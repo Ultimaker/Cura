@@ -18,7 +18,7 @@ class AutoDetectBaudJob(Job):
     def __init__(self, serial_port: int) -> None:
         super().__init__()
         self._serial_port = serial_port
-        self._all_baud_rates = [115200, 250000, 500000, 230400, 57600, 38400, 19200, 9600]
+        self._all_baud_rates = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
     def run(self) -> None:
         Logger.log("d", "Auto detect baud rate started.")

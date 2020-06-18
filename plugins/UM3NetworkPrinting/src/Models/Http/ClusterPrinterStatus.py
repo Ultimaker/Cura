@@ -17,26 +17,10 @@ from .ClusterPrinterConfigurationMaterial import ClusterPrinterConfigurationMate
 from ..BaseModel import BaseModel
 
 
-##  Class representing a cluster printer
 class ClusterPrinterStatus(BaseModel):
+    """Class representing a cluster printer"""
 
-    ## Creates a new cluster printer status
-    #  \param enabled: A printer can be disabled if it should not receive new jobs. By default every printer is enabled.
-    #  \param firmware_version: Firmware version installed on the printer. Can differ for each printer in a cluster.
-    #  \param friendly_name: Human readable name of the printer. Can be used for identification purposes.
-    #  \param ip_address: The IP address of the printer in the local network.
-    #  \param machine_variant: The type of printer. Can be 'Ultimaker 3' or 'Ultimaker 3ext'.
-    #  \param status: The status of the printer.
-    #  \param unique_name: The unique name of the printer in the network.
-    #  \param uuid: The unique ID of the printer, also known as GUID.
-    #  \param configuration: The active print core configurations of this printer.
-    #  \param reserved_by: A printer can be claimed by a specific print job.
-    #  \param maintenance_required: Indicates if maintenance is necessary.
-    #  \param firmware_update_status: Whether the printer's firmware is up-to-date, value is one of: "up_to_date",
-    #         "pending_update", "update_available", "update_in_progress", "update_failed", "update_impossible".
-    #  \param latest_available_firmware: The version of the latest firmware that is available.
-    #  \param build_plate: The build plate that is on the printer.
-    #  \param material_station: The material station that is on the printer.
+
     def __init__(self, enabled: bool, firmware_version: str, friendly_name: str, ip_address: str, machine_variant: str,
                  status: str, unique_name: str, uuid: str,
                  configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
@@ -44,6 +28,25 @@ class ClusterPrinterStatus(BaseModel):
                  firmware_update_status: Optional[str] = None, latest_available_firmware: Optional[str] = None,
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  material_station: Union[Dict[str, Any], ClusterPrinterMaterialStation] = None, **kwargs) -> None:
+        """Creates a new cluster printer status
+
+        :param enabled: A printer can be disabled if it should not receive new jobs. By default every printer is enabled.
+        :param firmware_version: Firmware version installed on the printer. Can differ for each printer in a cluster.
+        :param friendly_name: Human readable name of the printer. Can be used for identification purposes.
+        :param ip_address: The IP address of the printer in the local network.
+        :param machine_variant: The type of printer. Can be 'Ultimaker 3' or 'Ultimaker 3ext'.
+        :param status: The status of the printer.
+        :param unique_name: The unique name of the printer in the network.
+        :param uuid: The unique ID of the printer, also known as GUID.
+        :param configuration: The active print core configurations of this printer.
+        :param reserved_by: A printer can be claimed by a specific print job.
+        :param maintenance_required: Indicates if maintenance is necessary.
+        :param firmware_update_status: Whether the printer's firmware is up-to-date, value is one of: "up_to_date",
+          "pending_update", "update_available", "update_in_progress", "update_failed", "update_impossible".
+        :param latest_available_firmware: The version of the latest firmware that is available.
+        :param build_plate: The build plate that is on the printer.
+        :param material_station: The material station that is on the printer.
+        """
 
         self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
         self.enabled = enabled
@@ -63,9 +66,12 @@ class ClusterPrinterStatus(BaseModel):
                                                 material_station) if material_station else None
         super().__init__(**kwargs)
 
-    ## Creates a new output model.
-    #  \param controller - The controller of the model.
     def createOutputModel(self, controller: PrinterOutputController) -> PrinterOutputModel:
+        """Creates a new output model.
+
+        :param controller: - The controller of the model.
+        """
+
         # FIXME
         # Note that we're using '2' here as extruder count. We have hardcoded this for now to prevent issues where the
         # amount of extruders coming back from the API is actually lower (which it can be if a printer was just added
@@ -74,9 +80,12 @@ class ClusterPrinterStatus(BaseModel):
         self.updateOutputModel(model)
         return model
 
-    ## Updates the given output model.
-    #  \param model - The output model to update.
     def updateOutputModel(self, model: PrinterOutputModel) -> None:
+        """Updates the given output model.
+
+        :param model: - The output model to update.
+        """
+
         model.updateKey(self.uuid)
         model.updateName(self.friendly_name)
         model.updateUniqueName(self.unique_name)
@@ -110,9 +119,12 @@ class ClusterPrinterStatus(BaseModel):
         ) for left_slot, right_slot in product(self._getSlotsForExtruder(0), self._getSlotsForExtruder(1))]
         model.setAvailableConfigurations(available_configurations)
 
-    ## Create a list of Material Station slots for the given extruder index.
-    #  Returns a list with a single empty material slot if none are found to ensure we don't miss configurations.
     def _getSlotsForExtruder(self, extruder_index: int) -> List[ClusterPrinterMaterialStationSlot]:
+        """Create a list of Material Station slots for the given extruder index.
+
+        Returns a list with a single empty material slot if none are found to ensure we don't miss configurations.
+        """
+
         if not self.material_station:  # typing guard
             return []
         slots = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
@@ -121,15 +133,19 @@ class ClusterPrinterStatus(BaseModel):
         )]
         return slots or [self._createEmptyMaterialSlot(extruder_index)]
 
-    ## Check if a configuration is supported in order to make it selectable by the user.
-    #  We filter out any slot that is not supported by the extruder index, print core type or if the material is empty.
     @staticmethod
     def _isSupportedConfiguration(slot: ClusterPrinterMaterialStationSlot, extruder_index: int) -> bool:
+        """Check if a configuration is supported in order to make it selectable by the user.
+
+        We filter out any slot that is not supported by the extruder index, print core type or if the material is empty.
+        """
+
         return slot.extruder_index == extruder_index and slot.compatible and not slot.material_empty
 
-    ## Create an empty material slot with a fake empty material.
     @staticmethod
     def _createEmptyMaterialSlot(extruder_index: int) -> ClusterPrinterMaterialStationSlot:
+        """Create an empty material slot with a fake empty material."""
+
         empty_material = ClusterPrinterConfigurationMaterial(guid = "", material = "empty", brand = "", color = "")
         return ClusterPrinterMaterialStationSlot(slot_index = 0, extruder_index = extruder_index,
                                                  compatible = True, material_remaining = 0, material = empty_material)

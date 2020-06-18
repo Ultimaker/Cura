@@ -214,14 +214,17 @@ _creality_limited_quality_type = {
 }
 
 
-##  Upgrades configurations from the state they were in at version 4.1 to the
-#   state they should be in at version 4.2.
 class VersionUpgrade41to42(VersionUpgrade):
-    ##  Upgrades instance containers to have the new version
-    #   number.
-    #
-    #   This renames the renamed settings in the containers.
+    """Upgrades configurations from the state they were in at version 4.1 to the
+
+    state they should be in at version 4.2.
+    """
+
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades instance containers to have the new version number.
+
+        This renames the renamed settings in the containers.
+        """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
@@ -257,10 +260,12 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades Preferences to have the new version number.
-    #
-    #   This renames the renamed settings in the list of visible settings.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades Preferences to have the new version number.
+
+        This renames the renamed settings in the list of visible settings.
+        """
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -284,8 +289,9 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades stacks to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 

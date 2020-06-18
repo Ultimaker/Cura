@@ -7,8 +7,9 @@ from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from cura.LayerData import LayerData
 
 
-## Simple decorator to indicate a scene node holds layer data.
 class LayerDataDecorator(SceneNodeDecorator):
+    """Simple decorator to indicate a scene node holds layer data."""
+
     def __init__(self) -> None:
         super().__init__()
         self._layer_data = None  # type: Optional[LayerData]

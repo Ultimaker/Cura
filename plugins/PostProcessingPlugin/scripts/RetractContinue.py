@@ -5,8 +5,10 @@ import math
 
 from ..Script import Script
 
-##  Continues retracting during all travel moves.
+
 class RetractContinue(Script):
+    """Continues retracting during all travel moves."""
+
     def getSettingDataString(self):
         return """{
             "name": "Retract Continue",

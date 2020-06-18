@@ -15,21 +15,24 @@ from UM.Application import Application
 from cura.Settings.PerObjectContainerStack import PerObjectContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 
-##  A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
-#   the linked node. The Stack in question will refer to the global stack (so that settings that are not defined by
-#   this stack still resolve.
 @signalemitter
 class SettingOverrideDecorator(SceneNodeDecorator):
-    ##  Event indicating that the user selected a different extruder.
-    activeExtruderChanged = Signal()
+    """A decorator that adds a container stack to a Node. This stack should be queried for all settings regarding
 
-    ##  Non-printing meshes
-    #
-    #   If these settings are True for any mesh, the mesh does not need a convex hull,
-    #   and is sent to the slicer regardless of whether it fits inside the build volume.
-    #   Note that Support Mesh is not in here because it actually generates
-    #   g-code in the volume of the mesh.
+    the linked node. The Stack in question will refer to the global stack (so that settings that are not defined by
+    this stack still resolve.
+    """
+    activeExtruderChanged = Signal()
+    """Event indicating that the user selected a different extruder."""
+
     _non_printing_mesh_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+    """Non-printing meshes
+
+    If these settings are True for any mesh, the mesh does not need a convex hull,
+    and is sent to the slicer regardless of whether it fits inside the build volume.
+    Note that Support Mesh is not in here because it actually generates
+    g-code in the volume of the mesh.
+    """
     _non_thumbnail_visible_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh", "support_mesh"}
 
     def __init__(self):
@@ -56,11 +59,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
 
     def __deepcopy__(self, memo):
-        ## Create a fresh decorator object
         deep_copy = SettingOverrideDecorator()
+        """Create a fresh decorator object"""
 
-        ## Copy the instance
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
+        """Copy the instance"""
 
         # A unique name must be added, or replaceContainer will not replace it
         instance_container.setMetaDataEntry("id", self._generateUniqueName())
@@ -78,22 +81,28 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         return deep_copy
 
-    ##  Gets the currently active extruder to print this object with.
-    #
-    #   \return An extruder's container stack.
     def getActiveExtruder(self):
+        """Gets the currently active extruder to print this object with.
+
+        :return: An extruder's container stack.
+        """
+
         return self._extruder_stack
 
-    ##  Gets the signal that emits if the active extruder changed.
-    #
-    #   This can then be accessed via a decorator.
     def getActiveExtruderChangedSignal(self):
+        """Gets the signal that emits if the active extruder changed.
+
+        This can then be accessed via a decorator.
+        """
+
         return self.activeExtruderChanged
 
-    ##  Gets the currently active extruders position
-    #
-    #   \return An extruder's position, or None if no position info is available.
     def getActiveExtruderPosition(self):
+        """Gets the currently active extruders position
+
+        :return: An extruder's position, or None if no position info is available.
+        """
+
         # for support_meshes, always use the support_extruder
         if self.getStack().getProperty("support_mesh", "value"):
             global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -126,9 +135,11 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 
-    ##  Makes sure that the stack upon which the container stack is placed is
-    #   kept up to date.
     def _updateNextStack(self):
+        """Makes sure that the stack upon which the container stack is placed is
+
+        kept up to date.
+        """
         if self._extruder_stack:
             extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = self._extruder_stack)
             if extruder_stack:
@@ -147,10 +158,12 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         else:
             self._stack.setNextStack(Application.getInstance().getGlobalContainerStack())
 
-    ##  Changes the extruder with which to print this node.
-    #
-    #   \param extruder_stack_id The new extruder stack to print with.
     def setActiveExtruder(self, extruder_stack_id):
+        """Changes the extruder with which to print this node.
+
+        :param extruder_stack_id: The new extruder stack to print with.
+        """
+
         self._extruder_stack = extruder_stack_id
         self._updateNextStack()
         ExtruderManager.getInstance().resetSelectedObjectExtruders()

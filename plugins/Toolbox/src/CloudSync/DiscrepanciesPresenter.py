@@ -8,9 +8,11 @@ from UM.Signal import Signal
 from .SubscribedPackagesModel import SubscribedPackagesModel
 
 
-## Shows a list of packages to be added or removed. The user can select which packages to (un)install. The user's
-#  choices are emitted on the `packageMutations` Signal.
 class DiscrepanciesPresenter(QObject):
+    """Shows a list of packages to be added or removed. The user can select which packages to (un)install. The user's
+
+    choices are emitted on the `packageMutations` Signal.
+    """
 
     def __init__(self, app: QtApplication) -> None:
         super().__init__(app)

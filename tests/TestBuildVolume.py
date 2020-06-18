@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import MagicMock, patch
 import pytest
 
@@ -5,9 +8,6 @@ from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from cura.BuildVolume import BuildVolume, PRIME_CLEARANCE
 import numpy
-
-
-
 
 @pytest.fixture
 def build_volume() -> BuildVolume:
@@ -161,11 +161,9 @@ class TestUpdateRaftThickness:
             return properties.get(args[2])
 
     def createMockedStack(self):
-        mocked_global_stack = MagicMock(name="mocked_global_stack")
-        mocked_global_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_global_stack = MagicMock(name = "mocked_global_stack")
+        mocked_global_stack.getProperty = MagicMock(side_effect = self.getPropertySideEffect)
         extruder_stack = MagicMock()
-
-        mocked_global_stack.extruders = {"0": extruder_stack}
 
         return mocked_global_stack
 

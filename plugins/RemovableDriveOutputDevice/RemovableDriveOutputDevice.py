@@ -28,17 +28,19 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self._stream = None
 
-    ##  Request the specified nodes to be written to the removable drive.
-    #
-    #   \param nodes A collection of scene nodes that should be written to the
-    #   removable drive.
-    #   \param file_name \type{string} A suggestion for the file name to write
-    #   to. If none is provided, a file name will be made from the names of the
-    #   meshes.
-    #   \param limit_mimetypes Should we limit the available MIME types to the
-    #   MIME types available to the currently active machine?
-    #
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+        """Request the specified nodes to be written to the removable drive.
+
+        :param nodes: A collection of scene nodes that should be written to the
+            removable drive.
+        :param file_name: :type{string} A suggestion for the file name to write to.
+            If none is provided, a file name will be made from the names of the
+        meshes.
+        :param limit_mimetypes: Should we limit the available MIME types to the
+        MIME types available to the currently active machine?
+
+        """
+
         filter_by_machine = True # This plugin is intended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
@@ -106,14 +108,14 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("e", "Operating system would not let us write to %s: %s", file_name, str(e))
             raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
 
-    ##  Generate a file name automatically for the specified nodes to be saved
-    #   in.
-    #
-    #   The name generated will be the name of one of the nodes. Which node that
-    #   is can not be guaranteed.
-    #
-    #   \param nodes A collection of nodes for which to generate a file name.
     def _automaticFileName(self, nodes):
+        """Generate a file name automatically for the specified nodes to be saved in.
+
+        The name generated will be the name of one of the nodes. Which node that
+        is can not be guaranteed.
+
+        :param nodes: A collection of nodes for which to generate a file name.
+        """
         for root in nodes:
             for child in BreadthFirstIterator(root):
                 if child.getMeshData():

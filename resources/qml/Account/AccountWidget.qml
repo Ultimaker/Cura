@@ -108,7 +108,15 @@ Item
             }
         }
 
-        onClicked: popup.opened ? popup.close() : popup.open()
+        onClicked: {
+            if (popup.opened)
+            {
+                popup.close()
+            } else {
+                Cura.API.account.popupOpened()
+                popup.open()
+            }
+        }
     }
 
     Popup
@@ -119,17 +127,13 @@ Item
         x: parent.width - width
 
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+        onOpened: Cura.API.account.popupOpened()
 
         opacity: opened ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
-
+        padding: 0
         contentItem: AccountDetails
-        {
-            id: panel
-            profile: Cura.API.account.userProfile
-            loggedIn: Cura.API.account.isLoggedIn
-            profileImage: Cura.API.account.profileImageUrl
-        }
+        {}
 
         background: UM.PointingRectangle
         {

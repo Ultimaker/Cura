@@ -62,11 +62,11 @@ class CloudPackageChecker(QObject):
 
     def _getUserSubscribedPackages(self) -> None:
         self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
-        Logger.debug("Requesting subscribed packages metadata from server.")
         url = CloudApiModel.api_url_user_packages
         self._application.getHttpRequestManager().get(url,
                                                       callback = self._onUserPackagesRequestFinished,
                                                       error_callback = self._onUserPackagesRequestFinished,
+                                                      timeout=10,
                                                       scope = self._scope)
 
     def _onUserPackagesRequestFinished(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:

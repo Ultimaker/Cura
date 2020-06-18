@@ -56,7 +56,7 @@ class PauseAtHeight(Script):
                     "type": "enum",
                     "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
                     "default_value": "marlin",
-                    "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name else \\\"marlin\\\""
+                    "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name or \\\"Flying Bear Ghost 4S\\\" in machine_name  else \\\"marlin\\\""
                 },                    
                 "disarm_timeout":
                 {
@@ -201,18 +201,22 @@ class PauseAtHeight(Script):
     ##  Get the X and Y values for a layer (will be used to get X and Y of the
     #   layer after the pause).
     def getNextXY(self, layer: str) -> Tuple[float, float]:
+        """Get the X and Y values for a layer (will be used to get X and Y of the layer after the pause)."""
         lines = layer.split("\n")
         for line in lines:
-            if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
-                x = self.getValue(line, "X")
-                y = self.getValue(line, "Y")
-                return x, y
+            if line.startswith(("G0", "G1", "G2", "G3")):
+                if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
+                    x = self.getValue(line, "X")
+                    y = self.getValue(line, "Y")
+                    return x, y
         return 0, 0
 
-    ##  Inserts the pause commands.
-    #   \param data: List of layers.
-    #   \return New list of layers.
     def execute(self, data: List[str]) -> List[str]:
+        """Inserts the pause commands.
+
+        :param data: List of layers.
+        :return: New list of layers.
+        """
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
