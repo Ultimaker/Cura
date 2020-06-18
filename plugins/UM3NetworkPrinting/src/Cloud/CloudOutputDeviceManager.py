@@ -239,13 +239,13 @@ class CloudOutputDeviceManager:
             num_hidden = len(new_devices) - max_disp_devices + 1
             device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:num_hidden]]
             device_name_list.append(self.I18N_CATALOG.i18nc("info:hidden list items", "<li>... and {} others</li>", num_hidden))
-            device_names = "\n".join(device_name_list)
+            device_names = "".join(device_name_list)
         else:
-            device_names = "\n".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices])
+            device_names = "".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices])
 
         message_text = self.I18N_CATALOG.i18nc(
             "info:status",
-            "Cloud printers added from your account:\n<ul>{}</ul>",
+            "Cloud printers added from your account:<ul>{}</ul>",
             device_names
         )
         message.setText(message_text)
