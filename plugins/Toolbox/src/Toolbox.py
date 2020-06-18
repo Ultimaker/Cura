@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -232,7 +232,7 @@ class Toolbox(QObject, Extension):
             "licenseModel": self._license_model
         })
         if not dialog:
-            raise Exception("Failed to create Marketplace dialog")
+            return None
         return dialog
 
     def _convertPluginMetadata(self, plugin_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
