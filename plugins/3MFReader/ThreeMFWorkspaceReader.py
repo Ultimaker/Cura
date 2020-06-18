@@ -651,7 +651,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.addContainer(global_stack)
         else:
             # Find the machine
-            global_stack = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")[0]
+            global_stacks = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")
+            if not global_stacks:
+                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura.", file_name))
+                message.show()
+                self.setWorkspaceName("")
+                return [], {}
+            global_stack = global_stacks[0]
             extruder_stacks = self._container_registry.findContainerStacks(machine = global_stack.getId(),
                                                                            type = "extruder_train")
             extruder_stack_dict = {stack.getMetaDataEntry("position"): stack for stack in extruder_stacks}
