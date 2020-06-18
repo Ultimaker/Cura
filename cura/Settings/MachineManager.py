@@ -1368,7 +1368,6 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
 
-            disabled_used_extruder_position_set = set()
             extruders_to_disable = set()
 
             # If an extruder that's currently used to print a model gets disabled due to the syncing, we need to show
@@ -1396,7 +1395,6 @@ class MachineManager(QObject):
                     self._global_container_stack.extruderList[int(position)].setEnabled(False)
 
                     need_to_show_message = True
-                    disabled_used_extruder_position_set.add(int(position))
 
                 else:
                     machine_node = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
@@ -1427,7 +1425,7 @@ class MachineManager(QObject):
 
                 # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
                 extruder_names = []
-                for extruder_position in sorted(disabled_used_extruder_position_set):
+                for extruder_position in sorted(extruders_to_disable):
                     extruder_stack = self._global_container_stack.extruderList[int(extruder_position)]
                     extruder_name = extruder_stack.definition.getName()
                     extruder_names.append(extruder_name)
