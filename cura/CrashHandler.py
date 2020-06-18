@@ -215,6 +215,16 @@ class CrashHandler:
         locale.getdefaultlocale()[0]
         self.data["locale_cura"] = self.cura_locale
 
+        try:
+            from cura.CuraApplication import CuraApplication
+            plugins = CuraApplication.getInstance().getPluginRegistry()
+            self.data["plugins"] = {
+                plugin_id: plugins.getMetaData(plugin_id)["plugin"]["version"]
+                for plugin_id in plugins.getInstalledPlugins() if not plugins.isBundledPlugin(plugin_id)
+            }
+        except:
+            self.data["plugins"] = {"[FAILED]": "0.0.0"}
+
         crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label", "Cura language") + ":</b> " + str(self.cura_locale) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label", "OS language") + ":</b> " + str(self.data["locale_os"]) + "<br/>"
@@ -237,6 +247,8 @@ class CrashHandler:
                 scope.set_tag("locale_os", self.data["locale_os"])
                 scope.set_tag("locale_cura", self.cura_locale)
                 scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
+
+                scope.set_context("plugins", self.data["plugins"])
 
                 scope.set_user({"id": str(uuid.getnode())})
 
