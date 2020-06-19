@@ -141,52 +141,45 @@ class Script:
         All other keyword parameters are put in the result in g-code's format.
         For instance, if you put ``G=1`` in the parameters, it will output
         ``G1``. If you put ``G=1, X=100`` in the parameters, it will output
-        ``G1 X100``. The parameters G and M will always be put first. The
-        parameters T and S will be put second (or first if there is no G or M).
-        The rest of the parameters will be put in arbitrary order.
+        ``G1 X100``. The parameters will be added in order G M T S F X Y Z E.
+        Any other parameters will be added in arbitrary order.
 
         :param line: The original g-code line that must be modified. If not
             provided, an entirely new g-code line will be produced.
         :return: A line of g-code with the desired parameters filled in.
         """
-
-        #Strip the comment.
-        comment = ""
+        # Strip the comment.
         if ";" in line:
             comment = line[line.find(";"):]
-            line = line[:line.find(";")] #Strip the comment.
+            line = line[:line.find(";")]
+        else:
+            comment = ""
 
-        #Parse the original g-code line.
+        # Parse the original g-code line and add them to kwargs.
         for part in line.split(" "):
             if part == "":
                 continue
             parameter = part[0]
+            if parameter not in kwargs:
+                value = part[1:]
+                kwargs[parameter] = value
+
+        # Start writing the new g-code line.
+        line_parts = list()
+        # First add these parameters in order
+        for parameter in ["G", "M", "T", "S", "F", "X", "Y", "Z", "E"]:
             if parameter in kwargs:
-                continue #Skip this one. The user-provided parameter overwrites the one in the line.
-            value = part[1:]
-            kwargs[parameter] = value
+                line_parts.append(parameter + str(kwargs.pop(parameter)))
+        # Then add the rest of the parameters
+        for parameter, value in kwargs.items():
+            line_parts.append(parameter + str(value))
 
-        #Write the new g-code line.
-        result = ""
-        priority_parameters = ["G", "M", "T", "S", "F", "X", "Y", "Z", "E"] #First some parameters that get priority. In order of priority!
-        for priority_key in priority_parameters:
-            if priority_key in kwargs:
-                if result != "":
-                    result += " "
-                result += priority_key + str(kwargs[priority_key])
-                del kwargs[priority_key]
-        for key, value in kwargs.items():
-            if result != "":
-                result += " "
-            result += key + str(value)
-
-        #Put the comment back in.
+        # If there was a comment, put it at the end.
         if comment != "":
-            if result != "":
-                result += " "
-            result += ";" + comment
+            line_parts.append(comment)
 
-        return result
+        # Add spaces and return the new line
+        return " ".join(line_parts)
 
     def execute(self, data: List[str]) -> List[str]:
         """This is called when the script is executed. 
