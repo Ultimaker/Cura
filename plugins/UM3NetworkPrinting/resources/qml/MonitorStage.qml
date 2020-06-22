@@ -11,7 +11,7 @@ Component
         anchors.fill: parent
 
         // visits the correct page automatically
-        url: "https://digitalfactory.ultimaker.com/app/jobs/" + OutputDevice.key
+        url: CuraApplication.ultimakerDigitalFactoryUrl + "/app/jobs/" + OutputDevice.key
 
         // inject a script to make some UI modifications
         userScripts: [
