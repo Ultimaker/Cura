@@ -167,7 +167,7 @@ class SolidView(View):
                 self._composite_pass.setLayerBindings(["default", "selection", "xray"])
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
-                
+
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()

@@ -80,14 +80,11 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
-        if self.getParent():
-            if self.getMeshData() and isinstance(self._node, SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getMultiBuildPlateModel().activeBuildPlate:
-                # The object itself (+ adhesion in one-at-a-time mode)
-                renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
-                if self._convex_hull_head_mesh:
-                    # The full head. Rendered as a hint to the user: If this area overlaps another object A; this object
-                    # cannot be printed after A, because the head would hit A while printing the current object
-                    renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+        renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
+        if self._convex_hull_head_mesh:
+            # The full head. Rendered as a hint to the user: If this area overlaps another object A; this object
+            # cannot be printed after A, because the head would hit A while printing the current object
+            renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 
