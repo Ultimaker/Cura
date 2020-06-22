@@ -167,7 +167,7 @@ class SolidView(View):
                 self._composite_pass.setLayerBindings(["default", "selection", "xray"])
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
-
+                
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
@@ -224,13 +224,13 @@ class SolidView(View):
                         pass
 
                     if node.callDecoration("isNonPrintingMesh"):
-                        if per_mesh_stack and (per_mesh_stack.getProperty("infill_mesh", "value") or per_mesh_stack.getProperty("cutting_mesh", "value")):
+                        if per_mesh_stack and (node.callDecoration("isInfillMesh") or node.callDecoration("isCuttingMesh")):
                             renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                         else:
                             renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
                     elif getattr(node, "_outside_buildarea", False):
                         renderer.queueNode(node, shader = self._disabled_shader)
-                    elif per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
+                    elif per_mesh_stack and node.callDecoration("isSupportMesh"):
                         # Render support meshes with a vertical stripe that is darker
                         shade_factor = 0.6
                         uniforms["diffuse_color_2"] = [

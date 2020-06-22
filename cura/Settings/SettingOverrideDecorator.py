@@ -46,6 +46,9 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         self._is_non_printing_mesh = False
         self._is_non_thumbnail_visible_mesh = False
+        self._is_support_mesh = False
+        self._is_cutting_mesh = False
+        self._is_infill_mesh = False
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
@@ -104,7 +107,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         """
 
         # for support_meshes, always use the support_extruder
-        if self.getStack().userChanges.getProperty("support_mesh", "value"):
+        if self._is_support_mesh:
             global_container_stack = Application.getInstance().getGlobalContainerStack()
             if global_container_stack:
                 return str(global_container_stack.getProperty("support_extruder_nr", "value"))
@@ -113,6 +116,24 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if containers:
             container_stack = containers[0]
             return container_stack.getMetaDataEntry("position", default=None)
+
+    def isCuttingMesh(self):
+        return self._is_cutting_mesh
+
+    def isSupportMesh(self):
+        return self._is_support_mesh
+
+    def isInfillMesh(self):
+        return self._is_infill_mesh
+
+    def _evaluateIsCuttingMesh(self):
+        return bool(self._stack.userChanges.getProperty("cutting_mesh", "value"))
+
+    def _evaluateIsSupportMesh(self):
+        return bool(self._stack.userChanges.getProperty("support_mesh", "value"))
+
+    def _evaluateInfillMesh(self):
+        return bool(self._stack.userChanges.getProperty("infill_mesh", "value"))
 
     def isNonPrintingMesh(self):
         return self._is_non_printing_mesh
@@ -132,6 +153,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             # Trigger slice/need slicing if the value has changed.
             self._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
             self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
+
+            if setting_key == "support_mesh":
+                self._is_support_mesh = self._evaluateIsSupportMesh()
+            elif setting_key == "cutting_mesh":
+                self._is_cutting_mesh = self._evaluateIsCuttingMesh()
+            elif setting_key == "infill_mesh":
+                self._is_infill_mesh = self._evaluateInfillMesh()
+
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 
