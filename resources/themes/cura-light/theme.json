@@ -183,6 +183,7 @@
         "main_window_header_button_background_hovered": [117, 114, 159, 255],
 
         "account_widget_outline_active": [70, 66, 126, 255],
+        "account_sync_state_icon": [25, 25, 25, 255],
 
         "machine_selector_bar": [31, 36, 39, 255],
         "machine_selector_active": [68, 72, 75, 255],

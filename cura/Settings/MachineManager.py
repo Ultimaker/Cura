@@ -745,7 +745,7 @@ class MachineManager(QObject):
         # If the printer that is being removed is a network printer, the hidden printers have to be also removed
         group_id = metadata.get("group_id", None)
         if group_id:
-            metadata_filter = {"group_id": group_id}
+            metadata_filter = {"group_id": group_id, "hidden": True}
             hidden_containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
             if hidden_containers:
                 # This reuses the method and remove all printers recursively
@@ -1368,7 +1368,6 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
 
-            disabled_used_extruder_position_set = set()
             extruders_to_disable = set()
 
             # If an extruder that's currently used to print a model gets disabled due to the syncing, we need to show
@@ -1377,8 +1376,8 @@ class MachineManager(QObject):
 
             for extruder_configuration in configuration.extruderConfigurations:
                 # We support "" or None, since the cloud uses None instead of empty strings
-                extruder_has_hotend = extruder_configuration.hotendID and extruder_configuration.hotendID != ""
-                extruder_has_material = extruder_configuration.material.guid and extruder_configuration.material.guid != ""
+                extruder_has_hotend = extruder_configuration.hotendID not in ["", None]
+                extruder_has_material = extruder_configuration.material.guid not in [None, "", "00000000-0000-0000-0000-000000000000"]
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if not extruder_has_hotend or not extruder_has_material:
@@ -1396,7 +1395,6 @@ class MachineManager(QObject):
                     self._global_container_stack.extruderList[int(position)].setEnabled(False)
 
                     need_to_show_message = True
-                    disabled_used_extruder_position_set.add(int(position))
 
                 else:
                     machine_node = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
@@ -1427,7 +1425,7 @@ class MachineManager(QObject):
 
                 # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
                 extruder_names = []
-                for extruder_position in sorted(disabled_used_extruder_position_set):
+                for extruder_position in sorted(extruders_to_disable):
                     extruder_stack = self._global_container_stack.extruderList[int(extruder_position)]
                     extruder_name = extruder_stack.definition.getName()
                     extruder_names.append(extruder_name)
