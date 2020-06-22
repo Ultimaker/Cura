@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 import QtQuick 2.2
 import QtWebEngine 1.4
@@ -9,7 +9,11 @@ Component
     {
         id: webEngine
         anchors.fill: parent
-        url: "https://digitalfactory.ultimaker.com/app/jobs/" + OutputDevice.key // visit the correct page automatically
+
+        // visits the correct page automatically
+        url: "https://digitalfactory.ultimaker.com/app/jobs/" + OutputDevice.key
+
+        // inject a script to make some UI modifications
         userScripts: [
             WebEngineScript {
                 injectionPoint: WebEngineScript.DocumentCreation
@@ -17,5 +21,13 @@ Component
                 worldId: WebEngineScript.MainWorld
             }
 	    ]
+
+	    // this signal is triggered when the user click on an href in the HTML
+	    // we open these in an actual browser to prevent getting stuck in this web view
+	    onNewViewRequested: function(request) {
+	        if (request.userInitiated) {
+	            Qt.openUrlExternally(request.requestedUrl)
+	        }
+	    }
     }
 }
