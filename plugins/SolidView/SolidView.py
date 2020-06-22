@@ -103,7 +103,9 @@ class SolidView(View):
             except IndexError:
                 pass
             else:
-                self._support_angle = support_angle_stack.getProperty("support_angle", "value")
+                angle = support_angle_stack.getProperty("support_angle", "value")
+                if angle is not None:
+                    self._support_angle = angle
 
     def _checkSetup(self):
         if not self._extruders_model:
@@ -178,7 +180,7 @@ class SolidView(View):
         if global_container_stack:
             if Application.getInstance().getPreferences().getValue("view/show_overhang"):
                 # Make sure the overhang angle is valid before passing it to the shader
-                if self._support_angle is not None and self._support_angle >= 0 and self._support_angle <= 90:
+                if self._support_angle >= 0 and self._support_angle <= 90:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - self._support_angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
