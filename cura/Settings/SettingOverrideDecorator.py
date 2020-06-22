@@ -104,7 +104,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         """
 
         # for support_meshes, always use the support_extruder
-        if self.getStack().getProperty("support_mesh", "value"):
+        if self.getStack().userChanges.getProperty("support_mesh", "value"):
             global_container_stack = Application.getInstance().getGlobalContainerStack()
             if global_container_stack:
                 return str(global_container_stack.getProperty("support_extruder_nr", "value"))

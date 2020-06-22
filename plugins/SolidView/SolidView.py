@@ -198,11 +198,6 @@ class SolidView(View):
                         extruder_index = "0"
                     extruder_index = int(extruder_index)
 
-                    # Use the support extruder instead of the active extruder if this is a support_mesh
-                    if per_mesh_stack:
-                        if per_mesh_stack.getProperty("support_mesh", "value"):
-                            extruder_index = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
-
                     try:
                         material_color = self._extruders_model.getItem(extruder_index)["color"]
                     except KeyError:
