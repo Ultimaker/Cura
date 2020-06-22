@@ -64,7 +64,7 @@ class SolidView(View):
         self._old_layer_bindings = None
 
         self._next_xray_checking_time = time.time()
-        self._xray_checking_update_time = 1.0 # seconds
+        self._xray_checking_update_time = 30.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
         self._xray_warning_message = Message(
             catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
