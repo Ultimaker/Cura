@@ -106,8 +106,6 @@ class BuildVolume(SceneNode):
 
         self._application.globalContainerStackChanged.connect(self._onStackChanged)
 
-        self._onStackChanged()
-
         self._engine_ready = False
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -118,7 +116,7 @@ class BuildVolume(SceneNode):
         self._scene_objects = set()  # type: Set[SceneNode]
 
         self._scene_change_timer = QTimer()
-        self._scene_change_timer.setInterval(100)
+        self._scene_change_timer.setInterval(200)
         self._scene_change_timer.setSingleShot(True)
         self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
 
