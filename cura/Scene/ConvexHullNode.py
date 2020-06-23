@@ -57,13 +57,20 @@ class ConvexHullNode(SceneNode):
         self._hull = hull
         if self._hull:
             hull_mesh_builder = MeshBuilder()
+            if self._thickness == 0:
+                if hull_mesh_builder.addConvexPolygon(
+                    self._hull.getPoints()[::],  # bottom layer is reversed
+                    self._mesh_height, color = self._color):
 
-            if hull_mesh_builder.addConvexPolygonExtrusion(
-                self._hull.getPoints()[::-1],  # bottom layer is reversed
-                self._mesh_height - thickness, self._mesh_height, color = self._color):
+                    hull_mesh = hull_mesh_builder.build()
+                    self.setMeshData(hull_mesh)
+            else:
+                if hull_mesh_builder.addConvexPolygonExtrusion(
+                    self._hull.getPoints()[::-1],  # bottom layer is reversed
+                    self._mesh_height - thickness, self._mesh_height, color = self._color):
 
-                hull_mesh = hull_mesh_builder.build()
-                self.setMeshData(hull_mesh)
+                    hull_mesh = hull_mesh_builder.build()
+                    self.setMeshData(hull_mesh)
 
     def getHull(self):
         return self._hull
