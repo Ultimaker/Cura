@@ -169,7 +169,8 @@ class Script:
         # First add these parameters in order
         for parameter in ["G", "M", "T", "S", "F", "X", "Y", "Z", "E"]:
             if parameter in kwargs:
-                line_parts.append(parameter + str(kwargs.pop(parameter)))
+                value = kwargs.pop(parameter)  # get the corresponding value and remove the parameter from kwargs
+                line_parts.append(parameter + str(value))
         # Then add the rest of the parameters
         for parameter, value in kwargs.items():
             line_parts.append(parameter + str(value))
