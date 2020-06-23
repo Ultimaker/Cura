@@ -35,7 +35,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     """
     _non_thumbnail_visible_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh", "support_mesh"}
 
-    def __init__(self):
+    def __init__(self, *, force_update = True):
         super().__init__()
         self._stack = PerObjectContainerStack(container_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
@@ -57,13 +57,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
         self.activeExtruderChanged.connect(self._updateNextStack)
-        self._updateNextStack()
+        if force_update:
+            self._updateNextStack()
 
     def _generateUniqueName(self):
         return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
 
     def __deepcopy__(self, memo):
-        deep_copy = SettingOverrideDecorator()
+        deep_copy = SettingOverrideDecorator(force_update = False)
         """Create a fresh decorator object"""
 
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
