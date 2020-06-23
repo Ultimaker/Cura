@@ -86,8 +86,11 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
             ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
-
-        renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
+        batch = renderer.getNamedBatch("convex_hull_node")
+        if not batch:
+            batch = renderer.createRenderBatch(transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
+            renderer.addRenderBatch(batch, name = "convex_hull_node")
+        batch.addItem(self.getWorldTransformation(copy = False), self.getMeshData())
         if self._convex_hull_head_mesh:
             # The full head. Rendered as a hint to the user: If this area overlaps another object A; this object
             # cannot be printed after A, because the head would hit A while printing the current object

@@ -186,7 +186,8 @@ class SolidView(View):
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
-
+        disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
+        renderer.addRenderBatch(disabled_batch)
         for node in DepthFirstIterator(scene.getRoot()):
             if node.render(renderer):
                 continue
@@ -233,7 +234,7 @@ class SolidView(View):
                     else:
                         renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
                 elif getattr(node, "_outside_buildarea", False):
-                    renderer.queueNode(node, shader = self._disabled_shader)
+                    disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData())
                 elif per_mesh_stack and node.callDecoration("isSupportMesh"):
                     # Render support meshes with a vertical stripe that is darker
                     shade_factor = 0.6
