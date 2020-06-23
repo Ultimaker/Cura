@@ -268,7 +268,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if mesh is None:
                 return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
-            world_transform = self._node.getWorldTransformation()
+            world_transform = self._node.getWorldTransformation(copy= False)
 
             # Check the cache
             if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
