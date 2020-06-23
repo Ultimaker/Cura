@@ -8,6 +8,7 @@ import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
 import Arcus #For typing.
+from PyQt5.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -372,9 +373,11 @@ class StartSliceJob(Job):
         self._all_extruders_settings = {
             "-1": self._buildReplacementTokens(global_stack)
         }
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
             self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         """Replace setting tokens in a piece of g-code.
