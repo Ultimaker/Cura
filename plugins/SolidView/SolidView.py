@@ -188,64 +188,66 @@ class SolidView(View):
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
         for node in DepthFirstIterator(scene.getRoot()):
-            if not node.render(renderer):
-                if node.getMeshData() and node.isVisible():
-                    uniforms = {}
-                    shade_factor = 1.0
+            if node.render(renderer):
+                continue
 
-                    per_mesh_stack = node.callDecoration("getStack")
+            if node.getMeshData() and node.isVisible():
+                uniforms = {}
+                shade_factor = 1.0
 
-                    extruder_index = node.callDecoration("getActiveExtruderPosition")
-                    if extruder_index is None:
-                        extruder_index = "0"
-                    extruder_index = int(extruder_index)
+                per_mesh_stack = node.callDecoration("getStack")
 
-                    try:
-                        material_color = self._extruders_model.getItem(extruder_index)["color"]
-                    except KeyError:
-                        material_color = self._extruders_model.defaultColors[0]
+                extruder_index = node.callDecoration("getActiveExtruderPosition")
+                if extruder_index is None:
+                    extruder_index = "0"
+                extruder_index = int(extruder_index)
 
-                    if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
-                        # Shade objects that are printed with the non-active extruder 25% darker
-                        shade_factor = 0.6
+                try:
+                    material_color = self._extruders_model.getItem(extruder_index)["color"]
+                except KeyError:
+                    material_color = self._extruders_model.defaultColors[0]
 
-                    try:
-                        # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
-                        # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
-                        uniforms["diffuse_color"] = [
-                            shade_factor * int(material_color[1:3], 16) / 255,
-                            shade_factor * int(material_color[3:5], 16) / 255,
-                            shade_factor * int(material_color[5:7], 16) / 255,
-                            1.0
-                        ]
+                if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                    # Shade objects that are printed with the non-active extruder 25% darker
+                    shade_factor = 0.6
 
-                        # Color the currently selected face-id. (Disable for now.)
-                        #face = Selection.getHoverFace()
-                        uniforms["hover_face"] = -1 #if not face or node != face[0] else face[1]
-                    except ValueError:
-                        pass
+                try:
+                    # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
+                    # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
+                    uniforms["diffuse_color"] = [
+                        shade_factor * int(material_color[1:3], 16) / 255,
+                        shade_factor * int(material_color[3:5], 16) / 255,
+                        shade_factor * int(material_color[5:7], 16) / 255,
+                        1.0
+                    ]
 
-                    if node.callDecoration("isNonPrintingMesh"):
-                        if per_mesh_stack and (node.callDecoration("isInfillMesh") or node.callDecoration("isCuttingMesh")):
-                            renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
-                        else:
-                            renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
-                    elif getattr(node, "_outside_buildarea", False):
-                        renderer.queueNode(node, shader = self._disabled_shader)
-                    elif per_mesh_stack and node.callDecoration("isSupportMesh"):
-                        # Render support meshes with a vertical stripe that is darker
-                        shade_factor = 0.6
-                        uniforms["diffuse_color_2"] = [
-                            uniforms["diffuse_color"][0] * shade_factor,
-                            uniforms["diffuse_color"][1] * shade_factor,
-                            uniforms["diffuse_color"][2] * shade_factor,
-                            1.0
-                        ]
-                        renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
+                    # Color the currently selected face-id. (Disable for now.)
+                    #face = Selection.getHoverFace()
+                    uniforms["hover_face"] = -1 #if not face or node != face[0] else face[1]
+                except ValueError:
+                    pass
+
+                if node.callDecoration("isNonPrintingMesh"):
+                    if per_mesh_stack and (node.callDecoration("isInfillMesh") or node.callDecoration("isCuttingMesh")):
+                        renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                     else:
-                        renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
-                if node.callDecoration("isGroup") and Selection.isSelected(node):
-                    renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
+                        renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
+                elif getattr(node, "_outside_buildarea", False):
+                    renderer.queueNode(node, shader = self._disabled_shader)
+                elif per_mesh_stack and node.callDecoration("isSupportMesh"):
+                    # Render support meshes with a vertical stripe that is darker
+                    shade_factor = 0.6
+                    uniforms["diffuse_color_2"] = [
+                        uniforms["diffuse_color"][0] * shade_factor,
+                        uniforms["diffuse_color"][1] * shade_factor,
+                        uniforms["diffuse_color"][2] * shade_factor,
+                        1.0
+                    ]
+                    renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
+                else:
+                    renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
+            if node.callDecoration("isGroup") and Selection.isSelected(node):
+                renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
     def endRendering(self):
         # check whether the xray overlay is showing badness
