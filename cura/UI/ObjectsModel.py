@@ -98,7 +98,8 @@ class ObjectsModel(ListModel):
 
         return True
 
-    def _renameNodes(self, node_info_dict: Dict[str, _NodeInfo]) -> List[SceneNode]:
+    @staticmethod
+    def _renameNodes(node_info_dict: Dict[str, _NodeInfo]) -> List[SceneNode]:
         # Go through all names and find out the names for all nodes that need to be renamed.
         all_nodes = []  # type: List[SceneNode]
         for name, node_info in node_info_dict.items():
@@ -118,9 +119,7 @@ class ObjectsModel(ListModel):
                 else:
                     new_group_name = "{0}#{1}".format(name, current_index)
 
-                old_name = node.getName()
                 node.setName(new_group_name)
-                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_group_name)
                 all_nodes.append(node)
         return all_nodes
 
