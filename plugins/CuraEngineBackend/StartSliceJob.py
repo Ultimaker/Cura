@@ -419,10 +419,15 @@ class StartSliceJob(Job):
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
         settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 
+        global_definition = stack.getNextStack().getBottom()
+        own_definition = stack.getBottom()
+
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
-            if not stack.getProperty(key, "settable_per_extruder"):
-                continue
+            # Since these can only be set in definition files, we only have to ask there.
+            if not global_definition.getProperty(key, "settable_per_extruder") and \
+                    not own_definition.getProperty(key, "settable_per_extruder"):
+                    continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             setting.value = str(value).encode("utf-8")
