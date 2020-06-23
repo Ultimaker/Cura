@@ -206,25 +206,24 @@ class ExtruderManager(QObject):
             return []
 
         # Get the extruders of all printable meshes in the scene
-        meshes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        nodes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
 
         # Exclude anti-overhang meshes
-        mesh_list = []
-        for mesh in meshes:
-            stack = mesh.callDecoration("getStack")
-            if stack is not None and (stack.getProperty("anti_overhang_mesh", "value") or stack.getProperty("support_mesh", "value")):
+        node_list = []
+        for node in nodes:
+            if node.callDecoration("isAntiOverhangMesh") or node.callDecoration("isSupportMesh"):
                 continue
-            mesh_list.append(mesh)
+            node_list.append(node)
 
-        for mesh in mesh_list:
-            extruder_stack_id = mesh.callDecoration("getActiveExtruder")
+        for node in node_list:
+            extruder_stack_id = node.callDecoration("getActiveExtruder")
             if not extruder_stack_id:
                 # No per-object settings for this node
                 extruder_stack_id = self.extruderIds["0"]
             used_extruder_stack_ids.add(extruder_stack_id)
 
             # Get whether any of them use support.
-            stack_to_use = mesh.callDecoration("getStack")  # if there is a per-mesh stack, we use it
+            stack_to_use = node.callDecoration("getStack")  # if there is a per-mesh stack, we use it
             if not stack_to_use:
                 # if there is no per-mesh stack, we use the build extruder for this mesh
                 stack_to_use = container_registry.findContainerStacks(id = extruder_stack_id)[0]
