@@ -55,6 +55,8 @@ class GlobalStack(CuraContainerStack):
         # properties. So we need to tie them together like this.
         self.metaDataChanged.connect(self.configuredConnectionTypesChanged)
 
+        self.setDirty(False)
+
     extrudersChanged = pyqtSignal()
     configuredConnectionTypesChanged = pyqtSignal()
 
