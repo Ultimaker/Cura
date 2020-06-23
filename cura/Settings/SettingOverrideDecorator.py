@@ -49,6 +49,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._is_support_mesh = False
         self._is_cutting_mesh = False
         self._is_infill_mesh = False
+        self._is_anti_overhang_mesh = False
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
@@ -126,6 +127,12 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def isInfillMesh(self):
         return self._is_infill_mesh
 
+    def isAntiOverhangMesh(self):
+        return self._is_anti_overhang_mesh
+
+    def _evaluateAntiOverhangMesh(self):
+        return bool(self._stack.userChanges.getProperty("anti_overhang_mesh", "value"))
+
     def _evaluateIsCuttingMesh(self):
         return bool(self._stack.userChanges.getProperty("cutting_mesh", "value"))
 
@@ -154,7 +161,9 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             self._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
             self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
 
-            if setting_key == "support_mesh":
+            if setting_key == "anti_overhang_mesh":
+                self._is_anti_overhang_mesh = self._evaluateAntiOverhangMesh()
+            elif setting_key == "support_mesh":
                 self._is_support_mesh = self._evaluateIsSupportMesh()
             elif setting_key == "cutting_mesh":
                 self._is_cutting_mesh = self._evaluateIsCuttingMesh()

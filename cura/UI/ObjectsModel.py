@@ -185,11 +185,18 @@ class ObjectsModel(ListModel):
             if per_object_stack:
                 per_object_settings_count = per_object_stack.getTop().getNumInstances()
 
-                for mesh_type in ["anti_overhang_mesh", "infill_mesh", "cutting_mesh", "support_mesh"]:
-                    if per_object_stack.getProperty(mesh_type, "value"):
-                        node_mesh_type = mesh_type
-                        per_object_settings_count -= 1 # do not count this mesh type setting
-                        break
+                if node.callDecoration("isAntiOverhangMesh"):
+                    node_mesh_type = "anti_overhang_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+                elif node.callDecoration("isSupportMesh"):
+                    node_mesh_type = "support_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+                elif node.callDecoration("isCuttingMesh"):
+                    node_mesh_type = "cutting_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+                elif node.callDecoration("isInfillMesh"):
+                    node_mesh_type = "infill_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
 
                 if per_object_settings_count > 0:
                     if node_mesh_type == "support_mesh":
