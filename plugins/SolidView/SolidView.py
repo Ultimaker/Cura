@@ -187,7 +187,9 @@ class SolidView(View):
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
         disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
+        normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
         renderer.addRenderBatch(disabled_batch)
+        renderer.addRenderBatch(normal_object_batch)
         for node in DepthFirstIterator(scene.getRoot()):
             if node.render(renderer):
                 continue
@@ -246,7 +248,7 @@ class SolidView(View):
                     ]
                     renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
                 else:
-                    renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
+                    normal_object_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), uniforms=uniforms)
             if node.callDecoration("isGroup") and Selection.isSelected(node):
                 renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 

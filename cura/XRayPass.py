@@ -29,7 +29,7 @@ class XRayPass(RenderPass):
         batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, backface_cull = False, blend_mode = RenderBatch.BlendMode.Additive)
         for node in DepthFirstIterator(self._scene.getRoot()):
             if isinstance(node, CuraSceneNode) and node.getMeshData() and node.isVisible():
-                batch.addItem(node.getWorldTransformation(), node.getMeshData())
+                batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData())
 
         self.bind()
 
