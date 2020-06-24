@@ -208,8 +208,6 @@ class ExtruderManager(QObject):
 
         # Get the extruders of all printable meshes in the scene
         nodes = [node for node in DepthFirstIterator(scene_root) if node.isSelectable() and not node.callDecoration("isAntiOverhangMesh") and not  node.callDecoration("isSupportMesh")] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
-        if not nodes:
-            return []
 
         for node in nodes:
             extruder_stack_id = node.callDecoration("getActiveExtruder")
