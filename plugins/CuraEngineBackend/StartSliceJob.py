@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingRelation import SettingRelation #For typing.
 
@@ -422,8 +423,8 @@ class StartSliceJob(Job):
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
         settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 
-        global_definition = stack.getNextStack().getBottom()
-        own_definition = stack.getBottom()
+        global_definition = cast(ContainerInterface, cast(ContainerStack, stack.getNextStack()).getBottom())
+        own_definition = cast(ContainerInterface, stack.getBottom())
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
