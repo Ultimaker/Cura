@@ -16,27 +16,33 @@ if TYPE_CHECKING:
     from .LocalClusterOutputDevice import LocalClusterOutputDevice
 
 
-##  Asynchronous job to send material profiles to the printer.
-#
-#   This way it won't freeze up the interface while sending those materials.
 class SendMaterialJob(Job):
+    """Asynchronous job to send material profiles to the printer.
+
+    This way it won't freeze up the interface while sending those materials.
+    """
+
 
     def __init__(self, device: "LocalClusterOutputDevice") -> None:
         super().__init__()
         self.device = device  # type: LocalClusterOutputDevice
 
-    ##  Send the request to the printer and register a callback
     def run(self) -> None:
+        """Send the request to the printer and register a callback"""
+
         self.device.getMaterials(on_finished = self._onGetMaterials)
 
-    ##  Callback for when the remote materials were returned.
     def _onGetMaterials(self, materials: List[ClusterMaterial]) -> None:
+        """Callback for when the remote materials were returned."""
+
         remote_materials_by_guid = {material.guid: material for material in materials}
         self._sendMissingMaterials(remote_materials_by_guid)
 
-    ##  Determine which materials should be updated and send them to the printer.
-    #   \param remote_materials_by_guid The remote materials by GUID.
     def _sendMissingMaterials(self, remote_materials_by_guid: Dict[str, ClusterMaterial]) -> None:
+        """Determine which materials should be updated and send them to the printer.
+
+        :param remote_materials_by_guid: The remote materials by GUID.
+        """
         local_materials_by_guid = self._getLocalMaterials()
         if len(local_materials_by_guid) == 0:
             Logger.log("d", "There are no local materials to synchronize with the printer.")
@@ -47,25 +53,31 @@ class SendMaterialJob(Job):
             return
         self._sendMaterials(material_ids_to_send)
 
-    ##  From the local and remote materials, determine which ones should be synchronized.
-    #   Makes a Set of id's containing only the id's of the materials that are not on the printer yet or the ones that
-    #   are newer in Cura.
-    #   \param local_materials The local materials by GUID.
-    #   \param remote_materials The remote materials by GUID.
     @staticmethod
     def _determineMaterialsToSend(local_materials: Dict[str, LocalMaterial],
                                   remote_materials: Dict[str, ClusterMaterial]) -> Set[str]:
+        """From the local and remote materials, determine which ones should be synchronized.
+
+        Makes a Set of id's containing only the id's of the materials that are not on the printer yet or the ones that
+        are newer in Cura.
+        :param local_materials: The local materials by GUID.
+        :param remote_materials: The remote materials by GUID.
+        """
+
         return {
             local_material.id
             for guid, local_material in local_materials.items()
             if guid not in remote_materials.keys() or local_material.version > remote_materials[guid].version
         }
 
-    ##  Send the materials to the printer.
-    #   The given materials will be loaded from disk en sent to to printer.
-    #   The given id's will be matched with filenames of the locally stored materials.
-    #   \param materials_to_send A set with id's of materials that must be sent.
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
+        """Send the materials to the printer.
+
+        The given materials will be loaded from disk en sent to to printer.
+        The given id's will be matched with filenames of the locally stored materials.
+        :param materials_to_send: A set with id's of materials that must be sent.
+        """
+
         container_registry = CuraApplication.getInstance().getContainerRegistry()
         all_materials = container_registry.findInstanceContainersMetadata(type = "material")
         all_base_files = {material["base_file"] for material in all_materials if "base_file" in material}  # Filters out uniques by making it a set. Don't include files without base file (i.e. empty material).
@@ -83,12 +95,14 @@ class SendMaterialJob(Job):
             file_name = os.path.basename(file_path)
             self._sendMaterialFile(file_path, file_name, root_material_id)
 
-    ##  Send a single material file to the printer.
-    #   Also add the material signature file if that is available.
-    #   \param file_path The path of the material file.
-    #   \param file_name The name of the material file.
-    #   \param material_id The ID of the material in the file.
     def _sendMaterialFile(self, file_path: str, file_name: str, material_id: str) -> None:
+        """Send a single material file to the printer.
+
+        Also add the material signature file if that is available.
+        :param file_path: The path of the material file.
+        :param file_name: The name of the material file.
+        :param material_id: The ID of the material in the file.
+        """
         parts = []
 
         # Add the material file.
@@ -112,8 +126,9 @@ class SendMaterialJob(Job):
         self.device.postFormWithParts(target = "/cluster-api/v1/materials/", parts = parts,
                                       on_finished = self._sendingFinished)
 
-    ##  Check a reply from an upload to the printer and log an error when the call failed
     def _sendingFinished(self, reply: QNetworkReply) -> None:
+        """Check a reply from an upload to the printer and log an error when the call failed"""
+
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
             Logger.log("w", "Error while syncing material: %s", reply.errorString())
             return
@@ -125,11 +140,14 @@ class SendMaterialJob(Job):
         # Because of the guards above it is not shown when syncing failed (which is not always an actual problem).
         MaterialSyncMessage(self.device).show()
 
-    ##  Retrieves a list of local materials
-    #   Only the new newest version of the local materials is returned
-    #   \return a dictionary of LocalMaterial objects by GUID
     @staticmethod
     def _getLocalMaterials() -> Dict[str, LocalMaterial]:
+        """Retrieves a list of local materials
+
+        Only the new newest version of the local materials is returned
+        :return: a dictionary of LocalMaterial objects by GUID
+        """
+
         result = {}  # type: Dict[str, LocalMaterial]
         all_materials = CuraApplication.getInstance().getContainerRegistry().findInstanceContainersMetadata(type = "material")
         all_base_files = [material for material in all_materials if material["id"] == material.get("base_file")]  # Don't send materials without base_file: The empty material doesn't need to be sent.

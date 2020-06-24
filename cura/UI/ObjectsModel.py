@@ -31,8 +31,9 @@ class _NodeInfo:
         self.is_group = is_group  # type: bool
 
 
-##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
+    """Keep track of all objects in the project"""
+
     NameRole = Qt.UserRole + 1
     SelectedRole = Qt.UserRole + 2
     OutsideAreaRole = Qt.UserRole + 3

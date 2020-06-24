@@ -2,9 +2,16 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 import io
 from UM.VersionUpgrade import VersionUpgrade
+
+
+# Renamed definition files
+_RENAMED_DEFINITION_DICT = {
+    "dagoma_discoeasy200": "dagoma_discoeasy200_bicolor",
+} # type: Dict[str, str]
+
 
 class VersionUpgrade462to47(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -58,6 +65,23 @@ class VersionUpgrade462to47(VersionUpgrade):
                 maximum_deviation = "=(" + maximum_deviation + ") / 2"
                 parser["values"]["meshfix_maximum_deviation"] = maximum_deviation
 
+            # Ironing inset is now based on the flow-compensated line width to make the setting have a more logical UX.
+            # Adjust so that the actual print result remains the same.
+            if "ironing_inset" in parser["values"]:
+                ironing_inset = parser["values"]["ironing_inset"]
+                if ironing_inset.startswith("="):
+                    ironing_inset = ironing_inset[1:]
+                if "ironing_pattern" in parser["values"] and parser["values"]["ironing_pattern"] == "concentric":
+                    correction = " + ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2"
+                else:  # If ironing_pattern doesn't exist, it means the default (zigzag) is selected
+                    correction = " + skin_line_width * (1.0 - ironing_flow / 100) / 2"
+                ironing_inset = "=(" + ironing_inset + ")" + correction
+                parser["values"]["ironing_inset"] = ironing_inset
+
+        # Check renamed definitions
+        if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
+            parser["general"]["definition"] = _RENAMED_DEFINITION_DICT[parser["general"]["definition"]]
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
@@ -88,6 +112,25 @@ class VersionUpgrade462to47(VersionUpgrade):
                 script_parser = configparser.ConfigParser(interpolation=None)
                 script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
                 script_parser.read_string(script_str)
+
+                # Unify all Pause at Height
+                script_id = script_parser.sections()[0]
+                if script_id in ["BQ_PauseAtHeight", "PauseAtHeightRepRapFirmwareDuet", "PauseAtHeightforRepetier"]:
+                    script_settings = script_parser.items(script_id)
+                    script_settings.append(("pause_method", {
+                        "BQ_PauseAtHeight": "bq",
+                        "PauseAtHeightforRepetier": "repetier",
+                        "PauseAtHeightRepRapFirmwareDuet": "reprap"
+                    }[script_id]))
+
+                    # Since we cannot rename a section, we remove the original section and create a new section with the new script id.
+                    script_parser.remove_section(script_id)
+                    script_id = "PauseAtHeight"
+                    script_parser.add_section(script_id)
+                    for setting_tuple in script_settings:
+                        script_parser.set(script_id, setting_tuple[0], setting_tuple[1])
+
+                # Update redo_layers to redo_layer
                 if "PauseAtHeight" in script_parser:
                     if "redo_layers" in script_parser["PauseAtHeight"]:
                         script_parser["PauseAtHeight"]["redo_layer"] = str(int(script_parser["PauseAtHeight"]["redo_layers"]) > 0)
@@ -98,7 +141,9 @@ class VersionUpgrade462to47(VersionUpgrade):
                 script_str = script_str.replace("\\\\", r"\\\\").replace("\n", r"\\\n")  # Escape newlines because configparser sees those as section delimiters.
                 new_scripts_entries.append(script_str)
             parser["metadata"]["post_processing_scripts"] = "\n".join(new_scripts_entries)
-
+        # check renamed definition
+        if parser.has_option("containers", "7") and parser["containers"]["7"] in _RENAMED_DEFINITION_DICT:
+            parser["containers"]["7"] = _RENAMED_DEFINITION_DICT[parser["containers"]["7"]]
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]

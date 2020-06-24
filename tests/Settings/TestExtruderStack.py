@@ -14,11 +14,13 @@ from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationErro
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.cura_empty_instance_containers import empty_container
 
-##  Gets an instance container with a specified container type.
-#
-#   \param container_type The type metadata for the instance container.
-#   \return An instance container instance.
 def getInstanceContainer(container_type) -> InstanceContainer:
+    """Gets an instance container with a specified container type.
+
+    :param container_type: The type metadata for the instance container.
+    :return: An instance container instance.
+    """
+
     container = InstanceContainer(container_id = "InstanceContainer")
     container.setMetaDataEntry("type", container_type)
     return container
@@ -32,10 +34,12 @@ class InstanceContainerSubClass(InstanceContainer):
         super().__init__(container_id = "SubInstanceContainer")
         self.setMetaDataEntry("type", container_type)
 
-#############################START OF TEST CASES################################
+############################START OF TEST CASES################################
 
-##  Tests whether adding a container is properly forbidden.
+
 def test_addContainer(extruder_stack):
+    """Tests whether adding a container is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         extruder_stack.addContainer(unittest.mock.MagicMock())
 
@@ -164,8 +168,10 @@ def test_constrainDefinitionInvalid(container, extruder_stack):
 def test_constrainDefinitionValid(container, extruder_stack):
     extruder_stack.definition = container #Should not give an error.
 
-##  Tests whether deserialising completes the missing containers with empty ones.
+
 def test_deserializeCompletesEmptyContainers(extruder_stack):
+    """Tests whether deserialising completes the missing containers with empty ones."""
+
     extruder_stack._containers = [DefinitionContainer(container_id = "definition"), extruder_stack.definitionChanges] #Set the internal state of this stack manually.
 
     with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
@@ -179,8 +185,10 @@ def test_deserializeCompletesEmptyContainers(extruder_stack):
             continue
         assert extruder_stack.getContainer(container_type_index) == empty_container #All others need to be empty.
 
-##  Tests whether an instance container with the wrong type gets removed when deserialising.
+
 def test_deserializeRemovesWrongInstanceContainer(extruder_stack):
+    """Tests whether an instance container with the wrong type gets removed when deserialising."""
+
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = getInstanceContainer(container_type = "wrong type")
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
@@ -189,8 +197,10 @@ def test_deserializeRemovesWrongInstanceContainer(extruder_stack):
 
     assert extruder_stack.quality == extruder_stack._empty_instance_container #Replaced with empty.
 
-##  Tests whether a container with the wrong class gets removed when deserialising.
+
 def test_deserializeRemovesWrongContainerClass(extruder_stack):
+    """Tests whether a container with the wrong class gets removed when deserialising."""
+
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = DefinitionContainer(container_id = "wrong class")
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
@@ -199,16 +209,20 @@ def test_deserializeRemovesWrongContainerClass(extruder_stack):
 
     assert extruder_stack.quality == extruder_stack._empty_instance_container #Replaced with empty.
 
-##  Tests whether an instance container in the definition spot results in an error.
+
 def test_deserializeWrongDefinitionClass(extruder_stack):
+    """Tests whether an instance container in the definition spot results in an error."""
+
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = getInstanceContainer(container_type = "definition") #Correct type but wrong class.
 
     with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
         with pytest.raises(UM.Settings.ContainerStack.InvalidContainerStackError): #Must raise an error that there is no definition container.
             extruder_stack.deserialize("")
 
-##  Tests whether an instance container with the wrong type is moved into the correct slot by deserialising.
+
 def test_deserializeMoveInstanceContainer(extruder_stack):
+    """Tests whether an instance container with the wrong type is moved into the correct slot by deserialising."""
+
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = getInstanceContainer(container_type = "material") #Not in the correct spot.
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
@@ -218,8 +232,10 @@ def test_deserializeMoveInstanceContainer(extruder_stack):
     assert extruder_stack.quality == empty_container
     assert extruder_stack.material != empty_container
 
-##  Tests whether a definition container in the wrong spot is moved into the correct spot by deserialising.
+
 def test_deserializeMoveDefinitionContainer(extruder_stack):
+    """Tests whether a definition container in the wrong spot is moved into the correct spot by deserialising."""
+
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Material] = DefinitionContainer(container_id = "some definition") #Not in the correct spot.
 
     with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
@@ -228,9 +244,10 @@ def test_deserializeMoveDefinitionContainer(extruder_stack):
     assert extruder_stack.material == empty_container
     assert extruder_stack.definition != empty_container
 
-##  Tests whether getProperty properly applies the stack-like behaviour on its containers.
+
 def test_getPropertyFallThrough(global_stack, extruder_stack):
-    # ExtruderStack.setNextStack calls registerExtruder for backward compatibility, but we do not need a complete extruder manager
+    """Tests whether getProperty properly applies the stack-like behaviour on its containers."""
+
     ExtruderManager._ExtruderManager__instance = unittest.mock.MagicMock()
 
     #A few instance container mocks to put in the stack.
@@ -273,13 +290,17 @@ def test_getPropertyFallThrough(global_stack, extruder_stack):
     extruder_stack.userChanges = mock_layer_heights[container_indices.UserChanges]
     assert extruder_stack.getProperty("layer_height", "value") == container_indices.UserChanges
 
-##  Tests whether inserting a container is properly forbidden.
+
 def test_insertContainer(extruder_stack):
+    """Tests whether inserting a container is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         extruder_stack.insertContainer(0, unittest.mock.MagicMock())
 
-##  Tests whether removing a container is properly forbidden.
+
 def test_removeContainer(extruder_stack):
+    """Tests whether removing a container is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         extruder_stack.removeContainer(unittest.mock.MagicMock())
 

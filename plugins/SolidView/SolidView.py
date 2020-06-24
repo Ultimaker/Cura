@@ -33,9 +33,10 @@ import math
 
 catalog = i18nCatalog("cura")
 
-## Standard view for mesh models.
 
 class SolidView(View):
+    """Standard view for mesh models."""
+
     _show_xray_warning_preference = "view/show_xray_warning"
 
     def __init__(self):

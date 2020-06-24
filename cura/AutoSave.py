@@ -31,7 +31,6 @@ class AutoSave:
         self._change_timer.timeout.connect(self._onTimeout)
         self._application.globalContainerStackChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
-        self._triggerTimer()
 
     def _triggerTimer(self, *args: Any) -> None:
         if not self._saving:

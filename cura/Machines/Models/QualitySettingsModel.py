@@ -10,10 +10,9 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 
-#
-# This model is used to show details settings of the selected quality in the quality management page.
-#
 class QualitySettingsModel(ListModel):
+    """This model is used to show details settings of the selected quality in the quality management page."""
+
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
     UnitRole = Qt.UserRole + 3
@@ -101,7 +100,8 @@ class QualitySettingsModel(ListModel):
         # the settings in that quality_changes_group.
         if quality_changes_group is not None:
             container_registry = ContainerRegistry.getInstance()
-            global_containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
+            metadata_for_global = quality_changes_group.metadata_for_global
+            global_containers = container_registry.findContainers(id = metadata_for_global["id"])
             global_container = None if len(global_containers) == 0 else global_containers[0]
             extruders_containers = {pos: container_registry.findContainers(id = quality_changes_group.metadata_per_extruder[pos]["id"]) for pos in quality_changes_group.metadata_per_extruder}
             extruders_container = {pos: None if not containers else containers[0] for pos, containers in extruders_containers.items()}
@@ -152,7 +152,7 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:
-                extruder_stack = global_container_stack.extruders[str(self._selected_position)]
+                extruder_stack = global_container_stack.extruderList[self._selected_position]
                 user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
 
             if profile_value is None and user_value is None:

@@ -12,7 +12,7 @@ from unittest.mock import patch, MagicMock
 import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
-
+from UM.VersionUpgradeManager import FilesDataUpdateResult
 from UM.Resources import Resources
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
 
@@ -36,6 +36,7 @@ def definition_container():
     assert result.getId() == uid
     return result
 
+
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_definitionIds(file_path):
     """
@@ -44,6 +45,7 @@ def test_definitionIds(file_path):
     """
     definition_id = os.path.basename(file_path).split(".")[0]
     assert " " not in definition_id  # Definition IDs are not allowed to have spaces.
+
 
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_noCategory(file_path):
@@ -57,19 +59,20 @@ def test_noCategory(file_path):
         metadata = DefinitionContainer.deserializeMetadata(json, "test_container_id")
         assert "category" not in metadata[0]
 
-##  Tests all definition containers
+
 @pytest.mark.parametrize("file_path", machine_filepaths)
 def test_validateMachineDefinitionContainer(file_path, definition_container):
+    """Tests all definition containers"""
+
     file_name = os.path.basename(file_path)
     if file_name == "fdmprinter.def.json" or file_name == "fdmextruder.def.json":
         return  # Stop checking, these are root files.
-
-    from UM.VersionUpgradeManager import FilesDataUpdateResult
 
     mocked_vum = MagicMock()
     mocked_vum.updateFilesData = lambda ct, v, fdl, fnl: FilesDataUpdateResult(ct, v, fdl, fnl)
     with patch("UM.VersionUpgradeManager.VersionUpgradeManager.getInstance", MagicMock(return_value = mocked_vum)):
         assertIsDefinitionValid(definition_container, file_path)
+
 
 def assertIsDefinitionValid(definition_container, file_path):
     with open(file_path, encoding = "utf-8") as data:
@@ -85,13 +88,16 @@ def assertIsDefinitionValid(definition_container, file_path):
         if "platform_texture" in metadata[0]:
             assert metadata[0]["platform_texture"] in all_images
 
-##  Tests whether setting values are not being hidden by parent containers.
-#
-#   When a definition container defines a "default_value" but inherits from a
-#   definition that defines a "value", the "default_value" is ineffective. This
-#   test fails on those things.
+
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_validateOverridingDefaultValue(file_path: str):
+    """Tests whether setting values are not being hidden by parent containers.
+
+    When a definition container defines a "default_value" but inherits from a
+    definition that defines a "value", the "default_value" is ineffective. This
+    test fails on those things.
+    """
+
     with open(file_path, encoding = "utf-8") as f:
         doc = json.load(f)
 
@@ -107,12 +113,14 @@ def test_validateOverridingDefaultValue(file_path: str):
                 faulty_keys.add(key)
     assert not faulty_keys, "Unnecessary default_values for {faulty_keys} in {file_name}".format(faulty_keys = sorted(faulty_keys), file_name = file_path)  # If there is a value in the parent settings, then the default_value is not effective.
 
-##  Get all settings and their properties from a definition we're inheriting
-#   from.
-#   \param definition_id The definition we're inheriting from.
-#   \return A dictionary of settings by key. Each setting is a dictionary of
-#   properties.
+
 def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
+    """Get all settings and their properties from a definition we're inheriting from.
+
+    :param definition_id: The definition we're inheriting from.
+    :return: A dictionary of settings by key. Each setting is a dictionary of properties.
+    """
+
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", definition_id + ".def.json")
     with open(definition_path, encoding = "utf-8") as f:
         doc = json.load(f)
@@ -127,13 +135,15 @@ def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
 
     return result
 
-##  Put all settings in the main dictionary rather than in children dicts.
-#   \param settings Nested settings. The keys are the setting IDs. The values
-#   are dictionaries of properties per setting, including the "children"
-#   property.
-#   \return A dictionary of settings by key. Each setting is a dictionary of
-#   properties.
+
 def flattenSettings(settings: Dict[str, Any]) -> Dict[str, Any]:
+    """Put all settings in the main dictionary rather than in children dicts.
+
+    :param settings: Nested settings. The keys are the setting IDs. The values
+    are dictionaries of properties per setting, including the "children" property.
+    :return: A dictionary of settings by key. Each setting is a dictionary of properties.
+    """
+
     result = {}
     for entry, contents in settings.items():
         if "children" in contents:
@@ -142,12 +152,16 @@ def flattenSettings(settings: Dict[str, Any]) -> Dict[str, Any]:
         result[entry] = contents
     return result
 
-##  Make one dictionary override the other. Nested dictionaries override each
-#   other in the same way.
-#   \param base A dictionary of settings that will get overridden by the other.
-#   \param overrides A dictionary of settings that will override the other.
-#   \return Combined setting data.
+
 def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, Any]:
+    """Make one dictionary override the other. Nested dictionaries override each
+
+    other in the same way.
+    :param base: A dictionary of settings that will get overridden by the other.
+    :param overrides: A dictionary of settings that will override the other.
+    :return: Combined setting data.
+    """
+
     result = {}
     result.update(base)
     for key, val in overrides.items():
@@ -161,21 +175,27 @@ def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, An
             result[key] = val
     return result
 
-##  Verifies that definition contains don't have an ID field.
-#
-#   ID fields are legacy. They should not be used any more. This is legacy that
-#   people don't seem to be able to get used to.
+
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_noId(file_path: str):
+    """Verifies that definition contains don't have an ID field.
+
+    ID fields are legacy. They should not be used any more. This is legacy that
+    people don't seem to be able to get used to.
+    """
+
     with open(file_path, encoding = "utf-8") as f:
         doc = json.load(f)
 
     assert "id" not in doc, "Definitions should not have an ID field."
 
-##  Verifies that extruders say that they work on the same extruder_nr as what
-#   is listed in their machine definition.
+
 @pytest.mark.parametrize("file_path", extruder_filepaths)
 def test_extruderMatch(file_path: str):
+    """
+    Verifies that extruders say that they work on the same extruder_nr as what is listed in their machine definition.
+    """
+
     extruder_id = os.path.basename(file_path).split(".")[0]
     with open(file_path, encoding = "utf-8") as f:
         doc = json.load(f)

@@ -25,7 +25,8 @@
         },
         "machine_depth": {
             "default_value": 235
-        },        "machine_center_is_zero": {
+        },        
+        "machine_center_is_zero": {
             "default_value": false
         },
         "layer_height": { "default_value": 0.1 },

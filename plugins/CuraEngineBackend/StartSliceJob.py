@@ -42,8 +42,9 @@ class StartJobResult(IntEnum):
     ObjectsWithDisabledExtruder = 8
 
 
-##  Formatter class that handles token expansion in start/end gcode
 class GcodeStartEndFormatter(Formatter):
+    """Formatter class that handles token expansion in start/end gcode"""
+
     def __init__(self, default_extruder_nr: int = -1) -> None:
         super().__init__()
         self._default_extruder_nr = default_extruder_nr
@@ -84,8 +85,9 @@ class GcodeStartEndFormatter(Formatter):
         return value
 
 
-##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
+    """Job class that builds up the message of scene data to send to CuraEngine."""
+
     def __init__(self, slice_message: Arcus.PythonMessage) -> None:
         super().__init__()
 
@@ -102,9 +104,10 @@ class StartSliceJob(Job):
     def setBuildPlate(self, build_plate_number: int) -> None:
         self._build_plate_number = build_plate_number
 
-    ##  Check if a stack has any errors.
-    ##  returns true if it has errors, false otherwise.
     def _checkStackForErrors(self, stack: ContainerStack) -> bool:
+        """Check if a stack has any errors."""
+
+        """returns true if it has errors, false otherwise."""
 
         top_of_stack = cast(InstanceContainer, stack.getTop())  # Cache for efficiency.
         changed_setting_keys = top_of_stack.getAllKeys()
@@ -134,8 +137,9 @@ class StartSliceJob(Job):
 
         return False
 
-    ##  Runs the job that initiates the slicing.
     def run(self) -> None:
+        """Runs the job that initiates the slicing."""
+
         if self._build_plate_number is None:
             self.setResult(StartJobResult.Error)
             return
@@ -251,7 +255,7 @@ class StartSliceJob(Job):
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             return
-        extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
+        extruders_enabled = [stack.isEnabled for stack in global_stack.extruderList]
         filtered_object_groups = []
         has_model_with_disabled_extruders = False
         associated_disabled_extruders = set()
@@ -261,7 +265,7 @@ class StartSliceJob(Job):
             for node in group:
                 # Only check if the printing extruder is enabled for printing meshes
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                extruder_position = node.callDecoration("getActiveExtruderPosition")
+                extruder_position = int(node.callDecoration("getActiveExtruderPosition"))
                 if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                     skip_group = True
                     has_model_with_disabled_extruders = True
@@ -271,8 +275,8 @@ class StartSliceJob(Job):
 
         if has_model_with_disabled_extruders:
             self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-            associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
-            self.setMessage(", ".join(associated_disabled_extruders))
+            associated_disabled_extruders = {p + 1 for p in associated_disabled_extruders}
+            self.setMessage(", ".join(map(str, sorted(associated_disabled_extruders))))
             return
 
         # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
@@ -338,14 +342,14 @@ class StartSliceJob(Job):
     def setIsCancelled(self, value: bool):
         self._is_cancelled = value
 
-    ##  Creates a dictionary of tokens to replace in g-code pieces.
-    #
-    #   This indicates what should be replaced in the start and end g-codes.
-    #   \param stack The stack to get the settings from to replace the tokens
-    #   with.
-    #   \return A dictionary of replacement tokens to the values they should be
-    #   replaced with.
     def _buildReplacementTokens(self, stack: ContainerStack) -> Dict[str, Any]:
+        """Creates a dictionary of tokens to replace in g-code pieces.
+
+        This indicates what should be replaced in the start and end g-codes.
+        :param stack: The stack to get the settings from to replace the tokens with.
+        :return: A dictionary of replacement tokens to the values they should be replaced with.
+        """
+
         result = {}
         for key in stack.getAllKeys():
             value = stack.getProperty(key, "value")
@@ -373,10 +377,12 @@ class StartSliceJob(Job):
             extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
             self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
 
-    ##  Replace setting tokens in a piece of g-code.
-    #   \param value A piece of g-code to replace tokens in.
-    #   \param default_extruder_nr Stack nr to use when no stack nr is specified, defaults to the global stack
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
+        """Replace setting tokens in a piece of g-code.
+
+        :param value: A piece of g-code to replace tokens in.
+        :param default_extruder_nr: Stack nr to use when no stack nr is specified, defaults to the global stack
+        """
         if not self._all_extruders_settings:
             self._cacheAllExtruderSettings()
 
@@ -392,8 +398,9 @@ class StartSliceJob(Job):
             Logger.logException("w", "Unable to do token replacement on start/end g-code")
             return str(value)
 
-    ##  Create extruder message from stack
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
+        """Create extruder message from stack"""
+
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
         if not self._all_extruders_settings:
@@ -422,11 +429,13 @@ class StartSliceJob(Job):
             setting.value = str(value).encode("utf-8")
             Job.yieldThread()
 
-    ##  Sends all global settings to the engine.
-    #
-    #   The settings are taken from the global stack. This does not include any
-    #   per-extruder settings or per-object settings.
     def _buildGlobalSettingsMessage(self, stack: ContainerStack) -> None:
+        """Sends all global settings to the engine.
+
+        The settings are taken from the global stack. This does not include any
+        per-extruder settings or per-object settings.
+        """
+
         if not self._all_extruders_settings:
             self._cacheAllExtruderSettings()
 
@@ -460,15 +469,16 @@ class StartSliceJob(Job):
             setting_message.value = str(value).encode("utf-8")
             Job.yieldThread()
 
-    ##  Sends for some settings which extruder they should fallback to if not
-    #   set.
-    #
-    #   This is only set for settings that have the limit_to_extruder
-    #   property.
-    #
-    #   \param stack The global stack with all settings, from which to read the
-    #   limit_to_extruder property.
     def _buildGlobalInheritsStackMessage(self, stack: ContainerStack) -> None:
+        """Sends for some settings which extruder they should fallback to if not set.
+
+        This is only set for settings that have the limit_to_extruder
+        property.
+
+        :param stack: The global stack with all settings, from which to read the
+            limit_to_extruder property.
+        """
+
         for key in stack.getAllKeys():
             extruder_position = int(round(float(stack.getProperty(key, "limit_to_extruder"))))
             if extruder_position >= 0:  # Set to a specific extruder.
@@ -477,10 +487,13 @@ class StartSliceJob(Job):
                 setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
-    ##  Check if a node has per object settings and ensure that they are set correctly in the message
-    #   \param node Node to check.
-    #   \param message object_lists message to put the per object settings in
     def _handlePerObjectSettings(self, node: CuraSceneNode, message: Arcus.PythonMessage):
+        """Check if a node has per object settings and ensure that they are set correctly in the message
+
+        :param node: Node to check.
+        :param message: object_lists message to put the per object settings in
+        """
+
         stack = node.callDecoration("getStack")
 
         # Check if the node has a stack attached to it and the stack has any settings in the top container.
@@ -516,10 +529,13 @@ class StartSliceJob(Job):
 
             Job.yieldThread()
 
-    ##  Recursive function to put all settings that require each other for value changes in a list
-    #   \param relations_set Set of keys of settings that are influenced
-    #   \param relations list of relation objects that need to be checked.
     def _addRelations(self, relations_set: Set[str], relations: List[SettingRelation]):
+        """Recursive function to put all settings that require each other for value changes in a list
+
+        :param relations_set: Set of keys of settings that are influenced
+        :param relations: list of relation objects that need to be checked.
+        """
+
         for relation in filter(lambda r: r.role == "value" or r.role == "limit_to_extruder", relations):
             if relation.type == RelationType.RequiresTarget:
                 continue

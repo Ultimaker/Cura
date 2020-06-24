@@ -63,10 +63,12 @@ class FilamentChange(Script):
             }
         }"""
 
-    ##  Inserts the filament change g-code at specific layer numbers.
-    #   \param data A list of layers of g-code.
-    #   \return A similar list, with filament change commands inserted.
     def execute(self, data: List[str]):
+        """Inserts the filament change g-code at specific layer numbers.
+
+        :param data: A list of layers of g-code.
+        :return: A similar list, with filament change commands inserted.
+        """
         layer_nums = self.getSettingValueByKey("layer_number")
         initial_retract = self.getSettingValueByKey("initial_retract")
         later_retract = self.getSettingValueByKey("later_retract")

@@ -72,6 +72,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("cura/single_instance")
+        singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
+
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         UM.Preferences.resetPreference("physics/automatic_drop_down")
@@ -154,7 +157,7 @@ UM.PreferencesPage
 
                         Component.onCompleted: {
                             append({ text: "English", code: "en_US" })
-                            append({ text: "Czech", code: "cs_CZ" })
+                            append({ text: "Čeština", code: "cs_CZ" })
                             append({ text: "Deutsch", code: "de_DE" })
                             append({ text: "Español", code: "es_ES" })
                             //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
@@ -558,6 +561,21 @@ UM.PreferencesPage
             {
                 font.bold: true
                 text: catalog.i18nc("@label","Opening and saving files")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
+
+                CheckBox
+                {
+                    id: singleInstanceCheckbox
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura")
+                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
+                }
             }
 
             UM.TooltipArea

@@ -11,7 +11,8 @@
         "platform": "prusai3_platform.3mf",
         "machine_extruder_trains":
         {
-            "0": "tevo_tarantula_extruder_0"
+            "0": "tevo_tarantula_extruder_0",
+            "1": "tevo_tarantula_extruder_1"
         }
     },
 

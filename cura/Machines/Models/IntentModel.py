@@ -98,8 +98,9 @@ class IntentModel(ListModel):
         new_items = sorted(new_items, key = lambda x: x["layer_height"])
         self.setItems(new_items)
 
-    ##  Get the active materials for all extruders. No duplicates will be returned
     def _getActiveMaterials(self) -> Set["MaterialNode"]:
+        """Get the active materials for all extruders. No duplicates will be returned"""
+
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return set()

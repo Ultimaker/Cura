@@ -1,0 +1,62 @@
+{
+    "name": "Dagoma Disco",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": false,
+        "author": "Dagoma",
+        "manufacturer": "Dagoma"
+    },
+    "overrides": {
+        "machine_width": {
+            "default_value": 205
+        },
+        "machine_height": {
+            "default_value": 205
+        },
+        "machine_depth": {
+            "default_value": 205
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-17, -70],
+                [-17, 40],
+                [17, 40],
+                [17, -70]
+            ]
+        },
+        "gantry_height": {
+            "value": "10"
+        },
+        "default_material_print_temperature": {
+            "default_value": 205
+        },
+        "material_standby_temperature": {
+            "default_value": 90
+        },
+        "speed_print": {
+            "default_value": 60
+        },
+        "retraction_amount": {
+            "default_value": 3.5
+        },
+        "retraction_speed": {
+            "default_value": 50
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "skirt_line_count": {
+            "default_value": 2
+        },
+        "layer_height_0": {
+            "default_value": 0.26
+        },
+        "top_bottom_thickness": {
+            "default_value": 1
+        }
+    }
+}

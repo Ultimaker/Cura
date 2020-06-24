@@ -2,8 +2,9 @@ from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 
 
-##  Make a SceneNode build plate aware CuraSceneNode objects all have this decorator.
 class BuildPlateDecorator(SceneNodeDecorator):
+    """Make a SceneNode build plate aware CuraSceneNode objects all have this decorator."""
+
     def __init__(self, build_plate_number: int = -1) -> None:
         super().__init__()
         self._build_plate_number = build_plate_number

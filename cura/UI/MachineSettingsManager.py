@@ -60,7 +60,6 @@ class MachineSettingsManager(QObject):
             # In other words: only continue for the UM2 (extended), but not for the UM2+
             return
 
-        extruder_positions = list(global_stack.extruders.keys())
         has_materials = global_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
         material_node = None
@@ -73,12 +72,11 @@ class MachineSettingsManager(QObject):
                 global_stack.removeMetaDataEntry("has_materials")
 
         # set materials
-        for position in extruder_positions:
+        for position, extruder in enumerate(global_stack.extruderList):
             if has_materials:
-                extruder = global_stack.extruderList[int(position)]
                 approximate_diameter = extruder.getApproximateMaterialDiameter()
                 variant_node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[extruder.variant.getName()]
                 material_node = variant_node.preferredMaterial(approximate_diameter)
-            machine_manager.setMaterial(position, material_node)
+            machine_manager.setMaterial(str(position), material_node)
 
         self.forceUpdate()

@@ -23,9 +23,10 @@ if TYPE_CHECKING:
     from UM.Settings.Interfaces import DefinitionContainerInterface
 
 
-## Base class for scripts. All scripts should inherit the script class.
 @signalemitter
 class Script:
+    """Base class for scripts. All scripts should inherit the script class."""
+
     def __init__(self) -> None:
         super().__init__()
         self._stack = None  # type: Optional[ContainerStack]
@@ -78,13 +79,15 @@ class Script:
             if global_container_stack is not None:
                 global_container_stack.propertyChanged.emit(key, property_name)
 
-    ##  Needs to return a dict that can be used to construct a settingcategory file.
-    #   See the example script for an example.
-    #   It follows the same style / guides as the Uranium settings.
-    #   Scripts can either override getSettingData directly, or use getSettingDataString
-    #   to return a string that will be parsed as json. The latter has the benefit over
-    #   returning a dict in that the order of settings is maintained.
     def getSettingData(self) -> Dict[str, Any]:
+        """Needs to return a dict that can be used to construct a settingcategory file.
+
+        See the example script for an example.
+        It follows the same style / guides as the Uranium settings.
+        Scripts can either override getSettingData directly, or use getSettingDataString
+        to return a string that will be parsed as json. The latter has the benefit over
+        returning a dict in that the order of settings is maintained.
+        """
         setting_data_as_string = self.getSettingDataString()
         setting_data = json.loads(setting_data_as_string, object_pairs_hook = collections.OrderedDict)
         return setting_data
@@ -104,15 +107,18 @@ class Script:
             return self._stack.getId()
         return None
 
-    ##  Convenience function that retrieves value of a setting from the stack.
     def getSettingValueByKey(self, key: str) -> Any:
+        """Convenience function that retrieves value of a setting from the stack."""
+
         if self._stack is not None:
             return self._stack.getProperty(key, "value")
         return None
 
-    ##  Convenience function that finds the value in a line of g-code.
-    #   When requesting key = x from line "G1 X100" the value 100 is returned.
     def getValue(self, line: str, key: str, default = None) -> Any:
+        """Convenience function that finds the value in a line of g-code.
+
+        When requesting key = x from line "G1 X100" the value 100 is returned.
+        """
         if not key in line or (';' in line and line.find(key) > line.find(';')):
             return default
         sub_part = line[line.find(key) + 1:]
@@ -127,20 +133,23 @@ class Script:
             except ValueError: #Not a number at all.
                 return default
 
-    ##  Convenience function to produce a line of g-code.
-    #
-    #   You can put in an original g-code line and it'll re-use all the values
-    #   in that line.
-    #   All other keyword parameters are put in the result in g-code's format.
-    #   For instance, if you put ``G=1`` in the parameters, it will output
-    #   ``G1``. If you put ``G=1, X=100`` in the parameters, it will output
-    #   ``G1 X100``. The parameters G and M will always be put first. The
-    #   parameters T and S will be put second (or first if there is no G or M).
-    #   The rest of the parameters will be put in arbitrary order.
-    #   \param line The original g-code line that must be modified. If not
-    #   provided, an entirely new g-code line will be produced.
-    #   \return A line of g-code with the desired parameters filled in.
     def putValue(self, line: str = "", **kwargs) -> str:
+        """Convenience function to produce a line of g-code.
+
+        You can put in an original g-code line and it'll re-use all the values
+        in that line.
+        All other keyword parameters are put in the result in g-code's format.
+        For instance, if you put ``G=1`` in the parameters, it will output
+        ``G1``. If you put ``G=1, X=100`` in the parameters, it will output
+        ``G1 X100``. The parameters G and M will always be put first. The
+        parameters T and S will be put second (or first if there is no G or M).
+        The rest of the parameters will be put in arbitrary order.
+
+        :param line: The original g-code line that must be modified. If not
+            provided, an entirely new g-code line will be produced.
+        :return: A line of g-code with the desired parameters filled in.
+        """
+
         #Strip the comment.
         comment = ""
         if ";" in line:
@@ -179,7 +188,9 @@ class Script:
 
         return result
 
-    ##  This is called when the script is executed. 
-    #   It gets a list of g-code strings and needs to return a (modified) list.
     def execute(self, data: List[str]) -> List[str]:
+        """This is called when the script is executed. 
+
+        It gets a list of g-code strings and needs to return a (modified) list.
+        """
         raise NotImplementedError()

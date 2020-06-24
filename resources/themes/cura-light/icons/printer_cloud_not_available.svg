@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Artboard Copy 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M6,0 C9.3137085,0 12,2.6862915 12,6 C12,9.3137085 9.3137085,12 6,12 C2.6862915,12 0,9.3137085 0,6 C0,2.6862915 2.6862915,0 6,0 Z M5.2,3 C4.08,3 3.2,3.91666667 3.2,5.08333333 L3.2,5.125 L3.2,5.125 C2.52,5.20833333 2,5.83333333 2,6.54166667 C2,7.33333333 2.64,8 3.4,8 L8.6,8 L8.6,8 C9.36,8 10,7.33333333 10,6.54166667 C10,5.79166667 9.48,5.20833333 8.8,5.08333333 C8.72,4.375 8.12,3.83333333 7.4,3.83333333 C7.2,3.83333333 7.04,3.875 6.88,3.95833333 C6.52,3.375 5.88,3 5.2,3 Z" id="path-1"></path>
+    </defs>
+    <g id="Artboard-Copy-4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#999999" transform="translate(7.187184, 7.187184) scale(-1, 1) rotate(45.000000) translate(-7.187184, -7.187184) " x="6.43718434" y="-0.812815665" width="1.5" height="16" rx="0.75"></rect>
+        <g id="Path" transform="translate(1.000000, 1.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Combined-Shape" fill="#999999" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>
