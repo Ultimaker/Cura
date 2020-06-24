@@ -18,14 +18,14 @@
     "overrides": {
         "machine_name": { "default_value": "Geeetech A10" },
         "machine_width": {
-            "default_value": 220
+            "default_value": 235
         },
         "machine_height": {
             "default_value": 260
         },
         "machine_depth": {
-            "default_value": 220
-        },
+            "default_value": 235
+        },        
         "machine_center_is_zero": {
             "default_value": false
         },
@@ -43,6 +43,7 @@
         "machine_max_jerk_xy": { "default_value": 10 },
         "machine_max_jerk_z": { "default_value": 0.2 },
         "machine_max_jerk_e": { "default_value": 2.5 },
+        "machine_heated_bed": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": {
             "default_value": "G28 \nG1 Z15 F300\nM107\nG90\nM82\nM104 S215\nM140 S55\nG92 E0\nM109 S215\nM107\nG0 X10 Y20 F6000\nG1 Z0.8\nG1 F300 X180 E40\nG1 F1200 Z2\nG92 E0\nG28"
