@@ -51,7 +51,7 @@ class MachineErrorChecker(QObject):
         self._error_check_timer.setInterval(100)
         self._error_check_timer.setSingleShot(True)
 
-        self._keys_to_check = set()
+        self._keys_to_check = set()  # type: Set[str]
 
     def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
