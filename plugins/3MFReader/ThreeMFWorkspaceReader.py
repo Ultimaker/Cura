@@ -819,7 +819,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stack = None
                     intent_category = None  # type: Optional[str]
                     if position is not None:
-                        extruder_stack = global_stack.extruderList[int(position)]
+                        try:
+                            extruder_stack = global_stack.extruderList[int(position)]
+                        except IndexError:
+                            pass
                         intent_category = quality_changes_intent_category_per_extruder[position]
                     container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
@@ -849,7 +852,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # it might not have its extruders set properly.
                 if len(global_stack.extruderList) == 0:
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
-                extruder_stack = global_stack.extruderList[0]
+                try:
+                    extruder_stack = global_stack.extruderList[0]
+                except IndexError:
+                    extruder_stack = None
                 intent_category = quality_changes_intent_category_per_extruder["0"]
 
                 container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
@@ -878,7 +884,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     continue
 
                 if container_info.container is None:
-                    extruder_stack = global_stack.extruderList[int(position)]
+                    try:
+                        extruder_stack = global_stack.extruderList[int(position)]
+                    except IndexError:
+                        extruder_stack = None
                     intent_category = quality_changes_intent_category_per_extruder[position]
                     container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
