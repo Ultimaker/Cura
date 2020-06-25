@@ -45,9 +45,10 @@ class SettingInheritanceManager(QObject):
 
     settingsWithIntheritanceChanged = pyqtSignal()
 
-    ##  Get the keys of all children settings with an override.
     @pyqtSlot(str, result = "QStringList")
     def getChildrenKeysWithOverride(self, key: str) -> List[str]:
+        """Get the keys of all children settings with an override."""
+
         if self._global_container_stack is None:
             return []
         definitions = self._global_container_stack.definition.findDefinitions(key=key)
@@ -163,8 +164,9 @@ class SettingInheritanceManager(QObject):
     def settingsWithInheritanceWarning(self) -> List[str]:
         return self._settings_with_inheritance_warning
 
-    ##  Check if a setting has an inheritance function that is overwritten
     def _settingIsOverwritingInheritance(self, key: str, stack: ContainerStack = None) -> bool:
+        """Check if a setting has an inheritance function that is overwritten"""
+
         has_setting_function = False
         if not stack:
             stack = self._active_container_stack
@@ -177,17 +179,19 @@ class SettingInheritanceManager(QObject):
 
         containers = []  # type: List[ContainerInterface]
 
-        ## Check if the setting has a user state. If not, it is never overwritten.
         has_user_state = stack.getProperty(key, "state") == InstanceState.User
+        """Check if the setting has a user state. If not, it is never overwritten."""
+
         if not has_user_state:
             return False
 
-        ## If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
+        # If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
         if not stack.getProperty(key, "enabled"):
             return False
 
-        ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
         user_container = stack.getTop()
+        """Also check if the top container is not a setting function (this happens if the inheritance is restored)."""
+
         if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
 

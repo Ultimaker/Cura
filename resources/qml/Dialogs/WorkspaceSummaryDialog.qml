@@ -143,7 +143,7 @@ UM.Dialog
                 {
                     width: parent.width
                     height: childrenRect.height
-                    model: Cura.MachineManager.activeMachine.extruderList
+                    model: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.extruderList : null
                     delegate: Column
                     {
                         height: childrenRect.height

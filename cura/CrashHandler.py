@@ -88,7 +88,7 @@ class CrashHandler:
     @staticmethod
     def pruneSensitiveData(obj: Any) -> Any:
         if isinstance(obj, str):
-            return obj.replace(home_dir, "<user_home>")
+            return obj.replace("\\\\", "\\").replace(home_dir, "<user_home>")
         if isinstance(obj, list):
             return [CrashHandler.pruneSensitiveData(item) for item in obj]
         if isinstance(obj, dict):
@@ -150,8 +150,9 @@ class CrashHandler:
             self._sendCrashReport()
         os._exit(1)
 
-    ##  Backup the current resource directories and create clean ones.
     def _backupAndStartClean(self):
+        """Backup the current resource directories and create clean ones."""
+
         Resources.factoryReset()
         self.early_crash_dialog.close()
 
@@ -162,8 +163,9 @@ class CrashHandler:
     def _showDetailedReport(self):
         self.dialog.exec_()
 
-    ##  Creates a modal dialog.
     def _createDialog(self):
+        """Creates a modal dialog."""
+
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
@@ -213,6 +215,16 @@ class CrashHandler:
         locale.getdefaultlocale()[0]
         self.data["locale_cura"] = self.cura_locale
 
+        try:
+            from cura.CuraApplication import CuraApplication
+            plugins = CuraApplication.getInstance().getPluginRegistry()
+            self.data["plugins"] = {
+                plugin_id: plugins.getMetaData(plugin_id)["plugin"]["version"]
+                for plugin_id in plugins.getInstalledPlugins() if not plugins.isBundledPlugin(plugin_id)
+            }
+        except:
+            self.data["plugins"] = {"[FAILED]": "0.0.0"}
+
         crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label", "Cura language") + ":</b> " + str(self.cura_locale) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label", "OS language") + ":</b> " + str(self.data["locale_os"]) + "<br/>"
@@ -235,7 +247,9 @@ class CrashHandler:
                 scope.set_tag("locale_os", self.data["locale_os"])
                 scope.set_tag("locale_cura", self.cura_locale)
                 scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
-    
+
+                scope.set_context("plugins", self.data["plugins"])
+
                 scope.set_user({"id": str(uuid.getnode())})
 
         return group

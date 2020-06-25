@@ -2,9 +2,16 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 import io
 from UM.VersionUpgrade import VersionUpgrade
+
+
+# Renamed definition files
+_RENAMED_DEFINITION_DICT = {
+    "dagoma_discoeasy200": "dagoma_discoeasy200_bicolor",
+} # type: Dict[str, str]
+
 
 class VersionUpgrade462to47(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -64,8 +71,16 @@ class VersionUpgrade462to47(VersionUpgrade):
                 ironing_inset = parser["values"]["ironing_inset"]
                 if ironing_inset.startswith("="):
                     ironing_inset = ironing_inset[1:]
-                ironing_inset = "=(" + ironing_inset + ") + skin_line_width * (1.0 - ironing_flow) / 2"
+                if "ironing_pattern" in parser["values"] and parser["values"]["ironing_pattern"] == "concentric":
+                    correction = " + ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2"
+                else:  # If ironing_pattern doesn't exist, it means the default (zigzag) is selected
+                    correction = " + skin_line_width * (1.0 - ironing_flow / 100) / 2"
+                ironing_inset = "=(" + ironing_inset + ")" + correction
                 parser["values"]["ironing_inset"] = ironing_inset
+
+        # Check renamed definitions
+        if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
+            parser["general"]["definition"] = _RENAMED_DEFINITION_DICT[parser["general"]["definition"]]
 
         result = io.StringIO()
         parser.write(result)
@@ -126,7 +141,9 @@ class VersionUpgrade462to47(VersionUpgrade):
                 script_str = script_str.replace("\\\\", r"\\\\").replace("\n", r"\\\n")  # Escape newlines because configparser sees those as section delimiters.
                 new_scripts_entries.append(script_str)
             parser["metadata"]["post_processing_scripts"] = "\n".join(new_scripts_entries)
-
+        # check renamed definition
+        if parser.has_option("containers", "7") and parser["containers"]["7"] in _RENAMED_DEFINITION_DICT:
+            parser["containers"]["7"] = _RENAMED_DEFINITION_DICT[parser["containers"]["7"]]
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]

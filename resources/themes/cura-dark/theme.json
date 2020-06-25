@@ -24,6 +24,8 @@
 
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
 
+        "account_sync_state_icon": [255, 255, 255, 204],
+
         "machine_selector_bar": [39, 44, 48, 255],
         "machine_selector_active": [39, 44, 48, 255],
         "machine_selector_printer_icon": [204, 204, 204, 255],

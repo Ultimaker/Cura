@@ -7,10 +7,13 @@ from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementin
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType #To add the .gcode.gz files to the MIME type database.
 from UM.PluginRegistry import PluginRegistry
 
-##  A file reader that reads gzipped g-code.
-#
-#   If you're zipping g-code, you might as well use gzip!
+
 class GCodeGzReader(MeshReader):
+    """A file reader that reads gzipped g-code.
+
+    If you're zipping g-code, you might as well use gzip!
+    """
+
     def __init__(self) -> None:
         super().__init__()
         MimeTypeDatabase.addMimeType(
