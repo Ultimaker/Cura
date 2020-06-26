@@ -105,7 +105,7 @@ Row // Sync state icon + message
             MouseArea
             {
                 anchors.fill: parent
-                onClicked: Cura.API.account.update_packages()
+                onClicked: Cura.API.account.onUpdatePackagesClicked()
                 hoverEnabled: true
                 onEntered: updatePackagesButton.font.underline = true
                 onExited: updatePackagesButton.font.underline = false

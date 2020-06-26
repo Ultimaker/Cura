@@ -94,7 +94,7 @@ class Account(QObject):
         self._update_timer.setInterval(int(self.SYNC_INTERVAL * 1000))
         # The timer is restarted explicitly after an update was processed. This prevents 2 concurrent updates
         self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self.syncRequested)
+        self._update_timer.timeout.connect(self.sync)
 
         self._sync_services = {}  # type: Dict[str, int]
         """contains entries "service_name" : SyncState"""
@@ -282,7 +282,7 @@ class Account(QObject):
         self._sync()
 
     @pyqtSlot()
-    def update_packages(self):
+    def onUpdatePackagesClicked(self):
         if self._update_packages_action is not None:
             self._update_packages_action()
 
