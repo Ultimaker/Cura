@@ -85,7 +85,7 @@ Item
 
             onEditingFinished:
             {
-                definitionsModel.filter = {"i18n_label": "*" + text}
+                definitionsModel.filter = {"i18n_label|i18n_description" : "*" + text}
                 findingSettings = (text.length > 0)
                 if (findingSettings != lastFindingSettings)
                 {
