@@ -117,6 +117,7 @@ class SolidView(View):
         if not self._enabled_shader:
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
             self._enabled_shader.setUniformValue("u_overhangColor", Color(*self._theme.getColor("model_overhang").getRgb()))
+            self._enabled_shader.setUniformValue("u_renderError", 0.0)
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
@@ -142,6 +143,7 @@ class SolidView(View):
                 self._composite_pass.setCompositeShader(self._old_composite_shader)
                 self._old_layer_bindings = None
                 self._old_composite_shader = None
+                self._enabled_shader.setUniformValue("u_renderError", 0.0)  # We don't want any error markers!.
                 self._xray_warning_message.hide()
         else:
             if not self._xray_shader:
@@ -159,7 +161,7 @@ class SolidView(View):
                 # Currently the RenderPass constructor requires a size > 0
                 # This should be fixed in RenderPass's constructor.
                 self._xray_pass = XRayPass.XRayPass(1, 1)
-
+                self._enabled_shader.setUniformValue("u_renderError", 1.0)  # We don't want any error markers!.
                 renderer.addRenderPass(self._xray_pass)
 
                 if not self._composite_pass:
