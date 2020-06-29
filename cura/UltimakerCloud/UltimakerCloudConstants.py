@@ -7,6 +7,7 @@
 DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com"  # type: str
 DEFAULT_CLOUD_API_VERSION = "1"  # type: str
 DEFAULT_CLOUD_ACCOUNT_API_ROOT = "https://account.ultimaker.com"  # type: str
+DEFAULT_DIGITAL_FACTORY_URL = "https://digitalfactory.ultimaker.com"  # type: str
 
 # Container Metadata keys
 META_UM_LINKED_TO_ACCOUNT = "um_linked_to_account"
@@ -32,3 +33,10 @@ try:
         CuraCloudAccountAPIRoot = DEFAULT_CLOUD_ACCOUNT_API_ROOT
 except ImportError:
     CuraCloudAccountAPIRoot = DEFAULT_CLOUD_ACCOUNT_API_ROOT
+
+try:
+    from cura.CuraVersion import CuraDigitalFactoryURL # type: ignore
+    if CuraDigitalFactoryURL == "":
+        CuraDigitalFactoryURL = DEFAULT_DIGITAL_FACTORY_URL
+except ImportError:
+    CuraDigitalFactoryURL = DEFAULT_DIGITAL_FACTORY_URL

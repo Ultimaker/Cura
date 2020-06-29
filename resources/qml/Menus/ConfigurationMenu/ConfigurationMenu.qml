@@ -41,6 +41,7 @@ Cura.ExpandablePopup
         RowLayout
         {
             anchors.fill: parent
+            visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials : false
             Repeater
             {
                 model: extrudersModel

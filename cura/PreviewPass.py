@@ -114,12 +114,12 @@ class PreviewPass(RenderPass):
                             1.0]
                         uniforms["diffuse_color"] = prettier_color(diffuse_color)
                         uniforms["diffuse_color_2"] = diffuse_color2
-                        batch_support_mesh.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
+                        batch_support_mesh.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), uniforms = uniforms)
                     else:
                         # Normal scene node
                         uniforms = {}
                         uniforms["diffuse_color"] = prettier_color(cast(CuraSceneNode, node).getDiffuseColor())
-                        batch.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
+                        batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), uniforms = uniforms)
 
         self.bind()
 

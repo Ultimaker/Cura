@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from copy import deepcopy
@@ -118,10 +118,10 @@ class CuraSceneNode(SceneNode):
 
         self._aabb = None
         if self._mesh_data:
-            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation())
-        else:  # If there is no mesh_data, use a boundingbox that encompasses the local (0,0,0)
+            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy = False))
+        else:  # If there is no mesh_data, use a bounding box that encompasses the local (0,0,0)
             position = self.getWorldPosition()
-            self._aabb = AxisAlignedBox(minimum=position, maximum=position)
+            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
 
         for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
@@ -139,7 +139,7 @@ class CuraSceneNode(SceneNode):
         """Taken from SceneNode, but replaced SceneNode with CuraSceneNode"""
 
         copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
-        copy.setTransformation(self.getLocalTransformation())
+        copy.setTransformation(self.getLocalTransformation(copy= False))
         copy.setMeshData(self._mesh_data)
         copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
         copy._selectable = cast(bool, deepcopy(self._selectable, memo))

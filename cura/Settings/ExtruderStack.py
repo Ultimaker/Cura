@@ -32,6 +32,8 @@ class ExtruderStack(CuraContainerStack):
 
         self.propertiesChanged.connect(self._onPropertiesChanged)
 
+        self.setDirty(False)
+
     enabledChanged = pyqtSignal()
 
     @override(ContainerStack)

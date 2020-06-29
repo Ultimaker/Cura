@@ -153,6 +153,9 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
     def isDirty(self):
         return True
 
+    def setDirty(self, dirty):
+        pass
+
     metaDataChanged = Signal()
     propertyChanged = Signal()
     containersChanged = Signal()

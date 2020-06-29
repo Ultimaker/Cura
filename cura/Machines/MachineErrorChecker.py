@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -13,6 +13,7 @@ from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.Validator import ValidatorState
 
 import cura.CuraApplication
+
 
 class MachineErrorChecker(QObject):
     """This class performs setting error checks for the currently active machine.
@@ -49,6 +50,8 @@ class MachineErrorChecker(QObject):
         self._error_check_timer = QTimer(self)
         self._error_check_timer.setInterval(100)
         self._error_check_timer.setSingleShot(True)
+
+        self._keys_to_check = set()  # type: Set[str]
 
     def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
@@ -103,6 +106,7 @@ class MachineErrorChecker(QObject):
 
         if property_name != "value":
             return
+        self._keys_to_check.add(key)
         self.startErrorCheck()
 
     def startErrorCheck(self, *args: Any) -> None:
@@ -140,7 +144,10 @@ class MachineErrorChecker(QObject):
         # Populate the (stack, key) tuples to check
         self._stacks_and_keys_to_check = deque()
         for stack in global_stack.extruderList:
-            for key in stack.getAllKeys():
+            if not self._keys_to_check:
+                self._keys_to_check = stack.getAllKeys()
+
+            for key in self._keys_to_check:
                 self._stacks_and_keys_to_check.append((stack, key))
 
         self._application.callLater(self._checkStack)
@@ -181,18 +188,25 @@ class MachineErrorChecker(QObject):
                 validator = validator_type(key)
                 validation_state = validator(stack)
         if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
-            # Finish
-            self._setResult(True)
+            # Since we don't know if any of the settings we didn't check is has an error value, store the list for the
+            # next check.
+            keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
+            keys_to_recheck.add(key)
+            self._setResult(True, keys_to_recheck = keys_to_recheck)
             return
 
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)
 
-    def _setResult(self, result: bool) -> None:
+    def _setResult(self, result: bool, keys_to_recheck = None) -> None:
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()
             self._machine_manager.stacksValidationChanged.emit()
+        if keys_to_recheck is None:
+            self._keys_to_check = set()
+        else:
+            self._keys_to_check = keys_to_recheck
         self._need_to_check = False
         self._check_in_progress = False
         self.needToWaitForResultChanged.emit()

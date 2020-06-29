@@ -60,6 +60,8 @@ class CuraContainerStack(ContainerStack):
         import cura.CuraApplication #Here to prevent circular imports.
         self.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
 
+        self.setDirty(False)
+
     # This is emitted whenever the containersChanged signal from the ContainerStack base class is emitted.
     pyqtContainersChanged = pyqtSignal()
 

@@ -4,6 +4,8 @@
 import copy
 from typing import List
 
+from PyQt5.QtCore import QCoreApplication
+
 from UM.Job import Job
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Message import Message
@@ -93,8 +95,9 @@ class MultiplyObjectsJob(Job):
                 nodes.append(new_node)
                 current_progress += 1
                 status_message.setProgress((current_progress / total_progress) * 100)
+                QCoreApplication.processEvents()
                 Job.yieldThread()
-
+            QCoreApplication.processEvents()
             Job.yieldThread()
 
         if nodes:

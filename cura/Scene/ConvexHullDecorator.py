@@ -53,6 +53,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
         CuraApplication.getInstance().getController().toolOperationStarted.connect(self._onChanged)
         CuraApplication.getInstance().getController().toolOperationStopped.connect(self._onChanged)
 
+        self._root = Application.getInstance().getController().getScene().getRoot()
+
         self._onGlobalStackChanged()
 
     def createRecomputeConvexHullTimer(self) -> None:
@@ -198,23 +200,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
             CuraApplication.getInstance().callLater(self.recomputeConvexHullDelayed)
 
     def recomputeConvexHull(self) -> None:
-        controller = Application.getInstance().getController()
-        root = controller.getScene().getRoot()
-        if self._node is None or controller.isToolOperationActive() or not self.__isDescendant(root, self._node):
-            # If the tool operation is still active, we need to compute the convex hull later after the controller is
-            # no longer active.
-            if controller.isToolOperationActive():
-                self.recomputeConvexHullDelayed()
-                return
-
+        if self._node is None or not self.__isDescendant(self._root, self._node):
             if self._convex_hull_node:
+                # Convex hull node still exists, but the node is removed or no longer in the scene.
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None
             return
 
         if self._convex_hull_node:
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, root)
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, self._root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key: str, property_name: str) -> None:
@@ -273,7 +268,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if mesh is None:
                 return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
-            world_transform = self._node.getWorldTransformation()
+            world_transform = self._node.getWorldTransformation(copy= False)
 
             # Check the cache
             if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
