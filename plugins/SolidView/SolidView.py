@@ -70,10 +70,16 @@ class SolidView(View):
             catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
             lifetime = 60 * 5, # leave message for 5 minutes
             title = catalog.i18nc("@info:title", "Model errors"),
+            option_text = catalog.i18nc("@info:option_text", "Do not show this message again"),
+            option_state = False
         )
+        self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         application.getPreferences().addPreference(self._show_xray_warning_preference, True)
 
         application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
+
+    def _onDontAskMeAgain(self, checked: bool) -> None:
+        Application.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:
