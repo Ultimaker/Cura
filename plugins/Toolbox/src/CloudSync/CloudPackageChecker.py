@@ -110,11 +110,11 @@ class CloudPackageChecker(QObject):
             # scenario:
             # 1. user subscribes to a package
             # 2. dismisses the license/unsubscribes
-            # 3. subscribes to the same packafe again
+            # 3. subscribes to the same package again
             # in this scenario we want to notify the user again. To capture that there was a change during
             # step 2, we clear the last_notified after step 2. This way, the user will be notified after
             # step 3 even though the list of packages for step 1 and 3 are equal
-            self._last_notified_packages = None
+            self._last_notified_packages = set()
 
         if package_discrepancy:
             account = self._application.getCuraAPI().account

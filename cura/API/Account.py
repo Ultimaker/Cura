@@ -68,7 +68,7 @@ class Account(QObject):
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
-        self._update_packages_action = None  # type: Callable
+        self._update_packages_action = None  # type: Optional[Callable]
         self._last_sync_str = "-"
 
         self._callback_port = 32118
