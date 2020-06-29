@@ -64,7 +64,7 @@ class SolidView(View):
         self._old_layer_bindings = None
 
         self._next_xray_checking_time = time.time()
-        self._xray_checking_update_time = 1.0 # seconds
+        self._xray_checking_update_time = 30.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
         self._xray_warning_message = Message(
             catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
@@ -103,7 +103,9 @@ class SolidView(View):
             except IndexError:
                 pass
             else:
-                self._support_angle = support_angle_stack.getProperty("support_angle", "value")
+                angle = support_angle_stack.getProperty("support_angle", "value")
+                if angle is not None:
+                    self._support_angle = angle
 
     def _checkSetup(self):
         if not self._extruders_model:
@@ -178,77 +180,77 @@ class SolidView(View):
         if global_container_stack:
             if Application.getInstance().getPreferences().getValue("view/show_overhang"):
                 # Make sure the overhang angle is valid before passing it to the shader
-                if self._support_angle is not None and self._support_angle >= 0 and self._support_angle <= 90:
+                if self._support_angle >= 0 and self._support_angle <= 90:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - self._support_angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
-
+        disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
+        normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
+        renderer.addRenderBatch(disabled_batch)
+        renderer.addRenderBatch(normal_object_batch)
         for node in DepthFirstIterator(scene.getRoot()):
-            if not node.render(renderer):
-                if node.getMeshData() and node.isVisible() and not node.callDecoration("getLayerData"):
-                    uniforms = {}
-                    shade_factor = 1.0
+            if node.render(renderer):
+                continue
 
-                    per_mesh_stack = node.callDecoration("getStack")
+            if node.getMeshData() and node.isVisible():
+                uniforms = {}
+                shade_factor = 1.0
 
-                    extruder_index = node.callDecoration("getActiveExtruderPosition")
-                    if extruder_index is None:
-                        extruder_index = "0"
-                    extruder_index = int(extruder_index)
+                per_mesh_stack = node.callDecoration("getStack")
 
-                    # Use the support extruder instead of the active extruder if this is a support_mesh
-                    if per_mesh_stack:
-                        if per_mesh_stack.getProperty("support_mesh", "value"):
-                            extruder_index = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
+                extruder_index = node.callDecoration("getActiveExtruderPosition")
+                if extruder_index is None:
+                    extruder_index = "0"
+                extruder_index = int(extruder_index)
 
-                    try:
-                        material_color = self._extruders_model.getItem(extruder_index)["color"]
-                    except KeyError:
-                        material_color = self._extruders_model.defaultColors[0]
+                try:
+                    material_color = self._extruders_model.getItem(extruder_index)["color"]
+                except KeyError:
+                    material_color = self._extruders_model.defaultColors[0]
 
-                    if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
-                        # Shade objects that are printed with the non-active extruder 25% darker
-                        shade_factor = 0.6
+                if extruder_index != ExtruderManager.getInstance().activeExtruderIndex:
+                    # Shade objects that are printed with the non-active extruder 25% darker
+                    shade_factor = 0.6
 
-                    try:
-                        # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
-                        # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
-                        uniforms["diffuse_color"] = [
-                            shade_factor * int(material_color[1:3], 16) / 255,
-                            shade_factor * int(material_color[3:5], 16) / 255,
-                            shade_factor * int(material_color[5:7], 16) / 255,
-                            1.0
-                        ]
+                try:
+                    # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
+                    # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
+                    uniforms["diffuse_color"] = [
+                        shade_factor * int(material_color[1:3], 16) / 255,
+                        shade_factor * int(material_color[3:5], 16) / 255,
+                        shade_factor * int(material_color[5:7], 16) / 255,
+                        1.0
+                    ]
 
-                        # Color the currently selected face-id. (Disable for now.)
-                        #face = Selection.getHoverFace()
-                        uniforms["hover_face"] = -1 #if not face or node != face[0] else face[1]
-                    except ValueError:
-                        pass
+                    # Color the currently selected face-id. (Disable for now.)
+                    #face = Selection.getHoverFace()
+                    uniforms["hover_face"] = -1 #if not face or node != face[0] else face[1]
+                except ValueError:
+                    pass
 
-                    if node.callDecoration("isNonPrintingMesh"):
-                        if per_mesh_stack and (per_mesh_stack.getProperty("infill_mesh", "value") or per_mesh_stack.getProperty("cutting_mesh", "value")):
-                            renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
-                        else:
-                            renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
-                    elif getattr(node, "_outside_buildarea", False):
-                        renderer.queueNode(node, shader = self._disabled_shader)
-                    elif per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
-                        # Render support meshes with a vertical stripe that is darker
-                        shade_factor = 0.6
-                        uniforms["diffuse_color_2"] = [
-                            uniforms["diffuse_color"][0] * shade_factor,
-                            uniforms["diffuse_color"][1] * shade_factor,
-                            uniforms["diffuse_color"][2] * shade_factor,
-                            1.0
-                        ]
-                        renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
+                if node.callDecoration("isNonPrintingMesh"):
+                    if per_mesh_stack and (node.callDecoration("isInfillMesh") or node.callDecoration("isCuttingMesh")):
+                        renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                     else:
-                        renderer.queueNode(node, shader = self._enabled_shader, uniforms = uniforms)
-                if node.callDecoration("isGroup") and Selection.isSelected(node):
-                    renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
+                        renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
+                elif getattr(node, "_outside_buildarea", False):
+                    disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData())
+                elif per_mesh_stack and node.callDecoration("isSupportMesh"):
+                    # Render support meshes with a vertical stripe that is darker
+                    shade_factor = 0.6
+                    uniforms["diffuse_color_2"] = [
+                        uniforms["diffuse_color"][0] * shade_factor,
+                        uniforms["diffuse_color"][1] * shade_factor,
+                        uniforms["diffuse_color"][2] * shade_factor,
+                        1.0
+                    ]
+                    renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
+                else:
+                    normal_object_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), uniforms=uniforms)
+            if node.callDecoration("isGroup") and Selection.isSelected(node):
+                renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
     def endRendering(self):
         # check whether the xray overlay is showing badness

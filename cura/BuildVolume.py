@@ -92,6 +92,8 @@ class BuildVolume(SceneNode):
         self._adhesion_type = None  # type: Any
         self._platform = Platform(self)
 
+        self._edge_disallowed_size = None
+
         self._build_volume_message = Message(catalog.i18nc("@info:status",
             "The build volume height has been reduced due to the value of the"
             " \"Print Sequence\" setting to prevent the gantry from colliding"
@@ -106,8 +108,6 @@ class BuildVolume(SceneNode):
 
         self._application.globalContainerStackChanged.connect(self._onStackChanged)
 
-        self._onStackChanged()
-
         self._engine_ready = False
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -118,7 +118,7 @@ class BuildVolume(SceneNode):
         self._scene_objects = set()  # type: Set[SceneNode]
 
         self._scene_change_timer = QTimer()
-        self._scene_change_timer.setInterval(100)
+        self._scene_change_timer.setInterval(200)
         self._scene_change_timer.setSingleShot(True)
         self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
 
@@ -747,6 +747,7 @@ class BuildVolume(SceneNode):
         self._error_areas = []
 
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
+        self._edge_disallowed_size = None  # Force a recalculation
         disallowed_border_size = self.getEdgeDisallowedSize()
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders)  # Normal machine disallowed areas can always be added.
@@ -1124,6 +1125,9 @@ class BuildVolume(SceneNode):
         if not self._global_container_stack or not self._global_container_stack.extruderList:
             return 0
 
+        if self._edge_disallowed_size is not None:
+            return self._edge_disallowed_size
+
         container_stack = self._global_container_stack
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
 
@@ -1139,8 +1143,8 @@ class BuildVolume(SceneNode):
         # Now combine our different pieces of data to get the final border size.
         # Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
         # Support expansion is added to farthest shield distance, since the shields go around support.
-        border_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
-        return border_size
+        self._edge_disallowed_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
+        return self._edge_disallowed_size
 
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
