@@ -100,7 +100,7 @@ class SimulationPass(RenderPass):
         nozzle_node = None
 
         ride_the_nozzle = (self._old_current_path != self._layer_view._current_path_num and
-                            ((QtWidgets.QApplication.queryKeyboardModifiers() & QtCore.Qt.ControlModifier) == QtCore.Qt.ControlModifier))
+                            ((QtWidgets.QApplication.queryKeyboardModifiers() & QtCore.Qt.AltModifier) == QtCore.Qt.AltModifier))
         camera_position = None
         elevation = 1.0 # mm
         trail_by = 5.0 #mm
