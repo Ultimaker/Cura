@@ -146,7 +146,7 @@ class Account(QObject):
                 if not self._update_timer.isActive():
                     self._update_timer.start()
 
-    def setUpdatePackagesAction(self, action: Callable):
+    def setUpdatePackagesAction(self, action: Callable) -> None:
         """ Set the callback which will be invoked when the user clicks the update packages button
 
         Should be invoked after your service sets the sync state to SYNCING and before setting the
@@ -282,7 +282,7 @@ class Account(QObject):
         self._sync()
 
     @pyqtSlot()
-    def onUpdatePackagesClicked(self):
+    def onUpdatePackagesClicked(self) -> None:
         if self._update_packages_action is not None:
             self._update_packages_action()
 
