@@ -1510,8 +1510,7 @@
                 {
                     "label": "Extra Skin Wall Count",
                     "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "value": "0 if top_bottom_pattern == 'concentric' else 1",
-                    "default_value": 1,
+                    "default_value": "0 if top_bottom_pattern == 'concentric' else 1",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "type": "int",
