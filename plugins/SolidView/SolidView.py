@@ -244,7 +244,7 @@ class SolidView(View):
                     else:
                         renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
                 elif getattr(node, "_outside_buildarea", False):
-                    disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData())
+                    disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation = node.getCachedNormalMatrix())
                 elif per_mesh_stack and node.callDecoration("isSupportMesh"):
                     # Render support meshes with a vertical stripe that is darker
                     shade_factor = 0.6
@@ -256,7 +256,7 @@ class SolidView(View):
                     ]
                     renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
                 else:
-                    normal_object_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), uniforms=uniforms)
+                    normal_object_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), uniforms=uniforms, normal_transformation = node.getCachedNormalMatrix())
             if node.callDecoration("isGroup") and Selection.isSelected(node):
                 renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
