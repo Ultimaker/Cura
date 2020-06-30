@@ -140,7 +140,7 @@ A new performance enhancement that limits re-rendering of the application interf
 Previous versions used different ways of handling HTTP requests. This version uses a unified method, for better performance.
 
 * Job names less sensitive to being touched.
-A contribution from fieldOfview has fixed an issue where the jobname in the bottom-left of the scene is no longer made static by clicking on it. If you load a model and change to another printer, the prefix is now correctly updated.
+A contribution from fieldOfview has fixed an issue where the job name in the bottom-left of the scene is no longer made static by clicking on it. If you load a model and change to another printer, the prefix is now correctly updated.
 
 * Property checks on instance containers.
 A new speed optimization for reading setting values from profiles.
