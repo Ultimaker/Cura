@@ -91,6 +91,9 @@ class VersionUpgrade462to47(VersionUpgrade):
                     correction = " + skin_line_width * (1.0 - ironing_flow / 100) / 2"
                 ironing_inset = "=(" + ironing_inset + ")" + correction
                 parser["values"]["ironing_inset"] = ironing_inset
+                
+            for removed in set(parser["values"].keys()).intersection(_removed_settings):
+                del parser["values"][removed]
 
         # Check renamed definitions
         if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
