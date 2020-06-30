@@ -18,6 +18,9 @@ from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
+
+METADATA_OBJECTS_PATH = "metadata/objects"
+
 catalog = i18nCatalog("cura")
 
 
@@ -52,6 +55,8 @@ class UFPWriter(MeshWriter):
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
+
+        self._writeObjectList(archive)
 
         #Store the g-code from the scene.
         archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
@@ -139,3 +144,15 @@ class UFPWriter(MeshWriter):
             Logger.error(error_msg)
             return False
         return True
+
+    @staticmethod
+    def _writeObjectList(archive):
+        """Write a json list of object names to the METADATA_OBJECTS_PATH metadata field
+
+        To retrieve, use: `archive.getMetadata(METADATA_OBJECTS_PATH)`
+        """
+        objectsModel = CuraApplication.getInstance().getObjectsModel()
+        objectMetas = [{"name": item["name"]} for item in objectsModel.items]
+
+        data = {METADATA_OBJECTS_PATH: objectMetas}
+        archive.setMetadata(data)
