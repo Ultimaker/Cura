@@ -254,8 +254,7 @@ class PrintInformation(QObject):
     def _onPreferencesChanged(self, preference: str) -> None:
         if preference == "cura/job_name_template":
             self._updateJobName()
-
-        if preference == "cura/material_settings":
+        elif preference == "cura/material_settings":
             for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
                 self._calculateInformation(build_plate_number)
 

@@ -642,7 +642,7 @@ UM.PreferencesPage
                     TextField
                     {
                         id: jobNameTemplateTextField
-                        width: 200 * screenScaleFactor
+                        width: 250 * screenScaleFactor
                         text: UM.Preferences.getValue("cura/job_name_template")
                         onTextChanged: UM.Preferences.setValue("cura/job_name_template", text)
                     }
@@ -681,7 +681,7 @@ UM.PreferencesPage
                     ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: 250 * screenScaleFactor
 
                         model: ListModel
                         {
@@ -747,7 +747,7 @@ UM.PreferencesPage
                     ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: 250 * screenScaleFactor
 
                         model: ListModel
                         {
