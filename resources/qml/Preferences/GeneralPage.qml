@@ -85,8 +85,8 @@ UM.PreferencesPage
         scaleTinyCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
         UM.Preferences.resetPreference("cura/select_models_on_load")
         selectModelsOnLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/select_models_on_load"))
-        UM.Preferences.resetPreference("cura/jobname_prefix")
-        prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+        UM.Preferences.resetPreference("cura/job_name_template")
+        jobnameTemplateTextField.text = UM.Preferences.getValue("cura/job_name_template")
         UM.Preferences.resetPreference("view/show_overhang");
         showOverhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
         UM.Preferences.resetPreference("view/show_xray_warning");
@@ -627,14 +627,25 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
+                text: catalog.i18nc("@info:tooltip. Note variable names themselves (ie. machine_name_short, project_name) should not be translated", "Variables: machine_name_short, machine_name, project_name")
 
-                CheckBox
+                Column
                 {
-                    id: prefixJobNameCheckbox
-                    text: catalog.i18nc("@option:check", "Add machine prefix to job name")
-                    checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
+                    spacing: 4 * screenScaleFactor
+
+                    Label
+                    {
+                        id: jobNameTemplateLabel
+                        text: catalog.i18nc("@label","Print job template:")
+                    }
+
+                    TextField
+                    {
+                        id: jobNameTemplateTextField
+                        width: 250 * screenScaleFactor
+                        text: UM.Preferences.getValue("cura/job_name_template")
+                        onTextChanged: UM.Preferences.setValue("cura/job_name_template", text)
+                    }
                 }
             }
 
@@ -670,7 +681,7 @@ UM.PreferencesPage
                     ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: 250 * screenScaleFactor
 
                         model: ListModel
                         {
@@ -736,7 +747,7 @@ UM.PreferencesPage
                     ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: 250 * screenScaleFactor
 
                         model: ListModel
                         {
