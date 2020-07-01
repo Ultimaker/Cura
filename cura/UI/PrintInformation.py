@@ -450,10 +450,10 @@ class PrintInformation(QObject):
 
         if "{machine_name}" in template:
             global_container_stack = self._application.getGlobalContainerStack()
-            if not global_container_stack:
-                self._abbr_machine = ""
-                return
-            active_machine_type_name = global_container_stack.definition.getName()
+            active_machine_type_name = global_container_stack.definition.getName() \
+                if global_container_stack \
+                else "no_machine"
+
             active_machine_type_name = active_machine_type_name.replace(" ", "_")
             output = output.replace("{machine_name}", active_machine_type_name)
 
