@@ -151,8 +151,8 @@ class UFPWriter(MeshWriter):
 
         To retrieve, use: `archive.getMetadata(METADATA_OBJECTS_PATH)`
         """
-        objectsModel = CuraApplication.getInstance().getObjectsModel()
-        objectMetas = [{"name": item["name"]} for item in objectsModel.items]
+        objects_model = CuraApplication.getInstance().getObjectsModel()
+        object_metas = [{"name": item["name"]} for item in objects_model.items]
 
-        data = {METADATA_OBJECTS_PATH: objectMetas}
+        data = {METADATA_OBJECTS_PATH: object_metas}
         archive.setMetadata(data)
