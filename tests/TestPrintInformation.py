@@ -8,6 +8,13 @@ from unittest.mock import MagicMock, patch
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 
+def preferencesGetValue(key: str):
+    if key == "cura/job_name_template":
+        return "{machine_name_short}_{project_name}"
+
+    return '{"omgzomg": {"spool_weight": 10, "spool_cost": 9}}'
+
+
 def getPrintInformation(printer_name) -> PrintInformation:
 
     mock_application = MagicMock(name = "mock_application")
@@ -19,7 +26,7 @@ def getPrintInformation(printer_name) -> PrintInformation:
     mocked_extruder_stack.material = mocked_material
 
     mock_application.getInstance = MagicMock(return_value = mock_application)
-    mocked_preferences.getValue = MagicMock(return_value = '{"omgzomg": {"spool_weight": 10, "spool_cost": 9}}')
+    mocked_preferences.getValue = MagicMock(side_effect=preferencesGetValue)
 
     global_container_stack = MagicMock()
     global_container_stack.definition.getName = MagicMock(return_value = printer_name)
