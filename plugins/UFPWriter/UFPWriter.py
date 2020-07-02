@@ -152,7 +152,10 @@ class UFPWriter(MeshWriter):
         To retrieve, use: `archive.getMetadata(METADATA_OBJECTS_PATH)`
         """
         objects_model = CuraApplication.getInstance().getObjectsModel()
-        object_metas = [{"name": item["name"]} for item in objects_model.items]
+        object_metas = [{"name": item["name"]}
+                        for item in objects_model.items
+                        if item["node"].getMeshData() is not None and not item["node"].callDecoration("isNonPrintingMesh")
+                        ]
 
         data = {METADATA_OBJECTS_PATH: object_metas}
         archive.setMetadata(data)
