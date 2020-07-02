@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Set
 import io
 from UM.VersionUpgrade import VersionUpgrade
 
@@ -10,8 +10,17 @@ from UM.VersionUpgrade import VersionUpgrade
 # Renamed definition files
 _RENAMED_DEFINITION_DICT = {
     "dagoma_discoeasy200": "dagoma_discoeasy200_bicolor",
-} # type: Dict[str, str]
+}  # type: Dict[str, str]
 
+_removed_settings = {
+    "spaghetti_infill_enabled",
+    "spaghetti_infill_stepped",
+    "spaghetti_max_infill_angle",
+    "spaghetti_max_height",
+    "spaghetti_inset",
+    "spaghetti_flow",
+    "spaghetti_infill_extra_volume"
+}  # type: Set[str]
 
 class VersionUpgrade462to47(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -27,6 +36,11 @@ class VersionUpgrade462to47(VersionUpgrade):
 
         # Update version number.
         parser["metadata"]["setting_version"] = "15"
+        
+        # Remove deleted settings from the visible settings list.
+        if "general" in parser and "visible_settings" in parser["general"]:
+            parser["general"]["visible_settings"] = ";".join(
+                set(parser["general"]["visible_settings"].split(";")).difference(_removed_settings))
 
         result = io.StringIO()
         parser.write(result)
@@ -77,6 +91,9 @@ class VersionUpgrade462to47(VersionUpgrade):
                     correction = " + skin_line_width * (1.0 - ironing_flow / 100) / 2"
                 ironing_inset = "=(" + ironing_inset + ")" + correction
                 parser["values"]["ironing_inset"] = ironing_inset
+                
+            for removed in set(parser["values"].keys()).intersection(_removed_settings):
+                del parser["values"][removed]
 
         # Check renamed definitions
         if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
