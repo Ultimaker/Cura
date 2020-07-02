@@ -253,8 +253,8 @@ class CloudOutputDeviceManager:
 
         max_disp_devices = 3
         if len(new_devices) > max_disp_devices:
-            num_hidden = len(new_devices) - max_disp_devices + 1
-            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:num_hidden]]
+            num_hidden = len(new_devices) - max_disp_devices
+            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:max_disp_devices]]
             device_name_list.append(self.I18N_CATALOG.i18nc("info:hidden list items", "<li>... and {} others</li>", num_hidden))
             device_names = "".join(device_name_list)
         else:
