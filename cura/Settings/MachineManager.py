@@ -830,9 +830,12 @@ class MachineManager(QObject):
                 old_value = old_value(self._global_container_stack)
             if int(old_value) < 0:
                 continue
-            if int(old_value) >= extruder_count or not self._global_container_stack.extruderList[int(old_value)].isEnabled:
-                result.append(setting_key)
-                Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
+            try:
+                if int(old_value) >= extruder_count or not self._global_container_stack.extruderList[int(old_value)].isEnabled:
+                    result.append(setting_key)
+                    Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
+            except IndexError:
+                pass
         return result
 
     def correctExtruderSettings(self) -> None:
@@ -903,10 +906,10 @@ class MachineManager(QObject):
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
                 extruder_position = max(0, limit_to_extruder)
-                extruder_stack = self._global_container_stack.extruderList[extruder_position]
-                if extruder_stack:
+                try:
+                    extruder_stack = self._global_container_stack.extruderList[extruder_position]
                     extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
-                else:
+                except IndexError:
                     Logger.log("e", "Unable to find extruder on position %s", extruder_position)
                 global_user_container.removeInstance(setting_key)
 
@@ -971,7 +974,10 @@ class MachineManager(QObject):
         if self._global_container_stack is None or position >= len(self._global_container_stack.extruderList):
             Logger.log("w", "Could not find extruder on position %s.", position)
             return
-        extruder = self._global_container_stack.extruderList[position]
+        try:
+            extruder = self._global_container_stack.extruderList[position]
+        except IndexError:
+            return
 
         extruder.setEnabled(enabled)
         self.updateDefaultExtruder()
@@ -1087,9 +1093,12 @@ class MachineManager(QObject):
 
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
-            self._global_container_stack.extruderList[position].quality = node.container
-            if empty_quality_changes:
-                self._global_container_stack.extruderList[position].qualityChanges = empty_quality_changes_container
+            try:
+                self._global_container_stack.extruderList[position].quality = node.container
+                if empty_quality_changes:
+                    self._global_container_stack.extruderList[position].qualityChanges = empty_quality_changes_container
+            except IndexError:
+                pass
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
@@ -1157,7 +1166,10 @@ class MachineManager(QObject):
     def _setVariantNode(self, position: str, variant_node: "VariantNode") -> None:
         if self._global_container_stack is None:
             return
-        self._global_container_stack.extruderList[int(position)].variant = variant_node.container
+        try:
+            self._global_container_stack.extruderList[int(position)].variant = variant_node.container
+        except IndexError:
+            return
         self.activeVariantChanged.emit()
 
     def _setGlobalVariant(self, container_node: "ContainerNode") -> None:
@@ -1172,10 +1184,16 @@ class MachineManager(QObject):
             return
         if material_node and material_node.container:
             material_container = material_node.container
-            self._global_container_stack.extruderList[int(position)].material = material_container
+            try:
+                self._global_container_stack.extruderList[int(position)].material = material_container
+            except IndexError:
+                return
             root_material_id = material_container.getMetaDataEntry("base_file", None)
         else:
-            self._global_container_stack.extruderList[int(position)].material = empty_material_container
+            try:
+                self._global_container_stack.extruderList[int(position)].material = empty_material_container
+            except IndexError:
+                return
             root_material_id = None
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
         if position not in self._current_root_material_id or root_material_id != self._current_root_material_id[position]:
@@ -1393,7 +1411,10 @@ class MachineManager(QObject):
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if int(position) in extruders_to_disable:
-                    self._global_container_stack.extruderList[int(position)].setEnabled(False)
+                    try:
+                        self._global_container_stack.extruderList[int(position)].setEnabled(False)
+                    except IndexError:
+                        continue
 
                     need_to_show_message = True
 
@@ -1406,7 +1427,10 @@ class MachineManager(QObject):
 
                     # Find the material profile that the printer has stored.
                     # This might find one of the duplicates if the user duplicated the material to sync with. But that's okay; both have this GUID so both are correct.
-                    approximate_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
+                    try:
+                        approximate_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
+                    except IndexError:
+                        continue
                     materials_with_guid = container_registry.findInstanceContainersMetadata(GUID = extruder_configuration.material.guid, approximate_diameter = str(approximate_diameter), ignore_case = True)
                     material_container_node = variant_node.preferredMaterial(approximate_diameter)
                     if materials_with_guid:  # We also have the material profile that the printer wants to share.
@@ -1427,14 +1451,18 @@ class MachineManager(QObject):
                 # Show human-readable extruder names such as "Extruder Left", "Extruder Front" instead of "Extruder 1, 2, 3".
                 extruder_names = []
                 for extruder_position in sorted(extruders_to_disable):
-                    extruder_stack = self._global_container_stack.extruderList[int(extruder_position)]
+                    try:
+                        extruder_stack = self._global_container_stack.extruderList[int(extruder_position)]
+                    except IndexError:
+                        continue
                     extruder_name = extruder_stack.definition.getName()
                     extruder_names.append(extruder_name)
-                extruders_str = ", ".join(extruder_names)
-                msg_str = msg_str.format(extruders = extruders_str)
-                message = Message(catalog.i18nc("@info:status", msg_str),
-                                  title = catalog.i18nc("@info:title", "Extruder(s) Disabled"))
-                message.show()
+                if extruder_names:
+                    extruders_str = ", ".join(extruder_names)
+                    msg_str = msg_str.format(extruders = extruders_str)
+                    message = Message(catalog.i18nc("@info:status", msg_str),
+                                      title = catalog.i18nc("@info:title", "Extruder(s) Disabled"))
+                    message.show()
 
         # See if we need to show the Discard or Keep changes screen
         if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
@@ -1455,7 +1483,10 @@ class MachineManager(QObject):
 
         machine_definition_id = self._global_container_stack.definition.id
         position = str(position)
-        extruder_stack = self._global_container_stack.extruderList[int(position)]
+        try:
+            extruder_stack = self._global_container_stack.extruderList[int(position)]
+        except IndexError:
+            return
         nozzle_name = extruder_stack.variant.getName()
         material_node = ContainerTree.getInstance().machines[machine_definition_id].variants[nozzle_name].materials[root_material_id]
         self.setMaterial(position, material_node)
@@ -1467,7 +1498,10 @@ class MachineManager(QObject):
         if you update an active machine, special measures have to be taken.
         """
         if global_stack is not None and global_stack != self._global_container_stack:
-            global_stack.extruderList[int(position)].material = container_node.container
+            try:
+                global_stack.extruderList[int(position)].material = container_node.container
+            except IndexError:
+                pass
             return
         position = str(position)
         self.blurSettings.emit()
