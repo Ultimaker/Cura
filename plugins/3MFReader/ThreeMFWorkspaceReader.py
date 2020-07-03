@@ -389,6 +389,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     machine_conflict = True
                     break
             self._is_same_machine_type = global_stack.definition.getId() == machine_definition_id
+        else:
+            global_stack = None
 
         # Get quality type
         parser = ConfigParser(interpolation = None)
