@@ -368,7 +368,10 @@ class Toolbox(QObject, Extension):
         container_tree = ContainerTree.getInstance()
 
         for global_stack, extruder_nr, container_id in self._package_used_materials:
-            extruder = global_stack.extruderList[int(extruder_nr)]
+            try:
+                extruder = global_stack.extruderList[int(extruder_nr)]
+            except IndexError:
+                continue
             approximate_diameter = extruder.getApproximateMaterialDiameter()
             variant_node = container_tree.machines[global_stack.definition.getId()].variants[extruder.variant.getName()]
             default_material_node = variant_node.preferredMaterial(approximate_diameter)
