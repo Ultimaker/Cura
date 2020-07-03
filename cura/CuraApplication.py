@@ -1817,7 +1817,10 @@ class CuraApplication(QtApplication):
         arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = fixed_nodes)
         min_offset = 8
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
-        default_extruder_id = self._global_container_stack.extruderList[int(default_extruder_position)].getId()
+        try:
+            default_extruder_id = self._global_container_stack.extruderList[int(default_extruder_position)].getId()
+        except IndexError:
+            default_extruder_id = None
 
         select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
@@ -1888,7 +1891,8 @@ class CuraApplication(QtApplication):
             operation = AddSceneNodeOperation(node, scene.getRoot())
             operation.push()
 
-            node.callDecoration("setActiveExtruder", default_extruder_id)
+            if default_extruder_id:
+                node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
 
             if select_models_on_load:
