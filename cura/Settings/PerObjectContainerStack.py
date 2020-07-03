@@ -51,7 +51,10 @@ class PerObjectContainerStack(CuraContainerStack):
                 context.context["original_limit_to_extruder"] = limit_to_extruder
 
             if super().getProperty(key, "settable_per_extruder", context):
-                result = global_stack.extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
+                try:
+                    result = global_stack.extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
+                except IndexError:
+                    result = None
                 if result is not None:
                     context.popContainer()
                     return result
