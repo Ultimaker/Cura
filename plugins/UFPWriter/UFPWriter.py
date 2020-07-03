@@ -162,13 +162,13 @@ class UFPWriter(MeshWriter):
         object_metas = []
 
         for item in objects_model.items:
-            object_metas = object_metas + UFPWriter._getObjectMetas(item["node"])
+            object_metas.extend(UFPWriter._getObjectMetas(item["node"]))
 
         data = {METADATA_OBJECTS_PATH: object_metas}
         archive.setMetadata(data)
 
     @staticmethod
-    def _getObjectMetas(node: SceneNode) -> List[Dict]:
+    def _getObjectMetas(node: SceneNode) -> List[Dict[str, str]]:
         """Get object metadata to write for a Node.
 
         :return: List of object metadata dictionaries.
