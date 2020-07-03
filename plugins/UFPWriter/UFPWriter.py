@@ -13,6 +13,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.Snapshot import Snapshot
@@ -175,11 +176,7 @@ class UFPWriter(MeshWriter):
                  Might be empty in case of nonPrintingMesh
         """
 
-        nodes = [node]
-        if node.callDecoration("isGroup"):
-            nodes = nodes + node.getAllChildren()  # all descendants
-
         return [{"name": item.getName()}
-                for item in nodes
+                for item in DepthFirstIterator(node)
                 if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")
                 ]
