@@ -4,6 +4,8 @@
 import configparser
 from typing import Tuple, List, Dict
 import io
+
+from UM.Util import parseBool
 from UM.VersionUpgrade import VersionUpgrade
 
 
@@ -27,6 +29,13 @@ class VersionUpgrade462to47(VersionUpgrade):
 
         # Update version number.
         parser["metadata"]["setting_version"] = "15"
+
+        if "cura" in parser and "jobname_prefix" in parser["cura"]:
+            if not parseBool(parser["cura"]["jobname_prefix"]):
+                parser["cura"]["job_name_template"] = "{project_name}"
+            del parser["cura"]["jobname_prefix"]
+        # else: When the jobname_prefix preference is True or not set,
+        # the default value for job_name_template ("{machine_name_short}_{project_name}") will be used
 
         result = io.StringIO()
         parser.write(result)
