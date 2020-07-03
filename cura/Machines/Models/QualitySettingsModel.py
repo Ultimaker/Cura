@@ -152,8 +152,11 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:
-                extruder_stack = global_container_stack.extruderList[self._selected_position]
-                user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
+                try:
+                    extruder_stack = global_container_stack.extruderList[self._selected_position]
+                    user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
+                except IndexError:
+                    user_value = None
 
             if profile_value is None and user_value is None:
                 continue
