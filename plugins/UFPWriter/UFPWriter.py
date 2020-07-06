@@ -28,13 +28,13 @@ catalog = i18nCatalog("cura")
 
 class UFPWriter(MeshWriter):
     def __init__(self):
-        super().__init__(add_to_recent_files=False)
+        super().__init__(add_to_recent_files = False)
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-ufp",
-                comment="Ultimaker Format Package",
-                suffixes=["ufp"]
+                name = "application/x-ufp",
+                comment = "Ultimaker Format Package",
+                suffixes = ["ufp"]
             )
         )
 
@@ -44,7 +44,7 @@ class UFPWriter(MeshWriter):
         # must be called from the main thread because of OpenGL
         Logger.log("d", "Creating thumbnail image...")
         try:
-            self._snapshot = Snapshot.snapshot(width=300, height=300)
+            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
         except Exception:
             Logger.logException("w", "Failed to create snapshot image")
             self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
@@ -54,14 +54,14 @@ class UFPWriter(MeshWriter):
     # Qt thread. The File read/write operations right now are executed on separated threads because they are scheduled
     # by the Job class.
     @call_on_qt_thread
-    def write(self, stream, nodes, mode=MeshWriter.OutputMode.BinaryMode):
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
 
         self._writeObjectList(archive)
 
         # Store the g-code from the scene.
-        archive.addContentType(extension="gcode", mime_type="text/x-gcode")
+        archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
         gcode_textio = StringIO()  # We have to convert the g-code into bytes.
         gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
         success = gcode_writer.write(gcode_textio, None)
@@ -70,14 +70,13 @@ class UFPWriter(MeshWriter):
             return False
         gcode = archive.getStream("/3D/model.gcode")
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
-        archive.addRelation(virtual_path="/3D/model.gcode",
-                            relation_type="http://schemas.ultimaker.org/package/2018/relationships/gcode")
+        archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
         self._createSnapshot()
 
         # Store the thumbnail.
         if self._snapshot:
-            archive.addContentType(extension="png", mime_type="image/png")
+            archive.addContentType(extension = "png", mime_type = "image/png")
             thumbnail = archive.getStream("/Metadata/thumbnail.png")
 
             thumbnail_buffer = QBuffer()
@@ -86,9 +85,9 @@ class UFPWriter(MeshWriter):
             thumbnail_image.save(thumbnail_buffer, "PNG")
 
             thumbnail.write(thumbnail_buffer.data())
-            archive.addRelation(virtual_path="/Metadata/thumbnail.png",
-                                relation_type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
-                                origin="/3D/model.gcode")
+            archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
+                                relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+                                origin = "/3D/model.gcode")
         else:
             Logger.log("d", "Thumbnail not created, cannot save it")
 
@@ -102,7 +101,7 @@ class UFPWriter(MeshWriter):
         material_mime_type = "application/x-ultimaker-material-profile"
 
         try:
-            archive.addContentType(extension=material_extension, mime_type=material_mime_type)
+            archive.addContentType(extension = material_extension, mime_type = material_mime_type)
         except:
             Logger.log("w", "The material extension: %s was already added", material_extension)
 
@@ -121,10 +120,9 @@ class UFPWriter(MeshWriter):
                 continue
 
             material_root_id = material.getMetaDataEntry("base_file")
-            material_root_query = container_registry.findContainers(id=material_root_id)
+            material_root_query = container_registry.findContainers(id = material_root_id)
             if not material_root_query:
-                Logger.log("e",
-                           "Cannot find material container with root id {root_id}".format(root_id=material_root_id))
+                Logger.log("e", "Cannot find material container with root id {root_id}".format(root_id = material_root_id))
                 return False
             material_container = material_root_query[0]
 
@@ -136,9 +134,9 @@ class UFPWriter(MeshWriter):
 
             material_file = archive.getStream(material_file_name)
             material_file.write(serialized_material.encode("UTF-8"))
-            archive.addRelation(virtual_path=material_file_name,
-                                relation_type="http://schemas.ultimaker.org/package/2018/relationships/material",
-                                origin="/3D/model.gcode")
+            archive.addRelation(virtual_path = material_file_name,
+                                relation_type = "http://schemas.ultimaker.org/package/2018/relationships/material",
+                                origin = "/3D/model.gcode")
 
             added_materials.append(material_file_name)
 
@@ -162,13 +160,13 @@ class UFPWriter(MeshWriter):
         object_metas = []
 
         for item in objects_model.items:
-            object_metas.extend(UFPWriter._getObjectMetas(item["node"]))
+            object_metas.extend(UFPWriter._getObjectMetadata(item["node"]))
 
         data = {METADATA_OBJECTS_PATH: object_metas}
         archive.setMetadata(data)
 
     @staticmethod
-    def _getObjectMetas(node: SceneNode) -> List[Dict[str, str]]:
+    def _getObjectMetadata(node: SceneNode) -> List[Dict[str, str]]:
         """Get object metadata to write for a Node.
 
         :return: List of object metadata dictionaries.
@@ -178,5 +176,4 @@ class UFPWriter(MeshWriter):
 
         return [{"name": item.getName()}
                 for item in DepthFirstIterator(node)
-                if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")
-                ]
+                if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
