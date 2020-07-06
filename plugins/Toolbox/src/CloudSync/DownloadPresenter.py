@@ -120,6 +120,10 @@ class DownloadPresenter:
             received += item["received"]
             total += item["total"]
 
+        if total == 0:  # Total download size is 0, or unknown, or there are no progress items at all.
+            self._progress_message.setProgress(100.0)
+            return
+
         self._progress_message.setProgress(100.0 * (received / total))  # [0 .. 100] %
 
     def _onError(self, package_id: str) -> None:
