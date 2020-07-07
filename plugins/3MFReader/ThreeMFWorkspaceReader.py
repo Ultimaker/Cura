@@ -471,7 +471,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
             if not machine_conflict and containers_found_dict["machine"]:
-                if int(position) >= len(global_stack.extrurderList):
+                if int(position) >= len(global_stack.extruderList):
                     continue
 
                 existing_extruder_stack = global_stack.extruderList[int(position)]
@@ -822,7 +822,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         try:
                             extruder_stack = global_stack.extruderList[int(position)]
                         except IndexError:
-                            pass
+                            continue
                         intent_category = quality_changes_intent_category_per_extruder[position]
                     container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
@@ -887,7 +887,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     try:
                         extruder_stack = global_stack.extruderList[int(position)]
                     except IndexError:
-                        extruder_stack = None
+                        continue
                     intent_category = quality_changes_intent_category_per_extruder[position]
                     container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
