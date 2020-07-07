@@ -101,7 +101,7 @@ class CloudPackageChecker(QObject):
         self._package_manager.reEvaluateDismissedPackages(subscribed_packages_payload, self._sdk_version)
         user_dismissed_packages = self._package_manager.getDismissedPackages()
         if user_dismissed_packages:
-            user_installed_packages += user_dismissed_packages
+            user_installed_packages.update(user_dismissed_packages)
 
         # We check if there are packages installed in Web Marketplace but not in Cura marketplace
         package_discrepancy = list(user_subscribed_packages.difference(user_installed_packages))
