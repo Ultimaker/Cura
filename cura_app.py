@@ -39,7 +39,7 @@ except ImportError:
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
 parser.add_argument("--debug",
-                    action="store_true",
+                    action = "store_true",
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
@@ -49,7 +49,7 @@ known_args = vars(parser.parse_known_args()[0])
 if with_sentry_sdk:
     sentry_env = "unknown"  # Start off with a "IDK"
     if hasattr(sys, "frozen"):
-        sentry_env = "production"  # A frozen build has the posibility to be a "real" distribution.
+        sentry_env = "production"  # A frozen build has the possibility to be a "real" distribution.
 
     if ApplicationMetadata.CuraVersion == "master":
         sentry_env = "development"  # Master is always a development version.
