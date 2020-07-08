@@ -3,7 +3,7 @@
 
 import os.path
 import zipfile
-from typing import List, Optional, Union, TYPE_CHECKING
+from typing import List, Optional, Union, TYPE_CHECKING, cast
 
 import Savitar
 import numpy
@@ -175,7 +175,7 @@ class ThreeMFReader(MeshReader):
                 parent_transformation = um_node.getLocalTransformation()
                 child_transformation = child_node.getLocalTransformation()
                 child_node.setTransformation(parent_transformation.multiply(child_transformation))
-                um_node = um_node.getChildren()[0]
+                um_node = cast(CuraSceneNode, um_node.getChildren()[0])
             else:
                 group_decorator = GroupDecorator()
                 um_node.addDecorator(group_decorator)
