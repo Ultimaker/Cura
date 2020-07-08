@@ -4,6 +4,8 @@
 import configparser
 from typing import Tuple, List, Dict, Set
 import io
+
+from UM.Util import parseBool
 from UM.VersionUpgrade import VersionUpgrade
 
 
