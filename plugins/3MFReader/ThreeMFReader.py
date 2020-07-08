@@ -169,8 +169,16 @@ class ThreeMFReader(MeshReader):
                 setting_container.setProperty(key, "value", setting_value)
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
-            group_decorator = GroupDecorator()
-            um_node.addDecorator(group_decorator)
+            if len(um_node.getAllChildren()) == 1:
+                # We don't want groups of one, so move the node up one "level"
+                child_node = um_node.getChildren()[0]
+                parent_transformation = um_node.getLocalTransformation()
+                child_transformation = child_node.getLocalTransformation()
+                child_node.setTransformation(parent_transformation.multiply(child_transformation))
+                um_node = um_node.getChildren()[0]
+            else:
+                group_decorator = GroupDecorator()
+                um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
         if um_node.getMeshData():
             # Assuming that all nodes with mesh data are printable objects
@@ -192,8 +200,8 @@ class ThreeMFReader(MeshReader):
                 um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
-                # compensate for original center position, if object(s) is/are not around its zero position
 
+                # compensate for original center position, if object(s) is/are not around its zero position
                 transform_matrix = Matrix()
                 mesh_data = um_node.getMeshData()
                 if mesh_data is not None:
