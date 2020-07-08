@@ -59,7 +59,7 @@ class DisplayProgressOnLCD(Script):
         output_time = self.getSettingValueByKey("time_remaining")
         output_percentage = self.getSettingValueByKey("percentage")
         line_set = {}
-        if (output_percentage or output_time) == True:
+        if output_percentage or output_time:
             total_time = -1
             previous_layer_end_percentage = 0
             for layer in data:
@@ -72,12 +72,11 @@ class DisplayProgressOnLCD(Script):
                         total_time = self.getTimeValue(line)
                         line_index = lines.index(line)
 
-                        if (output_time):
+                        if output_time:
                             self.outputTime(lines, line_index, total_time)
-                        if (output_percentage):
+                        if output_percentage:
                             # Emit 0 percent to sure Marlin knows we are overriding the completion percentage
                             lines.insert(line_index, "M73 P0")
-
 
                     elif line.startswith(";TIME_ELAPSED:"):
                         # We've found one of the time elapsed values which are added at the end of layers
@@ -85,22 +84,22 @@ class DisplayProgressOnLCD(Script):
                         # If we have seen this line before then skip processing it. We can see lines multiple times because we are adding
                         # intermediate percentages before the line being processed. This can cause the current line to shift back and be
                         # encountered more than once
-                        if (line in line_set):
+                        if line in line_set:
                             continue
                         line_set[line] = True
 
                         # If total_time was not already found then noop
-                        if (total_time == -1):
+                        if total_time == -1:
                             continue
 
                         current_time = self.getTimeValue(line)
                         line_index = lines.index(line)
                         
-                        if (output_time):
+                        if output_time:
                             # Here we calculate remaining time
                             self.outputTime(lines, line_index, total_time - current_time)
 
-                        if (output_percentage):
+                        if output_percentage:
                             # Calculate percentage value this layer ends at
                             layer_end_percentage = int((current_time / total_time) * 100)
 
@@ -108,7 +107,7 @@ class DisplayProgressOnLCD(Script):
                             layer_percentage_delta = layer_end_percentage - previous_layer_end_percentage
                             
                             # If this layer represents less than 1 percent then we don't need to emit anything, continue to the next layer
-                            if (layer_percentage_delta != 0):
+                            if layer_percentage_delta != 0:
                                 # Grab the index of the current line and figure out how many lines represent one percent
                                 step = line_index / layer_percentage_delta
 
@@ -127,5 +126,5 @@ class DisplayProgressOnLCD(Script):
                                 previous_layer_end_percentage = layer_end_percentage
 
                 # Join up the lines for this layer again and store them in the data array
-                data[layer_index] =  "\n".join(lines)
+                data[layer_index] = "\n".join(lines)
         return data
