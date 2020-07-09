@@ -6207,13 +6207,18 @@
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
-                "support_tree_enable":
+                "support_structure":
                 {
-                    "label": "Tree Support",
-                    "description": "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": true,
+                    "label": "Support Structure",
+                    "description": "Generate a tree-like support ",
+                    "type": "enum",
+                    "options":
+                    {
+                        "normal": "Normal",
+                        "tree": "Tree"
+                    },
+                    "default_value": "normal",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
                 "support_tree_angle":
