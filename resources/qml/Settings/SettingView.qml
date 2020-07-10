@@ -246,13 +246,14 @@ Item
             }
 
             property int indexWithFocus: -1
+            property double delegateHeight: UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height
             property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
             delegate: Loader
             {
                 id: delegate
 
                 width: scrollView.width
-                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height : 0
+                height: provider.properties.enabled === "True" ? contents.delegateHeight: 0
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled === "True" ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
