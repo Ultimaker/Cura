@@ -81,7 +81,7 @@
             "default_value": "ZigZag"
         },
         "support_infill_rate": {
-            "value": "15 if support_enable else 0 if support_tree_enable else 15"
+            "value": "15 if support_structure=='normal' else 0 if support_structure=='tree' else 15"
         },
         "adhesion_type": {
             "default_value": "raft"
