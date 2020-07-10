@@ -502,6 +502,7 @@
         "extruder_icon": [2.33, 2.33],
 
         "section": [0.0, 2],
+        "section_control": [0, 1],
         "section_icon": [1.6, 1.6],
         "section_icon_column": [2.8, 0.0],
         "rating_star": [1.0, 1.0],
