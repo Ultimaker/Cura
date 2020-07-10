@@ -253,19 +253,11 @@ Item
                 id: delegate
 
                 width: scrollView.width
-                height: provider.properties.enabled === "True" ? contents.delegateHeight: 0
+                height: enabled ? contents.delegateHeight: 0
                 Behavior on height { NumberAnimation { duration: 100 } }
-                opacity: provider.properties.enabled === "True" ? 1 : 0
+                opacity: enabled ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
-                enabled:
-                {
-                    if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
-                    {
-                        // disable all controls on the global tab, except categories
-                        return model.type === "category"
-                    }
-                    return provider.properties.enabled === "True"
-                }
+                enabled: provider.properties.enabled === "True"
 
                 property var definition: model
                 property var settingDefinitionsModel: definitionsModel
