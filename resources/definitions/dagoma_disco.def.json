@@ -70,9 +70,9 @@
         "machine_max_jerk_xy": { "value": 20 },
         "machine_max_jerk_z": { "value": 0.4 },
         "machine_max_jerk_e": { "value": 5 },
-		"machine_steps_per_mm_x": 	{ "default_value": 80 },
-		"machine_steps_per_mm_y": 	{ "default_value": 80 },
-		"machine_steps_per_mm_z": 	{ "default_value": 2560 },
-		"machine_steps_per_mm_e": 	{ "default_value": 98 }
+	"machine_steps_per_mm_x": 	{ "default_value": 80 },
+	"machine_steps_per_mm_y": 	{ "default_value": 80 },
+	"machine_steps_per_mm_z": 	{ "default_value": 2560 },
+	"machine_steps_per_mm_e": 	{ "default_value": 98 }
     }
 }
