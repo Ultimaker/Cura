@@ -1047,7 +1047,7 @@ class BuildVolume(SceneNode):
         skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
         initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
-        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and adhesion_type != "raft"):
+        if adhesion_type == "brim":
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
@@ -1056,7 +1056,7 @@ class BuildVolume(SceneNode):
 
             # We don't create an additional line for the extruder we're printing the brim with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "skirt":  # No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
+        elif adhesion_type == "skirt":
             skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
             skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
 
