@@ -1,0 +1,89 @@
+{
+    "version": 2,
+    "name": "Diytech 400",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Venkatkamesh",
+        "manufacturer": "Sri Vignan Technologies",
+        "weight": 3,
+        "file_formats": "text/x-gcode",
+        "platform": "diytech400.obj",
+        "platform_texture": "svtbacktext400.png",
+        "platform_offset": [0, -55, 0],
+        "has_materials": true,
+        "has_variants": true,
+        "preferred_variant_name": "0.4 mm",
+        "machine_extruder_trains":
+        {
+            "0": "diy400_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Diytech 400" },
+        "machine_start_gcode" : {
+            "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nG28 Z0 ;move Z to bottom endstops\\nG28 X0 Y0 ;move X/Y to endstops\\nG1 X15 Y0 F4000 ;move X/Y to front of printer\\nG1 Z15.0 F9000 ;move the platform to 15mm\\nG92 E0 ;zero the extruded length\\nG1 F200 E50 ;extrude 50 mm of feed stock\\nG92 E0 ;zero the extruded length again\\nG1 F9000\\n;Put printing message on LCD screen\\nM117 Printing...\""
+        },
+        "machine_end_gcode" : {
+            "value": "\";Version _2.6 of the firmware can abort the print too early if the file ends\\n;too soon. However if the file hasn't ended yet because there are comments at\\n;the end of the file, it won't abort yet. Therefore we have to put at least 512\\n;bytes at the end of the g-code so that the file is not yet finished by the\\n;time that the motion planner gets flushed. With firmware version _3.3 this\\n;should be fixed, so this comment wouldn't be necessary any more. Now we have\\n;to pad this text to make precisely 512 bytes.\"  if machine_gcode_flavor == \"UltiGCode\" else \"M104 S0 ;extruder heater off\\nM140 S0 ;heated bed heater off (if you have it)\\nG91 ;relative positioning\\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\\nM84 ;steppers off\\nG90 ;absolute positioning\\n;Version _2.6 of the firmware can abort the print too early if the file ends\\n;too soon. However if the file hasn't ended yet because there are comments at\\n;the end of the file, it won't abort yet. Therefore we have to put at least 512\\n;bytes at the end of the g-code so that the file is not yet finished by the\\n;time that the motion planner gets flushed. With firmware version _3.3 this\\n;should be fixed, so this comment wouldn't be necessary any more. Now we have\\n;to pad this text to make precisely 512 bytes.\""
+        },
+        "machine_width": {
+            "default_value": 300
+        },
+        "machine_depth": {
+            "default_value": 300
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -42, 12 ],
+                [ -42, -32 ],
+                [ 62, 12 ],
+                [ 62, -32 ]
+            ]
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "value": "48"
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_gcode_flavor": {
+            "default_value": "Marlin"
+        },
+        "machine_disallowed_areas": {
+            "default_value": [
+              [[-115,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]],
+              [[ 115,  112.5], [ 115,  102.5], [ 110,  102.5], [ 108,  112.5]],
+              [[-115, -112.5], [-115, -104.5], [ -84, -104.5], [ -82, -112.5]],
+              [[ 115, -112.5], [ 108, -112.5], [ 110, -104.5], [ 115, -104.5]]
+        ]},
+        "machine_nozzle_tip_outer_diameter": {
+            "default_value": 1
+        },
+        "machine_nozzle_head_distance": {
+            "default_value": 3
+        },
+        "machine_max_feedrate_x": {
+            "default_value": 300
+        },
+        "machine_max_feedrate_y": {
+            "default_value": 300
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 40
+        },
+        "machine_acceleration": {
+            "default_value": 3000
+        }
+    }
+}
