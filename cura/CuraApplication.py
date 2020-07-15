@@ -533,7 +533,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/active_mode", "simple")
 
         preferences.addPreference("cura/categories_expanded", "")
-        preferences.addPreference("cura/job_name_template", "{machine_name_short}_{project_name}")
+        preferences.addPreference("cura/jobname_prefix", True)
         preferences.addPreference("cura/select_models_on_load", False)
         preferences.addPreference("view/center_on_select", False)
         preferences.addPreference("mesh/scale_to_fit", False)

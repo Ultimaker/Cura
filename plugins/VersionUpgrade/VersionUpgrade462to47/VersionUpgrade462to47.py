@@ -45,13 +45,6 @@ class VersionUpgrade462to47(VersionUpgrade):
             parser["general"]["visible_settings"] = ";".join(
                 set(parser["general"]["visible_settings"].split(";")).difference(_removed_settings))
 
-        if "cura" in parser and "jobname_prefix" in parser["cura"]:
-            if not parseBool(parser["cura"]["jobname_prefix"]):
-                parser["cura"]["job_name_template"] = "{project_name}"
-            del parser["cura"]["jobname_prefix"]
-        # else: When the jobname_prefix preference is True or not set,
-        # the default value for job_name_template ("{machine_name_short}_{project_name}") will be used
-
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
@@ -168,6 +161,17 @@ class VersionUpgrade462to47(VersionUpgrade):
                     if "redo_layers" in script_parser["PauseAtHeight"]:
                         script_parser["PauseAtHeight"]["redo_layer"] = str(int(script_parser["PauseAtHeight"]["redo_layers"]) > 0)
                         del script_parser["PauseAtHeight"]["redo_layers"]  # Has been renamed to without the S.
+
+                # Migrate DisplayCompleteOnLCD to DisplayProgressOnLCD
+                if script_id == "DisplayRemainingTimeOnLCD":
+                    was_enabled = parseBool(script_parser[script_id]["TurnOn"]) if "TurnOn" in script_parser[script_id] else False
+                    script_parser.remove_section(script_id)
+
+                    script_id = "DisplayProgressOnLCD"
+                    script_parser.add_section(script_id)
+                    if was_enabled:
+                        script_parser.set(script_id, "time_remaining", "True")
+
                 script_io = io.StringIO()
                 script_parser.write(script_io)
                 script_str = script_io.getvalue()

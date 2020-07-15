@@ -202,7 +202,11 @@ class PrintInformation(QObject):
         self._material_costs[build_plate_number] = []
         self._material_names[build_plate_number] = []
 
-        material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
+        try:
+            material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
+        except json.JSONDecodeError:
+            Logger.warning("Material preference values are corrupt. Will revert to defaults!")
+            material_preference_values = {}
 
         for index, extruder_stack in enumerate(global_stack.extruderList):
             if index >= len(self._material_amounts):
@@ -252,11 +256,11 @@ class PrintInformation(QObject):
         self.materialNamesChanged.emit()
 
     def _onPreferencesChanged(self, preference: str) -> None:
-        if preference == "cura/job_name_template":
-            self._updateJobName()
-        elif preference == "cura/material_settings":
-            for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
-                self._calculateInformation(build_plate_number)
+        if preference != "cura/material_settings":
+            return
+
+        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
+            self._calculateInformation(build_plate_number)
 
     def _onActiveBuildPlateChanged(self) -> None:
         new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
@@ -305,8 +309,12 @@ class PrintInformation(QObject):
 
         # Only update the job name when it's not user-specified.
         if not self._is_user_specified_job_name:
-            if not self._pre_sliced:
-                self._job_name = self.parseTemplate()
+            if self._application.getInstance().getPreferences().getValue("cura/jobname_prefix") and not self._pre_sliced:
+                # Don't add abbreviation if it already has the exact same abbreviation.
+                if base_name.startswith(self._abbr_machine + "_"):
+                    self._job_name = base_name
+                else:
+                    self._job_name = self._abbr_machine + "_" + base_name
             else:
                 self._job_name = base_name
 
@@ -436,28 +444,3 @@ class PrintInformation(QObject):
         """Listen to scene changes to check if we need to reset the print information"""
 
         self.setToZeroPrintInformation(self._active_build_plate)
-
-    def parseTemplate(self) -> str:
-        """Generate a print job name from the job name template
-
-        The template is a user preference: "cura/job_name_template"
-        """
-        template = self._application.getInstance().getPreferences().getValue("cura/job_name_template")
-        output = template
-
-        output = output.replace("{machine_name_short}", self._abbr_machine)
-
-        if "{machine_name}" in template:
-            global_container_stack = self._application.getGlobalContainerStack()
-            active_machine_type_name = global_container_stack.definition.getName() \
-                if global_container_stack \
-                else "no_machine"
-
-            active_machine_type_name = active_machine_type_name.replace(" ", "_")
-            output = output.replace("{machine_name}", active_machine_type_name)
-
-        if "{project_name}" in template:
-            base_name = self._stripAccents(self._base_name)
-            output = output.replace("{project_name}", base_name)
-
-        return output
