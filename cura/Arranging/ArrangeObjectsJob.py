@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from PyQt5.QtCore import QCoreApplication
 
 from UM.Application import Application
 from UM.Job import Job
@@ -94,6 +95,7 @@ class ArrangeObjectsJob(Job):
 
             status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
             Job.yieldThread()
+            QCoreApplication.processEvents()
 
         grouped_operation.push()
 

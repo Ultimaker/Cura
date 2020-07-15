@@ -738,14 +738,15 @@ class MachineManager(QObject):
         containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
             CuraContainerRegistry.getInstance().removeContainer(container["id"])
-        machine_stack = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", name = machine_id)[0]
-        CuraContainerRegistry.getInstance().removeContainer(machine_stack.definitionChanges.getId())
+        machine_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", name = machine_id)
+        if machine_stacks:
+            CuraContainerRegistry.getInstance().removeContainer(machine_stacks[0].definitionChanges.getId())
         CuraContainerRegistry.getInstance().removeContainer(machine_id)
 
         # If the printer that is being removed is a network printer, the hidden printers have to be also removed
         group_id = metadata.get("group_id", None)
         if group_id:
-            metadata_filter = {"group_id": group_id}
+            metadata_filter = {"group_id": group_id, "hidden": True}
             hidden_containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
             if hidden_containers:
                 # This reuses the method and remove all printers recursively

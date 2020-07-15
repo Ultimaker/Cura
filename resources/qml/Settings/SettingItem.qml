@@ -156,7 +156,7 @@ Item
         {
             id: settingControls
 
-            height: Math.round(parent.height / 2)
+            height: UM.Theme.getSize("section_control").height
             spacing: Math.round(UM.Theme.getSize("thick_margin").height / 2)
 
             anchors

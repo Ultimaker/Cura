@@ -226,7 +226,7 @@ class CuraContainerRegistry(ContainerRegistry):
                             global_profile = profile
                         else:
                             extruder_profiles.append(profile)
-                extruder_profiles = sorted(extruder_profiles, key = lambda x: int(x.getMetaDataEntry("position")))
+                extruder_profiles = sorted(extruder_profiles, key = lambda x: int(x.getMetaDataEntry("position", default = "0")))
                 profile_or_list = [global_profile] + extruder_profiles
 
                 if not global_profile:

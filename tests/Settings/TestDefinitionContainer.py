@@ -12,7 +12,7 @@ from unittest.mock import patch, MagicMock
 import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
-
+from UM.VersionUpgradeManager import FilesDataUpdateResult
 from UM.Resources import Resources
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
 
@@ -36,6 +36,7 @@ def definition_container():
     assert result.getId() == uid
     return result
 
+
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_definitionIds(file_path):
     """
@@ -44,6 +45,7 @@ def test_definitionIds(file_path):
     """
     definition_id = os.path.basename(file_path).split(".")[0]
     assert " " not in definition_id  # Definition IDs are not allowed to have spaces.
+
 
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_noCategory(file_path):
@@ -57,6 +59,7 @@ def test_noCategory(file_path):
         metadata = DefinitionContainer.deserializeMetadata(json, "test_container_id")
         assert "category" not in metadata[0]
 
+
 @pytest.mark.parametrize("file_path", machine_filepaths)
 def test_validateMachineDefinitionContainer(file_path, definition_container):
     """Tests all definition containers"""
@@ -65,12 +68,11 @@ def test_validateMachineDefinitionContainer(file_path, definition_container):
     if file_name == "fdmprinter.def.json" or file_name == "fdmextruder.def.json":
         return  # Stop checking, these are root files.
 
-    from UM.VersionUpgradeManager import FilesDataUpdateResult
-
     mocked_vum = MagicMock()
     mocked_vum.updateFilesData = lambda ct, v, fdl, fnl: FilesDataUpdateResult(ct, v, fdl, fnl)
     with patch("UM.VersionUpgradeManager.VersionUpgradeManager.getInstance", MagicMock(return_value = mocked_vum)):
         assertIsDefinitionValid(definition_container, file_path)
+
 
 def assertIsDefinitionValid(definition_container, file_path):
     with open(file_path, encoding = "utf-8") as data:
@@ -85,6 +87,7 @@ def assertIsDefinitionValid(definition_container, file_path):
 
         if "platform_texture" in metadata[0]:
             assert metadata[0]["platform_texture"] in all_images
+
 
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_validateOverridingDefaultValue(file_path: str):
@@ -189,7 +192,9 @@ def test_noId(file_path: str):
 
 @pytest.mark.parametrize("file_path", extruder_filepaths)
 def test_extruderMatch(file_path: str):
-    """Verifies that extruders say that they work on the same extruder_nr as what is listed in their machine definition."""
+    """
+    Verifies that extruders say that they work on the same extruder_nr as what is listed in their machine definition.
+    """
 
     extruder_id = os.path.basename(file_path).split(".")[0]
     with open(file_path, encoding = "utf-8") as f:

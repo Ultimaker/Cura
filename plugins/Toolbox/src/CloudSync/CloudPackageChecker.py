@@ -95,21 +95,35 @@ class CloudPackageChecker(QObject):
         user_subscribed_packages = {plugin["package_id"] for plugin in subscribed_packages_payload}
         user_installed_packages = self._package_manager.getAllInstalledPackageIDs()
 
-        if user_subscribed_packages == self._last_notified_packages:
-            # already notified user about these
-            return
-
         # We need to re-evaluate the dismissed packages
         # (i.e. some package might got updated to the correct SDK version in the meantime,
         # hence remove them from the Dismissed Incompatible list)
         self._package_manager.reEvaluateDismissedPackages(subscribed_packages_payload, self._sdk_version)
         user_dismissed_packages = self._package_manager.getDismissedPackages()
         if user_dismissed_packages:
-            user_installed_packages += user_dismissed_packages
+            user_installed_packages.update(user_dismissed_packages)
 
         # We check if there are packages installed in Web Marketplace but not in Cura marketplace
         package_discrepancy = list(user_subscribed_packages.difference(user_installed_packages))
+
+        if user_subscribed_packages != self._last_notified_packages:
+            # scenario:
+            # 1. user subscribes to a package
+            # 2. dismisses the license/unsubscribes
+            # 3. subscribes to the same package again
+            # in this scenario we want to notify the user again. To capture that there was a change during
+            # step 2, we clear the last_notified after step 2. This way, the user will be notified after
+            # step 3 even though the list of packages for step 1 and 3 are equal
+            self._last_notified_packages = set()
+
         if package_discrepancy:
+            account = self._application.getCuraAPI().account
+            account.setUpdatePackagesAction(lambda: self._onSyncButtonClicked(None, None))
+
+            if user_subscribed_packages == self._last_notified_packages:
+                # already notified user about these
+                return
+
             Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             self._model.addDiscrepancies(package_discrepancy)
             self._model.initialize(self._package_manager, subscribed_packages_payload)
@@ -144,7 +158,8 @@ class CloudPackageChecker(QObject):
             self._message.hide()
             self._message = None
 
-    def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
-        sync_message.hide()
+    def _onSyncButtonClicked(self, sync_message: Optional[Message], sync_message_action: Optional[str]) -> None:
+        if sync_message is not None:
+            sync_message.hide()
         self._hideSyncMessage()  # Should be the same message, but also sets _message to None
         self.discrepancies.emit(self._model)

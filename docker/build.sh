@@ -67,4 +67,4 @@ cmake3 \
     -DBUILD_TESTS=ON \
     ..
 make
-ctest3 --output-on-failure -T Test
+ctest3 -j4 --output-on-failure -T Test

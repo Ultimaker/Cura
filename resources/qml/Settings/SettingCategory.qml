@@ -22,21 +22,9 @@ Button
         height: UM.Theme.getSize("section").height
         color:
         {
-            if (base.color)
-            {
-                return base.color
-            }
-            else if (!base.enabled)
+            if (!base.enabled)
             {
                 return UM.Theme.getColor("setting_category_disabled")
-            }
-            else if (base.hovered && base.expanded)
-            {
-                return UM.Theme.getColor("setting_category_active_hover")
-            }
-            else if (base.pressed || base.expanded)
-            {
-                return UM.Theme.getColor("setting_category_active")
             }
             else if (base.hovered)
             {
@@ -57,6 +45,21 @@ Button
     property var focusItem: base
     property bool expanded: definition.expanded
 
+
+    property color text_color:
+    {
+        if (!base.enabled)
+        {
+            return UM.Theme.getColor("setting_category_disabled_text")
+        } else if (base.hovered || base.pressed || base.activeFocus)
+        {
+            return UM.Theme.getColor("setting_category_active_text")
+        }
+
+        return UM.Theme.getColor("setting_category_text")
+
+    }
+
     contentItem: Item
     {
         anchors.fill: parent
@@ -75,25 +78,7 @@ Button
             textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("medium_bold")
-            color:
-            {
-                if (!base.enabled)
-                {
-                    return UM.Theme.getColor("setting_category_disabled_text")
-                } else if ((base.hovered || base.activeFocus) && base.expanded)
-                {
-                    return UM.Theme.getColor("setting_category_active_hover_text")
-                } else if (base.pressed || base.expanded)
-                {
-                    return UM.Theme.getColor("setting_category_active_text")
-                } else if (base.hovered || base.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_category_hover_text")
-                } else
-                {
-                    return UM.Theme.getColor("setting_category_text")
-                }
-            }
+            color: base.text_color
             fontSizeMode: Text.HorizontalFit
             minimumPointSize: 8
         }
@@ -118,26 +103,7 @@ Button
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("thin_margin").width
-        color:
-        {
-            if (!base.enabled)
-            {
-                return UM.Theme.getColor("setting_category_disabled_text")
-            }
-            else if((base.hovered || base.activeFocus) && base.expanded)
-            {
-                return UM.Theme.getColor("setting_category_active_hover_text")
-            }
-            else if(base.pressed || base.expanded)
-            {
-                return UM.Theme.getColor("setting_category_active_text")
-            }
-            else if(base.hovered || base.activeFocus)
-            {
-                return UM.Theme.getColor("setting_category_hover_text")
-            }
-            return UM.Theme.getColor("setting_category_text")
-        }
+        color: base.text_color
         source: UM.Theme.getIcon(definition.icon)
         width: UM.Theme.getSize("section_icon").width
         height: UM.Theme.getSize("section_icon").height

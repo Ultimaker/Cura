@@ -80,8 +80,11 @@ class Arrange:
             # After scaling (like up to 0.1 mm) the node might not have points
             if not points.size:
                 continue
-
-            shape_arr = ShapeArray.fromPolygon(points, scale = scale)
+            try:
+                shape_arr = ShapeArray.fromPolygon(points, scale = scale)
+            except ValueError:
+                Logger.logException("w", "Unable to create polygon")
+                continue
             arranger.place(0, 0, shape_arr)
 
         # If a build volume was set, add the disallowed areas

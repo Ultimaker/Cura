@@ -49,7 +49,7 @@ Row // Sync state icon + message
         width: 20 * screenScaleFactor
         height: width
 
-        source: Cura.API.account.manualSyncEnabled ? UM.Theme.getIcon("update") : UM.Theme.getIcon("checked")
+        // source is determined by State
         color: UM.Theme.getColor("account_sync_state_icon")
 
         RotationAnimator
@@ -80,14 +80,36 @@ Row // Sync state icon + message
         Label
         {
             id: stateLabel
-            text: catalog.i18nc("@state", catalog.i18nc("@label", "Account synced"))
+            // text is determined by State
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
             width: contentWidth + UM.Theme.getSize("default_margin").height
             height: contentHeight
             verticalAlignment: Text.AlignVCenter
-            visible: !Cura.API.account.manualSyncEnabled
+            visible: !Cura.API.account.manualSyncEnabled && !Cura.API.account.updatePackagesEnabled
+        }
+
+        Label
+        {
+            id: updatePackagesButton
+            text: catalog.i18nc("@button", "Install pending updates")
+            color: UM.Theme.getColor("secondary_button_text")
+            font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            height: contentHeight
+            width: contentWidth + UM.Theme.getSize("default_margin").height
+            visible: Cura.API.account.updatePackagesEnabled
+
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked: Cura.API.account.onUpdatePackagesClicked()
+                hoverEnabled: true
+                onEntered: updatePackagesButton.font.underline = true
+                onExited: updatePackagesButton.font.underline = false
+            }
         }
 
         Label

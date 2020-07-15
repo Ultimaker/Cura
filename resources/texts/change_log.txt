@@ -1,6 +1,15 @@
 [4.6.2]
 
-TODO
+Patch release to fix some bugs that emerged with 4.6.1.
+
+* Persistent notifications in the Marketplace.
+We fixed a frustrating bug where a package would keep issuing a badge notification to update, even after the package had been updated.
+
+* Removed Ultibot from Marketplace login screen.
+For professionalism, Ultibot has been asked to leave the Marketplace login screen. He's now gone from everything.
+
+* Ultimaker 2+ Z-hop.
+The Ultimaker 2+ included an unwanted travel move that could drag purged material into the start of a print. This is now fixed.
 
 [4.6.1]
 

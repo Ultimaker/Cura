@@ -153,7 +153,7 @@ SettingItem
             selectByMouse: true
 
             maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 10
-            clip: true; //Hide any text that exceeds the width of the text box.
+            clip: definition.type == "[int]" // Only clip for the list
 
             validator: RegExpValidator { regExp: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,9}\s*,)*(\s*-?[0-9]{0,9})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : (definition.type == "float") ? /^-?[0-9]{0,9}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
 

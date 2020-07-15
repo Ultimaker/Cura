@@ -204,49 +204,50 @@ class ExtruderManager(QObject):
         # If no extruders are registered in the extruder manager yet, return an empty array
         if len(self.extruderIds) == 0:
             return []
+        number_active_extruders = len([extruder for extruder in self.getActiveExtruderStacks() if extruder.isEnabled])
 
         # Get the extruders of all printable meshes in the scene
-        meshes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        nodes = [node for node in DepthFirstIterator(scene_root) if node.isSelectable() and not node.callDecoration("isAntiOverhangMesh") and not  node.callDecoration("isSupportMesh")] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
 
-        # Exclude anti-overhang meshes
-        mesh_list = []
-        for mesh in meshes:
-            stack = mesh.callDecoration("getStack")
-            if stack is not None and (stack.getProperty("anti_overhang_mesh", "value") or stack.getProperty("support_mesh", "value")):
-                continue
-            mesh_list.append(mesh)
-
-        for mesh in mesh_list:
-            extruder_stack_id = mesh.callDecoration("getActiveExtruder")
+        for node in nodes:
+            extruder_stack_id = node.callDecoration("getActiveExtruder")
             if not extruder_stack_id:
                 # No per-object settings for this node
                 extruder_stack_id = self.extruderIds["0"]
             used_extruder_stack_ids.add(extruder_stack_id)
 
+            if len(used_extruder_stack_ids) == number_active_extruders:
+                # We're already done. Stop looking.
+                # Especially with a lot of models on the buildplate, this will speed up things rather dramatically.
+                break
+
             # Get whether any of them use support.
-            stack_to_use = mesh.callDecoration("getStack")  # if there is a per-mesh stack, we use it
+            stack_to_use = node.callDecoration("getStack")  # if there is a per-mesh stack, we use it
             if not stack_to_use:
                 # if there is no per-mesh stack, we use the build extruder for this mesh
                 stack_to_use = container_registry.findContainerStacks(id = extruder_stack_id)[0]
 
-            support_enabled |= stack_to_use.getProperty("support_enable", "value")
-            support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
-            support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
+            if not support_enabled:
+                support_enabled |= stack_to_use.getProperty("support_enable", "value")
+            if not support_bottom_enabled:
+                support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
+            if not support_roof_enabled:
+                support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
 
-            # Check limit to extruders
-            limit_to_extruder_feature_list = ["wall_0_extruder_nr",
-                                              "wall_x_extruder_nr",
-                                              "roofing_extruder_nr",
-                                              "top_bottom_extruder_nr",
-                                              "infill_extruder_nr",
-                                              ]
-            for extruder_nr_feature_name in limit_to_extruder_feature_list:
-                extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
-                if extruder_nr == -1:
-                    continue
-                if str(extruder_nr) not in self.extruderIds:
-                    extruder_nr = int(self._application.getMachineManager().defaultExtruderPosition)
-                used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+        # Check limit to extruders
+        limit_to_extruder_feature_list = ["wall_0_extruder_nr",
+                                          "wall_x_extruder_nr",
+                                          "roofing_extruder_nr",
+                                          "top_bottom_extruder_nr",
+                                          "infill_extruder_nr",
+                                          ]
+        for extruder_nr_feature_name in limit_to_extruder_feature_list:
+            extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
+            if extruder_nr == -1:
+                continue
+            if str(extruder_nr) not in self.extruderIds:
+                extruder_nr = int(self._application.getMachineManager().defaultExtruderPosition)
+            used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
 
         # Check support extruders
         if support_enabled:

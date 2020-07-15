@@ -57,13 +57,21 @@ class ConvexHullNode(SceneNode):
         self._hull = hull
         if self._hull:
             hull_mesh_builder = MeshBuilder()
+            if self._thickness == 0:
+                if hull_mesh_builder.addConvexPolygon(
+                    self._hull.getPoints()[::],  # bottom layer is reversed
+                    self._mesh_height, color = self._color):
+                    hull_mesh_builder.resetNormals()
 
-            if hull_mesh_builder.addConvexPolygonExtrusion(
-                self._hull.getPoints()[::-1],  # bottom layer is reversed
-                self._mesh_height - thickness, self._mesh_height, color = self._color):
-
-                hull_mesh = hull_mesh_builder.build()
-                self.setMeshData(hull_mesh)
+                    hull_mesh = hull_mesh_builder.build()
+                    self.setMeshData(hull_mesh)
+            else:
+                if hull_mesh_builder.addConvexPolygonExtrusion(
+                    self._hull.getPoints()[::-1],  # bottom layer is reversed
+                    self._mesh_height - thickness, self._mesh_height, color = self._color):
+                    hull_mesh_builder.resetNormals()
+                    hull_mesh = hull_mesh_builder.build()
+                    self.setMeshData(hull_mesh)
 
     def getHull(self):
         return self._hull
@@ -79,15 +87,15 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
             ConvexHullNode.shader.setUniformValue("u_diffuseColor", self._color)
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
-
-        if self.getParent():
-            if self.getMeshData() and isinstance(self._node, SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getMultiBuildPlateModel().activeBuildPlate:
-                # The object itself (+ adhesion in one-at-a-time mode)
-                renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
-                if self._convex_hull_head_mesh:
-                    # The full head. Rendered as a hint to the user: If this area overlaps another object A; this object
-                    # cannot be printed after A, because the head would hit A while printing the current object
-                    renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+        batch = renderer.getNamedBatch("convex_hull_node")
+        if not batch:
+            batch = renderer.createRenderBatch(transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
+            renderer.addRenderBatch(batch, name = "convex_hull_node")
+        batch.addItem(self.getWorldTransformation(copy = False), self.getMeshData())
+        if self._convex_hull_head_mesh:
+            # The full head. Rendered as a hint to the user: If this area overlaps another object A; this object
+            # cannot be printed after A, because the head would hit A while printing the current object
+            renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 
@@ -97,7 +105,3 @@ class ConvexHullNode(SceneNode):
             convex_hull_head_builder = MeshBuilder()
             convex_hull_head_builder.addConvexPolygon(convex_hull_head.getPoints(), self._mesh_height - self._thickness)
             self._convex_hull_head_mesh = convex_hull_head_builder.build()
-
-        if not node:
-            return
-
