@@ -1,0 +1,66 @@
+{
+    "version": 2,
+    "name": "Proforge Original",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Makertech",
+        "manufacturer": "Makertech",
+		"category": "Makertech",
+        "file_formats": "text/x-gcode",
+
+		"has_machine_quality": true,
+		"has_materials": true,
+		"has_variants": true,
+
+        "variants_name": "Nozzle",
+        "preferred_variant_name": "0.4mm",
+		"preferred_material": "makertech_pla",
+        "preferred_quality_type": "normal",
+        
+        "platform": "proforge_original_platform.stl",
+        "platform_offset": [ -115, -57, 120],
+		
+		"machine_extruder_trains": 
+		{
+			"0": "makertech_proforge_original_extruder_0"
+        },
+		
+		"supports_usb_connection": false
+    },
+    "overrides": {
+		"machine_name": { "default_value": "Proforge Original" },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": false },
+        "gantry_height": { "default_value": 80 },
+        "machine_height": { "default_value": 240 },
+        "machine_depth": { "default_value": 200 },
+        "machine_width": { "default_value": 200 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "material_print_temp_wait": { "default_value": false },
+        "material_bed_temp_wait": { "default_value": false },
+        "machine_max_feedrate_z": { "default_value": 5 },
+		"cool_fan_full_layer": { "value": 5 },
+		"line_width": { "value": "machine_nozzle_size * 1.2" },
+		"wall_thickness": { "value": "line_width * 3" },
+		"brim_width": { "default_value": 3 },
+		"infill_sparse_density": { "default_value": 20 },
+		"infill_pattern": { "default_value": "zigzag" },
+		"infill_pattern": { "value": "'lines' if infill_sparse_density > 25 else 'zigzag'" },
+		"skin_overlap": {"default_value": 10 },
+		"fill_perimeter_gaps": { "default_value": "nowhere" },
+		"speed_wall": { "value": "speed_print / 2" },
+		"speed_wall_x": { "value": "speed_wall * 1.2" },
+		"speed_travel": { "value": "speed_print if magic_spiralize else 80" },
+		"wall_0_wipe_dist": { "value": "machine_nozzle_size" },
+		"coasting_enable": { "default_value": true },
+		"coasting_volume": { "default_value": 0.15 },
+        "machine_start_gcode": {
+            "default_value": ";----------Proforge Original Start G-code---------- \nM140 S{material_bed_temperature_layer_0} ;Set Bed Temp \nM104 S{material_print_temperature_layer_0} T0; Heat up Hotend 1 (T0) \nM109 S{material_print_temperature_layer_0} T0; Wait for Hotend 1 (T0) \nG28 ;Home \nG29 ;Autolevel Bed \nM420 Z5 ;Levelling fade off \nG1 F8000 X10 Y5 ;Move hotend to bottom left corner \n\n; ---Unique to your setup---\nG0 Z0.0 ;Set Z-offset in 0.1mm incriments (Increase if first layer too low)\n; --------------------------\n\nG92 Z{layer_height_0} ;Set to first layer height \nM82 ;absolute extrusion mode \nG92 E0 ;Zero Extruder \nG1 F1500 X190 E15 ;Prime Hotend\n; ----------Proforge Original Start G-code----------"
+        },
+        "machine_end_gcode": {
+            "default_value": "G91 ;Relative postioning\nG1 Z5 F600 ;Raise Hotend\nG90 ;Absolute postioning\nG28 X Y ;Home \nM104 S0 ;Hotend off\nM140 S0 ;Bed off\nM84 ;Motors off"
+        }
+    }
+}

@@ -1,0 +1,80 @@
+{
+    "version": 2,
+	"name": "AXIS",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Makertech",
+        "manufacturer": "Makertech",
+		"category": "Makertech",
+        "file_formats": "text/x-gcode",
+
+        "has_machine_quality": true,
+		"has_materials": true,
+		"has_variants": true,
+		
+		"variants_name": "Nozzle",
+        "preferred_variant_name": "0.3mm",
+		"preferred_material": "makertech_pla",
+        "preferred_quality_type": "normal",
+
+        "platform": "axis_platform.stl",
+        "platform_offset": [ -207, -84, 197],
+		
+		"machine_extruder_trains":
+        {
+            "0": "makertech_axis_extruder_0",
+			"1": "makertech_axis_extruder_1"
+        },
+		
+		"first_start_actions": ["MachineSettingsAction"],
+		
+		"supports_usb_connection": false
+		
+    },
+    "overrides": {
+	    "machine_name": { "default_value": "AXIS" },
+        "material_diameter": { "default_value": 1.75 },
+		"material_print_temp_wait": { "default_value": false },
+        "machine_heated_bed": { "default_value": false },
+        "machine_center_is_zero": { "default_value": false },
+		"machine_extruders_share_heater": { "default_value": true },
+        "gantry_height": { "value": 20 },
+		"machine_head_with_fans_polygon": { "default_value": [ [ -50, 32 ],[ -50, -26 ],[ 47, 32 ],[ 47, -26 ] ] },
+        "machine_height": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_width": { "default_value": 300 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "material_print_temp_wait": { "default_value": false },
+        "material_bed_temp_wait": { "default_value": false },
+        "machine_max_feedrate_z": { "default_value": 5 },
+		"layer_height_0": { "value": "machine_nozzle_size * 0.6" },
+		"initial_layer_line_width_factor": { "value": 110 },
+		"cool_fan_full_at_height": { "value": 2 },
+		"line_width": { "value": "machine_nozzle_size * 1" },
+		"wall_thickness": { "value": "line_width * 3" },
+		"brim_width": { "default_value": 3 },
+		"infill_sparse_density": { "default_value": 20 },
+		"infill_pattern": { "default_value": "zigzag" },
+		"skin_overlap": {"default_value": 10 },
+		"fill_perimeter_gaps": { "default_value": "nowhere" },
+		"speed_wall": { "value": "speed_print / 2" },
+		"speed_wall_x": { "value": "speed_wall * 1.6" },
+		"speed_travel": { "value": "speed_print if magic_spiralize else 80" },
+		"wall_0_wipe_dist": { "value": "machine_nozzle_size" },
+		"coasting_enable": { "default_value": true },
+		"coasting_volume": { "default_value": 0.15 },
+		"retraction_hop_after_extruder_switch": { "default_value": false },
+		"switch_extruder_retraction_amount": { "value": 0 },
+		"prime_tower_enable": { "default_value": false },
+		"prime_tower_size": { "default_value": 30, "maximum_value_warning": 35 },
+		"prime_tower_min_volume": { "default_value": 65 },
+        "machine_start_gcode": {
+		            "default_value": ";----------AXIS Start G-code---------- \nT0 \nM104 S{material_print_temperature_layer_0} ;Set hotend temp. \nM140 S{material_bed_temperature_layer_0} ;Set bed temp. \nM109 S{material_print_temperature_layer_0} ;Wait for hotend \nM190 S{material_bed_temperature_layer_0} ;Wait for heated bed \nG28 ;Home \nM420 S1 Z4 ;Activate auto-level and set Z-fade. \nG1 F8000 X10 Y3 ;Move hotend to bottom left corner \nG1 Z{layer_height_0} ;Set to first layer height \nM82 ;absolute extrusion mode \nG92 E0 ;Zero Extruder \nG1 F1500 X290 E12 ;Prime Hotend \n; ----------AXIS start G-code----------"
+        },
+        "machine_end_gcode": {
+            "default_value": "G91 ;Relative postioning\nG1 Z5 F600 ;Raise Hotend\nG90 ;Absolute postioning\nG28 X Y ;Home and present print\nM104 S0 ;Hotend off\nM140 S0 ;Bed off\nM84 ;Motors off"
+        }
+		
+		}
+}

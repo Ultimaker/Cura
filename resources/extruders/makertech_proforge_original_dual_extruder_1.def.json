@@ -1,0 +1,22 @@
+{
+    "id": "makertech_proforge_original_dual_extruder_1",
+    "version": 2,
+    "name": "Right Extruder",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "proforge_original_dual",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 1 },
+		"machine_nozzle_size": { "default_value": 0.3 },
+        "material_diameter": { "default_value": 1.75 },
+		"machine_extruder_start_code": {
+            "default_value": ";-------------Extruder 2 Start-Gcode ------------- \nM104 S{material_print_temperature} T1  \n;-------------Extruder 2 Start-Gcode -------------"
+        }
+
+    }
+}
+
+
