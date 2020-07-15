@@ -40,10 +40,18 @@ class VersionUpgrade462to47(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "15"
         
-        # Remove deleted settings from the visible settings list.
         if "general" in parser and "visible_settings" in parser["general"]:
-            parser["general"]["visible_settings"] = ";".join(
-                set(parser["general"]["visible_settings"].split(";")).difference(_removed_settings))
+            settings = set(parser["general"]["visible_settings"].split(";"))
+
+            # add support_structure to the visible settings list if necessary
+            if "support_tree_enable" in parser["general"]["visible_settings"]:
+                settings.add("support_structure")
+
+            # Remove deleted settings from the visible settings list.
+            settings.difference_update(_removed_settings)
+
+            # serialize
+            parser["general"]["visible_settings"] = ";".join(settings)
 
         result = io.StringIO()
         parser.write(result)
