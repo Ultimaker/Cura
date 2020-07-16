@@ -289,7 +289,7 @@ class ExtruderManager(QObject):
             return global_stack.getProperty("adhesion_extruder_nr", "value")
 
         # No adhesion? Well maybe there is still support brim.
-        if (global_stack.getProperty("support_enable", "value") or global_stack.getProperty("support_tree_enable", "value")) and global_stack.getProperty("support_brim_enable", "value"):
+        if (global_stack.getProperty("support_enable", "value") or global_stack.getProperty("support_structure", "value") == "tree") and global_stack.getProperty("support_brim_enable", "value"):
             return global_stack.getProperty("support_infill_extruder_nr", "value")
 
         # REALLY no adhesion? Use the first used extruder.

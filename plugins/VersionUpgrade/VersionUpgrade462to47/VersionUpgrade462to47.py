@@ -21,7 +21,8 @@ _removed_settings = {
     "spaghetti_max_height",
     "spaghetti_inset",
     "spaghetti_flow",
-    "spaghetti_infill_extra_volume"
+    "spaghetti_infill_extra_volume",
+    "support_tree_enable"
 }  # type: Set[str]
 
 class VersionUpgrade462to47(VersionUpgrade):
@@ -39,10 +40,18 @@ class VersionUpgrade462to47(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "15"
         
-        # Remove deleted settings from the visible settings list.
         if "general" in parser and "visible_settings" in parser["general"]:
-            parser["general"]["visible_settings"] = ";".join(
-                set(parser["general"]["visible_settings"].split(";")).difference(_removed_settings))
+            settings = set(parser["general"]["visible_settings"].split(";"))
+
+            # add support_structure to the visible settings list if necessary
+            if "support_tree_enable" in parser["general"]["visible_settings"]:
+                settings.add("support_structure")
+
+            # Remove deleted settings from the visible settings list.
+            settings.difference_update(_removed_settings)
+
+            # serialize
+            parser["general"]["visible_settings"] = ";".join(settings)
 
         result = io.StringIO()
         parser.write(result)
@@ -93,7 +102,13 @@ class VersionUpgrade462to47(VersionUpgrade):
                     correction = " + skin_line_width * (1.0 - ironing_flow / 100) / 2"
                 ironing_inset = "=(" + ironing_inset + ")" + correction
                 parser["values"]["ironing_inset"] = ironing_inset
-                
+
+            # Set support_structure if necessary
+            if "support_tree_enable" in parser["values"]:
+                if parseBool(parser["values"]["support_tree_enable"]):
+                    parser["values"]["support_structure"] = "tree"
+                    parser["values"]["support_enable"] = "True"
+
             for removed in set(parser["values"].keys()).intersection(_removed_settings):
                 del parser["values"][removed]
 
