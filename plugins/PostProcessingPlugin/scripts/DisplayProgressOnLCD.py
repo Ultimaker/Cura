@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
-# Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee
+# Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, ftk
 # Date:     July 31, 2019
-# Modified: May 22, 2020
+# Modified: July 18, 2020
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -25,15 +25,22 @@ class DisplayProgressOnLCD(Script):
             {
                 "time_remaining":
                 {
-                    "label": "Time Remaining",
+                    "label": "Time Remaining (message)",
                     "description": "When enabled, write Time Left: HHMMSS on the display using M117. This is updated every layer.",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "time_remainingM73":
+                {
+                    "label": "Time Remaining (M73)",
+                    "description": "When enabled, set the remaining time on the LCD using Marlin's M73 R command. This is updated every layer.",
                     "type": "bool",
                     "default_value": false
                 },
                 "percentage":
                 {
                     "label": "Percentage",
-                    "description": "When enabled, set the completion bar percentage on the LCD using Marlin's M73 command.",
+                    "description": "When enabled, set the completion bar percentage on the LCD using Marlin's M73 P command.",
                     "type": "bool",
                     "default_value": false
                 }
@@ -57,6 +64,7 @@ class DisplayProgressOnLCD(Script):
 
     def execute(self, data):
         output_time = self.getSettingValueByKey("time_remaining")
+        output_timeM73 = self.getSettingValueByKey("time_remainingM73")
         output_percentage = self.getSettingValueByKey("percentage")
         line_set = {}
         if output_percentage or output_time:
@@ -98,6 +106,9 @@ class DisplayProgressOnLCD(Script):
                         if output_time:
                             # Here we calculate remaining time
                             self.outputTime(lines, line_index, total_time - current_time)
+
+                        if output_timeM73:
+                            lines.insert(line_index, "M73 R{}".format(int((total_time - current_time)/60)))
 
                         if output_percentage:
                             # Calculate percentage value this layer ends at
