@@ -4172,6 +4172,20 @@
                         }
                     }
                 },
+                "support_structure":
+                {
+                    "label": "Support Structure",
+                    "description": "Generate a tree-like support ",
+                    "type": "enum",
+                    "options":
+                    {
+                        "normal": "Normal",
+                        "tree": "Tree"
+                    },
+                    "default_value": "normal",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "support_type":
                 {
                     "label": "Support Placement",
@@ -6207,20 +6221,6 @@
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
-                "support_structure":
-                {
-                    "label": "Support Structure",
-                    "description": "Generate a tree-like support ",
-                    "type": "enum",
-                    "options":
-                    {
-                        "normal": "Normal",
-                        "tree": "Tree"
-                    },
-                    "default_value": "normal",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
                 "support_tree_angle":
                 {
                     "label": "Tree Support Branch Angle",
