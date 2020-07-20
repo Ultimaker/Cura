@@ -182,19 +182,19 @@ class PauseAtHeight(Script):
                         "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
-                    "enabled": false
+                    "enabled": false,
                     "default_value": ""
                 },
                 "custom_gcode_before_pause":
                 {
-                    "label": "GCODE Before Pause",
+                    "label": "G-code Before Pause",
                     "description": "Any custom GCODE to run before the pause, for example, M300 S440 P200 to beep.",
                     "type": "str",
                     "default_value": "M300 S440 P200; M300 S660 P250; M300 S880 P300;"
                 },
                 "custom_gcode_after_pause":
                 {
-                    "label": "GCODE After Pause",
+                    "label": "G-code After Pause",
                     "description": "Any custom GCODE to run after the pause, for example, M300 S440 P200 to beep.",
                     "type": "str",
                     "default_value": ""
