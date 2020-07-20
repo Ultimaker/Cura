@@ -190,7 +190,7 @@ class PauseAtHeight(Script):
                     "label": "G-code Before Pause",
                     "description": "Any custom GCODE to run before the pause, for example, M300 S440 P200 to beep.",
                     "type": "str",
-                    "default_value": "M300 S440 P200; M300 S660 P250; M300 S880 P300;"
+                    "default_value": ""
                 },
                 "custom_gcode_after_pause":
                 {
