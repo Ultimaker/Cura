@@ -4186,6 +4186,78 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "support_tree_angle":
+                {
+                    "label": "Tree Support Branch Angle",
+                    "description": "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "60",
+                    "default_value": 40,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_tree_branch_distance":
+                {
+                    "label": "Tree Support Branch Distance",
+                    "description": "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "default_value": 1,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": true
+                },
+                "support_tree_branch_diameter":
+                {
+                    "label": "Tree Support Branch Diameter",
+                    "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "support_line_width * 2",
+                    "default_value": 2,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_tree_branch_diameter_angle":
+                {
+                    "label": "Tree Support Branch Diameter Angle",
+                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "89.9999",
+                    "maximum_value_warning": "15",
+                    "default_value": 5,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_tree_collision_resolution":
+                {
+                    "label": "Tree Support Collision Resolution",
+                    "description": "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "support_line_width / 4",
+                    "maximum_value_warning": "support_line_width * 2",
+                    "default_value": 0.4,
+                    "value": "support_line_width / 2",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree' and support_tree_branch_diameter_angle > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_type":
                 {
                     "label": "Support Placement",
@@ -6221,78 +6293,6 @@
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
-                "support_tree_angle":
-                {
-                    "label": "Tree Support Branch Angle",
-                    "description": "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
-                    "unit": "°",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "90",
-                    "maximum_value_warning": "60",
-                    "default_value": 40,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_tree_branch_distance":
-                {
-                    "label": "Tree Support Branch Distance",
-                    "description": "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "default_value": 1,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true
-                },
-                "support_tree_branch_diameter":
-                {
-                    "label": "Tree Support Branch Diameter",
-                    "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "support_line_width * 2",
-                    "default_value": 2,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_tree_branch_diameter_angle":
-                {
-                    "label": "Tree Support Branch Diameter Angle",
-                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
-                    "unit": "°",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "89.9999",
-                    "maximum_value_warning": "15",
-                    "default_value": 5,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_tree_collision_resolution":
-                {
-                    "label": "Tree Support Collision Resolution",
-                    "description": "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "support_line_width / 4",
-                    "maximum_value_warning": "support_line_width * 2",
-                    "default_value": 0.4,
-                    "value": "support_line_width / 2",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree' and support_tree_branch_diameter_angle > 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "slicing_tolerance":
                 {
                     "label": "Slicing Tolerance",
