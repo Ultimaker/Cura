@@ -117,7 +117,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         for port in serial.tools.list_ports.comports():
             if not isinstance(port, tuple):
                 port = (port.device, port.description, port.hwid)
-            if not port[2]:  # HWID may be None if the port got disconnected while processing.
+            if not port[2]:  # HWID may be None if the port got disconnected while processing, the device is not USB or the system doesn't report the type.
                 continue
             if only_list_usb and not port[2].startswith("USB"):
                 continue
