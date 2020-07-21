@@ -64,9 +64,9 @@ class Backup:
         files = archive.namelist()
 
         # Count the metadata items. We do this in a rather naive way at the moment.
-        machine_count = len([s for s in files if "machine_instances/" in s]) - 1
-        material_count = len([s for s in files if "materials/" in s]) - 1
-        profile_count = len([s for s in files if "quality_changes/" in s]) - 1
+        machine_count = max(len([s for s in files if "machine_instances/" in s]) - 1, 0)  # If people delete their profiles but not their preferences, it can still make a backup, and report -1 profiles. Server crashes on this.
+        material_count = max(len([s for s in files if "materials/" in s]) - 1, 0)
+        profile_count = max(len([s for s in files if "quality_changes/" in s]) - 1, 0)
         plugin_count = len([s for s in files if "plugin.json" in s])
 
         # Store the archive and metadata so the BackupManager can fetch them when needed.
