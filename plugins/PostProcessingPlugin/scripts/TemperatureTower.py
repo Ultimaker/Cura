@@ -6,7 +6,6 @@ from typing import List
 from ..Script import Script
 from UM.Application import Application
 
-#  Performs a search-and-replace on all g-code.
 class TemperatureTower(Script):
     def getSettingDataString(self):
         return """{
