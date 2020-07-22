@@ -117,19 +117,9 @@ Item
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.top: name.bottom
-            anchors.bottom: rating.top
+            anchors.bottom: parent.bottom
             verticalAlignment: Text.AlignVCenter
             maximumLineCount: 2
-        }
-        SmallRatingWidget
-        {
-            id: rating
-            anchors
-            {
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-            }
         }
     }
 }
