@@ -4182,6 +4182,7 @@
                         "normal": "Normal",
                         "tree": "Tree"
                     },
+                    "enabled": "support_enable or support_meshes_present",
                     "default_value": "normal",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
