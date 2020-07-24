@@ -20,9 +20,6 @@
         "machine_heated_bed": {
             "default_value": true
         },
-        "travel_compensate_overlapping_walls_enabled": {
-            "default_value": false
-        },
         "layer_height": {
             "default_value": 0.2
         },

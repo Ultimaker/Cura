@@ -91,7 +91,6 @@
         "wall_0_inset":              {"value": "0" },
         "outer_inset_first":         {"value": true },
         "alternate_extra_perimeter": {"value": false },
-        "travel_compensate_overlapping_walls_enabled": {"value": false },
         "filter_out_tiny_gaps":      {"value": true },
         "fill_outline_gaps":         {"value": true },
         "z_seam_type":               {"value": "'shortest'"},

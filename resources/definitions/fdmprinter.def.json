@@ -1283,38 +1283,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "travel_compensate_overlapping_walls_enabled":
-                {
-                    "label": "Compensate Wall Overlaps",
-                    "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
-                    "type": "bool",
-                    "default_value": true,
-                    "limit_to_extruder": "wall_x_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "travel_compensate_overlapping_walls_0_enabled":
-                        {
-                            "label": "Compensate Outer Wall Overlaps",
-                            "description": "Compensate the flow for parts of an outer wall being printed where there is already a wall in place.",
-                            "type": "bool",
-                            "default_value": true,
-                            "value": "travel_compensate_overlapping_walls_enabled",
-                            "limit_to_extruder": "wall_0_extruder_nr",
-                            "settable_per_mesh": true
-                        },
-                        "travel_compensate_overlapping_walls_x_enabled":
-                        {
-                            "label": "Compensate Inner Wall Overlaps",
-                            "description": "Compensate the flow for parts of an inner wall being printed where there is already a wall in place.",
-                            "type": "bool",
-                            "default_value": true,
-                            "value": "travel_compensate_overlapping_walls_enabled",
-                            "limit_to_extruder": "wall_x_extruder_nr",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
                 "wall_min_flow":
                 {
                     "label": "Minimum Wall Flow",
@@ -1324,7 +1292,6 @@
                     "maximum_value": "100",
                     "default_value": 0,
                     "type": "float",
-                    "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
                     "settable_per_mesh": true
                 },
                 "wall_min_flow_retract":
@@ -1333,7 +1300,7 @@
                     "description": "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
+                    "enabled": "wall_min_flow > 0",
                     "settable_per_mesh": true
                 },
                 "fill_perimeter_gaps":
