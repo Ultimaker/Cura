@@ -9,7 +9,7 @@
         "file_formats": "text/x-gcode",
         "supports_usb_connection": false,
         "machine_extruder_trains": {
-            "0": "cubicon_style_plus_a15_extruder_0"
+            "0": "cubicon_style_neo_a22_extruder_0"
         },
         "platform_offset": [
             0,
