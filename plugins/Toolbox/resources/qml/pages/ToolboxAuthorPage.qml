@@ -33,7 +33,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
             fillMode: Image.PreserveAspectFit
-            source: details.icon_url || "../../images/placeholder.svg"
+            source: details && details.icon_url ? details.icon_url : "../../images/placeholder.svg"
             mipmap: true
             anchors
             {
@@ -56,7 +56,7 @@ Item
                 rightMargin: UM.Theme.getSize("wide_margin").width
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            text: details.name || ""
+            text: details && details.name ? details.name : ""
             font: UM.Theme.getFont("large_bold")
             wrapMode: Text.WordWrap
             width: parent.width
@@ -66,7 +66,7 @@ Item
         Label
         {
             id: description
-            text: details.description || ""
+            text: details && details.description ? details.description : ""
             font: UM.Theme.getFont("default")
             anchors
             {
@@ -121,7 +121,7 @@ Item
             {
                 text:
                 {
-                    if (details.website)
+                    if (details && details.website)
                     {
                         return "<a href=\"" + details.website + "\">" + details.website + "</a>"
                     }
@@ -140,7 +140,7 @@ Item
             {
                 text:
                 {
-                    if (details.email)
+                    if (details && details.email)
                     {
                         return "<a href=\"mailto:" + details.email + "\">" + details.email + "</a>"
                     }
