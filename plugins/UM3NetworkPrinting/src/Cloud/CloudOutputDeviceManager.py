@@ -262,7 +262,7 @@ class CloudOutputDeviceManager:
 
         message_text = self.I18N_CATALOG.i18nc(
             "info:status",
-            "Cloud printers added from your account:<ul>{}</ul>",
+            "Printers added from Digital Factory:<ul>{}</ul>",
             device_names
         )
         message.setText(message_text)
@@ -321,21 +321,21 @@ class CloudOutputDeviceManager:
         self._removed_printers_message = Message(
                 title = self.I18N_CATALOG.i18ncp(
                         "info:status",
-                        "Cloud connection is not available for a printer",
-                        "Cloud connection is not available for some printers",
+                        "A cloud connection is not available for a printer",
+                        "A cloud connection is not available for some printers",
                         len(self.reported_device_ids)
                 )
         )
-        device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
+        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.I18N_CATALOG.i18ncp(
                 "info:status",
-                "The following cloud printer is not linked to your account:\n",
-                "The following cloud printers are not linked to your account:\n",
+                "This printer is not linked to the Digital Factory:",
+                "These printers are not linked to the Digital Factory:",
                 len(self.reported_device_ids)
         )
         message_text += self.I18N_CATALOG.i18nc(
                 "info:status",
-                "<ul>{}</ul>\nTo establish a connection, please visit the "
+                "<ul>{}</ul>To establish a connection, please visit the "
                 "<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>.",
                 device_names
         )
@@ -343,12 +343,12 @@ class CloudOutputDeviceManager:
         self._removed_printers_message.addAction("keep_printer_configurations_action",
                                                  name = self.I18N_CATALOG.i18nc("@action:button", "Keep printer configurations"),
                                                  icon = "",
-                                                 description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
+                                                 description = "Keep cloud printers in Ultimaker Cura when not connected to your account.",
                                                  button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
         self._removed_printers_message.addAction("remove_printers_action",
                                                  name = self.I18N_CATALOG.i18nc("@action:button", "Remove printers"),
                                                  icon = "",
-                                                 description = "Remove the cloud printer(s) which are not linked to your account.",
+                                                 description = "Remove cloud printer(s) which aren't linked to your account.",
                                                  button_style = Message.ActionButtonStyle.SECONDARY,
                                                  button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
         self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
