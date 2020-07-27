@@ -24,7 +24,7 @@ Rectangle
             Label
             {
                 id: heading
-                text: catalog.i18nc("@label", "Featured")
+                text: catalog.i18nc("@label", "Premium")
                 width: contentWidth
                 height: contentHeight
                 color: UM.Theme.getColor("text_medium")
