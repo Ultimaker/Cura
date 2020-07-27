@@ -25,6 +25,18 @@ _removed_settings = {
     "support_tree_enable"
 }  # type: Set[str]
 
+_removed_machine_network_metadata = {
+    "um_cloud_cluster_id",
+    "um_network_key",
+    "um_linked_to_account",
+    "host_guid",
+    "removal_warning",
+    "group_name",
+    "group_size",
+    "connection_type"
+}  # type: Set[str]
+
+
 class VersionUpgrade462to47(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
@@ -135,6 +147,11 @@ class VersionUpgrade462to47(VersionUpgrade):
         if "metadata" not in parser:
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "15"
+
+        # Remove machine network information from project file
+        for network_info in _removed_machine_network_metadata:
+            if network_info in parser["metadata"]:
+                del parser["metadata"][network_info]
 
         # Update Pause at Height script parameters if present.
         if "post_processing_scripts" in parser["metadata"]:
