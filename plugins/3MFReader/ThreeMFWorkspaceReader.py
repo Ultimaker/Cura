@@ -5,7 +5,7 @@ from configparser import ConfigParser
 import zipfile
 import os
 import json
-from typing import cast, Dict, List, Optional, Tuple, Any
+from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
@@ -39,6 +39,18 @@ from PyQt5.QtCore import QCoreApplication
 from .WorkspaceDialog import WorkspaceDialog
 
 i18n_catalog = i18nCatalog("cura")
+
+
+_ignored_machine_network_metadata = {
+    "um_cloud_cluster_id",
+    "um_network_key",
+    "um_linked_to_account",
+    "host_guid",
+    "removal_warning",
+    "group_name",
+    "group_size",
+    "connection_type"
+}  # type: Set[str]
 
 
 class ContainerInfo:
@@ -1069,7 +1081,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         for key, value in self._machine_info.metadata_dict.items():
-            global_stack.setMetaDataEntry(key, value)
+            if key not in _ignored_machine_network_metadata:
+                global_stack.setMetaDataEntry(key, value)
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
@@ -1080,7 +1093,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData():
+            if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
