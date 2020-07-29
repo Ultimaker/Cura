@@ -358,7 +358,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # any such leftovers are purged from the registry.
         quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type="quality_changes")
 
-        profile_count_by_name = {}
+        profile_count_by_name = {}  # type: Dict[str, int]
 
         for quality_change in quality_changes:
             name = quality_change.get("name")
