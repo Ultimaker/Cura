@@ -45,7 +45,7 @@ class CuraContainerRegistry(ContainerRegistry):
         self.containerAdded.connect(self._onContainerAdded)
 
     @override(ContainerRegistry)
-    def addContainer(self, container: ContainerInterface) -> None:
+    def addContainer(self, container: ContainerInterface) -> bool:
         """Overridden from ContainerRegistry
 
         Adds a container to the registry.
@@ -64,9 +64,9 @@ class CuraContainerRegistry(ContainerRegistry):
             actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
             if required_setting_version != actual_setting_version:
                 Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id = container.getId(), actual_setting_version = actual_setting_version, required_setting_version = required_setting_version))
-                return  # Don't add.
+                return False  # Don't add.
 
-        super().addContainer(container)
+        return super().addContainer(container)
 
     def createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
         """Create a name that is not empty and unique
@@ -411,7 +411,8 @@ class CuraContainerRegistry(ContainerRegistry):
         if quality_type != empty_quality_container.getMetaDataEntry("quality_type") and quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
-        ContainerRegistry.getInstance().addContainer(profile)
+        if not self.addContainer(profile):
+            return catalog.i18nc("@info:status", "Unable to add the profile.")
 
         return None
 
