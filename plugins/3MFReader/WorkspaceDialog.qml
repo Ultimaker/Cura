@@ -20,6 +20,7 @@ UM.Dialog
 
     property int comboboxHeight: 15 * screenScaleFactor
     property int spacerHeight: 10 * screenScaleFactor
+    property string machineResolveStrategyCurrentKey: "override"
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -101,34 +102,27 @@ UM.Dialog
                 }
                 UM.TooltipArea
                 {
-                    id: machineResolveTooltip
+                    id: machineResolveStrategyTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: manager.machineConflict
+                    visible: manager.availableMachinesCount != 0
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
+                        id: machineResolveComboBox
                         model: ListModel
                         {
                             Component.onCompleted:
                             {
-                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update") + " " + manager.machineName});
-                                append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new")});
-                            }
-                        }
-                        Connections
-                        {
-                            target: manager
-                            onMachineNameChanged:
-                            {
-                                machineResolveComboBox.model.get(0).label = catalog.i18nc("@action:ComboBox option", "Update") + " " + manager.machineName;
+                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing printer")});
+                                append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new printer")});
                             }
                         }
                         textRole: "label"
-                        id: machineResolveComboBox
                         width: parent.width
                         onActivated:
                         {
+                            machineResolveStrategyCurrentKey = resolveStrategiesModel.get(index).key
                             manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
                         }
                     }
@@ -163,6 +157,39 @@ UM.Dialog
                 {
                     text: manager.machineName
                     width: (parent.width / 3) | 0
+                }
+                UM.TooltipArea
+                {
+                    id: machineResolveTooltip
+                    width: (parent.width / 3) | 0
+                    height: visible ? comboboxHeight : 0
+                    visible: base.visible && manager.availableMachinesCount != 0 && machineResolveStrategyCurrentKey == "override"
+                    text: catalog.i18nc("@info:tooltip", "Which machine of the same type should be overriden?")
+                    ComboBox
+                    {
+                        id: selectMachineComboBox
+                        model: manager.availableMachines
+                        width: parent.width
+                        onCurrentIndexChanged:
+                        {
+                            manager.setMachineToOverride(model[currentIndex])
+                        }
+                        onVisibleChanged:
+                        {
+                            if (visible)
+                            {
+                                currentIndex = 0
+                                for (var i = 0; i < count; i++)
+                                {
+                                    if (model[i] == manager.machineName)
+                                    {
+                                        currentIndex = i
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

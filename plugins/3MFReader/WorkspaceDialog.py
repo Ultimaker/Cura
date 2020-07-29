@@ -29,6 +29,7 @@ class WorkspaceDialog(QObject):
                         "quality_changes": self._default_strategy,
                         "definition_changes": self._default_strategy,
                         "material": self._default_strategy}
+        self._override_machine = None
         self._visible = False
         self.showDialogSignal.connect(self.__show)
 
@@ -45,6 +46,7 @@ class WorkspaceDialog(QObject):
         self._quality_type = ""
         self._intent_name = ""
         self._machine_name = ""
+        self._available_machines = []
         self._machine_type = ""
         self._variant_type = ""
         self._material_labels = []
@@ -63,6 +65,7 @@ class WorkspaceDialog(QObject):
     qualityTypeChanged = pyqtSignal()
     intentNameChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
+    availableMachinesChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
@@ -141,6 +144,19 @@ class WorkspaceDialog(QObject):
         if self._machine_name != machine_name:
             self._machine_name = machine_name
             self.machineNameChanged.emit()
+
+    @pyqtProperty("QVariantList", notify = availableMachinesChanged)
+    def availableMachines(self):
+        return self._available_machines
+
+    def setAvailableMachines(self, available_machines):
+        if self._available_machines != available_machines:
+            self._available_machines = sorted(available_machines)
+            self.availableMachinesChanged.emit()
+
+    @pyqtProperty(int, notify = availableMachinesChanged)
+    def availableMachinesCount(self):
+        return len(self._available_machines)
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self):
@@ -228,6 +244,13 @@ class WorkspaceDialog(QObject):
     def setResolveStrategy(self, key, strategy):
         if key in self._result:
             self._result[key] = strategy
+
+    def getMachineToOverride(self):
+        return self._override_machine
+
+    @pyqtSlot(str)
+    def setMachineToOverride(self, machine_name):
+        self._override_machine = machine_name
 
     @pyqtSlot()
     def closeBackend(self):

@@ -133,12 +133,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
-        self._is_same_machine_type = False
+        # self._is_same_machine_type = False
         self._old_new_materials = {} # type: Dict[str, str]
         self._machine_info = None
 
     def _clearState(self):
-        self._is_same_machine_type = False
+        # self._is_same_machine_type = False
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
@@ -229,6 +229,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Read definition containers
         #
         machine_definition_id = None
+        available_machines = []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -244,7 +245,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
-                machine_definition_id = container_id
+                machine_definition_id = container_id  # TODO
+                my_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
+                available_machines = [i.name for i in self._container_registry.findContainerStacks(type = "machine") if
+                                       i.definition == my_definition_containers[0]]
                 machine_type = definition_container["name"]
                 variant_type_name = definition_container.get("variants_name", variant_type_name)
 
@@ -386,8 +390,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_definition_id = id_list[7]
 
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
-        self._is_same_machine_type = True
+        # self._is_same_machine_type = True
         existing_global_stack = None
+        global_stack = None
 
         if stacks:
             global_stack = stacks[0]
@@ -400,7 +405,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
                     break
-            self._is_same_machine_type = global_stack.definition.getId() == machine_definition_id
+        elif available_machines:
+            containers_found_dict["machine"] = True
+            # self._is_same_machine_type = global_stack.definition.getId() == machine_definition_id
 
         # Get quality type
         parser = ConfigParser(interpolation = None)
@@ -482,7 +489,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if intent_id not in ("empty", "empty_intent"):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
-            if not machine_conflict and containers_found_dict["machine"]:
+            if not machine_conflict and containers_found_dict["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
                     continue
 
@@ -548,8 +555,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.custom_quality_name = quality_name
         self._machine_info.intent_category = intent_category
 
-        if machine_conflict and not self._is_same_machine_type:
-            machine_conflict = False
+        # if machine_conflict and not self._is_same_machine_type:
+        #     machine_conflict = False
 
         is_printer_group = False
         if machine_conflict:
@@ -571,6 +578,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
+        self._dialog.setAvailableMachines(available_machines)
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
@@ -652,7 +660,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If a machine with the same name is of a different type, always create a new one.
-        if not self._is_same_machine_type or self._resolve_strategies["machine"] != "override":
+        if self._resolve_strategies["machine"] != "override" or not self._dialog.availableMachines:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
@@ -662,8 +670,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 self._container_registry.addContainer(global_stack)
         else:
-            # Find the machine
-            global_stacks = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")
+            # Find the machine which will be overridden
+            global_stacks = self._container_registry.findContainerStacks(name = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura.", file_name))
                 message.show()
