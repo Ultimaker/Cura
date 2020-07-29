@@ -361,7 +361,7 @@ class CuraContainerRegistry(ContainerRegistry):
         profile_count_by_name = {}  # type: Dict[str, int]
 
         for quality_change in quality_changes:
-            name = quality_change.get("name")
+            name = str(quality_change.get("name", ""))
             if name == "empty":
                 continue
             if name not in profile_count_by_name:
