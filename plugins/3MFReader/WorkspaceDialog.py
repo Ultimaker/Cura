@@ -46,7 +46,7 @@ class WorkspaceDialog(QObject):
         self._quality_type = ""
         self._intent_name = ""
         self._machine_name = ""
-        self._available_machines = []
+        self._updatable_machines = []
         self._machine_type = ""
         self._variant_type = ""
         self._material_labels = []
@@ -65,7 +65,7 @@ class WorkspaceDialog(QObject):
     qualityTypeChanged = pyqtSignal()
     intentNameChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
-    availableMachinesChanged = pyqtSignal()
+    updatableMachinesChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
@@ -145,18 +145,18 @@ class WorkspaceDialog(QObject):
             self._machine_name = machine_name
             self.machineNameChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = availableMachinesChanged)
-    def availableMachines(self):
-        return self._available_machines
+    @pyqtProperty("QVariantList", notify = updatableMachinesChanged)
+    def updatableMachines(self):
+        return self._updatable_machines
 
-    def setAvailableMachines(self, available_machines):
-        if self._available_machines != available_machines:
-            self._available_machines = sorted(available_machines)
-            self.availableMachinesChanged.emit()
+    def setUpdatableMachines(self, updatable_machines):
+        if self._updatable_machines != updatable_machines:
+            self._updatable_machines = sorted(updatable_machines)
+            self.updatableMachinesChanged.emit()
 
-    @pyqtProperty(int, notify = availableMachinesChanged)
-    def availableMachinesCount(self):
-        return len(self._available_machines)
+    @pyqtProperty(int, notify = updatableMachinesChanged)
+    def updatableMachinesCount(self):
+        return len(self._updatable_machines)
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self):

@@ -105,7 +105,7 @@ UM.Dialog
                     id: machineResolveStrategyTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: manager.availableMachinesCount != 0
+                    visible: manager.updatableMachinesCount != 0
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
@@ -163,12 +163,12 @@ UM.Dialog
                     id: machineResolveTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: base.visible && manager.availableMachinesCount != 0 && machineResolveStrategyCurrentKey == "override"
+                    visible: base.visible && manager.updatableMachinesCount != 0 && machineResolveStrategyCurrentKey == "override"
                     text: catalog.i18nc("@info:tooltip", "Which machine of the same type should be overriden?")
                     ComboBox
                     {
                         id: selectMachineComboBox
-                        model: manager.availableMachines
+                        model: manager.updatableMachines
                         width: parent.width
                         onCurrentIndexChanged:
                         {
