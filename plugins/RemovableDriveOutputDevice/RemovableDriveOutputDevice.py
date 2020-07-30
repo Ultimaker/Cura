@@ -79,7 +79,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         if extension:  # Not empty string.
             extension = "." + extension
-        file_name = os.path.join(self.getId(), os.path.splitext(file_name)[0] + extension)
+        file_name = os.path.join(self.getId(), file_name + extension)
 
         try:
             Logger.log("d", "Writing to %s", file_name)
