@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Cubicon Style NEO-A22",
+    "name": "Cubicon Style Neo-A22",
     "inherits": "cubicon_common",
     "metadata": {
         "author": "Cubicon R&D Center",
@@ -19,10 +19,10 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "Cubicon Style NEO-A22"
+            "default_value": "Cubicon Style Neo-A22"
         },
         "machine_start_gcode": {
-            "default_value": "M911 Style NEO-A22\nM201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+            "default_value": "M911 Style Neo-A22\nM201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
         },
         "machine_width": {
             "default_value": 220
