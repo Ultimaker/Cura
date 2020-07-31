@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-07-31 12:48+0000\n"
+"POT-Creation-Date: 2020-07-31 14:10+0000\n"
 "PO-Revision-Date: 2020-02-19 22:42+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
@@ -3491,7 +3491,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_structure description"
-msgid "Generate a tree-like support "
+msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
 
 #: fdmprinter.def.json
