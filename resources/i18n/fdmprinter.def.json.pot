@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-04-06 16:33+0000\n"
+"POT-Creation-Date: 2020-07-31 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -226,6 +226,19 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool label"
+msgid "Always Write Active Tool"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool description"
+msgid ""
+"Write active tool after sending temp commands to inactive tool. Required for "
+"Dual Extruder printing with Smoothie or other firmware with modal tool "
+"commands."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3974,6 +3987,90 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_structure label"
+msgid "Support Structure"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure description"
+msgid "Generate a tree-like support "
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option normal"
+msgid "Normal"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option tree"
+msgid "Tree"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid ""
+"The angle of the branches. Use a lower angle to make them more vertical and "
+"more stable. Use a higher angle to be able to have more reach."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid ""
+"How far apart the branches need to be when they touch the model. Making this "
+"distance small will cause the tree support to touch the model at more "
+"points, causing better overhang but making support harder to remove."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid ""
+"The diameter of the thinnest branches of tree support. Thicker branches are "
+"more sturdy. Branches towards the base will be thicker than this."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid ""
+"The angle of the branches' diameter as they gradually become thicker towards "
+"the bottom. An angle of 0 will cause the branches to have uniform thickness "
+"over their length. A bit of an angle can increase stability of the tree "
+"support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid ""
+"Resolution to compute collisions with to avoid hitting the model. Setting "
+"this lower will produce more accurate trees that fail less often, but "
+"increases slicing time dramatically."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
 msgstr ""
@@ -4284,6 +4381,20 @@ msgid ""
 "The maximum width of the steps of the stair-like bottom of support resting "
 "on the model. A low value makes the support harder to remove, but too high "
 "values can lead to unstable support structures."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope label"
+msgid "Support Stair Step Minimum Slope Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope description"
+msgid ""
+"The minimum slope of the area for stair-stepping to take effect. Low values "
+"should make support easier to remove on shallower slopes, but really low "
+"values may result in some very counter-intuitive results on other parts of "
+"the model."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4810,6 +4921,18 @@ msgctxt "support_mesh_drop_down description"
 msgid ""
 "Make support everywhere below the support mesh, so that there's no overhang "
 "in the support mesh."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present label"
+msgid "Scene Has Support Meshes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present description"
+msgid ""
+"There are support meshes present in the scene. This setting is controlled by "
+"Cura."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5711,7 +5834,7 @@ msgid ""
 "finish, before moving on to the next. One at a time mode is possible if a) "
 "only one extruder is enabled and b) all models are separated in such a way "
 "that the whole print head can move in between and all models are lower than "
-"the distance between the nozzle and the X/Y axes. "
+"the distance between the nozzle and the X/Y axes."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5739,13 +5862,14 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
-msgid "Infill Mesh Order"
+msgid "Mesh Processing Rank"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid ""
-"Determines which infill mesh is inside the infill of another infill mesh. An "
+"Determines the priority of this mesh when considering overlapping volumes. "
+"Areas where multiple meshes reside will be won by the lower rank mesh. An "
 "infill mesh with a higher order will modify the infill of infill meshes with "
 "lower order and normal meshes."
 msgstr ""
@@ -5918,82 +6042,6 @@ msgid "Features that haven't completely been fleshed out yet."
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_tree_enable label"
-msgid "Tree Support"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable description"
-msgid ""
-"Generate a tree-like support with branches that support your print. This may "
-"reduce material usage and print time, but greatly increases slicing time."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid ""
-"The angle of the branches. Use a lower angle to make them more vertical and "
-"more stable. Use a higher angle to be able to have more reach."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid ""
-"How far apart the branches need to be when they touch the model. Making this "
-"distance small will cause the tree support to touch the model at more "
-"points, causing better overhang but making support harder to remove."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter description"
-msgid ""
-"The diameter of the thinnest branches of tree support. Thicker branches are "
-"more sturdy. Branches towards the base will be thicker than this."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle description"
-msgid ""
-"The angle of the branches' diameter as they gradually become thicker towards "
-"the bottom. An angle of 0 will cause the branches to have uniform thickness "
-"over their length. A bit of an angle can increase stability of the tree "
-"support."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid ""
-"Resolution to compute collisions with to avoid hitting the model. Setting "
-"this lower will produce more accurate trees that fail less often, but "
-"increases slicing time dramatically."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
 msgstr ""
@@ -6001,13 +6049,13 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid ""
-"How to slice layers with diagonal surfaces. The areas of a layer can be "
-"generated based on where the middle of the layer intersects the surface "
-"(Middle). Alternatively each layer can have the areas which fall inside of "
-"the volume throughout the height of the layer (Exclusive) or a layer has the "
-"areas which fall inside anywhere within the layer (Inclusive). Exclusive "
-"retains the most details, Inclusive makes for the best fit and Middle takes "
-"the least time to process."
+"Vertical tolerance in the sliced layers. The contours of a layer are "
+"normally generated by taking cross sections through the middle of each "
+"layer's thickness (Middle). Alternatively each layer can have the areas "
+"which fall inside of the volume throughout the entire thickness of the layer "
+"(Exclusive) or a layer has the areas which fall inside anywhere within the "
+"layer (Inclusive). Inclusive retains the most details, Exclusive makes for "
+"the best fit and Middle stays closest to the original surface."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6333,92 +6381,6 @@ msgctxt "cross_support_density_image description"
 msgid ""
 "The file location of an image of which the brightness values determine the "
 "minimal density at the corresponding location in the support."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled label"
-msgid "Spaghetti Infill"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled description"
-msgid ""
-"Print the infill every so often, so that the filament will curl up "
-"chaotically inside the object. This reduces print time, but the behaviour is "
-"rather unpredictable."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped label"
-msgid "Spaghetti Infill Stepping"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped description"
-msgid ""
-"Whether to print spaghetti infill in steps or extrude all the infill "
-"filament at the end of the print."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle label"
-msgid "Spaghetti Maximum Infill Angle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle description"
-msgid ""
-"The maximum angle w.r.t. the Z axis of the inside of the print for areas "
-"which are to be filled with spaghetti infill afterwards. Lowering this value "
-"causes more angled parts in your model to be filled on each layer."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height label"
-msgid "Spaghetti Infill Maximum Height"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height description"
-msgid ""
-"The maximum height of inside space which can be combined and filled from the "
-"top."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset label"
-msgid "Spaghetti Inset"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset description"
-msgid ""
-"The offset from the walls from where the spaghetti infill will be printed."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow label"
-msgid "Spaghetti Flow"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow description"
-msgid ""
-"Adjusts the density of the spaghetti infill. Note that the Infill Density "
-"only controls the line spacing of the filling pattern, not the amount of "
-"extrusion for spaghetti infill."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume label"
-msgid "Spaghetti Infill Extra Volume"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume description"
-msgid ""
-"A correction term to adjust the total volume being extruded each time when "
-"filling spaghetti."
 msgstr ""
 
 #: fdmprinter.def.json
