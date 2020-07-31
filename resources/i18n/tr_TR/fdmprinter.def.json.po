@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-04-06 16:33+0000\n"
+"POT-Creation-Date: 2020-07-31 12:48+0000\n"
 "PO-Revision-Date: 2020-04-15 17:50+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Turkish <info@lionbridge.com>, Turkish <info@bothof.nl>\n"
@@ -223,6 +223,16 @@ msgstr "Yapı Hacmi Sıcaklığı Dengesi Mevcut"
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
 msgstr "Makinenin yapı hacmi sıcaklığını dengeleyip dengelemediği."
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool label"
+msgid "Always Write Active Tool"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool description"
+msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -3474,6 +3484,76 @@ msgid "The extruder train to use for printing the floors of the support. This is
 msgstr "Desteğin zemininin yazdırılması için kullanılacak ekstrüder dizisi. Çoklu ekstrüzyon sırasında kullanılır."
 
 #: fdmprinter.def.json
+msgctxt "support_structure label"
+msgid "Support Structure"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure description"
+msgid "Generate a tree-like support "
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option normal"
+msgid "Normal"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option tree"
+msgid "Tree"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr "Ağaç Destek Dal Açısı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr "Ağaç Destek Dal Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr "Ağaç Destek Dalının Çapı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
+msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha dayanıklı olur. Tabana doğru uzanan dallar bundan daha kalın olacaktır."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr "Ağaç Destek Dalının Çap Açısı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
+
+#: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
 msgstr "Destek Yerleştirme"
@@ -3737,6 +3817,16 @@ msgstr "Destek Merdiveni Maksimum Basamak Genişliği"
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 msgstr "Modelin üzerinde sabit duran desteğin merdiven benzeri alt kısmının maksimum basamak genişliği. Daha düşük bir değer desteğin hareket ettirilmesini zorlaştırırken, daha yüksek bir değer kararsız destek yapılarına yol açabilir."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope label"
+msgid "Support Stair Step Minimum Slope Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope description"
+msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4182,6 +4272,16 @@ msgstr "Alçalan Destek Örgüsü"
 msgctxt "support_mesh_drop_down description"
 msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
 msgstr "Destek örgüsünde askıda kalan herhangi bir kısım olmaması için destek örgüsünün altındaki her yere destek yapın."
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present label"
+msgid "Scene Has Support Meshes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present description"
+msgid "There are support meshes present in the scene. This setting is controlled by Cura."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -4944,8 +5044,8 @@ msgstr "Yazdırma Dizisi"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "Sıradakine geçmeden önce, tüm modellerin tek seferde bir katmanla mı yazdırılacağı yoksa bir modelin bitmesinin mi bekleneceği. Teker teker modu a) yalnızca bir ekstrüder etkinleştirildiğinde b) tüm modeller baskı kafası aralarında hareket edecek veya nozül ile X/Y eksenleri arasındaki mesafeden az olacak şekilde ayrıldığında kullanılabilir. "
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -4969,13 +5069,13 @@ msgstr "Çakıştığı diğer dolgu ağını düzeltmek için bu ağı kullanı
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
-msgid "Infill Mesh Order"
-msgstr "Dolgu Birleşim Düzeni"
+msgid "Mesh Processing Rank"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "Hangi dolgu birleşiminin diğer dolgu birleşiminin içinde olacağını belirler. Yüksek düzeyli bir dolgu birleşimi, dolgu birleşimlerinin dolgusunu daha düşük düzey ve normal birleşimler ile düzeltir."
+msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5113,74 +5213,14 @@ msgid "Features that haven't completely been fleshed out yet."
 msgstr "Henüz tamamen detaylandırılmamış özelliklerdir."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_enable label"
-msgid "Tree Support"
-msgstr "Ağaç Destek"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable description"
-msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr "Baskınızı desteklemesi adına dallarıyla birlikte ağaca benzeyen bir destek oluşturun. Malzeme kullanımı ve baskı süresi düşer ancak dilimleme zamanı da önemli ölçüde artar."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Ağaç Destek Dal Açısı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Ağaç Destek Dal Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Ağaç Destek Dalının Çapı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter description"
-msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha dayanıklı olur. Tabana doğru uzanan dallar bundan daha kalın olacaktır."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Ağaç Destek Dalının Çap Açısı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle description"
-msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
-
-#: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
 msgstr "Dilimleme Toleransı"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
-msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr "Çapraz yüzeylerle katman dilimleme yolları. Bir katmanın alanları katmanın ortasının yüzeyle kesiştiği yere (Ortalayıcı) göre oluşturulabilir. Diğer bir yol da her katmanın yüksekliği boyunca hacim içinde kalan alanları (Dışlayıcı) veya katmanın içinde herhangi bir yerde kalan alanları (Kapsayıcı) almasıdır. Dışlayıcı seçenek en çok ayrıntıyı tutar; Kapsayıcı seçenek en iyi şekilde oturur; Ortalayıcı ise en kısa sürede işlenir."
+msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
@@ -5451,76 +5491,6 @@ msgstr "Destek için Çapraz Dolgu Yoğunluğu Görüntüsü"
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
 msgstr "Parlaklık değerlerinin, desteğin ilgili konumundaki minimum yoğunluğu belirlediği görüntünün dosya konumu."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled label"
-msgid "Spaghetti Infill"
-msgstr "Spagetti Dolgu"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled description"
-msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-msgstr "Filamanın nesnenin içinde düzensiz bir şekilde yukarı doğru kıvrılması için dolguyu arada sırada yazdırın. Böylece yazdırma süresi azalır, ancak davranış önceden kestirilemez."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped label"
-msgid "Spaghetti Infill Stepping"
-msgstr "Spagetti Dolgu Adımları"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped description"
-msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr "Spagetti dolgusunu adım adım yazdırma veya tüm dolgu filamanını yazdırma işleminin sonunda ekstrude etme."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle label"
-msgid "Spaghetti Maximum Infill Angle"
-msgstr "Spagetti Maksimum Dolgu Açısı"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle description"
-msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-msgstr "Daha sonradan spagetti dolgu uygulanacak alanlar için yazdırmanın içindeki Z ekseninin maksimum açısı. Bu değerin düşürülmesi, modelinize yapılan her bir dolgu katmanında daha fazla açılı kısımlara neden olur."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height label"
-msgid "Spaghetti Infill Maximum Height"
-msgstr "Spagetti Dolgu Maksimum Yüksekliği"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height description"
-msgid "The maximum height of inside space which can be combined and filled from the top."
-msgstr "Birleştirilebilecek ve üstten dolgu yapılabilecek iç alanın maksimum yüksekliği."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset label"
-msgid "Spaghetti Inset"
-msgstr "Spagetti İç Dolgusu"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset description"
-msgid "The offset from the walls from where the spaghetti infill will be printed."
-msgstr "Spagetti dolgunun yazdırılacağı yerin duvarlardan ofset değeri."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow label"
-msgid "Spaghetti Flow"
-msgstr "Spagetti Debisi"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow description"
-msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-msgstr "Spagetti dolgusunun yoğunluğunu ayarlar. Dolgu yoğunluğunun spagetti dolgu için ekstrüzyon miktarını değil, sadece dolgu deseni çizgi boşluğunu kontrol ettiğini unutmayın."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume label"
-msgid "Spaghetti Infill Extra Volume"
-msgstr "Spagetti Dolgu Ekstra Hacmi"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume description"
-msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr "Her spagetti dolumunda ekstrude edilen toplam hacmi ayarlamak için kullanılan bir düzeltme terimi."
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -6390,6 +6360,86 @@ msgstr "Bileşim Rotasyon Matrisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi."
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+#~ msgstr "Sıradakine geçmeden önce, tüm modellerin tek seferde bir katmanla mı yazdırılacağı yoksa bir modelin bitmesinin mi bekleneceği. Teker teker modu a) yalnızca bir ekstrüder etkinleştirildiğinde b) tüm modeller baskı kafası aralarında hareket edecek veya nozül ile X/Y eksenleri arasındaki mesafeden az olacak şekilde ayrıldığında kullanılabilir. "
+
+#~ msgctxt "infill_mesh_order label"
+#~ msgid "Infill Mesh Order"
+#~ msgstr "Dolgu Birleşim Düzeni"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Hangi dolgu birleşiminin diğer dolgu birleşiminin içinde olacağını belirler. Yüksek düzeyli bir dolgu birleşimi, dolgu birleşimlerinin dolgusunu daha düşük düzey ve normal birleşimler ile düzeltir."
+
+#~ msgctxt "support_tree_enable label"
+#~ msgid "Tree Support"
+#~ msgstr "Ağaç Destek"
+
+#~ msgctxt "support_tree_enable description"
+#~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
+#~ msgstr "Baskınızı desteklemesi adına dallarıyla birlikte ağaca benzeyen bir destek oluşturun. Malzeme kullanımı ve baskı süresi düşer ancak dilimleme zamanı da önemli ölçüde artar."
+
+#~ msgctxt "slicing_tolerance description"
+#~ msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+#~ msgstr "Çapraz yüzeylerle katman dilimleme yolları. Bir katmanın alanları katmanın ortasının yüzeyle kesiştiği yere (Ortalayıcı) göre oluşturulabilir. Diğer bir yol da her katmanın yüksekliği boyunca hacim içinde kalan alanları (Dışlayıcı) veya katmanın içinde herhangi bir yerde kalan alanları (Kapsayıcı) almasıdır. Dışlayıcı seçenek en çok ayrıntıyı tutar; Kapsayıcı seçenek en iyi şekilde oturur; Ortalayıcı ise en kısa sürede işlenir."
+
+#~ msgctxt "spaghetti_infill_enabled label"
+#~ msgid "Spaghetti Infill"
+#~ msgstr "Spagetti Dolgu"
+
+#~ msgctxt "spaghetti_infill_enabled description"
+#~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
+#~ msgstr "Filamanın nesnenin içinde düzensiz bir şekilde yukarı doğru kıvrılması için dolguyu arada sırada yazdırın. Böylece yazdırma süresi azalır, ancak davranış önceden kestirilemez."
+
+#~ msgctxt "spaghetti_infill_stepped label"
+#~ msgid "Spaghetti Infill Stepping"
+#~ msgstr "Spagetti Dolgu Adımları"
+
+#~ msgctxt "spaghetti_infill_stepped description"
+#~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
+#~ msgstr "Spagetti dolgusunu adım adım yazdırma veya tüm dolgu filamanını yazdırma işleminin sonunda ekstrude etme."
+
+#~ msgctxt "spaghetti_max_infill_angle label"
+#~ msgid "Spaghetti Maximum Infill Angle"
+#~ msgstr "Spagetti Maksimum Dolgu Açısı"
+
+#~ msgctxt "spaghetti_max_infill_angle description"
+#~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
+#~ msgstr "Daha sonradan spagetti dolgu uygulanacak alanlar için yazdırmanın içindeki Z ekseninin maksimum açısı. Bu değerin düşürülmesi, modelinize yapılan her bir dolgu katmanında daha fazla açılı kısımlara neden olur."
+
+#~ msgctxt "spaghetti_max_height label"
+#~ msgid "Spaghetti Infill Maximum Height"
+#~ msgstr "Spagetti Dolgu Maksimum Yüksekliği"
+
+#~ msgctxt "spaghetti_max_height description"
+#~ msgid "The maximum height of inside space which can be combined and filled from the top."
+#~ msgstr "Birleştirilebilecek ve üstten dolgu yapılabilecek iç alanın maksimum yüksekliği."
+
+#~ msgctxt "spaghetti_inset label"
+#~ msgid "Spaghetti Inset"
+#~ msgstr "Spagetti İç Dolgusu"
+
+#~ msgctxt "spaghetti_inset description"
+#~ msgid "The offset from the walls from where the spaghetti infill will be printed."
+#~ msgstr "Spagetti dolgunun yazdırılacağı yerin duvarlardan ofset değeri."
+
+#~ msgctxt "spaghetti_flow label"
+#~ msgid "Spaghetti Flow"
+#~ msgstr "Spagetti Debisi"
+
+#~ msgctxt "spaghetti_flow description"
+#~ msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
+#~ msgstr "Spagetti dolgusunun yoğunluğunu ayarlar. Dolgu yoğunluğunun spagetti dolgu için ekstrüzyon miktarını değil, sadece dolgu deseni çizgi boşluğunu kontrol ettiğini unutmayın."
+
+#~ msgctxt "spaghetti_infill_extra_volume label"
+#~ msgid "Spaghetti Infill Extra Volume"
+#~ msgstr "Spagetti Dolgu Ekstra Hacmi"
+
+#~ msgctxt "spaghetti_infill_extra_volume description"
+#~ msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
+#~ msgstr "Her spagetti dolumunda ekstrude edilen toplam hacmi ayarlamak için kullanılan bir düzeltme terimi."
 
 #~ msgctxt "material_guid description"
 #~ msgid "GUID of the material. This is set automatically. "
