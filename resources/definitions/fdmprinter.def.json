@@ -4175,7 +4175,7 @@
                 "support_structure":
                 {
                     "label": "Support Structure",
-                    "description": "Generate a tree-like support ",
+                    "description": "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible.",
                     "type": "enum",
                     "options":
                     {
