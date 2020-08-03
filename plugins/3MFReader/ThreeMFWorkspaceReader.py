@@ -260,7 +260,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_definition_container_count != 1:
             return WorkspaceReader.PreReadResult.failed  # Not a workspace file but ordinary 3MF.
 
-        material_labels = []
+        material_ids_to_names_map = {}
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
         reverse_material_id_dict = {}
@@ -276,7 +276,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 reverse_map = {metadata["id"]: container_id for metadata in metadata_list}
                 reverse_material_id_dict.update(reverse_map)
 
-                material_labels.append(self._getMaterialLabelFromSerialized(serialized))
+                material_ids_to_names_map[container_id] = self._getMaterialLabelFromSerialized(serialized)
                 if self._container_registry.findContainersMetadata(id = container_id): #This material already exists.
                     containers_found_dict["material"] = True
                     if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
@@ -443,6 +443,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         Job.yieldThread()
 
+        materials_in_extruders_dict = {}  # Which material is in which extruder
+
         # if the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
@@ -456,6 +458,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             position = parser["metadata"]["position"]
             variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
             material_id = parser["containers"][str(_ContainerIndexes.Material)]
+            materials_in_extruders_dict[position] = material_ids_to_names_map[reverse_material_id_dict[material_id]]
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
@@ -495,6 +498,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
+
+        # Now we know which material is in which extruder. Let's use that to sort the material_labels according to
+        # their extruder position
+        material_labels = [material_name for pos, material_name in sorted(materials_in_extruders_dict.items())]
 
         num_visible_settings = 0
         try:
