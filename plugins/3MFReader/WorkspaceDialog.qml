@@ -20,6 +20,7 @@ UM.Dialog
 
     property int comboboxHeight: 15 * screenScaleFactor
     property int spacerHeight: 10 * screenScaleFactor
+    property int doubleSpacerHeight: 20 * screenScaleFactor
     property string machineResolveStrategyCurrentKey: "override"
 
     onClosing: manager.notifyClosed()
@@ -36,7 +37,7 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-        anchors.margins: 20 * screenScaleFactor
+        anchors.margins: 10 * screenScaleFactor
 
         UM.I18nCatalog
         {
@@ -80,7 +81,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: 2 * spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
 
@@ -105,7 +106,7 @@ UM.Dialog
                     id: machineResolveStrategyTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: manager.updatableMachinesCount != 0
+                    visible: manager.updatableMachineNamesCount != 0
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
@@ -163,12 +164,12 @@ UM.Dialog
                     id: machineResolveTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: base.visible && manager.updatableMachinesCount != 0 && machineResolveStrategyCurrentKey == "override"
+                    visible: base.visible && manager.updatableMachineNamesCount != 0 && machineResolveStrategyCurrentKey == "override"
                     text: catalog.i18nc("@info:tooltip", "Which machine of the same type should be overriden?")
                     ComboBox
                     {
                         id: selectMachineComboBox
-                        model: manager.updatableMachines
+                        model: manager.updatableMachineNames
                         width: parent.width
                         onCurrentIndexChanged:
                         {
@@ -176,18 +177,18 @@ UM.Dialog
                         }
                         onVisibleChanged:
                         {
-                            if (visible)
+                            if (!visible) {return}
+
+                            currentIndex = 0
+                            for (var i = 0; i < count; i++)
                             {
-                                currentIndex = 0
-                                for (var i = 0; i < count; i++)
+                                if (model[i] == manager.machineName)
                                 {
-                                    if (model[i] == manager.machineName)
-                                    {
-                                        currentIndex = i
-                                        break
-                                    }
+                                    currentIndex = i
+                                    break
                                 }
                             }
+
                         }
                     }
                 }
@@ -195,7 +196,7 @@ UM.Dialog
 
             Item // Spacer
             {
-                height: 2 * spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
             Row
@@ -298,7 +299,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: 2 * spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
             Row
@@ -360,7 +361,7 @@ UM.Dialog
 
             Item // Spacer
             {
-                height: 2 * spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
 
@@ -402,7 +403,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: 2 * spacerHeight
+                height: spacerHeight
                 width: height
             }
             Row
