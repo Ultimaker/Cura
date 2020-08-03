@@ -274,7 +274,7 @@ class WorkspaceDialog(QObject):
             self.qualityChangesConflictChanged.emit()
 
     def getResult(self):
-        if "machine" in self._result and not self._has_machine_conflict:
+        if "machine" in self._result and not self._updatable_machines:
             self._result["machine"] = None
         if "quality_changes" in self._result and not self._has_quality_changes_conflict:
             self._result["quality_changes"] = None
