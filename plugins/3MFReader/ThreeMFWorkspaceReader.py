@@ -458,7 +458,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             position = parser["metadata"]["position"]
             variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
             material_id = parser["containers"][str(_ContainerIndexes.Material)]
-            materials_in_extruders_dict[position] = material_ids_to_names_map[reverse_material_id_dict[material_id]]
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
@@ -471,6 +470,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if material_id not in ("empty", "empty_material"):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
+                materials_in_extruders_dict[position] = material_ids_to_names_map[reverse_material_id_dict[material_id]]
 
             definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
