@@ -114,7 +114,7 @@ UM.Dialog
                         {
                             Component.onCompleted:
                             {
-                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing printer")});
+                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing...")});
                                 append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new printer")});
                             }
                         }
