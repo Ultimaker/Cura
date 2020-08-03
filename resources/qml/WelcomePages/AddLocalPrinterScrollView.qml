@@ -15,7 +15,6 @@ import Cura 1.1 as Cura
 Item
 {
     id: base
-    height: childrenRect.height
 
     // The currently selected machine item in the local machine list.
     property var currentItem: (machineList.currentIndex >= 0)
@@ -78,7 +77,6 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        height: childrenRect.height
 
         // ScrollView + ListView for selecting a local printer to add
         Cura.ScrollView
@@ -86,7 +84,7 @@ Item
             id: scrollView
 
             height: childrenHeight
-            width: Math.floor(parent.width * 0.4)
+            width: Math.floor(parent.width * 0.48)
 
             ListView
             {
@@ -203,7 +201,7 @@ Item
         // User-editable printer name row
         Column
         {
-            width: Math.floor(parent.width * 0.6)
+            width: Math.floor(parent.width * 0.52)
 
             spacing: UM.Theme.getSize("default_margin").width
             padding: UM.Theme.getSize("default_margin").width
@@ -228,6 +226,7 @@ Item
 
                 Label
                 {
+                    id: manufacturerLabel
                     text: catalog.i18nc("@label", "Manufacturer")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
@@ -236,12 +235,15 @@ Item
                 Label
                 {
                     text: base.getMachineMetaDataEntry("manufacturer")
+                    width: parent.width - manufacturerLabel.width
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
+                    wrapMode: Text.WordWrap
                 }
                 Label
                 {
+                    id: profileAuthorLabel
                     text: catalog.i18nc("@label", "Profile author")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
@@ -250,13 +252,16 @@ Item
                 Label
                 {
                     text: base.getMachineMetaDataEntry("author")
+                    width: parent.width - profileAuthorLabel.width
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
+                    wrapMode: Text.WordWrap
                 }
 
                 Label
                 {
+                    id: printerNameLabel
                     text: catalog.i18nc("@label", "Printer name")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
@@ -266,7 +271,7 @@ Item
                 Cura.TextField
                 {
                     id: printerNameTextField
-                    placeholderText: catalog.i18nc("@text", "Please give your printer a name")
+                    placeholderText: catalog.i18nc("@text", "Please name your printer")
                     maximumLength: 40
                     validator: RegExpValidator
                     {
