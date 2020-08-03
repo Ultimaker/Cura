@@ -12,6 +12,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 import os
 import threading
 import time
+
+from cura.CuraApplication import CuraApplication
+
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -295,7 +298,7 @@ class WorkspaceDialog(QObject):
         three_mf_reader_path = PluginRegistry.getInstance().getPluginPath("3MFReader")
         if three_mf_reader_path:
             path = os.path.join(three_mf_reader_path, self._qml_url)
-            self._view = Application.getInstance().createQmlComponent(path, {"manager": self})
+            self._view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
 
     def show(self) -> None:
         # Emit signal so the right thread actually shows the view.
