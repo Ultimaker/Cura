@@ -80,7 +80,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: spacerHeight
+                height: 2 * spacerHeight
                 width: height
             }
 
@@ -195,7 +195,7 @@ UM.Dialog
 
             Item // Spacer
             {
-                height: spacerHeight
+                height: 2 * spacerHeight
                 width: height
             }
             Row
@@ -298,7 +298,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: spacerHeight
+                height: 2 * spacerHeight
                 width: height
             }
             Row
@@ -360,7 +360,7 @@ UM.Dialog
 
             Item // Spacer
             {
-                height: spacerHeight
+                height: 2 * spacerHeight
                 width: height
             }
 
@@ -402,7 +402,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: spacerHeight
+                height: 2 * spacerHeight
                 width: height
             }
             Row
