@@ -41,6 +41,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "There is no printer found over your network.")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
             visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.

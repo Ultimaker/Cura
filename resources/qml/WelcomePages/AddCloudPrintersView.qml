@@ -63,6 +63,7 @@ Item
                 id: waitingIndicator
                 anchors.horizontalCenter: parent.horizontalCenter
                 running: searchingForCloudPrinters
+                palette.dark: UM.Theme.getColor("text")
             }
             Label
             {
