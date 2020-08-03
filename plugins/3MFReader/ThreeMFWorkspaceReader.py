@@ -243,7 +243,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
-                machine_definition_id = container_id  # TODO
+                machine_definition_id = container_id
                 machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
                 if machine_definition_containers:
                     updatable_machines = [machine.name for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
