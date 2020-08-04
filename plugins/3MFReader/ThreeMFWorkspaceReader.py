@@ -227,7 +227,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Read definition containers
         #
         machine_definition_id = None
-        updatable_machine_names = []
+        updatable_machines = []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -246,7 +246,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 machine_definition_id = container_id
                 machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
                 if machine_definition_containers:
-                    updatable_machine_names = [machine.name for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
+                    updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
                 machine_type = definition_container["name"]
                 variant_type_name = definition_container.get("variants_name", variant_type_name)
 
@@ -403,7 +403,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     machine_conflict = True
                     break
 
-        if updatable_machine_names and not containers_found_dict["machine"]:
+        if updatable_machines and not containers_found_dict["machine"]:
             containers_found_dict["machine"] = True
 
         # Get quality type
@@ -572,7 +572,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
-        self._dialog.setUpdatableMachineNames(updatable_machine_names)
+        self._dialog.setUpdatableMachinesModel(updatable_machines)
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
@@ -654,7 +654,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If there are no machines of the same type, create a new machine.
-        if self._resolve_strategies["machine"] != "override" or not self._dialog.updatableMachineNames:
+        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count <= 1:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 

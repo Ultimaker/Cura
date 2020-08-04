@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
@@ -21,7 +21,6 @@ UM.Dialog
     property int comboboxHeight: 15 * screenScaleFactor
     property int spacerHeight: 10 * screenScaleFactor
     property int doubleSpacerHeight: 20 * screenScaleFactor
-    property string machineResolveStrategyCurrentKey: "override"
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -106,25 +105,50 @@ UM.Dialog
                     id: machineResolveStrategyTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: manager.updatableMachineNamesCount != 0
+                    visible: base.visible && machineResolveComboBox.model.count > 1
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
                         id: machineResolveComboBox
-                        model: ListModel
+                        model: manager.updatableMachinesModel
+                        visible: machineResolveStrategyTooltip.visible
+                        textRole: "displayName"
+                        width: parent.width
+                        onCurrentIndexChanged:
                         {
-                            Component.onCompleted:
+                            if (model.getItem(currentIndex).id == "new"
+                                && model.getItem(currentIndex).type == "default_option")
                             {
-                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing...")});
-                                append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new printer")});
+                                manager.setResolveStrategy("machine", "new")
+                            }
+                            else
+                            {
+                                manager.setResolveStrategy("machine", "override")
+                                manager.setMachineToOverride(model.getItem(currentIndex).id)
                             }
                         }
-                        textRole: "label"
-                        width: parent.width
-                        onActivated:
+
+                        onVisibleChanged:
                         {
-                            machineResolveStrategyCurrentKey = resolveStrategiesModel.get(index).key
-                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
+                            if (!visible) {return}
+
+                            currentIndex = 0
+                            // If the project printer exists in Cura, set it as the default dropdown menu option.
+                            // No need to check object 0, which is the "Create new" option
+                            for (var i = 1; i < model.count; i++)
+                            {
+                                if (model.getItem(i).name == manager.machineName)
+                                {
+                                    currentIndex = i
+                                    break
+                                }
+                            }
+                            // The project printer does not exist in Cura. If there is at least one printer of the same
+                            // type, select the first one, else set the index to "Create new"
+                            if (currentIndex == 0 && model.count > 1)
+                            {
+                                currentIndex = 1
+                            }
                         }
                     }
                 }
@@ -158,39 +182,6 @@ UM.Dialog
                 {
                     text: manager.machineName
                     width: (parent.width / 3) | 0
-                }
-                UM.TooltipArea
-                {
-                    id: machineResolveTooltip
-                    width: (parent.width / 3) | 0
-                    height: visible ? comboboxHeight : 0
-                    visible: base.visible && manager.updatableMachineNamesCount != 0 && machineResolveStrategyCurrentKey == "override"
-                    text: catalog.i18nc("@info:tooltip", "Which machine of the same type should be overriden?")
-                    ComboBox
-                    {
-                        id: selectMachineComboBox
-                        model: manager.updatableMachineNames
-                        width: parent.width
-                        onCurrentIndexChanged:
-                        {
-                            manager.setMachineToOverride(model[currentIndex])
-                        }
-                        onVisibleChanged:
-                        {
-                            if (!visible) {return}
-
-                            currentIndex = 0
-                            for (var i = 0; i < count; i++)
-                            {
-                                if (model[i] == manager.machineName)
-                                {
-                                    currentIndex = i
-                                    break
-                                }
-                            }
-
-                        }
-                    }
                 }
             }
 

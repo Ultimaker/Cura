@@ -1,6 +1,6 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, cast
 
 from PyQt5.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
 from UM.FlameProfiler import pyqtSlot
@@ -8,6 +8,8 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.GlobalStack import GlobalStack
+from .UpdatableMachinesModel import UpdatableMachinesModel
 
 import os
 import threading
@@ -50,13 +52,13 @@ class WorkspaceDialog(QObject):
         self._quality_type = ""
         self._intent_name = ""
         self._machine_name = ""
-        self._updatable_machines = []
         self._machine_type = ""
         self._variant_type = ""
         self._material_labels = []
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
+        self._updatable_machines_model = UpdatableMachinesModel(self)
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -69,7 +71,7 @@ class WorkspaceDialog(QObject):
     qualityTypeChanged = pyqtSignal()
     intentNameChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
-    updatableMachineNamesChanged = pyqtSignal()
+    updatableMachinesChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
@@ -149,18 +151,13 @@ class WorkspaceDialog(QObject):
             self._machine_name = machine_name
             self.machineNameChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = updatableMachineNamesChanged)
-    def updatableMachineNames(self) -> List[str]:
-        return self._updatable_machines
+    @pyqtProperty(QObject, notify = updatableMachinesChanged)
+    def updatableMachinesModel(self) -> UpdatableMachinesModel:
+        return cast(UpdatableMachinesModel, self._updatable_machines_model)
 
-    def setUpdatableMachineNames(self, updatable_machines: List[str]) -> None:
-        if self._updatable_machines != updatable_machines:
-            self._updatable_machines = sorted(updatable_machines)
-            self.updatableMachineNamesChanged.emit()
-
-    @pyqtProperty(int, notify = updatableMachineNamesChanged)
-    def updatableMachineNamesCount(self) -> int:
-        return len(self._updatable_machines)
+    def setUpdatableMachinesModel(self, updatable_machines: List[GlobalStack]) -> None:
+        self._updatable_machines_model.update(updatable_machines)
+        self.updatableMachinesChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self) -> str:
@@ -245,7 +242,7 @@ class WorkspaceDialog(QObject):
         return self._has_material_conflict
 
     @pyqtSlot(str, str)
-    def setResolveStrategy(self, key: str, strategy: str) -> None:
+    def setResolveStrategy(self, key: str, strategy: Optional[str]) -> None:
         if key in self._result:
             self._result[key] = strategy
 
@@ -278,7 +275,7 @@ class WorkspaceDialog(QObject):
             self.qualityChangesConflictChanged.emit()
 
     def getResult(self) -> Dict[str, Optional[str]]:
-        if "machine" in self._result and not self._updatable_machines:
+        if "machine" in self._result and self.updatableMachinesModel.count <= 1:
             self._result["machine"] = None
         if "quality_changes" in self._result and not self._has_quality_changes_conflict:
             self._result["quality_changes"] = None
