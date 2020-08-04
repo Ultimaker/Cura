@@ -32,7 +32,7 @@ class WorkspaceDialog(QObject):
         self._result = {"machine": self._default_strategy,
                         "quality_changes": self._default_strategy,
                         "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+                        "material": self._default_strategy}  # type: Dict[str, Optional[str]]
         self._override_machine = None
         self._visible = False
         self.showDialogSignal.connect(self.__show)
@@ -245,7 +245,7 @@ class WorkspaceDialog(QObject):
         return self._has_material_conflict
 
     @pyqtSlot(str, str)
-    def setResolveStrategy(self, key: str, strategy: str) -> None:
+    def setResolveStrategy(self, key: str, strategy: Optional[str]) -> None:
         if key in self._result:
             self._result[key] = strategy
 
