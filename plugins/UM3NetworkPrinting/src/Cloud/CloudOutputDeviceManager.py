@@ -332,11 +332,12 @@ class CloudOutputDeviceManager:
                 "These printers are not linked to the Digital Factory:",
                 len(self.reported_device_ids)
         )
+        message_text += "<br/><ul>{}</ul><br/>".format(device_names)
+        digital_factory_string = self.I18N_CATALOG.i18nc("info:name", "Ultimaker Digital Factory")
+
         message_text += self.I18N_CATALOG.i18nc(
                 "info:status",
-                "<ul>{}</ul>To establish a connection, please visit the "
-                "<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>.",
-                device_names
+                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>.".format(digital_factory_string))
         )
         self._removed_printers_message.setText(message_text)
         self._removed_printers_message.addAction("keep_printer_configurations_action",
@@ -422,13 +423,17 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry(self.META_HOST_GUID, device.clusterData.host_guid)
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
-        machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
-            "@label ({} is printer name)",
-            "{} will be removed until the next account sync. <br> To remove {} permanently, "
-            "visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. "
-            "<br><br>Are you sure you want to remove {} temporarily?",
-            device.name, device.name, device.name
-        ))
+        digital_factory_string = self.I18N_CATALOG.i18nc("info:name", "Ultimaker Digital Factory")
+        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>".format(digital_factory_string)
+        removal_warning_string = self.I18N_CATALOG.i18nc(
+            "@label ({printer_name} is replaced with the name of the printer",
+            "{printer_name} will be removed until the next account sync. <br> To remove {printer_name} permanently, "
+            "visit {digital_factory_link}"
+            "<br><br>Are you sure you want to remove {printer_name} temporarily?".format(printer_name = device.name,
+                                                                                         digital_factory_link = digital_factory_link)
+        )
+
+        machine.setMetaDataEntry("removal_warning", removal_warning_string)
         machine.addConfiguredConnectionType(device.connectionType.value)
 
     def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
