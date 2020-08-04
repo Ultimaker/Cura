@@ -291,7 +291,6 @@ class CloudOutputDeviceManager:
             del self._remote_clusters[old_cluster_id]
             self._remote_clusters[new_cloud_output_device.key] = new_cloud_output_device
 
-
     def _devicesRemovedFromAccount(self, removed_device_ids: Set[str]) -> None:
         """
         Removes the CloudOutputDevice from the received device ids and marks the specific printers as "removed from

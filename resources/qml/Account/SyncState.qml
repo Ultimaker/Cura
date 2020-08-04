@@ -94,7 +94,7 @@ Row // Sync state icon + message
         {
             id: updatePackagesButton
             text: catalog.i18nc("@button", "Install pending updates")
-            color: UM.Theme.getColor("secondary_button_text")
+            color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
@@ -116,7 +116,7 @@ Row // Sync state icon + message
         {
             id: accountSyncButton
             text: catalog.i18nc("@button", "Check for account updates")
-            color: UM.Theme.getColor("secondary_button_text")
+            color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
