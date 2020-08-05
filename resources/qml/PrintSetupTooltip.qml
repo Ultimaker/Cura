@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -59,22 +59,39 @@ UM.PointingRectangle
         base.opacity = 0;
     }
 
-    Label
+    MouseArea
     {
-        id: label;
-        anchors
+        anchors.fill: parent
+        hoverEnabled: true
+        onHoveredChanged:
         {
-            top: parent.top;
-            topMargin: UM.Theme.getSize("tooltip_margins").height;
-            left: parent.left;
-            leftMargin: UM.Theme.getSize("tooltip_margins").width;
-            right: parent.right;
-            rightMargin: UM.Theme.getSize("tooltip_margins").width;
+            if(containsMouse && base.opacity > 0)
+            {
+                base.show(Qt.point(base.x + base.width, base.y + UM.Theme.getSize("tooltip_arrow_margins").height));
+            }
+            else
+            {
+                base.hide();
+            }
         }
-        wrapMode: Text.Wrap;
-        textFormat: Text.RichText
-        font: UM.Theme.getFont("default");
-        color: UM.Theme.getColor("tooltip_text");
-        renderType: Text.NativeRendering
+
+        Label
+        {
+            id: label
+            anchors
+            {
+                top: parent.top;
+                topMargin: UM.Theme.getSize("tooltip_margins").height;
+                left: parent.left;
+                leftMargin: UM.Theme.getSize("tooltip_margins").width;
+                right: parent.right;
+                rightMargin: UM.Theme.getSize("tooltip_margins").width;
+            }
+            wrapMode: Text.Wrap;
+            textFormat: Text.RichText
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("tooltip_text");
+            renderType: Text.NativeRendering
+        }
     }
 }
