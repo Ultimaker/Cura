@@ -149,9 +149,8 @@ Item
                     {
                         id: managePrinterText
                         anchors.verticalCenter: managePrinterLink.verticalCenter
-                        color: UM.Theme.getColor("monitor_text_link")
+                        color: UM.Theme.getColor("text_link")
                         font: UM.Theme.getFont("default")
-                        linkColor: UM.Theme.getColor("monitor_text_link")
                         text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
                         renderType: Text.NativeRendering
                     }
@@ -164,7 +163,7 @@ Item
                             leftMargin: 6 * screenScaleFactor
                             verticalCenter: managePrinterText.verticalCenter
                         }
-                        color: UM.Theme.getColor("monitor_text_link")
+                        color: UM.Theme.getColor("text_link")
                         source: UM.Theme.getIcon("external_link")
                         width: 12 * screenScaleFactor
                         height: 12 * screenScaleFactor
