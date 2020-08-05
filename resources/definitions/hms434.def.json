@@ -12,7 +12,7 @@
         "exclude_materials": [
  "chromatik_pla",
  "dsm_arnitel2045_175", "dsm_novamid1070_175",
- "emotiontech_abs", "emotiontech_asax", "emotiontech_hips", "emotiontech_petg", "emotiontech_pla", "emotiontech_pva-m", "emotiontech_pva-oks", "emotiontech_pva-s", "emotiontech_tpu98a",
+ "emotiontech_abs", "emotiontech_asax", "emotiontech_hips", "emotiontech_petg", "emotiontech_pla", "emotiontech_pva-m", "emotiontech_pva-oks", "emotiontech_pva-s", "emotiontech_tpu98a", "emotiontech_absx", "emotiontech_bvoh",
  "eSUN_PETG_Black", "eSUN_PETG_Grey", "eSUN_PETG_Purple", "eSUN_PLA_PRO_Black", "eSUN_PLA_PRO_Grey", "eSUN_PLA_PRO_Purple", "eSUN_PLA_PRO_White",
  "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu",
  "fiberlogy_hd_pla",
@@ -104,7 +104,7 @@
         "ironing_inset":             {"value": "ironing_line_spacing + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)"},
         "speed_ironing":             {"value": "150"},
  
-        "infill_sparse_density": {"value": 30},
+        "infill_sparse_density": {"value": 100},
         "infill_pattern":        {"value": "'lines'"},
         "infill_before_walls":   {"value": true},
 

@@ -74,7 +74,7 @@ UM.MainWindow
     WelcomeDialogItem
     {
         id: welcomeDialogItem
-        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
+        visible: false
         z: greyOutBackground.z + 1
     }
 
@@ -866,6 +866,7 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "What's New")
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
+        visible: false
     }
 
     Connections

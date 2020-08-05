@@ -72,14 +72,6 @@ Item
             renderType: Text.NativeRendering
         }
 
-        SmallRatingWidget
-        {
-            anchors.left: title.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: title.verticalCenter
-            property var model: details
-        }
-
         Column
         {
             id: properties
@@ -92,14 +84,6 @@ Item
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
             height: childrenRect.height
-            Label
-            {
-                text: catalog.i18nc("@label", "Your rating") + ":"
-                visible: details.type == "plugin"
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text_medium")
-                renderType: Text.NativeRendering
-            }
             Label
             {
                 text: catalog.i18nc("@label", "Version") + ":"
@@ -116,7 +100,7 @@ Item
             }
             Label
             {
-                text: catalog.i18nc("@label", "Author") + ":"
+                text: catalog.i18nc("@label", "Brand") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
                 renderType: Text.NativeRendering
@@ -141,48 +125,6 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             height: childrenRect.height
-            RatingWidget
-            {
-                id: rating
-                visible: details.type == "plugin"
-                packageId: details.id != undefined ? details.id: ""
-                userRating: details.user_rating != undefined ? details.user_rating: 0
-                canRate: toolbox.isInstalled(details.id) && Cura.API.account.isLoggedIn
-
-                onRated:
-                {
-                    toolbox.ratePackage(details.id, rating)
-                    // HACK: This is a far from optimal solution, but without major refactoring, this is the best we can
-                    // do. Since a rework of this is scheduled, it shouldn't live that long...
-                    var index = toolbox.pluginsAvailableModel.find("id", details.id)
-                    if(index != -1)
-                    {
-                        if(details.user_rating == 0)  // User never rated before.
-                        {
-                            toolbox.pluginsAvailableModel.setProperty(index, "num_ratings", details.num_ratings + 1)
-                        }
-
-                        toolbox.pluginsAvailableModel.setProperty(index, "user_rating", rating)
-
-
-                        // Hack; This is because the current selection is an outdated copy, so we need to re-copy it.
-                        base.selection = toolbox.pluginsAvailableModel.getItem(index)
-                        return
-                    }
-                    index = toolbox.pluginsShowcaseModel.find("id", details.id)
-                    if(index != -1)
-                    {
-                        if(details.user_rating == 0) // User never rated before.
-                        {
-                            toolbox.pluginsShowcaseModel.setProperty(index, "user_rating", rating)
-                        }
-                        toolbox.pluginsShowcaseModel.setProperty(index, "num_ratings", details.num_ratings + 1)
-
-                        // Hack; This is because the current selection is an outdated copy, so we need to re-copy it.
-                        base.selection = toolbox.pluginsShowcaseModel.getItem(index)
-                    }
-                }
-            }
             Label
             {
                 text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))

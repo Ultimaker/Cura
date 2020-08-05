@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.6\n"
+"Project-Id-Version: Cura 4.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-04-06 16:33+0000\n"
+"POT-Creation-Date: 2020-07-31 14:10+0000\n"
 "PO-Revision-Date: 2020-02-21 14:59+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -224,6 +224,16 @@ msgstr "빌드 볼륨 온도 안정화"
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
 msgstr "기기의 빌드 볼륨 온도 안정화 지원 여부입니다."
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool label"
+msgid "Always Write Active Tool"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool description"
+msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -3475,6 +3485,76 @@ msgid "The extruder train to use for printing the floors of the support. This is
 msgstr "서포트의 바닥을 프린팅하는 데 사용할 익스트루더. 이것은 다중 압출에 사용됩니다."
 
 #: fdmprinter.def.json
+msgctxt "support_structure label"
+msgid "Support Structure"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure description"
+msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option normal"
+msgid "Normal"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option tree"
+msgid "Tree"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr "트리 서포트 브랜치 각도"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr "브랜치의 각도. 적은 각도를 사용하면 더 수직이 되어 더 안정됩니다. 높은 각도를 사용하면 더 많이 도달할 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr "트리 서포트 브랜치 거리"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgstr "모델에 붙는 브랜치를 떨어뜨리는 거리. 이 거리를 짧게 하면 트리 서포트이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 서포트를 제거하기가 더 어렵게 됩니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr "트리 서포트 브랜치 직경"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
+msgstr "트리 서포트의 가장 얇은 브랜치의 직경. 브랜치가 두꺼울수록 더 견고해집니다. 바닥을 향한 브랜치는 이보다 더 두꺼워집니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr "트리 서포트 브랜치 직경 각도"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr "바닥면을 향할수록 점점 더 두꺼워짐에 따른 브랜치의 직경 각도. 이 각도가 0이면 브랜치는 길이 전체에 균일한 두께를 갖게 됩니다. 약간의 각도가 있으면 트리 서포트의 안정성을 높여 줍니다."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr "트리 서포트 충돌 정밀도"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 정밀도. 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
+
+#: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
 msgstr "서포트 배치"
@@ -3738,6 +3818,16 @@ msgstr "서포트 계단 스텝 최대 폭"
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 msgstr "모델에있는 서포트의 계단 모양 바닥의 최대 폭. 값이 낮으면 서포트을 제거하기가 어려워 서포트만 값이 너무 높으면 불안정한 서포트 구조가 생길 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope label"
+msgid "Support Stair Step Minimum Slope Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope description"
+msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4183,6 +4273,16 @@ msgstr "드롭 다운 서포트 메쉬"
 msgctxt "support_mesh_drop_down description"
 msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
 msgstr "서포트 메쉬 아래의 모든 부분을 지원하여서 서포트 메쉬에 오버행이 없습니다."
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present label"
+msgid "Scene Has Support Meshes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present description"
+msgid "There are support meshes present in the scene. This setting is controlled by Cura."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -4945,8 +5045,8 @@ msgstr "프린팅 순서"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "모든 모델을 한 번에 한 레이어씩 프린팅할 것인지, 아니면 한 모델이 완료될 때까지 기다릴 것인지, 다음 단계로 넘어가기 전에 대한 여부 a) 한 번에 하나의 압출기만 활성화하고 b) 모든 모델은 전체 프린트 헤드가 이동할 수 있는 방식으로 분리되며 모든 모델은 노즐과 X/Y 축 사이의 거리보다 낮습니다. "
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -4970,13 +5070,13 @@ msgstr "겹치는 다른 메쉬의 내부채움율을 수정합니다. 다른 �
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
-msgid "Infill Mesh Order"
-msgstr "메쉬 순서 내부채움"
+msgid "Mesh Processing Rank"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "어떤 내부채움 메쉬가 다른 내부채움 메쉬의 내부에 있는지 결정합니다. 더 높은 차수의 내부채움 메쉬는 더 낮은 차수와 일반적인 메쉬로 내부채움 메쉬의 내부채움을 수정합니다."
+msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5114,74 +5214,14 @@ msgid "Features that haven't completely been fleshed out yet."
 msgstr "아직 구체화되지 않은 기능들."
 
 #: fdmprinter.def.json
-msgctxt "support_tree_enable label"
-msgid "Tree Support"
-msgstr "트리구조 서포트"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable description"
-msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr "가지가 달린 나무 모양의 서포트을 생성합니다. 이것이 재료 사용과 프린팅 시간을 줄여줄 수 있지만, 슬라이싱 시간이 상당히 늘어납니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "트리 서포트 브랜치 각도"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "브랜치의 각도. 적은 각도를 사용하면 더 수직이 되어 더 안정됩니다. 높은 각도를 사용하면 더 많이 도달할 수 있습니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "트리 서포트 브랜치 거리"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "모델에 붙는 브랜치를 떨어뜨리는 거리. 이 거리를 짧게 하면 트리 서포트이 더 많은 접점에서 모델에 접촉하여, 오버행이 더 좋아지지만 서포트를 제거하기가 더 어렵게 됩니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "트리 서포트 브랜치 직경"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter description"
-msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr "트리 서포트의 가장 얇은 브랜치의 직경. 브랜치가 두꺼울수록 더 견고해집니다. 바닥을 향한 브랜치는 이보다 더 두꺼워집니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "트리 서포트 브랜치 직경 각도"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle description"
-msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "바닥면을 향할수록 점점 더 두꺼워짐에 따른 브랜치의 직경 각도. 이 각도가 0이면 브랜치는 길이 전체에 균일한 두께를 갖게 됩니다. 약간의 각도가 있으면 트리 서포트의 안정성을 높여 줍니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "트리 서포트 충돌 정밀도"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 정밀도. 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
-
-#: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
 msgid "Slicing Tolerance"
 msgstr "슬라이싱 허용 오차"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
-msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr "레이어를 대각선 방향으로 슬라이스하는 방법. 레이어 영역은 레이어의 중앙이 서피스와 교차하는 부분(중간)을 기준으로 생성됩니다. 또는 각 레이어에 레이어의 높이 전체의 볼륨에 들어가는 영역(배타적)이나 레이어 안의 어느 지점에 들어가는 영역(중복)이 있을 수 있습니다. 배타적은 가장 많은 디테일을 포함하고, 중복은 가장 잘 맞게 만들 수 있으며, 중간은 처리 시간이 가장 짧습니다."
+msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
@@ -5452,76 +5492,6 @@ msgstr "지지대에 대한 교차 충진 밀도 이미지"
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
 msgstr "지지대의 해당 위치에서 밝기 값으로 최소 밀도를 결정하는 이미지의 파일 위치."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled label"
-msgid "Spaghetti Infill"
-msgstr "스파게티 내부채움"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled description"
-msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-msgstr "필라멘트가 물체 내부에서 혼란스럽게 뒤 틀릴 수 있도록 필러를 너무 자주 프린팅합니다. 이렇게하면 프린팅 시간이 줄어들지만 예측할 수 없는 행동입니다."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped label"
-msgid "Spaghetti Infill Stepping"
-msgstr "스파게티 내부채움 단계"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped description"
-msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr "스파게티 필링을 단계별로 프린팅할지 또는 프린팅가 끝날 때 모든 필 필라멘트를 압출시킬지 여부."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle label"
-msgid "Spaghetti Maximum Infill Angle"
-msgstr "스파게티 최대 내부채움 각"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle description"
-msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-msgstr "최대 각도 w.r.t. 나중에 스파게티가 채워질 영역에 대한 프린팅 내부의 Z 축. 이 값을 낮추면 모델의 각진 부분이 각 레이어에 채워집니다."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height label"
-msgid "Spaghetti Infill Maximum Height"
-msgstr "스파게티 내부채움 최대 높이"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height description"
-msgid "The maximum height of inside space which can be combined and filled from the top."
-msgstr "상단에서 결합하여 채울 수 있는 내부 공간의 최대 높이입니다."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset label"
-msgid "Spaghetti Inset"
-msgstr "스파게티 삽입"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset description"
-msgid "The offset from the walls from where the spaghetti infill will be printed."
-msgstr "스파게티가 채워지는 벽의 오프셋."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow label"
-msgid "Spaghetti Flow"
-msgstr "스파게티 흐름"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow description"
-msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-msgstr "스파게티 내부채움의 밀도를 조정합니다. 내부채움 밀도는 스파게티 압출 량이 아니라 채워자는 패턴의 줄 간격 만 제어합니다."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume label"
-msgid "Spaghetti Infill Extra Volume"
-msgstr "스파게티 내부채움 추가 양"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume description"
-msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr "스파게티를 채울 때마다 압출되는 총 부피를 조정하는 보정 용어."
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -6389,6 +6359,86 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+#~ msgstr "모든 모델을 한 번에 한 레이어씩 프린팅할 것인지, 아니면 한 모델이 완료될 때까지 기다릴 것인지, 다음 단계로 넘어가기 전에 대한 여부 a) 한 번에 하나의 압출기만 활성화하고 b) 모든 모델은 전체 프린트 헤드가 이동할 수 있는 방식으로 분리되며 모든 모델은 노즐과 X/Y 축 사이의 거리보다 낮습니다. "
+
+#~ msgctxt "infill_mesh_order label"
+#~ msgid "Infill Mesh Order"
+#~ msgstr "메쉬 순서 내부채움"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "어떤 내부채움 메쉬가 다른 내부채움 메쉬의 내부에 있는지 결정합니다. 더 높은 차수의 내부채움 메쉬는 더 낮은 차수와 일반적인 메쉬로 내부채움 메쉬의 내부채움을 수정합니다."
+
+#~ msgctxt "support_tree_enable label"
+#~ msgid "Tree Support"
+#~ msgstr "트리구조 서포트"
+
+#~ msgctxt "support_tree_enable description"
+#~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
+#~ msgstr "가지가 달린 나무 모양의 서포트을 생성합니다. 이것이 재료 사용과 프린팅 시간을 줄여줄 수 있지만, 슬라이싱 시간이 상당히 늘어납니다."
+
+#~ msgctxt "slicing_tolerance description"
+#~ msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+#~ msgstr "레이어를 대각선 방향으로 슬라이스하는 방법. 레이어 영역은 레이어의 중앙이 서피스와 교차하는 부분(중간)을 기준으로 생성됩니다. 또는 각 레이어에 레이어의 높이 전체의 볼륨에 들어가는 영역(배타적)이나 레이어 안의 어느 지점에 들어가는 영역(중복)이 있을 수 있습니다. 배타적은 가장 많은 디테일을 포함하고, 중복은 가장 잘 맞게 만들 수 있으며, 중간은 처리 시간이 가장 짧습니다."
+
+#~ msgctxt "spaghetti_infill_enabled label"
+#~ msgid "Spaghetti Infill"
+#~ msgstr "스파게티 내부채움"
+
+#~ msgctxt "spaghetti_infill_enabled description"
+#~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
+#~ msgstr "필라멘트가 물체 내부에서 혼란스럽게 뒤 틀릴 수 있도록 필러를 너무 자주 프린팅합니다. 이렇게하면 프린팅 시간이 줄어들지만 예측할 수 없는 행동입니다."
+
+#~ msgctxt "spaghetti_infill_stepped label"
+#~ msgid "Spaghetti Infill Stepping"
+#~ msgstr "스파게티 내부채움 단계"
+
+#~ msgctxt "spaghetti_infill_stepped description"
+#~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
+#~ msgstr "스파게티 필링을 단계별로 프린팅할지 또는 프린팅가 끝날 때 모든 필 필라멘트를 압출시킬지 여부."
+
+#~ msgctxt "spaghetti_max_infill_angle label"
+#~ msgid "Spaghetti Maximum Infill Angle"
+#~ msgstr "스파게티 최대 내부채움 각"
+
+#~ msgctxt "spaghetti_max_infill_angle description"
+#~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
+#~ msgstr "최대 각도 w.r.t. 나중에 스파게티가 채워질 영역에 대한 프린팅 내부의 Z 축. 이 값을 낮추면 모델의 각진 부분이 각 레이어에 채워집니다."
+
+#~ msgctxt "spaghetti_max_height label"
+#~ msgid "Spaghetti Infill Maximum Height"
+#~ msgstr "스파게티 내부채움 최대 높이"
+
+#~ msgctxt "spaghetti_max_height description"
+#~ msgid "The maximum height of inside space which can be combined and filled from the top."
+#~ msgstr "상단에서 결합하여 채울 수 있는 내부 공간의 최대 높이입니다."
+
+#~ msgctxt "spaghetti_inset label"
+#~ msgid "Spaghetti Inset"
+#~ msgstr "스파게티 삽입"
+
+#~ msgctxt "spaghetti_inset description"
+#~ msgid "The offset from the walls from where the spaghetti infill will be printed."
+#~ msgstr "스파게티가 채워지는 벽의 오프셋."
+
+#~ msgctxt "spaghetti_flow label"
+#~ msgid "Spaghetti Flow"
+#~ msgstr "스파게티 흐름"
+
+#~ msgctxt "spaghetti_flow description"
+#~ msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
+#~ msgstr "스파게티 내부채움의 밀도를 조정합니다. 내부채움 밀도는 스파게티 압출 량이 아니라 채워자는 패턴의 줄 간격 만 제어합니다."
+
+#~ msgctxt "spaghetti_infill_extra_volume label"
+#~ msgid "Spaghetti Infill Extra Volume"
+#~ msgstr "스파게티 내부채움 추가 양"
+
+#~ msgctxt "spaghetti_infill_extra_volume description"
+#~ msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
+#~ msgstr "스파게티를 채울 때마다 압출되는 총 부피를 조정하는 보정 용어."
 
 #~ msgctxt "material_guid description"
 #~ msgid "GUID of the material. This is set automatically. "

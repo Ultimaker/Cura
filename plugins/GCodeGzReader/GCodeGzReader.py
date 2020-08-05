@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import gzip
@@ -19,7 +19,7 @@ class GCodeGzReader(MeshReader):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-cura-compressed-gcode-file",
-                comment = "Cura Compressed GCode File",
+                comment = "Cura Compressed G-code File",
                 suffixes = ["gcode.gz"]
             )
         )

@@ -253,8 +253,8 @@ class CloudOutputDeviceManager:
 
         max_disp_devices = 3
         if len(new_devices) > max_disp_devices:
-            num_hidden = len(new_devices) - max_disp_devices + 1
-            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:num_hidden]]
+            num_hidden = len(new_devices) - max_disp_devices
+            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:max_disp_devices]]
             device_name_list.append(self.I18N_CATALOG.i18nc("info:hidden list items", "<li>... and {} others</li>", num_hidden))
             device_names = "".join(device_name_list)
         else:
@@ -262,7 +262,7 @@ class CloudOutputDeviceManager:
 
         message_text = self.I18N_CATALOG.i18nc(
             "info:status",
-            "Cloud printers added from your account:<ul>{}</ul>",
+            "Printers added from Digital Factory:<ul>{}</ul>",
             device_names
         )
         message.setText(message_text)
@@ -290,7 +290,6 @@ class CloudOutputDeviceManager:
             self._remote_clusters[old_cluster_id].close()
             del self._remote_clusters[old_cluster_id]
             self._remote_clusters[new_cloud_output_device.key] = new_cloud_output_device
-
 
     def _devicesRemovedFromAccount(self, removed_device_ids: Set[str]) -> None:
         """
@@ -321,34 +320,35 @@ class CloudOutputDeviceManager:
         self._removed_printers_message = Message(
                 title = self.I18N_CATALOG.i18ncp(
                         "info:status",
-                        "Cloud connection is not available for a printer",
-                        "Cloud connection is not available for some printers",
+                        "A cloud connection is not available for a printer",
+                        "A cloud connection is not available for some printers",
                         len(self.reported_device_ids)
                 )
         )
-        device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
+        device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.I18N_CATALOG.i18ncp(
                 "info:status",
-                "The following cloud printer is not linked to your account:\n",
-                "The following cloud printers are not linked to your account:\n",
+                "This printer is not linked to the Digital Factory:",
+                "These printers are not linked to the Digital Factory:",
                 len(self.reported_device_ids)
         )
+        message_text += "<br/><ul>{}</ul><br/>".format(device_names)
+        digital_factory_string = self.I18N_CATALOG.i18nc("info:name", "Ultimaker Digital Factory")
+
         message_text += self.I18N_CATALOG.i18nc(
                 "info:status",
-                "<ul>{}</ul>\nTo establish a connection, please visit the "
-                "<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>.",
-                device_names
+                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>.".format(digital_factory_string))
         )
         self._removed_printers_message.setText(message_text)
         self._removed_printers_message.addAction("keep_printer_configurations_action",
                                                  name = self.I18N_CATALOG.i18nc("@action:button", "Keep printer configurations"),
                                                  icon = "",
-                                                 description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
+                                                 description = "Keep cloud printers in Ultimaker Cura when not connected to your account.",
                                                  button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
         self._removed_printers_message.addAction("remove_printers_action",
                                                  name = self.I18N_CATALOG.i18nc("@action:button", "Remove printers"),
                                                  icon = "",
-                                                 description = "Remove the cloud printer(s) which are not linked to your account.",
+                                                 description = "Remove cloud printer(s) which aren't linked to your account.",
                                                  button_style = Message.ActionButtonStyle.SECONDARY,
                                                  button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
         self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
@@ -423,13 +423,17 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry(self.META_HOST_GUID, device.clusterData.host_guid)
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
-        machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
-            "@label ({} is printer name)",
-            "{} will be removed until the next account sync. <br> To remove {} permanently, "
-            "visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. "
-            "<br><br>Are you sure you want to remove {} temporarily?",
-            device.name, device.name, device.name
-        ))
+        digital_factory_string = self.I18N_CATALOG.i18nc("info:name", "Ultimaker Digital Factory")
+        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>".format(digital_factory_string)
+        removal_warning_string = self.I18N_CATALOG.i18nc(
+            "@label ({printer_name} is replaced with the name of the printer",
+            "{printer_name} will be removed until the next account sync. <br> To remove {printer_name} permanently, "
+            "visit {digital_factory_link}"
+            "<br><br>Are you sure you want to remove {printer_name} temporarily?".format(printer_name = device.name,
+                                                                                         digital_factory_link = digital_factory_link)
+        )
+
+        machine.setMetaDataEntry("removal_warning", removal_warning_string)
         machine.addConfiguredConnectionType(device.connectionType.value)
 
     def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:

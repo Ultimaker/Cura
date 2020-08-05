@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -522,7 +522,7 @@ class CommandBuffer:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or 3 < len(sys.argv):
-        print("Usage: <input gcode> [output gcode]")
+        print("Usage: <input g-code> [output g-code]")
         sys.exit(1)
     in_filename = sys.argv[1]
     out_filename = None
