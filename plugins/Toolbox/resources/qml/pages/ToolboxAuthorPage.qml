@@ -58,6 +58,7 @@ Item
             }
             text: details && details.name ? details.name : ""
             font: UM.Theme.getFont("large_bold")
+            color: UM.Theme.getColor("text_medium")
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
@@ -68,6 +69,7 @@ Item
             id: description
             text: details && details.description ? details.description : ""
             font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_medium")
             anchors
             {
                 top: title.bottom
