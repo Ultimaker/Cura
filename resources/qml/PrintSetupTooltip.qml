@@ -11,7 +11,7 @@ UM.PointingRectangle
     id: base
     property real sourceWidth: 0
     width: UM.Theme.getSize("tooltip").width
-    height: label.height + UM.Theme.getSize("tooltip_margins").height * 2
+    height: textScroll.height + UM.Theme.getSize("tooltip_margins").height * 2
     color: UM.Theme.getColor("tooltip")
 
     arrowSize: UM.Theme.getSize("default_arrow").width
@@ -75,23 +75,29 @@ UM.PointingRectangle
             }
         }
 
-        Label
+        ScrollView
         {
-            id: label
-            anchors
-            {
-                top: parent.top;
-                topMargin: UM.Theme.getSize("tooltip_margins").height;
-                left: parent.left;
-                leftMargin: UM.Theme.getSize("tooltip_margins").width;
-                right: parent.right;
-                rightMargin: UM.Theme.getSize("tooltip_margins").width;
+            id: textScroll
+            width: parent.width
+            height: Math.min(label.height, base.parent.height)
+
+            ScrollBar.horizontal: ScrollBar {
+                active: false //Only allow vertical scrolling. We should grow vertically only, but due to how the label is positioned it allocates space in the ScrollView horizontally.
             }
-            wrapMode: Text.Wrap;
-            textFormat: Text.RichText
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("tooltip_text");
-            renderType: Text.NativeRendering
+
+            Label
+            {
+                id: label
+                x: UM.Theme.getSize("tooltip_margins").width
+                y: UM.Theme.getSize("tooltip_margins").height
+                width: base.width - UM.Theme.getSize("tooltip_margins").width * 2
+
+                wrapMode: Text.Wrap;
+                textFormat: Text.RichText
+                font: UM.Theme.getFont("default");
+                color: UM.Theme.getColor("tooltip_text");
+                renderType: Text.NativeRendering
+            }
         }
     }
 }
