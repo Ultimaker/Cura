@@ -4413,6 +4413,7 @@
                     "description": "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate.",
                     "type": "bool",
                     "default_value": false,
+                    "value": "support_structure == 'tree'",
                     "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
