@@ -572,7 +572,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
-        self._dialog.setUpdatableMachinesModel(updatable_machines)
+        self._dialog.setUpdatableMachines(updatable_machines)
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)

@@ -155,7 +155,7 @@ class WorkspaceDialog(QObject):
     def updatableMachinesModel(self) -> UpdatableMachinesModel:
         return cast(UpdatableMachinesModel, self._updatable_machines_model)
 
-    def setUpdatableMachinesModel(self, updatable_machines: List[GlobalStack]) -> None:
+    def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
         self._updatable_machines_model.update(updatable_machines)
         self.updatableMachinesChanged.emit()
 
