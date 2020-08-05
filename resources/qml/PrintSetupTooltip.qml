@@ -67,7 +67,7 @@ UM.PointingRectangle
         {
             if(containsMouse && base.opacity > 0)
             {
-                base.show(Qt.point(base.x + base.width, base.y + UM.Theme.getSize("tooltip_arrow_margins").height));
+                base.show(Qt.point(target.x - 1, target.y - UM.Theme.getSize("tooltip_arrow_margins").height / 2)); //Same arrow position as before.
             }
             else
             {
