@@ -1212,9 +1212,8 @@ class MachineManager(QObject):
             return
 
         if not available_quality_types:
-            if global_stack.qualityChanges == empty_quality_changes_container:
-                Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
-                self._setEmptyQuality()
+            Logger.log("i", "No available quality types found, setting all qualities to empty (Not Supported).")
+            self._setEmptyQuality()
             return
 
         if current_quality_type in available_quality_types:
