@@ -365,6 +365,9 @@ class QualityManagementModel(ListModel):
             # CURA-6913 Note that custom qualities can be based on "not supported", so the quality group can be None.
             quality_group = quality_group_dict.get(quality_changes_group.quality_type)
             quality_type = quality_changes_group.quality_type
+
+            if not quality_changes_group.is_available:
+                continue
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
