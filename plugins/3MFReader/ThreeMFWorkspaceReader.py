@@ -672,7 +672,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.addContainer(global_stack)
         else:
             # Find the machine which will be overridden
-            global_stacks = self._container_registry.findContainerStacks(name = self._dialog.getMachineToOverride(), type = "machine")
+            global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
                                                      "Project file <filename>{0}</filename> is made using profiles that"
