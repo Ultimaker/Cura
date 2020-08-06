@@ -333,6 +333,7 @@ class QualityManagementModel(ListModel):
                     "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)
+
         # Sort by layer_height for built-in qualities
         item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
@@ -341,6 +342,9 @@ class QualityManagementModel(ListModel):
         available_intent_list = [i for i in available_intent_list if i[0] != "default"]
         result = []
         for intent_category, quality_type in available_intent_list:
+            if not quality_group_dict[quality_type].is_available:
+                continue
+            
             result.append({
                 "name": quality_group_dict[quality_type].name,  # Use the quality name as the display name
                 "is_read_only": True,
