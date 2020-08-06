@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
@@ -20,6 +20,7 @@ UM.Dialog
 
     property int comboboxHeight: 15 * screenScaleFactor
     property int spacerHeight: 10 * screenScaleFactor
+    property int doubleSpacerHeight: 20 * screenScaleFactor
 
     onClosing: manager.notifyClosed()
     onVisibleChanged:
@@ -35,7 +36,7 @@ UM.Dialog
     Item
     {
         anchors.fill: parent
-        anchors.margins: 20 * screenScaleFactor
+        anchors.margins: 10 * screenScaleFactor
 
         UM.I18nCatalog
         {
@@ -79,7 +80,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
 
@@ -101,35 +102,53 @@ UM.Dialog
                 }
                 UM.TooltipArea
                 {
-                    id: machineResolveTooltip
+                    id: machineResolveStrategyTooltip
                     width: (parent.width / 3) | 0
                     height: visible ? comboboxHeight : 0
-                    visible: manager.machineConflict
+                    visible: base.visible && machineResolveComboBox.model.count > 1
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
-                        model: ListModel
-                        {
-                            Component.onCompleted:
-                            {
-                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update") + " " + manager.machineName});
-                                append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new")});
-                            }
-                        }
-                        Connections
-                        {
-                            target: manager
-                            onMachineNameChanged:
-                            {
-                                machineResolveComboBox.model.get(0).label = catalog.i18nc("@action:ComboBox option", "Update") + " " + manager.machineName;
-                            }
-                        }
-                        textRole: "label"
                         id: machineResolveComboBox
+                        model: manager.updatableMachinesModel
+                        visible: machineResolveStrategyTooltip.visible
+                        textRole: "displayName"
                         width: parent.width
-                        onActivated:
+                        onCurrentIndexChanged:
                         {
-                            manager.setResolveStrategy("machine", resolveStrategiesModel.get(index).key)
+                            if (model.getItem(currentIndex).id == "new"
+                                && model.getItem(currentIndex).type == "default_option")
+                            {
+                                manager.setResolveStrategy("machine", "new")
+                            }
+                            else
+                            {
+                                manager.setResolveStrategy("machine", "override")
+                                manager.setMachineToOverride(model.getItem(currentIndex).id)
+                            }
+                        }
+
+                        onVisibleChanged:
+                        {
+                            if (!visible) {return}
+
+                            currentIndex = 0
+                            // If the project printer exists in Cura, set it as the default dropdown menu option.
+                            // No need to check object 0, which is the "Create new" option
+                            for (var i = 1; i < model.count; i++)
+                            {
+                                if (model.getItem(i).name == manager.machineName)
+                                {
+                                    currentIndex = i
+                                    break
+                                }
+                            }
+                            // The project printer does not exist in Cura. If there is at least one printer of the same
+                            // type, select the first one, else set the index to "Create new"
+                            if (currentIndex == 0 && model.count > 1)
+                            {
+                                currentIndex = 1
+                            }
                         }
                     }
                 }
@@ -168,7 +187,7 @@ UM.Dialog
 
             Item // Spacer
             {
-                height: spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
             Row
@@ -271,7 +290,7 @@ UM.Dialog
             }
             Item // Spacer
             {
-                height: spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
             Row
@@ -333,7 +352,7 @@ UM.Dialog
 
             Item // Spacer
             {
-                height: spacerHeight
+                height: doubleSpacerHeight
                 width: height
             }
 
