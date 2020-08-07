@@ -5,11 +5,12 @@ from configparser import ConfigParser
 import zipfile
 import os
 import json
-from typing import cast, Dict, List, Optional, Tuple, Any, Set
+from typing import cast, Dict, List, Optional, Tuple, Any, Set, Union
 
 import xml.etree.ElementTree as ET
 
 from UM.FileHandler.FileReader import FileReader
+from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
@@ -55,12 +56,12 @@ _ignored_machine_network_metadata = {
 
 
 class ContainerInfo:
-    def __init__(self, file_name: Optional[str], serialized: Optional[str], parser: Optional[ConfigParser]) -> None:
-        self.file_name = file_name
-        self.serialized = serialized
-        self.parser = parser
-        self.container = None
-        self.definition_id = None
+    def __init__(self, file_name: Optional[str] = None, serialized: Optional[str] = None, parser: Optional[ConfigParser] = None) -> None:
+        self.file_name = file_name  # type: Optional[str]
+        self.serialized = serialized  # type: Optional[str]
+        self.parser = parser  # type: Optional[ConfigParser]
+        self.container = None  # type: Optional[InstanceContainer]
+        self.definition_id = None  # type: Optional[str]
 
 
 class QualityChangesInfo:
@@ -72,34 +73,33 @@ class QualityChangesInfo:
 
 class MachineInfo:
     def __init__(self) -> None:
-        self.container_id = None
-        self.name = None
-        self.definition_id = None
+        self.container_id = None  # type: Optional[str]
+        self.name = None  # type: Optional[str]
+        self.definition_id = None  # type: Optional[str]
 
         self.metadata_dict = {}  # type: Dict[str, str]
 
-        self.quality_type = None
-        self.intent_category = None
-        self.custom_quality_name = None
-        self.quality_changes_info = QualityChangesInfo()
-        self.variant_info = None
+        self.quality_type = None  # type: Optional[str]
+        self.intent_category = None  # type: Optional[str]
+        self.custom_quality_name = None  # type: Optional[str]
+        self.quality_changes_info = None  # type: Optional[QualityChangesInfo]
+        self.variant_info = None  # type: Optional[ContainerInfo]
+        self.definition_changes_info = None  # type: Optional[ContainerInfo]
+        self.user_changes_info = None  # type: Optional[ContainerInfo]
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
-
-        self.extruder_info_dict = {} # type: Dict[str, ExtruderInfo]
+        self.extruder_info_dict = {}  # type: Dict[str, ExtruderInfo]
 
 
 class ExtruderInfo:
     def __init__(self) -> None:
-        self.position = None
-        self.enabled = True
-        self.variant_info = None
-        self.root_material_id = None
+        self.position = None  # type: Optional[str]
+        self.enabled = True  # type: bool
+        self.variant_info = None  # type: Optional[ContainerInfo]
+        self.root_material_id = None  # type: Optional[str]
 
-        self.definition_changes_info = None
-        self.user_changes_info = None
-        self.intent_info = None
+        self.definition_changes_info = None  # type: Optional[ContainerInfo]
+        self.user_changes_info = None  # type: Optional[ContainerInfo]
+        self.intent_info = None  # type: Optional[ContainerInfo]
 
 
 class ThreeMFWorkspaceReader(WorkspaceReader):
@@ -330,7 +330,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.quality_changes_info = QualityChangesInfo()
 
         quality_changes_info_list = []
-        instance_container_info_dict = {}  # id -> parser
+        instance_container_info_dict = {}  # type: Dict[str, ContainerInfo]  # id -> parser
         for instance_container_file_name in instance_container_files:
             container_id = self._stripFileToId(instance_container_file_name)
 
@@ -352,16 +352,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if container_type == "quality_changes":
                 quality_changes_info_list.append(container_info)
 
-                if not parser.has_option("metadata", "position"):
-                    self._machine_info.quality_changes_info.name = parser["general"]["name"]
-                    self._machine_info.quality_changes_info.global_info = container_info
-                else:
-                    position = parser["metadata"]["position"]
-                    self._machine_info.quality_changes_info.extruder_info_dict[position] = container_info
+                if self._machine_info.quality_changes_info:
+                    if not parser.has_option("metadata", "position"):
+                        self._machine_info.quality_changes_info.name = parser["general"]["name"]
+                        self._machine_info.quality_changes_info.global_info = container_info
+                    else:
+                        position = parser["metadata"]["position"]
+                        self._machine_info.quality_changes_info.extruder_info_dict[position] = container_info
 
                 custom_quality_name = parser["general"]["name"]
-                values = parser["values"] if parser.has_section("values") else dict()
-                num_settings_overridden_by_quality_changes += len(values)
+                if parser.has_section("values"):
+                    num_settings_overridden_by_quality_changes += len(parser["values"])
+
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
                                                                                   type = "quality_changes")
@@ -443,7 +445,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
-            quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+            quality_parser = cast(ConfigParser, instance_container_info_dict[quality_container_id].parser)
+            quality_type = quality_parser["metadata"]["quality_type"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")
@@ -497,7 +500,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             extruder_info = ExtruderInfo()
             extruder_info.position = position
             if parser.has_option("metadata", "enabled"):
-                extruder_info.enabled = parser["metadata"]["enabled"]
+                extruder_info.enabled = parseBool(parser["metadata"]["enabled"])
             if variant_id not in ("empty", "empty_variant"):
                 if variant_id in instance_container_info_dict:
                     extruder_info.variant_info = instance_container_info_dict[variant_id]
@@ -591,7 +594,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.intent_category = intent_category
 
         is_printer_group = False
-        if machine_conflict:
+        if machine_conflict and existing_global_stack:
             group_name = existing_global_stack.getMetaDataEntry("group_name")
             if group_name is not None:
                 is_printer_group = True
@@ -616,7 +619,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setMachineType(machine_type)
         self._dialog.setExtruders(extruders)
         self._dialog.setVariantType(variant_type_name)
-        self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
+        self._dialog.setHasObjectsOnPlate(CuraApplication.getInstance().platformActivity)
         self._dialog.show()
 
         # Block until the dialog is closed.
