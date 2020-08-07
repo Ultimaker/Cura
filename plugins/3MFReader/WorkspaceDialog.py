@@ -6,9 +6,9 @@ from PyQt5.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
 from UM.FlameProfiler import pyqtSlot
 from UM.PluginRegistry import PluginRegistry
 from UM.Application import Application
+from UM.Settings.ContainerStack import ContainerStack
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from cura.Settings.GlobalStack import GlobalStack
 from .UpdatableMachinesModel import UpdatableMachinesModel
 
 import os
@@ -155,7 +155,7 @@ class WorkspaceDialog(QObject):
     def updatableMachinesModel(self) -> UpdatableMachinesModel:
         return cast(UpdatableMachinesModel, self._updatable_machines_model)
 
-    def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
+    def setUpdatableMachines(self, updatable_machines: List[ContainerStack]) -> None:
         self._updatable_machines_model.update(updatable_machines)
         self.updatableMachinesChanged.emit()
 

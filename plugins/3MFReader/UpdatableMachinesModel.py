@@ -6,7 +6,7 @@ from typing import Dict, List
 from PyQt5.QtCore import Qt
 
 from UM.Qt.ListModel import ListModel
-from cura.Settings.GlobalStack import GlobalStack
+from UM.Settings.ContainerStack import ContainerStack
 
 create_new_list_item = {
     "id":   "new",
@@ -30,7 +30,7 @@ class UpdatableMachinesModel(ListModel):
         self.addRoleName(Qt.UserRole + 3, "displayName")
         self.addRoleName(Qt.UserRole + 4, "type")  # Either "default_option" or "machine"
 
-    def update(self, machines: List[GlobalStack]) -> None:
+    def update(self, machines: List[ContainerStack]) -> None:
         items = [create_new_list_item]  # type: List[Dict[str, str]]
 
         for machine in sorted(machines, key = lambda printer: printer.name):

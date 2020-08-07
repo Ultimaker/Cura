@@ -9,6 +9,7 @@ from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
+from UM.FileHandler.FileReader import FileReader
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
@@ -64,9 +65,9 @@ class ContainerInfo:
 
 class QualityChangesInfo:
     def __init__(self) -> None:
-        self.name = None
-        self.global_info = None
-        self.extruder_info_dict = {} # type: Dict[str, ContainerInfo]
+        self.name = None  # type: Optional[str]
+        self.global_info = None  # type: Optional[ContainerInfo]
+        self.extruder_info_dict = {}  # type: Dict[str, ContainerInfo]
 
 
 class MachineInfo:
@@ -80,7 +81,7 @@ class MachineInfo:
         self.quality_type = None
         self.intent_category = None
         self.custom_quality_name = None
-        self.quality_changes_info = None
+        self.quality_changes_info = QualityChangesInfo()
         self.variant_info = None
 
         self.definition_changes_info = None
@@ -109,12 +110,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
-        self._3mf_mesh_reader = None
+        self._3mf_mesh_reader = None  # type: Optional[FileReader]
         self._container_registry = ContainerRegistry.getInstance()
 
         # suffixes registered with the MimeTypes don't start with a dot '.'
         self._definition_container_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(DefinitionContainer)).preferredSuffix
-        self._material_container_suffix = None # We have to wait until all other plugins are loaded before we can set it
+        # We have to wait until all other plugins are loaded before we can set it
+        self._material_container_suffix = None  # type: Optional[str]
         self._instance_container_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(InstanceContainer)).preferredSuffix
         self._container_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(ContainerStack)).preferredSuffix
         self._extruder_stack_suffix = "." + cast(MimeType, ContainerRegistry.getMimeTypeForContainer(ExtruderStack)).preferredSuffix
@@ -126,22 +128,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - variant
         self._ignored_instance_container_types = {"quality", "variant"}
 
-        self._resolve_strategies = {} # type: Dict[str, str]
+        self._resolve_strategies = {}  # type: Dict[str, Optional[str]]
 
-        self._id_mapping = {} # type: Dict[str, str]
+        self._id_mapping = {}  # type: Dict[str, str]
 
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
-        self._old_new_materials = {} # type: Dict[str, str]
-        self._machine_info = None
+        self._old_new_materials = {}  # type: Dict[str, str]
+        self._machine_info = None  # type: Optional[MachineInfo]
 
-    def _clearState(self):
+    def _clearState(self) -> None:
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
 
-    def getNewId(self, old_id: str):
+    def getNewId(self, old_id: str) -> str:
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
 
         This has nothing to do with speed, but with getting consistent new naming for instances & objects.
@@ -188,50 +190,30 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         if len(global_stack_file_list) > 1:
             Logger.log("e", "More than one global stack file found: [{file_list}]".format(file_list = global_stack_file_list))
-            #But we can recover by just getting the first global stack file.
+            # But we can recover by just getting the first global stack file.
         if len(global_stack_file_list) == 0:
             Logger.log("e", "No global stack file found!")
             raise FileNotFoundError("No global stack file found!")
 
         return global_stack_file_list[0], extruder_stack_file_list
 
-    def preRead(self, file_name, show_dialog=True, *args, **kwargs):
-        """Read some info so we can make decisions
-
-        :param file_name:
-        :param show_dialog: In case we use preRead() to check if a file is a valid project file,
-                            we don't want to show a dialog.
+    def _readDefinitionContainers(self, archive: zipfile.ZipFile) -> Dict[str, List[Dict[str, Any]]]:
         """
-        self._clearState()
+        Reads all the definition container files included in the project file (archive)
 
-        self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
-        if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
-            pass
-        else:
-            Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
-            return WorkspaceReader.PreReadResult.failed
+        :param archive: The project file being read
+        :return: A mapping between the container types (machine or extruder) and a list of all the containers of that
+                 type found in the project file
+        """
+        cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]  # type: List[str]
 
-        self._machine_info = MachineInfo()
-        machine_type = ""
-        variant_type_name = i18n_catalog.i18nc("@label", "Nozzle")
+        definition_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
+        definition_containers = {
+            "machine": [],
+            "extruder": []
+        }  # type: Dict[str, List[Dict[str, Any]]]
 
-        # Check if there are any conflicts, so we can ask the user.
-        archive = zipfile.ZipFile(file_name, "r")
-        cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
-
-        resolve_strategy_keys = ["machine", "material", "quality_changes"]
-        self._resolve_strategies = {k: None for k in resolve_strategy_keys}
-        containers_found_dict = {k: False for k in resolve_strategy_keys}
-
-        #
-        # Read definition containers
-        #
-        machine_definition_id = None
-        updatable_machines = []
-        machine_definition_container_count = 0
-        extruder_definition_container_count = 0
-        definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
-        for definition_container_file in definition_container_files:
+        for definition_container_file in definition_files:
             container_id = self._stripFileToId(definition_container_file)
             definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
             serialized = archive.open(definition_container_file).read().decode("utf-8")
@@ -242,34 +224,83 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 definition_container = definitions[0]
 
             definition_container_type = definition_container.get("type")
-            if definition_container_type == "machine":
-                machine_definition_id = container_id
-                machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
-                if machine_definition_containers:
-                    updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
-                machine_type = definition_container["name"]
-                variant_type_name = definition_container.get("variants_name", variant_type_name)
-
-                machine_definition_container_count += 1
-            elif definition_container_type == "extruder":
-                extruder_definition_container_count += 1
+            if definition_container_type in ["machine", "extruder"]:
+                definition_containers[definition_container_type].append(definition_container)
             else:
                 Logger.log("w", "Unknown definition container type %s for %s",
                            definition_container_type, definition_container_file)
             QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
-        if machine_definition_container_count != 1:
+        return definition_containers
+
+    def _getUpdatableMachines(self, machine_definition_id: str) -> List[ContainerStack]:
+        """
+        Finds and returns a list of all the machines that are of the same definition type as the machine in the project
+        file.
+        :param machine_definition_id: The id of the definition of the machine included in the project file
+        :return:
+        """
+        updatable_machines = []  # type: List[ContainerStack]
+        machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
+        if machine_definition_containers:
+            updatable_machines = [machine for machine in
+                                  self._container_registry.findContainerStacks(type = "machine") if
+                                  machine.definition == machine_definition_containers[0]]
+        return updatable_machines
+
+    def preRead(self, file_name: str, show_dialog: bool = True, *args, **kwargs) -> WorkspaceReader.PreReadResult:
+        """Read some info so we can make decisions
+
+        :param file_name: The project file (.3mf) to be opened.
+        :param show_dialog: In case we use preRead() to check if a file is a valid project file,
+                            we don't want to show a dialog.
+        """
+        self._clearState()
+
+        self._3mf_mesh_reader = CuraApplication.getInstance().getMeshFileHandler().getReaderForFile(file_name)
+        if not self._3mf_mesh_reader or \
+                self._3mf_mesh_reader.preRead(file_name) != WorkspaceReader.PreReadResult.accepted:
+            Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
+            return WorkspaceReader.PreReadResult.failed
+
+        self._machine_info = MachineInfo()
+        variant_type_name = i18n_catalog.i18nc("@label", "Nozzle")  # type: str
+
+        # Check if there are any conflicts, so we can ask the user.
+        archive = zipfile.ZipFile(file_name, "r")  # type: zipfile.ZipFile
+        cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]  # type: List[str]
+
+        resolve_strategy_keys = ["machine", "material", "quality_changes"]
+        self._resolve_strategies = {k: None for k in resolve_strategy_keys}
+        containers_found_dict = {k: False for k in resolve_strategy_keys}  # type: Dict[str, bool]
+
+        # Read definition Containers
+        definition_containers = self._readDefinitionContainers(archive)  # type: Dict[str, List[Dict[str, Any]]]
+
+        if len(definition_containers["machine"]) != 1:
             return WorkspaceReader.PreReadResult.failed  # Not a workspace file but ordinary 3MF.
+
+        # Extract machine info from the definition containers
+        machine_definition_id = definition_containers["machine"][0]["id"]  # type: str
+        machine_type = definition_containers["machine"][0]["name"]  # type: str
+        variant_type_name = definition_containers["machine"][0].get("variants_name", variant_type_name)
+        updatable_machines = self._getUpdatableMachines(machine_definition_id)  # type: List[ContainerStack]
 
         material_ids_to_names_map = {}
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
         reverse_material_id_dict = {}
-        if self._material_container_suffix is None:
-            self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).preferredSuffix
+        material_container_files = []
+        if not self._material_container_suffix:
+            xml_material_mime_type = ContainerRegistry.getMimeTypeForContainer(xml_material_profile)
+            if xml_material_mime_type:
+                self._material_container_suffix = xml_material_mime_type.preferredSuffix
         if xml_material_profile:
-            material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
+
+            if self._material_container_suffix:
+                material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
+
             for material_container_file in material_container_files:
                 container_id = self._stripFileToId(material_container_file)
 
@@ -544,7 +575,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return WorkspaceReader.PreReadResult.accepted
 
         # prepare data for the dialog
-        num_extruders = extruder_definition_container_count
+        num_extruders = len(definition_containers["extruder"])
         if num_extruders == 0:
             num_extruders = 1  # No extruder stacks found, which means there is one extruder
 
