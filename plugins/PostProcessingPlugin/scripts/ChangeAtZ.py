@@ -1101,7 +1101,7 @@ class ChangeAtZProcessor:
 
         # if it's not a linear move, we don't care
         if linear_command is None:
-            return
+            return line
 
         # get our linear move parameters
         feed_rate = linear_command.Arguments["F"]
