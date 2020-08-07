@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Provides capabilities to read and write XML-based material profiles.",
-    "api": "7.2.0",
+    "api": "7.3.0",
     "i18n-catalog": "cura"
 }
