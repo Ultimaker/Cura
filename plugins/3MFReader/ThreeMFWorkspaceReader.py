@@ -290,14 +290,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         material_ids_to_names_map = {}
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
-        reverse_material_id_dict = {}
-        material_container_files = []
+        reverse_material_id_dict = {}  # type: Dict[str, str]
+        material_container_files = []  # type: List[str]
         if not self._material_container_suffix:
             xml_material_mime_type = ContainerRegistry.getMimeTypeForContainer(xml_material_profile)
             if xml_material_mime_type:
                 self._material_container_suffix = xml_material_mime_type.preferredSuffix
-        if xml_material_profile:
 
+        if xml_material_profile:
             if self._material_container_suffix:
                 material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
 
@@ -1129,17 +1129,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
-    def _updateActiveMachine(self, global_stack):
+    def _updateActiveMachine(self, global_stack: GlobalStack) -> None:
         # Actually change the active machine.
-        machine_manager = Application.getInstance().getMachineManager()
+        machine_manager = CuraApplication.getInstance().getMachineManager()
         container_tree = ContainerTree.getInstance()
 
         machine_manager.setActiveMachine(global_stack.getId())
 
         # Set metadata fields that are missing from the global stack
-        for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
-                global_stack.setMetaDataEntry(key, value)
+        if self._machine_info:
+            for key, value in self._machine_info.metadata_dict.items():
+                if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
+                    global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
             quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
@@ -1172,7 +1173,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         global_stack.containersChanged.emit(global_stack.getTop())
 
     @staticmethod
-    def _stripFileToId(file):
+    def _stripFileToId(file: str) -> str:
         mime_type = MimeTypeDatabase.getMimeTypeForFile(file)
         file = mime_type.stripExtension(file)
         return file.replace("Cura/", "")
@@ -1181,7 +1182,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return self._container_registry.getContainerForMimeType(MimeTypeDatabase.getMimeType("application/x-ultimaker-material-profile"))
 
     @staticmethod
-    def _getContainerIdListFromSerialized(serialized):
+    def _getContainerIdListFromSerialized(serialized: str) -> List[str]:
         """Get the list of ID's of all containers in a container stack by partially parsing it's serialized data."""
 
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
@@ -1205,7 +1206,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return container_ids
 
     @staticmethod
-    def _getMachineNameFromSerializedStack(serialized):
+    def _getMachineNameFromSerializedStack(serialized: str) -> str:
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
