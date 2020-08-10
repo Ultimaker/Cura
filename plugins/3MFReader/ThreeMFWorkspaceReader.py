@@ -502,6 +502,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Now we know which material is in which extruder. Let's use that to sort the material_labels according to
         # their extruder position
         material_labels = [material_name for pos, material_name in sorted(materials_in_extruders_dict.items())]
+        machine_extruder_count = self._getMachineExtruderCount()
+        if machine_extruder_count:
+            material_labels = material_labels[:machine_extruder_count]
 
         num_visible_settings = 0
         try:
