@@ -666,7 +666,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Printers with modifiable number of extruders (such as CFFF) will specify a machine_extruder_count in their
             # quality_changes file. If that's the case, take the extruder count into account when creating the machine
             # or else the extruderList will return only the first extruder, leading to missing non-global settings in
-            # the other extruders. See CURA-7646
+            # the other extruders.
             machine_extruder_count = self._getMachineExtruderCount()  # type: Optional[int]
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id, machine_extruder_count)
             if global_stack:  # Only switch if creating the machine was successful.

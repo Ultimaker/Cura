@@ -68,7 +68,7 @@ class CuraStackBuilder:
 
         # If given, set the machine_extruder_count when creating the machine, or else the extruderList used bellow will
         # not return the correct extruder list (since by default, the machine_extruder_count is 1) in machines with
-        # settable number of extruders. See CURA-7646.
+        # settable number of extruders.
         if machine_extruder_count and 0 <= machine_extruder_count <= len(extruder_dict):
             new_global_stack.setProperty("machine_extruder_count", "value", machine_extruder_count)
 
