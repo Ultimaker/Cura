@@ -934,7 +934,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         :return: The count of the machine's extruders
         """
         machine_extruder_count = None
-        if self._machine_info.definition_changes_info \
+        if self._machine_info \
+                and self._machine_info.definition_changes_info \
                 and "values" in self._machine_info.definition_changes_info.parser \
                 and "machine_extruder_count" in self._machine_info.definition_changes_info.parser["values"]:
             try:
