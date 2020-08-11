@@ -758,21 +758,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Job.yieldThread()
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
-        # Handle quality changes if any
-        self._processQualityChanges(global_stack)
+        if global_stack:
+            # Handle quality changes if any
+            self._processQualityChanges(global_stack)
 
-        # Prepare the machine
-        self._applyChangesToMachine(global_stack, extruder_stack_dict)
+            # Prepare the machine
+            self._applyChangesToMachine(global_stack, extruder_stack_dict)
 
-        Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
-        # Actually change the active machine.
-        #
-        # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
-        # data, but those managers will only update upon a container/container metadata changed signal. Because this
-        # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
-        # they won't take effect until this function is done.
-        # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
-        self._updateActiveMachine(global_stack)
+            Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
+            # Actually change the active machine.
+            #
+            # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
+            # data, but those managers will only update upon a container/container metadata changed signal. Because this
+            # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
+            # they won't take effect until this function is done.
+            # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
+            self._updateActiveMachine(global_stack)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
