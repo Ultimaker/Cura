@@ -72,8 +72,8 @@ class GlobalStacksModel(ListModel):
             section_name = self._catalog.i18nc("@info:title", section_name)
 
             default_removal_warning = self._catalog.i18nc(
-                "@label ({} is object name)",
-                "Are you sure you wish to remove {}? This cannot be undone!", device_name
+                "@label {0} is the name of a printer that's about to be deleted.",
+                "Are you sure you wish to remove {0}? This cannot be undone!", device_name
             )
             removal_warning = container_stack.getMetaDataEntry("removal_warning", default_removal_warning)
 
