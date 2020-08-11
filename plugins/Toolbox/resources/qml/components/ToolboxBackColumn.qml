@@ -48,7 +48,15 @@ Item
         onClicked:
         {
             toolbox.viewPage = "overview"
-            toolbox.filterModelByProp("packages", "package_types", toolbox.viewCategory)
+            if (toolbox.viewCategory == "material")
+            {
+                toolbox.filterModelByProp("authors", "package_types", "material")
+            }
+            else if (toolbox.viewCategory == "plugin")
+            {
+                toolbox.filterModelByProp("packages", "type", "plugin")
+            }
+
         }
         style: ButtonStyle
         {
