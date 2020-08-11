@@ -939,6 +939,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 and "values" in self._machine_info.definition_changes_info.parser \
                 and "machine_extruder_count" in self._machine_info.definition_changes_info.parser["values"]:
             try:
+                # Theoretically, if the machine_extruder_count is a setting formula (e.g. "=3"), this will produce a
+                # value error and the project file loading will load the settings in the first extruder only.
+                # This is not expected to happen though, since all machine definitions define the machine_extruder_count
+                # as an integer.
                 machine_extruder_count = int(self._machine_info.definition_changes_info.parser["values"]["machine_extruder_count"])
             except ValueError:
                 Logger.log("w", "'machine_extruder_count' in file '{file_name}' is not a number."
