@@ -45,7 +45,7 @@ class CuraContainerRegistry(ContainerRegistry):
         self.containerAdded.connect(self._onContainerAdded)
 
     @override(ContainerRegistry)
-    def addContainer(self, container: ContainerInterface) -> None:
+    def addContainer(self, container: ContainerInterface) -> bool:
         """Overridden from ContainerRegistry
 
         Adds a container to the registry.
@@ -64,9 +64,9 @@ class CuraContainerRegistry(ContainerRegistry):
             actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
             if required_setting_version != actual_setting_version:
                 Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id = container.getId(), actual_setting_version = actual_setting_version, required_setting_version = required_setting_version))
-                return  # Don't add.
+                return False  # Don't add.
 
-        super().addContainer(container)
+        return super().addContainer(container)
 
     def createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
         """Create a name that is not empty and unique
@@ -349,6 +349,34 @@ class CuraContainerRegistry(ContainerRegistry):
         self._connectUpgradedExtruderStacksToMachines()
 
     @override(ContainerRegistry)
+    def loadAllMetadata(self) -> None:
+        super().loadAllMetadata()
+        self._cleanUpInvalidQualityChanges()
+
+    def _cleanUpInvalidQualityChanges(self) -> None:
+        # We've seen cases where it was possible for quality_changes to be incorrectly added. This is to ensure that
+        # any such leftovers are purged from the registry.
+        quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type="quality_changes")
+
+        profile_count_by_name = {}  # type: Dict[str, int]
+
+        for quality_change in quality_changes:
+            name = str(quality_change.get("name", ""))
+            if name == "empty":
+                continue
+            if name not in profile_count_by_name:
+                profile_count_by_name[name] = 0
+            profile_count_by_name[name] += 1
+
+        for profile_name, profile_count in profile_count_by_name.items():
+            if profile_count > 1:
+                continue
+            # Only one profile found, this should not ever be the case, so that profile needs to be removed!
+            Logger.log("d", "Found an invalid quality_changes profile with the name %s. Going to remove that now", profile_name)
+            invalid_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(name=profile_name)
+            self.removeContainer(invalid_quality_changes[0]["id"])
+
+    @override(ContainerRegistry)
     def _isMetadataValid(self, metadata: Optional[Dict[str, Any]]) -> bool:
         """Check if the metadata for a container is okay before adding it.
 
@@ -411,7 +439,8 @@ class CuraContainerRegistry(ContainerRegistry):
         if quality_type != empty_quality_container.getMetaDataEntry("quality_type") and quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
-        ContainerRegistry.getInstance().addContainer(profile)
+        if not self.addContainer(profile):
+            return catalog.i18nc("@info:status", "Unable to add the profile.")
 
         return None
 

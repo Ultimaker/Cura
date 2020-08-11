@@ -25,6 +25,7 @@ _removed_settings = {
     "support_tree_enable"
 }  # type: Set[str]
 
+
 class VersionUpgrade462to47(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """

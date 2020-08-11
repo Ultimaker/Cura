@@ -1,13 +1,16 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 from typing import Set
 
 import cura.CuraApplication
+from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
+
+import os
 
 
 class QualitySettingsModel(ListModel):
@@ -80,6 +83,12 @@ class QualitySettingsModel(ListModel):
 
         global_container_stack = self._application.getGlobalContainerStack()
         definition_container = global_container_stack.definition
+
+        # Try and find a translation catalog for the definition
+        for file_name in definition_container.getInheritedFiles():
+            catalog = i18nCatalog(os.path.basename(file_name))
+            if catalog.hasTranslationLoaded():
+                self._i18n_catalog = catalog
 
         quality_group = self._selected_quality_item["quality_group"]
         quality_changes_group = self._selected_quality_item["quality_changes_group"]

@@ -409,7 +409,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
                     checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled
                     onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
-                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal"
+                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthographic"
                 }
 
                 //Because there is no signal for individual preferences, we need to manually link to the onPreferenceChanged signal.

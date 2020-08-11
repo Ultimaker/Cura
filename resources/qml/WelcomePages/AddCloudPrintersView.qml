@@ -23,7 +23,7 @@ Item
     property var discoveredCloudPrintersModel: CuraApplication.getDiscoveredCloudPrintersModel()
 
     // The area where either the discoveredCloudPrintersScrollView or the busyIndicator will be displayed
-    Rectangle
+    Item
     {
         id: cloudPrintersContent
         width: parent.width
@@ -63,6 +63,7 @@ Item
                 id: waitingIndicator
                 anchors.horizontalCenter: parent.horizontalCenter
                 running: searchingForCloudPrinters
+                palette.dark: UM.Theme.getColor("text")
             }
             Label
             {
@@ -73,6 +74,7 @@ Item
                 text: catalog.i18nc("@label", "Waiting for Cloud response")
                 font: UM.Theme.getFont("large")
                 renderType: Text.NativeRendering
+                color: UM.Theme.getColor("text")
             }
             Label
             {
@@ -83,6 +85,7 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text: catalog.i18nc("@label", "No printers found in your account?")
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
             }
             Label
             {
@@ -118,6 +121,7 @@ Item
             text: catalog.i18nc("@label", "The following printers in your account have been added in Cura:")
             height: contentHeight + 2 * UM.Theme.getSize("default_margin").height
             visible: discoveredCloudPrintersModel.count > 0
+            color: UM.Theme.getColor("text")
         }
 
         // The scrollView that contains the list of newly discovered Ultimaker Cloud printers. Visible only when
@@ -150,43 +154,43 @@ Item
                     id: discoveredCloudPrintersRepeater
                     model: discoveredCloudPrintersModel
                     delegate: Item
-                        {
-                            width: discoveredCloudPrintersScrollView.width
-                            height: contentColumn.height
+                    {
+                        width: discoveredCloudPrintersScrollView.width
+                        height: contentColumn.height
 
-                            Column
+                        Column
+                        {
+                            id: contentColumn
+                            Label
                             {
-                                id: contentColumn
-                                Label
-                                {
-                                    id: cloudPrinterNameLabel
-                                    leftPadding: UM.Theme.getSize("default_margin").width
-                                    text: model.name
-                                    font: UM.Theme.getFont("large_bold")
-                                    color: UM.Theme.getColor("text")
-                                    elide: Text.ElideRight
-                                }
-                                Label
-                                {
-                                    id: cloudPrinterTypeLabel
-                                    leftPadding: 2 * UM.Theme.getSize("default_margin").width
-                                    topPadding: UM.Theme.getSize("thin_margin").height
-                                    text: {"Type: " + model.machine_type}
-                                    font: UM.Theme.getFont("medium")
-                                    color: UM.Theme.getColor("text")
-                                    elide: Text.ElideRight
-                                }
-                                Label
-                                {
-                                    id: cloudPrinterFirmwareVersionLabel
-                                    leftPadding: 2 * UM.Theme.getSize("default_margin").width
-                                    text: {"Firmware version: " + model.firmware_version}
-                                    font: UM.Theme.getFont("medium")
-                                    color: UM.Theme.getColor("text")
-                                    elide: Text.ElideRight
-                                }
+                                id: cloudPrinterNameLabel
+                                leftPadding: UM.Theme.getSize("default_margin").width
+                                text: model.name
+                                font: UM.Theme.getFont("large_bold")
+                                color: UM.Theme.getColor("text")
+                                elide: Text.ElideRight
+                            }
+                            Label
+                            {
+                                id: cloudPrinterTypeLabel
+                                leftPadding: 2 * UM.Theme.getSize("default_margin").width
+                                topPadding: UM.Theme.getSize("thin_margin").height
+                                text: {"Type: " + model.machine_type}
+                                font: UM.Theme.getFont("medium")
+                                color: UM.Theme.getColor("text")
+                                elide: Text.ElideRight
+                            }
+                            Label
+                            {
+                                id: cloudPrinterFirmwareVersionLabel
+                                leftPadding: 2 * UM.Theme.getSize("default_margin").width
+                                text: {"Firmware version: " + model.firmware_version}
+                                font: UM.Theme.getFont("medium")
+                                color: UM.Theme.getColor("text")
+                                elide: Text.ElideRight
                             }
                         }
+                    }
                 }
             }
         }

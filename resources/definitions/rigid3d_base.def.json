@@ -248,7 +248,7 @@
 
         "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width/2.0/layer_height)))" },
         "support_pattern": { "value": "'zigzag'" },
-        "support_infill_rate": { "value": "0 if support_tree_enable else 20" },
+        "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 20" },
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },

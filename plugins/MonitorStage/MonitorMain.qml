@@ -136,7 +136,7 @@ Rectangle
             {
                 id: externalLinkIcon
                 anchors.verticalCenter: parent.verticalCenter
-                color: UM.Theme.getColor("monitor_text_link")
+                color: UM.Theme.getColor("text_link")
                 source: UM.Theme.getIcon("external_link")
                 width: UM.Theme.getSize("monitor_external_link_icon").width
                 height: UM.Theme.getSize("monitor_external_link_icon").height
@@ -150,9 +150,8 @@ Rectangle
                     leftMargin: UM.Theme.getSize("narrow_margin").width
                     verticalCenter: externalLinkIcon.verticalCenter
                 }
-                color: UM.Theme.getColor("monitor_text_link")
+                color: UM.Theme.getColor("text_link")
                 font: UM.Theme.getFont("medium")
-                linkColor: UM.Theme.getColor("monitor_text_link")
                 text: catalog.i18nc("@label link to technical assistance", "View user manuals online")
                 renderType: Text.NativeRendering
             }

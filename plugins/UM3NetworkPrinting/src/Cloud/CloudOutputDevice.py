@@ -145,9 +145,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """Set all the interface elements and texts for this output device."""
 
         self.setPriority(2)  # Make sure we end up below the local networking and above 'save to file'.
-        self.setShortDescription(I18N_CATALOG.i18nc("@action:button", "Print via Cloud"))
-        self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud"))
-        self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via Cloud"))
+        self.setShortDescription(I18N_CATALOG.i18nc("@action:button", "Print via cloud"))
+        self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via cloud"))
+        self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via cloud"))
 
     def _update(self) -> None:
         """Called when the network data should be updated."""

@@ -5,7 +5,7 @@ from configparser import ConfigParser
 import zipfile
 import os
 import json
-from typing import cast, Dict, List, Optional, Tuple, Any
+from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
@@ -39,6 +39,18 @@ from PyQt5.QtCore import QCoreApplication
 from .WorkspaceDialog import WorkspaceDialog
 
 i18n_catalog = i18nCatalog("cura")
+
+
+_ignored_machine_network_metadata = {
+    "um_cloud_cluster_id",
+    "um_network_key",
+    "um_linked_to_account",
+    "host_guid",
+    "removal_warning",
+    "group_name",
+    "group_size",
+    "connection_type"
+}  # type: Set[str]
 
 
 class ContainerInfo:
@@ -121,12 +133,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # In Cura 2.5 and 2.6, the empty profiles used to have those long names
         self._old_empty_profile_id_dict = {"empty_%s" % k: "empty" for k in ["material", "variant"]}
 
-        self._is_same_machine_type = False
         self._old_new_materials = {} # type: Dict[str, str]
         self._machine_info = None
 
     def _clearState(self):
-        self._is_same_machine_type = False
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
@@ -217,6 +227,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Read definition containers
         #
         machine_definition_id = None
+        updatable_machines = []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -233,6 +244,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
                 machine_definition_id = container_id
+                machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
+                if machine_definition_containers:
+                    updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
                 machine_type = definition_container["name"]
                 variant_type_name = definition_container.get("variants_name", variant_type_name)
 
@@ -248,7 +262,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if machine_definition_container_count != 1:
             return WorkspaceReader.PreReadResult.failed  # Not a workspace file but ordinary 3MF.
 
-        material_labels = []
+        material_ids_to_names_map = {}
         material_conflict = False
         xml_material_profile = self._getXmlProfileClass()
         reverse_material_id_dict = {}
@@ -264,7 +278,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 reverse_map = {metadata["id"]: container_id for metadata in metadata_list}
                 reverse_material_id_dict.update(reverse_map)
 
-                material_labels.append(self._getMaterialLabelFromSerialized(serialized))
+                material_ids_to_names_map[container_id] = self._getMaterialLabelFromSerialized(serialized)
                 if self._container_registry.findContainersMetadata(id = container_id): #This material already exists.
                     containers_found_dict["material"] = True
                     if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
@@ -374,8 +388,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_definition_id = id_list[7]
 
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
-        self._is_same_machine_type = True
         existing_global_stack = None
+        global_stack = None
 
         if stacks:
             global_stack = stacks[0]
@@ -388,7 +402,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if global_stack.getContainer(index).getId() != container_id:
                     machine_conflict = True
                     break
-            self._is_same_machine_type = global_stack.definition.getId() == machine_definition_id
+
+        if updatable_machines and not containers_found_dict["machine"]:
+            containers_found_dict["machine"] = True
 
         # Get quality type
         parser = ConfigParser(interpolation = None)
@@ -431,6 +447,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         Job.yieldThread()
 
+        materials_in_extruders_dict = {}  # Which material is in which extruder
+
         # if the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
             serialized = archive.open(extruder_stack_file).read().decode("utf-8")
@@ -456,6 +474,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if material_id not in ("empty", "empty_material"):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
+                materials_in_extruders_dict[position] = material_ids_to_names_map[reverse_material_id_dict[material_id]]
 
             definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
@@ -470,7 +489,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if intent_id not in ("empty", "empty_intent"):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
-            if not machine_conflict and containers_found_dict["machine"]:
+            if not machine_conflict and containers_found_dict["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
                     continue
 
@@ -483,6 +502,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
                         machine_conflict = True
                         break
+
+        # Now we know which material is in which extruder. Let's use that to sort the material_labels according to
+        # their extruder position
+        material_labels = [material_name for pos, material_name in sorted(materials_in_extruders_dict.items())]
 
         num_visible_settings = 0
         try:
@@ -536,9 +559,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.custom_quality_name = quality_name
         self._machine_info.intent_category = intent_category
 
-        if machine_conflict and not self._is_same_machine_type:
-            machine_conflict = False
-
         is_printer_group = False
         if machine_conflict:
             group_name = existing_global_stack.getMetaDataEntry("group_name")
@@ -559,6 +579,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
+        self._dialog.setUpdatableMachines(updatable_machines)
         self._dialog.setMachineName(machine_name)
         self._dialog.setMaterialLabels(material_labels)
         self._dialog.setMachineType(machine_type)
@@ -639,8 +660,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
-        # If a machine with the same name is of a different type, always create a new one.
-        if not self._is_same_machine_type or self._resolve_strategies["machine"] != "override":
+        # If there are no machines of the same type, create a new machine.
+        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count <= 1:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
@@ -650,10 +671,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 self._container_registry.addContainer(global_stack)
         else:
-            # Find the machine
-            global_stacks = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")
+            # Find the machine which will be overridden
+            global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
-                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura.", file_name))
+                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
+                                                     "Project file <filename>{0}</filename> is made using profiles that"
+                                                     " are unknown to this version of Ultimaker Cura.", file_name))
                 message.show()
                 self.setWorkspaceName("")
                 return [], {}
@@ -739,21 +762,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Job.yieldThread()
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
-        # Handle quality changes if any
-        self._processQualityChanges(global_stack)
+        if global_stack:
+            # Handle quality changes if any
+            self._processQualityChanges(global_stack)
 
-        # Prepare the machine
-        self._applyChangesToMachine(global_stack, extruder_stack_dict)
+            # Prepare the machine
+            self._applyChangesToMachine(global_stack, extruder_stack_dict)
 
-        Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
-        # Actually change the active machine.
-        #
-        # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
-        # data, but those managers will only update upon a container/container metadata changed signal. Because this
-        # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
-        # they won't take effect until this function is done.
-        # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
-        self._updateActiveMachine(global_stack)
+            Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
+            # Actually change the active machine.
+            #
+            # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
+            # data, but those managers will only update upon a container/container metadata changed signal. Because this
+            # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
+            # they won't take effect until this function is done.
+            # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
+            self._updateActiveMachine(global_stack)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1069,7 +1093,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         for key, value in self._machine_info.metadata_dict.items():
-            global_stack.setMetaDataEntry(key, value)
+            if key not in _ignored_machine_network_metadata:
+                global_stack.setMetaDataEntry(key, value)
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
@@ -1080,7 +1105,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData():
+            if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:

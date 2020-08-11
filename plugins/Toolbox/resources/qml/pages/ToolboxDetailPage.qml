@@ -100,7 +100,7 @@ Item
             }
             Label
             {
-                text: catalog.i18nc("@label", "Author") + ":"
+                text: catalog.i18nc("@label", "Brand") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
                 renderType: Text.NativeRendering
