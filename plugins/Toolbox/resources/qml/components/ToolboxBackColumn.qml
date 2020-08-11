@@ -48,7 +48,7 @@ Item
         onClicked:
         {
             toolbox.viewPage = "overview"
-            toolbox.filterModelByProp("packages", "type", toolbox.viewCategory)
+            toolbox.filterModelByProp("packages", "package_types", toolbox.viewCategory)
         }
         style: ButtonStyle
         {
