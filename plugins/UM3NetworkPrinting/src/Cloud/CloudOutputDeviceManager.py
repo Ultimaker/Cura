@@ -235,7 +235,7 @@ class CloudOutputDeviceManager:
         message.show()
 
         for idx, device in enumerate(new_devices):
-            message_text = self.i18n_catalog.i18nc("info:status %1 is printer name, %2 is printer type", "Adding printer {name} ({type}) from your account").format(name = device.name, type = device.printerTypeName)
+            message_text = self.i18n_catalog.i18nc("info:status Filled in with printer name and printer model.", "Adding printer {name} ({model}) from your account").format(name = device.name, model = device.printerTypeName)
             message.setText(message_text)
             if len(new_devices) > 1:
                 message.setProgress((idx / len(new_devices)) * 100)
@@ -417,15 +417,10 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
         digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>".format(digital_factory_string)
-        removal_warning_string = self.i18n_catalog.i18nc(
-            "@label ({printer_name} is replaced with the name of the printer",
-            "{printer_name} will be removed until the next account sync. <br> To remove {printer_name} permanently, "
-            "visit {digital_factory_link}"
-            "<br><br>Are you sure you want to remove {printer_name} temporarily?".format(printer_name = device.name,
-                                                                                         digital_factory_link = digital_factory_link)
-        )
-
+        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
+        removal_warning_string = self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "{printer_name} will be removed until the next account sync.").format(printer_name = device.name) \
+            + "<br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "To remove {printer_name} permanently, visit {digital_factory_link}").format(printer_name = device.name, digital_factory_link = digital_factory_link) \
+            + "<br><br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "Are you sure you want to remove {printer_name} temporarily?").format(printer_name = device.name)
         machine.setMetaDataEntry("removal_warning", removal_warning_string)
         machine.addConfiguredConnectionType(device.connectionType.value)
 
