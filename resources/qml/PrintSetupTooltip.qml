@@ -61,6 +61,8 @@ UM.PointingRectangle
 
     MouseArea
     {
+        enabled: parent.opacity > 0
+        visible: enabled
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
         hoverEnabled: true
