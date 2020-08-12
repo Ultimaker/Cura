@@ -502,6 +502,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Now we know which material is in which extruder. Let's use that to sort the material_labels according to
         # their extruder position
         material_labels = [material_name for pos, material_name in sorted(materials_in_extruders_dict.items())]
+        machine_extruder_count = self._getMachineExtruderCount()
+        if machine_extruder_count:
+            material_labels = material_labels[:machine_extruder_count]
 
         num_visible_settings = 0
         try:
@@ -663,7 +666,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
-            global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id)
+            # Printers with modifiable number of extruders (such as CFFF) will specify a machine_extruder_count in their
+            # quality_changes file. If that's the case, take the extruder count into account when creating the machine
+            # or else the extruderList will return only the first extruder, leading to missing non-global settings in
+            # the other extruders.
+            machine_extruder_count = self._getMachineExtruderCount()  # type: Optional[int]
+            global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id, machine_extruder_count)
             if global_stack:  # Only switch if creating the machine was successful.
                 extruder_stack_dict = {str(position): extruder for position, extruder in enumerate(global_stack.extruderList)}
 
@@ -917,6 +925,29 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container_info.container.setProperty(key, "value", value)
 
         self._machine_info.quality_changes_info.name = quality_changes_name
+
+    def _getMachineExtruderCount(self) -> Optional[int]:
+        """
+        Extracts the machine extruder count from the definition_changes file of the printer. If it is not specified in
+        the file, None is returned instead.
+
+        :return: The count of the machine's extruders
+        """
+        machine_extruder_count = None
+        if self._machine_info \
+                and self._machine_info.definition_changes_info \
+                and "values" in self._machine_info.definition_changes_info.parser \
+                and "machine_extruder_count" in self._machine_info.definition_changes_info.parser["values"]:
+            try:
+                # Theoretically, if the machine_extruder_count is a setting formula (e.g. "=3"), this will produce a
+                # value error and the project file loading will load the settings in the first extruder only.
+                # This is not expected to happen though, since all machine definitions define the machine_extruder_count
+                # as an integer.
+                machine_extruder_count = int(self._machine_info.definition_changes_info.parser["values"]["machine_extruder_count"])
+            except ValueError:
+                Logger.log("w", "'machine_extruder_count' in file '{file_name}' is not a number."
+                           .format(file_name = self._machine_info.definition_changes_info.file_name))
+        return machine_extruder_count
 
     def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
         """Helper class to create a new quality changes profile.
