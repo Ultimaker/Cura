@@ -1053,6 +1053,115 @@
                         }
                     }
                 },
+                "beading_strategy_type":
+                {
+                    "label": "Beading Strategy",
+                    "description": "Beading strategy used by libArachne to generate walls.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "naive": "Naive",
+                        "center_deviation": "Center Deviation",
+                        "distributed": "Distributed",
+                        "inward_distributed": "Inward Distributed",
+                        "limited_distributed": "Limited Distributed"
+                    },
+                    "default_value": "naive",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "children":
+                    {
+                        "bead_width":
+                        {
+                            "label": "Bead Width",
+                            "description": "Bead Width.",
+                            "unit": "mm",
+                            "value": "line_width",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "enabled": "beading_strategy_type != 'naive'"
+                        },
+                        "transitioning_angle":
+                        {
+                            "label": "Transitioning Angle",
+                            "description": "Transitioning Angle.",
+                            "unit": "°",
+                            "default_value": 45,
+                            "minimum_value": "1",
+                            "minimum_value_warning": "22.5",
+                            "maximum_value": "89",
+                            "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "enabled": "beading_strategy_type != 'naive'"
+                        },
+                        "transition_length":
+                        {
+                            "label": "Transition Length",
+                            "description": "Transition Length.",
+                            "unit": "mm",
+                            "default_value": 0.4,
+                            "value": "line_width * 2",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "line_width * 5",
+                            "type": "float",
+                            "minimum_value_warning": "0.01",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "enabled": "beading_strategy_type == 'distributed' or beading_strategy_type == 'inward_distributed' or beading_strategy_type == 'limited_distributed'"
+                        },
+                        "widening_mode":
+                        {
+                            "label": "Widening Mode",
+                            "description": "Widening Mode.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "not_selected": "Not Selected",
+                                "min_bead_width_mode": "Minimum Bead Width Mode",
+                                "min_feature_size_mode": "Minimum Feature Size Mode"
+                            },
+                            "default_value": "not_selected",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "children":
+                            {
+                                "min_bead_width":
+                                {
+                                    "label": "Minimum Bead Width",
+                                    "description": "Minimum Bead Width.",
+                                    "unit": "mm",
+                                    "value": "bead_width / 2",
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "bead_width",
+                                    "type": "float",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "enabled": "widening_mode == 'min_bead_width_mode'"
+                                },
+                                "min_feature_size":
+                                {
+                                    "label": "Minimum Feature Size",
+                                    "description": "Minimum Feature Size.",
+                                    "unit": "mm",
+                                    "value": "bead_width / 2",
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "bead_width",
+                                    "type": "float",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "enabled": "widening_mode == 'min_feature_size_mode'"
+                                }
+                            }
+                        },
+                        "max_bead_count":
+                        {
+                            "label": "Maximum Bead Count",
+                            "description": "Maximum Bead Count. If >=1, the Limited Beading Meta-Strategy is applied on top of the selected Beading Strategy.",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "type": "int",
+                            "limit_to_extruder": "wall_0_extruder_nr"
+                        }
+                    }
+                },
                 "wall_0_wipe_dist":
                 {
                     "label": "Outer Wall Wipe Distance",
