@@ -1488,7 +1488,7 @@ msgstr "다림질 라인 사이의 거리."
 #: fdmprinter.def.json
 msgctxt "ironing_flow label"
 msgid "Ironing Flow"
-msgstr "다림질 과정"
+msgstr "다림질 압출량"
 
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
