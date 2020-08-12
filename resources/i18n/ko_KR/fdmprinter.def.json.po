@@ -1493,7 +1493,7 @@ msgstr "다림질 과정"
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr "다림질하는 동안 기본 스킨 라인을 기준으로 한 재료의 양. 노즐을 가득 채우면 윗면의 틈새가 채워서포트만 표면의 과도한 압출과 틈이 너무 많이 생깁니다."
+msgstr "다림질하는 동안 기본 스킨 라인을 기준으로 한 재료의 압출량. 노즐을 가득 채우면 윗면의 틈새를 채울 수 있지만 표면에 과도한 압출과 필라멘트 덩어리가 생길 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset label"
