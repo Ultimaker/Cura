@@ -252,7 +252,7 @@ class CloudOutputDeviceManager:
         if len(new_devices) > max_disp_devices:
             num_hidden = len(new_devices) - max_disp_devices
             device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:max_disp_devices]]
-            device_name_list.append("<li>" + self.i18n_catalog.i18ncp("info:{num_hidden} gets replaced by a number of printers", "... and {num_hidden} other", "... and {num_hidden} others", num_hidden).format(num_hidden = num_hidden) + "</li>")
+            device_name_list.append("<li>" + self.i18n_catalog.i18ncp("info:{num_hidden} gets replaced by a number of printers", "... and {num_hidden} other", "... and {num_hidden} others").format(num_hidden = num_hidden) + "</li>")
             device_names = "".join(device_name_list)
         else:
             device_names = "".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices])
