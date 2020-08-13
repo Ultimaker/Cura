@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -11,7 +11,7 @@ UM.PointingRectangle
     id: base
     property real sourceWidth: 0
     width: UM.Theme.getSize("tooltip").width
-    height: label.height + UM.Theme.getSize("tooltip_margins").height * 2
+    height: textScroll.height + UM.Theme.getSize("tooltip_margins").height * 2
     color: UM.Theme.getColor("tooltip")
 
     arrowSize: UM.Theme.getSize("default_arrow").width
@@ -59,22 +59,48 @@ UM.PointingRectangle
         base.opacity = 0;
     }
 
-    Label
+    MouseArea
     {
-        id: label;
-        anchors
+        enabled: parent.opacity > 0
+        visible: enabled
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+        hoverEnabled: true
+        onHoveredChanged:
         {
-            top: parent.top;
-            topMargin: UM.Theme.getSize("tooltip_margins").height;
-            left: parent.left;
-            leftMargin: UM.Theme.getSize("tooltip_margins").width;
-            right: parent.right;
-            rightMargin: UM.Theme.getSize("tooltip_margins").width;
+            if(containsMouse && base.opacity > 0)
+            {
+                base.show(Qt.point(target.x - 1, target.y - UM.Theme.getSize("tooltip_arrow_margins").height / 2)); //Same arrow position as before.
+            }
+            else
+            {
+                base.hide();
+            }
         }
-        wrapMode: Text.Wrap;
-        textFormat: Text.RichText
-        font: UM.Theme.getFont("default");
-        color: UM.Theme.getColor("tooltip_text");
-        renderType: Text.NativeRendering
+
+        ScrollView
+        {
+            id: textScroll
+            width: parent.width
+            height: Math.min(label.height, base.parent.height)
+
+            ScrollBar.horizontal: ScrollBar {
+                active: false //Only allow vertical scrolling. We should grow vertically only, but due to how the label is positioned it allocates space in the ScrollView horizontally.
+            }
+
+            Label
+            {
+                id: label
+                x: UM.Theme.getSize("tooltip_margins").width
+                y: UM.Theme.getSize("tooltip_margins").height
+                width: base.width - UM.Theme.getSize("tooltip_margins").width * 2
+
+                wrapMode: Text.Wrap;
+                textFormat: Text.RichText
+                font: UM.Theme.getFont("default");
+                color: UM.Theme.getColor("tooltip_text");
+                renderType: Text.NativeRendering
+            }
+        }
     }
 }
