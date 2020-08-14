@@ -56,6 +56,14 @@ function(cura_add_test)
     endif()
 endfunction()
 
+
+#Add code style test.
+add_test(
+    NAME "code-style"
+    COMMAND ${Python3_EXECUTABLE} run_mypy.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
 #Add test for import statements which are not compatible with all builds
 add_test(
     NAME "invalid-imports"
@@ -73,13 +81,6 @@ foreach(_plugin ${_plugins})
         cura_add_test(NAME pytest-${_plugin_name} DIRECTORY ${_plugin_directory} PYTHONPATH "${_plugin_directory}|${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
     endif()
 endforeach()
-
-#Add code style test.
-add_test(
-    NAME "code-style"
-    COMMAND ${Python3_EXECUTABLE} run_mypy.py
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
 
 #Add test for whether the shortcut alt-keys are unique in every translation.
 add_test(
