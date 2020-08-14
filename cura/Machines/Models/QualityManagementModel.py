@@ -333,6 +333,7 @@ class QualityManagementModel(ListModel):
                     "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)
+
         # Sort by layer_height for built-in qualities
         item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
@@ -341,6 +342,9 @@ class QualityManagementModel(ListModel):
         available_intent_list = [i for i in available_intent_list if i[0] != "default"]
         result = []
         for intent_category, quality_type in available_intent_list:
+            if not quality_group_dict[quality_type].is_available:
+                continue
+            
             result.append({
                 "name": quality_group_dict[quality_type].name,  # Use the quality name as the display name
                 "is_read_only": True,
@@ -361,6 +365,9 @@ class QualityManagementModel(ListModel):
             # CURA-6913 Note that custom qualities can be based on "not supported", so the quality group can be None.
             quality_group = quality_group_dict.get(quality_changes_group.quality_type)
             quality_type = quality_changes_group.quality_type
+
+            if not quality_changes_group.is_available:
+                continue
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
