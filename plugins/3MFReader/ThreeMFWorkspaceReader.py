@@ -202,8 +202,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         Reads all the definition container files included in the project file (archive)
 
         :param archive: The project file being read
-        :return: A mapping between the container types (machine or extruder) and a list of all the containers of that
-                 type found in the project file
+        :return: A mapping between the container types (machine or extruder) and a list of the metadata of all the
+                 containers of that type found in the project file
+                 e.g.
+                 definition_containers = {
+                    "machine": [metadata_of_machine1],
+                    "extruder": [metadata_of_extruder1, metadata_of_extruder2]
+                 }
         """
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]  # type: List[str]
 
@@ -236,17 +241,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _getUpdatableMachines(self, machine_definition_id: str) -> List[ContainerStack]:
         """
-        Finds and returns a list of all the machines that are of the same definition type as the machine in the project
-        file.
+        Get all the machines that can be updated by the project file
+
         :param machine_definition_id: The id of the definition of the machine included in the project file
-        :return:
+        :return: List of all the machines that are of the same definition type as the machine in the project file
         """
         updatable_machines = []  # type: List[ContainerStack]
         machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
         if machine_definition_containers:
-            updatable_machines = [machine for machine in
-                                  self._container_registry.findContainerStacks(type = "machine") if
-                                  machine.definition == machine_definition_containers[0]]
+            updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine")
+                                  if machine.definition == machine_definition_containers[0]]
         return updatable_machines
 
     def preRead(self, file_name: str, show_dialog: bool = True, *args, **kwargs) -> WorkspaceReader.PreReadResult:
