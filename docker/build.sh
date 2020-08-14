@@ -69,4 +69,3 @@ cmake3 \
     -DGENERATE_TRANSLATIONS=OFF \
     ..
 make
-ctest3 -j4 --output-on-failure -T Test
