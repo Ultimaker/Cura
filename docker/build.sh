@@ -65,6 +65,7 @@ cmake3 \
     -DCMAKE_PREFIX_PATH="${CURA_BUILD_ENV_PATH}" \
     -DURANIUM_DIR="${PROJECT_DIR}/Uranium" \
     -DBUILD_TESTS=ON \
+    -DGENERATE_TRANSLATIONS=OFF
     ..
 make
 ctest3 -j4 --output-on-failure -T Test
