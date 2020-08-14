@@ -192,7 +192,7 @@ class GlobalStack(CuraContainerStack):
         self._extruders[position] = extruder
         self.extrudersChanged.emit()
         Logger.log("i", "Extruder[%s] added to [%s] at position [%s]", extruder.id, self.id, position)
-
+    
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         """Overridden from ContainerStack
@@ -211,9 +211,8 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
-        if context is None:
-            context = PropertyEvaluationContext()
-        context.pushContainer(self)
+        if context:
+            context.pushContainer(self)
 
         # Handle the "resolve" property.
         #TODO: Why the hell does this involve threading?
@@ -238,13 +237,15 @@ class GlobalStack(CuraContainerStack):
             if super().getProperty(key, "settable_per_extruder", context):
                 result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
-                    context.popContainer()
+                    if context:
+                        context.popContainer()
                     return result
             else:
                 Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
         result = super().getProperty(key, property_name, context)
-        context.popContainer()
+        if context:
+            context.popContainer()
         return result
 
     @override(ContainerStack)
