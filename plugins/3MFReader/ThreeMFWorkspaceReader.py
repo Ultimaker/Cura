@@ -5,7 +5,7 @@ from configparser import ConfigParser
 import zipfile
 import os
 import json
-from typing import cast, Dict, List, Optional, Tuple, Any, Set, Union
+from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
@@ -129,6 +129,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._ignored_instance_container_types = {"quality", "variant"}
 
         self._resolve_strategies = {}  # type: Dict[str, Optional[str]]
+        self._containers_found = {}  # type: Dict[str, bool]
+        self._conflicts_found = {}  # type: Dict[str, bool]
 
         self._id_mapping = {}  # type: Dict[str, str]
 
@@ -143,8 +145,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._old_new_materials = {}
         self._machine_info = None
 
+        container_types = ["machine", "material", "quality_changes"]
+        self._resolve_strategies = {k: None for k in container_types}
+        self._containers_found = {k: False for k in container_types}
+        self._conflicts_found = {k: False for k in container_types}
+
     def getNewId(self, old_id: str) -> str:
-        """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
+        """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches
+        results.
 
         This has nothing to do with speed, but with getting consistent new naming for instances & objects.
         """
@@ -197,7 +205,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return global_stack_file_list[0], extruder_stack_file_list
 
-    def _readDefinitionContainers(self, archive: zipfile.ZipFile) -> Dict[str, List[Dict[str, Any]]]:
+    def _preReadDefinitionContainersFromArchive(self, archive: zipfile.ZipFile) -> Dict[str, List[Dict[str, Any]]]:
         """
         Reads all the definition container files included in the project file (archive)
 
@@ -253,6 +261,56 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                   if machine.definition == machine_definition_containers[0]]
         return updatable_machines
 
+    def _preReadMaterialDataFromArchive(self, archive: zipfile.ZipFile) -> Tuple[Dict[str, str], Dict[str, str]]:
+        """
+        Deserializes the material profiles in the archive to extract some basic information about their root material
+        ids and their labels.
+
+        :param archive: The project file being read
+        :return: tuple (material_labels_dict, root_materials_dict)
+                WHERE
+                material_labels_dict is a map between the root_material_id and its label
+                    {
+                        'generic_pla': 'Generic PLA',
+                        'generic_cpe': 'Generic CPE'
+                    }
+                root_materials_dict is a map between all the derived materials and their root_material_id
+                    {
+                        'generic_pla': 'generic_pla',
+                        'generic_pla_ultimaker_s5': 'generic_pla',
+                        'generic_pla_ultimaker_s5_AA_0.4': 'generic_pla'
+                    }
+        """
+        material_labels_dict = {}  # type: Dict[str, str]
+        xml_material_profile = self._getXmlProfileClass()
+        root_materials_dict = {}  # type: Dict[str, str]
+        cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]  # type: List[str]
+
+        if not self._material_container_suffix:
+            xml_material_mime_type = ContainerRegistry.getMimeTypeForContainer(xml_material_profile)
+            if xml_material_mime_type:
+                self._material_container_suffix = xml_material_mime_type.preferredSuffix
+
+        if xml_material_profile and self._material_container_suffix:
+            material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
+
+            for material_container_file in material_container_files:
+                container_id = self._stripFileToId(material_container_file)
+
+                serialized = archive.open(material_container_file).read().decode("utf-8")
+                material_labels_dict[container_id] = self._getMaterialLabelFromSerialized(serialized)
+                metadata_list = xml_material_profile.deserializeMetadata(serialized, container_id)
+                reverse_map = {metadata["id"]: container_id for metadata in metadata_list}
+                root_materials_dict.update(reverse_map)
+
+                if self._container_registry.findContainersMetadata(id = container_id):  # This material already exists.
+                    self._containers_found["material"] = True
+                    if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
+                        self._conflicts_found["material"] = True
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+                Job.yieldThread()
+        return material_labels_dict, root_materials_dict
+
     def preRead(self, file_name: str, show_dialog: bool = True, *args, **kwargs) -> WorkspaceReader.PreReadResult:
         """Read some info so we can make decisions
 
@@ -275,12 +333,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         archive = zipfile.ZipFile(file_name, "r")  # type: zipfile.ZipFile
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]  # type: List[str]
 
-        resolve_strategy_keys = ["machine", "material", "quality_changes"]
-        self._resolve_strategies = {k: None for k in resolve_strategy_keys}
-        containers_found_dict = {k: False for k in resolve_strategy_keys}  # type: Dict[str, bool]
-
-        # Read definition Containers
-        definition_containers = self._readDefinitionContainers(archive)  # type: Dict[str, List[Dict[str, Any]]]
+        # Pre read the definition Containers
+        definition_containers = self._preReadDefinitionContainersFromArchive(archive)  # type: Dict[str, List[Dict[str, Any]]]
 
         if len(definition_containers["machine"]) != 1:
             return WorkspaceReader.PreReadResult.failed  # Not a workspace file but ordinary 3MF.
@@ -291,35 +345,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         variant_type_name = definition_containers["machine"][0].get("variants_name", variant_type_name)
         updatable_machines = self._getUpdatableMachines(machine_definition_id)  # type: List[ContainerStack]
 
-        material_ids_to_names_map = {}
-        material_conflict = False
-        xml_material_profile = self._getXmlProfileClass()
-        reverse_material_id_dict = {}  # type: Dict[str, str]
-        material_container_files = []  # type: List[str]
-        if not self._material_container_suffix:
-            xml_material_mime_type = ContainerRegistry.getMimeTypeForContainer(xml_material_profile)
-            if xml_material_mime_type:
-                self._material_container_suffix = xml_material_mime_type.preferredSuffix
-
-        if xml_material_profile:
-            if self._material_container_suffix:
-                material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
-
-            for material_container_file in material_container_files:
-                container_id = self._stripFileToId(material_container_file)
-
-                serialized = archive.open(material_container_file).read().decode("utf-8")
-                metadata_list = xml_material_profile.deserializeMetadata(serialized, container_id)
-                reverse_map = {metadata["id"]: container_id for metadata in metadata_list}
-                reverse_material_id_dict.update(reverse_map)
-
-                material_ids_to_names_map[container_id] = self._getMaterialLabelFromSerialized(serialized)
-                if self._container_registry.findContainersMetadata(id = container_id): #This material already exists.
-                    containers_found_dict["material"] = True
-                    if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
-                        material_conflict = True
-                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-                Job.yieldThread()
+        # Pre read data from the materials
+        material_labels_dict, root_materials_dict = self._preReadMaterialDataFromArchive(archive)
 
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
@@ -329,7 +356,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         intent_category = ""
         num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
-        quality_changes_conflict = False
 
         self._machine_info.quality_changes_info = QualityChangesInfo()
 
@@ -372,7 +398,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
                                                                                   type = "quality_changes")
                 if quality_changes:
-                    containers_found_dict["quality_changes"] = True
+                    self._containers_found["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
                     instance_container = InstanceContainer(container_id)
                     try:
@@ -382,7 +408,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                             instance_container_file_name, file_name)
                         return ThreeMFWorkspaceReader.PreReadResult.failed
                     if quality_changes[0] != instance_container:
-                        quality_changes_conflict = True
+                        self._conflicts_found["quality_changes"] = True
             elif container_type == "quality":
                 if not quality_name:
                     quality_name = parser["general"]["name"]
@@ -408,7 +434,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 file_name, cura_file_names)
         except FileNotFoundError:
             return WorkspaceReader.PreReadResult.failed
-        machine_conflict = False
+        self._conflicts_found["machine"] = False
         # Because there can be cases as follows:
         #  - the global stack exists but some/all of the extruder stacks DON'T exist
         #  - the global stack DOESN'T exist but some/all of the extruder stacks exist
@@ -431,17 +457,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if stacks:
             global_stack = stacks[0]
             existing_global_stack = global_stack
-            containers_found_dict["machine"] = True
+            self._containers_found["machine"] = True
             # Check if there are any changes at all in any of the container stacks.
             for index, container_id in enumerate(id_list):
                 # take into account the old empty container IDs
                 container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                 if global_stack.getContainer(index).getId() != container_id:
-                    machine_conflict = True
+                    self._conflicts_found["machine"] = True
                     break
 
-        if updatable_machines and not containers_found_dict["machine"]:
-            containers_found_dict["machine"] = True
+        if updatable_machines and not self._containers_found["machine"]:
+            self._containers_found["machine"] = True
 
         # Get quality type
         parser = ConfigParser(interpolation = None)
@@ -475,7 +501,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if variant_id not in ("empty", "empty_variant"):
                 extruder_info.variant_info = instance_container_info_dict[variant_id]
             if material_id not in ("empty", "empty_material"):
-                root_material_id = reverse_material_id_dict[material_id]
+                root_material_id = root_materials_dict[material_id]
                 extruder_info.root_material_id = root_material_id
             self._machine_info.extruder_info_dict[position] = extruder_info
         else:
@@ -510,9 +536,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_info.variant_info = instance_container_info_dict[variant_id]
 
             if material_id not in ("empty", "empty_material"):
-                root_material_id = reverse_material_id_dict[material_id]
+                root_material_id = root_materials_dict[material_id]
                 extruder_info.root_material_id = root_material_id
-                materials_in_extruders_dict[position] = material_ids_to_names_map[reverse_material_id_dict[material_id]]
+                materials_in_extruders_dict[position] = material_labels_dict[root_materials_dict[material_id]]
 
             definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
@@ -527,7 +553,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if intent_id not in ("empty", "empty_intent"):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
-            if not machine_conflict and containers_found_dict["machine"] and global_stack:
+            if not self._conflicts_found["machine"] and self._containers_found["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
                     continue
 
@@ -538,7 +564,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     # take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
                     if existing_extruder_stack.getContainer(index).getId() != container_id:
-                        machine_conflict = True
+                        self._conflicts_found["machine"] = True
                         break
 
         # Now we know which material is in which extruder. Let's use that to sort the material_labels according to
@@ -601,17 +627,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.intent_category = intent_category
 
         is_printer_group = False
-        if machine_conflict and existing_global_stack:
+        if self._conflicts_found["machine"] and existing_global_stack:
             group_name = existing_global_stack.getMetaDataEntry("group_name")
             if group_name is not None:
                 is_printer_group = True
                 machine_name = group_name
 
         # Show the dialog, informing the user what is about to happen.
-        self._dialog.setMachineConflict(machine_conflict)
+        self._dialog.setMachineConflict(self._conflicts_found["machine"])
         self._dialog.setIsPrinterGroup(is_printer_group)
-        self._dialog.setQualityChangesConflict(quality_changes_conflict)
-        self._dialog.setMaterialConflict(material_conflict)
+        self._dialog.setQualityChangesConflict(self._conflicts_found["quality_changes"])
+        self._dialog.setMaterialConflict(self._conflicts_found["material"])
         self._dialog.setHasVisibleSettingsField(has_visible_settings_string)
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
@@ -646,9 +672,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #
         # Default values
         for key, strategy in self._resolve_strategies.items():
-            if key not in containers_found_dict or strategy is not None:
+            if key not in self._containers_found or strategy is not None:
                 continue
-            self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
+            self._resolve_strategies[key] = "override" if self._containers_found[key] else "new"
 
         return WorkspaceReader.PreReadResult.accepted
 
