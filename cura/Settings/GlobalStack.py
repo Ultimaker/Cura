@@ -256,8 +256,6 @@ class GlobalStack(CuraContainerStack):
 
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
-    # protected:
-
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
     def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
@@ -273,10 +271,8 @@ class GlobalStack(CuraContainerStack):
             # track all settings that are being resolved.
             return False
 
-        setting_state = super().getProperty(key, "state", context = context)
-        if setting_state is not None and setting_state != InstanceState.Default:
-            # When the user has explicitly set a value, we should ignore any resolve and
-            # just return that value.
+        if self.hasUserValue(key):
+            # When the user has explicitly set a value, we should ignore any resolve and just return that value.
             return False
 
         return True
