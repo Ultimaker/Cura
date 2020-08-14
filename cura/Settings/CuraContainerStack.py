@@ -393,9 +393,11 @@ class CuraContainerStack(ContainerStack):
         if property_name == "settable_per_extruder":
             # Setable per extruder isn't a value that can ever change. So once we requested it once, we can just keep
             # that in memory.
-            if key not in self._settable_per_extruder_cache:
+            try:
+                return self._settable_per_extruder_cache[key]
+            except KeyError:
                 self._settable_per_extruder_cache[key] = super().getProperty(key, property_name, context)
-            return self._settable_per_extruder_cache[key]
+                return self._settable_per_extruder_cache[key]
 
         return super().getProperty(key, property_name, context)
 
