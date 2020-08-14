@@ -263,6 +263,10 @@ class GlobalStack(CuraContainerStack):
             # Do not try to resolve anything but the "value" property
             return False
 
+        if not self.definition.getProperty(key, "resolve"):
+            # If there isn't a resolve set for this setting, there isn't anything to do here.
+            return False
+
         current_thread = threading.current_thread()
         if key in self._resolving_settings[current_thread.name]:
             # To prevent infinite recursion, if getProperty is called with the same key as
