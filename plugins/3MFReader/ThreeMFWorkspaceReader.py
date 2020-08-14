@@ -976,19 +976,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         :return: The count of the machine's extruders
         """
         machine_extruder_count = None
-        if self._machine_info \
-                and self._machine_info.definition_changes_info \
-                and "values" in self._machine_info.definition_changes_info.parser \
-                and "machine_extruder_count" in self._machine_info.definition_changes_info.parser["values"]:
-            try:
-                # Theoretically, if the machine_extruder_count is a setting formula (e.g. "=3"), this will produce a
-                # value error and the project file loading will load the settings in the first extruder only.
-                # This is not expected to happen though, since all machine definitions define the machine_extruder_count
-                # as an integer.
-                machine_extruder_count = int(self._machine_info.definition_changes_info.parser["values"]["machine_extruder_count"])
-            except ValueError:
-                Logger.log("w", "'machine_extruder_count' in file '{file_name}' is not a number."
-                           .format(file_name = self._machine_info.definition_changes_info.file_name))
+        if self._machine_info and self._machine_info.definition_changes_info:
+            definition_changes_parser = cast(ConfigParser, self._machine_info.definition_changes_info.parser)
+            if "values" in definition_changes_parser and "machine_extruder_count" in definition_changes_parser["values"]:
+                try:
+                    # Theoretically, if the machine_extruder_count is a setting formula (e.g. "=3"), this will produce
+                    # a value error and the project file loading will load the settings in the first extruder only.
+                    # This is not expected to happen though, since all machine definitions define the machine extruder
+                    # count as an integer.
+                    machine_extruder_count = int(definition_changes_parser["values"]["machine_extruder_count"])
+                except ValueError:
+                    Logger.log("w", "'machine_extruder_count' in file '{file_name}' is not a number."
+                               .format(file_name = self._machine_info.definition_changes_info.file_name))
         return machine_extruder_count
 
     def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
