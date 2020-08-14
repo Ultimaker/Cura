@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, List, Optional
+from typing import Any, cast, List, Optional, Dict
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
@@ -60,7 +60,7 @@ class CuraContainerStack(ContainerStack):
         import cura.CuraApplication #Here to prevent circular imports.
         self.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
 
-        self._settable_per_extruder_cache = {}
+        self._settable_per_extruder_cache = {}  # type: Dict[str, Any]
 
         self.setDirty(False)
 
