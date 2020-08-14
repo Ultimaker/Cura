@@ -192,7 +192,7 @@ class GlobalStack(CuraContainerStack):
         self._extruders[position] = extruder
         self.extrudersChanged.emit()
         Logger.log("i", "Extruder[%s] added to [%s] at position [%s]", extruder.id, self.id, position)
-    
+
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         """Overridden from ContainerStack

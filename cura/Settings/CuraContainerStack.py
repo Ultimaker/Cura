@@ -60,6 +60,8 @@ class CuraContainerStack(ContainerStack):
         import cura.CuraApplication #Here to prevent circular imports.
         self.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
 
+        self._settable_per_extruder_cache = {}
+
         self.setDirty(False)
 
     # This is emitted whenever the containersChanged signal from the ContainerStack base class is emitted.
@@ -386,6 +388,16 @@ class CuraContainerStack(ContainerStack):
         if value == -1:
             value = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         return value
+
+    def getProperty(self, key: str, property_name: str, context = None) -> Any:
+        if property_name == "settable_per_extruder":
+            # Setable per extruder isn't a value that can ever change. So once we requested it once, we can just keep
+            # that in memory.
+            if key not in self._settable_per_extruder_cache:
+                self._settable_per_extruder_cache[key] = super().getProperty(key, property_name, context)
+            return self._settable_per_extruder_cache[key]
+
+        return super().getProperty(key, property_name, context)
 
 
 class _ContainerIndexes:
