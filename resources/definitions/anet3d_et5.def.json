@@ -21,11 +21,11 @@
         "machine_height": {
             "default_value": 400
         },
-				"machine_start_gcode": {
+        "machine_start_gcode": {
             "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
         },
         "machine_end_gcode": {
-            "default_value": "M104 S0\nM140 S0\nG92 E80\nG1 E-80 F2000\nG28 X0 Y0\nM84"
-        }        
+            "default_value": "M104 S0\nM140 S0\nG92 E0\nG1 E-10 F2000\nG28 X0 Y0\nM84"
+        }
     }
 }

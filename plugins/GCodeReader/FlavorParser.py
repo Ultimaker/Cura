@@ -28,9 +28,8 @@ PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optiona
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
 
 
-##  This parser is intended to interpret the common firmware codes among all the
-#   different flavors
 class FlavorParser:
+    """This parser is intended to interpret the common firmware codes among all the different flavors"""
 
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
@@ -212,8 +211,9 @@ class FlavorParser:
     # G0 and G1 should be handled exactly the same.
     _gCode1 = _gCode0
 
-    ##  Home the head.
     def _gCode28(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Home the head."""
+
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -221,21 +221,26 @@ class FlavorParser:
             position.f,
             position.e)
 
-    ##  Set the absolute positioning
     def _gCode90(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Set the absolute positioning"""
+
         self._is_absolute_positioning = True
         self._is_absolute_extrusion = True
         return position
 
-    ##  Set the relative positioning
     def _gCode91(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Set the relative positioning"""
+
         self._is_absolute_positioning = False
         self._is_absolute_extrusion = False
         return position
 
-    ##  Reset the current position to the values specified.
-    #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Reset the current position to the values specified.
+
+        For example: G92 X10 will set the X to 10 without any physical motion.
+        """
+
         if params.e is not None:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
             self._extrusion_length_offset[self._extruder_number] = position.e[self._extruder_number] - params.e
@@ -291,8 +296,9 @@ class FlavorParser:
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"
 
-    ##  For showing correct x, y offsets for each extruder
     def _extruderOffsets(self) -> Dict[int, List[float]]:
+        """For showing correct x, y offsets for each extruder"""
+
         result = {}
         for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
@@ -306,7 +312,7 @@ class FlavorParser:
     # F5, that gcode SceneNode will be removed because it doesn't have a file to be reloaded from.
     #
     def processGCodeStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
-        Logger.log("d", "Preparing to load GCode")
+        Logger.log("d", "Preparing to load g-code")
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
@@ -314,7 +320,7 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
+        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
 
@@ -346,7 +352,7 @@ class FlavorParser:
         self._message.setProgress(0)
         self._message.show()
 
-        Logger.log("d", "Parsing Gcode...")
+        Logger.log("d", "Parsing g-code...")
 
         current_position = Position(0, 0, 0, 0, [0])
         current_path = [] #type: List[List[float]]
@@ -357,7 +363,7 @@ class FlavorParser:
 
         for line in stream.split("\n"):
             if self._cancelled:
-                Logger.log("d", "Parsing Gcode file cancelled")
+                Logger.log("d", "Parsing g-code file cancelled.")
                 return None
             current_line += 1
 
@@ -476,7 +482,7 @@ class FlavorParser:
         gcode_dict = {active_build_plate_id: gcode_list}
         CuraApplication.getInstance().getController().getScene().gcode_dict = gcode_dict #type: ignore #Because gcode_dict is generated dynamically.
 
-        Logger.log("d", "Finished parsing Gcode")
+        Logger.log("d", "Finished parsing g-code.")
         self._message.hide()
 
         if self._layer_number == 0:
@@ -487,7 +493,7 @@ class FlavorParser:
             machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
-        Logger.log("d", "GCode loading finished")
+        Logger.log("d", "G-code loading finished.")
 
         if CuraApplication.getInstance().getPreferences().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(

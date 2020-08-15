@@ -12,8 +12,12 @@ from UM.Qt.ListModel import ListModel
 from .ConfigsModel import ConfigsModel
 
 
-##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
+    """Model that holds Cura packages.
+
+    By setting the filter property the instances held by this model can be changed.
+    """
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -41,9 +45,6 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 20, "links")
         self.addRoleName(Qt.UserRole + 21, "website")
         self.addRoleName(Qt.UserRole + 22, "login_required")
-        self.addRoleName(Qt.UserRole + 23, "average_rating")
-        self.addRoleName(Qt.UserRole + 24, "num_ratings")
-        self.addRoleName(Qt.UserRole + 25, "user_rating")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -110,9 +111,6 @@ class PackagesModel(ListModel):
                 "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
                 "login_required":       "login-required" in package.get("tags", []),
-                "average_rating":       float(package.get("rating", {}).get("average", 0)),
-                "num_ratings":          package.get("rating", {}).get("count", 0),
-                "user_rating":          package.get("rating", {}).get("user_rating", 0)
             })
 
         # Filter on all the key-word arguments.
@@ -131,9 +129,11 @@ class PackagesModel(ListModel):
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
 
-    ##  Set the filter of this model based on a string.
-    #   \param filter_dict \type{Dict} Dictionary to do the filtering by.
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
+        """Set the filter of this model based on a string.
+
+        :param filter_dict: Dictionary to do the filtering by.
+        """
         if filter_dict != self._filter:
             self._filter = filter_dict
             self._update()

@@ -66,8 +66,10 @@ Item
             anchors.centerIn: parent
             width: UM.Theme.getSize("toolbox_thumbnail_small").width - UM.Theme.getSize("wide_margin").width
             height: UM.Theme.getSize("toolbox_thumbnail_small").height - UM.Theme.getSize("wide_margin").width
+            sourceSize.width: width
+            sourceSize.height: height
             fillMode: Image.PreserveAspectFit
-            source: model.icon_url || "../../images/logobot.svg"
+            source: model.icon_url || "../../images/placeholder.svg"
             mipmap: true
         }
         UM.RecolorImage
@@ -115,19 +117,9 @@ Item
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.top: name.bottom
-            anchors.bottom: rating.top
+            anchors.bottom: parent.bottom
             verticalAlignment: Text.AlignVCenter
             maximumLineCount: 2
-        }
-        SmallRatingWidget
-        {
-            id: rating
-            anchors
-            {
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-            }
         }
     }
 }

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.5\n"
+"Project-Id-Version: Cura 4.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"POT-Creation-Date: 2020-07-31 14:10+0000\n"
 "PO-Revision-Date: 2019-07-29 15:51+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: French <info@lionbridge.com>, French <info@bothof.nl>\n"
@@ -81,8 +81,8 @@ msgstr "GUID matériau"
 
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "GUID du matériau. Cela est configuré automatiquement. "
+msgid "GUID of the material. This is set automatically."
+msgstr "GUID du matériau. Cela est configuré automatiquement."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -225,6 +225,16 @@ msgid "Whether the machine is able to stabilize the build volume temperature."
 msgstr "Si la machine est capable de stabiliser la température du volume d'impression."
 
 #: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool label"
+msgid "Always Write Active Tool"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool description"
+msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
 msgstr "Est l'origine du centre"
@@ -293,16 +303,6 @@ msgstr "Longueur de la zone chauffée"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "Distance depuis la pointe du bec d'impression sur laquelle la chaleur du bec d'impression est transférée au filament."
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "Distance de stationnement du filament"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "Distance depuis la pointe du bec sur laquelle stationner le filament lorsqu'une extrudeuse n'est plus utilisée."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -862,12 +862,12 @@ msgstr "Largeur d'une seule ligne de bas de support."
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "Largeur de ligne de la tour primaire"
+msgstr "Largeur de ligne de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
 msgid "Width of a single prime tower line."
-msgstr "Largeur d'une seule ligne de tour primaire."
+msgstr "Largeur d'une seule ligne de tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor label"
@@ -1258,6 +1258,16 @@ msgstr "Expansion horizontale de la couche initiale"
 msgctxt "xy_offset_layer_0 description"
 msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
 msgstr "Le décalage appliqué à tous les polygones dans la première couche. Une valeur négative peut compenser l'écrasement de la première couche, appelé « patte d'éléphant »."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr "Expansion horizontale des trous"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr "Le décalage appliqué à tous les trous dans chaque couche. Les valeurs positives augmentent la taille des trous ; les valeurs négatives réduisent la taille des trous."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2190,8 +2200,8 @@ msgstr "Vitesse de purge d'insertion"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How fast to prime the material after switching to a different material."
+msgstr "La vitesse d'amorçage du matériau après le passage à un autre matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2200,28 +2210,28 @@ msgstr "Longueur de la purge d'insertion"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr "La quantité de matériau à utiliser pour purger le matériau précédent de la buse (en longueur de filament) lors du passage à un autre matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
+msgid "End of Filament Purge Speed"
 msgstr "Vitesse de purge de l'extrémité du filament"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr "La vitesse d'amorçage du matériau après le remplacement d'une bobine vide par une nouvelle bobine du même matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
+msgid "End of Filament Purge Length"
 msgstr "Longueur de purge de l'extrémité du filament"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr "La quantité de matériau à utiliser pour purger le matériau précédent de la buse (en longueur de filament) lors du remplacement d'une bobine vide par une nouvelle bobine du même matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2230,8 +2240,8 @@ msgstr "Durée maximum du stationnement"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr "La durée pendant laquelle le matériau peut être conservé à l'abri de la sécheresse."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2240,8 +2250,8 @@ msgstr "Facteur de déplacement sans chargement"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr "Un facteur indiquant la quantité de filament compressée entre le chargeur et la chambre de la buse ; utilisé pour déterminer jusqu'où faire avancer le matériau pour changer de filament."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2366,12 +2376,12 @@ msgstr "Compensation de débit sur les lignes de bas de support."
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
-msgstr "Débit de la tour primaire"
+msgstr "Débit de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow description"
 msgid "Flow compensation on prime tower lines."
-msgstr "Compensation de débit sur les lignes de la tour primaire."
+msgstr "Compensation de débit sur les lignes de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2526,12 +2536,12 @@ msgstr "La vitesse à laquelle le bas de support est imprimé. L'impression à u
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
-msgstr "Vitesse de la tour primaire"
+msgstr "Vitesse de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower description"
 msgid "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal."
-msgstr "La vitesse à laquelle la tour primaire est imprimée. L'impression plus lente de la tour primaire peut la rendre plus stable lorsque l'adhérence entre les différents filaments est sous-optimale."
+msgstr "La vitesse à laquelle la tour d'amorçage est imprimée. L'impression plus lente de la tour d'amorçage peut la rendre plus stable lorsque l'adhérence entre les différents filaments est sous-optimale."
 
 #: fdmprinter.def.json
 msgctxt "speed_travel label"
@@ -2756,12 +2766,12 @@ msgstr "L'accélération selon laquelle les bas de support sont imprimés. Les i
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
-msgstr "Accélération de la tour primaire"
+msgstr "Accélération de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower description"
 msgid "The acceleration with which the prime tower is printed."
-msgstr "L'accélération selon laquelle la tour primaire est imprimée."
+msgstr "L'accélération selon laquelle la tour d'amorçage est imprimée."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel label"
@@ -2946,12 +2956,12 @@ msgstr "Le changement instantané maximal de vitesse selon lequel les bas de sup
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
 msgid "Prime Tower Jerk"
-msgstr "Saccade de la tour primaire"
+msgstr "Saccade de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower description"
 msgid "The maximum instantaneous velocity change with which the prime tower is printed."
-msgstr "Le changement instantané maximal de vitesse selon lequel la tour primaire est imprimée."
+msgstr "Le changement instantané maximal de vitesse selon lequel la tour d'amorçage est imprimée."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel label"
@@ -3020,8 +3030,8 @@ msgstr "Activer la rétraction"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Rétracte le filament quand la buse se déplace vers une zone non imprimée. "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr "Rétracte le filament quand la buse se déplace vers une zone non imprimée."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3066,7 +3076,7 @@ msgstr "La vitesse à laquelle le filament est rétracté pendant une rétractio
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr "Vitesse de rétraction primaire"
+msgstr "Vitesse de rétraction d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed description"
@@ -3474,6 +3484,76 @@ msgid "The extruder train to use for printing the floors of the support. This is
 msgstr "Le train d'extrudeuse à utiliser pour l'impression des bas du support. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
+msgctxt "support_structure label"
+msgid "Support Structure"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure description"
+msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option normal"
+msgid "Normal"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option tree"
+msgid "Tree"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr "Angle des branches de support arborescent"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr "Angle des branches. Utilisez un angle plus faible pour les rendre plus verticales et plus stables ; utilisez un angle plus élevé pour avoir plus de portée."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr "Distance des branches de support arborescent"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgstr "Distance à laquelle doivent se trouver les branches lorsqu'elles touchent le modèle. Si vous réduisez cette distance, le support arborescent touchera le modèle à plus d'endroits, ce qui causera un meilleur porte-à-faux mais rendra le support plus difficile à enlever."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr "Diamètre des branches de support arborescent"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
+msgstr "Diamètre des branches les plus minces du support arborescent. Plus les branches sont épaisses, plus elles sont robustes ; les branches proches de la base seront plus épaisses que cette valeur."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr "Angle de diamètre des branches de support arborescent"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr "Angle du diamètre des branches au fur et à mesure qu'elles s'épaississent lorsqu'elles sont proches du fond. Avec un angle de 0°, les branches auront une épaisseur uniforme sur toute leur longueur. Donner un peu d'angle permet d'augmenter la stabilité du support arborescent."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr "Résolution de collision du support arborescent"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+msgstr "Résolution servant à calculer les collisions afin d'éviter de heurter le modèle. Plus ce paramètre est faible, plus les arborescences seront précises et stables, mais cela augmente considérablement le temps de découpage."
+
+#: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
 msgstr "Positionnement des supports"
@@ -3715,8 +3795,8 @@ msgstr "Distance X/Y minimale des supports"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "Distance entre la structure de support et le porte-à-faux dans les directions X/Y. "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr "Distance entre la structure de support et le porte-à-faux dans les directions X/Y."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -3737,6 +3817,16 @@ msgstr "Largeur maximale de la marche de support"
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 msgstr "La largeur maximale de la marche du support en forme d'escalier reposant sur le modèle. Une valeur faible rend le support plus difficile à enlever, mais des valeurs trop élevées peuvent entraîner des supports instables."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope label"
+msgid "Support Stair Step Minimum Slope Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope description"
+msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4184,6 +4274,16 @@ msgid "Make support everywhere below the support mesh, so that there's no overha
 msgstr "Inclure du support à tout emplacement sous le maillage de support, de sorte à ce qu'il n'y ait pas de porte-à-faux dans le maillage de support."
 
 #: fdmprinter.def.json
+msgctxt "support_meshes_present label"
+msgid "Scene Has Support Meshes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present description"
+msgid "There are support meshes present in the scene. This setting is controlled by Cura."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Adhérence du plateau"
@@ -4325,8 +4425,7 @@ msgstr "Distance de la bordure"
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr "La distance horizontale entre la première ligne de bordure et le contour de la première couche de l'impression. Un petit trou peut faciliter l'enlèvement"
-" de la bordure tout en offrant des avantages thermiques."
+msgstr "La distance horizontale entre la première ligne de bordure et le contour de la première couche de l'impression. Un petit trou peut faciliter l'enlèvement de la bordure tout en offrant des avantages thermiques."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4661,7 +4760,7 @@ msgstr "Paramètres utilisés pour imprimer avec plusieurs extrudeuses."
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable label"
 msgid "Enable Prime Tower"
-msgstr "Activer la tour primaire"
+msgstr "Activer la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable description"
@@ -4671,62 +4770,62 @@ msgstr "Imprimer une tour à côté de l'impression qui sert à amorcer le maté
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
-msgstr "Taille de la tour primaire"
+msgstr "Taille de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
-msgstr "La largeur de la tour primaire."
+msgstr "La largeur de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
-msgstr "Volume minimum de la tour primaire"
+msgstr "Volume minimum de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
-msgstr "Le volume minimum pour chaque touche de la tour primaire afin de purger suffisamment de matériau."
+msgstr "Le volume minimum pour chaque touche de la tour d'amorçage afin de purger suffisamment de matériau."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
-msgstr "Position X de la tour primaire"
+msgstr "Position X de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x description"
 msgid "The x coordinate of the position of the prime tower."
-msgstr "Les coordonnées X de la position de la tour primaire."
+msgstr "Les coordonnées X de la position de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
-msgstr "Position Y de la tour primaire"
+msgstr "Position Y de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y description"
 msgid "The y coordinate of the position of the prime tower."
-msgstr "Les coordonnées Y de la position de la tour primaire."
+msgstr "Les coordonnées Y de la position de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Inactive Nozzle on Prime Tower"
-msgstr "Essuyer le bec d'impression inactif sur la tour primaire"
+msgstr "Essuyer le bec d'impression inactif sur la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled description"
 msgid "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower."
-msgstr "Après l'impression de la tour primaire à l'aide d'une buse, nettoyer le matériau qui suinte de l'autre buse sur la tour primaire."
+msgstr "Après l'impression de la tour d'amorçage à l'aide d'une buse, nettoyer le matériau qui suinte de l'autre buse sur la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr "Bordure de la tour primaire"
+msgstr "Bordure de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Les tours primaires peuvent avoir besoin de l'adhérence supplémentaire d'une bordure, même si le modèle n'en a pas besoin. Ne peut actuellement pas être utilisé avec le type d'adhérence « Raft » (radeau)."
+msgstr "Les tours d'amorçage peuvent avoir besoin de l'adhérence supplémentaire d'une bordure, même si le modèle n'en a pas besoin. Ne peut actuellement pas être utilisé avec le type d'adhérence « Raft » (radeau)."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4791,7 +4890,7 @@ msgstr "La vitesse à laquelle le filament est rétracté pendant une rétractio
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed label"
 msgid "Nozzle Switch Prime Speed"
-msgstr "Vitesse primaire de changement de buse"
+msgstr "Vitesse d'amorçage de changement de buse"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed description"
@@ -4815,8 +4914,8 @@ msgstr "Corrections"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "catégorie_corrections"
+msgid "Make the meshes more suited for 3D printing."
+msgstr "Rendez les mailles plus adaptées à l'impression 3D."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,8 +5034,8 @@ msgstr "Modes spéciaux"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "catégorie_noirmagique"
+msgid "Non-traditional ways to print your models."
+msgstr "Des moyens non traditionnels d'imprimer vos modèles."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -4945,10 +5044,8 @@ msgstr "Séquence d'impression"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "Imprime tous les modèles en même temps, couche par couche, ou attend la fin d'un modèle pour en commencer un autre. Le mode « Un modèle à la fois » est"
-" disponible seulement si a) un seul extrudeur est activé et si b) tous les modèles sont suffisamment éloignés pour que la tête puisse passer entre eux"
-" et qu'ils sont tous inférieurs à la distance entre la buse et les axes X/Y. "
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -4972,13 +5069,13 @@ msgstr "Utiliser cette maille pour modifier le remplissage d'autres mailles qu'e
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
-msgid "Infill Mesh Order"
-msgstr "Ordre de maille de remplissage"
+msgid "Mesh Processing Rank"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "Détermine quelle maille de remplissage se trouve à l'intérieur du remplissage d'une autre maille de remplissage. Une maille de remplissage possédant un ordre plus élevé modifiera le remplissage des mailles de remplissage ayant un ordre plus bas et des mailles normales."
+msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5112,68 +5209,8 @@ msgstr "Expérimental"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "expérimental !"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable label"
-msgid "Tree Support"
-msgstr "Support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable description"
-msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr "Générer un support arborescent avec des branches qui soutiennent votre impression. Cela peut réduire l'utilisation de matériau et le temps d'impression, mais augmente considérablement le temps de découpage."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Angle des branches de support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Angle des branches. Utilisez un angle plus faible pour les rendre plus verticales et plus stables ; utilisez un angle plus élevé pour avoir plus de portée."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Distance des branches de support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Distance à laquelle doivent se trouver les branches lorsqu'elles touchent le modèle. Si vous réduisez cette distance, le support arborescent touchera le modèle à plus d'endroits, ce qui causera un meilleur porte-à-faux mais rendra le support plus difficile à enlever."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Diamètre des branches de support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter description"
-msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr "Diamètre des branches les plus minces du support arborescent. Plus les branches sont épaisses, plus elles sont robustes ; les branches proches de la base seront plus épaisses que cette valeur."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Angle de diamètre des branches de support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle description"
-msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "Angle du diamètre des branches au fur et à mesure qu'elles s'épaississent lorsqu'elles sont proches du fond. Avec un angle de 0°, les branches auront une épaisseur uniforme sur toute leur longueur. Donner un peu d'angle permet d'augmenter la stabilité du support arborescent."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Résolution de collision du support arborescent"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Résolution servant à calculer les collisions afin d'éviter de heurter le modèle. Plus ce paramètre est faible, plus les arborescences seront précises et stables, mais cela augmente considérablement le temps de découpage."
+msgid "Features that haven't completely been fleshed out yet."
+msgstr "Des fonctionnalités qui n'ont pas encore été complètement développées."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5182,8 +5219,8 @@ msgstr "Tolérance à la découpe"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
-msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr "Comment découper des couches avec des surfaces diagonales. Les zones d'une couche peuvent être générées en fonction de l'endroit où le milieu de la couche croise la surface (Milieu). Alternativement, chaque couche peut posséder des zones situées à l'intérieur du volume à travers toute la hauteur de la couche (Exclusif), ou une couche peut avoir des zones situées à l'intérieur à tout endroit dans la couche (Inclusif). L'option Exclusif permet de retenir le plus de détails, Inclusif permet d'obtenir une adaptation optimale et Milieu demande le moins de temps de traitement."
+msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
@@ -5454,76 +5491,6 @@ msgstr "Image de densité du remplissage croisé pour le support"
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
 msgstr "Emplacement du fichier d'une image dont les valeurs de luminosité déterminent la densité minimale à l'emplacement correspondant dans le support."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled label"
-msgid "Spaghetti Infill"
-msgstr "Remplissage en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled description"
-msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-msgstr "Imprime régulièrement le remplissage afin que les filaments s'enroulent de manière chaotique à l'intérieur de l'objet. Cela permet de réduire le temps d'impression, mais le comportement sera assez imprévisible."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped label"
-msgid "Spaghetti Infill Stepping"
-msgstr "Étapes de remplissage en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped description"
-msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr "Imprimer le remplissage en spaghettis étape par étape ou bien extruder tout le filament de remplissage à la fin de l'impression."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle label"
-msgid "Spaghetti Maximum Infill Angle"
-msgstr "Angle maximal de remplissage en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle description"
-msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-msgstr "L'angle maximal pour l'axe Z de l'intérieur de l'impression pour les zones à remplir ensuite par remplissage en spaghettis. Le fait de réduire cette valeur entraînera le remplissage de plus de parties inclinées sur chaque couche dans votre modèle."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height label"
-msgid "Spaghetti Infill Maximum Height"
-msgstr "Hauteur maximale du remplissage en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height description"
-msgid "The maximum height of inside space which can be combined and filled from the top."
-msgstr "La hauteur maximale de l'espace intérieur qui peut être combiné et rempli depuis le haut."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset label"
-msgid "Spaghetti Inset"
-msgstr "Insert en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset description"
-msgid "The offset from the walls from where the spaghetti infill will be printed."
-msgstr "Le décalage à partir des parois depuis lesquelles le remplissage en spaghettis sera imprimé."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow label"
-msgid "Spaghetti Flow"
-msgstr "Flux en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow description"
-msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-msgstr "Ajuste la densité du remplissage en spaghettis. Veuillez noter que la densité de remplissage ne contrôle que l'espacement de ligne du motif de remplissage, et non le montant d'extrusion du remplissage en spaghettis."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume label"
-msgid "Spaghetti Infill Extra Volume"
-msgstr "Volume supplémentaire de remplissage en spaghettis"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume description"
-msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr "Terme de correction permettant d'ajuster le volume total extrudé à chaque fois lors du remplissage en spaghettis."
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -5982,8 +5949,7 @@ msgstr "Densité maximale du remplissage mince du pont"
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr "Densité maximale du remplissage considéré comme étant mince. La couche sur le remplissage mince est considérée comme non soutenue et peut donc être traitée"
-" comme une couche du pont."
+msgstr "Densité maximale du remplissage considéré comme étant mince. La couche sur le remplissage mince est considérée comme non soutenue et peut donc être traitée comme une couche du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6153,9 +6119,7 @@ msgstr "Essuyer la buse entre les couches"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "Inclure ou non le G-Code d'essuyage de la buse entre les couches (maximum 1 par couche). L'activation de ce paramètre peut influencer le comportement de"
-" la rétraction lors du changement de couche. Veuillez utiliser les paramètres de rétraction d'essuyage pour contrôler la rétraction aux couches où le script"
-" d'essuyage sera exécuté."
+msgstr "Inclure ou non le G-Code d'essuyage de la buse entre les couches (maximum 1 par couche). L'activation de ce paramètre peut influencer le comportement de la rétraction lors du changement de couche. Veuillez utiliser les paramètres de rétraction d'essuyage pour contrôler la rétraction aux couches où le script d'essuyage sera exécuté."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6165,8 +6129,7 @@ msgstr "Volume de matériau entre les essuyages"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr "Le volume maximum de matériau qui peut être extrudé avant qu'un autre essuyage de buse ne soit lancé. Si cette valeur est inférieure au volume de matériau"
-" nécessaire dans une couche, le paramètre n'a aucun effet dans cette couche, c'est-à-dire qu'il est limité à un essuyage par couche."
+msgstr "Le volume maximum de matériau qui peut être extrudé avant qu'un autre essuyage de buse ne soit lancé. Si cette valeur est inférieure au volume de matériau nécessaire dans une couche, le paramètre n'a aucun effet dans cette couche, c'est-à-dire qu'il est limité à un essuyage par couche."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6191,7 +6154,7 @@ msgstr "La distance de rétraction du filament afin qu'il ne suinte pas pendant 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr "Degré supplémentaire de rétraction d'essuyage primaire"
+msgstr "Degré supplémentaire de rétraction d'essuyage d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
@@ -6246,8 +6209,7 @@ msgstr "Décalage en Z de l'essuyage"
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "Lors de l'essuyage, le plateau de fabrication est abaissé pour créer un espace entre la buse et l'impression. Cela évite que la buse ne touche l'impression"
-" pendant les déplacements, réduisant ainsi le risque de heurter l'impression à partir du plateau de fabrication."
+msgstr "Lors de l'essuyage, le plateau de fabrication est abaissé pour créer un espace entre la buse et l'impression. Cela évite que la buse ne touche l'impression pendant les déplacements, réduisant ainsi le risque de heurter l'impression à partir du plateau de fabrication."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6398,6 +6360,150 @@ msgstr "Matrice de rotation de la maille"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matrice de transformation à appliquer au modèle lors de son chargement depuis le fichier."
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+#~ msgstr "Imprime tous les modèles en même temps, couche par couche, ou attend la fin d'un modèle pour en commencer un autre. Le mode « Un modèle à la fois » est disponible seulement si a) un seul extrudeur est activé et si b) tous les modèles sont suffisamment éloignés pour que la tête puisse passer entre eux et qu'ils sont tous inférieurs à la distance entre la buse et les axes X/Y. "
+
+#~ msgctxt "infill_mesh_order label"
+#~ msgid "Infill Mesh Order"
+#~ msgstr "Ordre de maille de remplissage"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Détermine quelle maille de remplissage se trouve à l'intérieur du remplissage d'une autre maille de remplissage. Une maille de remplissage possédant un ordre plus élevé modifiera le remplissage des mailles de remplissage ayant un ordre plus bas et des mailles normales."
+
+#~ msgctxt "support_tree_enable label"
+#~ msgid "Tree Support"
+#~ msgstr "Support arborescent"
+
+#~ msgctxt "support_tree_enable description"
+#~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
+#~ msgstr "Générer un support arborescent avec des branches qui soutiennent votre impression. Cela peut réduire l'utilisation de matériau et le temps d'impression, mais augmente considérablement le temps de découpage."
+
+#~ msgctxt "slicing_tolerance description"
+#~ msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+#~ msgstr "Comment découper des couches avec des surfaces diagonales. Les zones d'une couche peuvent être générées en fonction de l'endroit où le milieu de la couche croise la surface (Milieu). Alternativement, chaque couche peut posséder des zones situées à l'intérieur du volume à travers toute la hauteur de la couche (Exclusif), ou une couche peut avoir des zones situées à l'intérieur à tout endroit dans la couche (Inclusif). L'option Exclusif permet de retenir le plus de détails, Inclusif permet d'obtenir une adaptation optimale et Milieu demande le moins de temps de traitement."
+
+#~ msgctxt "spaghetti_infill_enabled label"
+#~ msgid "Spaghetti Infill"
+#~ msgstr "Remplissage en spaghettis"
+
+#~ msgctxt "spaghetti_infill_enabled description"
+#~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
+#~ msgstr "Imprime régulièrement le remplissage afin que les filaments s'enroulent de manière chaotique à l'intérieur de l'objet. Cela permet de réduire le temps d'impression, mais le comportement sera assez imprévisible."
+
+#~ msgctxt "spaghetti_infill_stepped label"
+#~ msgid "Spaghetti Infill Stepping"
+#~ msgstr "Étapes de remplissage en spaghettis"
+
+#~ msgctxt "spaghetti_infill_stepped description"
+#~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
+#~ msgstr "Imprimer le remplissage en spaghettis étape par étape ou bien extruder tout le filament de remplissage à la fin de l'impression."
+
+#~ msgctxt "spaghetti_max_infill_angle label"
+#~ msgid "Spaghetti Maximum Infill Angle"
+#~ msgstr "Angle maximal de remplissage en spaghettis"
+
+#~ msgctxt "spaghetti_max_infill_angle description"
+#~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
+#~ msgstr "L'angle maximal pour l'axe Z de l'intérieur de l'impression pour les zones à remplir ensuite par remplissage en spaghettis. Le fait de réduire cette valeur entraînera le remplissage de plus de parties inclinées sur chaque couche dans votre modèle."
+
+#~ msgctxt "spaghetti_max_height label"
+#~ msgid "Spaghetti Infill Maximum Height"
+#~ msgstr "Hauteur maximale du remplissage en spaghettis"
+
+#~ msgctxt "spaghetti_max_height description"
+#~ msgid "The maximum height of inside space which can be combined and filled from the top."
+#~ msgstr "La hauteur maximale de l'espace intérieur qui peut être combiné et rempli depuis le haut."
+
+#~ msgctxt "spaghetti_inset label"
+#~ msgid "Spaghetti Inset"
+#~ msgstr "Insert en spaghettis"
+
+#~ msgctxt "spaghetti_inset description"
+#~ msgid "The offset from the walls from where the spaghetti infill will be printed."
+#~ msgstr "Le décalage à partir des parois depuis lesquelles le remplissage en spaghettis sera imprimé."
+
+#~ msgctxt "spaghetti_flow label"
+#~ msgid "Spaghetti Flow"
+#~ msgstr "Flux en spaghettis"
+
+#~ msgctxt "spaghetti_flow description"
+#~ msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
+#~ msgstr "Ajuste la densité du remplissage en spaghettis. Veuillez noter que la densité de remplissage ne contrôle que l'espacement de ligne du motif de remplissage, et non le montant d'extrusion du remplissage en spaghettis."
+
+#~ msgctxt "spaghetti_infill_extra_volume label"
+#~ msgid "Spaghetti Infill Extra Volume"
+#~ msgstr "Volume supplémentaire de remplissage en spaghettis"
+
+#~ msgctxt "spaghetti_infill_extra_volume description"
+#~ msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
+#~ msgstr "Terme de correction permettant d'ajuster le volume total extrudé à chaque fois lors du remplissage en spaghettis."
+
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "GUID du matériau. Cela est configuré automatiquement. "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "Distance de stationnement du filament"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "Distance depuis la pointe du bec sur laquelle stationner le filament lorsqu'une extrudeuse n'est plus utilisée."
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "Vitesse de purge de l'extrémité du filament"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "Longueur de purge de l'extrémité du filament"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "Rétracte le filament quand la buse se déplace vers une zone non imprimée. "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "Distance entre la structure de support et le porte-à-faux dans les directions X/Y. "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "catégorie_corrections"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "catégorie_noirmagique"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "expérimental !"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"
@@ -6573,11 +6679,11 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 
 #~ msgctxt "prime_tower_circular label"
 #~ msgid "Circular Prime Tower"
-#~ msgstr "Tour primaire circulaire"
+#~ msgstr "Tour d'amorçage circulaire"
 
 #~ msgctxt "prime_tower_circular description"
 #~ msgid "Make the prime tower as a circular shape."
-#~ msgstr "Réaliser la tour primaire en forme circulaire."
+#~ msgstr "Réaliser la tour d'amorçage en forme circulaire."
 
 #~ msgctxt "prime_tower_flow description"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
@@ -6713,11 +6819,11 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 
 #~ msgctxt "prime_tower_wall_thickness label"
 #~ msgid "Prime Tower Thickness"
-#~ msgstr "Épaisseur de la tour primaire"
+#~ msgstr "Épaisseur de la tour d'amorçage"
 
 #~ msgctxt "prime_tower_wall_thickness description"
 #~ msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
-#~ msgstr "L'épaisseur de la tour primaire creuse. Une épaisseur supérieure à la moitié du volume minimum de la tour primaire résultera en une tour primaire dense."
+#~ msgstr "L'épaisseur de la tour d'amorçage creuse. Une épaisseur supérieure à la moitié du volume minimum de la tour d'amorçage résultera en une tour d'amorçage dense."
 
 #~ msgctxt "dual_pre_wipe label"
 #~ msgid "Wipe Nozzle After Switch"
@@ -6729,11 +6835,11 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 
 #~ msgctxt "prime_tower_purge_volume label"
 #~ msgid "Prime Tower Purge Volume"
-#~ msgstr "Volume de purge de la tour primaire"
+#~ msgstr "Volume de purge de la tour d'amorçage"
 
 #~ msgctxt "prime_tower_purge_volume description"
 #~ msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
-#~ msgstr "Quantité de filament à purger lors de l'essuyage de la tour primaire. La purge est utile pour compenser le filament perdu par la suinte pendant l'inactivité de la buse."
+#~ msgstr "Quantité de filament à purger lors de l'essuyage de la tour d'amorçage. La purge est utile pour compenser le filament perdu par la suinte pendant l'inactivité de la buse."
 
 #~ msgctxt "bridge_wall_max_overhang label"
 #~ msgid "Bridge Wall Max Overhang"

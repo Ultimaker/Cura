@@ -7,7 +7,7 @@
         "author": "BeamUp",
         "manufacturer": "BeamUp",
         "file_formats": "text/x-gcode",
-        "platform": "beamup_s.stl",
+        "platform": "beamup_s.3mf",
         "platform_offset": [0, -5, -10],
         "has_machine_quality": true,
         "has_materials": true,

@@ -15,9 +15,11 @@ from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherit
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 
-##  The per object setting visibility handler ensures that only setting
-#   definitions that have a matching instance Container are returned as visible.
 class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
+    """The per object setting visibility handler ensures that only setting
+
+    definitions that have a matching instance Container are returned as visible.
+    """
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 
@@ -71,7 +73,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
         # Add all instances that are not added, but are in visibility list
         for item in visible:
-            if settings.getInstance(item) is not None:  # Setting was not added already.
+            if settings.getInstance(item) is None:  # Setting was not added already.
                 definition = self._stack.getSettingDefinition(item)
                 if definition:
                     new_instance = SettingInstance(definition, settings)

@@ -74,7 +74,7 @@ UM.MainWindow
     WelcomeDialogItem
     {
         id: welcomeDialogItem
-        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
+        visible: false
         z: greyOutBackground.z + 1
     }
 
@@ -82,6 +82,21 @@ UM.MainWindow
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
         CuraApplication.purgeWindows()
+    }
+
+    Connections
+    {
+        // This connection is used when there is no ActiveMachine and the user is logged in
+        target: CuraApplication
+        onShowAddPrintersUncancellableDialog:
+        {
+            Cura.Actions.parent = backgroundItem
+
+            // Reuse the welcome dialog item to show "Add a printer" only.
+            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+            welcomeDialogItem.progressBarVisible = false
+            welcomeDialogItem.visible = true
+        }
     }
 
     Connections
@@ -114,6 +129,15 @@ UM.MainWindow
             if (CuraApplication.shouldShowWhatsNewDialog())
             {
                 welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
+            }
+
+            // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
+            // machine and the user is logged in.
+            if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
+            {
+                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
                 welcomeDialogItem.progressBarVisible = false
                 welcomeDialogItem.visible = true
             }
@@ -842,6 +866,7 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "What's New")
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
+        visible: false
     }
 
     Connections

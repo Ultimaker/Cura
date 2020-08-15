@@ -53,6 +53,8 @@ plugins/GodMode
 plugins/OctoPrintPlugin
 plugins/ProfileFlattener
 plugins/SettingsGuide
+plugins/SettingsGuide2
+plugins/SVGToolpathReader
 plugins/X3GWriter
 
 #Build stuff
@@ -76,3 +78,5 @@ CuraEngine
 
 #Prevents import failures when plugin running tests
 plugins/__init__.py
+
+/venv

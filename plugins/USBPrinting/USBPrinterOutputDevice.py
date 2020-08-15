@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -58,7 +58,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._baud_rate = baud_rate
 
-        self._all_baud_rates = [115200, 250000, 500000, 230400, 57600, 38400, 19200, 9600]
+        self._all_baud_rates = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
         self._update_thread = Thread(target = self._update, daemon = True, name = "USBPrinterUpdate")
@@ -110,20 +110,22 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             application = CuraApplication.getInstance()
             application.triggerNextExitCheck()
 
-    ## Reset USB device settings
-    #
     def resetDeviceSettings(self) -> None:
+        """Reset USB device settings"""
+
         self._firmware_name = None
 
-    ##  Request the current scene to be sent to a USB-connected printer.
-    #
-    #   \param nodes A collection of scene nodes to send. This is ignored.
-    #   \param file_name A suggestion for a file name to write.
-    #   \param filter_by_machine Whether to filter MIME types by machine. This
-    #   is ignored.
-    #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
+        """Request the current scene to be sent to a USB-connected printer.
+
+        :param nodes: A collection of scene nodes to send. This is ignored.
+        :param file_name: A suggestion for a file name to write.
+        :param filter_by_machine: Whether to filter MIME types by machine. This
+               is ignored.
+        :param kwargs: Keyword arguments.
+        """
+
         if self._is_printing:
             message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
             message.show()
@@ -144,9 +146,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._printGCode(gcode_textio.getvalue())
 
-    ##  Start a print based on a g-code.
-    #   \param gcode The g-code to print.
     def _printGCode(self, gcode: str):
+        """Start a print based on a g-code.
+
+        :param gcode: The g-code to print.
+        """
         self._gcode.clear()
         self._paused = False
 
@@ -191,7 +195,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             try:
                 self._serial = Serial(str(self._serial_port), self._baud_rate, timeout=self._timeout, writeTimeout=self._timeout)
             except SerialException:
-                Logger.log("w", "An exception occurred while trying to create serial connection")
+                Logger.warning("An exception occurred while trying to create serial connection.")
+                return
+            except OSError as e:
+                Logger.warning("The serial device is suddenly unavailable while trying to create a serial connection: {err}".format(err = str(e)))
                 return
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
@@ -216,8 +223,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_thread = Thread(target=self._update, daemon=True, name = "USBPrinterUpdate")
         self._serial = None
 
-    ##  Send a command to printer.
     def sendCommand(self, command: Union[str, bytes]):
+        """Send a command to printer."""
+
         if not self._command_received.is_set():
             self._command_queue.put(command)
         else:
@@ -364,11 +372,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("M84")
 
     def _sendNextGcodeLine(self):
-        if self._gcode_position >= len(self._gcode):
+        """
+        Send the next line of g-code, at the current `_gcode_position`, via a
+        serial port to the printer.
+
+        If the print is done, this sets `_is_printing` to `False` as well.
+        """
+        try:
+            line = self._gcode[self._gcode_position]
+        except IndexError:  # End of print, or print got cancelled.
             self._printers[0].updateActivePrintJob(None)
             self._is_printing = False
             return
-        line = self._gcode[self._gcode_position]
 
         if ";" in line:
             line = line[:line.find(";")]
@@ -398,7 +413,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)
-            print_job = PrintJobOutputModel(output_controller=controller, name=CuraApplication.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = controller, name = CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 

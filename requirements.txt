@@ -1,4 +1,5 @@
 colorlog
+mypy==0.740
 PyQt5==5.10
 numpy==1.15.4
 scipy==1.2.0
@@ -18,6 +19,7 @@ pycollada==0.6
 pycparser==2.19
 pyparsing==2.4.2
 pyserial==3.4
+pytest
 python-dateutil==2.8.0
 python-utils==2.3.0
 requests==2.22.0

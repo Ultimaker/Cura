@@ -1,51 +1,57 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import re #Regular expressions for parsing escape characters in the settings.
+import re  # Regular expressions for parsing escape characters in the settings.
 import json
+from typing import Optional
 
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
-
 from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
 
-##  A class that reads profile data from g-code files.
-#
-#   It reads the profile data from g-code files and stores it in a new profile.
-#   This class currently does not process the rest of the g-code in any way.
+catalog = i18nCatalog("cura")
+
+
 class GCodeProfileReader(ProfileReader):
-    ##  The file format version of the serialized g-code.
-    #
-    #   It can only read settings with the same version as the version it was
-    #   written with. If the file format is changed in a way that breaks reverse
-    #   compatibility, increment this version number!
+    """A class that reads profile data from g-code files.
+
+    It reads the profile data from g-code files and stores it in a new profile.
+    This class currently does not process the rest of the g-code in any way.
+    """
+
     version = 3
+    """The file format version of the serialized g-code.
 
-    ##  Dictionary that defines how characters are escaped when embedded in
-    #   g-code.
-    #
-    #   Note that the keys of this dictionary are regex strings. The values are
-    #   not.
+    It can only read settings with the same version as the version it was
+    written with. If the file format is changed in a way that breaks reverse
+    compatibility, increment this version number!
+    """
+
     escape_characters = {
-        re.escape("\\\\"): "\\", #The escape character.
-        re.escape("\\n"): "\n",  #Newlines. They break off the comment.
-        re.escape("\\r"): "\r"   #Carriage return. Windows users may need this for visualisation in their editors.
+        re.escape("\\\\"): "\\",  # The escape character.
+        re.escape("\\n"): "\n",   # Newlines. They break off the comment.
+        re.escape("\\r"): "\r"    # Carriage return. Windows users may need this for visualisation in their editors.
     }
+    """Dictionary that defines how characters are escaped when embedded in
 
-    ##  Initialises the g-code reader as a profile reader.
-    def __init__(self):
-        super().__init__()
+    g-code.
 
-    ##  Reads a g-code file, loading the profile from it.
-    #
-    #   \param file_name The name of the file to read the profile from.
-    #   \return The profile that was in the specified file, if any. If the
-    #   specified file was no g-code or contained no parsable profile, \code
-    #   None \endcode is returned.
+    Note that the keys of this dictionary are regex strings. The values are
+    not.
+    """
+
     def read(self, file_name):
+        """Reads a g-code file, loading the profile from it.
+
+        :param file_name: The name of the file to read the profile from.
+        :return: The profile that was in the specified file, if any. If the
+            specified file was no g-code or contained no parsable profile,
+            None  is returned.
+        """
+        Logger.log("i", "Attempting to read a profile from the g-code")
+
         if file_name.split(".")[-1] != "gcode":
             return None
 
@@ -61,7 +67,7 @@ class GCodeProfileReader(ProfileReader):
                 for line in f:
                     if line.startswith(prefix):
                         # Remove the prefix and the newline from the line and add it to the rest.
-                        serialized += line[prefix_length : -1]
+                        serialized += line[prefix_length: -1]
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
             return None
@@ -70,10 +76,10 @@ class GCodeProfileReader(ProfileReader):
         serialized = serialized.strip()
 
         if not serialized:
-            Logger.log("i", "No custom profile to import from this g-code: %s", file_name)
+            Logger.log("w", "No custom profile to import from this g-code: %s", file_name)
             raise NoProfileException()
 
-        # serialized data can be invalid JSON
+        # Serialized data can be invalid JSON
         try:
             json_data = json.loads(serialized)
         except Exception as e:
@@ -94,22 +100,28 @@ class GCodeProfileReader(ProfileReader):
             profiles.append(readQualityProfileFromString(profile_string))
         return profiles
 
-##  Unescape a string which has been escaped for use in a gcode comment.
-#
-#   \param string The string to unescape.
-#   \return \type{str} The unscaped string.
-def unescapeGcodeComment(string):
+
+def unescapeGcodeComment(string: str) -> str:
+    """Unescape a string which has been escaped for use in a gcode comment.
+
+    :param string: The string to unescape.
+    :return: The unescaped string.
+    """
+
     # Un-escape the serialized profile.
     pattern = re.compile("|".join(GCodeProfileReader.escape_characters.keys()))
 
     # Perform the replacement with a regular expression.
     return pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], string)
 
-##  Read in a profile from a serialized string.
-#
-#   \param profile_string The profile data in serialized form.
-#   \return \type{Profile} the resulting Profile object or None if it could not be read.
-def readQualityProfileFromString(profile_string):
+
+def readQualityProfileFromString(profile_string) -> Optional[InstanceContainer]:
+    """Read in a profile from a serialized string.
+
+    :param profile_string: The profile data in serialized form.
+    :return: The resulting Profile object or None if it could not be read.
+    """
+
     # Create an empty profile - the id and name will be changed by the ContainerRegistry
     profile = InstanceContainer("")
     try:

@@ -6,7 +6,7 @@
         "visible": true,
         "author": "samsector",
         "manufacturer": "Printrbot",
-        "platform": "printrbot_simple_metal_upgrade.stl",
+        "platform": "printrbot_simple_metal_upgrade.3mf",
         "platform_offset": [0, -0.3, 0],
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":

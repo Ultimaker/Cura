@@ -43,10 +43,12 @@ class LicensePresenter(QObject):
 
         self._compatibility_dialog_path = "resources/qml/dialogs/ToolboxLicenseDialog.qml"
 
-    ## Show a license dialog for multiple packages where users can read a license and accept or decline them
-    # \param plugin_path: Root directory of the Toolbox plugin
-    # \param packages: Dict[package id, file path]
     def present(self, plugin_path: str, packages: Dict[str, Dict[str, str]]) -> None:
+        """Show a license dialog for multiple packages where users can read a license and accept or decline them
+
+        :param plugin_path: Root directory of the Toolbox plugin
+        :param packages: Dict[package id, file path]
+        """
         if self._presented:
             Logger.error("{clazz} is single-use. Create a new {clazz} instead", clazz=self.__class__.__name__)
             return

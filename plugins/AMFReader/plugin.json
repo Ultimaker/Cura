@@ -3,5 +3,5 @@
     "author": "fieldOfView",
     "version": "1.0.0",
     "description": "Provides support for reading AMF files.",
-    "api": "7.1.0"
+    "api": "7.3.0"
 }

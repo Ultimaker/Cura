@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -31,16 +31,19 @@ MACHINE_MAX_JERK_E = 5
 MACHINE_MINIMUM_FEEDRATE = 0.001
 MACHINE_ACCELERATION = 3000
 
-##  Gets the code and number from the given g-code line.
+
 def get_code_and_num(gcode_line: str) -> Tuple[str, str]:
+    """Gets the code and number from the given g-code line."""
+
     gcode_line = gcode_line.strip()
     cmd_code = gcode_line[0].upper()
     cmd_num = str(gcode_line[1:])
     return cmd_code, cmd_num
 
-##  Fetches arguments such as X1 Y2 Z3 from the given part list and returns a
-#   dict.
+
 def get_value_dict(parts: List[str]) -> Dict[str, str]:
+    """Fetches arguments such as X1 Y2 Z3 from the given part list and returns a dict"""
+
     value_dict = {}
     for p in parts:
         p = p.strip()
@@ -63,39 +66,49 @@ def calc_distance(pos1, pos2):
     distance = math.sqrt(distance)
     return distance
 
-##  Given the initial speed, the target speed, and the acceleration, calculate
-#   the distance that's neede for the acceleration to finish.
+
 def calc_acceleration_distance(init_speed: float, target_speed: float, acceleration: float) -> float:
+    """Given the initial speed, the target speed, and the acceleration
+
+    calculate the distance that's neede for the acceleration to finish.
+    """
     if acceleration == 0:
         return 0.0
     return (target_speed ** 2 - init_speed ** 2) / (2 * acceleration)
 
-##  Gives the time it needs to accelerate from an initial speed to reach a final
-#   distance.
+
 def calc_acceleration_time_from_distance(initial_feedrate: float, distance: float, acceleration: float) -> float:
+    """Gives the time it needs to accelerate from an initial speed to reach a final distance."""
+
     discriminant = initial_feedrate ** 2 - 2 * acceleration * -distance
     #If the discriminant is negative, we're moving in the wrong direction.
     #Making the discriminant 0 then gives the extremum of the parabola instead of the intersection.
     discriminant = max(0, discriminant)
     return (-initial_feedrate + math.sqrt(discriminant)) / acceleration
 
-##  Calculates the point at which you must start braking.
-#
-#   This gives the distance from the start of a line at which you must start
-#   decelerating (at a rate of `-acceleration`) if you started at speed
-#   `initial_feedrate` and accelerated until this point and want to end at the
-#   `final_feedrate` after a total travel of `distance`. This can be used to
-#   compute the intersection point between acceleration and deceleration in the
-#   cases where the trapezoid has no plateau (i.e. never reaches maximum speed).
+
 def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, acceleration: float, distance: float) -> float:
+    """Calculates the point at which you must start braking.
+
+    This gives the distance from the start of a line at which you must start
+    decelerating (at a rate of `-acceleration`) if you started at speed
+    `initial_feedrate` and accelerated until this point and want to end at the
+    `final_feedrate` after a total travel of `distance`. This can be used to
+    compute the intersection point between acceleration and deceleration in the
+    cases where the trapezoid has no plateau (i.e. never reaches maximum speed).
+    """
+
     if acceleration == 0:
         return 0
     return (2 * acceleration * distance - initial_feedrate * initial_feedrate + final_feedrate * final_feedrate) / (4 * acceleration)
 
-##  Calculates the maximum speed that is allowed at this point when you must be
-#   able to reach target_velocity using the acceleration within the allotted
-#   distance.
+
 def calc_max_allowable_speed(acceleration: float, target_velocity: float, distance: float) -> float:
+    """Calculates the maximum speed that is allowed at this point when you must be
+    able to reach target_velocity using the acceleration within the allotted
+    distance.
+    """
+
     return math.sqrt(target_velocity * target_velocity - 2 * acceleration * distance)
 
 
@@ -130,10 +143,12 @@ class Command:
         self._delta = [0, 0, 0]
         self._abs_delta = [0, 0, 0]
 
-    ##  Calculate the velocity-time trapezoid function for this move.
-    #
-    #   Each move has a three-part function mapping time to velocity.
     def calculate_trapezoid(self, entry_factor, exit_factor):
+        """Calculate the velocity-time trapezoid function for this move.
+
+        Each move has a three-part function mapping time to velocity.
+        """
+
         initial_feedrate = self._nominal_feedrate * entry_factor
         final_feedrate = self._nominal_feedrate * exit_factor
 
@@ -169,9 +184,9 @@ class Command:
 
         return self._cmd_str.strip() + " ; --- " + info + os.linesep
 
-    ##  Estimates the execution time of this command and calculates the state
-    #   after this command is executed.
     def parse(self) -> None:
+        """Estimates the execution time of this command and calculates the state after this command is executed."""
+
         line = self._cmd_str.strip()
         if not line:
             self._is_empty = True
@@ -507,7 +522,7 @@ class CommandBuffer:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or 3 < len(sys.argv):
-        print("Usage: <input gcode> [output gcode]")
+        print("Usage: <input g-code> [output g-code]")
         sys.exit(1)
     in_filename = sys.argv[1]
     out_filename = None

@@ -12,13 +12,15 @@ from UM.Message import Message
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
-from ..UltimakerCloudScope import UltimakerCloudScope
 
 
-## Downloads a set of packages from the Ultimaker Cloud Marketplace
-# use download() exactly once: should not be used for multiple sets of downloads since this class contains state
 class DownloadPresenter:
+    """Downloads a set of packages from the Ultimaker Cloud Marketplace
+
+    use download() exactly once: should not be used for multiple sets of downloads since this class contains state
+    """
 
     DISK_WRITE_BUFFER_SIZE = 256 * 1024  # 256 KB
 
@@ -117,6 +119,10 @@ class DownloadPresenter:
         for item in self._progress.values():
             received += item["received"]
             total += item["total"]
+
+        if total == 0:  # Total download size is 0, or unknown, or there are no progress items at all.
+            self._progress_message.setProgress(100.0)
+            return
 
         self._progress_message.setProgress(100.0 * (received / total))  # [0 .. 100] %
 

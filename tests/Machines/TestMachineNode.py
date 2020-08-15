@@ -26,12 +26,14 @@ def container_registry():
     result.findContainersMetadata = MagicMock(return_value = [metadata_dict])
     return result
 
-##  Creates a machine node without anything underneath it. No sub-nodes.
-#
-#   For testing stuff with machine nodes without testing _loadAll(). You'll need
-#   to add subnodes manually in your test.
 @pytest.fixture
 def empty_machine_node():
+    """Creates a machine node without anything underneath it. No sub-nodes.
+
+    For testing stuff with machine nodes without testing _loadAll(). You'll need
+    to add subnodes manually in your test.
+    """
+
     empty_container_registry = MagicMock()
     empty_container_registry.findContainersMetadata = MagicMock(return_value = [metadata_dict])  # Still contain the MachineNode's own metadata for the constructor.
     empty_container_registry.findInstanceContainersMetadata = MagicMock(return_value = [])
@@ -77,9 +79,13 @@ def test_metadataProperties(container_registry):
     assert node.preferred_material == metadata_dict["preferred_material"]
     assert node.preferred_quality_type == metadata_dict["preferred_quality_type"]
 
-##  Test getting quality groups when there are quality profiles available for
-#   the requested configurations on two extruders.
+
 def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):
+    """Test getting quality groups when there are quality profiles available for
+
+    the requested configurations on two extruders.
+    """
+
     # Prepare a tree inside the machine node.
     extruder_0_node = MagicMock(quality_type = "quality_type_1")
     extruder_1_node = MagicMock(quality_type = "quality_type_1")  # Same quality type, so this is the one that can be returned.
@@ -121,12 +127,15 @@ def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):
     assert result["quality_type_1"].name == global_node.getMetaDataEntry("name", "Unnamed Profile")
     assert result["quality_type_1"].quality_type == "quality_type_1"
 
-##  Test the "is_available" flag on quality groups.
-#
-#   If a profile is available for a quality type on an extruder but not on all
-#   extruders, there should be a quality group for it but it should not be made
-#   available.
+
 def test_getQualityGroupsAvailability(empty_machine_node):
+    """Test the "is_available" flag on quality groups.
+
+    If a profile is available for a quality type on an extruder but not on all
+    extruders, there should be a quality group for it but it should not be made
+    available.
+    """
+
     # Prepare a tree inside the machine node.
     extruder_0_both = MagicMock(quality_type = "quality_type_both")  # This quality type is available for both extruders.
     extruder_1_both = MagicMock(quality_type = "quality_type_both")

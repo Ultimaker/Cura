@@ -23,6 +23,8 @@ import os
 import Arcus  # @UnusedImport
 import Savitar  # @UnusedImport
 
+from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
+
 from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
@@ -37,7 +39,7 @@ except ImportError:
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
 parser.add_argument("--debug",
-                    action="store_true",
+                    action = "store_true",
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
@@ -47,11 +49,11 @@ known_args = vars(parser.parse_known_args()[0])
 if with_sentry_sdk:
     sentry_env = "unknown"  # Start off with a "IDK"
     if hasattr(sys, "frozen"):
-        sentry_env = "production"  # A frozen build has the posibility to be a "real" distribution.
+        sentry_env = "production"  # A frozen build has the possibility to be a "real" distribution.
 
     if ApplicationMetadata.CuraVersion == "master":
         sentry_env = "development"  # Master is always a development version.
-    elif ApplicationMetadata.CuraVersion in ["beta", "BETA"]:
+    elif "beta" in ApplicationMetadata.CuraVersion or "BETA" in ApplicationMetadata.CuraVersion:
         sentry_env = "beta"
     try:
         if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
@@ -59,13 +61,19 @@ if with_sentry_sdk:
     except IndexError:
         pass
 
-    sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
-                    before_send = CrashHandler.sentryBeforeSend,
-                    environment = sentry_env,
-                    release = "cura%s" % ApplicationMetadata.CuraVersion,
-                    default_integrations = False,
-                    max_breadcrumbs = 300,
-                    server_name = "cura")
+    # Errors to be ignored by Sentry
+    ignore_errors = [KeyboardInterrupt, MemoryError]
+    try:
+        sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                        before_send = CrashHandler.sentryBeforeSend,
+                        environment = sentry_env,
+                        release = "cura%s" % ApplicationMetadata.CuraVersion,
+                        default_integrations = False,
+                        max_breadcrumbs = 300,
+                        server_name = "cura",
+                        ignore_errors = ignore_errors)
+    except Exception:
+        with_sentry_sdk = False
 
 if not known_args["debug"]:
     def get_cura_dir_path():
@@ -216,6 +224,11 @@ if Platform.isLinux() and getattr(sys, "frozen", False):
     os.environ["LD_LIBRARY_PATH"] = ":".join(path_list)
     import trimesh.exchange.load
     os.environ["LD_LIBRARY_PATH"] = old_env
+
+if ApplicationMetadata.CuraDebugMode:
+    ssl_conf = QSslConfiguration.defaultConfiguration()
+    ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)
+    QSslConfiguration.setDefaultConfiguration(ssl_conf)
 
 app = CuraApplication()
 app.run()

@@ -7,11 +7,12 @@
         "author": "FN59",
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
-        "platform": "tevo_tarantula_pro_platform.stl",
+        "platform": "tevo_tarantula_pro_platform.3mf",
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "tevo_tarantula_pro_extruder_0"
+            "0": "tevo_tarantula_pro_extruder_0",
+            "1": "tevo_tarantula_pro_extruder_1"
         }
     },
 

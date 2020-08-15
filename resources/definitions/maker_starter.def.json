@@ -7,7 +7,7 @@
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
-        "platform": "makerstarter_platform.stl",
+        "platform": "makerstarter_platform.3mf",
         "preferred_quality_type": "draft",
         "machine_extruder_trains":
         {
@@ -81,7 +81,7 @@
             "default_value": "ZigZag"
         },
         "support_infill_rate": {
-            "value": "15 if support_enable else 0 if support_tree_enable else 15"
+            "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15"
         },
         "adhesion_type": {
             "default_value": "raft"

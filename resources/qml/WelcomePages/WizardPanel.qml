@@ -71,7 +71,7 @@ Item
                 right: parent.right
             }
             source: base.pageUrl
-            enabled: base.visible
+            active: base.visible
         }
     }
 }

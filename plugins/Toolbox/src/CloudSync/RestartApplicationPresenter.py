@@ -3,9 +3,11 @@ from UM.Message import Message
 from cura.CuraApplication import CuraApplication
 
 
-## Presents a dialog telling the user that a restart is required to apply changes
-# Since we cannot restart Cura, the app is closed instead when the button is clicked
 class RestartApplicationPresenter:
+    """Presents a dialog telling the user that a restart is required to apply changes
+
+    Since we cannot restart Cura, the app is closed instead when the button is clicked
+    """
     def __init__(self, app: CuraApplication) -> None:
         self._app = app
         self._i18n_catalog = i18nCatalog("cura")

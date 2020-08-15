@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -33,6 +33,8 @@ Button
     property alias shadowEnabled: shadow.visible
     property alias busy: busyIndicator.visible
 
+    property bool underlineTextOnHover: false
+
     property alias toolTipContentAlignment: tooltip.contentAlignment
 
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
@@ -48,6 +50,14 @@ Button
     rightPadding: UM.Theme.getSize("default_margin").width
     height: UM.Theme.getSize("action_button").height
     hoverEnabled: true
+
+    onHoveredChanged:
+    {
+        if(underlineTextOnHover)
+        {
+            buttonText.font.underline = hovered
+        }
+    }
 
     contentItem: Row
     {
@@ -86,10 +96,20 @@ Button
             renderType: Text.NativeRendering
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+
+            Binding
+            {
+                // When settting width directly, an unjust binding loop warning would be triggered,
+                // because button.width is part of this expression.
+                // Using parent.width is fine in fixedWidthMode.
+                target: buttonText
+                property: "width"
+                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
+                                             : ((maximumWidth != 0 && button.contentWidth > maximumWidth) ? maximumWidth : undefined)
+            }
         }
 
         //Right side icon. Only displayed if isIconOnRightSide.

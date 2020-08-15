@@ -13,7 +13,7 @@ Rectangle
     property int installedPackages: toolbox.viewCategory == "material" ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     id: tileBase
     width: UM.Theme.getSize("toolbox_thumbnail_large").width + (2 * UM.Theme.getSize("default_lining").width)
-    height: thumbnail.height + packageName.height + rating.height + UM.Theme.getSize("default_margin").width
+    height: thumbnail.height + packageName.height + UM.Theme.getSize("default_margin").width
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
     color: UM.Theme.getColor("main_background")
@@ -22,8 +22,10 @@ Rectangle
         id: thumbnail
         height: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
+        sourceSize.height: height
+        sourceSize.width: width
         fillMode: Image.PreserveAspectFit
-        source: model.icon_url || "../../images/logobot.svg"
+        source: model.icon_url || "../../images/placeholder.svg"
         mipmap: true
         anchors
         {
@@ -65,13 +67,6 @@ Rectangle
         source: "../../images/installed_check.svg"
     }
 
-    SmallRatingWidget
-    {
-        id: rating
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
-        anchors.horizontalCenter: parent.horizontalCenter
-    }
     Rectangle
     {
         id: bottomBorder

@@ -12,6 +12,7 @@ from UM.Event import Event, KeyEvent
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Color import Color
+from UM.Math.Matrix import Matrix
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
@@ -48,8 +49,9 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
+    """The preview layer view. It is used to display g-code paths."""
+
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
@@ -139,7 +141,7 @@ class SimulationView(CuraView):
     def _resetSettings(self) -> None:
         self._layer_view_type = 0  # type: int # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
-        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
         self._show_travel_moves = False
         self._show_helpers = True
         self._show_skin = True
@@ -294,29 +296,36 @@ class SimulationView(CuraView):
 
             self.currentPathNumChanged.emit()
 
-    ##  Set the layer view type
-    #
-    #   \param layer_view_type integer as in SimulationView.qml and this class
     def setSimulationViewType(self, layer_view_type: int) -> None:
+        """Set the layer view type
+
+        :param layer_view_type: integer as in SimulationView.qml and this class
+        """
+
         if layer_view_type != self._layer_view_type:
             self._layer_view_type = layer_view_type
             self.currentLayerNumChanged.emit()
 
-    ##  Return the layer view type, integer as in SimulationView.qml and this class
     def getSimulationViewType(self) -> int:
+        """Return the layer view type, integer as in SimulationView.qml and this class"""
+
         return self._layer_view_type
 
-    ##  Set the extruder opacity
-    #
-    #   \param extruder_nr 0..3
-    #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr: int, opacity: float) -> None:
-        if 0 <= extruder_nr <= 3:
-            self._extruder_opacity[extruder_nr] = opacity
+        """Set the extruder opacity
+
+        :param extruder_nr: 0..15
+        :param opacity: 0.0 .. 1.0
+        """
+
+        if 0 <= extruder_nr <= 15:
+            self._extruder_opacity[extruder_nr // 4][extruder_nr % 4] = opacity
             self.currentLayerNumChanged.emit()
 
-    def getExtruderOpacities(self)-> List[float]:
-        return self._extruder_opacity
+    def getExtruderOpacities(self) -> Matrix:
+        # NOTE: Extruder opacities are stored in a matrix for (minor) performance reasons (w.r.t. OpenGL/shaders).
+        # If more than 16 extruders are called for, this should be converted to a sampler1d.
+        return Matrix(self._extruder_opacity)
 
     def setShowTravelMoves(self, show):
         self._show_travel_moves = show
@@ -372,8 +381,8 @@ class SimulationView(CuraView):
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
-        ## Recalculate num max layers
         new_max_layers = -1
+        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -449,9 +458,11 @@ class SimulationView(CuraView):
     busyChanged = Signal()
     activityChanged = Signal()
 
-    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
-    #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        """Hackish way to ensure the proxy is already created
+
+        which ensures that the layerview.qml is already created as this caused some issues.
+        """
         if self._proxy is None:
             self._proxy = SimulationViewProxy(self)
         return self._proxy

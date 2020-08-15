@@ -8,7 +8,7 @@
         "author": "TheTobby",
         "manufacturer": "Anycubic",
         "file_formats": "text/x-gcode",
-        "platform": "anycubic_i3_mega_platform.stl",
+        "platform": "anycubic_i3_mega_platform.3mf",
         "has_materials": true,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",

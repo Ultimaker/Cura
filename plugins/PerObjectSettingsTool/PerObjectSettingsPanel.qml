@@ -32,10 +32,7 @@ Item
         var type = currentMeshType
 
         // set checked state of mesh type buttons
-        normalButton.checked = type === normalMeshType
-        supportMeshButton.checked = type === supportMeshType
-        overhangMeshButton.checked = type === infillMeshType || type === cuttingMeshType
-        antiOverhangMeshButton.checked = type === antiOverhangMeshType
+        updateMeshTypeCheckedState(type)
 
         // update active type label
         for (var button in meshTypeButtons.children)
@@ -49,24 +46,22 @@ Item
         visibility_handler.addSkipResetSetting(currentMeshType)
     }
 
-    function setOverhangsMeshType()
+    function updateMeshTypeCheckedState(type)
     {
-        if (infillOnlyCheckbox.checked)
-        {
-            setMeshType(infillMeshType)
-        }
-        else
-        {
-            setMeshType(cuttingMeshType)
-        }
+        // set checked state of mesh type buttons
+        normalButton.checked = type === normalMeshType
+        supportMeshButton.checked = type === supportMeshType
+        overlapMeshButton.checked = type === infillMeshType || type === cuttingMeshType
+        antiOverhangMeshButton.checked = type === antiOverhangMeshType
     }
 
     function setMeshType(type)
     {
         UM.ActiveTool.setProperty("MeshType", type)
+        updateMeshTypeCheckedState(type)
     }
 
-    UM.I18nCatalog { id: catalog; name: "uranium"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     Column
     {
@@ -107,7 +102,7 @@ Item
 
             Button
             {
-                id: overhangMeshButton
+                id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
                 iconSource: UM.Theme.getIcon("pos_modify_overlaps");
                 property bool needBorder: true
@@ -140,26 +135,43 @@ Item
             verticalAlignment: Text.AlignVCenter
         }
 
-        CheckBox
+
+        ComboBox
         {
-            id: infillOnlyCheckbox
+            id: infillOnlyComboBox
+            width: parent.width / 2 - UM.Theme.getSize("default_margin").width
 
-            text: catalog.i18nc("@action:checkbox", "Infill only");
+            model: ListModel
+            {
+                id: infillOnlyComboBoxModel
 
-            style: UM.Theme.styles.checkbox;
+                Component.onCompleted: {
+                    append({ text: catalog.i18nc("@item:inlistbox", "Infill mesh only") })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Cutting mesh") })
+                }
+            }
 
             visible: currentMeshType === infillMeshType || currentMeshType === cuttingMeshType
-            onClicked: setOverhangsMeshType()
+
+
+            onActivated:
+            {
+                if (index == 0){
+                    setMeshType(infillMeshType)
+                } else {
+                    setMeshType(cuttingMeshType)
+                }
+            }
 
             Binding
             {
-                target: infillOnlyCheckbox
-                property: "checked"
-                value: currentMeshType === infillMeshType
+                target: infillOnlyComboBox
+                property: "currentIndex"
+                value: currentMeshType === infillMeshType ? 0 : 1
             }
         }
 
-        Column // Settings Dialog
+        Column // List of selected Settings to override for the selected object
         {
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)

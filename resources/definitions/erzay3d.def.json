@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Alexander Kirsanov",
         "manufacturer": "Robokinetika",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {
@@ -71,7 +70,7 @@
     "jerk_print": { "default_value": 10 },
 
     "support_angle": { "default_value": 65 },
-    "support_brim_enable": { "default_value": true },
+    "support_brim_enable": { "value": true },
 
     "adhesion_type": { "default_value": "skirt" },
     "brim_outside_only": { "default_value": false },

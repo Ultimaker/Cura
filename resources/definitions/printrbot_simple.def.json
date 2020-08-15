@@ -6,7 +6,7 @@
         "visible": true,
         "author": "Calvindog717",
         "manufacturer": "Printrbot",
-        "platform": "printrbot_simple_metal_platform.stl",
+        "platform": "printrbot_simple_metal_platform.3mf",
         "platform_offset": [0, -3.45, 0],
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":

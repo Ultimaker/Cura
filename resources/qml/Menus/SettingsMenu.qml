@@ -1,8 +1,8 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2020 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -24,7 +24,15 @@ Menu
             title: modelData.name
             property var extruder: (base.activeMachine === null) ? null : activeMachine.extruderList[model.index]
             NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.activeMachine.hasVariants; extruderIndex: index }
-            MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.activeMachine.hasMaterials; extruderIndex: index }
+            MaterialMenu
+            {
+                title: catalog.i18nc("@title:menu", "&Material")
+                visible: Cura.MachineManager.activeMachine.hasMaterials
+                extruderIndex: index
+                updateModels: false
+                onAboutToShow: updateModels = true
+                onAboutToHide: updateModels = false
+            }
 
             MenuSeparator
             {
@@ -41,14 +49,14 @@ Menu
             {
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
-                visible: extruder === null ? false : !extruder.isEnabled
+                visible: (extruder === null || extruder === undefined) ? false : !extruder.isEnabled
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
-                visible: extruder === null ? false : extruder.isEnabled
+                visible: (extruder === null || extruder === undefined) ? false : extruder.isEnabled
                 enabled: Cura.MachineManager.numberExtrudersEnabled > 1
             }
 

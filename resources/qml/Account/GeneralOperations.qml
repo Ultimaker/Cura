@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 Column
 {
     spacing: UM.Theme.getSize("default_margin").width
-
+    padding: UM.Theme.getSize("default_margin").width
     Image
     {
         id: machinesImage
@@ -26,7 +26,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: "Ultimaker Cloud"
+        text: "Ultimaker Account"
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
     }
@@ -37,7 +37,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "The next generation 3D printing workflow")
+        text: catalog.i18nc("@label", "Your key to connected 3D printing")
         font: UM.Theme.getFont("default_bold")
         color: UM.Theme.getColor("text")
     }
@@ -48,7 +48,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignLeft
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@text", "- Send print jobs to Ultimaker printers outside your local network\n- Store your Ultimaker Cura settings in the cloud for use anywhere\n- Get exclusive access to print profiles from leading brands")
+        text: catalog.i18nc("@text", "- Customize your experience with more print profiles and plugins\n- Stay flexible by syncing your setup and loading it anywhere\n- Increase efficiency with a remote workflow on Ultimaker printers")
         lineHeight: 1.4
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")

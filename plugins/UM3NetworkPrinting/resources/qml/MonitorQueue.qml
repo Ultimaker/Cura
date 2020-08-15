@@ -47,7 +47,7 @@ Item
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: UM.Theme.getColor("monitor_text_link")
+            color: UM.Theme.getColor("text_link")
             source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
@@ -61,9 +61,8 @@ Item
                 leftMargin: 6 * screenScaleFactor // TODO: Theme!
                 verticalCenter: externalLinkIcon.verticalCenter
             }
-            color: UM.Theme.getColor("monitor_text_link")
+            color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium") // 14pt, regular
-            linkColor: UM.Theme.getColor("monitor_text_link")
             text: catalog.i18nc("@label link to connect manager", "Manage in browser")
             renderType: Text.NativeRendering
         }

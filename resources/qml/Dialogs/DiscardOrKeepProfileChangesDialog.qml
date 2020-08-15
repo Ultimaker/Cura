@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: UM.Theme.getSize("popup_dialog").width
-    height: UM.Theme.getSize("popup_dialog").height
+    minimumWidth: UM.Theme.getSize("popup_dialog").width
+    minimumHeight: UM.Theme.getSize("popup_dialog").height
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -54,7 +54,7 @@ UM.Dialog
 
         Label
         {
-            text: catalog.i18nc("@text:window", "You have customized some profile settings.\nWould you like to keep or discard those settings?")
+            text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings.\nWould you like to Keep these changed settings after switching profiles?\nAlternatively, you can Discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
             anchors.margins: UM.Theme.getSize("default_margin").width
             wrapMode: Text.WordWrap
         }
@@ -80,6 +80,8 @@ UM.Dialog
                     property var extruder_name: userChangesModel.getItem(styleData.row).extruder
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.right: parent.right
+                    elide: Text.ElideRight
                     font: UM.Theme.getFont("system")
                     text:
                     {
@@ -113,14 +115,14 @@ UM.Dialog
             TableViewColumn
             {
                 role: "original_value"
-                title: catalog.i18nc("@title:column", "Default")
+                title: Cura.MachineManager.activeQualityDisplayNameMap["main"]
                 width: (tableView.width * 0.3) | 0
                 delegate: defaultDelegate
             }
             TableViewColumn
             {
                 role: "user_value"
-                title: catalog.i18nc("@title:column", "Customized")
+                title: catalog.i18nc("@title:column", "Current changes")
                 width: (tableView.width * 0.3) | 0
             }
             section.property: "category"
@@ -192,7 +194,7 @@ UM.Dialog
         Button
         {
             id: discardButton
-            text: catalog.i18nc("@action:button", "Discard");
+            text: catalog.i18nc("@action:button", "Discard changes");
             anchors.right: parent.right
             onClicked:
             {
@@ -205,7 +207,7 @@ UM.Dialog
         Button
         {
             id: keepButton
-            text: catalog.i18nc("@action:button", "Keep");
+            text: catalog.i18nc("@action:button", "Keep changes");
             anchors.right: discardButton.left
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             onClicked:
@@ -213,15 +215,6 @@ UM.Dialog
                 CuraApplication.discardOrKeepProfileChangesClosed("keep")
                 base.hide()
             }
-        }
-
-        Button
-        {
-            id: createNewProfileButton
-            text: catalog.i18nc("@action:button", "Create New Profile");
-            anchors.left: parent.left
-            action: Cura.Actions.addProfile
-            onClicked: base.hide()
         }
     }
 }

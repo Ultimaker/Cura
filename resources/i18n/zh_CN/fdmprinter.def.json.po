@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.5\n"
+"Project-Id-Version: Cura 4.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"POT-Creation-Date: 2020-07-31 14:10+0000\n"
 "PO-Revision-Date: 2019-09-23 14:18+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
@@ -82,8 +82,8 @@ msgstr "材料 GUID"
 
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "材料 GUID，此项为自动设置。 "
+msgid "GUID of the material. This is set automatically."
+msgstr "材料 GUID，此项为自动设置。"
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -226,6 +226,16 @@ msgid "Whether the machine is able to stabilize the build volume temperature."
 msgstr "机器是否能够稳定构建体积温度。"
 
 #: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool label"
+msgid "Always Write Active Tool"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool description"
+msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
 msgstr "位于中心"
@@ -294,16 +304,6 @@ msgstr "加热区长度"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "与喷嘴尖端的距离，喷嘴产生的热量在这段距离内传递到耗材中。"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "耗材停放距离"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "与喷嘴尖端的距离，当不再使用挤出机时会将耗材停放在此区域。"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -1261,6 +1261,16 @@ msgid "Amount of offset applied to all polygons in the first layer. A negative v
 msgstr "应用到第一层所有多边形的偏移量。 负数值可以补偿第一层的压扁量（被称为“象脚”）。"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr "孔洞水平扩展"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr "应用到每一层中所有孔洞的偏移量。正数值可以补偿过大的孔洞，负数值可以补偿过小的孔洞。"
+
+#: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Z 缝对齐"
@@ -2191,8 +2201,8 @@ msgstr "冲洗清除速度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How fast to prime the material after switching to a different material."
+msgstr "切换到其他材料后，装填材料的速度如何。"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2201,28 +2211,28 @@ msgstr "冲洗清除长度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr "切换到其他材料时，需要使用多少材料从喷嘴中清除之前的材料（以长丝长度计）。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
-msgstr "线末清除速度"
+msgid "End of Filament Purge Speed"
+msgstr "耗材末端清除速度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr "将空线轴替换为使用相同材料的新线轴后，装填材料的速度如何。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
-msgstr "线末清除长度"
+msgid "End of Filament Purge Length"
+msgstr "耗材末端清除长度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr "将空线轴替换为使用相同材料的新线轴后，需要使用多少材料从喷嘴中清除之前的材料（以长丝长度计）。"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2231,8 +2241,8 @@ msgstr "最长停放持续时间"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr "材料能在干燥存储区之外安全存放多长时间。"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2241,8 +2251,8 @@ msgstr "空载移动系数"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr "表示长丝在进料器和喷嘴室之间被压缩多少的系数，用于确定针对长丝开关将材料移动的距离。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3021,8 +3031,8 @@ msgstr "启用回抽"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "当喷嘴移动到非打印区域上方时回抽耗材。 "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr "当喷嘴移动到非打印区域上方时回抽耗材。"
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3475,6 +3485,76 @@ msgid "The extruder train to use for printing the floors of the support. This is
 msgstr "用于打印支撑底板的挤出机组。 用于多重挤出。"
 
 #: fdmprinter.def.json
+msgctxt "support_structure label"
+msgid "Support Structure"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure description"
+msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option normal"
+msgid "Normal"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_structure option tree"
+msgid "Tree"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr "树形支撑分支角度"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr "分支的角度。使用较小的角度可增加垂直度和稳定性。使用较大的角度可支撑更大范围。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr "树形支撑分支间距"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgstr "在支撑模型时，分支之间需要多大的间距。缩小这一间距会使树形支撑与模型之间有更多接触点，带来更好的悬垂，但会使支撑更难以拆除。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr "树形支撑分支直径"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
+msgstr "树形支撑最细分支的直径。较粗的分支更坚固。接近基础的分支会比这更粗。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr "树形支撑分支直径角度"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr "随着分支朝底部逐渐变粗，分支直径的角度。角度为 0 表明分支全长具有均匀的粗细度。稍微有些角度可以增加树形支撑的稳定性。"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr "树形支撑碰撞分辨率"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+msgstr "用于计算碰撞的分辨率，目的在于避免碰撞模型。将此设置得较低将产生更准确且通常较少失败的树，但是会大幅增加切片时间。"
+
+#: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
 msgstr "支撑放置"
@@ -3716,8 +3796,8 @@ msgstr "最小支撑 X/Y 距离"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "支撑结构在 X/Y 方向距悬垂的距离。 "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr "支撑结构在 X/Y 方向距悬垂的距离。"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -3738,6 +3818,16 @@ msgstr "支撑梯步阶最大宽度"
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 msgstr "停留在模型上的支撑阶梯状底部的最大步阶宽度。 较低的值会使支撑更难于移除，但过高的值可能导致不稳定的支撑结构。"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope label"
+msgid "Support Stair Step Minimum Slope Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope description"
+msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4183,6 +4273,16 @@ msgstr "下拉式支撑网格"
 msgctxt "support_mesh_drop_down description"
 msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
 msgstr "在支撑网格下方的所有位置进行支撑，让支撑网格中没有悬垂。"
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present label"
+msgid "Scene Has Support Meshes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present description"
+msgid "There are support meshes present in the scene. This setting is controlled by Cura."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -4815,8 +4915,8 @@ msgstr "网格修复"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "category_fixes"
+msgid "Make the meshes more suited for 3D printing."
+msgstr "使网格更适合 3D 打印。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,8 +5035,8 @@ msgstr "特殊模式"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "category_blackmagic"
+msgid "Non-traditional ways to print your models."
+msgstr "打印模型的非传统方式。"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -4945,8 +5045,8 @@ msgstr "打印序列"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "是要一次一层地打印所有模型，还是要等待打印完一个模型后再继续打印下一个。如果 a) 仅启用了一个挤出器，并且 b) 分离所有模型的方式使得整个打印头可在这些模型间移动，并且所有模型都低于喷嘴与 X/Y 轴之间的距离，则可使用排队打印模式。 "
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -4970,13 +5070,13 @@ msgstr "使用此网格修改与其重叠的其他网格的填充物。 利用�
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
-msgid "Infill Mesh Order"
-msgstr "填充网格顺序"
+msgid "Mesh Processing Rank"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "确定哪个填充网格在另一个填充网格的填充物内。 顺序较高的填充网格将修改顺序较低的填充网格以及普通网格的填充物。"
+msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5110,68 +5210,8 @@ msgstr "实验性"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "实验性！"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable label"
-msgid "Tree Support"
-msgstr "树形支撑"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable description"
-msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr "生成树形支撑，用分支支撑打印的模型。这可以减少材料用量和缩短打印时间，但会大幅增加切片时间。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "树形支撑分支角度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "分支的角度。使用较小的角度可增加垂直度和稳定性。使用较大的角度可支撑更大范围。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "树形支撑分支间距"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "在支撑模型时，分支之间需要多大的间距。缩小这一间距会使树形支撑与模型之间有更多接触点，带来更好的悬垂，但会使支撑更难以拆除。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "树形支撑分支直径"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter description"
-msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr "树形支撑最细分支的直径。较粗的分支更坚固。接近基础的分支会比这更粗。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "树形支撑分支直径角度"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle description"
-msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "随着分支朝底部逐渐变粗，分支直径的角度。角度为 0 表明分支全长具有均匀的粗细度。稍微有些角度可以增加树形支撑的稳定性。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "树形支撑碰撞分辨率"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "用于计算碰撞的分辨率，目的在于避免碰撞模型。将此设置得较低将产生更准确且通常较少失败的树，但是会大幅增加切片时间。"
+msgid "Features that haven't completely been fleshed out yet."
+msgstr "尚未完全充实的功能。"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5180,8 +5220,8 @@ msgstr "切片公差"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
-msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr "如何对带有对角线表面的层进行切片。层面积可以根据层的中心与表面 (Middle) 相交的位置生成。或者每一层的面积可以为落在整个层高度中成形体积内的面积 (Exclusive)，或者为落在层中任何位置的面积 (Inclusive)。Exclusive 保留大部分细节，Inclusive 可实现最佳匹配，而 Middle 需要的处理时间最少。"
+msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
@@ -5452,76 +5492,6 @@ msgstr "交叉填充密度图象"
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
 msgstr "一个图像的文件位置，在这个图像中，亮度值决定了在支持中相应位置的最小密度。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled label"
-msgid "Spaghetti Infill"
-msgstr "意面式填充"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled description"
-msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-msgstr "经常打印填充物，使得耗材在模型内部混乱地卷曲。 这会缩短打印时间，但行为会难以预测。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped label"
-msgid "Spaghetti Infill Stepping"
-msgstr "意面式填充步阶"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped description"
-msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr "是否逐步打印意面式填充或在打印结束时挤出所有填充耗材。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle label"
-msgid "Spaghetti Maximum Infill Angle"
-msgstr "意面式填充 - 最大填充角度"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle description"
-msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-msgstr "相对于打印物内部的 Z 轴，之后将填充意面式填充物区域的最大角度。 降低此值会导致模型中的更多成角度部分在每层填充。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height label"
-msgid "Spaghetti Infill Maximum Height"
-msgstr "意面式填充 - 最大填充高度"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height description"
-msgid "The maximum height of inside space which can be combined and filled from the top."
-msgstr "可以从顶部组合和填充的内部空间的最大高度。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset label"
-msgid "Spaghetti Inset"
-msgstr "意面式嵌入"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset description"
-msgid "The offset from the walls from where the spaghetti infill will be printed."
-msgstr "从其开始打印意面式填充物的壁偏移量。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow label"
-msgid "Spaghetti Flow"
-msgstr "意面式流量"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow description"
-msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-msgstr "调整意面式填充的密度。 注意，填充密度仅控制填充图案的走线间距，而不是意面式填充的挤出量。"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume label"
-msgid "Spaghetti Infill Extra Volume"
-msgstr "意面式填充额外体积"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume description"
-msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr "一个用于调整每次进行意面式填充时挤出总量的修正期。"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -6391,6 +6361,150 @@ msgstr "网格旋转矩阵"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+#~ msgstr "是要一次一层地打印所有模型，还是要等待打印完一个模型后再继续打印下一个。如果 a) 仅启用了一个挤出器，并且 b) 分离所有模型的方式使得整个打印头可在这些模型间移动，并且所有模型都低于喷嘴与 X/Y 轴之间的距离，则可使用排队打印模式。 "
+
+#~ msgctxt "infill_mesh_order label"
+#~ msgid "Infill Mesh Order"
+#~ msgstr "填充网格顺序"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "确定哪个填充网格在另一个填充网格的填充物内。 顺序较高的填充网格将修改顺序较低的填充网格以及普通网格的填充物。"
+
+#~ msgctxt "support_tree_enable label"
+#~ msgid "Tree Support"
+#~ msgstr "树形支撑"
+
+#~ msgctxt "support_tree_enable description"
+#~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
+#~ msgstr "生成树形支撑，用分支支撑打印的模型。这可以减少材料用量和缩短打印时间，但会大幅增加切片时间。"
+
+#~ msgctxt "slicing_tolerance description"
+#~ msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+#~ msgstr "如何对带有对角线表面的层进行切片。层面积可以根据层的中心与表面 (Middle) 相交的位置生成。或者每一层的面积可以为落在整个层高度中成形体积内的面积 (Exclusive)，或者为落在层中任何位置的面积 (Inclusive)。Exclusive 保留大部分细节，Inclusive 可实现最佳匹配，而 Middle 需要的处理时间最少。"
+
+#~ msgctxt "spaghetti_infill_enabled label"
+#~ msgid "Spaghetti Infill"
+#~ msgstr "意面式填充"
+
+#~ msgctxt "spaghetti_infill_enabled description"
+#~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
+#~ msgstr "经常打印填充物，使得耗材在模型内部混乱地卷曲。 这会缩短打印时间，但行为会难以预测。"
+
+#~ msgctxt "spaghetti_infill_stepped label"
+#~ msgid "Spaghetti Infill Stepping"
+#~ msgstr "意面式填充步阶"
+
+#~ msgctxt "spaghetti_infill_stepped description"
+#~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
+#~ msgstr "是否逐步打印意面式填充或在打印结束时挤出所有填充耗材。"
+
+#~ msgctxt "spaghetti_max_infill_angle label"
+#~ msgid "Spaghetti Maximum Infill Angle"
+#~ msgstr "意面式填充 - 最大填充角度"
+
+#~ msgctxt "spaghetti_max_infill_angle description"
+#~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
+#~ msgstr "相对于打印物内部的 Z 轴，之后将填充意面式填充物区域的最大角度。 降低此值会导致模型中的更多成角度部分在每层填充。"
+
+#~ msgctxt "spaghetti_max_height label"
+#~ msgid "Spaghetti Infill Maximum Height"
+#~ msgstr "意面式填充 - 最大填充高度"
+
+#~ msgctxt "spaghetti_max_height description"
+#~ msgid "The maximum height of inside space which can be combined and filled from the top."
+#~ msgstr "可以从顶部组合和填充的内部空间的最大高度。"
+
+#~ msgctxt "spaghetti_inset label"
+#~ msgid "Spaghetti Inset"
+#~ msgstr "意面式嵌入"
+
+#~ msgctxt "spaghetti_inset description"
+#~ msgid "The offset from the walls from where the spaghetti infill will be printed."
+#~ msgstr "从其开始打印意面式填充物的壁偏移量。"
+
+#~ msgctxt "spaghetti_flow label"
+#~ msgid "Spaghetti Flow"
+#~ msgstr "意面式流量"
+
+#~ msgctxt "spaghetti_flow description"
+#~ msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
+#~ msgstr "调整意面式填充的密度。 注意，填充密度仅控制填充图案的走线间距，而不是意面式填充的挤出量。"
+
+#~ msgctxt "spaghetti_infill_extra_volume label"
+#~ msgid "Spaghetti Infill Extra Volume"
+#~ msgstr "意面式填充额外体积"
+
+#~ msgctxt "spaghetti_infill_extra_volume description"
+#~ msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
+#~ msgstr "一个用于调整每次进行意面式填充时挤出总量的修正期。"
+
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "材料 GUID，此项为自动设置。 "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "耗材停放距离"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "与喷嘴尖端的距离，当不再使用挤出机时会将耗材停放在此区域。"
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "线末清除速度"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "线末清除长度"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "当喷嘴移动到非打印区域上方时回抽耗材。 "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "支撑结构在 X/Y 方向距悬垂的距离。 "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "category_fixes"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "category_blackmagic"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "实验性！"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"

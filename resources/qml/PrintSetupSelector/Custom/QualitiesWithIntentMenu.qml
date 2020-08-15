@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -103,16 +103,6 @@ Popup
                             anchors.top: headerLabel.bottom
                             anchors.left: parent.left
                             anchors.right: parent.right
-
-                            // We set it by means of a binding, since then we can use the when condition, which we need to
-                            // prevent a binding loop.
-                            Binding
-                            {
-                                target: parent
-                                property: "height"
-                                value: parent.childrenRect.height
-                                when: parent.visibleChildren.length > 0
-                            }
 
                             // Add the qualities that belong to the intent
                             Repeater

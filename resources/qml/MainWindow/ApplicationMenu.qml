@@ -35,6 +35,7 @@ Item
             MenuSeparator { }
             MenuItem { action: Cura.Actions.selectAll }
             MenuItem { action: Cura.Actions.arrangeAll }
+            MenuItem { action: Cura.Actions.multiplySelection }
             MenuItem { action: Cura.Actions.deleteSelection }
             MenuItem { action: Cura.Actions.deleteAll }
             MenuItem { action: Cura.Actions.resetAllTranslation }
@@ -68,13 +69,17 @@ Item
                     Instantiator
                     {
                         model: actions
-                        MenuItem
+                        Loader
                         {
-                            text: model.text
-                            onTriggered: extensions.model.subMenuTriggered(name, model.text)
+                            property var extensionsModel: extensions.model
+                            property var modelText: model.text
+                            property var extensionName: name
+
+                            sourceComponent: modelText.trim() == "" ? extensionsMenuSeparator : extensionsMenuItem
                         }
-                        onObjectAdded: sub_menu.insertItem(index, object)
-                        onObjectRemoved: sub_menu.removeItem(object)
+
+                        onObjectAdded: sub_menu.insertItem(index, object.item)
+                        onObjectRemoved: sub_menu.removeItem(object.item)
                     }
                 }
 
@@ -105,6 +110,25 @@ Item
             MenuItem { action: Cura.Actions.about }
         }
     }
+
+    Component
+    {
+        id: extensionsMenuItem
+
+        MenuItem
+        {
+            text: modelText
+            onTriggered: extensionsModel.subMenuTriggered(extensionName, modelText)
+        }
+    }
+
+    Component
+    {
+        id: extensionsMenuSeparator
+
+        MenuSeparator {}
+    }
+
 
     // ###############################################################################################
     // Definition of other components that are linked to the menus

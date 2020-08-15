@@ -90,16 +90,16 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
 
-                    Layout.row: 1
-                    Layout.column: 2
+                    Layout.row: 0
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                 }
 
                 Button
                 {
-                    Layout.row: 2
-                    Layout.column: 2
+                    Layout.row: 1
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_top");
@@ -115,8 +115,8 @@ Item
 
                 Button
                 {
-                    Layout.row: 3
-                    Layout.column: 1
+                    Layout.row: 2
+                    Layout.column: 0
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_left");
@@ -132,8 +132,8 @@ Item
 
                 Button
                 {
-                    Layout.row: 3
-                    Layout.column: 3
+                    Layout.row: 2
+                    Layout.column: 2
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_right");
@@ -149,8 +149,8 @@ Item
 
                 Button
                 {
-                    Layout.row: 4
-                    Layout.column: 2
+                    Layout.row: 3
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("arrow_bottom");
@@ -166,8 +166,8 @@ Item
 
                 Button
                 {
-                    Layout.row: 3
-                    Layout.column: 2
+                    Layout.row: 2
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("home");

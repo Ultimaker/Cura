@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -44,8 +44,9 @@ catalog = i18nCatalog("cura")
 PRIME_CLEARANCE = 6.5
 
 
-##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
+    """Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas."""
+
     raftThicknessChanged = Signal()
 
     def __init__(self, application: "CuraApplication", parent: Optional[SceneNode] = None) -> None:
@@ -91,6 +92,8 @@ class BuildVolume(SceneNode):
         self._adhesion_type = None  # type: Any
         self._platform = Platform(self)
 
+        self._edge_disallowed_size = None
+
         self._build_volume_message = Message(catalog.i18nc("@info:status",
             "The build volume height has been reduced due to the value of the"
             " \"Print Sequence\" setting to prevent the gantry from colliding"
@@ -105,19 +108,17 @@ class BuildVolume(SceneNode):
 
         self._application.globalContainerStackChanged.connect(self._onStackChanged)
 
-        self._onStackChanged()
-
         self._engine_ready = False
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
         self._has_errors = False
         self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
-        #Objects loaded at the moment. We are connected to the property changed events of these objects.
+        # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]
 
         self._scene_change_timer = QTimer()
-        self._scene_change_timer.setInterval(100)
+        self._scene_change_timer.setInterval(200)
         self._scene_change_timer.setSingleShot(True)
         self._scene_change_timer.timeout.connect(self._onSceneChangeTimerFinished)
 
@@ -163,10 +164,12 @@ class BuildVolume(SceneNode):
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
 
-    ##  Updates the listeners that listen for changes in per-mesh stacks.
-    #
-    #   \param node The node for which the decorators changed.
     def _updateNodeListeners(self, node: SceneNode):
+        """Updates the listeners that listen for changes in per-mesh stacks.
+
+        :param node: The node for which the decorators changed.
+        """
+
         per_mesh_stack = node.callDecoration("getStack")
         if per_mesh_stack:
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
@@ -187,10 +190,14 @@ class BuildVolume(SceneNode):
         if shape:
             self._shape = shape
 
-    ##  Get the length of the 3D diagonal through the build volume.
-    #
-    #   This gives a sense of the scale of the build volume in general.
     def getDiagonalSize(self) -> float:
+        """Get the length of the 3D diagonal through the build volume.
+
+        This gives a sense of the scale of the build volume in general.
+
+        :return: length of the 3D diagonal through the build volume
+        """
+
         return math.sqrt(self._width * self._width + self._height * self._height + self._depth * self._depth)
 
     def getDisallowedAreas(self) -> List[Polygon]:
@@ -226,9 +233,9 @@ class BuildVolume(SceneNode):
 
         return True
 
-    ##  For every sliceable node, update node._outside_buildarea
-    #
     def updateNodeBoundaryCheck(self):
+        """For every sliceable node, update node._outside_buildarea"""
+
         if not self._global_container_stack:
             return
 
@@ -274,7 +281,9 @@ class BuildVolume(SceneNode):
                     if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
                         node.setOutsideBuildArea(True)
                         continue
-                except IndexError:
+                except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
+                    continue
+                except TypeError:  # Happens when extruder_position is None. This object has no extruder decoration.
                     continue
 
                 node.setOutsideBuildArea(False)
@@ -293,8 +302,13 @@ class BuildVolume(SceneNode):
             for child_node in children:
                 child_node.setOutsideBuildArea(group_node.isOutsideBuildArea())
 
-    ##  Update the outsideBuildArea of a single node, given bounds or current build volume
     def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None) -> None:
+        """Update the outsideBuildArea of a single node, given bounds or current build volume
+
+        :param node: single node
+        :param bounds: bounds or current build volume
+        """
+
         if not isinstance(node, CuraSceneNode) or self._global_container_stack is None:
             return
 
@@ -482,8 +496,9 @@ class BuildVolume(SceneNode):
             self._disallowed_area_size = max(size, self._disallowed_area_size)
         return mb.build()
 
-    ##  Recalculates the build volume & disallowed areas.
     def rebuild(self) -> None:
+        """Recalculates the build volume & disallowed areas."""
+
         if not self._width or not self._height or not self._depth:
             return
 
@@ -572,7 +587,7 @@ class BuildVolume(SceneNode):
     def _calculateExtraZClearance(self, extruders: List["ContainerStack"]) -> float:
         if not self._global_container_stack:
             return 0
-        
+
         extra_z = 0.0
         for extruder in extruders:
             if extruder.getProperty("retraction_hop_enabled", "value"):
@@ -584,8 +599,9 @@ class BuildVolume(SceneNode):
     def _onStackChanged(self):
         self._stack_change_timer.start()
 
-    ##  Update the build volume visualization
     def _onStackChangeTimerFinished(self) -> None:
+        """Update the build volume visualization"""
+
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
             extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -710,15 +726,15 @@ class BuildVolume(SceneNode):
         self._depth = self._global_container_stack.getProperty("machine_depth", "value")
         self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
-    ##  Calls _updateDisallowedAreas and makes sure the changes appear in the
-    #   scene.
-    #
-    #   This is required for a signal to trigger the update in one go. The
-    #   ``_updateDisallowedAreas`` method itself shouldn't call ``rebuild``,
-    #   since there may be other changes before it needs to be rebuilt, which
-    #   would hit performance.
-
     def _updateDisallowedAreasAndRebuild(self):
+        """Calls :py:meth:`cura.BuildVolume._updateDisallowedAreas` and makes sure the changes appear in the scene.
+
+        This is required for a signal to trigger the update in one go. The
+        :py:meth:`cura.BuildVolume._updateDisallowedAreas` method itself shouldn't call
+        :py:meth:`cura.BuildVolume.rebuild`, since there may be other changes before it needs to be rebuilt,
+        which would hit performance.
+        """
+
         self._updateDisallowedAreas()
         self._updateRaftThickness()
         self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
@@ -731,6 +747,7 @@ class BuildVolume(SceneNode):
         self._error_areas = []
 
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
+        self._edge_disallowed_size = None  # Force a recalculation
         disallowed_border_size = self.getEdgeDisallowedSize()
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders)  # Normal machine disallowed areas can always be added.
@@ -764,7 +781,8 @@ class BuildVolume(SceneNode):
                     if prime_tower_collision:  # Already found a collision.
                         break
                     if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
-                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                        brim_size = self._calculateBedAdhesionSize(used_extruders, "brim")
+                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(brim_size))
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                     result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
@@ -780,15 +798,14 @@ class BuildVolume(SceneNode):
         for extruder_id in result_areas_no_brim:
             self._disallowed_areas_no_brim.extend(result_areas_no_brim[extruder_id])
 
-    ##  Computes the disallowed areas for objects that are printed with print
-    #   features.
-    #
-    #   This means that the brim, travel avoidance and such will be applied to
-    #   these features.
-    #
-    #   \return A dictionary with for each used extruder ID the disallowed areas
-    #   where that extruder may not print.
     def _computeDisallowedAreasPrinted(self, used_extruders):
+        """Computes the disallowed areas for objects that are printed with print features.
+
+        This means that the brim, travel avoidance and such will be applied to these features.
+
+        :return: A dictionary with for each used extruder ID the disallowed areas where that extruder may not print.
+        """
+
         result = {}
         adhesion_extruder = None #type: ExtruderStack
         for extruder in used_extruders:
@@ -826,18 +843,18 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Computes the disallowed areas for the prime blobs.
-    #
-    #   These are special because they are not subject to things like brim or
-    #   travel avoidance. They do get a dilute with the border size though
-    #   because they may not intersect with brims and such of other objects.
-    #
-    #   \param border_size The size with which to offset the disallowed areas
-    #   due to skirt, brim, travel avoid distance, etc.
-    #   \param used_extruders The extruder stacks to generate disallowed areas
-    #   for.
-    #   \return A dictionary with for each used extruder ID the prime areas.
     def _computeDisallowedAreasPrimeBlob(self, border_size: float, used_extruders: List["ExtruderStack"]) -> Dict[str, List[Polygon]]:
+        """Computes the disallowed areas for the prime blobs.
+
+        These are special because they are not subject to things like brim or travel avoidance. They do get a dilute
+        with the border size though because they may not intersect with brims and such of other objects.
+
+        :param border_size: The size with which to offset the disallowed areas due to skirt, brim, travel avoid distance
+         , etc.
+        :param used_extruders: The extruder stacks to generate disallowed areas for.
+        :return: A dictionary with for each used extruder ID the prime areas.
+        """
+
         result = {}  # type: Dict[str, List[Polygon]]
         if not self._global_container_stack:
             return result
@@ -865,19 +882,18 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Computes the disallowed areas that are statically placed in the machine.
-    #
-    #   It computes different disallowed areas depending on the offset of the
-    #   extruder. The resulting dictionary will therefore have an entry for each
-    #   extruder that is used.
-    #
-    #   \param border_size The size with which to offset the disallowed areas
-    #   due to skirt, brim, travel avoid distance, etc.
-    #   \param used_extruders The extruder stacks to generate disallowed areas
-    #   for.
-    #   \return A dictionary with for each used extruder ID the disallowed areas
-    #   where that extruder may not print.
     def _computeDisallowedAreasStatic(self, border_size:float, used_extruders: List["ExtruderStack"]) -> Dict[str, List[Polygon]]:
+        """Computes the disallowed areas that are statically placed in the machine.
+
+        It computes different disallowed areas depending on the offset of the extruder. The resulting dictionary will
+         therefore have an entry for each extruder that is used.
+
+        :param border_size: The size with which to offset the disallowed areas due to skirt, brim, travel avoid distance
+         , etc.
+        :param used_extruders: The extruder stacks to generate disallowed areas for.
+        :return: A dictionary with for each used extruder ID the disallowed areas where that extruder may not print.
+        """
+
         # Convert disallowed areas to polygons and dilate them.
         machine_disallowed_polygons = []
         if self._global_container_stack is None:
@@ -1008,13 +1024,14 @@ class BuildVolume(SceneNode):
 
         return result
 
-    ##  Private convenience function to get a setting from every extruder.
-    #
-    #   For single extrusion machines, this gets the setting from the global
-    #   stack.
-    #
-    #   \return A sequence of setting values, one for each extruder.
     def _getSettingFromAllExtruders(self, setting_key: str) -> List[Any]:
+        """Private convenience function to get a setting from every extruder.
+
+        For single extrusion machines, this gets the setting from the global stack.
+
+        :return: A sequence of setting values, one for each extruder.
+        """
+
         all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "value")
         all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
         for i, (setting_value, setting_type) in enumerate(zip(all_values, all_types)):
@@ -1022,16 +1039,23 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    def _calculateBedAdhesionSize(self, used_extruders):
+    def _calculateBedAdhesionSize(self, used_extruders, adhesion_override = None):
+        """Get the bed adhesion size for the global container stack and used extruders
+
+        :param adhesion_override: override adhesion type.
+          Use None to use the global stack default, "none" for no adhesion, "brim" for brim etc.
+        """
         if self._global_container_stack is None:
             return None
 
         container_stack = self._global_container_stack
-        adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        adhesion_type = adhesion_override
+        if adhesion_type is None:
+            adhesion_type = container_stack.getProperty("adhesion_type", "value")
         skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
         initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
-        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and adhesion_type != "raft"):
+        if adhesion_type == "brim":
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
@@ -1040,7 +1064,7 @@ class BuildVolume(SceneNode):
 
             # We don't create an additional line for the extruder we're printing the brim with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "skirt":  # No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
+        elif adhesion_type == "skirt":
             skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
             skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
 
@@ -1084,24 +1108,33 @@ class BuildVolume(SceneNode):
 
     def _calculateMoveFromWallRadius(self, used_extruders):
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        all_values = [move_from_wall_radius]
-        all_values.extend(self._getSettingFromAllExtruders("infill_wipe_dist"))
-        move_from_wall_radius = max(all_values)
-        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts", "value") for stack in used_extruders]
-        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
-        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder):  # For each extruder (or just global).
-            if avoid_other_parts_enabled:
-                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
+
+        for stack in used_extruders:
+            if stack.getProperty("travel_avoid_other_parts", "value"):
+                move_from_wall_radius = max(move_from_wall_radius, stack.getProperty("travel_avoid_distance", "value"))
+
+            infill_wipe_distance = stack.getProperty("infill_wipe_dist", "value")
+            num_walls = stack.getProperty("wall_line_count", "value")
+            if num_walls >= 1:  # Infill wipes start from the infill, so subtract the total wall thickness from this.
+                infill_wipe_distance -= stack.getProperty("wall_line_width_0", "value")
+                if num_walls >= 2:
+                    infill_wipe_distance -= stack.getProperty("wall_line_width_x", "value") * (num_walls - 1)
+            move_from_wall_radius = max(move_from_wall_radius, infill_wipe_distance)
+
         return move_from_wall_radius
 
-    ##  Calculate the disallowed radius around the edge.
-    #
-    #   This disallowed radius is to allow for space around the models that is
-    #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
-    #   and travel avoid distance.
     def getEdgeDisallowedSize(self):
+        """Calculate the disallowed radius around the edge.
+
+        This disallowed radius is to allow for space around the models that is not part of the collision radius,
+        such as bed adhesion (skirt/brim/raft) and travel avoid distance.
+        """
+
         if not self._global_container_stack or not self._global_container_stack.extruderList:
             return 0
+
+        if self._edge_disallowed_size is not None:
+            return self._edge_disallowed_size
 
         container_stack = self._global_container_stack
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
@@ -1118,8 +1151,8 @@ class BuildVolume(SceneNode):
         # Now combine our different pieces of data to get the final border size.
         # Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
         # Support expansion is added to farthest shield distance, since the shields go around support.
-        border_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
-        return border_size
+        self._edge_disallowed_size = max(move_from_wall_radius, support_expansion + farthest_shield_distance, support_expansion + bed_adhesion_size)
+        return self._edge_disallowed_size
 
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
@@ -1128,10 +1161,10 @@ class BuildVolume(SceneNode):
     _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
-    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
+    _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
     _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
     _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings

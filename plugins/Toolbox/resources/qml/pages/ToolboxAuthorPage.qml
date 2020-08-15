@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 import "../components"
 
@@ -33,7 +33,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
             fillMode: Image.PreserveAspectFit
-            source: details.icon_url || "../../images/logobot.svg"
+            source: details && details.icon_url ? details.icon_url : "../../images/placeholder.svg"
             mipmap: true
             anchors
             {
@@ -56,8 +56,9 @@ Item
                 rightMargin: UM.Theme.getSize("wide_margin").width
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            text: details.name || ""
+            text: details && details.name ? details.name : ""
             font: UM.Theme.getFont("large_bold")
+            color: UM.Theme.getColor("text_medium")
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
@@ -66,8 +67,9 @@ Item
         Label
         {
             id: description
-            text: details.description || ""
+            text: details && details.description ? details.description : ""
             font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_medium")
             anchors
             {
                 top: title.bottom
@@ -121,7 +123,7 @@ Item
             {
                 text:
                 {
-                    if (details.website)
+                    if (details && details.website)
                     {
                         return "<a href=\"" + details.website + "\">" + details.website + "</a>"
                     }
@@ -132,7 +134,7 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: UM.UrlUtil.openUrl(link, ["https", "http"])
                 renderType: Text.NativeRendering
             }
 
@@ -140,7 +142,7 @@ Item
             {
                 text:
                 {
-                    if (details.email)
+                    if (details && details.email)
                     {
                         return "<a href=\"mailto:" + details.email + "\">" + details.email + "</a>"
                     }

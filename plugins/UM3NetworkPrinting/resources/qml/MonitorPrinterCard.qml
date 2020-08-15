@@ -149,9 +149,8 @@ Item
                     {
                         id: managePrinterText
                         anchors.verticalCenter: managePrinterLink.verticalCenter
-                        color: UM.Theme.getColor("monitor_text_link")
+                        color: UM.Theme.getColor("text_link")
                         font: UM.Theme.getFont("default")
-                        linkColor: UM.Theme.getColor("monitor_text_link")
                         text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
                         renderType: Text.NativeRendering
                     }
@@ -164,7 +163,7 @@ Item
                             leftMargin: 6 * screenScaleFactor
                             verticalCenter: managePrinterText.verticalCenter
                         }
-                        color: UM.Theme.getColor("monitor_text_link")
+                        color: UM.Theme.getColor("text_link")
                         source: UM.Theme.getIcon("external_link")
                         width: 12 * screenScaleFactor
                         height: 12 * screenScaleFactor
@@ -283,12 +282,13 @@ Item
             enabled: !cameraButton.enabled
         }
 
+        /* //Warning message is commented out because it's factually incorrect. Fix CURA-7637 to allow camera connections via cloud.
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
             text: catalog.i18nc("@info", "The webcam is not available because you are monitoring a cloud printer.")
             target: cameraButton
-        }
+        }*/
     }
 
     // Divider
