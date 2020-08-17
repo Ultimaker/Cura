@@ -176,15 +176,6 @@
         "skin_outline_count": {
             "value": 0
         },
-        "travel_compensate_overlapping_walls_enabled": {
-            "value": "False"
-        },
-        "travel_compensate_overlapping_walls_0_enabled": {
-            "value": "False"
-        },
-        "travel_compensate_overlapping_walls_x_enabled": {
-            "value": "False"
-        },
         "wall_0_wipe_dist": {
             "value": "machine_nozzle_size / 3"
         },

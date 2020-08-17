@@ -107,9 +107,6 @@
         "switch_extruder_retraction_speed": {
             "value": "30"
         },
-        "travel_compensate_overlapping_walls_enabled": {
-            "default_value": false
-        },
         "raft_base_acceleration": {
             "value": "400"
         },
@@ -383,9 +380,6 @@
         "acceleration_support_infill": {
             "value": "400"
         },
-        "travel_compensate_overlapping_walls_0_enabled": {
-            "value": "False"
-        },
         "support_bottom_material_flow": {
             "value": "99"
         },
@@ -637,9 +631,6 @@
         },
         "skirt_line_count": {
             "default_value": 2
-        },
-        "travel_compensate_overlapping_walls_x_enabled": {
-            "value": "False"
         },
         "jerk_wall_0": {
             "value": "10"
