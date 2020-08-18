@@ -77,7 +77,7 @@ Item
                 Repeater
                 {
                     id: extrudersRepeater
-                    model: activePrinter != null ? activePrinter.extruderList : null
+                    model: activePrinter != null ? activePrinter.extruders : null
 
                     ExtruderBox
                     {
