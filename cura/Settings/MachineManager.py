@@ -1703,7 +1703,7 @@ class MachineManager(QObject):
             return False
         return global_stack.qualityChanges != empty_quality_changes_container
 
-    def _updateUponMaterialMetadataChange(self) -> None:
+    def updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
