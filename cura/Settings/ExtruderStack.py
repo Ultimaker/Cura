@@ -131,13 +131,13 @@ class ExtruderStack(CuraContainerStack):
         if not self._next_stack:
             raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
 
-        if context is None:
-            context = PropertyEvaluationContext()
-        context.pushContainer(self)
+        if context:
+            context.pushContainer(self)
 
         if not super().getProperty(key, "settable_per_extruder", context):
             result = self.getNextStack().getProperty(key, property_name, context)
-            context.popContainer()
+            if context:
+                context.popContainer()
             return result
 
         limit_to_extruder = super().getProperty(key, "limit_to_extruder", context)
@@ -150,13 +150,15 @@ class ExtruderStack(CuraContainerStack):
             try:
                 result = self.getNextStack().extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
-                    context.popContainer()
+                    if context:
+                        context.popContainer()
                     return result
             except IndexError:
                 pass
 
         result = super().getProperty(key, property_name, context)
-        context.popContainer()
+        if context:
+            context.popContainer()
         return result
 
     @override(CuraContainerStack)
