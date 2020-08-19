@@ -1070,19 +1070,6 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "children":
                     {
-                        "transitioning_angle":
-                        {
-                            "label": "Transitioning Angle",
-                            "description": "Transitioning Angle.",
-                            "unit": "°",
-                            "default_value": 30,
-                            "minimum_value": "1",
-                            "minimum_value_warning": "22.5",
-                            "maximum_value": "89",
-                            "type": "float",
-                            "limit_to_extruder": "wall_0_extruder_nr",
-                            "enabled": "beading_strategy_type != 'naive'"
-                        },
                         "transition_length":
                         {
                             "label": "Transition Length",
