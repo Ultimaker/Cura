@@ -336,7 +336,7 @@ class ChangeAtZ(Script):
 
         caz_instance = ChangeAtZProcessor()
 
-        caz_instance.TargetValues = {}
+        caz_instance.targetValues = {}
 
         # copy over our settings to our change z class
         self.setIntSettingIfEnabled(caz_instance, "e1_Change_speed", "speed", "e2_speed")
@@ -352,23 +352,23 @@ class ChangeAtZ(Script):
         self.setFloatSettingIfEnabled(caz_instance, "caz_change_retractlength", "retractlength", "caz_retractlength")
 
         # is this mod enabled?
-        caz_instance.IsEnabled = self.getSettingValueByKey("caz_enabled")
+        caz_instance.enabled = self.getSettingValueByKey("caz_enabled")
 
         # are we emitting data to the LCD?
-        caz_instance.IsDisplayingChangesToLcd = self.getSettingValueByKey("caz_output_to_display")
+        caz_instance.displayChangesToLcd = self.getSettingValueByKey("caz_output_to_display")
 
         # are we doing linear move retractions?
-        caz_instance.IsLinearRetraction = self.getSettingValueByKey("caz_retractstyle") == "linear"
+        caz_instance.linearRetraction = self.getSettingValueByKey("caz_retractstyle") == "linear"
 
         # see if we're applying to a single layer or to all layers hence forth
-        caz_instance.IsApplyToSingleLayer = self.getSettingValueByKey("c_behavior") == "single_layer"
+        caz_instance.applyToSingleLayer = self.getSettingValueByKey("c_behavior") == "single_layer"
 
         # used for easy reference of layer or height targeting
-        caz_instance.IsTargetByLayer = self.getSettingValueByKey("a_trigger") == "layer_no"
+        caz_instance.targetByLayer = self.getSettingValueByKey("a_trigger") == "layer_no"
 
         # change our target based on what we're targeting
-        caz_instance.TargetLayer = self.getIntSettingByKey("b_targetL", None)
-        caz_instance.TargetZ = self.getFloatSettingByKey("b_targetZ", None)
+        caz_instance.targetLayer = self.getIntSettingByKey("b_targetL", None)
+        caz_instance.targetZ = self.getFloatSettingByKey("b_targetZ", None)
 
         # run our script
         return caz_instance.execute(data)
@@ -388,7 +388,7 @@ class ChangeAtZ(Script):
             return
 
         # set our value in the target settings
-        caz_instance.TargetValues[target] = value
+        caz_instance.targetValues[target] = value
 
     # Sets the given TargetValue in the ChangeAtZ instance if the trigger is specified
     def setFloatSettingIfEnabled(self, caz_instance, trigger, target, setting):
@@ -405,7 +405,7 @@ class ChangeAtZ(Script):
             return
 
         # set our value in the target settings
-        caz_instance.TargetValues[target] = value
+        caz_instance.targetValues[target] = value
 
     # Returns the given settings value as an integer or the default if it cannot parse it
     def getIntSettingByKey(self, key, default):
@@ -430,13 +430,13 @@ class ChangeAtZ(Script):
 class GCodeCommand:
 
     # The GCode command itself (ex: G10)
-    Command = None,
+    command = None,
 
     # Contains any arguments passed to the command. The key is the argument name, the value is the value of the argument.
-    Arguments = {}
+    arguments = {}
 
     # Contains the components of the command broken into pieces
-    Components = []
+    components = []
 
     # Constructor. Sets up defaults
     def __init__(self):
@@ -468,10 +468,10 @@ class GCodeCommand:
             return None
 
         # stores all the components of the command within the class for later
-        command.Components = command_pieces
+        command.components = command_pieces
 
         # set the actual command
-        command.Command = command_pieces[0]
+        command.command = command_pieces[0]
 
         # stop here if we don't have any parameters
         if len(command_pieces) == 1:
@@ -488,15 +488,15 @@ class GCodeCommand:
         linear_command = GCodeCommand.getFromLine(line)
 
         # if it's not a linear move, we don't care
-        if linear_command is None or (linear_command.Command != "G0" and linear_command.Command != "G1"):
+        if linear_command is None or (linear_command.command != "G0" and linear_command.command != "G1"):
             return None
 
         # convert our values to floats (or defaults)
-        linear_command.Arguments["F"] = linear_command.getArgumentAsFloat("F", None)
-        linear_command.Arguments["X"] = linear_command.getArgumentAsFloat("X", None)
-        linear_command.Arguments["Y"] = linear_command.getArgumentAsFloat("Y", None)
-        linear_command.Arguments["Z"] = linear_command.getArgumentAsFloat("Z", None)
-        linear_command.Arguments["E"] = linear_command.getArgumentAsFloat("E", None)
+        linear_command.arguments["F"] = linear_command.getArgumentAsFloat("F", None)
+        linear_command.arguments["X"] = linear_command.getArgumentAsFloat("X", None)
+        linear_command.arguments["Y"] = linear_command.getArgumentAsFloat("Y", None)
+        linear_command.arguments["Z"] = linear_command.getArgumentAsFloat("Z", None)
+        linear_command.arguments["E"] = linear_command.getArgumentAsFloat("E", None)
 
         # return our new command
         return linear_command
@@ -508,11 +508,11 @@ class GCodeCommand:
         self.parseArguments()
 
         # if we don't have the parameter, return the default
-        if name not in self.Arguments:
+        if name not in self.arguments:
             return default
 
         # otherwise return the value
-        return self.Arguments[name]
+        return self.arguments[name]
 
     # Gets the value of a parameter as a float or returns the default
     def getArgumentAsFloat(self, name: str, default: float = None) -> float:
@@ -593,14 +593,14 @@ class GCodeCommand:
     def parseArguments(self):
 
         # stop here if we don't have any remaining components
-        if len(self.Components) <= 1:
+        if len(self.components) <= 1:
             return None
 
         # iterate and index all of our parameters, skip the first component as it's the command
-        for i in range(1, len(self.Components)):
+        for i in range(1, len(self.components)):
 
             # get our component
-            component = self.Components[i]
+            component = self.components[i]
 
             # get the first character of the parameter, which is the name
             component_name = component[0]
@@ -613,10 +613,10 @@ class GCodeCommand:
                 component_value = component[1:]
 
             # index the argument
-            self.Arguments[component_name] = component_value
+            self.arguments[component_name] = component_value
 
         # clear the components to we don't process again
-        self.Components = []
+        self.components = []
 
     # Easy function for replacing any GCODE parameter variable in a given GCODE command
     @staticmethod
@@ -625,8 +625,8 @@ class GCodeCommand:
 
     # Resets the model back to defaults
     def reset(self):
-        self.Command = None
-        self.Arguments = {}
+        self.command = None
+        self.arguments = {}
 
 
 # The primary ChangeAtZ class that does all the gcode editing. This was broken out into an
@@ -634,55 +634,55 @@ class GCodeCommand:
 class ChangeAtZProcessor:
 
     # Holds our current height
-    CurrentZ = None
+    currentZ = None
 
     # Holds our current layer number
-    CurrentLayer = None
+    currentLayer = None
 
     # Indicates if we're only supposed to apply our settings to a single layer or multiple layers
-    IsApplyToSingleLayer = False
+    applyToSingleLayer = False
 
     # Indicates if this should emit the changes as they happen to the LCD
-    IsDisplayingChangesToLcd = False
+    displayChangesToLcd = False
 
     # Indicates that this mod is still enabled (or not)
-    IsEnabled = True
+    enabled = True
 
     # Indicates if we're processing inside the target layer or not
-    IsInsideTargetLayer = False
+    insideTargetLayer = False
 
     # Indicates if we have restored the previous values from before we started our pass
-    IsLastValuesRestored = False
+    lastValuesRestored = False
 
     # Indicates if the user has opted for linear move retractions or firmware retractions
-    IsLinearRetraction = True
+    linearRetraction = True
 
     # Indicates if we're targetting by layer or height value
-    IsTargetByLayer = True
+    targetByLayer = True
 
     # Indicates if we have injected our changed values for the given layer yet
-    IsTargetValuesInjected = False
+    targetValuesInjected = False
 
     # Holds the last extrusion value, used with detecting when a retraction is made
-    LastE = None
+    lastE = None
 
     # An index of our gcodes which we're monitoring
-    LastValues = {}
+    lastValues = {}
 
     # The detected layer height from the gcode
-    LayerHeight = None
+    layerHeight = None
 
     # The target layer
-    TargetLayer = None
+    targetLayer = None
 
     # Holds the values the user has requested to change
-    TargetValues = {}
+    targetValues = {}
 
     # The target height in mm
-    TargetZ = None
+    targetZ = None
 
     # Used to track if we've been inside our target layer yet
-    WasInsideTargetLayer = False
+    wasInsideTargetLayer = False
 
     # boots up the class with defaults
     def __init__(self):
@@ -692,7 +692,7 @@ class ChangeAtZProcessor:
     def execute(self, data):
 
         # short cut the whole thing if we're not enabled
-        if not self.IsEnabled:
+        if not self.enabled:
             return data
 
         # our layer cursor
@@ -750,14 +750,14 @@ class ChangeAtZProcessor:
 
         # for each of our target values, get the value to restore
         # no point in restoring values we haven't changed
-        for key in self.TargetValues:
+        for key in self.targetValues:
 
             # skip target values we can't restore
-            if key not in self.LastValues:
+            if key not in self.lastValues:
                 continue
 
             # save into our changed
-            changed[key] = self.LastValues[key]
+            changed[key] = self.lastValues[key]
 
         # return our collection of changed values
         return changed
@@ -766,7 +766,7 @@ class ChangeAtZProcessor:
     def getDisplayChangesFromValues(self, values: Dict[str, any]) -> str:
 
         # stop here if we're not outputting data
-        if not self.IsDisplayingChangesToLcd:
+        if not self.displayChangesToLcd:
             return ""
 
         # will hold all the default settings for the target layer
@@ -833,7 +833,7 @@ class ChangeAtZProcessor:
     def getTargetDisplayValues(self) -> str:
 
         # convert our target values to something we can output
-        return self.getDisplayChangesFromValues(self.TargetValues)
+        return self.getDisplayChangesFromValues(self.targetValues)
 
     # Builds the the relevant GCODE lines from the given collection of values
     def getCodeFromValues(self, values: Dict[str, any]) -> str:
@@ -898,7 +898,7 @@ class ChangeAtZProcessor:
         # set retract rate
         if "retractfeedrate" in values:
 
-            if self.IsLinearRetraction:
+            if self.linearRetraction:
                 codes.append(";RETRACTFEEDRATE " + str(values["retractfeedrate"] * 60) + "")
             else:
                 codes.append("M207 F" + str(values["retractfeedrate"] * 60) + "")
@@ -906,7 +906,7 @@ class ChangeAtZProcessor:
         # set retract length
         if "retractlength" in values:
 
-            if self.IsLinearRetraction:
+            if self.linearRetraction:
                 codes.append(";RETRACTLENGTH " + str(values["retractlength"]) + "")
             else:
                 codes.append("M207 S" + str(values["retractlength"]) + "")
@@ -923,19 +923,19 @@ class ChangeAtZProcessor:
     def getInjectCode(self) -> str:
 
         # if we're now outside of our target layer and haven't restored our last values, do so now
-        if not self.IsInsideTargetLayer and self.WasInsideTargetLayer and not self.IsLastValuesRestored:
+        if not self.insideTargetLayer and self.wasInsideTargetLayer and not self.lastValuesRestored:
 
             # mark that we've injected the last values
-            self.IsLastValuesRestored = True
+            self.lastValuesRestored = True
 
             # inject the defaults
             return self.getLastValues() + "\n" + self.getLastDisplayValues()
 
         # if we're inside our target layer but haven't added our values yet, do so now
-        if self.IsInsideTargetLayer and not self.IsTargetValuesInjected:
+        if self.insideTargetLayer and not self.targetValuesInjected:
 
             # mark that we've injected the target values
-            self.IsTargetValuesInjected = True
+            self.targetValuesInjected = True
 
             # inject the defaults
             return self.getTargetValues() + "\n" + self.getTargetDisplayValues()
@@ -960,35 +960,35 @@ class ChangeAtZProcessor:
     def getTargetValues(self) -> str:
 
         # build the gcode to change our current values
-        return self.getCodeFromValues(self.TargetValues)
+        return self.getCodeFromValues(self.targetValues)
 
     # Determines if the current line is at or below the target required to start modifying
     def isTargetLayerOrHeight(self) -> bool:
 
         # target selected by layer no.
-        if self.IsTargetByLayer:
+        if self.targetByLayer:
 
             # if we don't have a current layer, we're not there yet
-            if self.CurrentLayer is None:
+            if self.currentLayer is None:
                 return False
 
             # if we're applying to a single layer, stop if our layer is not identical
-            if self.IsApplyToSingleLayer:
-                return self.CurrentLayer == self.TargetLayer
+            if self.applyToSingleLayer:
+                return self.currentLayer == self.targetLayer
             else:
-                return self.CurrentLayer >= self.TargetLayer
+                return self.currentLayer >= self.targetLayer
 
         else:
 
             # if we don't have a current Z, we're not there yet
-            if self.CurrentZ is None:
+            if self.currentZ is None:
                 return False
 
             # if we're applying to a single layer, stop if our Z is not identical
-            if self.IsApplyToSingleLayer:
-                return self.CurrentZ == self.TargetZ
+            if self.applyToSingleLayer:
+                return self.currentZ == self.targetZ
             else:
-                return self.CurrentZ >= self.TargetZ
+                return self.currentZ >= self.targetZ
 
     # Marks any current ChangeZ layer defaults in the layer for deletion
     @staticmethod
@@ -999,7 +999,7 @@ class ChangeAtZProcessor:
     def processLayerHeight(self, line: str):
 
         # stop here if we haven't entered a layer yet
-        if self.CurrentLayer is None:
+        if self.currentLayer is None:
             return
 
         # get our gcode command
@@ -1010,7 +1010,7 @@ class ChangeAtZProcessor:
             return
 
         # stop here if this isn't a linear move command
-        if command.Command != "G0" and command.Command != "G1":
+        if command.command != "G0" and command.command != "G1":
             return
 
         # get our value from the command
@@ -1021,15 +1021,15 @@ class ChangeAtZProcessor:
             return
 
         # stop if there's no change
-        if current_z == self.CurrentZ:
+        if current_z == self.currentZ:
             return
 
         # set our current Z value
-        self.CurrentZ = current_z
+        self.currentZ = current_z
 
         # if we don't have a layer height yet, set it based on the current Z value
-        if self.LayerHeight is None:
-            self.LayerHeight = self.CurrentZ
+        if self.layerHeight is None:
+            self.layerHeight = self.currentZ
 
     # Grabs the current layer number
     def processLayerNumber(self, line: str):
@@ -1042,11 +1042,11 @@ class ChangeAtZProcessor:
         current_layer = GCodeCommand.getDirectArgumentAsInt(line, ";LAYER:", None)
 
         # this should never happen, but if our layer number hasn't changed, stop here
-        if current_layer == self.CurrentLayer:
+        if current_layer == self.currentLayer:
             return
 
         # update our current layer
-        self.CurrentLayer = current_layer
+        self.currentLayer = current_layer
 
     # Makes any linear move changes and also injects either target or restored values depending on the plugin state
     def processLine(self, line: str) -> str:
@@ -1059,10 +1059,10 @@ class ChangeAtZProcessor:
 
         # if we're not inside the target layer, simply read the any
         # settings we can and revert any ChangeAtZ deletions
-        if not self.IsInsideTargetLayer:
+        if not self.insideTargetLayer:
 
             # read any settings if we haven't hit our target layer yet
-            if not self.WasInsideTargetLayer:
+            if not self.wasInsideTargetLayer:
                 self.processSetting(line)
 
             # if we haven't hit our target yet, leave the defaults as is (unmark them for deletion)
@@ -1074,7 +1074,7 @@ class ChangeAtZProcessor:
             modified_gcode += self.getInjectCode()
 
         # modify our command if we're still inside our target layer, otherwise pass unmodified
-        if self.IsInsideTargetLayer:
+        if self.insideTargetLayer:
             modified_gcode += self.processLinearMove(line) + "\n"
         else:
             modified_gcode += line + "\n"
@@ -1104,11 +1104,11 @@ class ChangeAtZProcessor:
             return line
 
         # get our linear move parameters
-        feed_rate = linear_command.Arguments["F"]
-        x_coord = linear_command.Arguments["X"]
-        y_coord = linear_command.Arguments["Y"]
-        z_coord = linear_command.Arguments["Z"]
-        extrude_length = linear_command.Arguments["E"]
+        feed_rate = linear_command.arguments["F"]
+        x_coord = linear_command.arguments["X"]
+        y_coord = linear_command.arguments["Y"]
+        z_coord = linear_command.arguments["Z"]
+        extrude_length = linear_command.arguments["E"]
 
         # set our new line to our old line
         new_line = line
@@ -1124,7 +1124,7 @@ class ChangeAtZProcessor:
             new_line = self.processPrintSpeed(feed_rate, new_line)
 
         # set our current extrude position
-        self.LastE = extrude_length if extrude_length is not None else self.LastE
+        self.lastE = extrude_length if extrude_length is not None else self.lastE
 
         # if no changes have been made, stop here
         if new_line == line:
@@ -1137,11 +1137,11 @@ class ChangeAtZProcessor:
     def processPrintSpeed(self, feed_rate: float, new_line: str) -> str:
 
         # if we're not setting print speed or we don't have a feed rate, stop here
-        if "printspeed" not in self.TargetValues or feed_rate is None:
+        if "printspeed" not in self.targetValues or feed_rate is None:
             return new_line
 
         # get our requested print speed
-        print_speed = int(self.TargetValues["printspeed"])
+        print_speed = int(self.targetValues["printspeed"])
 
         # if they requested no change to print speed (ie: 100%), stop here
         if print_speed == 100:
@@ -1157,11 +1157,11 @@ class ChangeAtZProcessor:
     def processRetractLength(self, extrude_length: float, feed_rate: float, new_line: str, x_coord: float, y_coord: float, z_coord: float) -> str:
 
         # if we don't have a retract length in the file we can't add one
-        if "retractlength" not in self.LastValues or self.LastValues["retractlength"] == 0:
+        if "retractlength" not in self.lastValues or self.lastValues["retractlength"] == 0:
             return new_line
 
         # if we're not changing retraction length, stop here
-        if "retractlength" not in self.TargetValues:
+        if "retractlength" not in self.targetValues:
             return new_line
 
         # retractions are only F (feed rate) and E (extrude), at least in cura
@@ -1173,22 +1173,22 @@ class ChangeAtZProcessor:
             return new_line
 
         # stop here if we don't know our last extrude value
-        if self.LastE is None:
+        if self.lastE is None:
             return new_line
 
         # if there's no change in extrude we have nothing to change
-        if self.LastE == extrude_length:
+        if self.lastE == extrude_length:
             return new_line
 
         # if our last extrude was lower than our current, we're restoring, so skip
-        if self.LastE < extrude_length:
+        if self.lastE < extrude_length:
             return new_line
 
         # get our desired retract length
-        retract_length = float(self.TargetValues["retractlength"])
+        retract_length = float(self.targetValues["retractlength"])
 
         # subtract the difference between the default and the desired
-        extrude_length -= (retract_length - self.LastValues["retractlength"])
+        extrude_length -= (retract_length - self.lastValues["retractlength"])
 
         # replace our extrude amount
         return GCodeCommand.replaceDirectArgument(new_line, "E", extrude_length)
@@ -1197,7 +1197,7 @@ class ChangeAtZProcessor:
     def processRetractLengthSetting(self, line: str):
 
         # skip if we're not doing linear retractions
-        if not self.IsLinearRetraction:
+        if not self.linearRetraction:
             return
 
         # get our command from the line
@@ -1208,11 +1208,11 @@ class ChangeAtZProcessor:
             return
 
         # get our linear move parameters
-        feed_rate = linear_command.Arguments["F"]
-        x_coord = linear_command.Arguments["X"]
-        y_coord = linear_command.Arguments["Y"]
-        z_coord = linear_command.Arguments["Z"]
-        extrude_length = linear_command.Arguments["E"]
+        feed_rate = linear_command.arguments["F"]
+        x_coord = linear_command.arguments["X"]
+        y_coord = linear_command.arguments["Y"]
+        z_coord = linear_command.arguments["Z"]
+        extrude_length = linear_command.arguments["E"]
 
         # the command we're looking for only has extrude and feed rate
         if x_coord is not None or y_coord is not None or z_coord is not None:
@@ -1230,17 +1230,17 @@ class ChangeAtZProcessor:
             return
 
         # what ever the last negative retract length is it wins
-        self.LastValues["retractlength"] = extrude_length
+        self.lastValues["retractlength"] = extrude_length
 
     # Handles any changes to retraction feed rate for the given linear motion command
     def processRetractFeedRate(self, extrude_length: float, feed_rate: float, new_line: str, x_coord: float, y_coord: float, z_coord: float) -> str:
 
         # skip if we're not doing linear retractions
-        if not self.IsLinearRetraction:
+        if not self.linearRetraction:
             return new_line
 
         # if we're not changing retraction length, stop here
-        if "retractfeedrate" not in self.TargetValues:
+        if "retractfeedrate" not in self.targetValues:
             return new_line
 
         # retractions are only F (feed rate) and E (extrude), at least in cura
@@ -1252,7 +1252,7 @@ class ChangeAtZProcessor:
             return new_line
 
         # get our desired retract feed rate
-        retract_feed_rate = float(self.TargetValues["retractfeedrate"])
+        retract_feed_rate = float(self.targetValues["retractfeedrate"])
 
         # convert to units/min
         retract_feed_rate *= 60
@@ -1264,7 +1264,7 @@ class ChangeAtZProcessor:
     def processSetting(self, line: str):
 
         # if we're in layers already we're out of settings
-        if self.CurrentLayer is not None:
+        if self.currentLayer is not None:
             return
 
         # check our retract length
@@ -1277,16 +1277,16 @@ class ChangeAtZProcessor:
         if not self.isTargetLayerOrHeight():
 
             # flag that we're outside our target layer
-            self.IsInsideTargetLayer = False
+            self.insideTargetLayer = False
 
             # skip to the next line
             return
 
         # flip if we hit our target layer
-        self.WasInsideTargetLayer = True
+        self.wasInsideTargetLayer = True
 
         # flag that we're inside our target layer
-        self.IsInsideTargetLayer = True
+        self.insideTargetLayer = True
 
     # Removes all the ChangeZ layer defaults from the given layer
     @staticmethod
@@ -1296,22 +1296,22 @@ class ChangeAtZProcessor:
     # Resets the class contents to defaults
     def reset(self):
 
-        self.TargetValues = {}
-        self.IsApplyToSingleLayer = False
-        self.LastE = None
-        self.CurrentZ = None
-        self.CurrentLayer = None
-        self.IsTargetByLayer = True
-        self.TargetLayer = None
-        self.TargetZ = None
-        self.LayerHeight = None
-        self.LastValues = {}
-        self.IsLinearRetraction = True
-        self.IsInsideTargetLayer = False
-        self.IsTargetValuesInjected = False
-        self.IsLastValuesRestored = False
-        self.WasInsideTargetLayer = False
-        self.IsEnabled = True
+        self.targetValues = {}
+        self.applyToSingleLayer = False
+        self.lastE = None
+        self.currentZ = None
+        self.currentLayer = None
+        self.targetByLayer = True
+        self.targetLayer = None
+        self.targetZ = None
+        self.layerHeight = None
+        self.lastValues = {}
+        self.linearRetraction = True
+        self.insideTargetLayer = False
+        self.targetValuesInjected = False
+        self.lastValuesRestored = False
+        self.wasInsideTargetLayer = False
+        self.enabled = True
 
     # Sets the original GCODE line in a given GCODE command
     @staticmethod
@@ -1341,31 +1341,31 @@ class ChangeAtZProcessor:
             return
 
         # handle retract length changes
-        if command.Command == "M207":
+        if command.command == "M207":
 
             # get our retract length if provided
-            if "S" in command.Arguments:
-                self.LastValues["retractlength"] = command.getArgumentAsFloat("S")
+            if "S" in command.arguments:
+                self.lastValues["retractlength"] = command.getArgumentAsFloat("S")
 
             # get our retract feedrate if provided, convert from mm/m to mm/s
-            if "F" in command.Arguments:
-                self.LastValues["retractfeedrate"] = command.getArgumentAsFloat("F") / 60.0
+            if "F" in command.arguments:
+                self.lastValues["retractfeedrate"] = command.getArgumentAsFloat("F") / 60.0
 
             # move to the next command
             return
 
         # handle bed temp changes
-        if command.Command == "M140" or command.Command == "M190":
+        if command.command == "M140" or command.command == "M190":
 
             # get our bed temp if provided
-            if "S" in command.Arguments:
-                self.LastValues["bedTemp"] = command.getArgumentAsFloat("S")
+            if "S" in command.arguments:
+                self.lastValues["bedTemp"] = command.getArgumentAsFloat("S")
 
             # move to the next command
             return
 
         # handle extruder temp changes
-        if command.Command == "M104" or command.Command == "M109":
+        if command.command == "M104" or command.command == "M109":
 
             # get our tempurature
             tempurature = command.getArgumentAsFloat("S")
@@ -1379,26 +1379,26 @@ class ChangeAtZProcessor:
 
             # set our extruder temp based on the extruder
             if extruder is None or extruder == 0:
-                self.LastValues["extruderOne"] = tempurature
+                self.lastValues["extruderOne"] = tempurature
 
             if extruder is None or extruder == 1:
-                self.LastValues["extruderTwo"] = tempurature
+                self.lastValues["extruderTwo"] = tempurature
 
             # move to the next command
             return
 
         # handle fan speed changes
-        if command.Command == "M106":
+        if command.command == "M106":
 
             # get our bed temp if provided
-            if "S" in command.Arguments:
-                self.LastValues["fanSpeed"] = (command.getArgumentAsInt("S") / 255.0) * 100
+            if "S" in command.arguments:
+                self.lastValues["fanSpeed"] = (command.getArgumentAsInt("S") / 255.0) * 100
 
             # move to the next command
             return
 
         # handle flow rate changes
-        if command.Command == "M221":
+        if command.command == "M221":
 
             # get our flow rate
             tempurature = command.getArgumentAsFloat("S")
@@ -1412,21 +1412,21 @@ class ChangeAtZProcessor:
 
             # set our extruder temp based on the extruder
             if extruder is None:
-                self.LastValues["flowrate"] = tempurature
+                self.lastValues["flowrate"] = tempurature
             elif extruder == 1:
-                self.LastValues["flowrateOne"] = tempurature
+                self.lastValues["flowrateOne"] = tempurature
             elif extruder == 1:
-                self.LastValues["flowrateTwo"] = tempurature
+                self.lastValues["flowrateTwo"] = tempurature
 
             # move to the next command
             return
 
         # handle print speed changes
-        if command.Command == "M220":
+        if command.command == "M220":
 
             # get our speed if provided
-            if "S" in command.Arguments:
-                self.LastValues["speed"] = command.getArgumentAsInt("S")
+            if "S" in command.arguments:
+                self.lastValues["speed"] = command.getArgumentAsInt("S")
 
             # move to the next command
             return
