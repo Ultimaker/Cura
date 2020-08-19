@@ -1069,20 +1069,6 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "children":
                     {
-                        "transition_length":
-                        {
-                            "label": "Transition Length",
-                            "description": "Transition Length.",
-                            "unit": "mm",
-                            "default_value": 0.4,
-                            "value": "wall_line_width * 2",
-                            "minimum_value": "0",
-                            "maximum_value_warning": "wall_line_width * 5",
-                            "type": "float",
-                            "minimum_value_warning": "0.01",
-                            "limit_to_extruder": "wall_0_extruder_nr",
-                            "enabled": "beading_strategy_type == 'distributed' or beading_strategy_type == 'inward_distributed'"
-                        },
                         "widening_beading_enabled":
                         {
                             "label": "Enable Widening Beading",
