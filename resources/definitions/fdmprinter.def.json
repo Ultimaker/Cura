@@ -1063,8 +1063,7 @@
                         "naive": "Naive",
                         "center_deviation": "Center Deviation",
                         "distributed": "Distributed",
-                        "inward_distributed": "Inward Distributed",
-                        "limited_distributed": "Limited Distributed"
+                        "inward_distributed": "Inward Distributed"
                     },
                     "default_value": "naive",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -1082,7 +1081,7 @@
                             "type": "float",
                             "minimum_value_warning": "0.01",
                             "limit_to_extruder": "wall_0_extruder_nr",
-                            "enabled": "beading_strategy_type == 'distributed' or beading_strategy_type == 'inward_distributed' or beading_strategy_type == 'limited_distributed'"
+                            "enabled": "beading_strategy_type == 'distributed' or beading_strategy_type == 'inward_distributed'"
                         },
                         "widening_beading_enabled":
                         {
