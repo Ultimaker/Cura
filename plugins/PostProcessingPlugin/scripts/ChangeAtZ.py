@@ -51,7 +51,7 @@
 # M207 S<mm> F<mm/m> - set the retract length <S> or feed rate <F>
 # M117 - output the current changes
 
-from typing import List, Optional, Dict
+from typing import List, Dict
 from ..Script import Script
 import re
 
