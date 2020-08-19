@@ -1133,27 +1133,6 @@
                                     "enabled": "widening_beading_enabled"
                                 }
                             }
-                        },
-                        "limited_beading_enabled":
-                        {
-                            "label": "Enable Limited Beading",
-                            "description": "Applies the Limited Beading meta-strategy on top of the selected beading strategy.",
-                            "type": "bool",
-                            "default_value": false,
-                            "limit_to_extruder": "wall_0_extruder_nr",
-                            "children":
-                            {
-                                "max_bead_count":
-                                {
-                                    "label": "Maximum Bead Count",
-                                    "description": "Maximum Bead Count used in the limited beading meta-strategy. Even numbers only.",
-                                    "value": "wall_line_count * 2",
-                                    "minimum_value": "2",
-                                    "type": "int",
-                                    "limit_to_extruder": "wall_0_extruder_nr",
-                                    "enabled": "limited_beading_enabled"
-                                }
-                            }
                         }
                     }
                 },
