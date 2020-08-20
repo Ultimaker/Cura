@@ -122,6 +122,8 @@ class ContainerManager(QObject):
         root_material.setMetaDataEntry(entry_name, entry_value)
         if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
             root_material.metaDataChanged.emit(root_material)
+
+        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().updateUponMaterialMetadataChange()
         return True
 
     @pyqtSlot(str, result = str)

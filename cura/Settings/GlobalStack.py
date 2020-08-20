@@ -211,9 +211,8 @@ class GlobalStack(CuraContainerStack):
         if not self.definition.findDefinitions(key = key):
             return None
 
-        if context is None:
-            context = PropertyEvaluationContext()
-        context.pushContainer(self)
+        if context:
+            context.pushContainer(self)
 
         # Handle the "resolve" property.
         #TODO: Why the hell does this involve threading?
@@ -238,13 +237,15 @@ class GlobalStack(CuraContainerStack):
             if super().getProperty(key, "settable_per_extruder", context):
                 result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
-                    context.popContainer()
+                    if context:
+                        context.popContainer()
                     return result
             else:
                 Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
         result = super().getProperty(key, property_name, context)
-        context.popContainer()
+        if context:
+            context.popContainer()
         return result
 
     @override(ContainerStack)
@@ -256,13 +257,15 @@ class GlobalStack(CuraContainerStack):
 
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
-    # protected:
-
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
     def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
         if property_name != "value":
             # Do not try to resolve anything but the "value" property
+            return False
+
+        if not self.definition.getProperty(key, "resolve"):
+            # If there isn't a resolve set for this setting, there isn't anything to do here.
             return False
 
         current_thread = threading.current_thread()
@@ -273,10 +276,8 @@ class GlobalStack(CuraContainerStack):
             # track all settings that are being resolved.
             return False
 
-        setting_state = super().getProperty(key, "state", context = context)
-        if setting_state is not None and setting_state != InstanceState.Default:
-            # When the user has explicitly set a value, we should ignore any resolve and
-            # just return that value.
+        if self.hasUserValue(key):
+            # When the user has explicitly set a value, we should ignore any resolve and just return that value.
             return False
 
         return True

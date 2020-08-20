@@ -4299,7 +4299,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "support_pattern == 'cross' or support_pattern == 'gyroid'",
-                    "enabled": "(support_enable or support_meshes_present) and (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid')",
+                    "enabled": "(support_enable or support_meshes_present) and (support_pattern == 'lines' or support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid')",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true

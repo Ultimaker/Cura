@@ -410,13 +410,13 @@ def test_getPropertyInstancesBeforeResolve(global_stack):
 
     value = unittest.mock.MagicMock() #Sets just the value.
     value.getProperty = unittest.mock.MagicMock(side_effect = getValueProperty)
-    value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
+    value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality_changes")
     resolve = unittest.mock.MagicMock() #Sets just the resolve.
     resolve.getProperty = unittest.mock.MagicMock(side_effect = getResolveProperty)
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = resolve
-    global_stack.quality = value
+    global_stack.qualityChanges = value
 
     assert global_stack.getProperty("material_bed_temperature", "value") == 10
 

@@ -16,13 +16,13 @@ from .ExtruderStack import ExtruderStack
 class CuraStackBuilder:
     """Contains helper functions to create new machines."""
 
-
     @classmethod
-    def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
+    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None) -> Optional[GlobalStack]:
         """Create a new instance of a machine.
 
         :param name: The name of the new machine.
         :param definition_id: The ID of the machine definition to use.
+        :param machine_extruder_count: The number of extruders in the machine.
 
         :return: The new global stack or None if an error occurred.
         """
@@ -66,7 +66,14 @@ class CuraStackBuilder:
                 Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos = position, err = str(e)))
                 return None
 
-        for new_extruder in new_global_stack.extruderList:  # Only register the extruders if we're sure that all of them are correct.
+        # If given, set the machine_extruder_count when creating the machine, or else the extruderList used bellow will
+        # not return the correct extruder list (since by default, the machine_extruder_count is 1) in machines with
+        # settable number of extruders.
+        if machine_extruder_count and 0 <= machine_extruder_count <= len(extruder_dict):
+            new_global_stack.setProperty("machine_extruder_count", "value", machine_extruder_count)
+
+        # Only register the extruders if we're sure that all of them are correct.
+        for new_extruder in new_global_stack.extruderList:
             registry.addContainer(new_extruder)
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
