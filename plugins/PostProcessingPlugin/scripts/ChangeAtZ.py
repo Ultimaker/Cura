@@ -1101,7 +1101,7 @@ class ChangeAtZProcessor:
 
         # if it's not a linear move, we don't care
         if linear_command is None:
-            return line
+            return
 
         # get our linear move parameters
         feed_rate = linear_command.Arguments["F"]
@@ -1120,8 +1120,7 @@ class ChangeAtZProcessor:
         new_line = self.processRetractFeedRate(extrude_length, feed_rate, new_line, x_coord, y_coord, z_coord)
 
         # handle print speed adjustments
-        if extrude_length is not None:  # Only for extrusion moves.
-            new_line = self.processPrintSpeed(feed_rate, new_line)
+        new_line = self.processPrintSpeed(feed_rate, new_line)
 
         # set our current extrude position
         self.LastE = extrude_length if extrude_length is not None else self.LastE

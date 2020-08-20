@@ -104,6 +104,16 @@ Popup
                             anchors.left: parent.left
                             anchors.right: parent.right
 
+                            // We set it by means of a binding, since then we can use the when condition, which we need to
+                            // prevent a binding loop.
+                            Binding
+                            {
+                                target: parent
+                                property: "height"
+                                value: parent.childrenRect.height
+                                when: parent.visibleChildren.length > 0
+                            }
+
                             // Add the qualities that belong to the intent
                             Repeater
                             {

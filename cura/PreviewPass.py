@@ -76,8 +76,8 @@ class PreviewPass(RenderPass):
                 Logger.error("Unable to compile shader program: overhang.shader")
 
         if not self._non_printing_shader:
-            self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
             if self._non_printing_shader:
+                self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
                 self._non_printing_shader.setUniformValue("u_diffuseColor", [0.5, 0.5, 0.5, 0.5])
                 self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
