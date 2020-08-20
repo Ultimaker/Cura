@@ -1055,7 +1055,7 @@
                 },
                 "beading_strategy_type":
                 {
-                    "label": "Beading Strategy",
+                    "label": "Variable Line Strategy",
                     "description": "Beading strategy used by libArachne to generate walls.",
                     "type": "enum",
                     "options":
@@ -1065,12 +1065,12 @@
                         "distributed": "Distributed",
                         "inward_distributed": "Inward Distributed"
                     },
-                    "default_value": "naive",
+                    "default_value": "distributed",
                     "limit_to_extruder": "wall_0_extruder_nr"
                 },
                 "widening_beading_enabled":
                 {
-                    "label": "Enable Widening Beading",
+                    "label": "Enable Variable Line Widening",
                     "description": "Applies the Widening Beading meta-strategy on top of the selected beading strategy.",
                     "type": "bool",
                     "default_value": false,
@@ -1078,12 +1078,11 @@
                 },
                 "min_bead_width":
                 {
-                    "label": "Minimum Bead Width",
-                    "description": "Minimum Bead Width.",
+                    "label": "Minimum Wall Line Width",
+                    "description": "Minimum Bead Width. Used in the Widening Beading meta-strategy.",
                     "unit": "mm",
                     "value": "wall_line_width / 2",
                     "minimum_value": "0",
-                    "minimum_value_warning": "wall_line_width / 2",
                     "maximum_value": "wall_line_width",
                     "type": "float",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -1092,11 +1091,10 @@
                 "min_feature_size":
                 {
                     "label": "Minimum Feature Size",
-                    "description": "Minimum Feature Size.",
+                    "description": "Minimum Feature Size. Used in the Widening Beading meta-strategy.",
                     "unit": "mm",
                     "value": "wall_line_width / 2",
                     "minimum_value": "0",
-                    "minimum_value_warning": "wall_line_width / 2",
                     "maximum_value": "wall_line_width",
                     "type": "float",
                     "limit_to_extruder": "wall_0_extruder_nr",
