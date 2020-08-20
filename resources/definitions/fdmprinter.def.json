@@ -1071,7 +1071,7 @@
                 "widening_beading_enabled":
                 {
                     "label": "Enable Variable Line Widening",
-                    "description": "Applies the Widening Beading meta-strategy on top of the selected beading strategy.",
+                    "description": "Applies the Widening Beading meta-strategy on top of the selected beading strategy in libArachne.",
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "wall_0_extruder_nr"
@@ -1079,7 +1079,7 @@
                 "min_bead_width":
                 {
                     "label": "Minimum Wall Line Width",
-                    "description": "Minimum Bead Width. Used in the Widening Beading meta-strategy.",
+                    "description": "Minimum Bead Width. Used in the Widening Beading meta-strategy in libArachne.",
                     "unit": "mm",
                     "value": "wall_line_width / 2",
                     "minimum_value": "0",
@@ -1091,7 +1091,7 @@
                 "min_feature_size":
                 {
                     "label": "Minimum Feature Size",
-                    "description": "Minimum Feature Size. Used in the Widening Beading meta-strategy.",
+                    "description": "Minimum Feature Size. Used in the Widening Beading meta-strategy in libArachne.",
                     "unit": "mm",
                     "value": "wall_line_width / 2",
                     "minimum_value": "0",
