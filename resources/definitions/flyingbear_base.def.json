@@ -48,7 +48,6 @@
 		"wall_0_wipe_dist": 			{ "value": 0.0 },
 		"top_bottom_thickness": 		{ "value":  "layer_height_0 + layer_height * 3 if layer_height > 0.15 else 0.8" },
 		"optimize_wall_printing_order": 	{ "value": true },
-		"travel_compensate_overlapping_walls_0_enabled": { "value": false },
 		"fill_perimeter_gaps": 			{ "value": "'everywhere'" },
 		"filter_out_tiny_gaps": 		{ "value": false },
 		"fill_outline_gaps": 			{ "value": false },

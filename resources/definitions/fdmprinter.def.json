@@ -1330,38 +1330,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "travel_compensate_overlapping_walls_enabled":
-                {
-                    "label": "Compensate Wall Overlaps",
-                    "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
-                    "type": "bool",
-                    "default_value": true,
-                    "limit_to_extruder": "wall_x_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "travel_compensate_overlapping_walls_0_enabled":
-                        {
-                            "label": "Compensate Outer Wall Overlaps",
-                            "description": "Compensate the flow for parts of an outer wall being printed where there is already a wall in place.",
-                            "type": "bool",
-                            "default_value": true,
-                            "value": "travel_compensate_overlapping_walls_enabled",
-                            "limit_to_extruder": "wall_0_extruder_nr",
-                            "settable_per_mesh": true
-                        },
-                        "travel_compensate_overlapping_walls_x_enabled":
-                        {
-                            "label": "Compensate Inner Wall Overlaps",
-                            "description": "Compensate the flow for parts of an inner wall being printed where there is already a wall in place.",
-                            "type": "bool",
-                            "default_value": true,
-                            "value": "travel_compensate_overlapping_walls_enabled",
-                            "limit_to_extruder": "wall_x_extruder_nr",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
                 "wall_min_flow":
                 {
                     "label": "Minimum Wall Flow",
@@ -1371,7 +1339,6 @@
                     "maximum_value": "100",
                     "default_value": 0,
                     "type": "float",
-                    "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
                     "settable_per_mesh": true
                 },
                 "wall_min_flow_retract":
@@ -1380,7 +1347,7 @@
                     "description": "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
+                    "enabled": "wall_min_flow > 0",
                     "settable_per_mesh": true
                 },
                 "fill_perimeter_gaps":
@@ -4379,7 +4346,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "support_pattern == 'cross' or support_pattern == 'gyroid'",
-                    "enabled": "(support_enable or support_meshes_present) and (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid')",
+                    "enabled": "(support_enable or support_meshes_present) and (support_pattern == 'lines' or support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid')",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -6199,7 +6166,7 @@
                 "infill_mesh_order":
                 {
                     "label": "Mesh Processing Rank",
-                    "description": "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "description": "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
                     "default_value": 0,
                     "value": "1 if infill_mesh else 0",
                     "minimum_value_warning": "1",
