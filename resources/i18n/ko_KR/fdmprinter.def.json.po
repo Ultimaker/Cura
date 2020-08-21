@@ -228,12 +228,12 @@ msgstr "기기의 빌드 볼륨 온도 안정화 지원 여부입니다."
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
-msgstr ""
+msgstr "항상 활성 도구 쓰기"
 
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool description"
 msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
-msgstr ""
+msgstr "임시 명령을 비활성 도구로 전송한 후 활성 도구를 작성하십시오. Smoothie 또는 모달 도구 명령어를 사용하는 다른 펌웨어를 사용해 프린팅하는 듀얼 압출기용 프린팅에 필요합니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -3487,22 +3487,23 @@ msgstr "서포트의 바닥을 프린팅하는 데 사용할 익스트루더. �
 #: fdmprinter.def.json
 msgctxt "support_structure label"
 msgid "Support Structure"
-msgstr ""
+msgstr "서포트 구조"
 
 #: fdmprinter.def.json
 msgctxt "support_structure description"
 msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 선택합니다. '표준' 서포트는 오버행(경사면) 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. '트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고"
+" 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr ""
+msgstr "표준"
 
 #: fdmprinter.def.json
 msgctxt "support_structure option tree"
 msgid "Tree"
-msgstr ""
+msgstr "트리"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
@@ -3822,12 +3823,12 @@ msgstr "모델에있는 서포트의 계단 모양 바닥의 최대 폭. 값이 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope label"
 msgid "Support Stair Step Minimum Slope Angle"
-msgstr ""
+msgstr "서포트 계단 스텝 최소 경사 각도"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
-msgstr ""
+msgstr "계단 스텝이 적용되는 영역의 최소 경사입니다. 값이 낮을수록 낮은 각도 서포트 제거가 쉬워지지만 값을 너무 낮게 지정하면 모델의 다른 부분에서 적절하지 않은 결과가 발생할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4277,12 +4278,12 @@ msgstr "서포트 메쉬 아래의 모든 부분을 지원하여서 서포트 �
 #: fdmprinter.def.json
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
-msgstr ""
+msgstr "장면에 서포트 메쉬가 있습니다"
 
 #: fdmprinter.def.json
 msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
-msgstr ""
+msgstr "장면에 서포트 메쉬가 있습니다. 이 설정은 Cura가 제어합니다."
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -5046,7 +5047,8 @@ msgstr "프린팅 순서"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr ""
+msgstr "모든 모델을 한 번에 한 레이어씩 프린팅할 것인지, 아니면 한 모델이 완료될 때까지 기다릴 것인지, 다음 단계로 넘어가기 전에 대한 여부 a) 한 번에 하나의 압출기만 활성화하고 b) 모든 모델은 전체 프린트 헤드가 이동할 수 있는 방식으로 분리되며 모든 모델은 노즐과"
+" X/Y 축 사이의 거리보다 낮습니다."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5071,12 +5073,12 @@ msgstr "겹치는 다른 메쉬의 내부채움율을 수정합니다. 다른 �
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Mesh Processing Rank"
-msgstr ""
+msgstr "메쉬 처리 랭크"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "오버랩 볼륨에서 메쉬의 우선 순위를 결정합니다. 여러 메쉬가 있는 영역보다 랭크가 낮은 메쉬의 우선 순위가 높습니다. 우선 순위가 높은 내부채움 메쉬는 우선 순위가 낮은 내부채움 메쉬와 표준 메쉬의 내부채움을 수정합니다."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5221,7 +5223,8 @@ msgstr "슬라이싱 허용 오차"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
-msgstr ""
+msgstr "슬라이스 레이어의 수직 허용 오차입니다. 레이어의 윤곽선은 일반적으로 각 레이어의 두께 중간(중간)을 교차하는 부분을 기준으로 생성됩니다. 또는 각 레이어가 레이어의 높이 전체의 볼륨에 들어가는 영역(포함하지 않음)이 있거나 레이어 안의 어느 지점에 들어가는 영역(포함)이"
+" 있을 수 있습니다. 포함된 영역에서 가장 많은 디테일이 포함되고 포함되지 않은 영역을 통해 가장 맞게 만들 수 있으며 중간을 통해 원래 표면과 가장 유사하게 만들어냅니다."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
