@@ -4858,7 +4858,7 @@ msgstr "A impressora de nuvem está offline. Por favor verifique se a impressora
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:51
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr "Esta impressora não está vinculada à sua conta. Por favor visite a Fábrica Digital da Ultimaker para estabelecer uma conexão."
+msgstr "Esta impressora não está vinculada à sua conta. Por favor visite a Ultimaker Digital Factory para estabelecer uma conexão."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
