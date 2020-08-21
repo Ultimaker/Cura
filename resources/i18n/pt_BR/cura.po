@@ -1410,7 +1410,7 @@ msgstr "Envia e monitora trabalhos de impressão de qualquer lugar usando sua co
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:33
 msgctxt "@info:status Ultimaker Cloud should not be translated."
 msgid "Connect to Ultimaker Digital Factory"
-msgstr "Conectar à Fábrica Digital da Ultimaker"
+msgstr "Conectar à Ultimaker Digital Factory
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:36
 msgctxt "@action"
