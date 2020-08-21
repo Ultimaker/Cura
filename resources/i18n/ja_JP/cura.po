@@ -4127,7 +4127,7 @@ msgstr "このモデルとの重なりはサポートされません。"
 msgctxt "@label"
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
+msgstr[0] "%1個の設定を上書きします。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
