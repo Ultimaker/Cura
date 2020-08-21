@@ -1343,7 +1343,7 @@ msgstr "<li>... e {} outras</li>"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:265
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:<ul>{}</ul>"
-msgstr "Impressoras adicionadas da Fábrica Digital:<ul>{}</ul>"
+msgstr "Impressoras adicionadas da Digital Factory:<ul>{}</ul>"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
 msgctxt "info:status"
