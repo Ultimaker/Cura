@@ -5044,7 +5044,7 @@ msgstr "Tisková sekvence"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "Zda tisknout všechny modely po jedné vrstvě najednou, nebo počkat na dokončení jednoho modelu, než se přesunete k další. Jeden za časovým režimem je možný, pokud a) je povolen pouze jeden extrudér ab) všechny modely jsou odděleny tak, že celá tisková hlava se může pohybovat mezi a všechny modely jsou menší než vzdálenost mezi tryskou a X / Osy Y."
+msgstr "Zda tisknout všechny modely po jedné vrstvě najednou, nebo počkat na dokončení jednoho modelu, než se přesunete k další. Jeden za časovým režimem je možný, pokud a) je povolen pouze jeden extrudér a b) všechny modely jsou odděleny tak, že celá tisková hlava se může pohybovat mezi a všechny modely jsou menší než vzdálenost mezi tryskou a X / Osy Y."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"

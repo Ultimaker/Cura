@@ -736,7 +736,7 @@ msgstr "Projektdatei öffnen"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
-msgstr "Auf Projektdatei <filename>{0}</filename> kann plötzlich nicht mehr zugegriffen werden: <message>{1}</message>"
+msgstr "Auf Projektdatei <filename>{0}</filename> kann plötzlich nicht mehr zugegriffen werden: <message>{1}</message>."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:623
 msgctxt "@info:title"
@@ -747,7 +747,7 @@ msgstr "Projektdatei kann nicht geöffnet werden"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr "Projektdatei <filename>{{0}}</filename> verwendet Profile, die nicht mit dieser Ultimaker Cura-Version kompatibel sind."
+msgstr "Projektdatei <filename>{0}</filename> verwendet Profile, die nicht mit dieser Ultimaker Cura-Version kompatibel sind."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:186
 msgctxt "@title:tab"
@@ -919,7 +919,7 @@ msgstr "Zugriff auf Update-Informationen nicht möglich."
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
-msgstr "Für Ihren {machine_name} sind eventuell neue Funktionen oder Fehlerbereinigungen verfügbar. Falls Sie nicht bereits die aktuellste Version verwenden, empfehlen"
+msgstr "Für Ihren {machine_name} sind eventuell neue Funktionen oder Fehlerbereinigungen verfügbar! Falls Sie nicht bereits die aktuellste Version verwenden, empfehlen"
 " wir Ihnen, ein Firmware-Update Ihres Druckers auf Version {latest_version} auszuführen."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
@@ -1339,12 +1339,12 @@ msgstr "Drucker {} ({}) aus Ihrem Konto wird hinzugefügt"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:258
 msgctxt "info:hidden list items"
 msgid "<li>... and {} others</li>"
-msgstr "<li>... und {{}} weitere</li>"
+msgstr "<li>... und {} weitere</li>"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:265
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:<ul>{}</ul>"
-msgstr "Drucker aus Digital Factory hinzugefügt<ul>:{{}}</ul>"
+msgstr "Drucker aus Digital Factory hinzugefügt<ul>:{}</ul>"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
 msgctxt "info:status"
@@ -1391,7 +1391,7 @@ msgctxt "@label"
 msgid ""
 "You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
 "Are you sure you want to continue?"
-msgstr "Es werden gleich {} Drucker aus Cura entfernt. Der Vorgang kann nicht rückgängig gemacht werden. \nMöchten Sie wirklich fortfahren."
+msgstr "Es werden gleich {} Drucker aus Cura entfernt. Der Vorgang kann nicht rückgängig gemacht werden. \nMöchten Sie wirklich fortfahren?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:471
 msgctxt "@label"
@@ -3138,7 +3138,7 @@ msgstr "Konto wurde synchronisiert"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:42
 msgctxt "@label"
 msgid "Something went wrong..."
-msgstr "irgendetwas ist schief gelaufen"
+msgstr "Irgendetwas ist schief gelaufen ..."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:96
 msgctxt "@button"
@@ -5889,7 +5889,7 @@ msgstr "Upgrade der Konfigurationen von Cura 4.6.0 auf Cura 4.6.2."
 #: VersionUpgrade/VersionUpgrade460to462/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "Upgrade von Version 3.6.0 auf 4.6.2"
+msgstr "Upgrade von Version 4.6.0 auf 4.6.2"
 
 #: VersionUpgrade/VersionUpgrade462to47/plugin.json
 msgctxt "description"

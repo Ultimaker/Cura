@@ -1381,7 +1381,7 @@ msgstr "Odstranit tiskárnu"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:428
 msgctxt "@label ({} is printer name)"
 msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
-msgstr "{} bude odebrána až do další synchronizace účtu. <br> Chcete-li {} trvale odebrat, navštivte <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br> Opravdu chcete dočasně odebrat {}?"
+msgstr "{} bude odebrána až do další synchronizace účtu. <br> Chcete-li {} trvale odebrat, navštivte <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Opravdu chcete dočasně odebrat {}?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@title:window"
