@@ -1398,7 +1398,7 @@ msgctxt "@label"
 msgid ""
 "You are about to remove all printers from Cura. This action cannot be undone. \n"
 "Are you sure you want to continue?"
-msgstr "Es werden gleich alle Drucker aus Cura entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden.Möchten Sie wirklich fortfahren."
+msgstr "Es werden gleich alle Drucker aus Cura entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden. \nMöchten Sie wirklich fortfahren?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:27
 msgctxt "@info:status"
