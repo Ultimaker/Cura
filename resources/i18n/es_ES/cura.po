@@ -1390,7 +1390,7 @@ msgctxt "@label"
 msgid ""
 "You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
 "Are you sure you want to continue?"
-msgstr "Está a punto de eliminar {} impresora(s) de Cura. Esta acción no se puede deshacer.¿Seguro que desea continuar?"
+msgstr "Está a punto de eliminar {} impresora(s) de Cura. Esta acción no se puede deshacer.\n¿Seguro que desea continuar?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:471
 msgctxt "@label"
