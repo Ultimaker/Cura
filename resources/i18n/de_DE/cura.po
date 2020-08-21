@@ -719,7 +719,7 @@ msgstr ""
 "<p>Ein oder mehrere 3D-Modelle können möglicherweise aufgrund der Modellgröße und Materialkonfiguration nicht optimal gedruckt werden:</p>\n"
 "<p>{model_names}</p>\n"
 "<p>Erfahren Sie, wie Sie die bestmögliche Druckqualität und Zuverlässigkeit sicherstellen.</p>\n"
-"<p><a href="https://ultimaker.com/3D-model-assistant">Leitfaden zu Druckqualität anzeigen</a></p>"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Leitfaden zu Druckqualität anzeigen</a></p>"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:521
 #, python-brace-format
