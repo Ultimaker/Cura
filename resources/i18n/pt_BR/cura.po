@@ -1362,7 +1362,7 @@ msgstr[1] "Estas impressoras não estão ligadas à Fábrica Digital:"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
 msgctxt "info:status"
 msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
-msgstr "<ul>{}</ul>Para estabelecer uma conexão, por favor visite a <a href='https://mycloud.ultimaker.com/'>Fábrica Digital da Ultimaker</a>."
+msgstr "<ul>{}</ul>Para estabelecer uma conexão, por favor visite a <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:344
 msgctxt "@action:button"
