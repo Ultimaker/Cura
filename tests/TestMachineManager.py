@@ -34,6 +34,8 @@ def test_getMachine():
     registry.findContainerStacks = MagicMock(return_value=[mocked_global_stack])
     with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
         assert MachineManager.getMachine("test") == mocked_global_stack
+        # Since only test is in the registry, this should be None
+        assert MachineManager.getMachine("UnknownMachine") is None
 
 
 def test_addMachine(machine_manager):
@@ -134,7 +136,7 @@ def test_setActiveMachine(machine_manager):
     machine_action_manager.addDefaultMachineActions.assert_called_once_with(global_stack)
     # Yeah sure. It's technically an implementation detail. But if this function wasn't called, it exited early somehow
     machine_manager._validateVariantsAndMaterials.assert_called_once_with(global_stack)
-    
+
 
 def test_setInvalidActiveMachine(machine_manager):
     registry = MagicMock()
