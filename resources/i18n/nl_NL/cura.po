@@ -1328,8 +1328,8 @@ msgstr "Verbonden via Cloud"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Nieuwe printer gedetecteerd van uw Ultimaker-account"
+msgstr[1] "Nieuwe printers gedetecteerd van uw Ultimaker-account"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
 msgctxt "info:status"
@@ -1350,15 +1350,15 @@ msgstr "Printers toegevoegd van Digital Factory: <ul>{}</ul>"
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Een cloudverbinding is niet beschikbaar voor een printer"
+msgstr[1] "Een cloudverbinding is niet beschikbaar voor meerdere printers"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:332
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Deze printer is niet gekoppeld aan de Digital Factory:"
+msgstr[1] "Deze printers zijn niet gekoppeld aan de Digital Factory:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
 msgctxt "info:status"
@@ -4136,8 +4136,8 @@ msgstr "Overlappingen worden in dit model niet ondersteund."
 msgctxt "@label"
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Overschrijft %1 instelling."
+msgstr[1] "Overschrijft %1 instellingen."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"

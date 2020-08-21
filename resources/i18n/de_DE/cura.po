@@ -719,7 +719,7 @@ msgstr ""
 "<p>Ein oder mehrere 3D-Modelle können möglicherweise aufgrund der Modellgröße und Materialkonfiguration nicht optimal gedruckt werden:</p>\n"
 "<p>{model_names}</p>\n"
 "<p>Erfahren Sie, wie Sie die bestmögliche Druckqualität und Zuverlässigkeit sicherstellen.</p>\n"
-"<p><a href=“https://ultimaker.com/3D-model-assistant“>Leitfaden zu Druckqualität anzeigen</a></p>"
+"<p><a href="https://ultimaker.com/3D-model-assistant">Leitfaden zu Druckqualität anzeigen</a></p>"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:521
 #, python-brace-format
@@ -1328,8 +1328,8 @@ msgstr "Über Cloud verbunden"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ihr Ultimaker-Konto hat einen neuen Drucker erkannt."
+msgstr[1] "Ihr Ultimaker-Konto hat neue Drucker erkannt."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
 msgctxt "info:status"
@@ -1350,15 +1350,15 @@ msgstr "Drucker aus Digital Factory hinzugefügt<ul>:{{}}</ul>"
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Für einen Drucker ist keine Cloud-Verbindung verfügbar"
+msgstr[1] "Für mehrere Drucker ist keine Cloud-Verbindung verfügbar"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:332
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Dieser Drucker ist nicht mit der Digital Factory verbunden:"
+msgstr[1] "Diese Drucker sind nicht mit der Digital Factory verbunden:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
 msgctxt "info:status"
@@ -2262,8 +2262,8 @@ msgstr "Aktive Nachbearbeitungsskripts ändern."
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Die folgenden Skript ist aktiv:"
+msgstr[1] "Die folgenden Skripte sind aktiv:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
@@ -4135,8 +4135,8 @@ msgstr "Überlappungen mit diesem Modell werden nicht unterstützt."
 msgctxt "@label"
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Überschreibt %1 Einstellung."
+msgstr[1] "Überschreibt %1 Einstellungen."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"

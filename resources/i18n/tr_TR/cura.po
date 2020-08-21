@@ -1328,8 +1328,8 @@ msgstr "Bulut üzerinden bağlı"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ultimaker hesabınızdan yeni yazıcı tespit edildi"
+msgstr[1] "Ultimaker hesabınızdan yeni yazıcılar tespit edildi"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
 msgctxt "info:status"
@@ -1350,15 +1350,15 @@ msgstr "Digital Factory'den eklenen yazıcılar:<ul>{}</ul>"
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Yazıcı için kullanılabilir bulut bağlantısı yok"
+msgstr[1] "Bazı yazıcılar için kullanılabilir bulut bağlantısı yok"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:332
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Bu yazıcı Digital Factory ile bağlantılandırılmamış:"
+msgstr[1] "Bu yazıcılar Digital Factory ile bağlantılandırılmamış:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
 msgctxt "info:status"
@@ -4136,8 +4136,8 @@ msgstr "Bu model ile çakışmalar desteklenmez."
 msgctxt "@label"
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 ayarı geçersiz kılar."
+msgstr[1] "%1 ayarı geçersiz kılar."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"

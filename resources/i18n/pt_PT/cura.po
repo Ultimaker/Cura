@@ -1341,8 +1341,8 @@ msgstr "Ligada através da cloud"
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Nova impressora detetada a partir da sua conta Ultimaker"
+msgstr[1] "Novas impressoras detetadas a partir da sua conta Ultimaker"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
 msgctxt "info:status"
@@ -1363,15 +1363,15 @@ msgstr "Impressoras adicionadas a partir da Digital Factory:<ul>{}</ul>"
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Não existe uma conectividade de cloud disponível para a impressora"
+msgstr[1] "Não existe uma conectividade de cloud disponível para algumas impressoras"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:332
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Esta impressora não está associada à Digital Factory:"
+msgstr[1] "Estas impressoras não estão associadas à Digital Factory:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
 msgctxt "info:status"
@@ -4163,8 +4163,8 @@ msgstr "Não são suportadas sobreposições com este modelo."
 msgctxt "@label"
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Substitui %1 definição."
+msgstr[1] "Substitui %1 definições."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
