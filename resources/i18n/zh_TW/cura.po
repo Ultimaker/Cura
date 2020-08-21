@@ -2664,7 +2664,7 @@ msgstr "取得套件..."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:22
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-msgstr "請登入以取得 Ultimaker Cura 企業驗証的外掛及耗材"
+msgstr "請登入以取得 Ultimaker Cura Enterprise 驗証的外掛及耗材"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:19
 msgctxt "@title"
