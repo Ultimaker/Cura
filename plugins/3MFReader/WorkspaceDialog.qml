@@ -16,7 +16,7 @@ UM.Dialog
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
-    height: minimumHeight
+    height: Math.max(dialogSummaryItem.height + 2 * buttonsItem.height, minimumHeight) // 2 * button height to also have some extra space around the button relative to the button size
 
     property int comboboxHeight: 15 * screenScaleFactor
     property int spacerHeight: 10 * screenScaleFactor
@@ -35,7 +35,9 @@ UM.Dialog
 
     Item
     {
-        anchors.fill: parent
+        id: dialogSummaryItem
+        width: parent.width
+        height: childrenRect.height
         anchors.margins: 10 * screenScaleFactor
 
         UM.I18nCatalog
@@ -63,7 +65,8 @@ UM.Dialog
 
         Column
         {
-            anchors.fill: parent
+            width: parent.width
+            height: childrenRect.height
             spacing: 2 * screenScaleFactor
             Label
             {
@@ -182,6 +185,7 @@ UM.Dialog
                 {
                     text: manager.machineName
                     width: (parent.width / 3) | 0
+                    wrapMode: Text.WordWrap
                 }
             }
 
@@ -239,6 +243,7 @@ UM.Dialog
                 {
                     text: manager.qualityName
                     width: (parent.width / 3) | 0
+                    wrapMode: Text.WordWrap
                 }
             }
             Row
@@ -254,6 +259,7 @@ UM.Dialog
                 {
                     text: manager.intentName
                     width: (parent.width / 3) | 0
+                    wrapMode: Text.WordWrap
                 }
             }
             Row
@@ -285,6 +291,7 @@ UM.Dialog
                 {
                     text: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                     width: (parent.width / 3) | 0
+                    wrapMode: Text.WordWrap
                 }
                 visible: manager.numSettingsOverridenByQualityChanges != 0
             }
@@ -346,6 +353,7 @@ UM.Dialog
                     {
                         text: modelData
                         width: (parent.width / 3) | 0
+                        wrapMode: Text.WordWrap
                     }
                 }
             }
@@ -419,6 +427,14 @@ UM.Dialog
                 }
             }
         }
+    }
+    Item
+    {
+        id: buttonsItem
+        width: parent.width
+        height: childrenRect.height
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
         Button
         {
             id: cancel_button
@@ -432,12 +448,13 @@ UM.Dialog
         Button
         {
             id: ok_button
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
             text: catalog.i18nc("@action:button","Open");
             onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
         }
     }
+
 
     function accept() {
         manager.closeBackend();
