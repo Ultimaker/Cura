@@ -192,3 +192,31 @@ def test_setInvalidActiveMachine(machine_manager):
     # Notification stuff should happen now!
     configuration_error_message.addFaultyContainers.assert_called_once_with("InvalidMachine")
 
+def test_clearUserSettingsAllCurrentStacks(machine_manager, application):
+    global_stack = application.getGlobalContainerStack()
+    extruder_1 = createMockedExtruder("extruder_1")
+    instance_container = createMockedInstanceContainer("user", "UserContainer")
+    extruder_1.getTop = MagicMock(return_value = instance_container)
+    global_stack.extruderList = [extruder_1]
+
+    machine_manager.clearUserSettingAllCurrentStacks("some_setting")
+
+    instance_container.removeInstance.assert_called_once_with("some_setting", postpone_emit=True)
+
+
+def test_clearUserSettingsAllCurrentStacksLinkedSetting(machine_manager, application):
+    global_stack = application.getGlobalContainerStack()
+    extruder_1 = createMockedExtruder("extruder_1")
+    instance_container = createMockedInstanceContainer("user", "UserContainer")
+    instance_container_global = createMockedInstanceContainer("global_user", "GlobalUserContainer")
+    global_stack.getTop = MagicMock(return_value = instance_container_global)
+    extruder_1.getTop = MagicMock(return_value=instance_container)
+    global_stack.extruderList = [extruder_1]
+
+    global_stack.getProperty = MagicMock(side_effect = lambda key, prop: True if prop == "settable_per_extruder" else "-1" )
+
+    machine_manager.clearUserSettingAllCurrentStacks("some_setting")
+
+    instance_container.removeInstance.assert_not_called()
+    instance_container_global.removeInstance.assert_called_once_with("some_setting", postpone_emit = True)
+
