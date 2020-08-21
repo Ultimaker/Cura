@@ -3,11 +3,17 @@ import pytest
 
 from cura.Settings.MachineManager import MachineManager
 
+
+def createMockedStack(stack_id: str, name: str):
+    stack = MagicMock(name=name)
+    stack.getId = MagicMock(return_value=stack_id)
+    return stack
+
+
 @pytest.fixture()
 def global_stack():
-    stack = MagicMock(name = "Global Stack")
-    stack.getId = MagicMock(return_value = "GlobalStack")
-    return stack
+    return createMockedStack("GlobalStack", "Global Stack")
+
 
 @pytest.fixture()
 def machine_manager(application, extruder_manager, container_registry, global_stack) -> MachineManager:
@@ -18,21 +24,6 @@ def machine_manager(application, extruder_manager, container_registry, global_st
         manager._onGlobalContainerChanged()
 
     return manager
-
-@pytest.mark.skip(reason = "Outdated test")
-def test_setActiveMachine(machine_manager):
-    registry = MagicMock()
-
-    mocked_global_stack = MagicMock()
-
-    mocked_global_stack.getId = MagicMock(return_value = "test_machine")
-    registry.findContainerStacks = MagicMock(return_value = [mocked_global_stack])
-    with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=registry)):
-            machine_manager.setActiveMachine("test_machine")
-
-            # Although we mocked the application away, we still want to know if it was notified about the attempted change.
-            machine_manager._application.setGlobalContainerStack.assert_called_with(mocked_global_stack)
 
 
 def test_getMachine():
@@ -109,3 +100,60 @@ def test_resetSettingForAllExtruders(machine_manager):
 
     extruder_1.userChanges.removeInstance.assert_called_once_with("whatever")
     extruder_2.userChanges.removeInstance.assert_called_once_with("whatever")
+
+
+def test_setUnknownActiveMachine(machine_manager):
+    machine_action_manager = MagicMock()
+    machine_manager.getMachineActionManager = MagicMock(return_value = machine_action_manager)
+
+    machine_manager.setActiveMachine("UnknownMachine")
+    # The machine isn't known to us, so this should not happen!
+    machine_action_manager.addDefaultMachineActions.assert_not_called()
+
+
+def test_clearActiveMachine(machine_manager):
+    machine_manager.setActiveMachine(None)
+
+    machine_manager._application.setGlobalContainerStack.assert_called_once_with(None)
+
+
+def test_setActiveMachine(machine_manager):
+    registry = MagicMock()
+    machine_action_manager = MagicMock()
+    machine_manager._validateVariantsAndMaterials = MagicMock()  # Not testing that function, so whatever.
+    machine_manager._application.getMachineActionManager = MagicMock(return_value=machine_action_manager)
+    global_stack = createMockedStack("NewMachine", "Newly created Machine")
+
+    # Ensure that the container stack will be found
+    registry.findContainerStacks = MagicMock(return_value = [global_stack])
+    with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=registry)):
+            with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):  # Prevent the FixSingleExtruder from being called
+                machine_manager.setActiveMachine("NewMachine")
+
+    machine_action_manager.addDefaultMachineActions.assert_called_once_with(global_stack)
+    # Yeah sure. It's technically an implementation detail. But if this function wasn't called, it exited early somehow
+    machine_manager._validateVariantsAndMaterials.assert_called_once_with(global_stack)
+    
+
+def test_setInvalidActiveMachine(machine_manager):
+    registry = MagicMock()
+    global_stack = createMockedStack("InvalidMachine", "Newly created Machine")
+
+    # This machine is just plain wrong!
+    global_stack.isValid = MagicMock(return_value = False)
+
+    # Ensure that the container stack will be found
+    registry.findContainerStacks = MagicMock(return_value=[global_stack])
+
+    configuration_error_message = MagicMock()
+
+    with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=registry)):
+            with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):  # Prevent the FixSingleExtruder from being called
+                with patch("UM.ConfigurationErrorMessage.ConfigurationErrorMessage.getInstance", MagicMock(return_value = configuration_error_message)):
+                    machine_manager.setActiveMachine("InvalidMachine")
+
+    # Notification stuff should happen now!
+    configuration_error_message.addFaultyContainers.assert_called_once_with("InvalidMachine")
+

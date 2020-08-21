@@ -329,6 +329,9 @@ class MachineManager(QObject):
             # This signal might not have been emitted yet (if it didn't change) but we still want the models to update that depend on it because we changed the contents of the containers too.
             extruder_manager.activeExtruderChanged.emit()
 
+        self._validateVariantsAndMaterials(global_stack)
+
+    def _validateVariantsAndMaterials(self, global_stack) -> None:
         # Validate if the machine has the correct variants and materials.
         # It can happen that a variant or material is empty, even though the machine has them. This will ensure that
         # that situation will be fixed (and not occur again, since it switches it out to the preferred variant or
@@ -346,6 +349,7 @@ class MachineManager(QObject):
             if material_node is None:
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
                 self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material)
+
 
     @staticmethod
     def getMachine(definition_id: str, metadata_filter: Optional[Dict[str, str]] = None) -> Optional["GlobalStack"]:
