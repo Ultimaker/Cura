@@ -3161,7 +3161,7 @@ msgstr "Última atualização: %1"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:99
 msgctxt "@button"
 msgid "Ultimaker Digital Factory"
-msgstr "Fábrica Digital da Ultimaker"
+msgstr "Ultimaker Digital Factory"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:109
 msgctxt "@button"
