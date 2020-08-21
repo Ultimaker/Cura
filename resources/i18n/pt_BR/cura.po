@@ -1357,7 +1357,7 @@ msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "Esta impressora não está ligada à Fábrica Digital:"
-msgstr[1] "Estas impressoras não estão ligadas à Fábrica Digital:"
+msgstr[1] "Estas impressoras não estão ligadas à Digital Factory:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
 msgctxt "info:status"
