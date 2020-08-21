@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, PropertyMock
 import pytest
 
 from cura.Settings.MachineManager import MachineManager
@@ -60,6 +60,39 @@ def test_hasUserSettings(machine_manager, application):
 
     assert machine_manager.numUserSettings == 12
     assert machine_manager.hasUserSettings
+
+
+def test_hasUserSettingsExtruder(machine_manager, application):
+    mocked_stack = application.getGlobalContainerStack()
+    extruder = createMockedExtruder("extruder")
+
+    mocked_instance_container_global = MagicMock(name="UserSettingContainerGlobal")
+    mocked_instance_container_global.getNumInstances = MagicMock(return_value=0)
+    mocked_stack.getTop = MagicMock(return_value=mocked_instance_container_global)
+    mocked_stack.extruderList = [extruder]
+
+    mocked_instance_container = MagicMock(name="UserSettingContainer")
+    mocked_instance_container.getNumInstances = MagicMock(return_value=200)
+    extruder.getTop = MagicMock(return_value = mocked_instance_container)
+
+    assert machine_manager.hasUserSettings
+    assert machine_manager.numUserSettings == 200
+
+
+def test_hasUserSettingsEmptyUserChanges(machine_manager, application):
+    mocked_stack = application.getGlobalContainerStack()
+    extruder = createMockedExtruder("extruder")
+
+    mocked_instance_container_global = MagicMock(name="UserSettingContainerGlobal")
+    mocked_instance_container_global.getNumInstances = MagicMock(return_value=0)
+    mocked_stack.getTop = MagicMock(return_value=mocked_instance_container_global)
+    mocked_stack.extruderList = [extruder]
+
+    mocked_instance_container = MagicMock(name="UserSettingContainer")
+    mocked_instance_container.getNumInstances = MagicMock(return_value=0)
+    extruder.getTop = MagicMock(return_value = mocked_instance_container)
+
+    assert not machine_manager.hasUserSettings
 
 
 def test_totalNumberOfSettings(machine_manager):
