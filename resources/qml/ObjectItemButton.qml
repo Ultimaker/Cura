@@ -115,7 +115,7 @@ Button
                 if (perObjectSettingsCount != "")
                 {
                     result += "<br>" + catalog.i18ncp(
-                        "@label", "Overrides %1 setting.", "Overrides %1 settings.", perObjectSettingsCount
+                        "@label %1 is the number of settings it overrides.", "Overrides %1 setting.", "Overrides %1 settings.", perObjectSettingsCount
                     ).arg(perObjectSettingsCount);
                 }
                 return result;

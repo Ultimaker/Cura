@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -96,7 +96,7 @@ Column
         id: cloudButton
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Ultimaker Digital Factory")
+        text: "Ultimaker Digital Factory"
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl)
         fixedWidthMode: false
     }
