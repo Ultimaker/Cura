@@ -1,25 +1,160 @@
+[4.7.0]
+* Rotation widgets
+fieldOfView has contributed code that adds 3 pairs of arrow widgets to the Rotate tool handle, to rotate objects by exactly 90 degrees.
+
+* Performance improvements with multiple 3D models
+In previous versions many objects on a build plate could cause Cura's performance and response to be slow. We have made some code optimizations to increase the responsiveness of Cura in such cases.
+
+* Cloud connections improvements
+Improved the overall UX workflow when a user is using a cloud connection. Check our new enhancements below.
+
+* Moved tree-support from experimental to normal settings
+We've made stability fixes and tested thoroughly so that it can be considered stable.
+
+* Improve object list GUI
+The object list indicates now the extruder used for each model, the mesh type if the model is not a normal mesh, and the number of per model setting overrides and whether a model is outside of the build plate. Contributed by fieldOfView.
+
+* Support for MacOS Big Sur
+Ultimaker Cura will now run on Apple's upcoming operating system.
+
+* Change normal support vs. tree support into a drop-down
+There is now the option of easily switching between normal and tree support. You cannot enable both at the same time any more.
+
+* Add "Multiply model" to Edit menu
+The option is now also accessible in the Edit menu and not only in the context menu (right-click).
+
+* Add local printer improvements
+Whenever the user wants to add a non-networked printer it is now easier to distinguish the scrollbar and some more information regarding the selected printer in our new redesigned layout. Have a look yourself! Brought to us by fieldOfView.
+
+* Show all while searching per object settings
+For more ease-of-use, the behavior has been changed so that all settings are visible temporarily, even if initial were hidden.
+
+* Search through setting descriptions
+When searching through the custom settings, the results include all the matches found in both the setting names and setting descriptions. This makes some settings easier to find if you don't remember the name.
+
+* Check for account updates manually
+A check for update/sync/refresh button was added near the account so that the user can manually check for updates of subscribed Marketplace packages and available Digital Factory printers.
+
+* Always select last write-device
+Cura will now remember the last used output device to save the g-code to (to file, USB stick, etc.) Contributed by fieldOfView.
+
+* Improved sync with the Ultimaker Marketplace
+Profile picture and links to the Digital Factory have been improved in the account dropdown.
+
+* Add option to sign in with another account while looking for cloud printers
+The "Sign in with a different account" link logs the user off both from Cura and the browser, so that they can sign in with another account. In case the other account has extra cloud printers, then these printers are added to Cura and are available for use.
+
+* Show warning in printer management page that removing is temporary
+When removing a printer in your Digital Factory, a message pops up to inform the user that the printer will be re-added in the next sync.
+
+* Show cloud connection not available
+We now display an offline icon when losing connection to a printer in the Digital Factory.
+
+* Show notification when printer is removed from account
+We show a notification when a printer is removed from the account. You can either go to the account page to restore access or remove it from Cura. In order to establish a new connection, the user is directed to the Digital Factory.
+
+* Add an offline printer, linked to an account, to Cura
+Printers that are temporarily offline (but previously added to your account) will also be added to Cura. You won't be able to send a print to that printer, but you could slice for it and store the g-code elsewhere.
+
+* Adjust initial layer horizontal expansion
+We adjusted the initial layer horizontal expansion for some profiles. This compensates for Elephant's Foot, a small defect where the bottom of the print has a little ridge where it is molten to the build plate.
+
+* Allow a g-code to be inserted before or after pausing
+It allows the user to enter a custom g-code before and after a pause at height. Contributed by rodrigosclosa.
+
+* Remove package ratings
+The package ratings have been removed from the Marketplace.
+
+* Remove extra skin wall count in concentric
+Hide "Extra Skin Wall Count" setting if a concentric pattern is used, and don't let it affect the print any more.
+
+* Support Stair Step Minimum Slope Angle
+With this setting you can disable stair stepping on the very bottom of the support, up until the slope of the model has a certain angle.
+
+* Pause at Height scripts combined
+Instead of having various scripts to use for different machines, there is now just one Pause at Height post-processing script, so all printers can now have the same features when pausing. Contributed by fieldOfView.
+
+* Pause at Height limited to 1 redo layer
+The "redo layers" setting is replaced by a checkbox to redo just the last layer, to prevent colliding the print head with previously printed layers.
+
+* Change at Z improvements
+Added support for changing Retract Length and Speed and fixed an issue when multiple changes are stacked on top of each other. Contributed by novamxd.
+
+* Add post-processing script display progress on LCD
+The "Display Progress On LCD" post-processing script shows the time left and the percentage on their LCD screen. Contributed by Bostwickenator.
+
+* Add preference for single instance
+If enabled, only one instance of Cura will be started at a time. Contributed by fieldOfView.
+
+* Remove spaghetti infill
+This setting was rarely used and didn't work well.
+
+* Bug fixes
+- Fixed issues with support no longer generated on some parts of the model. Support Stair Steps has caused some support to be missing where it touches the build plate or where it's resting on a shallow surface. It should be complete again.
+- Fixed multiple different issues with tree support, where branches would intersect with the model, the wouldn't keep distance when resting on the model, or when printing with Spiralize mode.
+- Fixed an issue where Cubic Subdivision infill didn't move along with the model.
+- Cubic Subdivision will now rotate according to the Infill Line Directions setting. Contributed by smartavionics.
+- X-ray view is now red again, instead of translucent green.
+- Improved wording of the "Discard/Keep Changes" dialog for clarity.
+- Models assigned to extruders >4 are visible again in layer view.
+- Fixed an issue when importing images if the "Base" setting was greater than "Height".
+- Cura now outputs a command to cool down the build plate for the second object in one-at-a-time mode even if the Initial Layer Build Plate Temperature is 0.
+- Distance between infill and walls and between infill and skin is corrected when using Infill Layer Thickness.
+- Fixed a crash when Coasting Minimum Volume is set to 0.
+- The usable build volume will no longer be shrunk unnecessarily when not using any adhesion, but using a prime tower with a brim.
+- Fixed a slicing crash when combining Randomize Infill Start with an even number for Infill Line Multiplier.
+- Improved reduction of model resolution. The Maximum Resolution and Deviation settings should now be more accurate and no longer behave differently in one corner of the model.
+- Removed an unintended gap when something was resting on an ironed surface.
+- Fix skirt printing out of order, causing unnecessary travel moves. Contributed by smartavionics.
+- A fix was added by smartavionics which removes unnecessary long moves that travel towards the outer wall.
+- It wasn't possible to connect to a network printer if two network plugins were enabled simultaneously. Now made possible by Loociano.
+- Support settings are now visible when you have support disabled, but a support mesh is present in the scene. Fixed by fieldOfView.
+- Fix printing speed after performing a retraction when using the stretch post-processing script. Contributed by sgtnoodle.
+- Prevent tool panels from overlapping with scene information. Fix made by smartavionics.
+- The values of the machine settings would look cut-off on some Linux distributions. Now fixed by smartavionics.
+- Fixed settings sometimes not appearing if they belong to a checkbox setting that is enabled by default (e.g. retraction settings belonging to Enable Retraction).
+- We cleaned up our “About...” dialog. It is now up to date.
+- Improve performance of loading profile metadata. This fix improves the start-up time of Cura.
+- When loading images, the translucency and linear options were swapped. Translucency should now again be tuned for lithophanes, and linear for a height map. Contributed by michalsc.
+- Retractions in travel move to next layer were sometimes omitted, but that's fixed now. Contributed by smartavionics.
+- Fix initial layer thickness when empty initial layers are removed. Contributed by smartavionics.
+- If Brim Replaces Support is enabled, the brim will now also replace support interface.
+
+* Printer definitions and profiles
+- Custom printer for Smoothieware firmware. Contributed by grk3010.
+- SVT DYITech. Contributed by venkatkamesh.
+- HMS434 update. Contributed by maukCC.
+- Cubicon Style NEO-A22. Contributed by hunibest-Hyvision.
+- Atmat Machines. Contributed by gandzia44.
+- Adjusted error limits for some MonoPrice Mini Delta settings. Contributed by PurpleHullPeas.
+- Tronxy. Contributed by 64bittuning.
+- Uni 3D Series. Contributed by evg33.
+- Predator printers and mesh for FLSUN-QQ. Contributed by curso007.
+- Fixed bed dimensions for Geeetech A10M and update Geeetech A10. Contributed by gerardrubio and keleticsaba.
+- Anycubic Mega Zero. Contributed by kad.
+- New Deltacomb models and updates. Contributed by kaleidoscopeit.
+- Add 2nd extruder to Tevo Tarantula printers. Contributed by paalex.
+- I3 Metal Motion. Contributed by pfelecan.
+- Lotmaxx Shark. Contributed by sm3dp.
+- Dagoma dual-extrusion printers. Contributed by 0r31.
+- Sovol 3D. Contributed by Joyce-lujunxu.
+- Tinyboy printers. Contributed by fred2088.
+- Beamup L. Contributed by beamup3d.
+- Strateo3D material updates. Contributed by KOUBeMT.
+- Adjusted firmware speed/acceleration rates for Dagoma Disco. Contributed by Sophist-UK.
+
 [4.6.2]
-
-Patch release to fix some bugs that emerged with 4.6.1.
-
-* Persistent notifications in the Marketplace.
-We fixed a frustrating bug where a package would keep issuing a badge notification to update, even after the package had been updated.
-
 * Removed Ultibot from Marketplace login screen.
 For professionalism, Ultibot has been asked to leave the Marketplace login screen. He's now gone from everything.
 
-* Ultimaker 2+ Z-hop.
-The Ultimaker 2+ included an unwanted travel move that could drag purged material into the start of a print. This is now fixed.
+* Bug fixes
+- We fixed a frustrating bug where a package would keep issuing a badge notification to update, even after the package had been updated.
+- The Ultimaker 2+ generated an unwanted travel move that could drag priming material into the start of a print. This is now fixed.
 
 [4.6.1]
-
-Patch release to fix some bugs that emerged with 4.6.0.
-
-* Z seam placement.
-Changes to the Simplify() algorithm in 4.6.0 caused Z seam placement issues, which resulted in less-than-perfect results. This has been fixed.
-
-* Ender 3 Pro nozzles missing.
-A lot of issue reports came in about nozzles missing for this machine definition, so we made a fix to stop this happening.
+* Bug fixes
+- Changes to the Simplify() algorithm in 4.6.0 caused Z seam placement issues, which resulted in less-than-perfect results. This has been fixed.
+- Added missing nozzle profiles for Ender 3 Pro.
 
 [4.6.0]
 
