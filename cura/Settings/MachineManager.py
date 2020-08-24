@@ -627,7 +627,7 @@ class MachineManager(QObject):
     # Provies a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
     def extruderPositionsWithNonActiveIntent(self):
-        global_container_stack = _application.getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
 
         if not global_container_stack:
             return []
