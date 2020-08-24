@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-07-31 14:10+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"PO-Revision-Date: 2020-08-21 13:40+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: German <info@lionbridge.com>, German <info@bothof.nl>\n"
 "Language: de_DE\n"
@@ -227,12 +227,13 @@ msgstr "Zeigt an, ob das Gerät die Temperatur im Druckraum stabilisieren kann."
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
-msgstr ""
+msgstr "Immer aktives Tools schreiben"
 
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool description"
 msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
-msgstr ""
+msgstr "Mit aktivem Werkzeug schreiben, nach dem temporäre Befehle an das inaktive Werkzeug übermittelt wurden. Erforderlich für Dual-Extruder-Druck mit Smoothie"
+" oder anderer Firmware mit modalen Werkzeugbefehlen."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -3486,22 +3487,24 @@ msgstr "Das für das Drucken der Stützstruktur der Böden verwendete Extruder-E
 #: fdmprinter.def.json
 msgctxt "support_structure label"
 msgid "Support Structure"
-msgstr ""
+msgstr "Stützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "support_structure description"
 msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "Wählt zwischen den verfügbaren Techniken zur Erzeugung von Stützstrukturen. Mit „Normal“ wird eine Stützstruktur direkt unter den überhängenden Teilen"
+" erzeugt, die direkt darauf liegen. In der Einstellung „Tree“ wird eine Baumstützstruktur erzeugt, die zu den überhängenden Teilen reicht und diese stützt."
+" Die Stützstruktur verästelt sich innerhalb des Modells und stützt es so gut wie möglich vom Druckbett aus."
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: fdmprinter.def.json
 msgctxt "support_structure option tree"
 msgid "Tree"
-msgstr ""
+msgstr "Tree"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
@@ -3821,12 +3824,13 @@ msgstr "Die maximale Breite der Stufen der treppenförmigen Unterlage für die S
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope label"
 msgid "Support Stair Step Minimum Slope Angle"
-msgstr ""
+msgstr "Stützstufe minimaler Neigungswinkel"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
-msgstr ""
+msgstr "Die Mindestneigung des Bereichs zur Erstellung einer Stützstufe. Bei niedrigeren Werten lassen sich die Stützstrukturen an flachen Neigungen leichter entfernen."
+" Zu niedrige Werte können allerdings zu widersprüchlichen Ergebnissen an anderen Teilen des Modells führen."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4276,12 +4280,12 @@ msgstr "Sorgt für Unterstützung überall unterhalb des Stütznetzes, sodass ke
 #: fdmprinter.def.json
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
-msgstr ""
+msgstr "Szene verfügt über Stütznetze"
 
 #: fdmprinter.def.json
 msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
-msgstr ""
+msgstr "Die Szene verfügt über Stütznetze. Diese Einstellung wird von Cura gesteuert."
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -5045,7 +5049,9 @@ msgstr "Druckreihenfolge"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr ""
+msgstr "Es wird festgelegt, ob eine Schicht für alle Modelle gleichzeitig gedruckt werden soll oder ob zuerst ein Modell fertig gedruckt wird, bevor der Druck"
+" eines weiteren begonnen wird. Der „Nacheinandermodus“ ist möglich, wenn a) nur ein Extruder aktiviert ist und b) alle Modelle voneinander getrennt sind,"
+" sodass sich der gesamte Druckkopf zwischen allen Modellen bewegen kann und alle Modelle niedriger sind als der Abstand zwischen der Düse und den X/Y-Achsen."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5070,12 +5076,14 @@ msgstr "Verwenden Sie dieses Mesh, um die Füllung anderer Meshes zu ändern, mi
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Mesh Processing Rank"
-msgstr ""
+msgstr "Rang der Netzverarbeitung"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Legt fest, welche Priorität dieses Netz (Mesh) bei überlappenden Volumen hat. Bereiche mit einem niedrigeren Netzrang haben Priorität vor Bereichen, in"
+" denen es mehrere Netze gibt. Wird eine Mesh-Füllung höher gerankt, führt dies zu einer Modifizierung der Füllungen oder Mesh-Füllungen, deren Priorität"
+" niedriger oder normal ist."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5220,7 +5228,10 @@ msgstr "Slicing-Toleranz"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
-msgstr ""
+msgstr "Vertikale Toleranz der geschnittenen (Slicing) Schichten. Die Konturen einer Schicht werden normalerweise erzeugt, indem ein Querschnitt durch die Mitte"
+" der Höhe jeder Schicht (Mitte) vorgenommen wird. Alternativ kann jede Schicht die Bereiche aufweisen, die über die gesamte Dicke der Schicht (Exklusiv)"
+" in das Volumen fallen, oder eine Schicht weist die Bereiche auf, die innerhalb der Schicht (Inklusiv) irgendwo hineinfallen. Inklusiv ermöglicht die meisten"
+" Details, Exklusiv die beste Passform und Mitte entspricht der ursprünglichen Fläche am ehesten."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
