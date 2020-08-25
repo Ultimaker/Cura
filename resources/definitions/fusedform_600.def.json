@@ -5,7 +5,6 @@
     "metadata": {
         "author": "Juan Blanco",
         "manufacturer": "Fused Form",
-        "category": "Fused Form",
         "visible": true,
         "machine_extruder_trains":{"0": "fusedform_600_extruder_0"},
 	"preferred_material": "generic_pla",
