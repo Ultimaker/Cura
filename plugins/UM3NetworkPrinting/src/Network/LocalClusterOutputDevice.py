@@ -41,7 +41,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             connection_type=ConnectionType.NetworkConnection,
             parent=parent
         )
-
+        self._timeout_time = 30
         self._cluster_api = None  # type: Optional[ClusterApiClient]
         self._active_exported_job = None  # type: Optional[ExportFileJob]
         self._printer_select_dialog = None  # type: Optional[QObject]
