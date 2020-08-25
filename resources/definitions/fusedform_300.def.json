@@ -1,9 +1,9 @@
 {
     "version": 2,
-    "name": "fusedform_300",
+    "name": "FF300",
     "inherits": "fdmprinter",
     "metadata": {
-        "author": "Fused Form",
+        "author": "Juan Blanco",
         "manufacturer": "Fused Form",
         "category": "Fused Form",
         "visible": true,
@@ -43,7 +43,6 @@
  	"optimize_wall_printing_order": {"value": true},
 
 	"infill_sparse_density": {"value":15},
-	"infill_pattern": {"default_value":"lines"},
  	"infill_overlap": {"value": 0},
 
  	"material_print_temperature": {"value":210 },
