@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "FFSTD",
+    "name": "fusedform_std",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Fused Form",

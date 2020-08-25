@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "FF300",
+    "name": "fusedform_300",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Fused Form",

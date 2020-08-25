@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "FFmini",
+    "name": "fusedform_mini",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Fused Form",
