@@ -1,0 +1,87 @@
+{
+    "version": 2,
+    "name": "FF600",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Fused Form",
+        "manufacturer": "Fused Form",
+        "category": "Fused Form",
+        "visible": true,
+        "machine_extruder_trains":{"0": "fusedform_600_extruder_0"},
+	"preferred_material": "generic_pla",
+        "exclude_materials": [ "structur3d_dap100silicone" ],
+	"has_machine_quality": true,
+        "preferred_quality_type": "normal PLA"
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "FF600" },
+        "machine_width": { "default_value": 500 },
+        "machine_depth": { "default_value": 500 },
+        "machine_height": { "default_value": 600 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": {"default_value": false},
+        "machine_head_with_fans_polygon":{"default_value": [
+                [ -75, 35 ],
+                [ -75, -18 ],
+                [ 18, 35 ],
+                [ 18, -18 ]
+            ]
+        },
+        "gantry_height": {"value": "70"},
+        "machine_use_extruder_offset_to_offset_coords": {"default_value": true},
+        "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
+        "machine_start_gcode": {"default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 Y50 F9000\n;Put printing message on LCD screen\nM117 Printing..."},
+        "machine_end_gcode": {"value": "'M104 S0 ;extruder heater off' + ('\\nM140 S0 ;heated bed heater off' if machine_heated_bed else '') + '\\nG91 ;relative positioning\\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\\nM84 ;steppers off\\nG90 ;absolute positioning\\nM107 ; Fans off'"},
+	
+	"layer_height": { "default_value": 0.15 },
+	"layer_height_0": { "default_value": 0.2 },
+
+	"wall_line_count":{ "value": 3 },
+	"wall_thickness": { "value": 1.2 },
+ 	"top_bottom_thickness": {"value": 1.5},
+ 	"optimize_wall_printing_order": {"value": true},
+
+	"infill_sparse_density": {"value":15},
+	"infill_pattern": {"default_value":"lines"},
+ 	"infill_overlap": {"value": 0},
+
+ 	"material_print_temperature": {"value":210 },
+ 	"material_bed_temperature": {"value":60},
+ 	"material_bed_temperature_layer_0": {"value":60},
+
+	"speed_print": { "value": 55 },
+	"speed_infill": { "value": 55 },
+	"speed_travel": { "value": 75 },
+ 	"speed_topbottom": {"value": 40 },
+	"speed_wall": { "value": 45 },
+
+ 	"retraction_enable": {"default_value":true},
+	"retraction_amount": { "default_value": 4 },
+        "retraction_speed": { "default_value": 70},
+ 	"retraction_min_travel": {"value":5 },
+ 	"retraction_hop": {"default_value":0.2},
+	"retraction_hop_enabled": {"value":true},
+
+
+ 	"cool_fan_enabled": {"default_value":true},
+ 	"cool_fan_full_at_height": {"value":0.4},
+ 	"cool_fan_full_layer": {"value":2},
+ 	"cool_min_speed": {"value":30},
+
+	"support_enable": {"value":true},
+ 	"support_angle": {"default_value": 50},
+ 	"support_brim_enable": {"value":true},
+ 	"support_infill_angles": {"value":[-45]},
+ 	"support_interface_density": {"value": 70},
+ 	"support_interface_enable": {"value": true },
+	"support_interface_height": {"value": 0.5},
+ 	"support_interface_pattern": {"default_value":"lines"},
+ 	"support_pattern": {"default_value":"lines"},
+ 	"support_xy_distance": {"value": 0.5},
+ 	"support_z_distance": {"value": 0.3 },
+
+
+ 	"adhesion_type": {"default_value":"skirt"}
+    }
+}
