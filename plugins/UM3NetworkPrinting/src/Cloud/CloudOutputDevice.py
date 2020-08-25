@@ -1,5 +1,6 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from time import time
 import os
 from typing import List, Optional, cast
@@ -228,10 +229,16 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
                                  self._onUploadError)
 
     def _onPrintJobUploaded(self) -> None:
-        """Requests the print to be sent to the printer when we finished uploading the mesh."""
+        """
+        Requests the print to be sent to the printer when we finished uploading
+        the mesh.
+        """
 
         self._progress.update(100)
         print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
+        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._uploaded_print_job to `None`.
+            # TODO: Maybe _onUploadError shouldn't set the _uploaded_print_job to None or we need to prevent such asynchronous cases.
+            return  # Prevent a crash.
         self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted)
 
     def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
