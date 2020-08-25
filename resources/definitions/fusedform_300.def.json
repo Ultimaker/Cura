@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "FF300",
-    "inherits": "fdmprinter",
+    "inherits": "fusedform",
     "metadata": {
         "author": "Juan Blanco",
         "manufacturer": "Fused Form",
