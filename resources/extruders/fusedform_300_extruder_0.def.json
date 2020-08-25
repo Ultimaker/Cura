@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "fusedform",
+        "machine": "FF300",
         "position": "0"
     },
 
