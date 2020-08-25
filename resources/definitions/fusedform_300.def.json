@@ -7,7 +7,7 @@
         "manufacturer": "Fused Form",
         "category": "Fused Form",
         "visible": true,
-        "machine_extruder_trains":{"0": "fusedform_300_extruder_0"},
+        "machine_extruder_trains":{"0": "fusedform_extruder_0"},
 	"preferred_material": "generic_pla",
         "exclude_materials": [ "structur3d_dap100silicone" ],
 	"has_machine_quality": true,
