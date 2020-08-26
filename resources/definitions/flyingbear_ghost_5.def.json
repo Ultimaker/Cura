@@ -15,6 +15,7 @@
 
 	"overrides": {
 		"machine_name": 		{ "default_value": "Flying Bear Ghost 5" },
+		"machine_start_gcode": 			{ "default_value": "M220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\n;Fix X0 Y0 being outside the bed after homing\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X1.3 Y4.8 ;Place the nozzle over the bed\nG92 X0 Y0 ;Set new X0 Y0\n\n;Code for nozzle cleaning and flow normalization\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.4 Y20 Z0.28 F5000.0\nG1 X10.4 Y170.0 Z0.28 F1500.0 E15\nG1 X10.1 Y170.0 Z0.28 F5000.0\nG1 X10.1 Y40 Z0.28 F1500.0 E30\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up" },
 		"machine_width": 		{ "default_value": 255 },
 		"machine_depth": 		{ "default_value": 210 },
 		"machine_height": 		{ "default_value": 210 },
