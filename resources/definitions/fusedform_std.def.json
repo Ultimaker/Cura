@@ -63,11 +63,11 @@
  	"material_bed_temperature": {"value":60},
  	"material_bed_temperature_layer_0": {"value":60},
 
-	"speed_print": { "value": 50 },
-	"speed_infill": { "value": 50 },
+	"speed_print": { "value": 45 },
+	"speed_infill": { "value": 45 },
 	"speed_travel": { "value": 75 },
  	"speed_topbottom": {"value": 40 },
-	"speed_wall": { "value": 40 },
+	"speed_wall": { "value": 35 },
 	"speed_equalize_flow_max": { "value": 70 },
 
  	"retraction_enable": {"default_value":true},

@@ -43,7 +43,7 @@
         "machine_max_jerk_e": { "default_value": 5 },
 	"acceleration_travel": {"value":800},
         
-"machine_use_extruder_offset_to_offset_coords": {"default_value": true},
+	"machine_use_extruder_offset_to_offset_coords": {"default_value": true},
         "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
         "machine_start_gcode": {"default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\n;Put printing message on LCD screen\nM117 Printing..."},
         "machine_end_gcode": {"value": "'M104 S0 ;extruder heater off' + ('\\nM140 S0 ;heated bed heater off' if machine_heated_bed else '') + '\\nG91 ;relative positioning\\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\\nM84 ;steppers off\\nG90 ;absolute positioning\\nM107 ; Fans off'"},
@@ -63,11 +63,11 @@
  	"material_bed_temperature": {"value":60},
  	"material_bed_temperature_layer_0": {"value":60},
 
-	"speed_print": { "value": 50 },
-	"speed_infill": { "value": 50 },
+	"speed_print": { "value": 45 },
+	"speed_infill": { "value": 45 },
 	"speed_travel": { "value": 75 },
  	"speed_topbottom": {"value": 40 },
-	"speed_wall": { "value": 40 },
+	"speed_wall": { "value": 35 },
 	"speed_equalize_flow_max": { "value": 70 },
 
  	"retraction_enable": {"default_value":true},
