@@ -4,7 +4,7 @@
     "inherits": "fdmprinter",
     "metadata":
         {
-            "author": "M.K",
+            "author": "eMotionTech",
             "manufacturer": "eMotionTech",
             "visible": true,
             "file_formats": "text/x-gcode",
