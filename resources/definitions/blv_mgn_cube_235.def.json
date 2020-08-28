@@ -1,5 +1,5 @@
 {
-  "name": "BLV mgn Cube 300",
+  "name": "BLV mgn Cube 235",
   "version": 2,
   "inherits": "blv_mgn_cube_base",
   "metadata": {
@@ -19,16 +19,16 @@
   },
   "overrides": {
     "machine_name": {
-      "default_value": "BLV mgn Cube 300"
+      "default_value": "BLV mgn Cube 235"
     },
     "machine_height": {
-      "default_value": 465
+      "default_value": 235
     },
     "machine_width": {
-      "default_value": 300
+      "default_value": 235
     },
     "machine_depth": {
-      "default_value": 300
+      "default_value": 235
     }
   }
 }

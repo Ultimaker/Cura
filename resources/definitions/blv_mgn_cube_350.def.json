@@ -15,7 +15,7 @@
       "0": "blv_mgn_cube_extruder_0"
     },
     "quality_definition": "blv_mgn_cube_base",
-    "platform": "blv_mgn_cube_350_platform.stl"
+    "platform": "blv_mgn_cube_platform.3mf"
   },
   "overrides": {
     "machine_name": {
