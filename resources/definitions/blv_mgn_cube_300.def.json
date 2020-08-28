@@ -11,7 +11,7 @@
     "first_start_actions": [
       "MachineSettingsAction"
     ],
-    "machine_Extruder_Trains": {
+    "machine_extruder_trains": {
       "0": "blv_mgn_cube_extruder_0"
     },
     "quality_definition": "blv_mgn_cube_base",
