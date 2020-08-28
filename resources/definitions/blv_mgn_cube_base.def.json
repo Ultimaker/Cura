@@ -77,7 +77,7 @@
       "default_value": "G91 ;relative positioning\nG1 Z5 F500; move nozzle relative to position\nG90 ;absolute positioning\nG1 X0 Y{machine_depth}\nG12 P1 T3\nM104 S0\nM140 S0\nG92 E0\nM84\nM109 S50\nM81\n"
     },
     "top_bottom_pattern": {
-      "default_value": "'zigzag'"
+      "value": "'zigzag'"
     },
     "speed_layer_0": {
       "value": "math.ceil(speed_print * 0.3)"
