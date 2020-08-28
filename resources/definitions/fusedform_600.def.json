@@ -68,6 +68,7 @@
 	"speed_travel": { "value": 75 },
  	"speed_topbottom": {"value": 40 },
 	"speed_wall": { "value": 35 },
+	"speed_wall_x": { "value": 40 },
 	"speed_equalize_flow_max": { "value": 70 },
 
  	"retraction_enable": {"default_value":true},
