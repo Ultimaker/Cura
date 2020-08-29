@@ -1,0 +1,56 @@
+{
+    "name": "BIQU B1",
+    "version": 2,
+    "inherits": "biqu_base",
+    "metadata": {
+        "quality_definition": "biqu_base",
+        "visible": true,
+        "has_machine_materials": true,
+        "platform": "BIQU_SSS.stl",
+        "platform_offset": [
+            0,
+            -7.4,
+            5
+        ]
+    },
+    "overrides": {
+        "retraction_amount": { "default_value": 7 },
+        "retraction_amount": { "value": 7 },
+        "retraction_speed": { "default_value": 70 },
+        "retraction_speed": { "value": 70 },
+        "support_enable": { "default_value": true },
+        "support_enable": { "value": true },
+        "support_structure": { "default_value": "normal" },
+        "support_structure": { "value": "normal" },
+        "support_type": { "default_value": "buildplate" },
+        "support_type": { "value": "buildplate" },
+        "support_angle": { "default_value": 45 },
+        "support_angle": { "value": 45 },
+        "support_infill_rate": { "default_value": 15 },
+        "support_infill_rate": { "value": 15 },
+        "infill_overlap_mm": { "default_value": 0.06 },
+        "infill_overlap_mm": { "value": 0.06 },
+        "speed_print": { "default_value": 60 },
+        "speed_print": { "value": 60 },
+        "machine_name": { "default_value": "BIQU B1" },
+        "machine_name": { "value": "BIQU B1" },
+        "machine_width": { "default_value": 235 },
+        "machine_width": { "value": 235 },
+        "machine_depth": { "default_value": 235 },
+        "machine_depth": { "value": 235 },
+        "machine_height": { "default_value": 270 },
+        "machine_height": { "value": 270 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-33, 35],
+                [-33, -23],
+                [33, -23],
+                [33, 35]
+            ]
+        },
+        "machine_start_gcode": {
+            "default_value": "                                 ; BIQU B1 Start G-code\nG92 E0                           ; Reset Extruder\nM117 Homing axes\nG28                              ; Home all axes\nG1 Z2.0 F3000                    ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0         ; Move to start position\nM117 Purging\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15  ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0      ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30     ; Draw the second line\nG92 E0                           ; Reset Extruder\nM117 Lets make\nG1 Z2.0 F3000                    ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0           ; Move over to prevent blob squish"
+        },
+
+        "gantry_height": { "value": 27.5 }
+    }
+}
