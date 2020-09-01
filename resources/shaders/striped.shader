@@ -64,6 +64,10 @@ fragment =
         highp vec3 viewVector = normalize(u_viewPosition - v_vertex);
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
+        if (v_vertex.y < 0.0)
+        {
+            finalColor.rgb = vec3(1.0, 1.0, 1.0) - finalColor.rgb;
+        }
 
         gl_FragColor = finalColor;
         gl_FragColor.a = u_opacity;
@@ -140,6 +144,10 @@ fragment41core =
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
         frag_color = finalColor;
+        if (v_vertex.y < 0.0)
+        {
+            frag_color.rgb = vec3(1.0, 1.0, 1.0) - frag_color.rgb;
+        }
         frag_color.a = u_opacity;
     }
 
