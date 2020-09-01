@@ -1725,7 +1725,7 @@ class CuraApplication(QtApplication):
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
         """
-
+        Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
             return
 
