@@ -1,0 +1,34 @@
+{
+	"name": "Anycubic Kossel Linear Plus",
+	"version": 2,
+	"inherits": "anycubic_kossel_linear",
+	"metadata": {
+		"visible": true,
+		"machine_extruder_trains": {
+			"0": "anycubic_kossel_linear_extruder_0"
+		}
+	},
+	"overrides": {
+		"machine_name": {
+			"default_value": "Anicubic kossel Linear Plus"
+		},
+		"machine_width": {
+			"default_value": 240
+		},
+		"machine_depth": {
+			"default_value": 240
+		},
+		"machine_disallowed_areas": {
+			"default_value": [
+				[[-50, -115], [-115, -115], [-90, -90]],
+				[[-115, -115], [-115, -50], [-90, -90]],
+				[[50, -115], [115, -115], [90, -90]],
+				[[115, -115], [115, -50], [90, -90]],
+				[[-50, 115], [-115, 115], [-90, 90]],
+				[[-115, 115], [-115, 50], [-90, 90]],
+				[[50, 115], [115, 115], [90, 90]],
+				[[115, 115], [115, 50], [90, 90]]
+			]
+		}
+	}
+}
