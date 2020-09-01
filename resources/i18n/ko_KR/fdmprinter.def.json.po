@@ -758,7 +758,7 @@ msgstr "선의 두께"
 #: fdmprinter.def.json
 msgctxt "line_width description"
 msgid "Width of a single line. Generally, the width of each line should correspond to the width of the nozzle. However, slightly reducing this value could produce better prints."
-msgstr "한 줄의 두께. 일반적으로 각 라인의 너비는 노즐 폭과 일치해야합니다. 그러나이 값을 약간 줄이면 더 좋은 인 쇄를 생성 할 수 있습니다."
+msgstr "한 줄의 두께. 일반적으로 각 라인의 너비는 노즐 폭과 일치해야합니다. 그러나 이 값을 약간 줄이면 더 나은 인쇄를 할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width label"
@@ -948,7 +948,7 @@ msgstr "외벽 이동 거리"
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
-msgstr "Z 솔기를 더 잘 숨기기위해, 바깥 쪽 벽 뒤에 삽입되어 이동한 거리."
+msgstr "Z 솔기를 더 잘 숨기기위해 바깥 쪽 벽 뒤에 삽입되어 이동한 거리."
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1073,7 +1073,7 @@ msgstr "하단 패턴 초기 레이어"
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 description"
 msgid "The pattern on the bottom of the print on the first layer."
-msgstr "첫 번째 레이어의 프린팅 아래쪽에있는 패턴입니다."
+msgstr "첫 번째 레이어의 프린팅 아래쪽에 있는 패턴입니다."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern_0 option lines"
@@ -1128,7 +1128,7 @@ msgstr "벽면 프린팅 순서 명령 최적화"
 #: fdmprinter.def.json
 msgctxt "optimize_wall_printing_order description"
 msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr "수축 및 이동 거리를 줄이도록 벽이 인쇄되는 순서를 최적화하십시오. 대부분의 부품은 이 기능을 사용하면 도움이 되지만, 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부와 관계없이 인쇄 시간을 비교하십시오. 빌드 플레이트 접착 유형을 Brim으로 선택하는 경우 첫 번째 층이 최적화되지 않습니다."
+msgstr "수축 및 이동 거리를 줄이도록 벽이 인쇄되는 순서를 최적화합니다. 대부분의 부품은 이 기능을 사용하면 도움이 되지만 실제로는 시간이 오래 걸릴 수 있으므로, 최적화 여부와 관계없이 인쇄 시간을 비교하십시오. 빌드 플레이트 접착 유형을 Brim으로 선택하는 경우 첫 번째 층이 최적화되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1223,12 +1223,12 @@ msgstr "어디에나"
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
 msgid "Filter Out Tiny Gaps"
-msgstr "아주 작은 갭 필터 아웃"
+msgstr "매우 작은 간격 차단"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps description"
 msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr "아주 작은 갭을 필터 아웃하여 모델 외부의 얼룩을 줄입니다."
+msgstr "매우 작은 간격을 차단하여 모델 외부의 얼룩을 줄입니다."
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1872,7 +1872,7 @@ msgstr "스킨 제거 폭"
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "제거 할 외부스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 위쪽 / 아래쪽 스킨을 프린팅하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이됩니다."
+msgstr "제거 할 외부스킨 영역의 가장 큰 너비. 이 값보다 작은 모든 스킨 영역은 사라집니다. 이렇게하면 모델의 경사면에서 위쪽 / 아래쪽 스킨을 프린팅하는 데 소요되는 시간과 재료의 양을 제한하는 데 도움이 됩니다."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
@@ -3102,7 +3102,7 @@ msgstr "리트렉션 최소 이동"
 #: fdmprinter.def.json
 msgctxt "retraction_min_travel description"
 msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "리트렉션이 가능하기 위해 필요한 최소한의 이동 거리. 이것은 작은 영역에서 더 적은 리트렉션이 가능합니다."
+msgstr "리트렉션이 가능하기 위해 필요한 최소한의 이동 거리. 작은 영역에서 더 적은 리트렉션이 가능합니다."
 
 #: fdmprinter.def.json
 msgctxt "retraction_count_max label"
@@ -3112,7 +3112,7 @@ msgstr "최대 리트렉션 수"
 #: fdmprinter.def.json
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
-msgstr "이 설정은 최소 압출 거리에서 발생하는 리트렉션 수를 제한합니다. 이 거리내에서 더 이상의 리트렉션은 무시됩니다. 이렇게 하면 필라멘트를 평평하게하고 갈리는  문제를 일으킬 수 있으므로 동일한 필라멘트에서 반복적으로 리트렉션하지 않습니다."
+msgstr "이 설정은 최소 압출 거리에서 발생하는 리트렉션 수를 제한합니다. 이 거리내에서 더 이상의 리트렉션은 무시됩니다. 이렇게 하면 필라멘트를 평평하게하고 갈리는 문제를 일으킬 수 있으므로 동일한 필라멘트에서 반복적으로 리트렉션하지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "retraction_extrusion_window label"
@@ -4427,12 +4427,12 @@ msgstr "브림 거리"
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr "첫 번째 브림 선과 첫 번째 레이어 프린팅의 윤곽 사이의 수평 거리 작은 간격은 브림을 제거하기 쉽도록 하면서 내열성의 이점을 제공할 수 있습니다."
+msgstr "첫 번째 브림 선과 첫 번째 레이어 프린팅의 윤곽 사이의 수평 거리입니다. 작은 간격은 브림을 제거하기 쉽도록 하면서 내열성의 이점을 제공할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr "브림이 서포트 대체"
+msgstr "브림이 서포트를 대체"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
@@ -4447,7 +4447,7 @@ msgstr "밖에서만 브림 생성"
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"
 msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "모델 바깥 쪽 브림에만 프린팅하십시오. 이렇게하면 나중에 제거해야하는 브림의 양이 줄어들지만 베드 접착력은 그렇게 많이 줄어들지 않습니다."
+msgstr "모델 바깥 쪽 브림에만 프린팅합니다. 나중에 제거해야하는 브림의 양이 줄어들지만 베드 접착력은 그렇게 많이 줄어들지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
@@ -4677,7 +4677,7 @@ msgstr "래프트 프린팅 Jerk"
 #: fdmprinter.def.json
 msgctxt "raft_jerk description"
 msgid "The jerk with which the raft is printed."
-msgstr "래프트와 함께 프린팅되는 Jerk."
+msgstr "래프트가 프린팅 될 때의 Jerk입니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_surface_jerk label"
@@ -4687,7 +4687,7 @@ msgstr "래프트 상단 프린팅 Jerk"
 #: fdmprinter.def.json
 msgctxt "raft_surface_jerk description"
 msgid "The jerk with which the top raft layers are printed."
-msgstr "상단 래프트 레이어가 프린팅되는 Jerk."
+msgstr "상단 래프트 레이어가 프린팅 될 때의 Jerk입니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_interface_jerk label"
@@ -4697,7 +4697,7 @@ msgstr "래프트 중앙 프린팅 Jerk"
 #: fdmprinter.def.json
 msgctxt "raft_interface_jerk description"
 msgid "The jerk with which the middle raft layer is printed."
-msgstr "중간 래프트 층이 프린팅되는 Jerk."
+msgstr "중간 래프트 층이 프린팅 될 때의 Jerk입니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_base_jerk label"
@@ -4707,7 +4707,7 @@ msgstr "래프트 기본 프린팅 Jerk"
 #: fdmprinter.def.json
 msgctxt "raft_base_jerk description"
 msgid "The jerk with which the base raft layer is printed."
-msgstr "기본 래프트 레이어가 프린팅되는 Jerk."
+msgstr "기본 래프트 레이어가 프린팅 될 때의 Jerk입니다."
 
 #: fdmprinter.def.json
 msgctxt "raft_fan_speed label"
@@ -6933,7 +6933,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 
 #~ msgctxt "relative_extrusion description"
 #~ msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-#~ msgstr "절대 돌출보다는 상대적 돌출을 사용합니다. 상대적인 E-steps을 사용하면 Gcode를 보다 쉽게 후 처리 할 수 있습니다. 그러나 모든 프린터에서 지원되는 것은 아니며 절대 E 단계와 비교할 때 출력된 재료의 양이 매우 약간 다를 수 있습니다. 이 설정과 관계없이 압출 모드는 Gcode 스크립트가 출력되기 전에 항상 절대 값으로 설정됩니다."
+#~ msgstr "절대 압출 대신 상대 압출을 사용합니다. 상대적인 E-steps을 사용하면 Gcode를 보다 쉽게 후처리 할 수 있습니다. 그러나 모든 프린터에서 지원되는 것은 아니며 절대 압출의 E 스텝값과 비교할 때 출력된 재료의 양이 근소하게 다를 수 있습니다. 이 설정과 관계없이 압출 모드는 Gcode 스크립트가 출력되기 전에 항상 절대 값으로 설정됩니다."
 
 #~ msgctxt "infill_offset_x description"
 #~ msgid "The infill pattern is offset this distance along the X axis."
