@@ -10,7 +10,7 @@
 		"preferred_variant_name": "0.4mm Nozzle",
 		"preferred_quality_type": "standard",
 		"preferred_material": "generic_pla",
-		"platform": "kossel_platform.stl",
+		"platform": "kossel_platform.3mf",
 		"machine_extruder_trains": {
 			"0": "anycubic_kossel_linear_extruder_0"
 		}
