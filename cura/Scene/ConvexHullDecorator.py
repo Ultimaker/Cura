@@ -380,6 +380,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         influences the collision area.
         """
 
+        scale_factor = self._getSettingProperty("material_shrinkage_percentage") / 100.0
+        center = self.getNode().getBoundingBox().center
+        result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
+
         horizontal_expansion = max(
             self._getSettingProperty("xy_offset", "value"),
             self._getSettingProperty("xy_offset_layer_0", "value")
@@ -396,9 +400,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 [hull_offset, hull_offset],
                 [hull_offset, -hull_offset]
             ], numpy.float32))
-            return convex_hull.getMinkowskiHull(expansion_polygon)
+            return result.getMinkowskiHull(expansion_polygon)
         else:
-            return convex_hull
+            return result
 
     def _onChanged(self, *args) -> None:
         self._raft_thickness = self._build_volume.getRaftThickness()
@@ -469,7 +473,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage"}
     """Settings that change the convex hull.
 
     If these settings change, the convex hull should be recalculated.
