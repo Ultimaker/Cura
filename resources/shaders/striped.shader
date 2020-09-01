@@ -64,7 +64,7 @@ fragment =
         highp vec3 viewVector = normalize(u_viewPosition - v_vertex);
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
-        if (v_vertex.y < 0.0)
+        if (v_vertex.y <= 0.0)
         {
             finalColor.rgb = vec3(1.0, 1.0, 1.0) - finalColor.rgb;
         }
@@ -144,7 +144,7 @@ fragment41core =
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
         frag_color = finalColor;
-        if (v_vertex.y < 0.0)
+        if (v_vertex.y <= 0.0)
         {
             frag_color.rgb = vec3(1.0, 1.0, 1.0) - frag_color.rgb;
         }
