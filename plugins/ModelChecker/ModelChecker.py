@@ -58,7 +58,7 @@ class ModelChecker(QObject, Extension):
         self._createView()
 
     def checkObjectsForShrinkage(self):
-        shrinkage_threshold = 0.5 #From what shrinkage percentage a warning will be issued about the model size.
+        shrinkage_threshold = 100.5 #From what shrinkage percentage a warning will be issued about the model size.
         warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
         warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
 
@@ -86,7 +86,7 @@ class ModelChecker(QObject, Extension):
                 Application.getInstance().callLater(lambda: self.onChanged.emit())
                 return False
 
-            if material_shrinkage[node_extruder_position] > shrinkage_threshold:
+            if material_shrinkage > shrinkage_threshold:
                 bbox = node.getBoundingBox()
                 if bbox is not None and (bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z):
                     warning_nodes.append(node)
@@ -134,16 +134,8 @@ class ModelChecker(QObject, Extension):
     def showWarnings(self):
         self._caution_message.show()
 
-    def _getMaterialShrinkage(self):
+    def _getMaterialShrinkage(self) -> float:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
-            return {}
-
-        material_shrinkage = {}
-        # Get all shrinkage values of materials used
-        for extruder_position, extruder in enumerate(global_container_stack.extruderList):
-            shrinkage = extruder.material.getProperty("material_shrinkage_percentage", "value")
-            if shrinkage is None:
-                shrinkage = 0
-            material_shrinkage[str(extruder_position)] = shrinkage
-        return material_shrinkage
+            return 100
+        return global_container_stack.getProperty("material_shrinkage_percentage", "value")
