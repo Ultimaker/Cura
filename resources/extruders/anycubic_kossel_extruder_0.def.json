@@ -3,7 +3,7 @@
 	"name": "Extruder 1",
 	"inherits": "fdmextruder",
 	"metadata": {
-		"machine": "anycubic_kossel_linear",
+		"machine": "anycubic_kossel",
 		"position": "0"
 	},
 

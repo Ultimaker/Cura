@@ -1,9 +1,9 @@
 {
-	"name": "Anycubic Kossel Linear",
+	"name": "Anycubic Kossel",
 	"version": 2,
 	"inherits": "fdmprinter",
 	"metadata": {
-		"visible": true,
+		"visible": false,
 		"author": "Allester Fox",
 		"manufacturer": "Anycubic",
 		"file_formats": "text/x-gcode",
@@ -12,7 +12,7 @@
 		"preferred_material": "generic_pla",
 		"platform": "kossel_platform.3mf",
 		"machine_extruder_trains": {
-			"0": "anycubic_kossel_linear_extruder_0"
+			"0": "anycubic_kossel_extruder_0"
 		}
 	},
 	"overrides": {
@@ -44,7 +44,7 @@
 			"default_value": "G21        ;metric values\nG90        ;absolute positioning\nM107       ;start with the fan off\nG28   ;move to endstops\nG92 E0                  ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F{speed_travel}\n;Put printing message on LCD screen\nM117 Printing..."
 		},
 		"machine_end_gcode": {
-			"default_value": "M400      ;Free buffer\nG91      ;relative positioning\nG1 E-1 F300      ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 F{speed_travel} Z+1 E-5 X+1 Y+1   ;move Z up a bit and retract filament even more\nG90      ;absolute positioning\nM104 S0      ;extruder heater off\nM140 S0      ;heated bed heater off (if you have it)\nM107      ;fan off\nM84      ;steppers off\nG28      ;move to endstop\nM84      ;steppers off"
+			"default_value": "M400      ;Free buffer\nG91      ;relative positioning\nG1 E-1 F300      ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 F{speed_travel} Z+1 E-5        ;move Z up a bit and retract filament even more\nG90      ;absolute positioning\nM104 S0      ;extruder heater off\nM140 S0      ;heated bed heater off\nM107      ;fan off\nM84      ;steppers off\nG28      ;move to endstop\nM84      ;steppers off"
 		},
 		"machine_shape": {
 			"default_value": "elliptic"
