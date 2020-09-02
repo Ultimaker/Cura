@@ -50,8 +50,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._build_volume.raftThicknessChanged.connect(self._onChanged)
 
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        CuraApplication.getInstance().getController().toolOperationStarted.connect(self._onChanged)
-        CuraApplication.getInstance().getController().toolOperationStopped.connect(self._onChanged)
+        controller = CuraApplication.getInstance().getController()
+        controller.toolOperationStarted.connect(self._onChanged)
+        controller.toolOperationStopped.connect(self._onChanged)
+        #CuraApplication.getInstance().sceneBoundingBoxChanged.connect(self._onChanged)
 
         self._root = Application.getInstance().getController().getScene().getRoot()
 
@@ -188,7 +190,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def recomputeConvexHullDelayed(self) -> None:
         """The same as recomputeConvexHull, but using a timer if it was set."""
-
         if self._recompute_convex_hull_timer is not None:
             self._recompute_convex_hull_timer.start()
         else:
@@ -263,16 +264,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
         else:
+            convex_hull = Polygon([])
             offset_hull = Polygon([])
             mesh = self._node.getMeshData()
             if mesh is None:
                 return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
-            world_transform = self._node.getWorldTransformation(copy= False)
+            world_transform = self._node.getWorldTransformation(copy = False)
 
             # Check the cache
             if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
-                return self._2d_convex_hull_mesh_result
+                return self._offsetHull(self._2d_convex_hull_mesh_result)
 
             vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
             # Don't use data below 0.
@@ -307,7 +309,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
             self._2d_convex_hull_mesh_world_transform = world_transform
-            self._2d_convex_hull_mesh_result = offset_hull
+            self._2d_convex_hull_mesh_result = convex_hull
 
             return offset_hull
 
@@ -427,8 +429,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _onChanged(self, *args) -> None:
         self._raft_thickness = self._build_volume.getRaftThickness()
-        if not args or args[0] == self._node:
-            self.recomputeConvexHullDelayed()
+        self.recomputeConvexHullDelayed()
 
     def _onGlobalStackChanged(self) -> None:
         if self._global_stack:
