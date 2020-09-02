@@ -2325,8 +2325,8 @@
                     "type": "float",
                     "default_value": 100.0,
                     "minimum_value": "0.001",
-                    "minimum_value_warning": "80",
-                    "maximum_value_warning": "100",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "120",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))"
