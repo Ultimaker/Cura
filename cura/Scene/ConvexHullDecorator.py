@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
@@ -381,11 +381,29 @@ class ConvexHullDecorator(SceneNodeDecorator):
         """
 
         scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
+        result = convex_hull
         if scale_factor != 1.0:
-            center = self.getNode().getBoundingBox().center
-            result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
-        else:
-            result = convex_hull
+            center = None
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                # Find the root node that's placed in the scene; the root of the mesh group.
+                ancestor = self.getNode()
+                while ancestor.getParent() != self._root:
+                    ancestor = ancestor.getParent()
+                center = ancestor.getBoundingBox().center
+            else:
+                # Find the bounding box of the entire scene, which is all one mesh group then.
+                aabb = None
+                for printed_node in self._root.getChildren():
+                    if not printed_node.callDecoration("isSliceable"):
+                        continue  # Not a printed node.
+                    if aabb is None:
+                        aabb = printed_node.getBoundingBox()
+                    else:
+                        aabb = aabb + printed_node.getBoundingBox()
+                if aabb:
+                    center = aabb.center
+            if center:
+                result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
 
         horizontal_expansion = max(
             self._getSettingProperty("xy_offset", "value"),
