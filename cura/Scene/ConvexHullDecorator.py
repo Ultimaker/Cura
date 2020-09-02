@@ -380,7 +380,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         influences the collision area.
         """
 
-        scale_factor = self._getSettingProperty("material_shrinkage_percentage") / 100.0
+        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
         center = self.getNode().getBoundingBox().center
         result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
 
