@@ -364,7 +364,20 @@ class StartSliceJob(Job):
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
         result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
-        result["speed_travel"] = result["speed_travel"] * 60 #Convert mm/sec to mm/min.
+        
+        # Create new basic tokens for speeds represented in mm/min.
+        result["speed_print_mmmin"] = result["speed_print"] * 60 #Convert mm/sec to mm/min.
+        result["speed_infill_mmmin"] = result["speed_infill"] * 60 
+        result["speed_wall_mmmin"] = result["speed_wall"] * 60
+        result["speed_roofing_mmmin"] = result["speed_roofing"] * 60
+        result["speed_topbottom_mmmin"] = result["speed_topbottom"] * 60
+        result["speed_support_mmmin"] = result["speed_support"] * 60
+        result["speed_travel_mmmin"] = result["speed_travel"] * 60 
+        result["speed_layer_0_mmmin"] = result["speed_layer_0"] * 60 
+        result["skirt_brim_speed_mmmin"] = result["skirt_brim_speed"] * 60 
+        result["speed_slowdown_layers_mmmin"] = result["speed_slowdown_layers"] * 60
+        result["retraction_speed_mmmin"] = result["retraction_speed"] * 60
+        result["raft_speed_mmmin"] = result["raft_speed"] * 60 
 
         return result
 
