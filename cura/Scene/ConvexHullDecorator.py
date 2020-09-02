@@ -381,8 +381,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
         """
 
         scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
-        center = self.getNode().getBoundingBox().center
-        result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
+        if scale_factor != 1.0:
+            center = self.getNode().getBoundingBox().center
+            result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
+        else:
+            result = convex_hull
 
         horizontal_expansion = max(
             self._getSettingProperty("xy_offset", "value"),
