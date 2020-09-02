@@ -33,7 +33,6 @@
         "speed_print": { "default_value": 60 },
         "speed_print": { "value": 60 },
         "machine_name": { "default_value": "BIQU B1" },
-        "machine_name": { "value": "BIQU B1" },
         "machine_width": { "default_value": 235 },
         "machine_width": { "value": 235 },
         "machine_depth": { "default_value": 235 },
