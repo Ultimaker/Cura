@@ -984,10 +984,6 @@ class MachineManager(QObject):
         self.updateNumberExtrudersEnabled()
         self.correctExtruderSettings()
 
-        # In case this extruder is being disabled and it's the currently selected one, switch to the default extruder
-        if not enabled and position == ExtruderManager.getInstance().activeExtruderIndex:
-            ExtruderManager.getInstance().setActiveExtruderIndex(int(self._default_extruder_position))
-
         # Ensure that the quality profile is compatible with current combination, or choose a compatible one if available
         self._updateQualityWithMaterial()
         self.extruderChanged.emit()
@@ -995,7 +991,7 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         # Update items in SettingExtruder
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
-        
+
         # Also trigger the build plate compatibility to update
         self.activeMaterialChanged.emit()
         self.activeIntentChanged.emit()
