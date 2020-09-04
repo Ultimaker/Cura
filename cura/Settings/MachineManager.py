@@ -967,11 +967,10 @@ class MachineManager(QObject):
 
         if self._global_container_stack is None:
             return
-        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            property_names = ["value", "resolve", "validationState"]
-            for container in [self._global_container_stack] + self._global_container_stack.extruderList:
-                for setting_key in container.getAllKeys():
-                    container.propertiesChanged.emit(setting_key, property_names)
+        property_names = ["value", "resolve", "validationState"]
+        for container in [self._global_container_stack] + self._global_container_stack.extruderList:
+            for setting_key in container.getAllKeys():
+                container.propertiesChanged.emit(setting_key, property_names)
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled: bool) -> None:
