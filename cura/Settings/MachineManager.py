@@ -995,8 +995,7 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         # Update items in SettingExtruder
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
-        # Make sure the front end reflects changes
-        self.forceUpdateAllSettings()
+        
         # Also trigger the build plate compatibility to update
         self.activeMaterialChanged.emit()
         self.activeIntentChanged.emit()
