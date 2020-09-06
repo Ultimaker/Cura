@@ -240,6 +240,7 @@ class PauseAtHeight(Script):
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
         extrude_speed = self.getSettingValueByKey("extrude_speed")
+        extrude_relative = self.getSettingValueByKey("relative_extrusion")
         park_x = self.getSettingValueByKey("head_park_x")
         park_y = self.getSettingValueByKey("head_park_y")
         move_z = self.getSettingValueByKey("head_move_z")
@@ -384,7 +385,8 @@ class PauseAtHeight(Script):
 
                 if pause_method == "repetier":
                     #Retraction
-                    prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
+                    if not extrude_relative:  # Should already be in relative mode, then.
+                        prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
 
@@ -399,7 +401,8 @@ class PauseAtHeight(Script):
 
                 elif pause_method != "griffin":
                     # Retraction
-                    prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
+                    if not extrude_relative:  # Should already be in relative mode, then.
+                        prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -465,10 +468,11 @@ class PauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + "\n"
+                    if not extrude_relative:
+                        prepend_gcode += self.putValue(M = 82) + "\n"
 
-                    # reset extrude value to pre pause value
-                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                        # reset extrude value to pre pause value
+                        prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 elif pause_method != "griffin":
                     if control_temperatures:
@@ -506,10 +510,12 @@ class PauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
+                    if not extrude_relative:
+                        prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
 
-                # reset extrude value to pre pause value
-                prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                if not extrude_relative:
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 layer = prepend_gcode + layer
 
