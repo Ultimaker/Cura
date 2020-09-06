@@ -80,15 +80,15 @@
       "value": "'zigzag'"
     },
     "speed_layer_0": {
-      "value": "math.ceil(speed_print * 0.3)"
+      "value": "math.ceil(speed_print * 0.25)"
     },
     "adhesion_type": {
       "value": "'none'"
     },
     "speed_travel": {
       "value": 120,
-      "maximum_value_warning": 151,
-      "maximum_value": 150
+      "maximum_value_warning": 251,
+      "maximum_value": 300
     },
     "infill_pattern": {
       "value": "'tetrahedral'"
@@ -172,7 +172,7 @@
       "value": "'z_seam_corner_inner'"
     },
     "speed_infill": {
-      "value": "math.ceil(speed_print * 0.5)"
+      "value": "speed_print"
     },
     "speed_travel_layer_0": {
       "value": "math.ceil(speed_travel * 0.4)"
@@ -180,10 +180,35 @@
     "speed_print": {
       "value": 100,
       "maximum_value_warning": 151,
-      "maximum_value": 150
+      "maximum_value": 250
     },
     "retraction_count_max": {
       "value": 20
+    },
+    "speed_wall": {
+      "value": "math.ceil(speed_print * 0.33)"
+    },
+    "speed_wall_0": {
+      "value": "math.ceil(speed_print * 0.33)"
+    },
+    "speed_wall_x": {
+      "value": "math.ceil(speed_print * 0.66)"
+    },
+    "speed_topbottom": {
+      "value": "math.ceil(speed_print * 0.33)"
+    },
+    "speed_roofing": {
+      "value": "math.ceil(speed_print * 0.33)"
+    },
+    "retraction_retract_speed": {
+      "maximum_value_warning": 130
+    },
+    "retraction_prime_speed": {
+      "value": "math.ceil(retraction_speed * 0.4)",
+      "maximum_value_warning": 130
+    },
+    "retraction_extrusion_window": {
+      "value": "retraction_amount"
     }
   }
 }
