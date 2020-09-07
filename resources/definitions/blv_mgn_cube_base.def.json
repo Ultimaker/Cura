@@ -43,7 +43,7 @@
       "default_value": false
     },
     "machine_gcode_flavor": {
-      "default_value": "RepRap (Marlin/Sprinter)"
+      "default_value": "RepRap (RepRap)"
     },
     "fill_perimeter_gaps": {
       "value": "'everywhere'"
@@ -157,7 +157,7 @@
       "value": false
     },
     "z_seam_type": {
-      "value": "'sharpest_corner'"
+      "value": "'shortest'"
     },
     "brim_width": {
       "default_value": 5
@@ -166,10 +166,7 @@
       "default_value": true
     },
     "skin_overlap": {
-      "value": 15.0
-    },
-    "z_seam_corner": {
-      "value": "'z_seam_corner_inner'"
+      "value": 10.0
     },
     "speed_infill": {
       "value": "speed_print"
@@ -209,6 +206,12 @@
     },
     "retraction_extrusion_window": {
       "value": "retraction_amount"
+    },
+    "infill_overlap": {
+      "default_value": 10,
+      "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
+      "maximum_value_warning": 100,
+      "minimum_value_warning": -50
     }
   }
 }
