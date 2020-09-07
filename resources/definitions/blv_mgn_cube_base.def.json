@@ -208,7 +208,6 @@
       "value": "retraction_amount"
     },
     "infill_overlap": {
-      "default_value": 10,
       "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
       "maximum_value_warning": 100,
       "minimum_value_warning": -50
