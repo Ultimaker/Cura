@@ -460,8 +460,8 @@ class CloudOutputDeviceManager:
             question_title = self.i18n_catalog.i18nc("@title:window", "Remove printers?")
             question_content = self.i18n_catalog.i18ncp(
                 "@label",
-                "You are about to remove {num_printers} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?",
-                "You are about to remove {num_printers} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?",
+                "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?",
+                "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?",
                 len(remove_printers_ids)
             ).format(num_printers = len(remove_printers_ids))
             if remove_printers_ids == all_ids:
