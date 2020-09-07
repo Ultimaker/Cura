@@ -45,6 +45,7 @@ Item
         textArea.wrapMode: Text.WordWrap
         textArea.readOnly: true
         textArea.font: UM.Theme.getFont("medium")
+        textArea.onLinkActivated: Qt.openUrlExternally(link)
     }
 
     Cura.PrimaryButton

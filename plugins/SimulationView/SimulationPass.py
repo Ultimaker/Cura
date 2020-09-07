@@ -32,6 +32,7 @@ class SimulationPass(RenderPass):
         self._current_shader = None # This shader will be the shadow or the normal depending if the user wants to see the paths or the layers
         self._tool_handle_shader = None
         self._nozzle_shader = None
+        self._disabled_shader = None
         self._old_current_layer = 0
         self._old_current_path = 0
         self._switching_layers = True # It tracks when the user is moving the layers' slider
@@ -90,9 +91,17 @@ class SimulationPass(RenderPass):
             self._nozzle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
             self._nozzle_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("layerview_nozzle").getRgb()))
 
+        if not self._disabled_shader:
+            self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
+            self._disabled_shader.setUniformValue("u_diffuseColor1", Color(*Application.getInstance().getTheme().getColor("model_unslicable").getRgb()))
+            self._disabled_shader.setUniformValue("u_diffuseColor2", Color(*Application.getInstance().getTheme().getColor("model_unslicable_alt").getRgb()))
+            self._disabled_shader.setUniformValue("u_width", 50.0)
+            self._disabled_shader.setUniformValue("u_opacity", 0.6)
+
         self.bind()
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay, backface_cull = True)
+        disabled_batch = RenderBatch(self._disabled_shader)
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 
@@ -104,6 +113,9 @@ class SimulationPass(RenderPass):
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
                 nozzle_node.setVisible(False)
+
+            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
+                disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
 
             elif isinstance(node, SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():
                 layer_data = node.callDecoration("getLayerData")
@@ -182,6 +194,9 @@ class SimulationPass(RenderPass):
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
                 nozzle_batch.render(self._scene.getActiveCamera())
+
+        if len(disabled_batch.items) > 0:
+            disabled_batch.render(self._scene.getActiveCamera())
 
         # Render toolhandles on top of the layerview
         if len(tool_handle_batch.items) > 0:

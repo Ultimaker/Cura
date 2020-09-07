@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Dict, Optional, TYPE_CHECKING
@@ -132,7 +132,7 @@ class QualityManagementModel(ListModel):
         for metadata in quality_changes_group.metadata_per_extruder.values():
             extruder_container = cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0])
             extruder_container.setName(new_name)
-        global_container = cast(InstanceContainer, container_registry.findContainers(id=quality_changes_group.metadata_for_global["id"])[0])
+        global_container = cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])
         global_container.setName(new_name)
 
         quality_changes_group.name = new_name
@@ -164,10 +164,16 @@ class QualityManagementModel(ListModel):
         quality_group = quality_model_item["quality_group"]
         quality_changes_group = quality_model_item["quality_changes_group"]
         if quality_changes_group is None:
-            # Create global quality changes only.
             new_quality_changes = self._createQualityChanges(quality_group.quality_type, intent_category, new_name,
                                                              global_stack, extruder_stack = None)
             container_registry.addContainer(new_quality_changes)
+
+            for extruder in global_stack.extruderList:
+                new_extruder_quality_changes = self._createQualityChanges(quality_group.quality_type, intent_category,
+                                                                          new_name,
+                                                                          global_stack, extruder_stack = extruder)
+
+                container_registry.addContainer(new_extruder_quality_changes)
         else:
             for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
                 containers = container_registry.findContainers(id = metadata["id"])
@@ -333,6 +339,7 @@ class QualityManagementModel(ListModel):
                     "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)
+
         # Sort by layer_height for built-in qualities
         item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
@@ -341,6 +348,9 @@ class QualityManagementModel(ListModel):
         available_intent_list = [i for i in available_intent_list if i[0] != "default"]
         result = []
         for intent_category, quality_type in available_intent_list:
+            if not quality_group_dict[quality_type].is_available:
+                continue
+            
             result.append({
                 "name": quality_group_dict[quality_type].name,  # Use the quality name as the display name
                 "is_read_only": True,
@@ -361,6 +371,9 @@ class QualityManagementModel(ListModel):
             # CURA-6913 Note that custom qualities can be based on "not supported", so the quality group can be None.
             quality_group = quality_group_dict.get(quality_changes_group.quality_type)
             quality_type = quality_changes_group.quality_type
+
+            if not quality_changes_group.is_available:
+                continue
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
