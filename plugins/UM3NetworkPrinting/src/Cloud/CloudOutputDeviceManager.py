@@ -463,7 +463,7 @@ class CloudOutputDeviceManager:
                 "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?",
                 "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?",
                 len(remove_printers_ids)
-            ).format(num_printers = len(remove_printers_ids))
+            )
             if remove_printers_ids == all_ids:
                 question_content = self.i18n_catalog.i18nc("@label", "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?")
             result = QMessageBox.question(None, question_title, question_content)
