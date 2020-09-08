@@ -381,11 +381,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         :return: New Polygon instance that is offset with everything that
         influences the collision area.
         """
+        # Shrinkage compensation.
         if not self._global_stack:  # Should never happen.
             return convex_hull
         scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
         result = convex_hull
-        if scale_factor != 1.0:
+        if scale_factor != 1.0 and not self.getNode().callDecoration("isGroup"):
             center = None
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 # Find the root node that's placed in the scene; the root of the mesh group.
@@ -408,11 +409,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if center:
                 result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
 
+        # Horizontal expansion.
         horizontal_expansion = max(
             self._getSettingProperty("xy_offset", "value"),
             self._getSettingProperty("xy_offset_layer_0", "value")
         )
 
+        # Mold.
         mold_width = 0
         if self._getSettingProperty("mold_enabled", "value"):
             mold_width = self._getSettingProperty("mold_width", "value")
