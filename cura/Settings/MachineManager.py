@@ -1396,6 +1396,9 @@ class MachineManager(QObject):
 
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
+                if int(position) >= len(self._global_container_stack.extruderList):
+                    Logger.warning("Received a configuration for extruder {position}, which is out of bounds for this printer.".format(position=position))
+                    continue  # Remote printer gave more extruders than what Cura had locally, e.g. because the user switched to a single-extruder printer while the sync was being processed.
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if int(position) in extruders_to_disable:
