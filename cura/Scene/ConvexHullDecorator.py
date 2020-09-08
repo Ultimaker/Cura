@@ -5,7 +5,6 @@ from PyQt5.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
-
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -398,7 +397,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # Find the bounding box of the entire scene, which is all one mesh group then.
                 aabb = None
                 for printed_node in self._root.getChildren():
-                    if not printed_node.callDecoration("isSliceable"):
+                    if not printed_node.callDecoration("isSliceable") and not printed_node.callDecoration("isGroup"):
                         continue  # Not a printed node.
                     if aabb is None:
                         aabb = printed_node.getBoundingBox()
