@@ -88,6 +88,8 @@
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
 
+        "infill_line_width": { "default_value": "line_width * 1.2" },
+        "infill_line_width": { "value": "line_width * 1.2" },
         "infill_sparse_density": { "value": "20" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
         "infill_before_walls": { "value": false },
