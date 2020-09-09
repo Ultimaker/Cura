@@ -948,7 +948,7 @@ msgstr "외벽 이동 거리"
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
-msgstr "Z 솔기를 더 잘 숨기기위해 바깥 쪽 벽 뒤에 삽입되어 이동한 거리."
+msgstr "Z 층의 경계면을 더 잘 가리기 위해 바깥쪽 벽 뒤에 삽입되어 이동한 거리."
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -6933,7 +6933,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 
 #~ msgctxt "relative_extrusion description"
 #~ msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-#~ msgstr "절대 압출 대신 상대 압출을 사용합니다. 상대적인 E-steps을 사용하면 Gcode를 보다 쉽게 후처리 할 수 있습니다. 그러나 모든 프린터에서 지원되는 것은 아니며 절대 압출의 E 스텝값과 비교할 때 출력된 재료의 양이 근소하게 다를 수 있습니다. 이 설정과 관계없이 압출 모드는 Gcode 스크립트가 출력되기 전에 항상 절대 값으로 설정됩니다."
+#~ msgstr "절대 압출 대신 상대 압출을 사용합니다. 상대적인 E-steps을 사용하면 Gcode를 보다 쉽게 후처리 할 수 있습니다. 그러나 모든 프린터에서 지원되는 것은 아니며 절대 압출의 E 스텝값과 비교할 때 출력된 재료의 양이 근소하게 다를 수 있습니다. 이 설정과 관계없이 압출 모드는 Gcode 스크립트가 출력되기 전에 항상 절댓값으로 설정됩니다."
 
 #~ msgctxt "infill_offset_x description"
 #~ msgid "The infill pattern is offset this distance along the X axis."

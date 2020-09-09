@@ -1799,6 +1799,9 @@ class CuraApplication(QtApplication):
             return
 
         nodes = job.getResult()
+        if nodes is None:
+            Logger.error("Read mesh job returned None. Mesh loading must have failed.")
+            return
         file_name = job.getFileName()
         file_name_lower = file_name.lower()
         file_extension = file_name_lower.split(".")[-1]

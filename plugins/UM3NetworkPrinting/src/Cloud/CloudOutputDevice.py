@@ -109,8 +109,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         if self.isConnected():
             return
+        Logger.log("i", "Attempting to connect to cluster %s", self.key)
         super().connect()
-        Logger.log("i", "Connected to cluster %s", self.key)
+
         CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
         self._update()
 
