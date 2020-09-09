@@ -243,7 +243,7 @@
                     "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 2.85,
+                    "default_value": 1.75,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "0.4",
                     "maximum_value_warning": "3.5",
