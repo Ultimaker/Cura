@@ -5,7 +5,7 @@ import os
 import re
 import configparser
 
-from typing import Any, cast, Dict, Optional, List, Union
+from typing import Any, cast, Dict, Optional, List, Union, Tuple
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
@@ -305,6 +305,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # Import all profiles
                 profile_ids_added = []  # type: List[str]
+                additional_message = None
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
@@ -323,18 +324,23 @@ class CuraContainerRegistry(ContainerRegistry):
                     else:  # More extruders in the imported file than in the machine.
                         continue  # Delete the additional profiles.
 
-                    result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
-                    if result is not None:
-                        # Remove any profiles that did got added.
+                    configuration_successful, message = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
+                    if configuration_successful and message:
+                        additional_message = message
+                    else:
+                        # Remove any profiles that were added.
                         for profile_id in profile_ids_added:
                             self.removeContainer(profile_id)
 
                         return {"status": "error", "message": catalog.i18nc(
-                            "@info:status Don't translate the XML tag <filename>!",
-                            "Failed to import profile from <filename>{0}</filename>:",
-                            file_name) + " " + result}
+                                "@info:status Don't translate the XML tag <filename>!",
+                                "Failed to import profile from <filename>{0}</filename>:",
+                                file_name) + " " + message}
                     profile_ids_added.append(profile.getId())
-                return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
+                success_message = catalog.i18nc("@info:status", "Successfully imported profile {0}.", profile_or_list[0].getName())
+                if additional_message:
+                    success_message += "\n" + additional_message
+                return {"status": "ok", "message": success_message}
 
             # This message is throw when the profile reader doesn't find any profile in the file
             return {"status": "error", "message": catalog.i18nc("@info:status", "File {0} does not contain any valid profile.", file_name)}
@@ -395,14 +401,18 @@ class CuraContainerRegistry(ContainerRegistry):
             return False
         return True
 
-    def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str, machine_definition_id: str) -> Optional[str]:
+    def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str, machine_definition_id: str) -> Tuple[bool, Optional[str]]:
         """Update an imported profile to match the current machine configuration.
 
         :param profile: The profile to configure.
         :param id_seed: The base ID for the profile. May be changed so it does not conflict with existing containers.
         :param new_name: The new name for the profile.
 
-        :return: None if configuring was successful or an error message if an error occurred.
+        :returns: tuple (configuration_successful, message)
+                WHERE
+                bool configuration_successful: Whether the process of configuring the profile was successful
+                optional str message: A message indicating the outcome of configuring the profile. If the configuration
+                                      is successful, this message can be None or contain a warning
         """
 
         profile.setDirty(True)  # Ensure the profiles are correctly saved
@@ -423,26 +433,38 @@ class CuraContainerRegistry(ContainerRegistry):
 
         quality_type = profile.getMetaDataEntry("quality_type")
         if not quality_type:
-            return catalog.i18nc("@info:status", "Profile is missing a quality type.")
+            return False, catalog.i18nc("@info:status", "Profile is missing a quality type.")
 
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        if global_stack is None:
-            return None
+        if not global_stack:
+            return False, catalog.i18nc("@info:status", "Global stack is missing.")
+
         definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         profile.setDefinition(definition_id)
+
+        # "not_supported" profiles can be imported.
+        if quality_type == empty_quality_container.getMetaDataEntry("quality_type"):
+            return True, None
 
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
-        # "not_supported" profiles can be imported.
-        if quality_type != empty_quality_container.getMetaDataEntry("quality_type") and quality_type not in quality_group_dict:
-            return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
+        available_quality_groups_dict = {name: quality_group for name, quality_group in ContainerTree.getInstance().getCurrentQualityGroups().items() if quality_group.is_available}
+        all_quality_groups_dict = ContainerTree.getInstance().getCurrentQualityGroups()
+
+        # If the quality type doesn't exist at all in the quality_groups of this machine, reject the profile
+        if quality_type not in all_quality_groups_dict:
+            return False, catalog.i18nc("@info:status", "Its quality type '{0}' is not compatible with the current active machine definition '{1}'.", quality_type, definition_id)
+
+        # If the quality_type exists in the quality_groups of this printer but it is not available with the current
+        # machine configuration (e.g. not available for the selected nozzles), accept it with a warning
+        if quality_type not in available_quality_groups_dict:
+            return True, catalog.i18nc("@info:status", "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration.", quality_type)
 
         if not self.addContainer(profile):
-            return catalog.i18nc("@info:status", "Unable to add the profile.")
+            return False, catalog.i18nc("@info:status", "Unable to add the profile.")
 
-        return None
+        return True, None
 
     @override(ContainerRegistry)
     def saveDirtyContainers(self) -> None:
