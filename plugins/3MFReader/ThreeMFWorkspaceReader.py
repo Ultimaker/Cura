@@ -323,7 +323,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         num_user_settings = 0
         container_info_dict = {}  # type: Dict[str, ContainerInfo]  # id -> parser
 
-        self._machine_info.quality_changes_info = QualityChangesInfo()
+        cast(MachineInfo, self._machine_info).quality_changes_info = QualityChangesInfo()
 
         quality_changes_info_list = []
         for instance_container_file_name in instance_container_files:
@@ -347,7 +347,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if container_type == "quality_changes":
                 quality_changes_info_list.append(container_info)
 
-                if self._machine_info.quality_changes_info:
+                if self._machine_info and self._machine_info.quality_changes_info:
                     if not parser.has_option("metadata", "position"):
                         self._machine_info.quality_changes_info.name = parser["general"]["name"]
                         self._machine_info.quality_changes_info.global_info = container_info
@@ -390,7 +390,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
-        if self._machine_info.quality_changes_info.global_info is None:
+        if self._machine_info and self._machine_info.quality_changes_info and self._machine_info.quality_changes_info.global_info is None:
             self._machine_info.quality_changes_info = None
 
         quality_name = custom_quality_name if custom_quality_name else quality_name
