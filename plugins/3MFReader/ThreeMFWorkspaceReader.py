@@ -311,6 +311,101 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 Job.yieldThread()
         return material_labels_dict, root_materials_dict
 
+    def _preReadInstanceContainerDataFromArchive(self, archive: zipfile.ZipFile) -> Dict[str, Any]:
+        cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]  # type: List[str]
+        instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
+
+        quality_name = ""
+        custom_quality_name = ""
+        intent_name = ""
+        intent_category = ""
+        num_settings_overridden_by_quality_changes = 0  # How many settings are changed by the quality changes
+        num_user_settings = 0
+        container_info_dict = {}  # type: Dict[str, ContainerInfo]  # id -> parser
+
+        self._machine_info.quality_changes_info = QualityChangesInfo()
+
+        quality_changes_info_list = []
+        for instance_container_file_name in instance_container_files:
+            container_id = self._stripFileToId(instance_container_file_name)
+
+            serialized = archive.open(instance_container_file_name).read().decode("utf-8")
+
+            # Qualities and variants don't have upgrades, so don't upgrade them
+            parser = ConfigParser(interpolation = None, comment_prefixes = ())
+            parser.read_string(serialized)
+            container_type = parser["metadata"]["type"]
+            if container_type not in ("quality", "variant"):
+                serialized = InstanceContainer._updateSerialized(serialized, instance_container_file_name)
+
+            parser = ConfigParser(interpolation = None, comment_prefixes = ())
+            parser.read_string(serialized)
+            container_info = ContainerInfo(instance_container_file_name, serialized, parser)
+            container_info_dict[container_id] = container_info
+
+            container_type = parser["metadata"]["type"]
+            if container_type == "quality_changes":
+                quality_changes_info_list.append(container_info)
+
+                if self._machine_info.quality_changes_info:
+                    if not parser.has_option("metadata", "position"):
+                        self._machine_info.quality_changes_info.name = parser["general"]["name"]
+                        self._machine_info.quality_changes_info.global_info = container_info
+                    else:
+                        position = parser["metadata"]["position"]
+                        self._machine_info.quality_changes_info.extruder_info_dict[position] = container_info
+
+                custom_quality_name = parser["general"]["name"]
+                if parser.has_section("values"):
+                    num_settings_overridden_by_quality_changes += len(parser["values"])
+
+                # Check if quality changes already exists.
+                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
+                                                                                  type = "quality_changes")
+                if quality_changes:
+                    self._containers_found["quality_changes"] = True
+                    # Check if there really is a conflict by comparing the values
+                    instance_container = InstanceContainer(container_id)
+                    try:
+                        instance_container.deserialize(serialized, file_name = instance_container_file_name)
+                    except ContainerFormatError:
+                        Logger.logException("e", "Failed to deserialize InstanceContainer %s from project file %s",
+                                            instance_container_file_name, archive.filename)
+                        return {"error": ThreeMFWorkspaceReader.PreReadResult.failed}
+                    if quality_changes[0] != instance_container:
+                        self._conflicts_found["quality_changes"] = True
+            elif container_type == "quality":
+                if not quality_name:
+                    quality_name = parser["general"]["name"]
+            elif container_type == "intent":
+                if not intent_name:
+                    intent_name = parser["general"]["name"]
+                    intent_category = parser["metadata"]["intent_category"]
+            elif container_type == "user":
+                num_user_settings += len(parser["values"])
+            elif container_type in self._ignored_instance_container_types:
+                # Ignore certain instance container types
+                Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
+                continue
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+            Job.yieldThread()
+
+        if self._machine_info.quality_changes_info.global_info is None:
+            self._machine_info.quality_changes_info = None
+
+        quality_name = custom_quality_name if custom_quality_name else quality_name
+
+        instance_container_pre_read_data = {
+            "quality_name"                              : quality_name,
+            "intent_name"                               : intent_name,
+            "intent_category"                           : intent_category,
+            "container_info_dict"                       : container_info_dict,
+            "num_settings_overridden_by_quality_changes": num_settings_overridden_by_quality_changes,
+            "num_user_settings"                         : num_user_settings
+        }
+
+        return instance_container_pre_read_data
+
     def preRead(self, file_name: str, show_dialog: bool = True, *args, **kwargs) -> WorkspaceReader.PreReadResult:
         """Read some info so we can make decisions
 
@@ -349,84 +444,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         material_labels_dict, root_materials_dict = self._preReadMaterialDataFromArchive(archive)
 
         # Check if any quality_changes instance container is in conflict.
-        instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
-        quality_name = ""
-        custom_quality_name = ""
-        intent_name = ""
-        intent_category = ""
-        num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
-        num_user_settings = 0
-
-        self._machine_info.quality_changes_info = QualityChangesInfo()
-
-        quality_changes_info_list = []
-        instance_container_info_dict = {}  # type: Dict[str, ContainerInfo]  # id -> parser
-        for instance_container_file_name in instance_container_files:
-            container_id = self._stripFileToId(instance_container_file_name)
-
-            serialized = archive.open(instance_container_file_name).read().decode("utf-8")
-
-            # Qualities and variants don't have upgrades, so don't upgrade them
-            parser = ConfigParser(interpolation = None, comment_prefixes = ())
-            parser.read_string(serialized)
-            container_type = parser["metadata"]["type"]
-            if container_type not in ("quality", "variant"):
-                serialized = InstanceContainer._updateSerialized(serialized, instance_container_file_name)
-
-            parser = ConfigParser(interpolation = None, comment_prefixes = ())
-            parser.read_string(serialized)
-            container_info = ContainerInfo(instance_container_file_name, serialized, parser)
-            instance_container_info_dict[container_id] = container_info
-
-            container_type = parser["metadata"]["type"]
-            if container_type == "quality_changes":
-                quality_changes_info_list.append(container_info)
-
-                if self._machine_info.quality_changes_info:
-                    if not parser.has_option("metadata", "position"):
-                        self._machine_info.quality_changes_info.name = parser["general"]["name"]
-                        self._machine_info.quality_changes_info.global_info = container_info
-                    else:
-                        position = parser["metadata"]["position"]
-                        self._machine_info.quality_changes_info.extruder_info_dict[position] = container_info
-
-                custom_quality_name = parser["general"]["name"]
-                if parser.has_section("values"):
-                    num_settings_overridden_by_quality_changes += len(parser["values"])
-
-                # Check if quality changes already exists.
-                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
-                                                                                  type = "quality_changes")
-                if quality_changes:
-                    self._containers_found["quality_changes"] = True
-                    # Check if there really is a conflict by comparing the values
-                    instance_container = InstanceContainer(container_id)
-                    try:
-                        instance_container.deserialize(serialized, file_name = instance_container_file_name)
-                    except ContainerFormatError:
-                        Logger.logException("e", "Failed to deserialize InstanceContainer %s from project file %s",
-                                            instance_container_file_name, file_name)
-                        return ThreeMFWorkspaceReader.PreReadResult.failed
-                    if quality_changes[0] != instance_container:
-                        self._conflicts_found["quality_changes"] = True
-            elif container_type == "quality":
-                if not quality_name:
-                    quality_name = parser["general"]["name"]
-            elif container_type == "intent":
-                if not intent_name:
-                    intent_name = parser["general"]["name"]
-                    intent_category = parser["metadata"]["intent_category"]
-            elif container_type == "user":
-                num_user_settings += len(parser["values"])
-            elif container_type in self._ignored_instance_container_types:
-                # Ignore certain instance container types
-                Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
-                continue
-            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-            Job.yieldThread()
-
-        if self._machine_info.quality_changes_info.global_info is None:
-            self._machine_info.quality_changes_info = None
+        instance_container_pre_read_data = self._preReadInstanceContainerDataFromArchive(archive)
+        if "error" in instance_container_pre_read_data:
+            return instance_container_pre_read_data["error"]
 
         # Load ContainerStack files and ExtruderStack files
         try:
@@ -474,6 +494,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         parser.read_string(serialized)
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
+        instance_container_info_dict = instance_container_pre_read_data["container_info_dict"]
         if quality_container_id not in ("empty", "empty_quality"):
             quality_parser = cast(ConfigParser, instance_container_info_dict[quality_container_id].parser)
             quality_type = quality_parser["metadata"]["quality_type"]
@@ -617,14 +638,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         extruders = num_extruders * [""]
 
-        quality_name = custom_quality_name if custom_quality_name else quality_name
-
         self._machine_info.container_id = global_stack_id
         self._machine_info.name = machine_name
         self._machine_info.definition_id = machine_definition_id
         self._machine_info.quality_type = quality_type
-        self._machine_info.custom_quality_name = quality_name
-        self._machine_info.intent_category = intent_category
+        self._machine_info.custom_quality_name = instance_container_pre_read_data["quality_name"]
+        self._machine_info.intent_category = instance_container_pre_read_data["intent_category"]
 
         is_printer_group = False
         if self._conflicts_found["machine"] and existing_global_stack:
@@ -640,11 +659,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setMaterialConflict(self._conflicts_found["material"])
         self._dialog.setHasVisibleSettingsField(has_visible_settings_string)
         self._dialog.setNumVisibleSettings(num_visible_settings)
-        self._dialog.setQualityName(quality_name)
+        self._dialog.setQualityName(instance_container_pre_read_data["quality_name"])
         self._dialog.setQualityType(quality_type)
-        self._dialog.setIntentName(intent_name)
-        self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
-        self._dialog.setNumUserSettings(num_user_settings)
+        self._dialog.setIntentName(instance_container_pre_read_data["intent_name"])
+        self._dialog.setNumSettingsOverriddenByQualityChanges(instance_container_pre_read_data["num_settings_overridden_by_quality_changes"])
+        self._dialog.setNumUserSettings(instance_container_pre_read_data["num_user_settings"])
         self._dialog.setActiveMode(active_mode)
         self._dialog.setUpdatableMachines(updatable_machines)
         self._dialog.setMachineName(machine_name)
@@ -746,7 +765,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Find the machine which will be overridden
             global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
-                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
+                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!",
                                                      "Project file <filename>{0}</filename> is made using profiles that"
                                                      " are unknown to this version of Ultimaker Cura.", file_name))
                 message.show()
