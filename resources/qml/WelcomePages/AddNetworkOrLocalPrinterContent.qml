@@ -75,7 +75,7 @@ Item
                     }
                     else
                     {
-                        Qt.openUrlExternally("https://mycloud.ultimaker.com/")
+                        Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl)
                     }
 
                 }
