@@ -1060,7 +1060,6 @@
                     "type": "enum",
                     "options":
                     {
-                        "naive": "Naive",
                         "center_deviation": "Center Deviation",
                         "distributed": "Distributed",
                         "inward_distributed": "Inward Distributed"
