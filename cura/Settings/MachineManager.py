@@ -63,6 +63,7 @@ class MachineManager(QObject):
         self._current_root_material_id = {}  # type: Dict[str, str]
 
         self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
+        self._num_user_settings = 0
 
         self._instance_container_timer = QTimer()  # type: QTimer
         self._instance_container_timer.setInterval(250)
@@ -126,6 +127,8 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.connect(self.activeQualityDisplayNameChanged)
         self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
 
+        self.activeStackValueChanged.connect(self._reCalculateNumUserSettings)
+
     activeQualityDisplayNameChanged = pyqtSignal()
 
     activeQualityGroupChanged = pyqtSignal()
@@ -151,6 +154,22 @@ class MachineManager(QObject):
     printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
+    numUserSettingsChanged = pyqtSignal()
+
+    def _reCalculateNumUserSettings(self):
+        if not self._global_container_stack:
+            if self._num_user_settings != 0:
+                self.numUserSettingsChanged.emit()
+                self._num_user_settings = 0
+            return
+        num_user_settings = self._global_container_stack.getTop().getNumInstances()
+        stacks = self._global_container_stack.extruderList
+        for stack in stacks:
+            num_user_settings += stack.getTop().getNumInstances()
+
+        if self._num_user_settings != num_user_settings:
+            self._num_user_settings = num_user_settings
+            self.numUserSettingsChanged.emit()
 
     def setInitialActiveMachine(self) -> None:
         active_machine_id = self._application.getPreferences().getValue("cura/active_machine")
@@ -329,11 +348,16 @@ class MachineManager(QObject):
             # This signal might not have been emitted yet (if it didn't change) but we still want the models to update that depend on it because we changed the contents of the containers too.
             extruder_manager.activeExtruderChanged.emit()
 
+        self._validateVariantsAndMaterials(global_stack)
+
+    def _validateVariantsAndMaterials(self, global_stack) -> None:
         # Validate if the machine has the correct variants and materials.
         # It can happen that a variant or material is empty, even though the machine has them. This will ensure that
         # that situation will be fixed (and not occur again, since it switches it out to the preferred variant or
         # variant instead!)
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        if not self._global_container_stack:
+            return
         for extruder in self._global_container_stack.extruderList:
             variant_name = extruder.variant.getName()
             variant_node = machine_node.variants.get(variant_name)
@@ -346,6 +370,7 @@ class MachineManager(QObject):
             if material_node is None:
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
                 self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material)
+
 
     @staticmethod
     def getMachine(definition_id: str, metadata_filter: Optional[Dict[str, str]] = None) -> Optional["GlobalStack"]:
@@ -409,31 +434,13 @@ class MachineManager(QObject):
         Logger.log("d", "Checking %s stacks for errors took %.2f s" % (count, time.time() - time_start))
         return False
 
-    @pyqtProperty(bool, notify = activeStackValueChanged)
+    @pyqtProperty(bool, notify = numUserSettingsChanged)
     def hasUserSettings(self) -> bool:
-        """Check if the global_container has instances in the user container"""
+        return self._num_user_settings != 0
 
-        if not self._global_container_stack:
-            return False
-
-        if self._global_container_stack.getTop().getNumInstances() != 0:
-            return True
-
-        for stack in self._global_container_stack.extruderList:
-            if stack.getTop().getNumInstances() != 0:
-                return True
-
-        return False
-
-    @pyqtProperty(int, notify = activeStackValueChanged)
+    @pyqtProperty(int, notify = numUserSettingsChanged)
     def numUserSettings(self) -> int:
-        if not self._global_container_stack:
-            return 0
-        num_user_settings = self._global_container_stack.getTop().getNumInstances()
-        stacks = self._global_container_stack.extruderList
-        for stack in stacks:
-            num_user_settings += stack.getTop().getNumInstances()
-        return num_user_settings
+        return self._num_user_settings
 
     @pyqtSlot(str)
     def clearUserSettingAllCurrentStacks(self, key: str) -> None:
@@ -584,14 +591,14 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityType(self) -> str:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return ""
         return global_stack.quality.getMetaDataEntry("quality_type")
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualitySupported(self) -> bool:
-        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             return False
         active_quality_group = self.activeQualityGroup()
@@ -599,9 +606,10 @@ class MachineManager(QObject):
             return False
         return active_quality_group.is_available
 
+
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualityExperimental(self) -> bool:
-        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             return False
         active_quality_group = self.activeQualityGroup()
@@ -611,7 +619,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeIntentChanged)
     def activeIntentCategory(self) -> str:
-        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
 
         if not global_container_stack:
             return ""
@@ -620,7 +628,7 @@ class MachineManager(QObject):
     # Provies a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
     def extruderPositionsWithNonActiveIntent(self):
-        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
 
         if not global_container_stack:
             return []
@@ -689,7 +697,7 @@ class MachineManager(QObject):
 
         :returns: DefinitionID (string) if found, empty string otherwise
         """
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return ""
         return ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
@@ -960,11 +968,10 @@ class MachineManager(QObject):
 
         if self._global_container_stack is None:
             return
-        with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            property_names = ["value", "resolve", "validationState"]
-            for container in [self._global_container_stack] + self._global_container_stack.extruderList:
-                for setting_key in container.getAllKeys():
-                    container.propertiesChanged.emit(setting_key, property_names)
+        property_names = ["value", "resolve", "validationState"]
+        for container in [self._global_container_stack] + self._global_container_stack.extruderList:
+            for setting_key in container.getAllKeys():
+                container.propertiesChanged.emit(setting_key, property_names)
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled: bool) -> None:
@@ -978,10 +985,6 @@ class MachineManager(QObject):
         self.updateNumberExtrudersEnabled()
         self.correctExtruderSettings()
 
-        # In case this extruder is being disabled and it's the currently selected one, switch to the default extruder
-        if not enabled and position == ExtruderManager.getInstance().activeExtruderIndex:
-            ExtruderManager.getInstance().setActiveExtruderIndex(int(self._default_extruder_position))
-
         # Ensure that the quality profile is compatible with current combination, or choose a compatible one if available
         self._updateQualityWithMaterial()
         self.extruderChanged.emit()
@@ -989,8 +992,7 @@ class MachineManager(QObject):
         self.activeQualityGroupChanged.emit()
         # Update items in SettingExtruder
         ExtruderManager.getInstance().extrudersChanged.emit(self._global_container_stack.getId())
-        # Make sure the front end reflects changes
-        self.forceUpdateAllSettings()
+
         # Also trigger the build plate compatibility to update
         self.activeMaterialChanged.emit()
         self.activeIntentChanged.emit()
@@ -1114,7 +1116,7 @@ class MachineManager(QObject):
             if quality_group is None:
                 self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
-        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        container_registry = self._application.getContainerRegistry()
         quality_changes_container = empty_quality_changes_container
         quality_container = empty_quality_container  # type: InstanceContainer
         if quality_changes_group.metadata_for_global:
@@ -1196,7 +1198,7 @@ class MachineManager(QObject):
     def _updateQualityWithMaterial(self, *args: Any) -> None:
         """Update current quality type and machine after setting material"""
 
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return
         Logger.log("d", "Updating quality/quality_changes due to material change")
@@ -1238,7 +1240,7 @@ class MachineManager(QObject):
     def _updateIntentWithQuality(self):
         """Update the current intent after the quality changed"""
 
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return
         Logger.log("d", "Updating intent due to quality change")
@@ -1389,6 +1391,9 @@ class MachineManager(QObject):
 
             for extruder_configuration in configuration.extruderConfigurations:
                 position = str(extruder_configuration.position)
+                if int(position) >= len(self._global_container_stack.extruderList):
+                    Logger.warning("Received a configuration for extruder {position}, which is out of bounds for this printer.".format(position=position))
+                    continue  # Remote printer gave more extruders than what Cura had locally, e.g. because the user switched to a single-extruder printer while the sync was being processed.
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if int(position) in extruders_to_disable:
@@ -1551,7 +1556,7 @@ class MachineManager(QObject):
     #          - "my_profile - Engineering - Fine" (based on an intent)
     @pyqtProperty("QVariantMap", notify = activeQualityDisplayNameChanged)
     def activeQualityDisplayNameMap(self) -> Dict[str, str]:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return {"main": "",
                     "suffix": ""}
@@ -1588,7 +1593,7 @@ class MachineManager(QObject):
         :param intent_category: The intent category to change to.
         """
 
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return
         container_tree = ContainerTree.getInstance()
@@ -1627,7 +1632,7 @@ class MachineManager(QObject):
         :return: The currently active quality group.
         """
 
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if not global_stack or global_stack.quality == empty_quality_container:
             return None
         return ContainerTree.getInstance().getCurrentQualityGroups().get(self.activeQualityType)
@@ -1664,7 +1669,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self) -> Optional["QualityChangesGroup"]:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None or global_stack.qualityChanges == empty_quality_changes_container:
             return None
 
@@ -1679,12 +1684,12 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = activeQualityChangesGroupChanged)
     def hasCustomQuality(self) -> bool:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         return global_stack is None or global_stack.qualityChanges != empty_quality_changes_container
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self) -> str:
-        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             return empty_quality_container.getName()
         if global_container_stack.qualityChanges != empty_quality_changes_container:
@@ -1693,17 +1698,17 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
-        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         return (not global_container_stack is None) and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualityCustom(self) -> bool:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = self._application.getGlobalContainerStack()
         if global_stack is None:
             return False
         return global_stack.qualityChanges != empty_quality_changes_container
 
-    def _updateUponMaterialMetadataChange(self) -> None:
+    def updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):

@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, List, Optional
+from typing import Any, cast, List, Optional, Dict
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
@@ -59,6 +59,8 @@ class CuraContainerStack(ContainerStack):
 
         import cura.CuraApplication #Here to prevent circular imports.
         self.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.SettingVersion)
+
+        self._settable_per_extruder_cache = {}  # type: Dict[str, Any]
 
         self.setDirty(False)
 
@@ -386,6 +388,18 @@ class CuraContainerStack(ContainerStack):
         if value == -1:
             value = int(Application.getInstance().getMachineManager().defaultExtruderPosition)
         return value
+
+    def getProperty(self, key: str, property_name: str, context = None) -> Any:
+        if property_name == "settable_per_extruder":
+            # Setable per extruder isn't a value that can ever change. So once we requested it once, we can just keep
+            # that in memory.
+            try:
+                return self._settable_per_extruder_cache[key]
+            except KeyError:
+                self._settable_per_extruder_cache[key] = super().getProperty(key, property_name, context)
+                return self._settable_per_extruder_cache[key]
+
+        return super().getProperty(key, property_name, context)
 
 
 class _ContainerIndexes:

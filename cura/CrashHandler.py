@@ -250,7 +250,10 @@ class CrashHandler:
 
                 scope.set_context("plugins", self.data["plugins"])
 
-                scope.set_user({"id": str(uuid.getnode())})
+                user_id = uuid.getnode()  # On all of Cura's supported platforms, this returns the MAC address which is pseudonymical information (!= anonymous).
+                user_id %= 2 ** 16  # So to make it anonymous, apply a bitmask selecting only the last 16 bits.
+                                    # This prevents it from being traceable to a specific user but still gives somewhat of an idea of whether it's just the same user hitting the same crash over and over again, or if it's widespread.
+                scope.set_user({"id": str(user_id)})
 
         return group
 

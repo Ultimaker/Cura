@@ -16,6 +16,8 @@ if(CURA_DEBUGMODE)
     set(_cura_debugmode "ON")
 endif()
 
+option(GENERATE_TRANSLATIONS "Should the translations be generated?" ON)
+
 set(CURA_APP_NAME "cura" CACHE STRING "Short name of Cura, used for configuration folder")
 set(CURA_APP_DISPLAY_NAME "Ultimaker Cura" CACHE STRING "Display name of Cura")
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
@@ -30,24 +32,16 @@ configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desk
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 
-# FIXME: Remove the code for CMake <3.12 once we have switched over completely.
-# FindPython3 is a new module since CMake 3.12. It deprecates FindPythonInterp and FindPythonLibs. The FindPython3
-# module is copied from the CMake repository here so in CMake <3.12 we can still use it.
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-    # Use FindPythonInterp and FindPythonLibs for CMake <3.12
-    find_package(PythonInterp 3 REQUIRED)
+# FIXME: The new FindPython3 finds the system's Python3.6 reather than the Python3.5 that we built for Cura's environment.
+# So we're using the old method here, with FindPythonInterp for now.
+find_package(PythonInterp 3 REQUIRED)
 
-    set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
+set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
 
-    set(Python3_VERSION ${PYTHON_VERSION_STRING})
-    set(Python3_VERSION_MAJOR ${PYTHON_VERSION_MAJOR})
-    set(Python3_VERSION_MINOR ${PYTHON_VERSION_MINOR})
-    set(Python3_VERSION_PATCH ${PYTHON_VERSION_PATCH})
-else()
-    # Use FindPython3 for CMake >=3.12
-    find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-endif()
-
+set(Python3_VERSION ${PYTHON_VERSION_STRING})
+set(Python3_VERSION_MAJOR ${PYTHON_VERSION_MAJOR})
+set(Python3_VERSION_MINOR ${PYTHON_VERSION_MINOR})
+set(Python3_VERSION_PATCH ${PYTHON_VERSION_PATCH})
 
 if(NOT ${URANIUM_DIR} STREQUAL "")
     set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${URANIUM_DIR}/cmake")
@@ -58,7 +52,9 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
     # Build Translations
-    CREATE_TRANSLATION_TARGETS()
+    if(${GENERATE_TRANSLATIONS})
+        CREATE_TRANSLATION_TARGETS()
+    endif()
 endif()
 
 

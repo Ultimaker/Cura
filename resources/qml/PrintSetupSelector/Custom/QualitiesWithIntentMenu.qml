@@ -138,11 +138,7 @@ Popup
                 Item
                 {
                     height: childrenRect.height
-                    anchors
-                    {
-                        left: parent.left
-                        right: parent.right
-                    }
+                    width: popup.contentWidth
 
                     Label
                     {
