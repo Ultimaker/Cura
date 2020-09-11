@@ -323,7 +323,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         num_user_settings = 0
         container_info_dict = {}  # type: Dict[str, ContainerInfo]  # id -> parser
 
-        cast(MachineInfo, self._machine_info).quality_changes_info = QualityChangesInfo()
+        cast(MachineInfo, self._machine_info).quality_changes_info = QualityChangesInfo()  # We have already initialized it in the preRead
 
         quality_changes_info_list = []
         for instance_container_file_name in instance_container_files:
@@ -440,7 +440,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         variant_type_name = definition_containers["machine"][0].get("variants_name", variant_type_name)
         updatable_machines = self._getUpdatableMachines(machine_definition_id)  # type: List[ContainerStack]
 
-        # Pre read data from the materials
+        # Pre read data from the material profiles
         material_labels_dict, root_materials_dict = self._preReadMaterialDataFromArchive(archive)
 
         # Check if any quality_changes instance container is in conflict.
@@ -500,10 +500,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             quality_type = quality_parser["metadata"]["quality_type"]
 
         # Get machine info
-        serialized = archive.open(global_stack_file).read().decode("utf-8")
-        serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
-        parser = ConfigParser(interpolation = None)
-        parser.read_string(serialized)
         definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
         if definition_changes_id not in ("empty", "empty_definition_changes"):
             self._machine_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
