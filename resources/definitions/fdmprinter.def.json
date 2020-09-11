@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 15,
+        "setting_version": 16,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -2319,16 +2319,17 @@
                 },
                 "material_shrinkage_percentage":
                 {
-                    "label": "Shrinkage Ratio",
-                    "description": "Shrinkage ratio in percentage.",
+                    "label": "Scaling Factor Shrinkage Compensation",
+                    "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "enabled": false,
+                    "default_value": 100.0,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "120",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": false,
+                    "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))"
                 },
                 "material_crystallinity":
                 {
