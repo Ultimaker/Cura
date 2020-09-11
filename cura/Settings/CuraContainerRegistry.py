@@ -325,13 +325,14 @@ class CuraContainerRegistry(ContainerRegistry):
                         continue  # Delete the additional profiles.
 
                     configuration_successful, message = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
-                    if configuration_successful and message:
+                    if configuration_successful:
                         additional_message = message
                     else:
                         # Remove any profiles that were added.
-                        for profile_id in profile_ids_added:
+                        for profile_id in profile_ids_added + [profile.getId()]:
                             self.removeContainer(profile_id)
-
+                        if not message:
+                            message = ""
                         return {"status": "error", "message": catalog.i18nc(
                                 "@info:status Don't translate the XML tag <filename>!",
                                 "Failed to import profile from <filename>{0}</filename>:",
@@ -339,7 +340,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     profile_ids_added.append(profile.getId())
                 success_message = catalog.i18nc("@info:status", "Successfully imported profile {0}.", profile_or_list[0].getName())
                 if additional_message:
-                    success_message += "\n" + additional_message
+                    success_message += additional_message
                 return {"status": "ok", "message": success_message}
 
             # This message is throw when the profile reader doesn't find any profile in the file
@@ -442,6 +443,9 @@ class CuraContainerRegistry(ContainerRegistry):
         definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         profile.setDefinition(definition_id)
 
+        if not self.addContainer(profile):
+            return False, catalog.i18nc("@info:status", "Unable to add the profile.")
+
         # "not_supported" profiles can be imported.
         if quality_type == empty_quality_container.getMetaDataEntry("quality_type"):
             return True, None
@@ -454,15 +458,13 @@ class CuraContainerRegistry(ContainerRegistry):
 
         # If the quality type doesn't exist at all in the quality_groups of this machine, reject the profile
         if quality_type not in all_quality_groups_dict:
-            return False, catalog.i18nc("@info:status", "Its quality type '{0}' is not compatible with the current active machine definition '{1}'.", quality_type, definition_id)
+            return False, catalog.i18nc("@info:status", "Quality type '{0}' is not compatible with the current active machine definition '{1}'.", quality_type, definition_id)
 
         # If the quality_type exists in the quality_groups of this printer but it is not available with the current
         # machine configuration (e.g. not available for the selected nozzles), accept it with a warning
         if quality_type not in available_quality_groups_dict:
-            return True, catalog.i18nc("@info:status", "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration.", quality_type)
-
-        if not self.addContainer(profile):
-            return False, catalog.i18nc("@info:status", "Unable to add the profile.")
+            return True, "\n\n" + catalog.i18nc("@info:status", "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. "
+                                                                "Switch to a material/nozzle combination that can use this quality type.", quality_type)
 
         return True, None
 
