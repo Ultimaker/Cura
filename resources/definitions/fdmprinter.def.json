@@ -1060,12 +1060,11 @@
                     "type": "enum",
                     "options":
                     {
-                        "naive": "Naive",
                         "center_deviation": "Center Deviation",
                         "distributed": "Distributed",
                         "inward_distributed": "Inward Distributed"
                     },
-                    "default_value": "distributed",
+                    "default_value": "inward_distributed",
                     "limit_to_extruder": "wall_0_extruder_nr"
                 },
                 "widening_beading_enabled":
