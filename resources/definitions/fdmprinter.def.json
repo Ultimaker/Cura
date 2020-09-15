@@ -5817,7 +5817,7 @@
                     "type": "float",
                     "default_value": 6,
                     "minimum_value": "0",
-                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
+                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
