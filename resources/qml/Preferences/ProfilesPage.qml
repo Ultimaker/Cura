@@ -313,7 +313,7 @@ Item
             {
                 messageDialog.icon = StandardIcon.Information;
             }
-            else if (result.status == "duplicate")
+            else if (result.status == "warning" || result.status == "duplicate")
             {
                 messageDialog.icon = StandardIcon.Warning;
             }
