@@ -16,6 +16,8 @@ if(CURA_DEBUGMODE)
     set(_cura_debugmode "ON")
 endif()
 
+option(GENERATE_TRANSLATIONS "Should the translations be generated?" ON)
+
 set(CURA_APP_NAME "cura" CACHE STRING "Short name of Cura, used for configuration folder")
 set(CURA_APP_DISPLAY_NAME "Ultimaker Cura" CACHE STRING "Display name of Cura")
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
@@ -24,6 +26,7 @@ set(CURA_CLOUD_API_ROOT "" CACHE STRING "Alternative Cura cloud API root")
 set(CURA_CLOUD_API_VERSION "" CACHE STRING "Alternative Cura cloud API version")
 set(CURA_CLOUD_ACCOUNT_API_ROOT "" CACHE STRING "Alternative Cura cloud account API version")
 set(CURA_MARKETPLACE_ROOT "" CACHE STRING "Alternative Marketplace location")
+set(CURA_DIGITAL_FACTORY_URL "" CACHE STRING "Alternative Digital Factory location")
 
 configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
 
@@ -50,7 +53,9 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
     # Build Translations
-    CREATE_TRANSLATION_TARGETS()
+    if(${GENERATE_TRANSLATIONS})
+        CREATE_TRANSLATION_TARGETS()
+    endif()
 endif()
 
 

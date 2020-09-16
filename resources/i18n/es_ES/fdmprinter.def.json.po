@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.7\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-07-31 14:10+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"PO-Revision-Date: 2020-08-21 13:40+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Spanish <info@lionbridge.com>, Spanish <info@bothof.nl>\n"
 "Language: es_ES\n"
@@ -227,12 +227,13 @@ msgstr "Si la máquina puede estabilizar la temperatura del volumen de impresió
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
-msgstr ""
+msgstr "Escriba siempre la herramienta activa"
 
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool description"
 msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
-msgstr ""
+msgstr "Escriba la herramienta activa después de enviar comandos temporales a la herramienta inactiva. Requerido para la impresión de extrusión dual con Smoothie"
+" u otro firmware con comandos de herramientas modales."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -3486,22 +3487,24 @@ msgstr "El tren extrusor que se utiliza para imprimir los suelos del soporte. Se
 #: fdmprinter.def.json
 msgctxt "support_structure label"
 msgid "Support Structure"
-msgstr ""
+msgstr "Estructura de soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_structure description"
 msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "Elige entre las técnicas disponibles para generar soporte. El soporte \"Normal\" crea una estructura de soporte directamente debajo de las partes en voladizo"
+" y lleva estas áreas hacia abajo. El soporte en \"Árbol\" crea ramas en las áreas en voladizo que sostienen el modelo al final de estas ramas y permite"
+" que las ramas se arrastren alrededor del modelo para sostenerlo tanto como sea posible en la placa de impresión."
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: fdmprinter.def.json
 msgctxt "support_structure option tree"
 msgid "Tree"
-msgstr ""
+msgstr "Árbol"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
@@ -3821,12 +3824,13 @@ msgstr "Ancho máximo de los escalones de la parte inferior de la escalera del s
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope label"
 msgid "Support Stair Step Minimum Slope Angle"
-msgstr ""
+msgstr "Ángulo de pendiente mínimo del escalón de la escalera de soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
-msgstr ""
+msgstr "La pendiente mínima de la zona para un efecto del escalón de la escalera de soporte. Los valores más bajos deberían facilitar la extracción del soporte"
+" en pendientes poco profundas, pero los valores muy bajos pueden dar resultados realmente contradictorios en otras partes del modelo."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4276,12 +4280,12 @@ msgstr "Disponga un soporte en todas partes por debajo de la malla de soporte, p
 #: fdmprinter.def.json
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
-msgstr ""
+msgstr "La escena tiene mallas de soporte"
 
 #: fdmprinter.def.json
 msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
-msgstr ""
+msgstr "Hay mallas de soporte presentes en la escena. Esta configuración está controlada por Cura."
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -5045,7 +5049,9 @@ msgstr "Secuencia de impresión"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr ""
+msgstr "Con esta opción se decide si imprimir todos los modelos al mismo tiempo capa por capa o esperar a terminar un modelo antes de pasar al siguiente. El modo"
+" de uno en uno solo es posible si todos los modelos están lo suficientemente separados para que el cabezal de impresión pase entre ellos y todos estén"
+" a menos de la distancia entre la boquilla y los ejes X/Y."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5070,12 +5076,13 @@ msgstr "Utilice esta malla para modificar el relleno de otras mallas con las que
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Mesh Processing Rank"
-msgstr ""
+msgstr "Rango de procesamiento de la malla"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Determina la prioridad de esta malla al tener en cuenta los volúmenes superpuestos. Las áreas con varias mallas se verán afectadas por la malla de menor"
+" rango. Una malla de relleno con un orden superior modificará el relleno de las mallas de relleno con un orden inferior y las mallas normales."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5220,7 +5227,10 @@ msgstr "Tolerancia de segmentación"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
-msgstr ""
+msgstr "Tolerancia vertical en las capas cortadas. Los contornos de una capa se generan normalmente pasando las secciones entrecruzadas a través del medio de cada"
+" espesor de capa (Media). Alternativamente, cada capa puede tener áreas ubicadas dentro del volumen a través de todo el grosor de la capa (Exclusiva) o"
+" una capa puede tener áreas ubicadas dentro en cualquier lugar de la capa (Inclusiva). La opción Inclusiva permite conservar la mayoría de los detalles,"
+" la opción Exclusiva permite obtener una adaptación óptima y la opción Media permite permanecer cerca de la superficie original."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
