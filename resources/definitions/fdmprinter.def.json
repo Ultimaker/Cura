@@ -4587,8 +4587,9 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "support_enable and support_structure == 'normal'",
-                    "settable_per_mesh": true
+                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_offset":
                 {
@@ -4601,7 +4602,8 @@
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
                     "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_infill_sparse_thickness":
                 {
@@ -4616,7 +4618,8 @@
                     "value": "resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "gradual_support_infill_steps":
                 {
@@ -4629,7 +4632,8 @@
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "gradual_support_infill_step_height":
                 {
@@ -4642,7 +4646,8 @@
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0 and gradual_support_infill_steps > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "minimum_support_area": 
                 {
