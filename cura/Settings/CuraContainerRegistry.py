@@ -179,7 +179,7 @@ class CuraContainerRegistry(ContainerRegistry):
         """Imports a profile from a file
 
         :param file_name: The full path and filename of the profile to import.
-        :return: Dict with a 'status' key containing the string 'ok' or 'error',
+        :return: Dict with a 'status' key containing the string 'ok', 'warning' or 'error',
             and a 'message' key containing a message for the user.
         """
 
@@ -338,10 +338,12 @@ class CuraContainerRegistry(ContainerRegistry):
                                 "Failed to import profile from <filename>{0}</filename>:",
                                 file_name) + " " + message}
                     profile_ids_added.append(profile.getId())
+                result_status = "ok"
                 success_message = catalog.i18nc("@info:status", "Successfully imported profile {0}.", profile_or_list[0].getName())
                 if additional_message:
+                    result_status = "warning"
                     success_message += additional_message
-                return {"status": "ok", "message": success_message}
+                return {"status": result_status, "message": success_message}
 
             # This message is throw when the profile reader doesn't find any profile in the file
             return {"status": "error", "message": catalog.i18nc("@info:status", "File {0} does not contain any valid profile.", file_name)}
