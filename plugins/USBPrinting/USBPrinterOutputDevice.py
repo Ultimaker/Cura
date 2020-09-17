@@ -88,8 +88,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._firmware_name_requested = False
         self._firmware_updater = AvrFirmwareUpdater(self)
 
-        plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("USBPrinting"))
-        self._monitor_view_qml_path = os.path.join(plugin_path, "MonitorItem.qml")
+        plugin_path = PluginRegistry.getInstance().getPluginPath("USBPrinting")
+        if plugin_path:
+            self._monitor_view_qml_path = os.path.join(plugin_path, "MonitorItem.qml")
+        else:
+            Logger.log("e", "Cannot create Monitor QML view: cannot find plugin path for plugin [USBPrinting]")
+            self._monitor_view_qml_path = ""
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
 
