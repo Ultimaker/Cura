@@ -454,19 +454,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 file_name, cura_file_names)
         except FileNotFoundError:
             return WorkspaceReader.PreReadResult.failed
-        self._conflicts_found["machine"] = False
+
         # Because there can be cases as follows:
         #  - the global stack exists but some/all of the extruder stacks DON'T exist
         #  - the global stack DOESN'T exist but some/all of the extruder stacks exist
         # To simplify this, only check if the global stack exists or not
         global_stack_id = self._stripFileToId(global_stack_file)
-        serialized = archive.open(global_stack_file).read().decode("utf-8")
-        serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
-        machine_name = self._getMachineNameFromSerializedStack(serialized)
-        self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
+        serialized_global_stack = archive.open(global_stack_file).read().decode("utf-8")
+        serialized_global_stack = GlobalStack._updateSerialized(serialized_global_stack, global_stack_file)
+        machine_name = self._getMachineNameFromSerializedStack(serialized_global_stack)
+        self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized_global_stack)
 
         # Check if the definition has been changed (this usually happens due to an upgrade)
-        id_list = self._getContainerIdListFromSerialized(serialized)
+        id_list = self._getContainerIdListFromSerialized(serialized_global_stack)
         if id_list[7] != machine_definition_id:
             machine_definition_id = id_list[7]
 
@@ -474,6 +474,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         existing_global_stack = None
         global_stack = None
 
+        self._conflicts_found["machine"] = False
         if stacks:
             global_stack = stacks[0]
             existing_global_stack = global_stack
@@ -486,12 +487,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     self._conflicts_found["machine"] = True
                     break
 
+        # The specific machine in the profile was not found, but similar machines exist in Cura and they can be
+        # used instead.
         if updatable_machines and not self._containers_found["machine"]:
             self._containers_found["machine"] = True
 
         # Get quality type
         parser = ConfigParser(interpolation = None)
-        parser.read_string(serialized)
+        parser.read_string(serialized_global_stack)
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         instance_container_info_dict = instance_container_pre_read_data["container_info_dict"]
@@ -532,10 +535,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # if the global stack is found, we check if there are conflicts in the extruder stacks
         for extruder_stack_file in extruder_stack_files:
-            serialized = archive.open(extruder_stack_file).read().decode("utf-8")
-            serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
+            serialized_extruder_stack = archive.open(extruder_stack_file).read().decode("utf-8")
+            serialized_extruder_stack = ExtruderStack._updateSerialized(serialized_extruder_stack, extruder_stack_file)
             parser = ConfigParser(interpolation = None)
-            parser.read_string(serialized)
+            parser.read_string(serialized_extruder_stack)
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
             # and those extruder stacks may have different IDs.
@@ -570,13 +573,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if intent_id not in ("empty", "empty_intent"):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
+            # The machine doesn't have conflicts, but if its extruder stacks have, we will still mark it as conflicting
             if not self._conflicts_found["machine"] and self._containers_found["machine"] and global_stack:
                 if int(position) >= len(global_stack.extruderList):
                     continue
 
                 existing_extruder_stack = global_stack.extruderList[int(position)]
                 # check if there are any changes at all in any of the container stacks.
-                id_list = self._getContainerIdListFromSerialized(serialized)
+                id_list = self._getContainerIdListFromSerialized(serialized_extruder_stack)
                 for index, container_id in enumerate(id_list):
                     # take into account the old empty container IDs
                     container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
