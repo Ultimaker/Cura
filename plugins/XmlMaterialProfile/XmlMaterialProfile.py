@@ -1112,7 +1112,6 @@ class XmlMaterialProfile(InstanceContainer):
         "retraction speed": "retraction_speed",
         "adhesion tendency": "material_adhesion_tendency",
         "surface energy": "material_surface_energy",
-        "shrinkage percentage": "material_shrinkage_percentage",
         "build volume temperature": "build_volume_temperature",
         "anti ooze retract position": "material_anti_ooze_retracted_position",
         "anti ooze retract speed": "material_anti_ooze_retraction_speed",
