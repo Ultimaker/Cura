@@ -176,7 +176,7 @@
 
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
-        "line_width": { "value": "machine_nozzle_size" },
+        "line_width": { "value": "machine_nozzle_size * 1.1" },
 
         "optimize_wall_printing_order": { "value": "True" },
 
@@ -185,8 +185,8 @@
         "material_flow": { "value": 100 },
         "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
-        "z_seam_type": { "value": "'back'" },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
         
         "infill_sparse_density": { "value": "20" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
@@ -215,7 +215,7 @@
         
         "retraction_hop_enabled": { "value": "False" },
         "retraction_hop": { "value": 0.2 },
-        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'" },
         "retraction_combing_max_distance": { "value": 30 },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
@@ -232,8 +232,8 @@
 
         "adhesion_type": { "value": "'skirt'" },
         "brim_replaces_support": { "value": false },
-        "skirt_gap": { "value": 10.0 },
-        "skirt_line_count": { "value": 3 },
+        "skirt_gap": { "value": 3.0 },
+        "skirt_line_count": { "value": 1 },
 
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
@@ -258,7 +258,7 @@
         "support_interface_density": { "value": 33.333 },
         "support_interface_pattern": { "value": "'grid'" },
         "support_interface_skip_height": { "value": 0.2 },
-        "minimum_support_area": { "value": 2 },
+        "minimum_support_area": { "value": 5 },
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }

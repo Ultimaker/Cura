@@ -1,0 +1,34 @@
+{
+    "name": "Creality CR-6 SE",
+    "version": 2,
+    "inherits": "creality_base",
+    "metadata": {
+      "quality_definition": "creality_base",
+      "visible": true
+    },
+    "overrides": {
+      "machine_name": { "default_value": "Creality CR-6 SE" },
+      "machine_width": { "default_value": 235 },
+      "machine_depth": { "default_value": 235 },
+      "machine_height": { "default_value": 250 },
+      "machine_head_polygon": {
+        "default_value": [
+          [-26, 34],
+          [-26, -32],
+          [22, -32],
+          [22, 34]
+        ]
+      },
+      "machine_head_with_fans_polygon": {
+        "default_value": [
+          [-26, 34],
+          [-26, -32],
+          [32, -32],
+          [32, 34]
+        ]
+      },
+  
+      "gantry_height": { "value": 25 }
+    }
+  }
+  
