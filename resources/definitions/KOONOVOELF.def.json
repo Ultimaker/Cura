@@ -15,7 +15,7 @@
         "has_materials": true,
         "preferred_material": "generic_pla",
         "has_machine_quality": true,
-        "quality_definition": "anycubic_chiron",
+        "quality_definition": "KOONOVO_ELF",
         "preferred_quality_type": "normal",
 
 
