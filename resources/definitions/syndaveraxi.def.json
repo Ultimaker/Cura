@@ -18,9 +18,6 @@
     },
 
     "overrides": {
-        "base_machine": "SyndaverAXI",
-        "base_machine_name": "SyndaverAXI",
-        "user_toolhead_name": "Hemera0.4",
         "machine_name": { "default_value": "AXI" },
         "machine_shape": { "default_value": "rectangular"},
         "machine_heated_bed": { "default_value": true },
