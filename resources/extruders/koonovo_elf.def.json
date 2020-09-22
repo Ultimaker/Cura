@@ -4,7 +4,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "KOONOVOELF",
+        "machine": "KOONOVO_ELF",
         "position": "0"
     },
 
