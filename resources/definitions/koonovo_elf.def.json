@@ -1,24 +1,25 @@
 {
     "version": 2,
-    "name": "KOONOVO_ELF",
+    "name": "KOONOVO elf",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "KOONOVO",
         "manufacturer": "KOONOVO",
             "file_formats": "text/x-gcode",
     
-        "platform": "KOONOVO.obj",
-        "platform_texture": "KOONOVO.png",
+        "platform": "koonovo.obj",
+        "platform_texture": "koonovo.png",
         "has_materials": true,
         "preferred_material": "generic_pla",
         "has_machine_quality": true,
-        "quality_definition": "KOONOVO_ELF",
+        "quality_definition": "koonovo_elf",
         "preferred_quality_type": "normal",
 
 
         "machine_extruder_trains":
         {
-            "0": "KOONOVO_ELF"
+            "0": "koonovo_elf"
             
         },
         "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
@@ -64,7 +65,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": value
+            "default_value": 0
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true
