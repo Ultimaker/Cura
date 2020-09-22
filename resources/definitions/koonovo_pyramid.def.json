@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "KOONOVO Pyramid",
+    "name": "KOONOVO_Pyramid",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "KOONOVO",
