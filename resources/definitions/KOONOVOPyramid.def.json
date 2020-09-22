@@ -3,12 +3,9 @@
     "name": "KOONOVO Pyramid",
     "inherits": "fdmprinter",
     "metadata": {
-        "visible": true,
         "author": "KOONOVO",
         "manufacturer": "KOONOVO",
-        "weight": 4,
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker.png",
         "has_materials": true,
 
         "platform": "KOONOVO.obj",
