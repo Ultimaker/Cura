@@ -1,10 +1,10 @@
 {
-    "id": "KOONOVO_ELF",
+    "id": "koonovo_elf",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "KOONOVO_ELF",
+        "machine": "koonovo_elf",
         "position": "0"
     },
 
