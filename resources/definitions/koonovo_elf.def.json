@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "KOONOVO ELF",
+    "name": "KOONOVO_ELF",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "KOONOVO",
