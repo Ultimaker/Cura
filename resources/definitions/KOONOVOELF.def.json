@@ -3,13 +3,10 @@
     "name": "KOONOVO ELF",
     "inherits": "fdmprinter",
     "metadata": {
-        "visible": true,
         "author": "KOONOVO",
         "manufacturer": "KOONOVO",
-        "weight": 4,
-        "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker.png",
-
+            "file_formats": "text/x-gcode",
+    
         "platform": "KOONOVO.obj",
         "platform_texture": "KOONOVO.png",
         "has_materials": true,
@@ -67,7 +64,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "default_value": value
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true
