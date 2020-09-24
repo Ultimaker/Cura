@@ -10,6 +10,7 @@
 	"preferred_material": "generic_pla",
         "exclude_materials": [ "structur3d_dap100silicone" ],
 	"has_machine_quality": true,
+	"has_materials": true,
         "preferred_quality_type": "normal PLA"
     },
 
