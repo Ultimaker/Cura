@@ -3657,6 +3657,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "retract_before_first_move":
+                {
+                    "label": "Retract Before First Move",
+                    "description": "Retract the filament before first move of nozzle.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_amount":
                 {
                     "label": "Retraction Distance",
@@ -3920,7 +3930,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_hop_after_extruder_switch_height": 
+                "retraction_hop_after_extruder_switch_height":
                 {
                     "label": "Z Hop After Extruder Switch Height",
                     "description": "The height difference when performing a Z Hop after extruder switch.",
@@ -4649,7 +4659,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "minimum_support_area": 
+                "minimum_support_area":
                 {
                     "label": "Minimum Support Area",
                     "description": "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated.",
@@ -4901,7 +4911,7 @@
                         }
                     }
                 },
-                "minimum_interface_area": 
+                "minimum_interface_area":
                 {
                     "label": "Minimum Support Interface Area",
                     "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -4915,7 +4925,7 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "minimum_roof_area": 
+                        "minimum_roof_area":
                         {
                             "label": "Minimum Support Roof Area",
                             "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -4929,7 +4939,7 @@
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
                         },
-                        "minimum_bottom_area": 
+                        "minimum_bottom_area":
                         {
                             "label": "Minimum Support Floor Area",
                             "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -4945,7 +4955,7 @@
                         }
                     }
                 },
-                "support_interface_offset": 
+                "support_interface_offset":
                 {
                     "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",
@@ -4959,7 +4969,7 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "support_roof_offset": 
+                        "support_roof_offset":
                         {
                             "label": "Support Roof Horizontal Expansion",
                             "description": "Amount of offset applied to the roofs of the support.",
@@ -4973,7 +4983,7 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "support_bottom_offset": 
+                        "support_bottom_offset":
                         {
                             "label": "Support Floor Horizontal Expansion",
                             "description": "Amount of offset applied to the floors of the support.",
