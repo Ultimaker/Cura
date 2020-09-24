@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 16,
+        "setting_version": 15,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -2319,17 +2319,16 @@
                 },
                 "material_shrinkage_percentage":
                 {
-                    "label": "Scaling Factor Shrinkage Compensation",
-                    "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor.",
+                    "label": "Shrinkage Ratio",
+                    "description": "Shrinkage ratio in percentage.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 100.0,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "100",
-                    "maximum_value_warning": "120",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))"
+                    "settable_per_extruder": true
                 },
                 "material_crystallinity":
                 {
@@ -3657,6 +3656,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "retract_before_first_move":
+                {
+                    "label": "Retract Before First Move",
+                    "description": "Retract the filament before first move of nozzle.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_amount":
                 {
                     "label": "Retraction Distance",
@@ -3920,7 +3929,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_hop_after_extruder_switch_height": 
+                "retraction_hop_after_extruder_switch_height":
                 {
                     "label": "Z Hop After Extruder Switch Height",
                     "description": "The height difference when performing a Z Hop after extruder switch.",
@@ -4587,9 +4596,8 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "enabled": "support_enable and support_structure == 'normal'",
+                    "settable_per_mesh": true
                 },
                 "support_offset":
                 {
@@ -4602,8 +4610,7 @@
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
                     "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": true
                 },
                 "support_infill_sparse_thickness":
                 {
@@ -4618,8 +4625,7 @@
                     "value": "resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false
                 },
                 "gradual_support_infill_steps":
                 {
@@ -4632,8 +4638,7 @@
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false
                 },
                 "gradual_support_infill_step_height":
                 {
@@ -4646,10 +4651,9 @@
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0 and gradual_support_infill_steps > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false
                 },
-                "minimum_support_area": 
+                "minimum_support_area":
                 {
                     "label": "Minimum Support Area",
                     "description": "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated.",
@@ -4901,7 +4905,7 @@
                         }
                     }
                 },
-                "minimum_interface_area": 
+                "minimum_interface_area":
                 {
                     "label": "Minimum Support Interface Area",
                     "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -4915,7 +4919,7 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "minimum_roof_area": 
+                        "minimum_roof_area":
                         {
                             "label": "Minimum Support Roof Area",
                             "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -4929,7 +4933,7 @@
                             "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": true
                         },
-                        "minimum_bottom_area": 
+                        "minimum_bottom_area":
                         {
                             "label": "Minimum Support Floor Area",
                             "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
@@ -4945,7 +4949,7 @@
                         }
                     }
                 },
-                "support_interface_offset": 
+                "support_interface_offset":
                 {
                     "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",
@@ -4959,7 +4963,7 @@
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "support_roof_offset": 
+                        "support_roof_offset":
                         {
                             "label": "Support Roof Horizontal Expansion",
                             "description": "Amount of offset applied to the roofs of the support.",
@@ -4973,7 +4977,7 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "support_bottom_offset": 
+                        "support_bottom_offset":
                         {
                             "label": "Support Floor Horizontal Expansion",
                             "description": "Amount of offset applied to the floors of the support.",
@@ -5822,7 +5826,7 @@
                     "type": "float",
                     "default_value": 6,
                     "minimum_value": "0",
-                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
+                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5849,7 +5853,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_y'))) - 3",
+                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_y'))) - 1",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
@@ -6158,7 +6162,7 @@
                 "infill_mesh_order":
                 {
                     "label": "Mesh Processing Rank",
-                    "description": "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "description": "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
                     "default_value": 0,
                     "value": "1 if infill_mesh else 0",
                     "minimum_value_warning": "1",
