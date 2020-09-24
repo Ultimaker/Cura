@@ -11,7 +11,7 @@
         "exclude_materials": [ "structur3d_dap100silicone" ],
 	"has_machine_quality": true,
 	"has_materials": true,
-        "preferred_quality_type": "normal PLA"
+        "preferred_quality_type": "normal"
     },
 
     "overrides": {
@@ -41,10 +41,6 @@
 
 	"infill_sparse_density": {"value":15},
  	"infill_overlap": {"value": 0},
-
- 	"material_print_temperature": {"value":210 },
- 	"material_bed_temperature": {"value":60},
- 	"material_bed_temperature_layer_0": {"value":60},
 
 	"speed_print": { "value": 45 },
 	"speed_infill": { "value": 45 },
