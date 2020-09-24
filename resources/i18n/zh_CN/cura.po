@@ -2468,7 +2468,7 @@ msgstr "在包装更改生效之前，您需要重新启动Cura。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxFooter.qml:46
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
-msgstr "退出 ％1"
+msgstr "退出 %1"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:30
 msgctxt "@title:tab"
@@ -3145,7 +3145,7 @@ msgstr "检查是否存在帐户更新"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:81
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
-msgstr "上次更新时间：％1"
+msgstr "上次更新时间：%1"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:99
 msgctxt "@button"
@@ -3492,13 +3492,13 @@ msgstr "配置文件"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:587
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
-msgstr "正在关闭 ％1"
+msgstr "正在关闭 %1"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:588
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:600
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
-msgstr "您确定要退出 ％1 吗？"
+msgstr "您确定要退出 %1 吗？"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:638
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
@@ -3534,7 +3534,7 @@ msgstr "新增功能"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
 msgid "About %1"
-msgstr "关于 ％1"
+msgstr "关于 %1"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -4914,7 +4914,7 @@ msgstr "自定义配置文件"
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] "没有 ％1 配置文件可用于挤出器 ％2 中的配置。将改为使用默认意图"
+msgstr[0] "没有 %1 配置文件可用于挤出器 %2 中的配置。将改为使用默认意图"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"

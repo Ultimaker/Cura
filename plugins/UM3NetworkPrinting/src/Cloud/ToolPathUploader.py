@@ -108,7 +108,11 @@ class ToolPathUploader:
         Logger.log("i", "Finished callback %s %s",
                    reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: int
+        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: Optional[int]
+        if not status_code:
+            Logger.log("e", "Reply contained no status code.")
+            self._errorCallback(reply, None)
+            return
 
         # check if we should retry the last chunk
         if self._retries < self.MAX_RETRIES and status_code in self.RETRY_HTTP_CODES:

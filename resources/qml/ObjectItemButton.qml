@@ -18,6 +18,18 @@ Button
     checkable: true
     hoverEnabled: true
 
+    onHoveredChanged:
+    {
+        if(hovered && (buttonTextMetrics.elidedText != buttonText.text || perObjectSettingsInfo.visible))
+        {
+            tooltip.show()
+        } else
+        {
+            tooltip.hide()
+        }
+    }
+
+
     onClicked: Cura.SceneController.changeSelection(index)
 
     background: Rectangle
@@ -185,7 +197,6 @@ Button
     {
         id: tooltip
         tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText
-        visible: objectItemButton.hovered && (buttonTextMetrics.elidedText != buttonText.text || perObjectSettingsInfo.visible)
     }
 
     UM.I18nCatalog
