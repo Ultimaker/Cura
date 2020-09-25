@@ -1,5 +1,5 @@
 {
-    "name": "Creawsome Base Printer",
+    "name": "KOONOVO Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
