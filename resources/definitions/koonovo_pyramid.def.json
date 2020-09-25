@@ -15,12 +15,6 @@
             ]
         },
 
-        "machine_extruder_trains": {
-            "0": "koonovo_base_extruder_1"
-	
-        },
-
-
         "gantry_height": { "value": 0 }
 
     },
