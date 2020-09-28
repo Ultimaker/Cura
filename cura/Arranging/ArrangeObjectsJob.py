@@ -59,15 +59,20 @@ class ArrangeObjectsJob(Job):
         config.accuracy = 1.0
         num_bins = nest(node_items, build_plate_bounding_box, 1, config)
         found_solution_for_all = num_bins == 1
-
+        not_fit_count = 0
         grouped_operation = GroupedOperation()
         for node, node_item in zip(self._nodes, node_items):
-            rotation_matrix = Matrix()
-            rotation_matrix.setByRotationAxis(node_item.rotation(),Vector(0, -1, 0))
+            if node_item.binId() == 0:
+                # We found a spot for it
+                rotation_matrix = Matrix()
+                rotation_matrix.setByRotationAxis(node_item.rotation(),Vector(0, -1, 0))
 
-            grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
-            grouped_operation.addOperation(TranslateOperation(node, Vector(node_item.translation().x() / factor, 0, node_item.translation().y() / factor)))
-
+                grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
+                grouped_operation.addOperation(TranslateOperation(node, Vector(node_item.translation().x() / factor, 0, node_item.translation().y() / factor)))
+            else:
+                # We didn't find a spot
+                grouped_operation.addOperation(TranslateOperation(node, Vector(200, 0, -not_fit_count * 20), set_position=True))
+                not_fit_count += 1
         grouped_operation.push()
 
         status_message.hide()
