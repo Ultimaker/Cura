@@ -4,6 +4,9 @@ from PyQt5.QtCore import QCoreApplication
 
 from UM.Application import Application
 from UM.Job import Job
+from UM.Math.Matrix import Matrix
+from UM.Math.Quaternion import Quaternion
+from UM.Operations.RotateOperation import RotateOperation
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Operations.TranslateOperation import TranslateOperation
@@ -18,6 +21,7 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ShapeArray import ShapeArray
 
 from typing import List
+from pynest2d import *
 
 
 class ArrangeObjectsJob(Job):
@@ -38,64 +42,31 @@ class ArrangeObjectsJob(Job):
         machine_width = global_container_stack.getProperty("machine_width", "value")
         machine_depth = global_container_stack.getProperty("machine_depth", "value")
 
-        arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = self._fixed_nodes, min_offset = self._min_offset)
+        factor = 10000
 
-        # Build set to exclude children (those get arranged together with the parents).
-        included_as_child = set()
+        build_plate_bounding_box = Box(machine_width * factor, machine_depth  * factor )
+
+        node_items = []
         for node in self._nodes:
-            included_as_child.update(node.getAllChildren())
+            hull_polygon = node.callDecoration("getConvexHull")
+            converted_points = []
+            for point in hull_polygon.getPoints():
+                converted_points.append(Point(point[0] * factor, point[1] * factor))
+            item = Item(converted_points)
+            node_items.append(item)
 
-        # Collect nodes to be placed
-        nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
-        for node in self._nodes:
-            if node in included_as_child:
-                continue
-            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = self._min_offset, include_children = True)
-            if offset_shape_arr is None:
-                Logger.log("w", "Node [%s] could not be converted to an array for arranging...", str(node))
-                continue
-            nodes_arr.append((offset_shape_arr.arr.shape[0] * offset_shape_arr.arr.shape[1], node, offset_shape_arr, hull_shape_arr))
+        config = NfpConfig()
+        config.accuracy = 1.0
+        num_bins = nest(node_items, build_plate_bounding_box, 1, config)
+        found_solution_for_all = num_bins == 1
 
-        # Sort the nodes with the biggest area first.
-        nodes_arr.sort(key=lambda item: item[0])
-        nodes_arr.reverse()
-
-        # Place nodes one at a time
-        start_priority = 0
-        last_priority = start_priority
-        last_size = None
         grouped_operation = GroupedOperation()
-        found_solution_for_all = True
-        not_fit_count = 0
-        for idx, (size, node, offset_shape_arr, hull_shape_arr) in enumerate(nodes_arr):
-            # For performance reasons, we assume that when a location does not fit,
-            # it will also not fit for the next object (while what can be untrue).
-            if last_size == size:  # This optimization works if many of the objects have the same size
-                start_priority = last_priority
-            else:
-                start_priority = 0
-            best_spot = arranger.bestSpot(hull_shape_arr, start_prio = start_priority)
-            x, y = best_spot.x, best_spot.y
-            node.removeDecorator(ZOffsetDecorator)
-            if node.getBoundingBox():
-                center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
-            else:
-                center_y = 0
-            if x is not None:  # We could find a place
-                last_size = size
-                last_priority = best_spot.priority
+        for node, node_item in zip(self._nodes, node_items):
+            rotation_matrix = Matrix()
+            rotation_matrix.setByRotationAxis(node_item.rotation(),Vector(0, -1, 0))
 
-                arranger.place(x, y, offset_shape_arr)  # take place before the next one
-                grouped_operation.addOperation(TranslateOperation(node, Vector(x, center_y, y), set_position = True))
-            else:
-                Logger.log("d", "Arrange all: could not find spot!")
-                found_solution_for_all = False
-                grouped_operation.addOperation(TranslateOperation(node, Vector(200, center_y, -not_fit_count * 20), set_position = True))
-                not_fit_count += 1
-
-            status_message.setProgress((idx + 1) / len(nodes_arr) * 100)
-            Job.yieldThread()
-            QCoreApplication.processEvents()
+            grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
+            grouped_operation.addOperation(TranslateOperation(node, Vector(node_item.translation().x() / factor, 0, node_item.translation().y() / factor)))
 
         grouped_operation.push()
 
