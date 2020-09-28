@@ -1,3 +1,12 @@
+[4.7.1]
+For an overview of the new features in Cura 4.7, please see this video: <a href="https://www.youtube.com/watch?v=vuKuil0dJqE">Change log overview</a>
+
+* Bug fixes
+- Fixed a crash when duplicating a built-in profile.
+- Having an equals symbol in your start or end g-code would cause part of that g-code to disappear and could cause a crash when loading a model. This is fixed now.
+- The MacOS build is now notarized by Apple, to prevent a security warning from popping up when starting Cura for the first time.
+- Corrected the orientation of the build plate mesh for Tevo Tarantula Pro.
+
 [4.7.0]
 * Rotation widgets
 fieldOfView has contributed code that adds 3 pairs of arrow widgets to the Rotate tool handle, to rotate objects by exactly 90 degrees.

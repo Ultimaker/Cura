@@ -222,10 +222,17 @@ Item
                 OldControls.CheckBox
                 {
                     id: enabledCheckbox
-                    checked: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.isEnabled : false
                     enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: parent.height
                     style: UM.Theme.styles.checkbox
+
+                    Binding
+                    {
+                        target: enabledCheckbox
+                        property: "checked"
+                        value: Cura.MachineManager.activeStack.isEnabled
+                        when: Cura.MachineManger.activeStack != null
+                    }
 
                     /* Use a MouseArea to process the click on this checkbox.
                        This is necessary because actually clicking the checkbox
@@ -235,8 +242,17 @@ Item
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: Cura.MachineManager.setExtruderEnabled(Cura.ExtruderManager.activeExtruderIndex, !parent.checked)
-                        enabled: parent.enabled
+                        onClicked:
+                        {
+                            if(!parent.enabled)
+                            {
+                                return
+                            }
+                            // Already update the visual indication
+                            parent.checked = !parent.checked
+                            // Update the settings on the background!
+                            Cura.MachineManager.setExtruderEnabled(Cura.ExtruderManager.activeExtruderIndex, parent.checked)
+                        }
                     }
                 }
             }

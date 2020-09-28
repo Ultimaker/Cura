@@ -126,7 +126,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 15
+    SettingVersion = 16
 
     Created = False
 
@@ -1725,7 +1725,7 @@ class CuraApplication(QtApplication):
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
         """
-
+        Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
             return
 
@@ -1799,6 +1799,9 @@ class CuraApplication(QtApplication):
             return
 
         nodes = job.getResult()
+        if nodes is None:
+            Logger.error("Read mesh job returned None. Mesh loading must have failed.")
+            return
         file_name = job.getFileName()
         file_name_lower = file_name.lower()
         file_extension = file_name_lower.split(".")[-1]
