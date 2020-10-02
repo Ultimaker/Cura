@@ -438,7 +438,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_definition_id = definition_containers["machine"][0]["id"]  # type: str
         machine_type = definition_containers["machine"][0]["name"]  # type: str
         variant_type_name = definition_containers["machine"][0].get("variants_name", variant_type_name)
-        updatable_machines = self._getUpdatableMachines(machine_definition_id)  # type: List[ContainerStack]
 
         # Pre read data from the material profiles
         material_labels_dict, root_materials_dict = self._preReadMaterialDataFromArchive(archive)
@@ -467,8 +466,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Check if the definition has been changed (this usually happens due to an upgrade)
         id_list = self._getContainerIdListFromSerialized(serialized_global_stack)
-        if id_list[7] != machine_definition_id:
-            machine_definition_id = id_list[7]
+        if id_list[_ContainerIndexes.Definition] != machine_definition_id:
+            machine_definition_id = id_list[_ContainerIndexes.Definition]
+
+        # Get all the existing Cura machines that have the same definition id as the project file machine.
+        updatable_machines = self._getUpdatableMachines(machine_definition_id)  # type: List[ContainerStack]
 
         existing_stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         existing_global_stack = None
@@ -483,11 +485,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if existing_global_stack.getContainer(index).getId() != container_id:
                     self._conflicts_found["machine"] = True
                     break
-
-        # The specific machine in the profile was not found, but similar machines exist in Cura and they can be
-        # used instead.
-        if updatable_machines and not self._containers_found["machine"]:
-            self._containers_found["machine"] = True
+        else:
+            # The specific machine in the project file was not found, but similar machines may exist in Cura. If that's
+            # the case, any of these similar machines can be used when opening this project file.
+            if updatable_machines:
+                self._containers_found["machine"] = True
 
         # Get quality type
         parser = ConfigParser(interpolation = None)
