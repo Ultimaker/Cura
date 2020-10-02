@@ -2261,7 +2261,7 @@
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted.",
+                    "description": "The temperature used for the heated build plate. If this is 0, the build plate is left unheated.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 60,
@@ -2279,7 +2279,7 @@
                 "material_bed_temperature_layer_0":
                 {
                     "label": "Build Plate Temperature Initial Layer",
-                    "description": "The temperature used for the heated build plate at the first layer.",
+                    "description": "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer.",
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature_layer_0'))",
