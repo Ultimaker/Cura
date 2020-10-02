@@ -16,6 +16,8 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
+from cura.Arranging.Nest2DArrange import arrange
+
 i18n_catalog = i18nCatalog("cura")
 
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
@@ -40,73 +42,9 @@ class ArrangeObjectsJob(Job):
                                  progress = 0,
                                  title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        machine_width = global_container_stack.getProperty("machine_width", "value")
-        machine_depth = global_container_stack.getProperty("machine_depth", "value")
-        factor = 10000
-        build_plate_bounding_box = Box(machine_width * factor, machine_depth  * factor)
 
-        # Add all the items we want to arrange
-        node_items = []
-        for node in self._nodes:
-            hull_polygon = node.callDecoration("getConvexHull")
-            converted_points = []
-            for point in hull_polygon.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
-            item = Item(converted_points)
-            node_items.append(item)
+        found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume())
 
-        # Use a tiny margin for the build_plate_polygon (the nesting doesn't like overlapping disallowed areas)
-        half_machine_width = 0.5 * machine_width - 1
-        half_machine_depth = 0.5 * machine_depth - 1
-        build_plate_polygon = Polygon(numpy.array([
-            [half_machine_width, -half_machine_depth],
-            [-half_machine_width, -half_machine_depth],
-            [-half_machine_width, half_machine_depth],
-            [half_machine_width, half_machine_depth]
-        ], numpy.float32))
-
-        build_volume = Application.getInstance().getBuildVolume()
-        disallowed_areas = build_volume.getDisallowedAreas()
-        num_disallowed_areas_added = 0
-        for area in disallowed_areas:
-            converted_points = []
-
-            # Clip the disallowed areas so that they don't overlap the bounding box (The arranger chokes otherwise)
-            clipped_area = area.intersectionConvexHulls(build_plate_polygon)
-
-            for point in clipped_area.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
-
-            disallowed_area = Item(converted_points)
-            disallowed_area.markAsFixedInBin(0)
-            node_items.append(disallowed_area)
-            num_disallowed_areas_added += 1
-
-        config = NfpConfig()
-        config.accuracy = 1.0
-
-        num_bins = nest(node_items, build_plate_bounding_box, 10000, config)
-
-        # Strip the disallowed areas from the results again
-        if num_disallowed_areas_added != 0:
-            node_items = node_items[:-num_disallowed_areas_added]
-
-        found_solution_for_all = num_bins == 1
-        not_fit_count = 0
-        grouped_operation = GroupedOperation()
-        for node, node_item in zip(self._nodes, node_items):
-            if node_item.binId() == 0:
-                # We found a spot for it
-                rotation_matrix = Matrix()
-                rotation_matrix.setByRotationAxis(node_item.rotation(),Vector(0, -1, 0))
-                grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
-                grouped_operation.addOperation(TranslateOperation(node, Vector(node_item.translation().x() / factor, 0, node_item.translation().y() / factor)))
-            else:
-                # We didn't find a spot
-                grouped_operation.addOperation(TranslateOperation(node, Vector(200, 0, -not_fit_count * 20), set_position=True))
-                not_fit_count += 1
-        grouped_operation.push()
         status_message.hide()
         if not found_solution_for_all:
             no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"),
