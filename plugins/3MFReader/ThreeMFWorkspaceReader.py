@@ -470,20 +470,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if id_list[7] != machine_definition_id:
             machine_definition_id = id_list[7]
 
-        stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
+        existing_stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         existing_global_stack = None
-        global_stack = None
 
         self._conflicts_found["machine"] = False
-        if stacks:
-            global_stack = stacks[0]
-            existing_global_stack = global_stack
+        if existing_stacks:
+            existing_global_stack = existing_stacks[0]
             self._containers_found["machine"] = True
             # Check if there are any changes at all in any of the container stacks.
             for index, container_id in enumerate(id_list):
                 # take into account the old empty container IDs
                 container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
-                if global_stack.getContainer(index).getId() != container_id:
+                if existing_global_stack.getContainer(index).getId() != container_id:
                     self._conflicts_found["machine"] = True
                     break
 
@@ -574,11 +572,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
             # The machine doesn't have conflicts, but if its extruder stacks have, we will still mark it as conflicting
-            if not self._conflicts_found["machine"] and self._containers_found["machine"] and global_stack:
-                if int(position) >= len(global_stack.extruderList):
+            if not self._conflicts_found["machine"] and self._containers_found["machine"] and existing_global_stack:
+                if int(position) >= len(existing_global_stack.extruderList):
                     continue
 
-                existing_extruder_stack = global_stack.extruderList[int(position)]
+                existing_extruder_stack = existing_global_stack.extruderList[int(position)]
                 # check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized_extruder_stack)
                 for index, container_id in enumerate(id_list):
