@@ -1,28 +1,13 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import numpy
-from PyQt5.QtCore import QCoreApplication
-
 from UM.Application import Application
 from UM.Job import Job
-from UM.Math.Matrix import Matrix
-from UM.Math.Polygon import Polygon
-from UM.Math.Quaternion import Quaternion
-from UM.Operations.RotateOperation import RotateOperation
 from UM.Scene.SceneNode import SceneNode
-from UM.Math.Vector import Vector
-from UM.Operations.TranslateOperation import TranslateOperation
-from UM.Operations.GroupedOperation import GroupedOperation
-from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.Arranging.Nest2DArrange import arrange
 
 i18n_catalog = i18nCatalog("cura")
-
-from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
-from cura.Arranging.Arrange import Arrange
-from cura.Arranging.ShapeArray import ShapeArray
 
 from typing import List
 from pynest2d import *
