@@ -473,7 +473,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         existing_stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         existing_global_stack = None
 
-        self._conflicts_found["machine"] = False
         if existing_stacks:
             existing_global_stack = existing_stacks[0]
             self._containers_found["machine"] = True
