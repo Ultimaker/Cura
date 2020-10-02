@@ -10,7 +10,7 @@ from UM.Operations.RotateOperation import RotateOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 
-def arrange(nodes_to_arrange, build_volume, fixed_nodes = None, factor = 10000) -> bool:
+def findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes = None, factor = 10000):
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
     build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
@@ -61,6 +61,13 @@ def arrange(nodes_to_arrange, build_volume, fixed_nodes = None, factor = 10000) 
         node_items = node_items[:-num_disallowed_areas_added]
 
     found_solution_for_all = num_bins == 1
+
+    return found_solution_for_all, node_items
+
+
+def arrange(nodes_to_arrange, build_volume, fixed_nodes = None, factor = 10000) -> bool:
+    found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
+
     not_fit_count = 0
     grouped_operation = GroupedOperation()
     for node, node_item in zip(nodes_to_arrange, node_items):
