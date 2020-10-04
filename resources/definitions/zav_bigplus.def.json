@@ -1,13 +1,12 @@
 {
-    "name":      "ZAV Big Plus family printer",
+    "name":      "ZAV Big+",
     "version":   2,
     "inherits":  "zav_base",
     "metadata":  {
-                  "author": "Kirill Nikolaev (C)",
+                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
                   "visible": true,
                   "quality_definition": "zav_base",
-                  "platform": "zav_bigplus.stl",
-                  "platform_texture": "zav.png"
+                  "platform": "zav_bigplus.stl"
                  },
     "overrides": {
                   "machine_name":   {"default_value": "zav_bigplus"},

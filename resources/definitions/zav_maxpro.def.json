@@ -1,13 +1,11 @@
 {
-    "name":      "ZAV Max Pro family printer",
+    "name":      "ZAV PRO",
     "version":   2,
     "inherits":  "zav_base",
     "metadata":  {
-                  "author": "Kirill Nikolaev (C)",
+                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
                   "visible": true,
-                  "quality_definition": "zav_base",
-                  "platform": "zav_maxpro.stl",
-                  "platform_texture": "zav.png"
+                  "quality_definition": "zav_base"
                  },
     "overrides": {
                   "machine_name":   {"default_value": "zav_maxpro"}

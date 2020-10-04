@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "zav",
+        "machine": "zav_base",
         "position": "0"
     },
 
