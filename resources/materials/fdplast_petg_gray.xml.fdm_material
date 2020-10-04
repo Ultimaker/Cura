@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura">
+  <metadata>
+    <name>
+      <brand>FDplast</brand>
+      <material>PETG</material>
+      <color>Gray</color>
+      <label>FD PETG Gray</label>
+    </name>
+    <adhesion_info>Hot bed is more or less a necessity! Expect slight warping on cold bed. Use blue tape with cold bed and a bare PEI sheet with hot bed.</adhesion_info>
+    <GUID>fdff3c20-1d38-4de5-89ee-81789ad8d682</GUID>
+    <description>PETG is strong and chemically resistant. A great material for mechanical applications. It's more sticky, oozy, and moderately hydrophilic. You must keep it dry!</description>
+    <color_code>#808080</color_code>
+    <version>5</version>
+  </metadata>
+  <properties>
+    <density>1.27</density>
+    <diameter>1.75</diameter>
+    <weight>1000</weight>
+  </properties>
+  <settings>
+    <setting key="print cooling">50.0</setting>
+    <setting key="print temperature">220.0</setting>
+    <setting key="heated bed temperature">70</setting>
+    <setting key="standby temperature">120</setting>
+  </settings>
+</fdmmaterial>
