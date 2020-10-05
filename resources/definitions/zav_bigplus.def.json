@@ -7,7 +7,6 @@
                   "visible": true,
                   "quality_definition": "zav_base",
                   "platform": "zav_bigplus.stl",
-                  "platform_texture": "zav.png"
                  },
     "overrides": {
                   "machine_name":   {"default_value": "zav_bigplus"},
