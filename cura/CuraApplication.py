@@ -53,6 +53,7 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ShapeArray import ShapeArray
+from cura.Arranging.Nest2DArrange import findNodePlacement, arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -1821,6 +1822,8 @@ class CuraApplication(QtApplication):
 
         select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
+        nodes_to_arrange = []  # type: List[CuraSceneNode]
+
         for original_node in nodes:
             # Create a CuraSceneNode just if the original node is not that type
             if isinstance(original_node, CuraSceneNode):
@@ -1869,6 +1872,8 @@ class CuraApplication(QtApplication):
 
                     node.translate(Vector(0, center_y, 0))
 
+                    nodes_to_arrange.append(node)
+
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
             # the BuildPlateDecorator exists or not and always set the correct build plate number.
@@ -1886,6 +1891,8 @@ class CuraApplication(QtApplication):
 
             if select_models_on_load:
                 Selection.add(node)
+
+        arrange(nodes_to_arrange, self.getBuildVolume())
 
         self.fileCompleted.emit(file_name)
 
