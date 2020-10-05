@@ -3,7 +3,7 @@
     "version":   2,
     "inherits":  "zav_base",
     "metadata":  {
-                  "author": "Kirill Nikolaev",
+                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
                   "visible": true,
                   "quality_definition": "zav_base",
                   "platform": "zav_big.stl",
