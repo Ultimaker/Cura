@@ -36,14 +36,9 @@ class MultiplyObjectsJob(Job):
         status_message.show()
         scene = Application.getInstance().getController().getScene()
 
-        total_progress = len(self._objects) * self._count
-        current_progress = 0
-
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return  # We can't do anything in this case.
-        machine_width = global_container_stack.getProperty("machine_width", "value")
-        machine_depth = global_container_stack.getProperty("machine_depth", "value")
 
         root = scene.getRoot()
 
@@ -80,7 +75,7 @@ class MultiplyObjectsJob(Job):
                 nodes.append(new_node)
         factor = 10000
         found_solution_for_all, node_items = findNodePlacement(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor = 10000)
-
+        not_fit_count = 0
         if nodes:
             operation = GroupedOperation()
             for new_node, node_item in zip(nodes, node_items):
@@ -98,6 +93,7 @@ class MultiplyObjectsJob(Job):
                     # We didn't find a spot
                     operation.addOperation(
                         TranslateOperation(new_node, Vector(200, 0, -not_fit_count * 20), set_position=True))
+                    not_fit_count += 1
 
             operation.push()
         status_message.hide()
