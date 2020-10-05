@@ -4,8 +4,6 @@
 import copy
 from typing import List
 
-from PyQt5.QtCore import QCoreApplication
-
 from UM.Job import Job
 from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
@@ -20,9 +18,6 @@ from UM.i18n import i18nCatalog
 from cura.Arranging.Nest2DArrange import findNodePlacement
 
 i18n_catalog = i18nCatalog("cura")
-
-from cura.Arranging.Arrange import Arrange
-from cura.Arranging.ShapeArray import ShapeArray
 
 from UM.Application import Application
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation

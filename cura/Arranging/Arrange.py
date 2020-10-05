@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
+from UM.Decorators import deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Polygon import Polygon
@@ -20,6 +21,7 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 """Return object for  bestSpot"""
 
 
+@deprecated("Use the functions in Nest2dArrange instead", "4.8")
 class Arrange:
     """
     The Arrange classed is used together with :py:class:`cura.Arranging.ShapeArray.ShapeArray`. Use it to find good locations for objects that you try to put
@@ -44,6 +46,7 @@ class Arrange:
         self._last_priority = 0
         self._is_empty = True
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     @classmethod
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250, min_offset = 8) -> "Arrange":
         """Helper to create an :py:class:`cura.Arranging.Arrange.Arrange` instance
@@ -101,6 +104,7 @@ class Arrange:
 
         self._last_priority = 0
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def findNodePlacement(self, node: SceneNode, offset_shape_arr: ShapeArray, hull_shape_arr: ShapeArray, step = 1) -> bool:
         """Find placement for a node (using offset shape) and place it (using hull shape)
 
