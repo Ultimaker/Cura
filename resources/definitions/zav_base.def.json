@@ -4,8 +4,8 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,
-        "author": "Kirill Nikolaev (C)",
-        "manufacturer": "ZAV Co., Ltd.",
+        "author": "Kirill Nikolaev, Kim Evgeniy (C)",
+        "manufacturer": "ZAV 3D",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
         "machine_extruder_trains": {
