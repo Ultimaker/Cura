@@ -1,5 +1,6 @@
 import numpy
 from pynest2d import *
+from typing import List, TYPE_CHECKING, Optional, Tuple
 
 from UM.Math.Matrix import Matrix
 from UM.Math.Polygon import Polygon
@@ -10,7 +11,22 @@ from UM.Operations.RotateOperation import RotateOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 
-def findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes = None, factor = 10000):
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
+    from cura.BuildVolume import BuildVolume
+
+
+def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: Optional[List["SceneNode"]] = None, factor = 10000) -> Tuple[bool, List[Item]]:
+    """
+    Find placement for a set of scene nodes, but don't actually move them just yet.
+    :param nodes_to_arrange: The list of nodes that need to be moved.
+    :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
+    :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
+                        are placed.
+    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
+    :return:
+    """
+
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
     build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
@@ -80,7 +96,17 @@ def findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes = None, factor
     return found_solution_for_all, node_items
 
 
-def arrange(nodes_to_arrange, build_volume, fixed_nodes = None, factor = 10000) -> bool:
+def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: Optional[List["SceneNode"]] = None, factor = 10000) -> bool:
+    """
+    Find placement for a set of scene nodes, and move them by using a single grouped operation.
+    :param nodes_to_arrange: The list of nodes that need to be moved.
+    :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
+    :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
+                        are placed.
+    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
+    :return:
+    """
+
     found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
 
     not_fit_count = 0
