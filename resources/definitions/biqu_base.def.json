@@ -9,9 +9,9 @@
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
-    	"machine_extruder_trains": {
-        	"0": "biqu_base_extruder_0"
-    	},
+        "machine_extruder_trains": {
+            "0": "biqu_base_extruder_0"
+        },
 
         "has_materials": true,
         "has_variants": true,
@@ -88,7 +88,6 @@
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
 
-        "infill_line_width": { "default_value": "line_width * 1.2" },
         "infill_line_width": { "value": "line_width * 1.2" },
         "infill_sparse_density": { "value": "20" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
@@ -164,6 +163,5 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
-
     }
 }
