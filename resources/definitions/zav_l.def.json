@@ -6,7 +6,7 @@
                   "author": "Kirill Nikolaev, Kim Evgeniy (C)",
                   "visible": true,
                   "quality_definition": "zav_base",
-                  "platform": "zav_l.stl",
+                  "platform": "zav_l.stl"
                   },
     "overrides": {
                   "machine_name":   {"default_value": "zav_l"},
