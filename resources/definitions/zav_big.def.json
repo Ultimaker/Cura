@@ -8,8 +8,7 @@
                   "quality_definition": "zav_base",
                   "platform": "zav_big.stl",
                   "platform_offset": [0, 0, 0],
-                  "platform_texture": "zav.png"
-                 },
+                  },
     "overrides": {
                   "machine_name":   {"default_value": "zav_big"},
                   "machine_depth":  {"default_value": 300},
