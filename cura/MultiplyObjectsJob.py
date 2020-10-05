@@ -7,10 +7,18 @@ from typing import List
 from PyQt5.QtCore import QCoreApplication
 
 from UM.Job import Job
+from UM.Math.Matrix import Matrix
+from UM.Math.Quaternion import Quaternion
+from UM.Math.Vector import Vector
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Message import Message
+from UM.Operations.RotateOperation import RotateOperation
+from UM.Operations.TranslateOperation import TranslateOperation
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
+from cura.Arranging.Nest2DArrange import findNodePlacement
+
 i18n_catalog = i18nCatalog("cura")
 
 from cura.Arranging.Arrange import Arrange
@@ -43,10 +51,15 @@ class MultiplyObjectsJob(Job):
         machine_depth = global_container_stack.getProperty("machine_depth", "value")
 
         root = scene.getRoot()
-        scale = 0.5
-        arranger = Arrange.create(x = machine_width, y = machine_depth, scene_root = root, scale = scale, min_offset = self._min_offset)
+
         processed_nodes = []  # type: List[SceneNode]
         nodes = []
+
+        fixed_nodes = []
+        for node_ in DepthFirstIterator(root):
+            # Only count sliceable objects
+            if node_.callDecoration("isSliceable"):
+                fixed_nodes.append(node_)
 
         not_fit_count = 0
         found_solution_for_all = False
@@ -60,31 +73,8 @@ class MultiplyObjectsJob(Job):
                 continue
             processed_nodes.append(current_node)
 
-            node_too_big = False
-            if node.getBoundingBox().width < machine_width or node.getBoundingBox().depth < machine_depth:
-                offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(current_node, min_offset = self._min_offset, scale = scale)
-            else:
-                node_too_big = True
-
-            found_solution_for_all = True
-            arranger.resetLastPriority()
             for _ in range(self._count):
-                # We do place the nodes one by one, as we want to yield in between.
                 new_node = copy.deepcopy(node)
-                solution_found = False
-                if not node_too_big:
-                    if offset_shape_arr is not None and hull_shape_arr is not None:
-                        solution_found = arranger.findNodePlacement(new_node, offset_shape_arr, hull_shape_arr)
-                    else:
-                        # The node has no shape, so no need to arrange it. The solution is simple: Do nothing. 
-                        solution_found = True
-
-                if node_too_big or not solution_found:
-                    found_solution_for_all = False
-                    new_location = new_node.getPosition()
-                    new_location = new_location.set(z = - not_fit_count * 20)
-                    new_node.setPosition(new_location)
-                    not_fit_count += 1
 
                 # Same build plate
                 build_plate_number = current_node.callDecoration("getBuildPlateNumber")
@@ -93,17 +83,27 @@ class MultiplyObjectsJob(Job):
                     child.callDecoration("setBuildPlateNumber", build_plate_number)
 
                 nodes.append(new_node)
-                current_progress += 1
-                status_message.setProgress((current_progress / total_progress) * 100)
-                QCoreApplication.processEvents()
-                Job.yieldThread()
-            QCoreApplication.processEvents()
-            Job.yieldThread()
+        factor = 10000
+        found_solution_for_all, node_items = findNodePlacement(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor = 10000)
 
         if nodes:
             operation = GroupedOperation()
-            for new_node in nodes:
+            for new_node, node_item in zip(nodes, node_items):
                 operation.addOperation(AddSceneNodeOperation(new_node, root))
+
+                if node_item.binId() == 0:
+                    # We found a spot for it
+                    rotation_matrix = Matrix()
+                    rotation_matrix.setByRotationAxis(node_item.rotation(), Vector(0, -1, 0))
+                    operation.addOperation(RotateOperation(new_node, Quaternion.fromMatrix(rotation_matrix)))
+                    operation.addOperation(
+                        TranslateOperation(new_node, Vector(node_item.translation().x() / factor, 0,
+                                                        node_item.translation().y() / factor)))
+                else:
+                    # We didn't find a spot
+                    operation.addOperation(
+                        TranslateOperation(new_node, Vector(200, 0, -not_fit_count * 20), set_position=True))
+
             operation.push()
         status_message.hide()
 
