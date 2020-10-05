@@ -103,7 +103,7 @@ class MultiplyObjectsJob(Job):
         if nodes:
             operation = GroupedOperation()
             for new_node in nodes:
-                operation.addOperation(AddSceneNodeOperation(new_node, current_node.getParent()))
+                operation.addOperation(AddSceneNodeOperation(new_node, root))
             operation.push()
         status_message.hide()
 
