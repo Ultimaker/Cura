@@ -15,6 +15,9 @@ def findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes = None, factor
     machine_depth = build_volume.getDepth()
     build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
 
+    if fixed_nodes is None:
+        fixed_nodes = []
+
     # Add all the items we want to arrange
     node_items = []
     for node in nodes_to_arrange:
@@ -49,6 +52,18 @@ def findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes = None, factor
         disallowed_area = Item(converted_points)
         disallowed_area.markAsFixedInBin(0)
         node_items.append(disallowed_area)
+        num_disallowed_areas_added += 1
+
+    for node in fixed_nodes:
+        converted_points = []
+        hull_polygon = node.callDecoration("getConvexHull")
+        
+        for point in hull_polygon.getPoints():
+            converted_points.append(Point(point[0] * factor, point[1] * factor))
+        item = Item(converted_points)
+        node_items.append(item)
+        item.markAsFixedInBin(0)
+        node_items.append(item)
         num_disallowed_areas_added += 1
 
     config = NfpConfig()

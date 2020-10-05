@@ -1823,6 +1823,12 @@ class CuraApplication(QtApplication):
         select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
         nodes_to_arrange = []  # type: List[CuraSceneNode]
+        
+        fixed_nodes = []
+        for node_ in DepthFirstIterator(self.getController().getScene().getRoot()):
+            # Only count sliceable objects
+            if node_.callDecoration("isSliceable"):
+                fixed_nodes.append(node_)
 
         for original_node in nodes:
             # Create a CuraSceneNode just if the original node is not that type
@@ -1892,7 +1898,7 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
 
-        arrange(nodes_to_arrange, self.getBuildVolume())
+        arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
 
         self.fileCompleted.emit(file_name)
 
