@@ -1,5 +1,5 @@
 {
-    "name":      "ZAV Mini family printer",
+    "name":      "ZAV mini",
     "version":   2,
     "inherits":  "zav_base",
     "metadata":  {
