@@ -1153,6 +1153,7 @@ class MachineManager(QObject):
             extruder.qualityChanges = quality_changes_container
 
         self.setIntentByCategory(quality_changes_group.intent_category)
+        self._reCalculateNumUserSettings()
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
