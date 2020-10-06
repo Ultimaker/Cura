@@ -1,5 +1,5 @@
 {
-    "name":      "ZAV-Pro family printer",
+    "name":      "ZAV PRO",
     "version":   2,
     "inherits":  "zav_base",
     "metadata":  {
