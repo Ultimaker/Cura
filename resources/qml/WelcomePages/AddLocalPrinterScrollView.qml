@@ -21,11 +21,11 @@ Item
                               ? machineList.model.getItem(machineList.currentIndex)
                               : null
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
-    property string currentSection: "Ultimaker B.V."
+    property string currentSection: "Rapidia Tech"
     // By default (when this list shows up) we always expand the "Ultimaker" section.
     property var preferredCategories: {
-        "Ultimaker B.V.": -2,
-        "Custom": -1
+        "Rapidia Tech": -2,
+        "Ultimaker B.V.": -1
     }
 
     // User-editable printer name

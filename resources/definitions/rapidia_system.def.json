@@ -1,0 +1,69 @@
+{
+    "version": 2,
+    "name": "Rapidia System",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Rapidia",
+        "manufacturer": "Rapidia Tech",
+        "file_formats": "text/x-gcode",
+        "icon": "icon_ultimaker2",
+        "has_material": false,
+        "has_machine_quality": true,
+        "machine_extruder_trains": {
+            "0": "rapidia_extruder_0",
+            "1": "rapidia_extruder_1"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Rapidia System"
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 212
+        },
+        "machine_height": {
+            "default_value": 243
+        },
+        "machine_depth": {
+            "default_value": 190
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "material_diameter": {
+            "default_value": 0.64
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.4
+        },
+        "layer_height": {
+            "default_value": 0.25
+        },
+        "layer_height_0": {
+            "default_value": 0.25
+        },
+        "retraction_amount": {
+            "default_value": 2
+        },
+        "gantry_height": {
+            "value": 190
+        },
+        "machine_extruder_count": {
+            "default_value": 2,
+            "maximum_value": "2"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "M900 K0.05;\nG28 ; home all axes\nG1 Z5 F5000 ; lift nozzle\nG1 X-45 Y70 F2500; go to glycerin roller;"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ; turn off extruder\nG28 X0 ; home X axis\nM84 ; disable motors\nM42 P12 S255 ; turn on red LEDs\nM42 P11 S0 ; turn off green LEDs\nM42 P13 S0 ; turn off blue LEDs\nM140 S70 ; turn bed heat to 70C"
+        }
+    }
+}

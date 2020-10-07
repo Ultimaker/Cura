@@ -126,12 +126,12 @@ UM.MainWindow
             }
 
             // Reuse the welcome dialog item to show "What's New" only.
-            if (CuraApplication.shouldShowWhatsNewDialog())
-            {
-                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
-                welcomeDialogItem.progressBarVisible = false
-                welcomeDialogItem.visible = true
-            }
+            // if (CuraApplication.shouldShowWhatsNewDialog())
+            // {
+            //     welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+            //     welcomeDialogItem.progressBarVisible = false
+            //     welcomeDialogItem.visible = true
+            // }
 
             // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
             // machine and the user is logged in.
@@ -860,14 +860,14 @@ UM.MainWindow
         progressBarVisible: false
     }
 
-    Cura.WizardDialog
-    {
-        id: whatsNewDialog
-        title: catalog.i18nc("@title:window", "What's New")
-        model: CuraApplication.getWhatsNewPagesModel()
-        progressBarVisible: false
-        visible: false
-    }
+    // Cura.WizardDialog
+    // {
+    //     id: whatsNewDialog
+    //     title: catalog.i18nc("@title:window", "What's New")
+    //     model: CuraApplication.getWhatsNewPagesModel()
+    //     progressBarVisible: false
+    //     visible: false
+    // }
 
     Connections
     {
