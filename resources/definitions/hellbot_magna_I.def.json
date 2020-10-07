@@ -1,5 +1,5 @@
 {
-    "version": 3,
+    "version": 2,
     "name": "Hellbot Magna 1",
     "inherits": "fdmprinter",
     "metadata": {
