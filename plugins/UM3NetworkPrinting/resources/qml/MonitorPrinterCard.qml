@@ -194,8 +194,7 @@ Item
                     var configs = []
                     if (printer)
                     {
-                        configs.push(printer.printerConfiguration.extruderConfigurations[0])
-                        configs.push(printer.printerConfiguration.extruderConfigurations[1])
+                        configs = configs.concat(printer.printerConfiguration.extruderConfigurations)
                     }
                     else
                     {
