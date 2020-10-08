@@ -1,16 +1,15 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import List
+
 from UM.Application import Application
 from UM.Job import Job
-from UM.Scene.SceneNode import SceneNode
 from UM.Message import Message
+from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from cura.Arranging.Nest2DArrange import arrange
 
 i18n_catalog = i18nCatalog("cura")
-
-from typing import List
-from pynest2d import *
 
 
 class ArrangeObjectsJob(Job):
@@ -23,7 +22,7 @@ class ArrangeObjectsJob(Job):
     def run(self):
         status_message = Message(i18n_catalog.i18nc("@info:status", "Finding new location for objects"),
                                  lifetime = 0,
-                                 dismissable=False,
+                                 dismissable = False,
                                  progress = 0,
                                  title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
@@ -32,8 +31,9 @@ class ArrangeObjectsJob(Job):
 
         status_message.hide()
         if not found_solution_for_all:
-            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"),
-                                               title = i18n_catalog.i18nc("@info:title", "Can't Find Location"))
+            no_full_solution_message = Message(
+                    i18n_catalog.i18nc("@info:status",
+                                       "Unable to find a location within the build volume for all objects"),
+                    title = i18n_catalog.i18nc("@info:title", "Can't Find Location"))
             no_full_solution_message.show()
         self.finished.emit(self)
-        
