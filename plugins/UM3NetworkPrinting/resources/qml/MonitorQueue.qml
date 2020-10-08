@@ -26,7 +26,7 @@ Item
             left: queuedPrintJobs.left
             top: parent.top
         }
-        color: UM.Theme.getColor("monitor_text_primary")
+        color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
         renderType: Text.NativeRendering
@@ -97,7 +97,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "There are no print jobs in the queue. Slice and send a job to add one.")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -112,7 +112,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -128,7 +128,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
@@ -144,7 +144,7 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter

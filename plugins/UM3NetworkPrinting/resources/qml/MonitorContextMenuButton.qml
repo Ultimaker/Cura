@@ -18,7 +18,7 @@ Button
         width: base.width
     }
     contentItem: Label {
-        color: enabled ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
+        color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
         font.pixelSize: 32 * screenScaleFactor
         horizontalAlignment: Text.AlignHCenter
         text: base.text

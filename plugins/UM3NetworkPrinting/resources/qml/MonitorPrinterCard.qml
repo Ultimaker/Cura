@@ -103,7 +103,7 @@ Item
                     Label
                     {
                         text: printer && printer.name ? printer.name : ""
-                        color: UM.Theme.getColor("monitor_text_primary")
+                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("large") // 16pt, bold
                         width: parent.width
@@ -341,7 +341,7 @@ Item
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                color: printer ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
+                color: printer ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                 font: UM.Theme.getFont("large_bold") // 16pt, bold
                 text: {
                     if (!printer) {
@@ -395,7 +395,7 @@ Item
                 Label
                 {
                     id: printerJobNameLabel
-                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("large") // 16pt, bold
                     text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
@@ -416,7 +416,7 @@ Item
                         topMargin: 6 * screenScaleFactor // TODO: Theme!
                         left: printerJobNameLabel.left
                     }
-                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
+                    color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("default") // 12pt, regular
                     text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
@@ -448,7 +448,7 @@ Item
                 font: UM.Theme.getFont("default")
                 text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
-                color: UM.Theme.getColor("monitor_text_primary")
+                color: UM.Theme.getColor("text")
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
@@ -484,7 +484,7 @@ Item
                 anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
                 color: UM.Theme.getColor("monitor_secondary_button_text")
                 font: UM.Theme.getFont("medium") // 14pt, regular
-                text: catalog.i18nc("@action:button","Details");
+                text: catalog.i18nc("@action:button", "Details");
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 height: 18 * screenScaleFactor // TODO: Theme!

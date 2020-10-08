@@ -97,7 +97,7 @@ Item
                 height: width // TODO: Theme!
                 sourceSize.width: width // TODO: Theme!
                 sourceSize.height: width // TODO: Theme!
-                color: UM.Theme.getColor("monitor_text_primary")
+                color: UM.Theme.getColor("text")
                 source: UM.Theme.getIcon("arrow_left")
             }
         }
@@ -176,7 +176,7 @@ Item
                 height: width // TODO: Theme!
                 sourceSize.width: width // TODO: Theme!
                 sourceSize.height: width // TODO: Theme!
-                color: UM.Theme.getColor("monitor_text_primary")
+                color: UM.Theme.getColor("text")
                 source: UM.Theme.getIcon("arrow_right")
             }
         }
