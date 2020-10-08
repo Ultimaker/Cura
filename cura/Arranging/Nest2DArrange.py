@@ -23,7 +23,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
     :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
                         are placed.
-    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
+    :param factor: The library that we use is int based. This factor defines how accurate we want it to be.
     :return:
     """
 
@@ -66,7 +66,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
             converted_points.append(Point(point[0] * factor, point[1] * factor))
 
         disallowed_area = Item(converted_points)
-        disallowed_area.markAsFixedInBin(0)
+        disallowed_area.markAsDisallowedAreaInBin(0)
         node_items.append(disallowed_area)
         num_disallowed_areas_added += 1
 
@@ -87,9 +87,8 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
     num_bins = nest(node_items, build_plate_bounding_box, 10000, config)
 
-    # Strip the disallowed areas from the results again
-    if num_disallowed_areas_added != 0:
-        node_items = node_items[:-num_disallowed_areas_added]
+    # Strip the fixed items (previously placed) and the disallowed areas from the results again.
+    node_items = list(filter(lambda item: not item.isFixed(), node_items))
 
     found_solution_for_all = num_bins == 1
 
