@@ -8,8 +8,9 @@
         "manufacturer": "Rapidia Tech",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
-        "has_material": false,
+        "has_material": true,
         "has_machine_quality": true,
+        "quality_definition": "rapidia_system",
         "machine_extruder_trains": {
             "0": "rapidia_extruder_0",
             "1": "rapidia_extruder_1"
