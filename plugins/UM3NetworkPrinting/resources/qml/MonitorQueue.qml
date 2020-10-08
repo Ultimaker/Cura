@@ -98,13 +98,9 @@ Item
         {
             text: catalog.i18nc("@label", "There are no print jobs in the queue. Slice and send a job to add one.")
             color: UM.Theme.getColor("text")
-            elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
             anchors.verticalCenter: parent.verticalCenter
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count === 0
         }
@@ -113,14 +109,10 @@ Item
         {
             text: catalog.i18nc("@label", "Print jobs")
             color: UM.Theme.getColor("text")
-            elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: 284 * screenScaleFactor // TODO: Theme! (Should match column size)
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
@@ -129,14 +121,10 @@ Item
         {
             text: catalog.i18nc("@label", "Total print time")
             color: UM.Theme.getColor("text")
-            elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
@@ -145,14 +133,10 @@ Item
         {
             text: catalog.i18nc("@label", "Waiting for")
             color: UM.Theme.getColor("text")
-            elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
