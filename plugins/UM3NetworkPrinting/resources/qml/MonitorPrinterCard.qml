@@ -130,7 +130,7 @@ Item
                     anchors
                     {
                         top: printerNameLabel.bottom
-                        topMargin: 6 * screenScaleFactor // TODO: Theme!
+                        topMargin: UM.Theme.getSize("narrow_margin").height
                         left: printerNameLabel.left
                     }
                     text: printer ? printer.type : ""
@@ -140,7 +140,7 @@ Item
                     id: managePrinterLink
                     anchors {
                         top: printerFamilyPill.bottom
-                        topMargin: 6 * screenScaleFactor
+                        topMargin: UM.Theme.getSize("narrow_margin").height
                     }
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: childrenRect.width
@@ -160,7 +160,7 @@ Item
                         anchors
                         {
                             left: managePrinterText.right
-                            leftMargin: 6 * screenScaleFactor
+                            leftMargin: UM.Theme.getSize("narrow_margin").width
                             verticalCenter: managePrinterText.verticalCenter
                         }
                         color: UM.Theme.getColor("text_link")
@@ -413,7 +413,7 @@ Item
                     anchors
                     {
                         top: printerJobNameLabel.bottom
-                        topMargin: 6 * screenScaleFactor // TODO: Theme!
+                        topMargin: UM.Theme.getSize("narrow_margin").height
                         left: printerJobNameLabel.left
                     }
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")

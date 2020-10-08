@@ -58,7 +58,7 @@ Item
             anchors
             {
                 left: externalLinkIcon.right
-                leftMargin: 6 * screenScaleFactor // TODO: Theme!
+                leftMargin: UM.Theme.getSize("narrow_margin").width
                 verticalCenter: externalLinkIcon.verticalCenter
             }
             color: UM.Theme.getColor("text_link")
@@ -88,7 +88,7 @@ Item
         anchors
         {
             left: queuedPrintJobs.left
-            leftMargin: 6 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("narrow_margin").width
             top: queuedLabel.bottom
             topMargin: 24 * screenScaleFactor // TODO: Theme!
         }
@@ -99,7 +99,7 @@ Item
             text: catalog.i18nc("@label", "There are no print jobs in the queue. Slice and send a job to add one.")
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
-            font: UM.Theme.getFont("medium") // 14pt, regular
+            font: UM.Theme.getFont("medium")
             anchors.verticalCenter: parent.verticalCenter
 
             // FIXED-LINE-HEIGHT:
