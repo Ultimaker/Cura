@@ -23,7 +23,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
     :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
                         are placed.
-    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
+    :param factor: The library that we use is int based. This factor defines how accurate we want it to be.
     :return:
     """
 

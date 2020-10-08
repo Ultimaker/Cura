@@ -74,7 +74,7 @@ class MultiplyObjectsJob(Job):
 
                 nodes.append(new_node)
         factor = 10000
-        found_solution_for_all, node_items = findNodePlacement(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor = 10000)
+        found_solution_for_all, node_items = findNodePlacement(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor = factor)
         not_fit_count = 0
         if nodes:
             operation = GroupedOperation()

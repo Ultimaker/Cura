@@ -36,3 +36,4 @@ class ArrangeObjectsJob(Job):
                                                title = i18n_catalog.i18nc("@info:title", "Can't Find Location"))
             no_full_solution_message.show()
         self.finished.emit(self)
+        
