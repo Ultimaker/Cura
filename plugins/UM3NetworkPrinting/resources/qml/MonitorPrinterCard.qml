@@ -271,7 +271,8 @@ Item
         }
 
         // For cloud printing, add this mouse area over the disabled cameraButton to indicate that it's not available
-        MouseArea
+        //Warning message is commented out because it's factually incorrect. Fix CURA-7637 to allow camera connections via cloud.
+        /* MouseArea
         {
             id: cameraDisabledButtonArea
             anchors.fill: cameraButton
@@ -281,7 +282,7 @@ Item
             enabled: !cameraButton.enabled
         }
 
-        /* //Warning message is commented out because it's factually incorrect. Fix CURA-7637 to allow camera connections via cloud.
+
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
