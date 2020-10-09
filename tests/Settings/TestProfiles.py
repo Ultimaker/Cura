@@ -93,7 +93,7 @@ def test_validateQualityProfiles(file_name):
             # Fairly obvious, but all the types here should be of the type quality
             assert InstanceContainer.getConfigurationTypeFromSerialized(serialized) == "quality"
             # All quality profiles must be linked to an existing definition.
-            assert result["general"]["definition"] in all_definition_ids
+            assert result["general"]["definition"] in all_definition_ids, "The quality profile %s links to an unknown definition (%s)" % (file_name, result["general"]["definition"])
 
             # We don't care what the value is, as long as it's there.
             assert result["metadata"].get("quality_type", None) is not None
@@ -147,9 +147,10 @@ def test_validateVariantProfiles(file_name):
             serialized = data.read()
             result = InstanceContainer._readAndValidateSerialized(serialized)
             # Fairly obvious, but all the types here should be of the type quality
-            assert InstanceContainer.getConfigurationTypeFromSerialized(serialized) == "variant"
+            assert InstanceContainer.getConfigurationTypeFromSerialized(serialized) == "variant", "The profile %s should be of type variant, but isn't" % file_name
+
             # All quality profiles must be linked to an existing definition.
-            assert result["general"]["definition"] in all_definition_ids
+            assert result["general"]["definition"] in all_definition_ids, "The profile %s isn't associated with a definition" % file_name
 
             # Check that all the values that we say something about are known.
             if "values" in result:
@@ -159,8 +160,7 @@ def test_validateVariantProfiles(file_name):
 
                 has_unknown_settings = not variant_setting_keys.issubset(all_setting_ids)
                 if has_unknown_settings:
-                    print("The following setting(s) %s are defined in the variant %s, but not in fdmprinter.def.json" % ([key for key in variant_setting_keys if key not in all_setting_ids], file_name))
-                    assert False
+                    assert False, "The following setting(s) %s are defined in the variant %s, but not in fdmprinter.def.json" % ([key for key in variant_setting_keys if key not in all_setting_ids], file_name)
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
         print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
@@ -175,11 +175,11 @@ def test_versionUpToDate(file_name):
 
             assert "general" in parser
             assert "version" in parser["general"]
-            assert int(parser["general"]["version"]) == InstanceContainer.Version
+            assert int(parser["general"]["version"]) == InstanceContainer.Version, "The version of this profile is not up to date!"
 
             assert "metadata" in parser
             assert "setting_version" in parser["metadata"]
-            assert int(parser["metadata"]["setting_version"]) == CuraApplication.SettingVersion
+            assert int(parser["metadata"]["setting_version"]) == CuraApplication.SettingVersion, "The version of this profile is not up to date!"
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
         print("Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e)))
