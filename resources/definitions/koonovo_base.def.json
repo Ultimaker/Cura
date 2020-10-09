@@ -91,12 +91,9 @@
         "speed_z_hop": { "value": 5 },
 
         "retraction_enable": { "value": true },
-        "retraction_amount": { "value": 4 },
-        "retraction_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
-            "maximum_value": 200
-        },     
-
+        "retraction_amount": { "value": 2.5 },
+        "retraction_speed": { "value": 40 },
+	    
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
         "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
