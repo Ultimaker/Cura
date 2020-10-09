@@ -165,7 +165,7 @@ class ProcessSlicedLayersJob(Job):
                 new_points = numpy.empty((len(points), 3), numpy.float32)
                 if polygon.point_type == 0:  # Point2D
                     new_points[:, 0] = points[:, 0]
-                    new_points[:, 1] = layer.height / 1000  # layer height value is in backend representation
+                    new_points[:, 1] = layer.height / 10000  # layer height value is in backend representation
                     new_points[:, 2] = -points[:, 1]
                 else: # Point3D
                     new_points[:, 0] = points[:, 0]
