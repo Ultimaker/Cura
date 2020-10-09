@@ -79,7 +79,6 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         for point in hull_polygon.getPoints():
             converted_points.append(Point(point[0] * factor, point[1] * factor))
         item = Item(converted_points)
-        node_items.append(item)
         item.markAsFixedInBin(0)
         node_items.append(item)
         num_disallowed_areas_added += 1
