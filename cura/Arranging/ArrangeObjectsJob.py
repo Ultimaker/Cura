@@ -27,7 +27,7 @@ class ArrangeObjectsJob(Job):
                                  title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
 
-        found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume())
+        found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
 
         status_message.hide()
         if not found_solution_for_all:
