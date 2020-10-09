@@ -88,11 +88,10 @@ class MultiplyObjectsJob(Job):
                     operation.addOperation(RotateOperation(new_node, Quaternion.fromMatrix(rotation_matrix)))
                     operation.addOperation(
                         TranslateOperation(new_node, Vector(node_item.translation().x() / factor, 0,
-                                                        node_item.translation().y() / factor)))
+                                                            node_item.translation().y() / factor)))
                 else:
                     # We didn't find a spot
-                    operation.addOperation(
-                        TranslateOperation(new_node, Vector(200, 0, -not_fit_count * 20), set_position=True))
+                    operation.addOperation(TranslateOperation(new_node, Vector(200, new_node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
                     not_fit_count += 1
 
             operation.push()

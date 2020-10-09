@@ -112,6 +112,7 @@ def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fi
     not_fit_count = 0
     grouped_operation = GroupedOperation()
     for node, node_item in zip(nodes_to_arrange, node_items):
+
         if node_item.binId() == 0:
             # We found a spot for it
             rotation_matrix = Matrix()
@@ -122,7 +123,7 @@ def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fi
         else:
             # We didn't find a spot
             grouped_operation.addOperation(
-                TranslateOperation(node, Vector(200, 0, -not_fit_count * 20), set_position=True))
+                TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
             not_fit_count += 1
     grouped_operation.push()
 
