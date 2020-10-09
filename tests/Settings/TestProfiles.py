@@ -7,6 +7,7 @@ import os
 import os.path
 import pytest
 
+from UM.FastConfigParser import FastConfigParser
 from cura.CuraApplication import CuraApplication  # To compare against the current SettingVersion.
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -46,6 +47,7 @@ def collectAllVariants():
         for filename in filenames:
             result.append(os.path.join(root, filename))
     return result
+
 
 def collectAllIntents():
     result = []
@@ -169,8 +171,7 @@ def test_validateVariantProfiles(file_name):
 def test_versionUpToDate(file_name):
     try:
         with open(file_name, encoding = "utf-8") as data:
-            parser = configparser.ConfigParser(interpolation = None)
-            parser.read(file_name)
+            parser = FastConfigParser(data.read())
 
             assert "general" in parser
             assert "version" in parser["general"]
