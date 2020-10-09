@@ -61,6 +61,25 @@ variant_filepaths = collectAllVariants()
 intent_filepaths = collectAllIntents()
 
 
+def test_uniqueID():
+    """Check if the ID's from the qualities, variants & intents are unique."""
+
+    all_paths = quality_filepaths + variant_filepaths + intent_filepaths
+    all_ids = {}
+    for path in all_paths:
+        profile_id = os.path.basename(path)
+        profile_id = profile_id.replace(".inst.cfg", "")
+        if profile_id not in all_ids:
+            all_ids[profile_id] = []
+        all_ids[profile_id].append(path)
+
+    duplicated_ids_with_paths = {profile_id: paths for profile_id, paths in all_ids.items() if len(paths) > 1}
+    if len(duplicated_ids_with_paths.keys()) == 0:
+        return  # No issues!
+
+    assert False, "Duplicate profile ID's were detected! Ensure that every profile ID is unique: %s" % duplicated_ids_with_paths
+
+
 @pytest.mark.parametrize("file_name", quality_filepaths)
 def test_validateQualityProfiles(file_name):
     """Attempt to load all the quality profiles."""
@@ -93,6 +112,7 @@ def test_validateQualityProfiles(file_name):
         print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
         assert False
 
+
 @pytest.mark.parametrize("file_name", intent_filepaths)
 def test_validateIntentProfiles(file_name):
     try:
@@ -114,6 +134,7 @@ def test_validateIntentProfiles(file_name):
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
         assert False, "Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e))
+
 
 @pytest.mark.parametrize("file_name", variant_filepaths)
 def test_validateVariantProfiles(file_name):
@@ -142,6 +163,7 @@ def test_validateVariantProfiles(file_name):
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
         print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
         assert False
+
 
 @pytest.mark.parametrize("file_name", quality_filepaths + variant_filepaths + intent_filepaths)
 def test_versionUpToDate(file_name):
