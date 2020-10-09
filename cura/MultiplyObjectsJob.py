@@ -51,8 +51,6 @@ class MultiplyObjectsJob(Job):
             if node_.callDecoration("isSliceable"):
                 fixed_nodes.append(node_)
 
-        not_fit_count = 0
-        found_solution_for_all = False
         for node in self._objects:
             # If object is part of a group, multiply group
             current_node = node
