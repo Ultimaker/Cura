@@ -44,7 +44,6 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.Validator import Validator
-from UM.Util import parseBool
 from UM.View.SelectionPass import SelectionPass  # For typing.
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.i18n import i18nCatalog
@@ -1383,7 +1382,7 @@ class CuraApplication(QtApplication):
     def arrangeAll(self) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
-        fixed_nodes = []
+        locked_nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
@@ -1406,11 +1405,11 @@ class CuraApplication(QtApplication):
                 bounding_box = node.getBoundingBox()
                 if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
                     # Arrange only the unlocked nodes and keep the locked ones in place
-                    if not parseBool(node.getSetting(SceneNodeSettings.LockPosition)):
-                        nodes_to_arrange.append(node)
+                    if UM.Util.parseBool(node.getSetting(SceneNodeSettings.LockPosition)):
+                        locked_nodes.append(node)
                     else:
-                        fixed_nodes.append(node)
-        self.arrange(nodes_to_arrange, fixed_nodes = fixed_nodes)
+                        nodes_to_arrange.append(node)
+        self.arrange(nodes_to_arrange, locked_nodes)
 
     def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
         """Arrange a set of nodes given a set of fixed nodes
