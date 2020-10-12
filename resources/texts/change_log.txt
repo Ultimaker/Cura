@@ -388,7 +388,7 @@ As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker
 * Minor improvements
  - Reweighting stages.
  - Small plug-in system improvements
- - Add RetractContinue post-processing script by https://github.com/thopiekar
+ - Add RetractContinue post-processing script.
  - Add DisplayRemainingTimeOnLCD post-processing script by https://github.com/iLyngklip
  - Thickness of the very bottom layer
 
