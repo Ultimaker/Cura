@@ -64,24 +64,26 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         # Clip the disallowed areas so that they don't overlap the bounding box (The arranger chokes otherwise)
         clipped_area = area.intersectionConvexHulls(build_plate_polygon)
 
-        for point in clipped_area.getPoints():
-            converted_points.append(Point(point[0] * factor, point[1] * factor))
+        if clipped_area.getPoints() is not None:  # numpy array has to be explicitly checked against None
+            for point in clipped_area.getPoints():
+                converted_points.append(Point(point[0] * factor, point[1] * factor))
 
-        disallowed_area = Item(converted_points)
-        disallowed_area.markAsDisallowedAreaInBin(0)
-        node_items.append(disallowed_area)
-        num_disallowed_areas_added += 1
+            disallowed_area = Item(converted_points)
+            disallowed_area.markAsDisallowedAreaInBin(0)
+            node_items.append(disallowed_area)
+            num_disallowed_areas_added += 1
 
     for node in fixed_nodes:
         converted_points = []
         hull_polygon = node.callDecoration("getConvexHull")
-        
-        for point in hull_polygon.getPoints():
-            converted_points.append(Point(point[0] * factor, point[1] * factor))
-        item = Item(converted_points)
-        item.markAsFixedInBin(0)
-        node_items.append(item)
-        num_disallowed_areas_added += 1
+
+        if hull_polygon.getPoints() is not None:  # numpy array has to be explicitly checked against None
+            for point in hull_polygon.getPoints():
+                converted_points.append(Point(point[0] * factor, point[1] * factor))
+            item = Item(converted_points)
+            item.markAsFixedInBin(0)
+            node_items.append(item)
+            num_disallowed_areas_added += 1
 
     config = NfpConfig()
     config.accuracy = 1.0
