@@ -26,7 +26,11 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
                         are placed.
     :param factor: The library that we use is int based. This factor defines how accurate we want it to be.
-    :return:
+
+    :return: tuple (found_solution_for_all, node_items)
+        WHERE
+        found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
+        node_items: A list of the nodes return by libnest2d, which contain the new positions on the buildplate
     """
 
     machine_width = build_volume.getWidth()
@@ -107,7 +111,8 @@ def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fi
                         are placed.
     :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
     :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
-    :return:
+
+    :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
     """
     scene_root = Application.getInstance().getController().getScene().getRoot()
     found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
