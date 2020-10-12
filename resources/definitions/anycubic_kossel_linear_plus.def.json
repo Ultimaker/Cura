@@ -11,7 +11,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "Anicubic kossel Linear Plus"
+            "default_value": "Anycubic Kossel Linear Plus"
         },
         "machine_width": {
             "default_value": 240

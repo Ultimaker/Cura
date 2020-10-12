@@ -10,7 +10,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "Anicubic kossel Pulley"
+            "default_value": "Anycubic Kossel Pulley"
         }
     }
 }
