@@ -347,17 +347,22 @@ Item
                     if (!printer) {
                         return catalog.i18nc("@label:status", "Loading...")
                     }
-                    if (printer && printer.state == "disabled")
+                    if (printer.state == "disabled")
                     {
                         return catalog.i18nc("@label:status", "Unavailable")
                     }
-                    if (printer && printer.state == "unreachable")
+                    if (printer.state == "unreachable")
                     {
                         return catalog.i18nc("@label:status", "Unreachable")
                     }
-                    if (printer && !printer.activePrintJob && printer.state == "idle")
+                    if (!printer.activePrintJob && printer.state == "idle")
                     {
                         return catalog.i18nc("@label:status", "Idle")
+                    }
+                    if (!printer.activePrintJob && printer.state == "printing")
+                    {
+                        // The print job isn't quite updated yet.
+                        return catalog.i18nc("@label:status", "Printing")
                     }
                     return ""
                 }
