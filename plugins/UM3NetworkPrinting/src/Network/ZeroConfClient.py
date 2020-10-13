@@ -6,9 +6,11 @@ from time import time
 from typing import Optional
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+from zeroconf import __version__ as zeroconf_version
 
 from UM.Logger import Logger
 from UM.Signal import Signal
+from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 
 
@@ -129,20 +131,20 @@ class ZeroConfClient:
 
         for record in zero_conf.cache.entries_with_name(info.server):
             info.update_record(zero_conf, time(), record)
-            if info.address:
+            if self._getAddress(info):
                 break
 
         # Request more data if info is not complete
-        if not info.address:
+        if not self._getAddress(info):
             new_info = zero_conf.get_service_info(service_type, name)
             if new_info is not None:
                 info = new_info
 
-        if info and info.address:
+        if info and self._getAddress(info):
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":
-                    address = '.'.join(map(str, info.address))
+                    address = '.'.join(map(str, self._getAddress(info)))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
                     Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)
@@ -151,6 +153,16 @@ class ZeroConfClient:
             return False
 
         return True
+
+    @staticmethod
+    def _getAddress(info: ServiceInfo) -> str:
+        """Retrieve IPv4 address from the ServiceInfo as string, None if there is no address."""
+
+        # Check the version of python-zeroconf
+        if Version(zeroconf_version) >= Version([0, 24, 0]):
+            return next(iter(info.addresses), None)
+        else:  # Versions up to 0.23 only support info.address
+            return info.address
 
     def _onServiceRemoved(self, name: str) -> bool:
         """Handler for when a ZeroConf service was removed."""
