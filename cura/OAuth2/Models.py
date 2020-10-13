@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, Dict, Any
 
@@ -27,6 +27,8 @@ class UserProfile(BaseModel):
     user_id = None  # type: Optional[str]
     username = None  # type: Optional[str]
     profile_image_url = None  # type: Optional[str]
+    enterprise_plan = None  # type: Optional[str]
+    organization_id = None  # type: Optional[str]
 
 
 class AuthenticationResponse(BaseModel):

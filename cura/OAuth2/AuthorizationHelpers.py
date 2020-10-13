@@ -1,11 +1,11 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
 import json
 import random
 from hashlib import sha512
 from base64 import b64encode
-from typing import Optional
+from typing import Optional, Any, Dict, Tuple
 
 import requests
 
@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 catalog = i18nCatalog("cura")
 TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 
 class AuthorizationHelpers:
     """Class containing several helpers to deal with the authorization flow."""
@@ -121,10 +122,12 @@ class AuthorizationHelpers:
         if not user_data or not isinstance(user_data, dict):
             Logger.log("w", "Could not parse user data from token: %s", user_data)
             return None
+        enterprise_info = self.extractEnterpriseSubscriptionInformation(user_data)
         return UserProfile(
             user_id = user_data["user_id"],
             username = user_data["username"],
-            profile_image_url = user_data.get("profile_image_url", "")
+            profile_image_url = user_data.get("profile_image_url", ""),
+            **enterprise_info
         )
 
     @staticmethod
@@ -147,3 +150,22 @@ class AuthorizationHelpers:
 
         encoded = sha512(verification_code.encode()).digest()
         return b64encode(encoded, altchars = b"_-").decode()
+
+    @staticmethod
+    def extractEnterpriseSubscriptionInformation(user_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extracts information related to the enterprise subscription of the account.
+
+        :param user_data: Dictionary containing the unencoded user_data received by the JWT
+        :returns: enterprise_info: Dictionary containing information related to enterprise subscriptions
+        """
+        enterprise_info = {}
+        subscriptions = user_data.get("subscriptions", [])
+        enterprise_subscription = {}
+        for subscription in subscriptions:
+            if subscription.get("type_id", "") == "customer.enterprise":
+                enterprise_subscription = subscription
+                break
+        enterprise_info["enterprise_plan"] = enterprise_subscription.get("plan_id", "")
+        enterprise_info["organization_id"] = user_data.get("organization", {}).get("organization_id", "")
+        return enterprise_info
