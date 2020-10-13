@@ -2326,6 +2326,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100.0,
+                    "enabled": false,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "120",
