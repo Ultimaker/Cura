@@ -18,10 +18,10 @@
         "material_diameter": { "default_value": 1.75 },
       
         "machine_extruder_start_code": {
-            "default_value":"\nG01 F4200 X-50 Y30"
+            "default_value":"\nG01 F4200 X150 Y30"
         },
         "machine_extruder_end_code": {
-            "default_value": "\nG01 F4200 X-50 Y30"
+            "default_value": "\nG01 F4200 Y30"
         }
   
     }
