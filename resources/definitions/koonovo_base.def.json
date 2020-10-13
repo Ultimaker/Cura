@@ -70,7 +70,7 @@
         "material_print_temperature_layer_0": { "value": "material_print_temperature" },       
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_bed_temperature": { "value": "45" },       
+        "material_bed_temperature": { "value": "55" },       
         "material_bed_temperature_layer_0": { "value": "material_bed_temperature" },
         "material_flow": { "value": 100 },
         "material_standby_temperature": { "value": "material_print_temperature" },
