@@ -21,7 +21,6 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 """Return object for  bestSpot"""
 
 
-@deprecated("Use the functions in Nest2dArrange instead", "4.8")
 class Arrange:
     """
     The Arrange classed is used together with :py:class:`cura.Arranging.ShapeArray.ShapeArray`. Use it to find good locations for objects that you try to put
@@ -34,6 +33,7 @@ class Arrange:
 
     build_volume = None  # type: Optional[BuildVolume]
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def __init__(self, x, y, offset_x, offset_y, scale = 0.5):
         self._scale = scale  # convert input coordinates to arrange coordinates
         world_x, world_y = int(x * self._scale), int(y * self._scale)
@@ -46,8 +46,8 @@ class Arrange:
         self._last_priority = 0
         self._is_empty = True
 
-    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     @classmethod
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250, min_offset = 8) -> "Arrange":
         """Helper to create an :py:class:`cura.Arranging.Arrange.Arrange` instance
 
