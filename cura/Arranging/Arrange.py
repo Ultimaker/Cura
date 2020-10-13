@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from UM.Decorators import deprecated
+from UM.Decorators import deprecated, Deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Polygon import Polygon
@@ -21,13 +21,12 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 """Return object for  bestSpot"""
 
 
-@deprecated("Use the functions in Nest2dArrange instead", "4.8")
-class Arrange:
+class Arrange(Deprecated):
     """
     The Arrange classed is used together with :py:class:`cura.Arranging.ShapeArray.ShapeArray`. Use it to find good locations for objects that you try to put
     on a build place. Different priority schemes can be defined so it alters the behavior while using the same logic.
 
-    .. note::
+    .. note:: DEPRECATED, use Nest2dArrange instead
 
        Make sure the scale is the same between :py:class:`cura.Arranging.ShapeArray.ShapeArray` objects and the :py:class:`cura.Arranging.Arrange.Arrange` instance.
     """
@@ -35,6 +34,7 @@ class Arrange:
     build_volume = None  # type: Optional[BuildVolume]
 
     def __init__(self, x, y, offset_x, offset_y, scale = 0.5):
+        super().__init__(self.__class__, message = "Use Nest2dArrange instead", since = "4.8")
         self._scale = scale  # convert input coordinates to arrange coordinates
         world_x, world_y = int(x * self._scale), int(y * self._scale)
         self._shape = (world_y, world_x)
@@ -46,8 +46,8 @@ class Arrange:
         self._last_priority = 0
         self._is_empty = True
 
-    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     @classmethod
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250, min_offset = 8) -> "Arrange":
         """Helper to create an :py:class:`cura.Arranging.Arrange.Arrange` instance
 
@@ -140,6 +140,7 @@ class Arrange:
             node.setPosition(Vector(200, center_y, 100))
         return found_spot
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def centerFirst(self):
         """Fill priority, center is best. Lower value is better. """
 
@@ -149,6 +150,7 @@ class Arrange:
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def backFirst(self):
         """Fill priority, back is best. Lower value is better """
 
@@ -157,6 +159,7 @@ class Arrange:
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def checkShape(self, x, y, shape_arr) -> Optional[numpy.ndarray]:
         """Return the amount of "penalty points" for polygon, which is the sum of priority
 
@@ -189,6 +192,7 @@ class Arrange:
             offset_x:offset_x + shape_arr.arr.shape[1]]
         return numpy.sum(prio_slice[numpy.where(shape_arr.arr == 1)])
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def bestSpot(self, shape_arr, start_prio = 0, step = 1) -> LocationSuggestion:
         """Find "best" spot for ShapeArray
 
@@ -220,6 +224,7 @@ class Arrange:
                     return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = priority)
         return LocationSuggestion(x = None, y = None, penalty_points = None, priority = priority)  # No suitable location found :-(
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def place(self, x, y, shape_arr, update_empty = True):
         """Place the object.
 
