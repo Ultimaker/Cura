@@ -11,7 +11,7 @@
         "platform_texture": "koonovo.png",
 
         "first_start_actions": [ "MachineSettingsAction" ],
-	 "machine_extruder_trains": {"0": "koonovo_base_extruder_1"},
+	 "machine_extruder_trains": {"0": "koonovo_base_extruder_0"},
 
         "has_materials": true,
 	  "has_machine_quality": true,
