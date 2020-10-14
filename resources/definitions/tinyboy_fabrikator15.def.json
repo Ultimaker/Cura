@@ -1,12 +1,14 @@
 {
-    "version": 1,
-    "name": "TinyBoy Fabrikator 1.5",
+    "version": 2,
+    "name": "TinyBoy Fabrikator Mini 1.5",
     "inherits": "fdmprinter",
     "metadata": { 
         "visible": true,
         "author": "Reiner Buehl",
         "manufacturer": "TinyBoy",
         "file_formats": "text/x-gcode",
+        "platform": "tinyboy_fabrikator15.stl",
+        "platform_offset": [-95, 0, -46],
         "has_materials": false,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
@@ -17,7 +19,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "TinyBoy Fabrikator 1.5" },
+        "machine_name": { "default_value": "Fabrikator Mini 1.5" },
         "machine_width": { "default_value": 80 },
         "machine_depth": { "default_value": 80 },
         "machine_height": { "default_value": 80 },
