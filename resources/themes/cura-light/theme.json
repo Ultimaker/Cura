@@ -405,7 +405,6 @@
         "favorites_row_selected": [196, 239, 255, 255],
 
         "monitor_printer_family_tag": [228, 228, 242, 255],
-        "monitor_text_primary": [65, 64, 84, 255],
         "monitor_text_disabled": [238, 238, 238, 255],
         "monitor_icon_primary": [10, 8, 80, 255],
         "monitor_icon_accent": [255, 255, 255, 255],
