@@ -155,7 +155,7 @@ class ZeroConfClient:
         return True
 
     @staticmethod
-    def _getAddress(info: ServiceInfo) -> str:
+    def _getAddress(info: ServiceInfo) -> Optional[str]:
         """Retrieve IPv4 address from the ServiceInfo as string, None if there is no address."""
 
         # Check the version of python-zeroconf
