@@ -1,5 +1,5 @@
 ---
-name: CI/CD
+name: CI
 on:
   push:
     branches:
@@ -10,11 +10,12 @@ on:
   pull_request:
 jobs:
   build:
-    name: Build and test
     runs-on: ubuntu-latest
     container: ultimaker/cura-build-environment
     steps:
     - name: Checkout Cura
       uses: actions/checkout@v2
-    - name: Build and test
+    - name: Build
       run: docker/build.sh
+    - name: Test
+      run: docker/test.sh
