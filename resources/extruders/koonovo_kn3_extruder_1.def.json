@@ -3,7 +3,7 @@
     "name": "Right Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "KOONOVO_KN3",
+        "machine": "koonovo_kn3",
         "position": "1"
     },
 
