@@ -756,7 +756,7 @@ class CuraApplication(QtApplication):
             self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib" + suffix, "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
-            self._plugin_registry.loadPlugin("ConsoleLogger")
+            self._plugin_registry.preloaded_plugins.append("ConsoleLogger")
 
         self._plugin_registry.loadPlugins()
 
