@@ -3,7 +3,7 @@
 from queue import Queue
 from threading import Thread, Event
 from time import time
-from typing import Optional
+from typing import List, Optional
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from zeroconf import __version__ as zeroconf_version
@@ -131,20 +131,20 @@ class ZeroConfClient:
 
         for record in zero_conf.cache.entries_with_name(info.server):
             info.update_record(zero_conf, time(), record)
-            if self._getAddress(info):
+            if self._getAddresses(info):
                 break
 
         # Request more data if info is not complete
-        if not self._getAddress(info):
+        if not self._getAddresses(info):
             new_info = zero_conf.get_service_info(service_type, name)
             if new_info is not None:
                 info = new_info
 
-        if info and self._getAddress(info):
+        if info and self._getAddresses(info):
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":
-                    address = '.'.join(map(str, self._getAddress(info)))
+                    address = '.'.join(map(str, self._getAddresses(info)[0]))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
                     Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)
@@ -155,14 +155,14 @@ class ZeroConfClient:
         return True
 
     @staticmethod
-    def _getAddress(info: ServiceInfo) -> Optional[bytes]:
-        """Retrieve IPv4 address from the ServiceInfo as bytes, None if there is no address."""
+    def _getAddresses(info: ServiceInfo) -> List[bytes]:
+        """Retrieve all IPv4 addresses from the ServiceInfo as bytes"""
 
         # Check the version of python-zeroconf
         if Version(zeroconf_version) >= Version([0, 24, 0]):
-            return next(iter(info.addresses), None)
+            return info.addresses
         else:  # Versions up to 0.23 only support info.address
-            return info.address
+            return [info.address] if info.address else []
 
     def _onServiceRemoved(self, name: str) -> bool:
         """Handler for when a ZeroConf service was removed."""
