@@ -1,3 +1,57 @@
+[4.8.0]
+
+* (NOTE: Draft release notes for Beta, these may change for final.)
+
+* New arrange algorithm!
+Shoutout to Prusa, since they made the libnest2d library for this, and allowed a licence change.
+
+* When opening a project file, pick any matching printer in addition to just exact match and new definition.
+Previously, when someone sent you a project, you either had to have the exact same printer under the exact same name, or create an entirely new instance. Now, in the open project dialog, you can specify any printer that has a(n exactly) matching printer-type.
+
+* Show warning message on profiles that where successfully imported, but not supported by the currently active configuration.
+People where a bit confused when adding profiles, which then didn't show up. With this new version, when you add a profile that isn't supported by the current instance (but otherwise correctly imported), you get a warning-message.
+
+* Show parts of the model below the buildplate in a different color.
+When viewing the buildplate from below, there's now shadow visible anymore. As this helped the user determine what part of the model was below the buildplate, we decided to color that part differently instead.
+
+* Show the familiar striped pattern for objects outside of the build-volume in Preview mode as well.
+Models outside of the build-volume can of course not be sliced. In the Prepare mode, this was already visible with solid objects indicated in the familiar grey-yellow striped pattern. Now you can also see the objects that are still in the scene just outside if the build-volume in Preview mode.
+
+* Iron the top-most bottom layer when spiralizing a solid model, contributed by smartavionics
+Ironing was only used for top-layers, or every layer. But what is the biggest flat surface in a vase? This helpful pull request made it so that, in this case, the top-most bottom layer is used to iron on.
+
+* Allow scrolling through setting-tooltips, useful for some plugins.
+Certain plugins, such as the very useful Settings Guide, occasionally have very large tooltips. This update allows you to scroll through those.
+
+* Bug Fixes
+- Fix the simplify algorithm. Again.
+- Fix percentage text-fields when scaling non-uniformly.
+- Fix cloud printer stuck in connect/disconnect loop.
+- Fix rare crash when processing stair stepping in support.
+- Fix sudden increase in tree support branch diameter.
+- Fix cases of tree-support resting against vertical wall.
+- Fix conical support missing on printers with 'origin at center' set.
+- Fix infill multiplier and connected lines settings not cooperating with each other.
+- Fixed an issue with skin-edge support, contributed by smartavionics
+- Fix printer renaming didn't always stick after restart.
+- Fix move after retraction not changing speed if it's a factor 60 greater.
+- Fix Windows file alteration detection (reload file popup message appears again).
+- OBJ-file reader now doesn't get confused by legal negative indices.
+- Fix off-by-one error that could cause horizontal faces to shift one layer upwards.
+- Fix out of bounds array and lost checks for segments ended with mesh vertices, contributed bt skarasov
+- Remove redundant 'successful responses' variable, contributed by aerotog
+
+* Printer definitions and profiles
+- Artillery Sidewinder X1, Artillery Sidewinder Genius, contributed by cataclism
+- AnyCubic Kossel, contributed by FoxExe
+- BIQU B1, contributed by looxonline
+- BLV mgn Cube 300, contributed by wolfgangmauer
+- Cocoon Create, Cocoon Create Touch, contributed by thushan
+- Creality CR-6 SE, contributed by MatthieuMH
+- Flying Bear Ghost 5, contributed by oducceu
+- Fused Form 3D (FF300, FF600, FF600+, FFmini), contributed by FusedForm
+- Add Acetate profiles for Strateo3D, contributed by KOUBeMT
+
 [4.7.1]
 For an overview of the new features in Cura 4.7, please see this video: <a href="https://www.youtube.com/watch?v=vuKuil0dJqE">Change log overview</a>
 
