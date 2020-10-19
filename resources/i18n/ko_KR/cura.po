@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.7\n"
+"Project-Id-Version: Cura 4.8\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-07-31 12:48+0200\n"
+"POT-Creation-Date: 2020-10-19 13:15+0200\n"
 "PO-Revision-Date: 2020-08-21 13:40+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -19,8 +19,8 @@ msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:110
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:351
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1566
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:361
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1581
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
 msgctxt "@label"
@@ -43,13 +43,14 @@ msgid "Not overridden"
 msgstr "재정의되지 않음"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/GlobalStacksModel.py:76
-msgctxt "@label ({} is object name)"
-msgid "Are you sure you wish to remove {}? This cannot be undone!"
-msgstr "정말로 {}을(를) 제거하시겠습니까? 이 작업을 실행 취소할 수 없습니다."
+#, python-brace-format
+msgctxt "@label {0} is the name of a printer that's about to be deleted."
+msgid "Are you sure you wish to remove {0}? This cannot be undone!"
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:42
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:11
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:332
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:338
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
@@ -101,18 +102,18 @@ msgctxt "@label"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:370
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
 msgctxt "@label"
 msgid "Custom profiles"
 msgstr "사용자 정의 프로파일"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:405
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:418
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "지원되는 모든 유형 ({0})"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:406
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:419
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "모든 파일 (*)"
@@ -123,26 +124,26 @@ msgid "Login failed"
 msgstr "로그인 실패"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:31
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:24
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "객체의 새 위치 찾기"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:35
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:28
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "위치 찾기"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:105
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:111
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:41
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:76
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "모든 개체가 출력할 수 있는 최대 사이즈 내에 위치할 수 없습니다"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:106
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:42
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "위치를 찾을 수 없음"
@@ -280,98 +281,97 @@ msgctxt "@label OpenGL version"
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:261
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:264
 msgctxt "@label"
 msgid "Not yet initialized<br/>"
 msgstr "아직 초기화되지 않음<br/>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:264
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:267
 #, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL 버전: {version}</li>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:265
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:268
 #, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL 공급업체: {vendor}</li>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:266
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:269
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL Renderer: {renderer}</li>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:300
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:303
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "오류 추적"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:386
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:389
 msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "로그"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:414
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:417
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "보고서 전송"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:520
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:521
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "기기로드 중 ..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:527
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:528
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
 msgstr "환경 설정을 설정하는 중..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:656
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:657
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "활성 기기 초기화 중..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:787
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:788
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "패키지 관리자 초기화 중..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:801
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:802
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "출력 사이즈 초기화 중..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:867
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:870
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "장면 설정 중..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:903
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:906
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "인터페이스 로드 중 ..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:908
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:911
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "엔진 초기화 중..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1218
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1221
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1769
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1777
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "한 번에 하나의 G-코드 파일만 로드 할 수 있습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1770
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1873
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1778
 #: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:188
 #: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:242
 #: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
@@ -380,13 +380,13 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "경고"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1779
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1787
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-코드가 로드되어 있으면 다른 파일을 열 수 없습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1780
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1788
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:146
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:153
 #: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:139
@@ -394,27 +394,22 @@ msgctxt "@info:title"
 msgid "Error"
 msgstr "오류"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1872
-msgctxt "@info:status"
-msgid "The selected model was too small to load."
-msgstr "선택한 모델이 너무 작아서 로드할 수 없습니다."
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:31
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:26
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "객체를 증가시키고 배치"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:32
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:28
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "개체 배치 중"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:111
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:77
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "개체 배치 중"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:89
+#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:90
 msgctxt "@message"
 msgid "Could not read response."
 msgstr "응답을 읽을 수 없습니다."
@@ -444,21 +439,21 @@ msgctxt "@info"
 msgid "Unable to reach the Ultimaker account server."
 msgstr "Ultimaker 계정 서버에 도달할 수 없음."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:203
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:205
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "파일이 이미 있습니다"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:204
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:206
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:133
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "파일 <filename>{0}</filename>이 이미 있습니다. 덮어 쓰시겠습니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:450
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:453
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:452
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:455
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "유효하지 않은 파일 URL:"
@@ -517,50 +512,61 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "프로파일 <filename>{0}</filename>에는 정확하지 않은 데이터가 포함되어 있으므로, 불러올 수 없습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:334
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:338
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename>에서 프로파일을 가져오지 못했습니다:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:337
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:342
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Successfully imported profile {0}"
-msgstr "프로파일 {0}을 성공적으로 가져 왔습니다."
+msgid "Successfully imported profile {0}."
+msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:340
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:349
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "파일 {0}에 유효한 프로파일이 포함되어 있지 않습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:343
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:352
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "프로파일 {0}에 알 수 없는 파일 유형이 있거나 손상되었습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:410
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:423
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "사용자 정의 프로파일"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:426
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:439
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "프로파일에 품질 타입이 누락되었습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:440
-#, python-brace-format
-msgctxt "@info:status"
-msgid "Could not find a quality type {0} for the current configuration."
-msgstr "현재 구성에 대해 품질 타입 {0}을 찾을 수 없습니다."
-
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:443
+msgctxt "@info:status"
+msgid "Global stack is missing."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:449
 msgctxt "@info:status"
 msgid "Unable to add the profile."
 msgstr "프로파일을 추가할 수 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:463
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:468
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:36
 msgctxt "@info:not supported profile"
@@ -572,23 +578,23 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:703
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:712
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:216
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "노즐"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:851
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:860
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "익스트루더의 현재 가용성과 일치하도록 설정이 변경되었습니다:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:853
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:862
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "설정이 업데이트되었습니다"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1436
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1447
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "익스트루더 비활성화됨"
@@ -607,7 +613,7 @@ msgid "Finish"
 msgstr "종료"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:406
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:441
 #: /home/trin/Gedeeld/Projects/Cura/plugins/ImageReader/ConfigUI.qml:234
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
@@ -696,7 +702,7 @@ msgstr "다음"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:171
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:173
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:127
 msgctxt "@action:button"
 msgid "Close"
@@ -721,40 +727,40 @@ msgstr ""
 "<p>인쇄 품질 및 안정성을 최고로 높이는 방법을 알아보십시오.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">인쇄 품질 가이드 보기</a></p>"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:521
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:535
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 알 수 없는 기기 유형 <message>{1}</message>이(가) 포함되어 있습니다. 기기를 가져올 수 없습니다. 대신 모델을 가져옵니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:524
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:538
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "프로젝트 파일 열기"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:622
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:634
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 갑자기 접근할 수 없습니다: <message>{1}</message>."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:623
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "프로젝트 파일 열 수 없음"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:668
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:686
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
 msgstr "프로젝트 파일 <filename>{0}</filename>이(가) 이 버전의 Ultimaker Cura에서 확인할 수 없는 프로파일을 사용하였습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:186
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:203
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "추천"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:188
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:205
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "사용자 정의"
@@ -775,6 +781,11 @@ msgstr "3MF 기록기 플러그인이 손상되었습니다."
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "여기서 작업 환경을 작성할 권한이 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:96
+msgctxt "@error:zip"
+msgid "The operating system does not allow saving a project file to this location or with this file name."
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:185
 msgctxt "@error:zip"
@@ -1308,93 +1319,125 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr "업그레이드 선택"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:148
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:152
 msgctxt "@action:button"
 msgid "Print via cloud"
 msgstr "Cloud를 통해 프린팅"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:149
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:153
 msgctxt "@properties:tooltip"
 msgid "Print via cloud"
 msgstr "Cloud를 통해 프린팅"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:150
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:154
 msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Cloud를 통해 연결됨"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:226
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:264
+#, python-brace-format
+msgctxt "@error:send"
+msgid "Unknown error code when uploading print job: {0}"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:227
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "Ultimaker 계정에서 새 프린터가 감지되었습니다"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
+#, python-brace-format
+msgctxt "info:status Filled in with printer name and printer model."
+msgid "Adding printer {name} ({model}) from your account"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:255
+#, python-brace-format
+msgctxt "info:{0} gets replaced by a number of printers"
+msgid "... and {0} other"
+msgid_plural "... and {0} others"
+msgstr[0] ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
-msgid "Adding printer {} ({}) from your account"
-msgstr "사용자 계정에서 프린터 {} ({}) 추가"
+msgid "Printers added from Digital Factory:"
+msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:258
-msgctxt "info:hidden list items"
-msgid "<li>... and {} others</li>"
-msgstr "<li>... 및 기타 {}</li>"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:265
-msgctxt "info:status"
-msgid "Printers added from Digital Factory:<ul>{}</ul>"
-msgstr "Digital Factory에서 프린터 추가:<ul>{}</ul>"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:316
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "일부 프린터에서는 클라우드 연결을 사용할 수 없습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:332
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "다음 프린터는 Digital Factory에 연결되어 있지 않습니다:"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
-msgctxt "info:status"
-msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
-msgstr "<ul>{}</ul>연결을 설정하려면 <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>에 방문하십시오."
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
+msgctxt "info:name"
+msgid "Ultimaker Digital Factory"
+msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:344
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:333
+#, python-brace-format
+msgctxt "info:status"
+msgid "To establish a connection, please visit the {website_link}"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:337
 msgctxt "@action:button"
 msgid "Keep printer configurations"
 msgstr "프린터 구성 유지"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:349
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342
 msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "프린터 제거"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:428
-msgctxt "@label ({} is printer name)"
-msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
-msgstr "다음 계정 동기화 시까지 {}이(가) 제거됩니다. <br> {}을(를) 영구적으로 제거하려면 <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>를 방문하십시오. <br><br>일시적으로 {}을(를)"
-" 제거하시겠습니까?"
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:421
+#, python-brace-format
+msgctxt "@message {printer_name} is replaced with the name of the printer"
+msgid "{printer_name} will be removed until the next account sync."
+msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
+#, python-brace-format
+msgctxt "@message {printer_name} is replaced with the name of the printer"
+msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:423
+#, python-brace-format
+msgctxt "@message {printer_name} is replaced with the name of the printer"
+msgid "Are you sure you want to remove {printer_name} temporarily?"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:460
 msgctxt "@title:window"
 msgid "Remove printers?"
 msgstr "프린터를 제거하시겠습니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:469
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:463
+#, python-brace-format
 msgctxt "@label"
 msgid ""
-"You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
+"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr "Cura에서 {} 프린터를 제거하려고 합니다. 이 작업은 실행 취소할 수 없습니다. \n정말로 계속하시겠습니까?"
+msgid_plural ""
+"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr[0] ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:471
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
 msgid ""
-"You are about to remove all printers from Cura. This action cannot be undone. \n"
+"You are about to remove all printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr "Cura에서 모든 프린터를 제거하려고 합니다. 이 작업은 실행 취소할 수 없습니다. \n정말로 계속하시겠습니까?"
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:27
 msgctxt "@info:status"
@@ -1478,6 +1521,16 @@ msgctxt "@info:status"
 msgid "Uploading print job to printer."
 msgstr "프린트 작업을 프린터로 업로드하고 있습니다."
 
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:16
+msgctxt "@info:status"
+msgid "Print job queue is full. The printer can't accept a new job."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:17
+msgctxt "@info:title"
+msgid "Queue Full"
+msgstr ""
+
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:15
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
@@ -1538,17 +1591,17 @@ msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "USB를 통해 연결"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:106
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:110
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "USB 인쇄가 진행 중입니다. Cura를 닫으면 인쇄도 중단됩니다. 계속하시겠습니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:134
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
 msgstr "프린트가 아직 진행 중입니다. Cura는 이전 프린트가 완료될 때까지는 USB를 통해 다른 프린트를 시작할 수 없습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:134
 msgctxt "@message"
 msgid "Print in Progress"
 msgstr "프린트 진행 중"
@@ -1573,141 +1626,130 @@ msgctxt "@title:window"
 msgid "Open Project"
 msgstr "프로젝트 열기"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:61
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
 msgstr "기존 업데이트"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:62
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "새로 만들기"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:74
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "요약 - Cura 프로젝트"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:92
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:96
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "프린터 설정"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:108
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:112
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "기기의 충돌을 어떻게 해결해야합니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:115
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:124
-msgctxt "@action:ComboBox option"
-msgid "Update"
-msgstr "업데이트"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:116
-msgctxt "@action:ComboBox option"
-msgid "Create new"
-msgstr "새로 만들기"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:143
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:165
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
 msgctxt "@action:label"
 msgid "Type"
 msgstr "유형"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:159
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:181
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "프린터 그룹"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:180
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:203
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "프로파일 설정"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:196
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:219
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "프로파일의 충돌을 어떻게 해결해야합니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:323
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:239
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:349
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:242
 msgctxt "@action:label"
 msgid "Name"
 msgstr "이름"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:255
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:246
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:271
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "프로파일에 없음"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:251
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:276
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
 msgstr[0] "%1 무시"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:262
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:287
 msgctxt "@action:label"
 msgid "Derivative from"
 msgstr "Derivative from"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:267
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:292
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
 msgstr[0] "%1, %2 무시"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:283
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:309
 msgctxt "@action:label"
 msgid "Material settings"
 msgstr "재료 설정"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:299
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:325
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the material be resolved?"
 msgstr "재료의 충돌은 어떻게 해결되어야합니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:342
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:369
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "표시 설정"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:351
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:378
 msgctxt "@action:label"
 msgid "Mode"
 msgstr "종류"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:367
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:394
 msgctxt "@action:label"
 msgid "Visible settings:"
 msgstr "표시 설정 :"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:372
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:399
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "1 out of %2"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:398
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:425
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
 msgstr "프로젝트를 로드하면 빌드 플레이트의 모든 모델이 지워집니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:416
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:453
 msgctxt "@action:button"
 msgid "Open"
 msgstr "열기"
@@ -2134,17 +2176,12 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "익스트루더의 수"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:339
-msgctxt "@label"
-msgid "Shared Heater"
-msgstr "공유된 히터"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:365
+#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:374
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "시작 GCode"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:376
+#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:385
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "End GCode"
@@ -2165,7 +2202,7 @@ msgctxt "@info"
 msgid "Please connect your printer to the network."
 msgstr "프린터를 네트워크에 연결하십시오."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:156
+#: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:155
 msgctxt "@label link to technical assistance"
 msgid "View user manuals online"
 msgstr "사용자 매뉴얼 온라인 보기"
@@ -2568,12 +2605,12 @@ msgctxt "@label"
 msgid "You need to accept the license to install the package"
 msgstr "패키지를 설치하려면 라이선스를 수락해야 합니다"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:93
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:95
 msgctxt "@label"
 msgid "Website"
 msgstr "웹 사이트"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:100
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:102
 msgctxt "@label"
 msgid "Email"
 msgstr "이메일"
@@ -2649,7 +2686,7 @@ msgctxt "@title:tab"
 msgid "Bundled materials"
 msgstr "번들 재료"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxLoadingPage.qml:16
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxLoadingPage.qml:17
 msgctxt "@info"
 msgid "Fetching packages..."
 msgstr "패키지 가져오는 중..."
@@ -2844,7 +2881,7 @@ msgid "Override will use the specified settings with the existing printer config
 msgstr "무시하기는 기존 프린터 구성과 함께 지정된 설정을 사용하게 됩니다. 이는 인쇄 실패로 이어질 수 있습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:192
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
 msgctxt "@label"
 msgid "Glass"
@@ -2929,22 +2966,17 @@ msgctxt "@window:title"
 msgid "Abort print"
 msgstr "프린팅 중단"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:155
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:154
 msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "프린터 관리"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:256
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:514
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:519
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "대기열을 원격으로 관리하려면 프린터 펌웨어를 업데이트하십시오."
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:289
-msgctxt "@info"
-msgid "The webcam is not available because you are monitoring a cloud printer."
-msgstr "Cloud 프린터를 모니터링하고 있기 때문에 웹캠을 사용할 수 없습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
@@ -2966,22 +2998,27 @@ msgctxt "@label:status"
 msgid "Idle"
 msgstr "대기 상태"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:401
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:365
+msgctxt "@label:status"
+msgid "Printing"
+msgstr "프린팅"
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:406
 msgctxt "@label"
 msgid "Untitled"
 msgstr "제목 없음"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:422
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:427
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "익명"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:449
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:454
 msgctxt "@label:status"
 msgid "Requires configuration changes"
 msgstr "구성 변경 필요"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:487
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:492
 msgctxt "@action:button"
 msgid "Details"
 msgstr "세부 사항"
@@ -3049,27 +3086,27 @@ msgctxt "@label"
 msgid "Queued"
 msgstr "대기 중"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:66
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
 msgstr "브라우저에서 관리"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:99
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
 msgstr "대기열에 프린팅 작업이 없습니다. 작업을 추가하려면 슬라이스하여 전송하십시오."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:115
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:110
 msgctxt "@label"
 msgid "Print jobs"
 msgstr "인쇄 작업"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:131
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:122
 msgctxt "@label"
 msgid "Total print time"
 msgstr "총 인쇄 시간"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:147
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:134
 msgctxt "@label"
 msgid "Waiting for"
 msgstr "대기"
@@ -3145,11 +3182,6 @@ msgstr "계정 업데이트 확인"
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
 msgstr "마지막 업데이트: %1"
-
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:99
-msgctxt "@button"
-msgid "Ultimaker Digital Factory"
-msgstr "Ultimaker Digital Factory"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:109
 msgctxt "@button"
@@ -3665,17 +3697,27 @@ msgctxt "@Label"
 msgid "Python Error tracking library"
 msgstr "Python 오류 추적 라이브러리"
 
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:159
+msgctxt "@label"
+msgid "Polygon packing library, developed by Prusa Research"
+msgstr ""
+
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
+msgctxt "@label"
+msgid "Python bindings for libnest2d"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Font"
 msgstr "폰트"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
 msgid "SVG icons"
 msgstr "SVG 아이콘"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:164
 msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux 교차 배포 응용 프로그램 배포"
@@ -3715,8 +3757,8 @@ msgctxt "@text:window, %1 is a profile name"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to Keep these changed settings after switching profiles?\n"
-"Alternatively, you can Discard the changes to load the defaults from '%1'."
-msgstr "일부 프로파일 설정을 사용자 정의했습니다.\n프로파일 전환 후에도 변경된 설정을 유지하시겠습니까?\n또는 변경 사항을 버리고 '%1'에서 기본값을 로드할 수 있습니다."
+"Alternatively, you can discard the changes to load the defaults from '%1'."
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:111
 msgctxt "@title:column"
@@ -3908,12 +3950,12 @@ msgctxt "@label"
 msgid "Enabled"
 msgstr "실행됨"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:251
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:267
 msgctxt "@label"
 msgid "Material"
 msgstr "재료"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:378
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:394
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
 msgstr "더 나은 접착력을 위해 이 재료 조합과 함께 접착제를 사용하십시오.."
@@ -4095,31 +4137,31 @@ msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "프린팅를 중단 하시겠습니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:102
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:114
 msgctxt "@label"
 msgid "Is printed as support."
 msgstr "지원으로 프린팅됩니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:105
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:117
 msgctxt "@label"
 msgid "Other models overlapping with this model are modified."
 msgstr "이 모델과 중복되는 다른 모델은 수정됩니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:108
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:120
 msgctxt "@label"
 msgid "Infill overlapping with this model is modified."
 msgstr "이 모델과 중복되는 내부채움은 수정됩니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:111
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:123
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
 msgstr "이 모델과의 중복은 지원되지 않습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:118
-msgctxt "@label"
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:130
+msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] "%1 설정을 덮어씁니다."
+msgstr[0] ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
@@ -4656,7 +4698,7 @@ msgid "Update profile with current settings/overrides"
 msgstr "현재 설정 / 재정의 프로파일 업데이트"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:561
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:258
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "현재 변경 사항 삭제"
@@ -4853,7 +4895,7 @@ msgctxt "@button"
 msgid "Add printer"
 msgstr "프린터 추가"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:254
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:255
 msgctxt "@button"
 msgid "Manage printers"
 msgstr "프린터 관리"
@@ -4904,7 +4946,7 @@ msgstr ""
 "\n"
 "프로파일 매니저를 열려면 클릭하십시오."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "사용자 정의 프로파일"
@@ -5103,50 +5145,50 @@ msgctxt "@label"
 msgid "Add a Cloud printer"
 msgstr "클라우드 프린터 추가"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:73
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:74
 msgctxt "@label"
 msgid "Waiting for Cloud response"
 msgstr "클라우드 응답 대기"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:84
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:86
 msgctxt "@label"
 msgid "No printers found in your account?"
 msgstr "사용자의 계정에 프린터가 없습니까?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:118
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:121
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
 msgstr "사용자의 계정에 있는 다음 프린터를 Cura에 추가하였습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:200
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:204
 msgctxt "@button"
 msgid "Add printer manually"
 msgstr "수동으로 프린터 추가"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:214
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:218
 msgctxt "@button"
 msgid "Finish"
 msgstr "종료"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:231
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:230
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "제조업체"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:245
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:247
 msgctxt "@label"
 msgid "Profile author"
 msgstr "프로파일 원작자"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:260
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:265
 msgctxt "@label"
 msgid "Printer name"
 msgstr "프린터 이름"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:269
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:274
 msgctxt "@text"
-msgid "Please give your printer a name"
-msgstr "프린터의 이름을 설정하십시오"
+msgid "Please name your printer"
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:24
 msgctxt "@label"
@@ -5158,7 +5200,7 @@ msgctxt "@label"
 msgid "Add a networked printer"
 msgstr "네트워크 프린터 추가"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:95
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:90
 msgctxt "@label"
 msgid "Add a non-networked printer"
 msgstr "비 네트워크 프린터 추가"
@@ -5168,22 +5210,22 @@ msgctxt "@label"
 msgid "There is no printer found over your network."
 msgstr "네트워크에서 검색된 프린터가 없습니다."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:181
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:182
 msgctxt "@label"
 msgid "Refresh"
 msgstr "새로고침"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:192
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:193
 msgctxt "@label"
 msgid "Add printer by IP"
 msgstr "IP로 프린터 추가"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:203
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:204
 msgctxt "@label"
 msgid "Add cloud printer"
 msgstr "클라우드 프린터 추가"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:239
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:240
 msgctxt "@label"
 msgid "Troubleshooting"
 msgstr "문제 해결"
@@ -5881,6 +5923,16 @@ msgctxt "name"
 msgid "Version Upgrade 4.6.2 to 4.7"
 msgstr "4.6.2에서 4.7로 버전 업그레이드"
 
+#: VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr ""
+
+#: VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr ""
+
 #: X3DReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading X3D files."
@@ -5910,6 +5962,97 @@ msgstr "엑스레이 뷰를 제공합니다."
 msgctxt "name"
 msgid "X-Ray View"
 msgstr "엑스레이 뷰"
+
+#~ msgctxt "@label ({} is object name)"
+#~ msgid "Are you sure you wish to remove {}? This cannot be undone!"
+#~ msgstr "정말로 {}을(를) 제거하시겠습니까? 이 작업을 실행 취소할 수 없습니다."
+
+#~ msgctxt "@info:status"
+#~ msgid "The selected model was too small to load."
+#~ msgstr "선택한 모델이 너무 작아서 로드할 수 없습니다."
+
+#~ msgctxt "@info:status"
+#~ msgid "Successfully imported profile {0}"
+#~ msgstr "프로파일 {0}을 성공적으로 가져 왔습니다."
+
+#~ msgctxt "@info:status"
+#~ msgid "Could not find a quality type {0} for the current configuration."
+#~ msgstr "현재 구성에 대해 품질 타입 {0}을 찾을 수 없습니다."
+
+#~ msgctxt "info:status"
+#~ msgid "Adding printer {} ({}) from your account"
+#~ msgstr "사용자 계정에서 프린터 {} ({}) 추가"
+
+#~ msgctxt "info:hidden list items"
+#~ msgid "<li>... and {} others</li>"
+#~ msgstr "<li>... 및 기타 {}</li>"
+
+#~ msgctxt "info:status"
+#~ msgid "Printers added from Digital Factory:<ul>{}</ul>"
+#~ msgstr "Digital Factory에서 프린터 추가:<ul>{}</ul>"
+
+#~ msgctxt "info:status"
+#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
+#~ msgstr "<ul>{}</ul>연결을 설정하려면 <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>에 방문하십시오."
+
+#~ msgctxt "@label ({} is printer name)"
+#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
+#~ msgstr "다음 계정 동기화 시까지 {}이(가) 제거됩니다. <br> {}을(를) 영구적으로 제거하려면 <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>를 방문하십시오. <br><br>일시적으로 {}을(를) 제거하시겠습니까?"
+
+#~ msgctxt "@label"
+#~ msgid ""
+#~ "You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
+#~ "Are you sure you want to continue?"
+#~ msgstr ""
+#~ "Cura에서 {} 프린터를 제거하려고 합니다. 이 작업은 실행 취소할 수 없습니다. \n"
+#~ "정말로 계속하시겠습니까?"
+
+#~ msgctxt "@label"
+#~ msgid ""
+#~ "You are about to remove all printers from Cura. This action cannot be undone. \n"
+#~ "Are you sure you want to continue?"
+#~ msgstr ""
+#~ "Cura에서 모든 프린터를 제거하려고 합니다. 이 작업은 실행 취소할 수 없습니다. \n"
+#~ "정말로 계속하시겠습니까?"
+
+#~ msgctxt "@action:ComboBox option"
+#~ msgid "Update"
+#~ msgstr "업데이트"
+
+#~ msgctxt "@action:ComboBox option"
+#~ msgid "Create new"
+#~ msgstr "새로 만들기"
+
+#~ msgctxt "@label"
+#~ msgid "Shared Heater"
+#~ msgstr "공유된 히터"
+
+#~ msgctxt "@info"
+#~ msgid "The webcam is not available because you are monitoring a cloud printer."
+#~ msgstr "Cloud 프린터를 모니터링하고 있기 때문에 웹캠을 사용할 수 없습니다."
+
+#~ msgctxt "@button"
+#~ msgid "Ultimaker Digital Factory"
+#~ msgstr "Ultimaker Digital Factory"
+
+#~ msgctxt "@text:window, %1 is a profile name"
+#~ msgid ""
+#~ "You have customized some profile settings.\n"
+#~ "Would you like to Keep these changed settings after switching profiles?\n"
+#~ "Alternatively, you can Discard the changes to load the defaults from '%1'."
+#~ msgstr ""
+#~ "일부 프로파일 설정을 사용자 정의했습니다.\n"
+#~ "프로파일 전환 후에도 변경된 설정을 유지하시겠습니까?\n"
+#~ "또는 변경 사항을 버리고 '%1'에서 기본값을 로드할 수 있습니다."
+
+#~ msgctxt "@label"
+#~ msgid "Overrides %1 setting."
+#~ msgid_plural "Overrides %1 settings."
+#~ msgstr[0] "%1 설정을 덮어씁니다."
+
+#~ msgctxt "@text"
+#~ msgid "Please give your printer a name"
+#~ msgstr "프린터의 이름을 설정하십시오"
 
 #~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 #~ msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
@@ -7332,10 +7475,6 @@ msgstr "엑스레이 뷰"
 #~ msgctxt "@label:status"
 #~ msgid "Preparing to print"
 #~ msgstr "프린팅 준비"
-
-#~ msgctxt "@label:status"
-#~ msgid "Printing"
-#~ msgstr "프린팅"
 
 #~ msgctxt "@label:status"
 #~ msgid "Available"
