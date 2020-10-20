@@ -889,7 +889,7 @@ class ChangeAtZProcessor:
 
         # set feedrate percentage
         if "speed" in values:
-            codes.append("M220 S" + str(values["speed"]) + " T1")
+            codes.append("M220 S" + str(values["speed"]) + "")
 
         # set print rate percentage
         if "printspeed" in values:
