@@ -82,7 +82,7 @@ class CuraEngineBackend(QObject, Backend):
                     default_engine_location = execpath
                     break
 
-        self._application = CuraApplication.getInstance() #type: CuraApplication
+        application = CuraApplication.getInstance() #type: CuraApplication
         self._multi_build_plate_model = None #type: Optional[MultiBuildPlateModel]
         self._machine_error_checker = None #type: Optional[MachineErrorChecker]
 
@@ -92,7 +92,7 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("i", "Found CuraEngine at: %s", default_engine_location)
 
         default_engine_location = os.path.abspath(default_engine_location)
-        self._application.getPreferences().addPreference("backend/location", default_engine_location)
+        application.getPreferences().addPreference("backend/location", default_engine_location)
 
         # Workaround to disable layer view processing if layer view is not active.
         self._layer_view_active = False #type: bool
@@ -101,7 +101,7 @@ class CuraEngineBackend(QObject, Backend):
         self._stored_layer_data = []  # type: List[Arcus.PythonMessage]
         self._stored_optimized_layer_data = {}  # type: Dict[int, List[Arcus.PythonMessage]] # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
 
-        self._scene = self._application.getController().getScene() #type: Scene
+        self._scene = application.getController().getScene() #type: Scene
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
         # Triggers for auto-slicing. Auto-slicing is triggered as follows:
@@ -141,7 +141,7 @@ class CuraEngineBackend(QObject, Backend):
         self._slice_start_time = None #type: Optional[float]
         self._is_disabled = False #type: bool
 
-        self._application.getPreferences().addPreference("general/auto_slice", False)
+        application.getPreferences().addPreference("general/auto_slice", False)
 
         self._use_timer = False #type: bool
         # When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
@@ -151,19 +151,20 @@ class CuraEngineBackend(QObject, Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.setInterval(500)
         self.determineAutoSlicing()
-        self._application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
+        application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
-        self._application.initializationFinished.connect(self.initialize)
+        application.initializationFinished.connect(self.initialize)
 
     def initialize(self) -> None:
-        self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
+        application = CuraApplication.getInstance()
+        self._multi_build_plate_model = application.getMultiBuildPlateModel()
 
-        self._application.getController().activeViewChanged.connect(self._onActiveViewChanged)
+        application.getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         if self._multi_build_plate_model:
             self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveViewChanged)
 
-        self._application.getMachineManager().globalContainerChanged.connect(self._onGlobalStackChanged)
+        application.getMachineManager().globalContainerChanged.connect(self._onGlobalStackChanged)
         self._onGlobalStackChanged()
 
         # extruder enable / disable. Actually wanted to use machine manager here, but the initialization order causes it to crash
@@ -173,10 +174,10 @@ class CuraEngineBackend(QObject, Backend):
         self.backendConnected.connect(self._onBackendConnected)
 
         # When a tool operation is in progress, don't slice. So we need to listen for tool operations.
-        self._application.getController().toolOperationStarted.connect(self._onToolOperationStarted)
-        self._application.getController().toolOperationStopped.connect(self._onToolOperationStopped)
+        application.getController().toolOperationStarted.connect(self._onToolOperationStarted)
+        application.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
-        self._machine_error_checker = self._application.getMachineErrorChecker()
+        self._machine_error_checker = application.getMachineErrorChecker()
         self._machine_error_checker.errorCheckFinished.connect(self._onStackErrorCheckFinished)
 
     def close(self) -> None:
@@ -195,7 +196,7 @@ class CuraEngineBackend(QObject, Backend):
         This is useful for debugging and used to actually start the engine.
         :return: list of commands and args / parameters.
         """
-        command = [self._application.getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), ""]
+        command = [CuraApplication.getInstance().getPreferences().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), ""]
 
         parser = argparse.ArgumentParser(prog = "cura", add_help = False)
         parser.add_argument("--debug", action = "store_true", default = False, help = "Turn on the debug mode by setting this option.")
@@ -259,7 +260,8 @@ class CuraEngineBackend(QObject, Backend):
             self._scene.gcode_dict = {} #type: ignore #Because we are creating the missing attribute here.
 
         # see if we really have to slice
-        active_build_plate = self._application.getMultiBuildPlateModel().activeBuildPlate
+        application = CuraApplication.getInstance()
+        active_build_plate = application.getMultiBuildPlateModel().activeBuildPlate
         build_plate_to_be_sliced = self._build_plates_to_be_sliced.pop(0)
         Logger.log("d", "Going to slice build plate [%s]!" % build_plate_to_be_sliced)
         num_objects = self._numObjectsPerBuildPlate()
@@ -274,8 +276,8 @@ class CuraEngineBackend(QObject, Backend):
                 self.slice()
             return
         self._stored_optimized_layer_data[build_plate_to_be_sliced] = []
-        if self._application.getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
-            self._application.getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
+        if application.getPrintInformation() and build_plate_to_be_sliced == active_build_plate:
+            application.getPrintInformation().setToZeroPrintInformation(build_plate_to_be_sliced)
 
         if self._process is None: # type: ignore
             self._createSocket()
@@ -314,7 +316,7 @@ class CuraEngineBackend(QObject, Backend):
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
 
-        if self._application.getUseExternalBackend():
+        if CuraApplication.getInstance().getUseExternalBackend():
             return
 
         if self._process is not None: # type: ignore
@@ -350,8 +352,9 @@ class CuraEngineBackend(QObject, Backend):
             self.backendError.emit(job)
             return
 
+        application = CuraApplication.getInstance()
         if job.getResult() == StartJobResult.MaterialIncompatible:
-            if self._application.platformActivity:
+            if application.platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
                                             "Unable to slice with the current material as it is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
@@ -362,7 +365,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartJobResult.SettingError:
-            if self._application.platformActivity:
+            if application.platformActivity:
                 if not self._global_container_stack:
                     Logger.log("w", "Global container stack not assigned to CuraEngineBackend!")
                     return
@@ -394,7 +397,7 @@ class CuraEngineBackend(QObject, Backend):
 
         elif job.getResult() == StartJobResult.ObjectSettingError:
             errors = {}
-            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()):
+            for node in DepthFirstIterator(application.getController().getScene().getRoot()):
                 stack = node.callDecoration("getStack")
                 if not stack:
                     continue
@@ -415,7 +418,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartJobResult.BuildPlateError:
-            if self._application.platformActivity:
+            if application.platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."),
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
@@ -433,7 +436,7 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         if job.getResult() == StartJobResult.NothingToSlice:
-            if self._application.platformActivity:
+            if application.platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status", "Please review settings and check if your models:"
                                                                             "\n- Fit within the build volume"
                                                                             "\n- Are assigned to an enabled extruder"
@@ -466,7 +469,7 @@ class CuraEngineBackend(QObject, Backend):
         enable_timer = True
         self._is_disabled = False
 
-        if not self._application.getPreferences().getValue("general/auto_slice"):
+        if not CuraApplication.getInstance().getPreferences().getValue("general/auto_slice"):
             enable_timer = False
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isBlockSlicing"):
@@ -560,7 +563,7 @@ class CuraEngineBackend(QObject, Backend):
         :param error: The exception that occurred.
         """
 
-        if self._application.isShuttingDown():
+        if CuraApplication.getInstance().isShuttingDown():
             return
 
         super()._onSocketError(error)
@@ -600,7 +603,7 @@ class CuraEngineBackend(QObject, Backend):
                     cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:
-        for build_plate_number in range(self._application.getMultiBuildPlateModel().maxBuildPlate + 1):
+        for build_plate_number in range(CuraApplication.getInstance().getMultiBuildPlateModel().maxBuildPlate + 1):
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
 
@@ -696,12 +699,13 @@ class CuraEngineBackend(QObject, Backend):
             gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
         except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             gcode_list = []
+        application = CuraApplication.getInstance()
         for index, line in enumerate(gcode_list):
-            replaced = line.replace("{print_time}", str(self._application.getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
-            replaced = replaced.replace("{filament_amount}", str(self._application.getPrintInformation().materialLengths))
-            replaced = replaced.replace("{filament_weight}", str(self._application.getPrintInformation().materialWeights))
-            replaced = replaced.replace("{filament_cost}", str(self._application.getPrintInformation().materialCosts))
-            replaced = replaced.replace("{jobname}", str(self._application.getPrintInformation().jobName))
+            replaced = line.replace("{print_time}", str(application.getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
+            replaced = replaced.replace("{filament_amount}", str(application.getPrintInformation().materialLengths))
+            replaced = replaced.replace("{filament_weight}", str(application.getPrintInformation().materialWeights))
+            replaced = replaced.replace("{filament_cost}", str(application.getPrintInformation().materialCosts))
+            replaced = replaced.replace("{jobname}", str(application.getPrintInformation().jobName))
 
             gcode_list[index] = replaced
 
@@ -711,7 +715,7 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "Number of models per buildplate: %s", dict(self._numObjectsPerBuildPlate()))
 
         # See if we need to process the sliced layers job.
-        active_build_plate = self._application.getMultiBuildPlateModel().activeBuildPlate
+        active_build_plate = application.getMultiBuildPlateModel().activeBuildPlate
         if (
             self._layer_view_active and
             (self._process_layers_job is None or not self._process_layers_job.isRunning()) and
@@ -870,9 +874,9 @@ class CuraEngineBackend(QObject, Backend):
     def _onActiveViewChanged(self) -> None:
         """Called when the user changes the active view mode."""
 
-        view = self._application.getController().getActiveView()
+        view = CuraApplication.getInstance().getController().getActiveView()
         if view:
-            active_build_plate = self._application.getMultiBuildPlateModel().activeBuildPlate
+            active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
             if view.getPluginId() == "SimulationView":  # If switching to layer view, we should process the layers if that hasn't been done yet.
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
@@ -909,7 +913,7 @@ class CuraEngineBackend(QObject, Backend):
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
                 extruder.containersChanged.disconnect(self._onChanged)
 
-        self._global_container_stack = self._application.getMachineManager().activeMachine
+        self._global_container_stack = CuraApplication.getInstance().getMachineManager().activeMachine
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.

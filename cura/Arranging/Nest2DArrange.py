@@ -3,6 +3,7 @@ from pynest2d import Point, Box, Item, NfpConfig, nest
 from typing import List, TYPE_CHECKING, Optional, Tuple
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Polygon import Polygon
 from UM.Math.Quaternion import Quaternion
@@ -44,6 +45,9 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     node_items = []
     for node in nodes_to_arrange:
         hull_polygon = node.callDecoration("getConvexHull")
+        if not hull_polygon or hull_polygon.getPoints is None:
+            Logger.log("w", "Object {} cannot be arranged because it has no convex hull.".format(node.getName()))
+            continue
         converted_points = []
         for point in hull_polygon.getPoints():
             converted_points.append(Point(point[0] * factor, point[1] * factor))

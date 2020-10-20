@@ -998,6 +998,11 @@ class MachineManager(QObject):
         self.activeMaterialChanged.emit()
         self.activeIntentChanged.emit()
 
+        # Force an update of resolve values
+        property_names = ["resolve", "validationState"]
+        for setting_key in self._global_container_stack.getAllKeys():
+            self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+
     def _onMaterialNameChanged(self) -> None:
         self.activeMaterialChanged.emit()
 
