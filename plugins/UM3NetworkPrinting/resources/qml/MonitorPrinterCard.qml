@@ -359,6 +359,10 @@ Item
                     {
                         return catalog.i18nc("@label:status", "Idle")
                     }
+                    if (!printer.activePrintJob && printer.state == "pre_print")
+                    {
+                        return catalog.i18nc("@label:status", "Preparing...")
+                    }
                     if (!printer.activePrintJob && printer.state == "printing")
                     {
                         // The print job isn't quite updated yet.
