@@ -67,7 +67,7 @@ class DisplayProgressOnLCD(Script):
             # And now insert that into the GCODE
             lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
         else:
-            mins = int(60*h + m + s / 30)
+            mins = int(60 * h + m + s / 30)
             lines.insert(line_index, "M73 R{}".format(mins))
 
     def execute(self, data):
@@ -84,7 +84,7 @@ class DisplayProgressOnLCD(Script):
                 lines = layer.split("\n")
 
                 for line in lines:
-                    if line.startswith(";TIME:") and total_time == -1:
+                    if (line.startswith(";TIME:") or line.startswith(";PRINT.TIME:")) and total_time == -1:
                         # This line represents the total time required to print the gcode
                         total_time = self.getTimeValue(line)
                         line_index = lines.index(line)
