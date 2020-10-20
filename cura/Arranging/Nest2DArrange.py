@@ -85,7 +85,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         converted_points = []
         hull_polygon = node.callDecoration("getConvexHull")
 
-        if hull_polygon.getPoints() is not None:  # numpy array has to be explicitly checked against None
+        if hull_polygon is not None and hull_polygon.getPoints() is not None:  # numpy array has to be explicitly checked against None
             for point in hull_polygon.getPoints():
                 converted_points.append(Point(point[0] * factor, point[1] * factor))
             item = Item(converted_points)
