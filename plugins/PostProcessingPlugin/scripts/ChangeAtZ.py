@@ -1305,7 +1305,7 @@ class ChangeAtZProcessor:
         self.targetLayer = None
         self.targetZ = None
         self.layerHeight = None
-        self.lastValues = {}
+        self.lastValues = {"speed": 100}
         self.linearRetraction = True
         self.insideTargetLayer = False
         self.targetValuesInjected = False
