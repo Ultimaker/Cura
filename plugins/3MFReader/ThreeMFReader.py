@@ -109,7 +109,10 @@ class ThreeMFReader(MeshReader):
 
         um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
-        um_node.addDecorator(ConvexHullDecorator())
+        try:
+            um_node.addDecorator(ConvexHullDecorator())
+        except:
+            pass
         um_node.setName(node_name)
         um_node.setId(node_id)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
