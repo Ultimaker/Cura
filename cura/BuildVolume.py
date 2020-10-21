@@ -180,11 +180,20 @@ class BuildVolume(SceneNode):
     def setWidth(self, width: float) -> None:
         self._width = width
 
+    def getWidth(self) -> float:
+        return self._width
+
     def setHeight(self, height: float) -> None:
         self._height = height
 
+    def getHeight(self) -> float:
+        return self._height
+
     def setDepth(self, depth: float) -> None:
         self._depth = depth
+
+    def getDepth(self) -> float:
+        return self._depth
 
     def setShape(self, shape: str) -> None:
         if shape:

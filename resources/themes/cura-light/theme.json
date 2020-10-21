@@ -388,7 +388,7 @@
         "layerview_move_retraction": [128, 127, 255, 255],
         "layerview_support_interface": [63, 127, 255, 127],
         "layerview_prime_tower": [0, 255, 255, 255],
-        "layerview_nozzle": [181, 166, 66, 50],
+        "layerview_nozzle": [224, 192, 16, 64],
 
         "tab_status_connected": [50, 130, 255, 255],
         "tab_status_disconnected": [200, 200, 200, 255],
@@ -405,7 +405,6 @@
         "favorites_row_selected": [196, 239, 255, 255],
 
         "monitor_printer_family_tag": [228, 228, 242, 255],
-        "monitor_text_primary": [65, 64, 84, 255],
         "monitor_text_disabled": [238, 238, 238, 255],
         "monitor_icon_primary": [10, 8, 80, 255],
         "monitor_icon_accent": [255, 255, 255, 255],

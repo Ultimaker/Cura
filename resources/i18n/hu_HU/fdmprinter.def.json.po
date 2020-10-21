@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.7\n"
+"Project-Id-Version: Cura 4.8\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-07-31 14:10+0000\n"
+"POT-Creation-Date: 2020-10-19 13:15+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -2061,8 +2061,8 @@ msgstr "Tárgyasztal hőmérséklete"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
-msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr "A tárgyasztal hőmérséklete. Ha ez az érték 0, akkor  tárgyasztal hőmérséklete nem lesz beállítva, azaz nem fogja fűteni a gép."
+msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2071,8 +2071,8 @@ msgstr "Tárgyasztal hőmérséklet a kezdő rétegnél"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
-msgid "The temperature used for the heated build plate at the first layer."
-msgstr "A tárgyasztal erre a hőmérsékletre fűt fel az első réteg nyomtatásához."
+msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2096,13 +2096,13 @@ msgstr "Felületi energia."
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
-msgid "Shrinkage Ratio"
-msgstr "Zsugorodási arány"
+msgid "Scaling Factor Shrinkage Compensation"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
-msgid "Shrinkage ratio in percentage."
-msgstr "ZSugorodási arány százalékban megadva."
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5075,7 +5075,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6359,6 +6359,22 @@ msgstr "Háló elforgatás mátrix"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "A modellre alkalmazandó átalakítási mátrix, amikor azt fájlból tölti be."
+
+#~ msgctxt "material_bed_temperature description"
+#~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
+#~ msgstr "A tárgyasztal hőmérséklete. Ha ez az érték 0, akkor  tárgyasztal hőmérséklete nem lesz beállítva, azaz nem fogja fűteni a gép."
+
+#~ msgctxt "material_bed_temperature_layer_0 description"
+#~ msgid "The temperature used for the heated build plate at the first layer."
+#~ msgstr "A tárgyasztal erre a hőmérsékletre fűt fel az első réteg nyomtatásához."
+
+#~ msgctxt "material_shrinkage_percentage label"
+#~ msgid "Shrinkage Ratio"
+#~ msgstr "Zsugorodási arány"
+
+#~ msgctxt "material_shrinkage_percentage description"
+#~ msgid "Shrinkage ratio in percentage."
+#~ msgstr "ZSugorodási arány százalékban megadva."
 
 #~ msgctxt "infill_mesh_order label"
 #~ msgid "Infill Mesh Order"

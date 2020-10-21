@@ -99,7 +99,7 @@ Rectangle
             visible: isNetworkConfigured && !isConnected
             text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             lineHeight: UM.Theme.getSize("monitor_text_line_large").height
             lineHeightMode: Text.FixedHeight
@@ -116,7 +116,7 @@ Rectangle
             visible: !isNetworkConfigured && isNetworkConfigurable
             text: catalog.i18nc("@info", "Please connect your printer to the network.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             width: contentWidth
             lineHeight: UM.Theme.getSize("monitor_text_line_large").height

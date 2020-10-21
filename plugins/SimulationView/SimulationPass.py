@@ -112,7 +112,7 @@ class SimulationPass(RenderPass):
 
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
-                nozzle_node.setVisible(False)
+                nozzle_node.setVisible(False)  # Don't set to true, we render it separately!
 
             elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
                 disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
@@ -189,7 +189,6 @@ class SimulationPass(RenderPass):
         # but the user is not using the layer slider, and the compatibility mode is not enabled
         if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
-                nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
