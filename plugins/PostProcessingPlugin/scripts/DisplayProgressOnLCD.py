@@ -96,7 +96,7 @@ class DisplayProgressOnLCD(Script):
                 lines = layer.split("\n")
 
                 for line in lines:
-                    if line.startswith(";TIME:") and total_time == -1:
+                    if (line.startswith(";TIME:") or line.startswith(";PRINT.TIME:")) and total_time == -1:
                         # This line represents the total time required to print the gcode
                         total_time = self.getTimeValue(line)
                         line_index = lines.index(line)
