@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
 # Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen
 # Date:     July 31, 2019
-# Modified: Sep 09, 2020
+# Modified: Okt 22, 2020
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -26,10 +26,21 @@ class DisplayProgressOnLCD(Script):
                 "time_remaining":
                 {
                     "label": "Time Remaining",
-                    "description": "Select to write remaining time on the display using M117 status line message (almost all printers) or using M73 command (Prusa and Marlin 2 if enabled).",
+                    "description": "Select to write remaining time to the display.Select to write remaining time on the display using M117 status line message (almost all printers) or using M73 command (Prusa and Marlin 2 if enabled).",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "time_remaining_method":
+                {
+                    "label": "Time Reporting Method",
+                    "description": "How should remaining time be shown on the display? It could use a generic message command (M117, almost all printers), or a specialised time remaining command (M73, Prusa and Marlin 2).",
                     "type": "enum",
-                    "options": {"none":"Disabled","m117":"M117 - All printers","m73":"M73 - Prusa, Marlin 2"},
-                    "default_value": "none"
+                    "options": {
+                        "m117":"M117 - All printers",
+                        "m73":"M73 - Prusa, Marlin 2"
+                    },
+                    "enabled": "time_remaining",
+                    "default_value": "m117"
                 },
                 "update_frequency":
                 {
@@ -38,7 +49,7 @@ class DisplayProgressOnLCD(Script):
                     "type": "enum",
                     "options": {"0":"Every layer","15":"Every 15 seconds","30":"Every 30 seconds","60":"Every minute"},
                     "default_value": "0",
-                    "enabled": "time_remaining != 'none'"
+                    "enabled": "time_remaining"
                 },
                 "percentage":
                 {
@@ -66,16 +77,17 @@ class DisplayProgressOnLCD(Script):
             current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
             # And now insert that into the GCODE
             lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
-        else:
-            mins = int(60*h + m + s / 30)
+        else:  # Must be m73.
+            mins = int(60 * h + m + s / 30)
             lines.insert(line_index, "M73 R{}".format(mins))
 
     def execute(self, data):
         output_time = self.getSettingValueByKey("time_remaining")
+        output_time_method = self.getSettingValueByKey("time_remaining_method")
         output_frequency = int(self.getSettingValueByKey("update_frequency"))
         output_percentage = self.getSettingValueByKey("percentage")
         line_set = {}
-        if output_percentage or output_time != "none":
+        if output_percentage or output_time:
             total_time = -1
             previous_layer_end_percentage = 0
             previous_layer_end_time = 0
@@ -90,8 +102,8 @@ class DisplayProgressOnLCD(Script):
                         line_index = lines.index(line)
 
                         # In the beginning we may have 2 M73 lines, but it makes logic less complicated
-                        if output_time != "none":
-                            self.outputTime(lines, line_index, total_time, output_time)
+                        if output_time:
+                            self.outputTime(lines, line_index, total_time, output_time_method)
 
                         if output_percentage:
                             # Emit 0 percent to sure Marlin knows we are overriding the completion percentage
@@ -114,10 +126,10 @@ class DisplayProgressOnLCD(Script):
                         current_time = self.getTimeValue(line)
                         line_index = lines.index(line)
                         
-                        if output_time != "none":
+                        if output_time:
                             if output_frequency == 0:
                                 # Here we calculate remaining time
-                                self.outputTime(lines, line_index, total_time - current_time, output_time)
+                                self.outputTime(lines, line_index, total_time - current_time, output_time_method)
                             else:
                                 # Here we calculate remaining time and how many outputs are expected for the layer
                                 layer_time_delta = int(current_time - previous_layer_end_time)
@@ -138,7 +150,7 @@ class DisplayProgressOnLCD(Script):
                                             time_line_index = int((seconds * step) + lines_added)
 
                                             # Insert remaining time into the GCODE
-                                            self.outputTime(lines, time_line_index, total_time - line_time, output_time)
+                                            self.outputTime(lines, time_line_index, total_time - line_time, output_time_method)
                                             # Next line will be again lower
                                             lines_added = lines_added + 1
 
