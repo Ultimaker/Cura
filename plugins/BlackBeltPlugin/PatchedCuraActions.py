@@ -29,7 +29,7 @@ class PatchedCuraActions(CuraActions):
             return
 
         definition_container = global_container_stack.getBottom()
-        if definition_container and definition_container.getId() != "blackbelt":
+        if definition_container and definition_container.getId() not in ["blackbelt", "blackbeltvd"]:
             # for all other printers do the normal multiply/arrange
             super().multiplySelection(count)
             return

@@ -1,3 +1,10 @@
+[3.6.2]
+*BlackBelt changes
+- New varioDrive setup added as seperate printer
+- Updated logos and icons
+- Updated material profiles
+- Updated start Gcode motor current
+
 [3.6.0]
 *BlackBelt changes
 - Added automatic support generation

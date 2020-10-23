@@ -88,45 +88,54 @@ class BlackBeltPlugin(Extension):
             preferences.addPreference("cura/active_setting_visibility_preset", "basic")
             preferences.setValue("cura/active_setting_visibility_preset", "blackbelt")
 
-            add_pricing = True
-            preferences.addPreference("cura/currency", "€")
-            if preferences.getValue("cura/currency") != "€":
-                add_pricing = False
-            preferences.addPreference("cura/favorite_materials", "")
-            preferences.addPreference("cura/material_settings", "{}")
-            try:
-                material_settings = json.loads(preferences.getValue("cura/material_settings"))
-            except json.decoder.JSONDecodeError:
-                Logger.log("e", "Unable to parse material settings: %s" % preferences.getValue("cura/material_settings"))
-                material_settings = {}
+            self._fixMaterialProperties()
 
-            material_favorites = set()
-            for item in preferences.getValue("cura/favorite_materials").split(";"):
-                material_favorites.add(item)
+    def _fixMaterialProperties(self):
+        # Update preference defaults
+        preferences = self._application.getPreferences()
+        preferences.preferenceChanged.connect(self._onPreferencesChanged)
 
-            # Get default material pricing from json file
-            material_defaults = {}
-            defaults_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "material_settings.json")
-            try:
-                with open(defaults_file_path) as defaults_file:
-                    material_defaults = json.load(defaults_file)
-            except:
-                Logger.log("w", "Could not load default material pricing")
+        add_pricing = True
+        preferences.addPreference("cura/currency", "€")
+        if preferences.getValue("cura/currency") != "€":
+            add_pricing = False
+        preferences.addPreference("cura/favorite_materials", "")
+        preferences.addPreference("cura/material_settings", "{}")
+        try:
+            material_settings = json.loads(preferences.getValue("cura/material_settings"))
+        except json.decoder.JSONDecodeError:
+            Logger.log("e", "Unable to parse material settings: %s" % preferences.getValue("cura/material_settings"))
+            material_settings = {}
 
-            for material_id in material_defaults:
-                material_favorites.add(material_id)
-                guid = material_defaults[material_id].get("guid", None)
-                if not guid:
-                    continue
-                if material_settings.get(guid, None):
-                    continue
-                settings = { "spool_weight": material_defaults[material_id].get("spool_weight", 750) }
-                if add_pricing:
-                    settings["spool_cost"] = material_defaults[material_id].get("spool_cost", 0)
-                material_settings[guid] = settings
+        material_favorites = set()
+        for item in preferences.getValue("cura/favorite_materials").split(";"):
+            material_favorites.add(item)
 
-            preferences.setValue("cura/material_settings", json.dumps(material_settings))
-            preferences.setValue("cura/favorite_materials", ";".join(list(material_favorites)))
+        # Get default material pricing from json file
+        material_defaults = {}
+        defaults_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "material_settings.json")
+        try:
+            with open(defaults_file_path) as defaults_file:
+                material_defaults = json.load(defaults_file)
+        except:
+            Logger.log("w", "Could not load default material pricing")
+
+        for material_id in material_defaults:
+            material_favorites.add(material_id)
+            guid = material_defaults[material_id].get("guid", None)
+            if not guid:
+                continue
+            # remove because of pricing updates
+            #if material_settings.get(guid, None):
+                #continue
+            settings = { "spool_weight": material_defaults[material_id].get("spool_weight", 750) }
+            Logger.log("w", "Pricing changed")
+            if add_pricing:
+                settings["spool_cost"] = material_defaults[material_id].get("spool_cost", 0)
+            material_settings[guid] = settings
+
+        preferences.setValue("cura/material_settings", json.dumps(material_settings))
+        preferences.setValue("cura/favorite_materials", ";".join(list(material_favorites)))
 
 
     def _getPluginVersion(self):
@@ -186,12 +195,15 @@ class BlackBeltPlugin(Extension):
         self._fixVisibilityPreferences(forced = self._force_visibility_update)
         self._force_visibility_update = False
 
+        # Run material settings again
+        self._fixMaterialProperties()
+
     def _onOutputDevicesChanged(self):
         if not self._global_container_stack:
             return
 
         definition_container = self._global_container_stack.getBottom()
-        if definition_container.getId() != "blackbelt":
+        if definition_container.getId() not in ["blackbelt", "blackbeltvd"]:
             return
 
         # HACK: Remove USB output device for blackbelt printers
@@ -217,7 +229,7 @@ class BlackBeltPlugin(Extension):
                         definition_container._definitions.insert(0, definition_container._definitions.pop(index))
 
             # HOTFIXES for Blackbelt stacks
-            if definition_container.getId() == "blackbelt" and self._application._machine_manager:
+            if definition_container.getId() in ["blackbelt", "blackbeltvd"] and self._application._machine_manager:
                 extruder_stack = self._application.getMachineManager()._active_container_stack
 
                 if extruder_stack:
@@ -239,8 +251,8 @@ class BlackBeltPlugin(Extension):
                         self._global_container_stack.setMetaDataEntry("approximate_diameter", approximate_diameter)
 
                     # Make sure the extruder quality is a blackbelt quality profile
-                    if extruder_stack.quality != self._application.empty_quality_container and extruder_stack.quality.getDefinition().getId() != "blackbelt":
-                        blackbelt_normal_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_normal")[0]
+                    if extruder_stack.quality != self._application.empty_quality_container and extruder_stack.quality.getDefinition().getId() not in ["blackbelt", "blackbeltvd"]:
+                        blackbelt_normal_quality = ContainerRegistry.getInstance().findContainers(id = str(definition_container.getId())+"_normal")[0]
                         extruder_stack.setQuality(blackbelt_normal_quality)
                         self._global_container_stack.setQuality(blackbelt_normal_quality)
 
@@ -258,7 +270,7 @@ class BlackBeltPlugin(Extension):
             return
 
         definition_container = self._global_container_stack.getBottom()
-        if definition_container.getId() != "blackbelt":
+        if definition_container.getId() not in ["blackbelt", "blackbeltvd"]:
             return
 
         if self._global_container_stack.variant != extruder_stack.variant:
@@ -273,14 +285,14 @@ class BlackBeltPlugin(Extension):
             return
 
         definition_container = self._global_container_stack.getBottom()
-        if definition_container.getId() != "blackbelt":
+        if definition_container.getId() not in ["blackbelt", "blackbeltvd"]:
             return
 
         if extruder_stack.quality.getMetaDataEntry("global_quality", False) or not self._global_container_stack.quality.getMetaDataEntry("global_quality", False):
-            blackbelt_global_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_global_normal")[0]
+            blackbelt_global_quality = ContainerRegistry.getInstance().findContainers(id = str(definition_container.getId())+"_global_normal")[0]
             self._global_container_stack.setQuality(blackbelt_global_quality)
 
-            blackbelt_quality = ContainerRegistry.getInstance().findContainers(id = "blackbelt_normal")[0]
+            blackbelt_quality = ContainerRegistry.getInstance().findContainers(id = str(definition_container.getId())+"_normal")[0]
             extruder_stack.setQuality(blackbelt_quality)
 
     def _onSettingValueChanged(self, key, property_name):
@@ -345,7 +357,7 @@ class BlackBeltPlugin(Extension):
         global_stack = self._application.getGlobalContainerStack()
 
         definition_container = self._global_container_stack.getBottom()
-        if definition_container.getId() != "blackbelt":
+        if definition_container.getId() not in ["blackbelt", "blackbeltvd"]:
             return
 
         scene = self._application.getController().getScene()

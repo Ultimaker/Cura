@@ -12,7 +12,7 @@
             "label": "BlackBelt",
             "type": "category",
             "description": "BlackBelt specific settings",
-            "icon": "category_machine",
+            "icon": "category_blackbelt",
             "children":
             {
                 "blackbelt_repetitions":
@@ -137,7 +137,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "150",
                     "default_value": 30,
-                    "value": "speed_wall_0 * 0.6",
+                    "value": "10 if blackbelt_belt_wall_enabled else 0",
                     "resolve": "min(extruderValues('blackbelt_belt_wall_speed'))",
                     "enabled": "blackbelt_belt_wall_enabled",
                     "settable_per_mesh": false,
@@ -375,17 +375,13 @@
                 "lines": "Lines",
                 "triangles": "Triangles",
                 "cubic": "Cubic",
-                "cubicsubdiv": "Cubic Subdivision",
                 "tetrahedral": "Octet",
-                "quarter_cubic": "Quarter Cubic",
                 "zigzag": "Zig Zag",
-                "cross": "Cross",
-                "cross_3d": "Cross 3D",
                 "gyroid": "Gyroid"
             }
         },
         "infill_angles": {
-            "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else '[ ]'"
+            "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else ('[26,205,-26,155]' if infill_pattern == 'zigzag' else '[]')"
         },
         "infill_line_distance": {
             "minimum_value_warning": "0 if infill_sparse_density == 0 else infill_line_width"

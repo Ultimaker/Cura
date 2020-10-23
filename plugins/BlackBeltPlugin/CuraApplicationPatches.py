@@ -35,7 +35,7 @@ class CuraApplicationPatches():
             return
 
         definition_container = global_container_stack.getBottom()
-        if definition_container.getId() == "blackbelt":
+        if definition_container.getId() in ["blackbelt", "blackbeltvd"] :
             leading_edge = self._application.getBuildVolume().getBoundingBox().front
 
             for fixed_node in fixed_nodes:
@@ -62,7 +62,7 @@ class CuraApplicationPatches():
             return
 
         definition_container = global_container_stack.getBottom()
-        is_blackbelt_printer = definition_container.getId() == "blackbelt"
+        is_blackbelt_printer = definition_container.getId() in ["blackbelt", "blackbeltvd"]
         ### END PATCH
 
         nodes = job.getResult()

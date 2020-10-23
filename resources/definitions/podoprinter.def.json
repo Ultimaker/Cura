@@ -1,5 +1,5 @@
 {
-    "name": "BLACKBELT 3D Printer",
+    "name": "PodoPrinter",
     "version": 2,
     "inherits": "beltprinter",
     "metadata": {
@@ -7,27 +7,24 @@
         "author": "fieldOfView",
         "manufacturer": "BLACKBELT 3D B.V.",
         "category": "BLACKBELT 3D",
-        "firmware_file": "MarlinBlackBelt3D.hex",
-        "platform": "blackbelt_platform.stl",
-        "platform_offset": [0, -2, 0],
         "limit_buildvolume":
         {
             "depth":
             {
-                "maximum": 320
+                "maximum": 150
             }
         },
         "machine_extruder_trains":
         {
             "0": "blackbelt_extruder_0"
         },
-        "has_machine_quality": true,
+        "has_machine_quality": false,
         "preferred_quality_type": "normal",
         "has_machine_materials": true,
         "preferred_material": "blackbelt_ngen",
         "limit_materials": true,
-        "has_variants": true,
-        "preferred_variant_name": "0.6 mm, 35°",
+        "has_variants": false,
+        "preferred_variant_name": "0.8 mm, 35°",
         "variants_id_pattern": "{definition_id}_{term}_{term}",
         "variants_name": "Configuration",
         "variants_terms":
@@ -35,8 +32,6 @@
             {
                 "name": "Gantry Angle",
                 "values": {
-                    "15": "15°",
-                    "25": "25°",
                     "35": "35°",
                     "45": "45°"
                 }
@@ -44,11 +39,10 @@
             {
                 "name": "Nozzle Size",
                 "values": {
-                    "0.25": "0.25 mm",
                     "0.4": "0.4 mm",
                     "0.6": "0.6 mm",
                     "0.8": "0.8 mm",
-                    "1.0": "1.0 mm"
+                    "0.9": "0.9 mm"
                 }
             }
         ],
@@ -67,9 +61,9 @@
                     "description": "The distance between the part and the conveyor belt. Adjust the gap to the belt to control adhesion between the print and the belt. Smaller gap means more adhesion, a bigger gap means less adhesion.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.25,
+                    "default_value": 0.22,
                     "resolve": "extruderValue(0, 'blackbelt_z_offset_gap')",
-                    "minimum_value": "0.20",
+                    "minimum_value": "0",
                     "maximum_value": "5",
                     "minimum_value_warning": "0.25",
                     "settable_per_mesh": false,
@@ -81,7 +75,7 @@
                     "description": "Enables the secondary print cooling fans while printing.",
                     "type": "bool",
                     "enabled": "cool_fan_enabled",
-                    "default_value": false,
+                    "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -92,26 +86,9 @@
                     "type": "float",
                     "enabled": "blackbelt_secondary_fans_enabled",
                     "unit": "%",
-                    "minimum_value": "0",
-                    "default_value": 100,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                }
-            }
-        },
-        "machine_settings":
-        {
-            "children":
-            {
-                "blackbelt_z_offset":
-                {
-                    "label": "Belt Offset",
-                    "description": "The offset to the belt (0.1 = big gap, 0.3 = small gap)",
                     "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.2,
-                    "value": "round((wall_line_width_0 / 2) - (blackbelt_z_offset_gap / math.sin(math.radians(float(blackbelt_gantry_angle)))) - xy_offset, 4)",
-                    "maximum_value_warning": "machine_nozzle_size",
+                    "minimum_value": "0",
+                    "default_value": 50,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -121,20 +98,20 @@
 
     "overrides": {
         "machine_name": {
-            "default_value": "BLACKBELT 3D Printer"
+            "default_value": "PodoPrinter test"
         },
         "machine_start_gcode" : {
-            "default_value": "G90               ; Set to Absolute Positioning\nM82               ; Set extruder to absolute mode\nG21               ; Metric values\nG92 X0 Y0 Z0 E0   ; Set all axis to 0\n;home X\nG1 Y2             ; Move Y axis off the bed\nG28 X0Y0 F2000      ; Home X axis\nG1 X170 Z5 F4000  ; Move X to the center\n;probe Y\nM908 P5 S10       ; Setting the motor current of the Y1 motor off\nM908 P1 S10       ; Setting the motor current of the Y2 motor off\nG1 Y20 G3000      ; Move Y up\nM400              ; Wait for current moves to finish\nM908 P5 S20       ; Setting the motor current of the Y1 motor very low\nM908 P1 S20       ; Setting the motor current of the Y2 motor off\nG1 Y0 F500        ; Move Y down into the belt\nM400              ; Wait for current moves to finish\nM908 P5 S140      ; Setting the motor current of the Y1 motor to normal\nM908 P1 S140      ; Setting the motor current of the Y2 motor to normal\nG92 Y{blackbelt_z_offset}\n;purge\nG1 Y2             ; Move Y axis off the bed\nG1 F15000         ; Set high feedrate\nG1 X170 F10000    ; Move the print head to the center and break the melt\nG1 X335 Y 1 G1 E10; Extruder 10mm material and move to the side\nG1 E15            ; Extrude 5mm more\nG1 Z10 E18 F500   ; Move belt 5mm and keep extruding\nG1 Z30            ; Move the belt a bit further without extruding\nG92 Z0            ; Zero Belt\nG92 E0            ; Zero the extruded length\nG1 E-4 F3900      ; Retract 4mm at 65mm/s\n;prepare printing\nG1 E0             ; Move extruder back to 0\nG92 E-1.5         ; Add 1.5mm start distance\nM117 BLACKBELT Printing...\n\n;˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅ - copy from here / paste codes just under here - ˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅\n\nM107              ; Start with the fan off"
+            "default_value": "M562\n\nM83               ; Set extruder to relative mode\n\nG92 Z0                 ; Zero Belt\nG0 F100 Z2          ; Move Z\nG92 Z0                 ; Zero Belt\n\nG28\n\nG1 F10000 E20                  ; Extrude 20mm\nG1 F10000 E20 Z5     ; Move the belt a bit further without extruding\nG1 F10000 E20\nG0 F100 Y15 Z15     ; Move the belt a bit further without extruding\nG92 Z0                 ; Zero Belt\nG92 E0                 ; Zero the extruded length\nG1 F3900 E-2       ; Retract 2mm at 65mm/s\nG92 E-5         ; Add 1.5mm start distance\n\n\nM107              ; Start with the fan off"
         },
         "machine_end_gcode" : {
-            "default_value": "G92 E0   ; Set Extruder to zero\nG1 E-6   ; Retract 6mm\nG92 Z0   ; Set Belt to zero\nG1 Z15   ; Move Belt 15mm before starting up the next product\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - copy up to here / paste codes just above here - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\n\nM104 S0  ; Extruder heater off\nM140 S0  ; Heated bed heater off\nM106 S0  ; Part cooling fan off\nM106 P1 S0  ; Rear fan off\nG92 Z0\nG1 Z10 F1000\nG28 X0 F2000\nG1 Z20 F1000\nG1 X170 F2000\nG1 Y{blackbelt_z_offset} F2000\nM18      ; Disable all stepper motors"
+            "default_value": "G92 E0   ; Set Extruder to zero\nG1 F3900 E-2   ; Retract 2mm\nG92 Z0   ; Set Belt to zero\nG1 F10000 Z15   ; Move Belt 15mm before starting up the next product\nG92 Z0   ; Set Belt to zero again\n\n\nM104 S0  ; Extruder heater off\nM140 S0  ; Heated bed heater off\nM106 S0  ; Part cooling fan off\nM106 P1 S0  ; Rear fan off\nG92 Z0\nG1  F10000 Z50\nG1  F1000 X75 Y10\nM18      ; Disable all stepper motors"
         },
         "machine_width": {
-            "default_value": 340
+            "default_value": 150
         },
         "machine_height": {
-            "default_value": 340,
-            "value": "455 * math.sin(math.radians(float(blackbelt_gantry_angle)))"
+            "default_value": 100,
+            "value": "485 * math.sin(math.radians(float(blackbelt_gantry_angle)))"
         },
         "machine_depth": {
             "default_value": 99999
@@ -148,34 +125,29 @@
         "machine_heated_bed": {
             "default_value": true
         },
-
-
         "material_bed_temperature": {
             "value": "max(extruderValues('default_material_bed_temperature'))"
         },
-
-
         "layer_height_0": {
             "value": "layer_height"
         },
-
         "line_width": {
             "value": "machine_nozzle_size"
         },
         "wall_line_width": {
-            "value": "line_width"
+            "value": "line_width + line_width"
         },
         "wall_line_width_0": {
-            "value": "line_width"
+            "value": "line_width + line_width"
         },
         "skin_line_width": {
-            "value": "line_width"
+            "value": "line_width + line_width"
         },
         "infill_line_width": {
-            "value": "line_width + 0.2"
+            "value": "line_width + 0.4"
         },
         "infill_pattern": {
-            "value": "'zigzag'"
+            "value": "'lines'"
         },
         "skin_preshrink": {
             "value": "2"
@@ -202,43 +174,43 @@
 
 
         "wall_thickness": {
-            "value": "(4 if machine_nozzle_size <= 0.4 else 2 if machine_nozzle_size >= 0.8 else 3) * wall_line_width_x"
+            "value": "1"
         },
         "top_bottom_thickness": {
-            "value": "5 * resolveOrValue('layer_height')"
+            "value": "1 * resolveOrValue('layer_height')"
         },
         "top_thickness": {
             "value": "top_bottom_thickness"
         },
         "bottom_thickness": {
-            "value": "0.6 * top_bottom_thickness"
+            "value": "1 * top_bottom_thickness"
         },
         "infill_sparse_density": {
-            "value": "0"
+            "value": "40"
         },
         "retraction_amount": {
-            "value": "4"
+            "value": "2"
         },
         "retraction_speed": {
             "value": "65"
         },
         "speed_print": {
-            "value": "40"
+            "value": "45"
         },
         "speed_support": {
-            "value": "speed_print * 0.75"
+            "value": "speed_print"
         },
         "speed_infill": {
-            "value": "speed_print * 0.75"
+            "value": "speed_print"
         },
         "speed_wall": {
-            "value": "speed_print"
+            "value": "35"
         },
         "speed_wall_x": {
-            "value": "speed_print"
+            "value": "35"
         },
         "speed_wall_0": {
-            "value": "speed_wall * 0.75"
+            "value": "35"
         },
         "speed_topbottom": {
             "value": "speed_print"
@@ -247,22 +219,22 @@
             "value": "150"
         },
         "speed_print_layer_0": {
-            "value": "5"
+            "value": "3"
         },
         "speed_travel_layer_0": {
-            "value": "speed_print * 3"
+            "value": "100"
         },
         "max_feedrate_z_override": {
             "value": "30"
         },
         "cool_fan_speed": {
-            "value": "60.0 if cool_fan_enabled else 0.0"
+            "value": "60.0"
         },
         "cool_fan_full_at_height": {
             "value": "layer_height_0 + 5 * layer_height"
         },
         "cool_min_layer_time": {
-            "value": "10"
+            "value": "4"
         },
         "material_initial_print_temperature": {
             "value": "material_print_temperature"
@@ -271,14 +243,14 @@
             "value": "material_print_temperature - 10"
         },
         "coasting_speed": {
-            "value": "100"
+            "value": "80"
         },
 
         "machine_max_acceleration_x": {
-            "value": "500"
+            "value": "1000"
         },
         "machine_max_acceleration_y": {
-            "value": "500"
+            "value": "1000"
         },
         "jerk_print": {
             "value": "15"
@@ -291,22 +263,10 @@
             "value": "True"
         },
         "retraction_combing": {
-            "value": "'off'"
+            "value": "'everywhere'"
         },
         "speed_slowdown_layers": {
-            "value": "4 if machine_nozzle_size <= 0.4 else 3"
-        },
-		"top_bottom_pattern": {
-            "value": "'concentric'"
-        },
-        "travel_compensate_overlapping_walls_enabled": {
-            "value": "False"
-        },
-		"z_seam_corner": {
-            "value": "'z_seam_corner_any'"
-		},
-		"material_flow_layer_0": {
-			"value": "150"
-		}
+            "value": "3"
+        }
     }
 }

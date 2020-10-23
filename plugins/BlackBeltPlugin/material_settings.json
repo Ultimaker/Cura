@@ -23,5 +23,25 @@
 		"guid":"3ed31896-4698-404e-9960-8daebc05885a",
 		"spool_cost":42.5,
 		"spool_weight":2200
+	},
+	"blackbelt_varioshore": {
+		"guid":"db3b8558-2fa2-4618-908b-ca4b2a328ed2",
+		"spool_cost":120.0,
+		"spool_weight":2000
+	},
+	"blackbelt_flex": {
+		"guid":"e8bc4c59-1023-4530-a0ed-0b1ed18c24e4",
+		"spool_cost":78.65,
+		"spool_weight":1000
+	},
+	"blackbelt_lwpla": {
+		"guid":"c07bb287-2975-4c5f-a745-22c2512a16bb",
+		"spool_cost":115.0,
+		"spool_weight":2200
+	},
+	"blackbelt_asa": {
+		"guid":"985a5531-d06b-445e-9b0e-969f4781e9e0",
+		"spool_cost":80.0,
+		"spool_weight":2200
 	}
 }

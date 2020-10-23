@@ -1,5 +1,5 @@
 {
-    "name": "BLACKBELT 3D Printer",
+    "name": "BLACKBELT 3D varioDrive",
     "version": 2,
     "inherits": "beltprinter",
     "metadata": {
@@ -7,7 +7,7 @@
         "author": "fieldOfView",
         "manufacturer": "BLACKBELT 3D B.V.",
         "category": "BLACKBELT 3D",
-        "firmware_file": "MarlinBlackBelt3D.hex",
+        "firmware_file": "MarlinBlackBelt3DVD.hex",
         "platform": "blackbelt_platform.stl",
         "platform_offset": [0, -2, 0],
         "limit_buildvolume":
@@ -19,12 +19,12 @@
         },
         "machine_extruder_trains":
         {
-            "0": "blackbelt_extruder_0"
+            "0": "blackbeltvd_extruder_0"
         },
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "has_machine_materials": true,
-        "preferred_material": "blackbelt_ngen",
+        "preferred_material": "blackbelt_varioshore",
         "limit_materials": true,
         "has_variants": true,
         "preferred_variant_name": "0.6 mm, 35°",
@@ -44,11 +44,11 @@
             {
                 "name": "Nozzle Size",
                 "values": {
-                    "0.25": "0.25 mm",
+                    "0.2": "0.2 mm",
                     "0.4": "0.4 mm",
                     "0.6": "0.6 mm",
-                    "0.8": "0.8 mm",
-                    "1.0": "1.0 mm"
+                    "0.9": "0.9 mm",
+                    "1.2": "1.2 mm"
                 }
             }
         ],
@@ -67,7 +67,7 @@
                     "description": "The distance between the part and the conveyor belt. Adjust the gap to the belt to control adhesion between the print and the belt. Smaller gap means more adhesion, a bigger gap means less adhesion.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.25,
+                    "default_value": 0.3,
                     "resolve": "extruderValue(0, 'blackbelt_z_offset_gap')",
                     "minimum_value": "0.20",
                     "maximum_value": "5",
@@ -88,7 +88,7 @@
                 "blackbelt_secondary_fans_speed":
                 {
                     "label": "Secondary Print Fan Speed",
-                    "description": "The speed at which the secondary print cooling fans spin. The secondary fans speed is relative to the primary cooling fan speed.",
+                    "description": "The speed at which the secondary print cooling fans spin.",
                     "type": "float",
                     "enabled": "blackbelt_secondary_fans_enabled",
                     "unit": "%",
@@ -113,7 +113,7 @@
                     "value": "round((wall_line_width_0 / 2) - (blackbelt_z_offset_gap / math.sin(math.radians(float(blackbelt_gantry_angle)))) - xy_offset, 4)",
                     "maximum_value_warning": "machine_nozzle_size",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": false
                 }
             }
         }
@@ -121,20 +121,20 @@
 
     "overrides": {
         "machine_name": {
-            "default_value": "BLACKBELT 3D Printer"
+            "default_value": "BLACKBELT 3D varioDrive"
         },
         "machine_start_gcode" : {
-            "default_value": "G90               ; Set to Absolute Positioning\nM82               ; Set extruder to absolute mode\nG21               ; Metric values\nG92 X0 Y0 Z0 E0   ; Set all axis to 0\n;home X\nG1 Y2             ; Move Y axis off the bed\nG28 X0Y0 F2000      ; Home X axis\nG1 X170 Z5 F4000  ; Move X to the center\n;probe Y\nM908 P5 S10       ; Setting the motor current of the Y1 motor off\nM908 P1 S10       ; Setting the motor current of the Y2 motor off\nG1 Y20 G3000      ; Move Y up\nM400              ; Wait for current moves to finish\nM908 P5 S20       ; Setting the motor current of the Y1 motor very low\nM908 P1 S20       ; Setting the motor current of the Y2 motor off\nG1 Y0 F500        ; Move Y down into the belt\nM400              ; Wait for current moves to finish\nM908 P5 S140      ; Setting the motor current of the Y1 motor to normal\nM908 P1 S140      ; Setting the motor current of the Y2 motor to normal\nG92 Y{blackbelt_z_offset}\n;purge\nG1 Y2             ; Move Y axis off the bed\nG1 F15000         ; Set high feedrate\nG1 X170 F10000    ; Move the print head to the center and break the melt\nG1 X335 Y 1 G1 E10; Extruder 10mm material and move to the side\nG1 E15            ; Extrude 5mm more\nG1 Z10 E18 F500   ; Move belt 5mm and keep extruding\nG1 Z30            ; Move the belt a bit further without extruding\nG92 Z0            ; Zero Belt\nG92 E0            ; Zero the extruded length\nG1 E-4 F3900      ; Retract 4mm at 65mm/s\n;prepare printing\nG1 E0             ; Move extruder back to 0\nG92 E-1.5         ; Add 1.5mm start distance\nM117 BLACKBELT Printing...\n\n;˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅ - copy from here / paste codes just under here - ˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅\n\nM107              ; Start with the fan off"
-        },
-        "machine_end_gcode" : {
-            "default_value": "G92 E0   ; Set Extruder to zero\nG1 E-6   ; Retract 6mm\nG92 Z0   ; Set Belt to zero\nG1 Z15   ; Move Belt 15mm before starting up the next product\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - copy up to here / paste codes just above here - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\n\nM104 S0  ; Extruder heater off\nM140 S0  ; Heated bed heater off\nM106 S0  ; Part cooling fan off\nM106 P1 S0  ; Rear fan off\nG92 Z0\nG1 Z10 F1000\nG28 X0 F2000\nG1 Z20 F1000\nG1 X170 F2000\nG1 Y{blackbelt_z_offset} F2000\nM18      ; Disable all stepper motors"
+			"default_value": ";start code varioDrive\n\nG90                      ; Set to Absolute Positioning\nM82                      ; Set extruder to absolute mode\nG21                      ; Metric values\nG92 X0 Y0 Z0 E0  ; Set all axis to 0\nG1 Y4 Z5 F500     ; Move Y axis off the bed\nM400                    ; Wait for current moves to finish\nG92 Z0                 ; Set belt to 0\nG28 X0Y0 F2000      ; Home X axis\nG1 Y4                   ; Move Y axis off the bed\nM400                   ; Wait for current moves to finish\n\nG1 Y3                  ; move head up\nG1 E30                ; Extruder 30mm material\nG1 Z10 F400       ; Move belt 10mm\nG4 P2000            ;Wait 2 seconds\nG1 Z20 F400       ; Move the belt a bit further\nG92 Z0                ; Zero Belt\nG92 E0                ; Zero the extruded length\nG1 E-2 F3900      ; Retract 2mm at 65mm/s\nG92 E-3               ; Add 1mm start distance\n\nG1 X170 Y3         ; Move X to the center\nM400                   ; Wait for current moves to finish\nM908 P5 S12       ; Setting the motor current of the Y1 motor off\nM908 P1 S12       ; Setting the motor current of the Y2 motor off\nG1 Y10 G3000     ; Move Y up\nM400                   ; Wait for current moves to finish\nM908 P5 S15       ; Setting the motor current of the Y1 motor very low\nM908 P1 S15       ; Setting the motor current of the Y2 motor off\nG1 Y0 F500          ; Move Y down into the belt\nM400                    ; Wait for current moves to finish\nM908 P5 S140      ; Setting the motor current of the Y1 motor to normal\nM908 P1 S140      ; Setting the motor current of the Y2 motor to normal\n\n\nM117 BLACKBELT Printing...\n\nG92 Y{blackbelt_z_offset}\n\n;˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅ - copy from here / paste codes just under here - ˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅˅\n\nM107              ; Start with the fan off"
+		},        
+		"machine_end_gcode" : {
+			"default_value": ";end code varioDrive\n\nG1 X170\nG92 Z0\nG1 Z60    ; Move the part 60mm away fro print head\nG92 Z0\nG1 Y{blackbelt_z_offset}\n\nM107              ; Fan off\n\nG92 E0   ; Set Extruder to zero\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - copy up to here / paste codes just above here - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\n\nG1 Y3 F2000\n\nG1 E-3   ; Retract 3mm\nM104 S0  ; Extruder heater off\nM140 S0  ; Heated bed heater off\nM106 P1 S0\nM106 S0  ; Part cooling fan off\nM106 P1 S0  ; Rear fan off\n\n\nG1 Y3 F2000\nG28 X0 F2000\nG1 Y3 F2000\nG1 X170 F2000\n\nM18      ; Disable all stepper motors\nM117 BLACKBELT Ready."
         },
         "machine_width": {
             "default_value": 340
         },
         "machine_height": {
             "default_value": 340,
-            "value": "455 * math.sin(math.radians(float(blackbelt_gantry_angle)))"
+            "value": "325 * math.sin(math.radians(float(blackbelt_gantry_angle)))"
         },
         "machine_depth": {
             "default_value": 99999
@@ -148,9 +148,9 @@
         "machine_heated_bed": {
             "default_value": true
         },
-
-
-        "material_bed_temperature": {
+		
+		
+		"material_bed_temperature": {
             "value": "max(extruderValues('default_material_bed_temperature'))"
         },
 
@@ -158,7 +158,6 @@
         "layer_height_0": {
             "value": "layer_height"
         },
-
         "line_width": {
             "value": "machine_nozzle_size"
         },
@@ -177,6 +176,9 @@
         "infill_pattern": {
             "value": "'zigzag'"
         },
+		"infill_percentage": {
+			"value": "20"
+		},
         "skin_preshrink": {
             "value": "2"
         },
@@ -200,7 +202,6 @@
         },
 
 
-
         "wall_thickness": {
             "value": "(4 if machine_nozzle_size <= 0.4 else 2 if machine_nozzle_size >= 0.8 else 3) * wall_line_width_x"
         },
@@ -213,11 +214,14 @@
         "bottom_thickness": {
             "value": "0.6 * top_bottom_thickness"
         },
-        "infill_sparse_density": {
+		"infill_sparse_density": {
             "value": "0"
         },
+		"infill_overlap": {
+			"value": "30"
+		},
         "retraction_amount": {
-            "value": "4"
+            "value": "2.5"
         },
         "retraction_speed": {
             "value": "65"
@@ -238,7 +242,7 @@
             "value": "speed_print"
         },
         "speed_wall_0": {
-            "value": "speed_wall * 0.75"
+            "value": "(blackbelt_belt_wall_speed * 2 if blackbelt_belt_wall_enabled else speed_wall * 0.75)"
         },
         "speed_topbottom": {
             "value": "speed_print"
@@ -247,7 +251,7 @@
             "value": "150"
         },
         "speed_print_layer_0": {
-            "value": "5"
+            "value": "3 * speed_print / 40"
         },
         "speed_travel_layer_0": {
             "value": "speed_print * 3"
@@ -262,7 +266,7 @@
             "value": "layer_height_0 + 5 * layer_height"
         },
         "cool_min_layer_time": {
-            "value": "10"
+            "value": "5"
         },
         "material_initial_print_temperature": {
             "value": "material_print_temperature"
@@ -270,6 +274,9 @@
         "material_final_print_temperature": {
             "value": "material_print_temperature - 10"
         },
+		"retract_before_outer_wall": {
+			"value": "true"
+		},
         "coasting_speed": {
             "value": "100"
         },
@@ -296,7 +303,7 @@
         "speed_slowdown_layers": {
             "value": "4 if machine_nozzle_size <= 0.4 else 3"
         },
-		"top_bottom_pattern": {
+				"top_bottom_pattern": {
             "value": "'concentric'"
         },
         "travel_compensate_overlapping_walls_enabled": {
