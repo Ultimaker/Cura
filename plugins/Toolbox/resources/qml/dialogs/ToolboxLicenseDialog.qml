@@ -42,8 +42,7 @@ UM.Dialog
         Row {
             id: packageRow
 
-            anchors.left: parent.left
-            anchors.right: parent.right
+            Layout.fillWidth: true
             height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("narrow_margin").width

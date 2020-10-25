@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.7\n"
+"Project-Id-Version: Cura 4.8\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-07-31 14:10+0000\n"
+"POT-Creation-Date: 2020-10-19 13:15+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -2053,7 +2053,7 @@ msgstr "Alustan lämpötila"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
-msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
+msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2063,8 +2063,8 @@ msgstr "Alustan lämpötila (alkukerros)"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
-msgid "The temperature used for the heated build plate at the first layer."
-msgstr "Lämmitettävän alustan lämpötila ensimmäistä kerrosta tulostettaessa."
+msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2088,12 +2088,12 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
-msgid "Shrinkage Ratio"
+msgid "Scaling Factor Shrinkage Compensation"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
-msgid "Shrinkage ratio in percentage."
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5065,7 +5065,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6351,6 +6351,10 @@ msgstr "Verkon pyöritysmatriisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Mallissa käytettävä muunnosmatriisi, kun malli ladataan tiedostosta."
+
+#~ msgctxt "material_bed_temperature_layer_0 description"
+#~ msgid "The temperature used for the heated build plate at the first layer."
+#~ msgstr "Lämmitettävän alustan lämpötila ensimmäistä kerrosta tulostettaessa."
 
 #~ msgctxt "infill_mesh_order label"
 #~ msgid "Infill Mesh Order"

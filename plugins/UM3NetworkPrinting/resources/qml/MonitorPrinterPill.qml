@@ -27,7 +27,7 @@ Item
     Label {
         id: printerNameLabel
         anchors.centerIn: parent
-        color: UM.Theme.getColor("monitor_text_primary")
+        color: UM.Theme.getColor("text")
         text: monitorPrinterPill.text
         font.pointSize: 10 // TODO: Theme!
         visible: monitorPrinterPill.text !== ""
