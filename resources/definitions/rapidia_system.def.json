@@ -61,7 +61,7 @@
             "default_value": "M900 K0.05;\nG28 ; home all axes\nG1 Z5 F5000 ; lift nozzle\nG1 X-45 Y70 F2500; go to glycerin roller;"
         },
         "machine_end_gcode": {
-            "default_value": "M104 S0 ; turn off extruder\nG28 X0 ; home X axis\nM84 ; disable motors\nM42 P12 S255 ; turn on red LEDs\nM42 P11 S0 ; turn off green LEDs\nM42 P13 S0 ; turn off blue LEDs\nM140 S70 ; turn bed heat to 70C"
+            "default_value": "M104 S0 ; turn off extruder\nG28 X0 ; home X axis\nM84 ; disable motors\nM42 P12 S255 ; turn on red LEDs\nM42 P11 S0 ; turn off green LEDs\nM42 P13 S0 ; turn off blue LEDs\nM140 S70 ; turn bed heat to 70C\nG4 S600 ; pause for 10 minutes\nM140 S0 ; turn bed heat off\nM42 P11 S255 ; turn on green LEDs\nM42 P12 S0 ; turn off red LEDs"
         }
     }
 }
