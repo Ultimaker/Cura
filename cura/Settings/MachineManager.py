@@ -336,7 +336,8 @@ class MachineManager(QObject):
             return  # We're done here
 
         self._global_container_stack = global_stack
-        extruder_manager.addMachineExtruders(global_stack)
+        if not global_stack.extruderList:  # First time we're activating this, there are no extruders yet.
+            extruder_manager.addMachineExtruders(global_stack)
         self._application.setGlobalContainerStack(global_stack)
 
         # Switch to the first enabled extruder
