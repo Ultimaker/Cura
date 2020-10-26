@@ -369,7 +369,8 @@ class MachineManager(QObject):
             material_node = variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
             if material_node is None:
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
-                self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material)
+                if not self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material):
+                    Logger.log("w", "Failed to switch to %s keeping old material instead", machine_node.preferred_material)
 
 
     @staticmethod
@@ -997,6 +998,11 @@ class MachineManager(QObject):
         self.activeMaterialChanged.emit()
         self.activeIntentChanged.emit()
 
+        # Force an update of resolve values
+        property_names = ["resolve", "validationState"]
+        for setting_key in self._global_container_stack.getAllKeys():
+            self._global_container_stack.propertiesChanged.emit(setting_key, property_names)
+
     def _onMaterialNameChanged(self) -> None:
         self.activeMaterialChanged.emit()
 
@@ -1152,6 +1158,7 @@ class MachineManager(QObject):
             extruder.qualityChanges = quality_changes_container
 
         self.setIntentByCategory(quality_changes_group.intent_category)
+        self._reCalculateNumUserSettings()
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
@@ -1452,17 +1459,21 @@ class MachineManager(QObject):
             self.updateMaterialWithVariant(None)  # Update all materials
             self._updateQualityWithMaterial()
 
-    @pyqtSlot(str, str)
-    def setMaterialById(self, position: str, root_material_id: str) -> None:
+    @pyqtSlot(str, str, result = bool)
+    def setMaterialById(self, position: str, root_material_id: str) -> bool:
         if self._global_container_stack is None:
-            return
+            return False
 
         machine_definition_id = self._global_container_stack.definition.id
         position = str(position)
         extruder_stack = self._global_container_stack.extruderList[int(position)]
         nozzle_name = extruder_stack.variant.getName()
-        material_node = ContainerTree.getInstance().machines[machine_definition_id].variants[nozzle_name].materials[root_material_id]
-        self.setMaterial(position, material_node)
+
+        materials = ContainerTree.getInstance().machines[machine_definition_id].variants[nozzle_name].materials
+        if root_material_id in materials:
+            self.setMaterial(position, materials[root_material_id])
+            return True
+        return False
 
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position: str, container_node, global_stack: Optional["GlobalStack"] = None) -> None:

@@ -205,10 +205,6 @@ class StartSliceJob(Job):
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
-                # Node can't be printed, so don't bother sending it.
-                if getattr(node, "_outside_buildarea", False):
-                    continue
-
                 # Filter on current build plate
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
                 if build_plate_number is not None and build_plate_number != self._build_plate_number:

@@ -60,7 +60,7 @@ Item
         Label
         {
             id: buildplateLabel
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default") // 12pt, regular
             text: buildplate ? buildplate : ""

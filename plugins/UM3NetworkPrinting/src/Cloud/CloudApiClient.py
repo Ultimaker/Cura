@@ -127,12 +127,16 @@ class CloudApiClient:
     #  \param cluster_id: The ID of the cluster.
     #  \param job_id: The ID of the print job.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any]) -> None:
+    #  \param on_error: A function to be called if there was a server-side problem uploading. Generic errors (not
+    #  specific to sending print jobs) such as lost connection, unparsable responses, etc. are not returned here, but
+    #  handled in a generic way by the CloudApiClient.
+    def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any], on_error) -> None:
         url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
         self._http.post(url,
                        scope = self._scope,
                        data = b"",
                        callback = self._parseCallback(on_finished, CloudPrintResponse),
+                       error_callback = on_error,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
     def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str,
