@@ -10,7 +10,6 @@
         "icon": "icon_ultimaker2",
         "has_material": true,
         "has_machine_quality": true,
-        "quality_definition": "rapidia_system",
         "has_variant_buildplates": false,
         "has_variants": true,
         "preferred_variant_name": "0.4",
