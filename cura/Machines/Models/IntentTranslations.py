@@ -22,15 +22,15 @@ intent_translations["quick"] = {
     "name": catalog.i18nc("@label", "Draft"),
     "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
 }
-intent_translations["no-support"] = {
+intent_translations["no_support"] = {
     "name": catalog.i18nc("@label", "No Support"),
     "description": catalog.i18nc("@text", "This profile is designed to print without support.")
 }
-intent_translations["metal-support"] = {
+intent_translations["metal_support"] = {
     "name": catalog.i18nc("@label", "Metal Support"),
                 "description": catalog.i18nc("@text", "This profile is designed to print with breakaway metal support.")
 }
-intent_translations["evap-support"] = {
+intent_translations["evap_support"] = {
     "name": catalog.i18nc("@label", "Evap Support"),
     "description": catalog.i18nc("@text", "This profile is designed to print evaporative support material.")
 }
