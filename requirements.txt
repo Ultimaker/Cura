@@ -8,7 +8,7 @@ appdirs==1.4.3
 certifi==2019.11.28
 cffi==1.13.1
 chardet==3.0.4
-cryptography==2.8
+cryptography==3.2
 decorator==4.4.0
 idna==2.8
 netifaces==0.10.9
