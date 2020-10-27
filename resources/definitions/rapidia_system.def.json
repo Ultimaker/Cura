@@ -11,6 +11,11 @@
         "has_material": true,
         "has_machine_quality": true,
         "quality_definition": "rapidia_system",
+        "has_variant_buildplates": false,
+        "has_variants": true,
+        "preferred_variant_name": "0.4",
+        "preferred_quality_type": "normal",
+        "variants_name": "Nozzle Size",
         "machine_extruder_trains": {
             "0": "rapidia_extruder_0",
             "1": "rapidia_extruder_1"
