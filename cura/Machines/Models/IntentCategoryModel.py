@@ -53,6 +53,18 @@ class IntentCategoryModel(ListModel):
                 "name": catalog.i18nc("@label", "Draft"),
                 "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
             }
+            cls._translations["none"] = {
+                "name": catalog.i18nc("@label", "No Support"),
+                "description": catalog.i18nc("@text", "This profile is designed to print without support.")
+            }
+            cls._translations["metal"] = {
+                "name": catalog.i18nc("@label", "Metal Support"),
+                "description": catalog.i18nc("@text", "This profile is designed to print with breakaway metal support.")
+            }
+            cls._translations["evap"] = {
+                "name": catalog.i18nc("@label", "Evap Support"),
+                "description": catalog.i18nc("@text", "This profile is designed to print evaporative support material.")
+            }
         return cls._translations
 
     def __init__(self, intent_category: str) -> None:
