@@ -1,9 +1,9 @@
 {
-    "name": "KOONOVO ELF",
+    "name": "Koonovo Elf",
     "version": 2,
     "inherits": "koonovo_base",
     "overrides": {
-        "machine_name": { "default_value": "KOONOVO ELF" },
+        "machine_name": { "default_value": "Koonovo Elf" },
         "machine_width": { "default_value": 310 },
         "machine_depth": { "default_value": 310 },
         "machine_height": { "default_value": 345 },

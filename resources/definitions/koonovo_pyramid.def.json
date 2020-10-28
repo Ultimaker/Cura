@@ -1,9 +1,9 @@
 {
-    "name": "KOONOVO Pyramid",
+    "name": "Koonovo Pyramid",
     "version": 2,
     "inherits": "koonovo_base",
     "overrides": {
-        "machine_name": { "default_value": "KOONOVO Pyramid" },
+        "machine_name": { "default_value": "Koonovo Pyramid" },
         "machine_width": { "default_value": 310 },
         "machine_depth": { "default_value": 310 },
         "machine_height": { "default_value": 400 },

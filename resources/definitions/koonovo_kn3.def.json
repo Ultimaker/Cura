@@ -1,11 +1,11 @@
 {
-    "name": "KOONOVO KN3 IDEX",
+    "name": "Koonovo KN3 Idex",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "KOONOVO",
-        "manufacturer": "KOONOVO",
+        "author": "Koonovo",
+        "manufacturer": "Koonovo",
         "file_formats": "text/x-gcode",
 	  "platform": "koonovo_kn3.stl",
 	  "quality_definition": "koonovo_base",
