@@ -18,6 +18,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 
 import os.path
+import numpy
 
 ## RenderPass used to display g-code paths.
 from .NozzleNode import NozzleNode
@@ -71,6 +72,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+            self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
@@ -83,6 +85,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
+            self._layer_shader.setUniformValue("u_show_starts", 1)
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
@@ -160,6 +163,12 @@ class SimulationPass(RenderPass):
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
+
+                    # The first line does not have a previous line: add a zero in front
+                    prev_line_types = numpy.concatenate([numpy.asarray([0], dtype=numpy.float32), layer_data._attributes["line_types"]["value"]])
+                    # Remove the last element 
+                    prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
+                    layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)
