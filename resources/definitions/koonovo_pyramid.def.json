@@ -16,11 +16,9 @@
         },
 
         "gantry_height": { "value": 0 }
-
     },
     "metadata": {
         "quality_definition": "koonovo_base",
         "visible": true
-
     }
 }
