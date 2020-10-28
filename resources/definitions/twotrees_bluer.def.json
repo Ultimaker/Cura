@@ -11,8 +11,8 @@
 		"platform": "twotrees_platform.stl",
         "machine_extruder_trains":
         {
-            "0": "custom_extruder_1",
-            "1": "custom_extruder_2"
+            "0": "twotrees_bluer_extruder_0",
+            "1": "twotrees_bluer_extruder_1"
         }
     },
 	"overrides":
