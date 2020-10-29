@@ -61,6 +61,27 @@
         {
             "children":
             {
+                "blackbelt_repetitions":
+                {
+                    "label": "Copies",
+                    "description": "The number of times the objects on the build plate are printed. Note that the repetitions will not be visible in Layer View.",
+                    "type": "int",
+                    "minimum_value": "1",
+                    "default_value": 1,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_repetitions_distance":
+                {
+                    "label": "Distance Between Copies",
+                    "description": "The distance the belt moves between repetitions.",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 300,
+                    "enabled": "blackbelt_repetitions > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "blackbelt_z_offset_gap":
                 {
                     "label": "Belt Offset",
