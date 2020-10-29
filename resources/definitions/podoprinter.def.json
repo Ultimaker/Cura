@@ -3,7 +3,7 @@
     "version": 2,
     "inherits": "beltprinter",
     "metadata": {
-        "visible": true,
+        "visible": false,
         "author": "fieldOfView",
         "manufacturer": "BLACKBELT 3D B.V.",
         "category": "BLACKBELT 3D",
@@ -46,7 +46,6 @@
                 }
             }
         ],
-        "supported_actions": ["UpgradeFirmware"],
         "file_formats": "text/x-gcode"
     },
 
