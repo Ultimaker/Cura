@@ -296,17 +296,17 @@
         "speed_slowdown_layers": {
             "value": "4 if machine_nozzle_size <= 0.4 else 3"
         },
-		"top_bottom_pattern": {
+        "top_bottom_pattern": {
             "value": "'concentric'"
         },
         "travel_compensate_overlapping_walls_enabled": {
             "value": "False"
         },
-		"z_seam_corner": {
+        "z_seam_corner": {
             "value": "'z_seam_corner_any'"
-		},
-		"material_flow_layer_0": {
-			"value": "150"
-		}
+        },
+        "material_flow_layer_0": {
+            "value": "150"
+        }
     }
 }
