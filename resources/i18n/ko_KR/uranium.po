@@ -1,0 +1,1049 @@
+# Uranium
+# Copyright (C) 2020 Ultimaker B.V.
+# This file is distributed under the same license as the Uranium package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Uranium 4.7\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2020-07-31 12:50+0200\n"
+"PO-Revision-Date: 2020-08-21 13:40+0200\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: Lionbridge <info@lionbridge.com>, Jinbuhm Kim, <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
+"Language: ko_KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/OBJReader/__init__.py:15
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/OBJWriter/__init__.py:15
+msgctxt "@item:inlistbox"
+msgid "Wavefront OBJ File"
+msgstr "Wavefront OBJ 파일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/OBJWriter/OBJWriter.py:25
+msgctxt "@error:not supported"
+msgid "OBJWriter does not support non-text mode."
+msgstr "OBJWriter는 텍스트가 아닌 모드는 지원하지 않습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/OBJWriter/OBJWriter.py:32
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/STLWriter/STLWriter.py:29
+msgctxt "@error:no mesh"
+msgid "There is no mesh to write."
+msgstr "작성할 메쉬가 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/STLReader/__init__.py:14
+msgctxt "@item:inlistbox"
+msgid "STL File"
+msgstr "STL 파일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/STLWriter/STLWriter.py:38
+msgctxt "@error:not supported"
+msgid "Unsupported output mode writing STL to stream."
+msgstr "스트리밍할 STL을 작성하는 지원되지 않는 출력 모드."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/STLWriter/__init__.py:17
+msgctxt "@item:inlistbox"
+msgid "STL File (ASCII)"
+msgstr "STL 파일 (ASCII)"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/FileHandlers/STLWriter/__init__.py:23
+msgctxt "@item:inlistbox"
+msgid "STL File (Binary)"
+msgstr "STL 파일 (바이너리)"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:29
+msgctxt "@item:inmenu"
+msgid "Local File"
+msgstr "로컬 파일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:30
+msgctxt "@action:button Preceded by 'Ready to'."
+msgid "Save to File"
+msgstr "파일에 저장"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:31
+msgctxt "@info:tooltip"
+msgid "Save to File"
+msgstr "파일에 저장"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:54
+msgctxt "@title:window"
+msgid "Save to File"
+msgstr "파일에 저장"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:87
+msgctxt "@info:warning"
+msgid "There are no file types available to write with!"
+msgstr "쓸 수있는 파일 유형이 없습니다!"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:133
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "파일이 이미 있음"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:133
+#, python-brace-format
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "<filename>{0}</filename> 파일이 이미 있습니다. 덮어 쓰시겠습니까?"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:163
+#, python-brace-format
+msgctxt "@info:progress Don't translate the XML tags <filename>!"
+msgid "Saving to <filename>{0}</filename>"
+msgstr "<filename>{0}</filename> 저장 중입니다"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:164
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "저장"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:172
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename>!"
+msgid "Permission denied when trying to save <filename>{0}</filename>"
+msgstr "<filename>{0}</filename> 저장하려고 하나 권한이 거부되었습니다"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:175
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:191
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename>: <message>{1}</message> 에 저장할 수 없습니다"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:185
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tags <filename>!"
+msgid "Saved to <filename>{0}</filename>"
+msgstr "<filename>{0}</filename> 에 저장됨"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:185
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "파일이 저장됨"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:186
+msgctxt "@action:button"
+msgid "Open Folder"
+msgstr "폴더 열기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:186
+msgctxt "@info:tooltip"
+msgid "Open the folder containing the file"
+msgstr "파일이 있는 폴더를 엽니다"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:191
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:65
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "경고"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:198
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Something went wrong saving to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "<filename>{0}</filename>에 저장하는 중에 다음과 같은 문제가 발생했습니다. <message>{1}</message>"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevice.py:198
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:95
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Bindings/OutputDeviceManagerProxy.py:156
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Bindings/OutputDeviceManagerProxy.py:159
+msgctxt "@info:title"
+msgid "Error"
+msgstr "오류"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/MirrorTool/__init__.py:12
+msgctxt "@label"
+msgid "Mirror"
+msgstr "대칭"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/MirrorTool/__init__.py:13
+msgctxt "@info:tooltip"
+msgid "Mirror Model"
+msgstr "대칭 모델"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/RotateTool.py:352
+msgctxt "@label"
+msgid "Laying object flat on buildplate..."
+msgstr "빌드 플레이트에 개체 평평하게 놓기..."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/RotateTool.py:352
+msgctxt "@title"
+msgid "Object Rotation"
+msgstr "개체 회전"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/__init__.py:12
+msgctxt "@label"
+msgid "Rotate"
+msgstr "회전"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/__init__.py:13
+msgctxt "@info:tooltip"
+msgid "Rotate Model"
+msgstr "모델 회전"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/ScaleTool/__init__.py:12
+msgctxt "@label"
+msgid "Scale"
+msgstr "스케일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/ScaleTool/__init__.py:13
+msgctxt "@info:tooltip"
+msgid "Scale Model"
+msgstr "스케일 모형"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/TranslateTool/__init__.py:12
+msgctxt "@action:button"
+msgid "Move"
+msgstr "움직임"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/TranslateTool/__init__.py:13
+msgctxt "@info:tooltip"
+msgid "Move Model"
+msgstr "모델 이동"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateChecker.py:26
+msgctxt "@item:inmenu"
+msgid "Update Checker"
+msgstr "업데이트 검사기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateChecker.py:27
+msgctxt "@item:inmenu"
+msgid "Check for Updates"
+msgstr "업데이트 확인"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:52
+msgctxt "@info"
+msgid "Could not access update information."
+msgstr "업데이트 정보에 액세스 할 수 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:53
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:70
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:99
+#: /home/trin/Gedeeld/Projects/Uranium/UM/VersionUpgradeManager.py:173
+msgctxt "@info:title"
+msgid "Version Upgrade"
+msgstr "버전 업그레이드"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:65
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:70
+msgctxt "@info"
+msgid "The version you are using does not support checking for updates."
+msgstr "사용중인 버전은 업데이트 확인을 지원하지 않습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:95
+msgctxt "@info"
+msgid "An error occurred while checking for updates."
+msgstr "업데이트를 확인하는 도중 오류가 발생했습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:99
+msgctxt "@info"
+msgid "No new version was found."
+msgstr "새 버전이 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:104
+#, python-brace-format
+msgctxt "@info:status"
+msgid "{application_name} {version_number} is available!"
+msgstr "{application_name} {version_number}을(를) 사용할 수 있습니다!"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:106
+#, python-brace-format
+msgctxt "@info:status"
+msgid "{application_name} {version_number} provides a better and more reliable printing experience."
+msgstr "{application_name} {version_number}은(는) 보다 개선된 안정적인 인쇄 환경을 제공합니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:109
+msgctxt "@action:button"
+msgid "Download"
+msgstr "다운로드"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/UpdateChecker/UpdateCheckerJob.py:111
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "자세히 알아보기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Views/SimpleView/__init__.py:12
+msgctxt "@item:inmenu"
+msgid "Simple"
+msgstr "단순한"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/ConfigurationErrorMessage.py:33
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/RotateTool.qml:21
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:67
+msgctxt "@action:button"
+msgid "Reset"
+msgstr "리셋"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/ConfigurationErrorMessage.py:45
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Your configuration seems to be corrupt. Something seems to be wrong with the following profiles:\n"
+"- {profiles}\n"
+" Would you like to reset to factory defaults? Reset will remove all your current printers and profiles."
+msgstr ""
+"설정이 손상된 것 같습니다. 다음 프로파일에 문제가 발생한 것 같습니다:\n"
+"- {profiles}\n"
+" 기본값으로 재설정하시겠습니까? 재설정하면 현재 모든 프린터 및 프로파일이 제거됩니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/ConfigurationErrorMessage.py:50
+msgctxt "@title:window"
+msgid "Reset to factory"
+msgstr "기본값으로 재설정"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/ConfigurationErrorMessage.py:52
+msgctxt "@label"
+msgid "Reset will remove all your current printers and profiles! Are you sure you want to reset?"
+msgstr "재설정하면 현재 모든 프린터 및 프로파일이 제거됩니다! 정말로 재설정하시겠습니까?"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/FileHandler.py:58
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PluginRegistry.py:783
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Settings/Models/InstanceContainersModel.py:193
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "지원되는 모든 유형 ({0})"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/FileHandler.py:59
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PluginRegistry.py:784
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Settings/Models/InstanceContainersModel.py:196
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "모든 파일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:36
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tag <filename>!"
+msgid "Cannot open files of the type of <filename>{0}</filename>"
+msgstr "<filename>{0}</filename> 형식의 파일을 열 수 없습니다"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:36
+msgctxt "@info:title"
+msgid "Invalid File"
+msgstr "유효하지 않은 파일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:49
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:74
+#, python-brace-format
+msgctxt "@info:status Don't translate the XML tag <filename>!"
+msgid "Failed to load <filename>{0}</filename>. The file could be corrupt or inaccessible."
+msgstr "<filename>{0}</filename>을(를) 로드하지 못했습니다 파일이 손상되었거나 액세스할 수 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:51
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:74
+msgctxt "@info:title"
+msgid "Unable to Open File"
+msgstr "파일을 열 수 없습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/FileHandler/ReadFileJob.py:59
+msgctxt "@info:title"
+msgid "Loading"
+msgstr "로딩중"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Mesh/ReadMeshJob.py:70
+#, python-format, python-brace-format
+msgctxt "@info:status"
+msgid "Auto scaled object to {0}% of original size"
+msgstr "원본크기의 {0}% 로 개체 크기 자동조절"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Mesh/ReadMeshJob.py:70
+msgctxt "@info:title"
+msgid "Scaling Object"
+msgstr "크기 조절"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PackageManager.py:272
+#, python-brace-format
+msgctxt "@error:uninstall"
+msgid ""
+"There were some errors uninstalling the following packages:\n"
+"{packages}"
+msgstr ""
+"다음 패키지를 제거하는 중에 오류가 발생했습니다. \n"
+"{packages}"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PackageManager.py:274
+msgctxt "@info:title"
+msgid "Uninstalling errors"
+msgstr "오류 제거 중"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PackageManager.py:550
+#, python-brace-format
+msgctxt "@error:update"
+msgid ""
+"There was an error uninstalling the package {package} before installing new version:\n"
+"{error}.\n"
+"Please try to upgrade again later."
+msgstr ""
+"새 버전을 설치하기 전 패키지 {package}(을)를 제거하는 중에 오류가 발생했습니다. \n"
+"{error}.\n"
+" 업그레이드를 나중에 다시 시도하십시오."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PackageManager.py:553
+msgctxt "@info:title"
+msgid "Updating error"
+msgstr "업데이트 오류"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PluginRegistry.py:301
+msgctxt "@info:status"
+msgid ""
+"The plugin has been installed.\n"
+"Please re-start the application to activate the plugin."
+msgstr ""
+"플러그인이 설치되었습니다.\n"
+"플러그인을 활성화하려면 응용 프로그램을 다시 시작하십시오."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PluginRegistry.py:357
+msgctxt "@error:untrusted"
+msgid "Plugin {} was not loaded because it could not be verified."
+msgstr "확인할 수 없어서 플러그인 {}이(가) 로딩되지 않았습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/PluginRegistry.py:457
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"The plugin has been removed.\n"
+"Please restart {0} to finish uninstall."
+msgstr ""
+"플러그인이 제거되었습니다.\n"
+"제거를 완료하려면 {0}을(를) 다시 시작하십시오."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:122
+#, python-brace-format
+msgctxt "@label Short days-hours-minutes format. {0} is days, {1} is hours, {2} is minutes"
+msgid "{0:0>2}d {1:0>2}h {2:0>2}min"
+msgstr "{0:0>2}일 {1:0>2}시 {2:0>2}분"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:124
+#, python-brace-format
+msgctxt "@label Short hours-minutes format. {0} is hours, {1} is minutes"
+msgid "{0:0>2}h {1:0>2}min"
+msgstr "{0:0>2}시 {1:0>2}분"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:127
+#, python-brace-format
+msgctxt "@label Long duration format. {0} is days"
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} 일"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:127
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:129
+#, python-brace-format
+msgctxt "@label Long duration format. {0} is hours"
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} 시간"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:127
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:129
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/Duration.py:131
+#, python-brace-format
+msgctxt "@label Long duration format. {0} is minutes"
+msgid "{0} minute"
+msgid_plural "{0} minutes"
+msgstr[0] "{0} 분"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:190
+msgctxt "@info:progress"
+msgid "Initializing package manager..."
+msgstr "패키지 관리자 초기화 중..."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:198
+msgctxt "@info:status"
+msgid "Your configuration seems to be corrupt."
+msgstr "설정이 손상된 것 같습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:200
+msgctxt "@info:title"
+msgid "Configuration errors"
+msgstr "설정 오류"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:203
+msgctxt "@info:progress"
+msgid "Loading plugins..."
+msgstr "플러그인 로드 중 ..."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:210
+msgctxt "@info:progress"
+msgid "Updating configuration..."
+msgstr "설정 업데이트 중 ..."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:216
+msgctxt "@info:progress"
+msgid "Loading preferences..."
+msgstr "환경 설정로드 중 ..."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/QtApplication.py:301
+msgctxt "@info:progress"
+msgid "Loading UI..."
+msgstr "UI 로딩 중..."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Scene/Scene.py:180
+#, python-brace-format
+msgctxt "@info"
+msgid "Would you like to reload {filename}?"
+msgstr "{filename}을(를) 다시 로드하시겠습니까?"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Scene/Scene.py:181
+msgctxt "@info:title"
+msgid "File has been modified"
+msgstr "파일 수정됨"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Scene/Scene.py:182
+msgctxt "@action:button"
+msgid "Reload"
+msgstr "다시 로드하기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Scene/Scene.py:182
+msgctxt "@action:description"
+msgid "This will trigger the modified files to reload from disk."
+msgstr "수정된 파일을 트리거하여 디스크에서 다시 가져옵니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/VersionUpgradeManager.py:173
+#, python-brace-format
+msgctxt "@info:version-upgrade"
+msgid "A configuration from an older version of {0} was imported."
+msgstr "{0} 이전 버전의 구성을 가져 왔습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/View/GL/OpenGL.py:59
+#: /home/trin/Gedeeld/Projects/Uranium/UM/View/GL/OpenGL.py:64
+msgctxt "@message"
+msgid "Failed to Initialize OpenGL"
+msgstr "OpenGL을 초기화하지 못했습니다"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/View/GL/OpenGL.py:74
+msgctxt "Critical OpenGL Extensions Missing"
+msgid "Critical OpenGL extensions are missing. This program requires support for Framebuffer Objects. Please check your video card drivers."
+msgstr "중요한 OpenGL 확장이 누락되었습니다. 이 프로그램은 Framebuffer 객체를 지원해야 합니다. 비디오 카드 드라이버를 확인하십시오."
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/RotateTool.qml:39
+msgctxt "@action:button"
+msgid "Lay flat"
+msgstr "바닥에 놓기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/RotateTool.qml:60
+msgctxt "@action:button"
+msgid "Select face to align to the build plate"
+msgstr "빌드 플레이어에 정렬할 면을 선택하십시오"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/RotateTool/RotateTool.qml:81
+msgctxt "@action:checkbox"
+msgid "Snap Rotation"
+msgstr "회전 스냅"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:93
+msgctxt "@option:check"
+msgid "Snap Scaling"
+msgstr "스냅 크기 조정"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:121
+msgctxt "@option:check"
+msgid "Uniform Scaling"
+msgstr "균일한 크기 조정"
+
+#: /home/trin/Gedeeld/Projects/Uranium/plugins/Tools/TranslateTool/TranslateTool.qml:196
+msgctxt "@option:check"
+msgid "Lock Model"
+msgstr "모델 잠금"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/ConfirmRemoveDialog.qml:16
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "제거 확인"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/ConfirmRemoveDialog.qml:17
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "%1을 제거 하시겠습니까? 이것은 취소 할 수 없습니다!"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/MachinesPage.qml:12
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "프린터"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/MachinesPage.qml:40
+msgctxt "@label"
+msgid "Type"
+msgstr "유형"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:18
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "환경 설정"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:107
+msgctxt "@action:button"
+msgid "Defaults"
+msgstr "기본값"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:115
+msgctxt "@action:button"
+msgid "Close"
+msgstr "닫기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:148
+msgctxt "@title:tab"
+msgid "General"
+msgstr "일반"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:149
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "설정"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:19
+msgctxt "@title:window"
+msgid "Rename"
+msgstr "이름 바꾸기"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:20
+msgctxt "@info"
+msgid "Please provide a new name."
+msgstr "새 이름을 입력하십시오."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:70
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Wizard.qml:241
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "취소"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:75
+msgctxt "@action:button"
+msgid "OK"
+msgstr "확인"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/SettingVisibilityItem.qml:32
+msgctxt "@item:tooltip"
+msgid "This setting has been hidden by the active machine and will not be visible."
+msgstr "이 설정은 활성 기기에 의해 숨겨졌으며 보이지 않습니다."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Preferences/SettingVisibilityItem.qml:49
+msgctxt "@item:tooltip %1 is list of setting names"
+msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
+msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
+msgstr[0] "이 설정은 %1 값으로 숨겨져 있습니다. 이 설정을 볼 수 있게 설정 값을 변경하십시오."
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Wizard.qml:215
+msgctxt "@action:button"
+msgid "Back"
+msgstr "뒤로"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Wizard.qml:231
+msgctxt "@action:button"
+msgid "Finish"
+msgstr "종료"
+
+#: /home/trin/Gedeeld/Projects/Uranium/UM/Qt/qml/UM/Wizard.qml:231
+msgctxt "@action:button"
+msgid "Next"
+msgstr "다음"
+
+#: ConsoleLogger/plugin.json
+msgctxt "description"
+msgid "Outputs log information to the console."
+msgstr "콘솔에 로그 정보를 출력합니다."
+
+#: ConsoleLogger/plugin.json
+msgctxt "name"
+msgid "Console Logger"
+msgstr "콘솔 로거"
+
+#: FileHandlers/OBJReader/plugin.json
+msgctxt "description"
+msgid "Makes it possible to read Wavefront OBJ files."
+msgstr "Wavefront OBJ 파일을 읽을 수 있도록 합니다."
+
+#: FileHandlers/OBJReader/plugin.json
+msgctxt "name"
+msgid "Wavefront OBJ Reader"
+msgstr "Wavefront OBJ 리더기"
+
+#: FileHandlers/OBJWriter/plugin.json
+msgctxt "description"
+msgid "Makes it possible to write Wavefront OBJ files."
+msgstr "Wavefront OBJ 파일을 작성할 수 있도록 합니다."
+
+#: FileHandlers/OBJWriter/plugin.json
+msgctxt "name"
+msgid "Wavefront OBJ Writer"
+msgstr "Wavefront OBJ 작성기"
+
+#: FileHandlers/STLReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading STL files."
+msgstr "STL 파일을 읽을 수 있도록 지원합니다."
+
+#: FileHandlers/STLReader/plugin.json
+msgctxt "name"
+msgid "STL Reader"
+msgstr "STL 리더기"
+
+#: FileHandlers/STLWriter/plugin.json
+msgctxt "description"
+msgid "Provides support for writing STL files."
+msgstr "STL 파일 작성 지원을 제공합니다."
+
+#: FileHandlers/STLWriter/plugin.json
+msgctxt "name"
+msgid "STL Writer"
+msgstr "STL 작성자"
+
+#: FileLogger/plugin.json
+msgctxt "description"
+msgid "Outputs log information to a file in your settings folder."
+msgstr "로그 정보를 설정 폴더의 파일에 출력합니다."
+
+#: FileLogger/plugin.json
+msgctxt "name"
+msgid "File Logger"
+msgstr "파일 로거"
+
+#: LocalContainerProvider/plugin.json
+msgctxt "description"
+msgid "Provides built-in setting containers that come with the installation of the application."
+msgstr "응용프로그램 설치와 동반되는 빌트인 설정 컨테이너를 제공합니다."
+
+#: LocalContainerProvider/plugin.json
+msgctxt "name"
+msgid "Local Container Provider"
+msgstr "로컬 컨테이너 제공자"
+
+#: LocalFileOutputDevice/plugin.json
+msgctxt "description"
+msgid "Enables saving to local files."
+msgstr "로컬 파일에 저장할 수 있습니다."
+
+#: LocalFileOutputDevice/plugin.json
+msgctxt "name"
+msgid "Local File Output Device"
+msgstr "로컬 파일 출력 장치"
+
+#: Tools/CameraTool/plugin.json
+msgctxt "description"
+msgid "Provides the tool to manipulate the camera."
+msgstr "카메라 조작 도구를 제공합니다."
+
+#: Tools/CameraTool/plugin.json
+msgctxt "name"
+msgid "Camera Tool"
+msgstr "카메라 도구"
+
+#: Tools/MirrorTool/plugin.json
+msgctxt "description"
+msgid "Provides the Mirror tool."
+msgstr "대칭 도구를 제공합니다."
+
+#: Tools/MirrorTool/plugin.json
+msgctxt "name"
+msgid "Mirror Tool"
+msgstr "대칭 도구"
+
+#: Tools/RotateTool/plugin.json
+msgctxt "description"
+msgid "Provides the Rotate tool."
+msgstr "회전 도구를 제공합니다."
+
+#: Tools/RotateTool/plugin.json
+msgctxt "name"
+msgid "Rotate Tool"
+msgstr "회전 도구"
+
+#: Tools/ScaleTool/plugin.json
+msgctxt "description"
+msgid "Provides the Scale tool."
+msgstr "크기 조정 도구를 제공합니다."
+
+#: Tools/ScaleTool/plugin.json
+msgctxt "name"
+msgid "Scale Tool"
+msgstr "스케일 도구"
+
+#: Tools/SelectionTool/plugin.json
+msgctxt "description"
+msgid "Provides the Selection tool."
+msgstr "선택 도구를 제공합니다."
+
+#: Tools/SelectionTool/plugin.json
+msgctxt "name"
+msgid "Selection Tool"
+msgstr "선택 도구"
+
+#: Tools/TranslateTool/plugin.json
+msgctxt "description"
+msgid "Provides the Move tool."
+msgstr "이동 도구를 제공합니다."
+
+#: Tools/TranslateTool/plugin.json
+msgctxt "name"
+msgid "Move Tool"
+msgstr "이동 도구"
+
+#: UpdateChecker/plugin.json
+msgctxt "description"
+msgid "Checks for updates of the software."
+msgstr "소프트웨어 업데이트를 확인합니다."
+
+#: UpdateChecker/plugin.json
+msgctxt "name"
+msgid "Update Checker"
+msgstr "업데이트 검사기"
+
+#: Views/SimpleView/plugin.json
+msgctxt "description"
+msgid "Provides a simple solid mesh view."
+msgstr "간단한 솔리드 메쉬보기를 제공합니다."
+
+#: Views/SimpleView/plugin.json
+msgctxt "name"
+msgid "Simple View"
+msgstr "단순보기"
+
+#~ msgctxt "@info:status Don't translate the XML tag <filename>!"
+#~ msgid "Failed to load <filename>{0}</filename>"
+#~ msgstr "<filename>{0}</filename>을 로드하지 못했습니다"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Your configuration seems to be corrupt. Something seems to be wrong with the following profiles:\n"
+#~ "- {profiles}\n"
+#~ "Would you like to reset to factory defaults?"
+#~ msgstr ""
+#~ "설정이 손상된 것 같습니다. 다음 프로파일에 문제가 발생한 것 같습니다.\n"
+#~ "- {profiles}\n"
+#~ "기본값으로 재설정하시겠습니까?"
+
+#~ msgctxt "@info:button"
+#~ msgid "Reset your configuration to factory defaults."
+#~ msgstr "설정을 기본값으로 재설정합니다."
+
+#~ msgctxt "description"
+#~ msgid "Example extension to instruct people on how to create Uranium extensions."
+#~ msgstr "우라늄 확장을 만드는 방법을 보여주는 예입니다."
+
+#~ msgctxt "name"
+#~ msgid "Example Extension"
+#~ msgstr "확장 예"
+
+#~ msgctxt "description"
+#~ msgid "Example file reader to instruct people on how to create Uranium file readers."
+#~ msgstr "우라늄 파일 리더를 만드는 방법을 보여주는 파일 리더 예입니다."
+
+#~ msgctxt "name"
+#~ msgid "Example File Reader"
+#~ msgstr "파일 리더 예"
+
+#~ msgctxt "description"
+#~ msgid "Example tool to instruct people on how to create Uranium tools."
+#~ msgstr "우라늄 도구를 만드는 방법을 보여주는 도구 예입니다."
+
+#~ msgctxt "name"
+#~ msgid "Example Tool"
+#~ msgstr "도구 예"
+
+#~ msgctxt "description"
+#~ msgid "Example output device to instruct people on how to create Uranium output devices."
+#~ msgstr "우라늄 출력 장치를 만드는 방법을 보여주는 출력 장치 예입니다."
+
+#~ msgctxt "name"
+#~ msgid "Example Output Device"
+#~ msgstr "출력 장치 예"
+
+#~ msgctxt "@title:tab"
+#~ msgid "Plugins"
+#~ msgstr "플러그인"
+
+#~ msgctxt "@action:button"
+#~ msgid "Install new plugin"
+#~ msgstr "새 플러그인 설치"
+
+#~ msgctxt "@label"
+#~ msgid "You will need to restart the application before changes in plugins have effect."
+#~ msgstr "플러그인의 변경 사항이 적용되기 전에 응용 프로그램을 다시 시작해야합니다."
+
+#~ msgctxt "@label"
+#~ msgid "This plugin is required for the application to run."
+#~ msgstr "이 플러그인은 응용 프로그램을 실행하는 데 필요합니다."
+
+#~ msgctxt "@label"
+#~ msgid "Info..."
+#~ msgstr "정보 ..."
+
+#~ msgctxt "@window:title"
+#~ msgid "Install Plugin"
+#~ msgstr "플러그인 설치"
+
+#~ msgctxt "@title:window"
+#~ msgid "Open file(s)"
+#~ msgstr "파일 열기"
+
+#~ msgctxt "@label"
+#~ msgid "No text available"
+#~ msgstr "사용할 수 있는 텍스트 없음"
+
+#~ msgctxt "@title:window"
+#~ msgid "About %1"
+#~ msgstr "대략 %1"
+
+#~ msgctxt "@label"
+#~ msgid "Author:"
+#~ msgstr "원작자:"
+
+#~ msgctxt "@label"
+#~ msgid "Version:"
+#~ msgstr "버전:"
+
+#~ msgctxt "@action:button"
+#~ msgid "Learn more about the new features"
+#~ msgstr "새 기능에 대해 자세히 알아보기"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cura {0} is available!"
+#~ msgstr "Cura {0}을(를) 사용할 수 있습니다!"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cura {0} provides better and reliable printing experience."
+#~ msgstr "Cura {0}은(는) 보다 개선된 안정적인 인쇄 환경을 제공합니다."
+
+#~ msgctxt "@action:button"
+#~ msgid "Learn more about new features"
+#~ msgstr "새 기능에 대해 자세히 알아보기"
+
+#~ msgctxt "@error:update"
+#~ msgid ""
+#~ "There was an error uninstalling the package {package} before installingnew version:\n"
+#~ "{error}.\n"
+#~ "Please try to upgrade again later."
+#~ msgstr ""
+#~ "새 버전을 설치하기 전 패키지 {package}(을)를 제거하는 중에 오류가 발생했습니다. \n"
+#~ "{error}.\n"
+#~ "업그레이드를 나중에 다시 시도하십시오."
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Your configuration seems to be corrupt. Something seems to be wrong with the following profiles:\n"
+#~ "- {profiles}\n"
+#~ "Would you like to reset to factory defaults? Reset will remove all your current printers and profiles."
+#~ msgstr ""
+#~ "설정이 손상된 것 같습니다. 다음 프로파일에 문제가 발생한 것 같습니다.\n"
+#~ "- {profiles}\n"
+#~ "기본값으로 재설정하시겠습니까? 재설정하면 현재 모든 프린터 및 프로파일이 제거됩니다."
+
+#~ msgctxt "@info"
+#~ msgid "A new version is available!"
+#~ msgstr "새 버전을 사용할 수 있습니다!"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Failed to install plugin from <filename>{0}</filename>:\n"
+#~ "<message>{1}</message>"
+#~ msgstr ""
+#~ "<filename>{0}</filename>에서 플러그인을 설치하지 못했습니다:\n"
+#~ "<message>{1}</message>"
+
+#~ msgctxt "@info:status"
+#~ msgid ""
+#~ "Failed to install the plugin;\n"
+#~ "<message>{0}</message>"
+#~ msgstr ""
+#~ "플러그인을 설치하지 못했습니다;\n"
+#~ "<message>{0}</message>"
+
+#~ msgctxt "@info:status"
+#~ msgid "Failed to uninstall plugin. Plugin will be removed after {0} restarts."
+#~ msgstr "플러그인을 제거하지 못했습니다. {0}을(를) 다시 시작하면 플러그인이 제거됩니다."
+
+#~ msgctxt "@title:tab"
+#~ msgid "Setting Visibility"
+#~ msgstr "공개 설정하기"
+
+#~ msgctxt "@label:textbox"
+#~ msgid "Check all"
+#~ msgstr "모두 확인"
+
+#~ msgctxt "@label:textbox"
+#~ msgid "Filter..."
+#~ msgstr "필터..."
+
+#~ msgctxt "@title:tab"
+#~ msgid "Profiles"
+#~ msgstr "프로파일"
+
+#~ msgctxt "@label"
+#~ msgid "Duplicate"
+#~ msgstr "복제"
+
+#~ msgctxt "@label %1 is printer name"
+#~ msgid "Printer: %1"
+#~ msgstr "프린터: %1"
+
+#~ msgctxt "@action:button"
+#~ msgid "Update \"%1\""
+#~ msgstr "업데이트 \"%1\""
+
+#~ msgctxt "@action:button"
+#~ msgid "Update profile"
+#~ msgstr "프로파일 업데이트"
+
+#~ msgctxt "@action:button"
+#~ msgid "Discard current changes"
+#~ msgstr "현재 변경 사항 삭제"
+
+#~ msgctxt "@action:button"
+#~ msgid "Reload profile"
+#~ msgstr "프로파일 새로 고침"
+
+#~ msgctxt "@label"
+#~ msgid "Based on"
+#~ msgstr "기준"
+
+#~ msgctxt "@label"
+#~ msgid "Profile type"
+#~ msgstr "프로파일 유형"
+
+#~ msgctxt "@label"
+#~ msgid "Protected profile"
+#~ msgstr "보호된 프로파일"
+
+#~ msgctxt "@label"
+#~ msgid "Custom profile"
+#~ msgstr "사용자 정의 프로파일"
+
+#~ msgctxt "@action:button"
+#~ msgid "Import"
+#~ msgstr "가져오기"
+
+#~ msgctxt "@action:button"
+#~ msgid "Export"
+#~ msgstr "내보내기"
+
+#~ msgctxt "@window:title"
+#~ msgid "Import Profile"
+#~ msgstr "프로파일 가져오기"
+
+#~ msgctxt "@title:window"
+#~ msgid "Import Profile"
+#~ msgstr "프로파일 가져오기"
+
+#~ msgctxt "@title:window"
+#~ msgid "Export Profile"
+#~ msgstr "프로파일 내보내기"
+
+#~ msgctxt "@info"
+#~ msgid "An exception occurred while checking for updates."
+#~ msgstr "업데이트를 확인하는 중 예외가 발생했습니다."
+
+#~ msgctxt "@info:status Don't translate the XML tag <filename>!"
+#~ msgid "Loading <filename>{0}</filename>"
+#~ msgstr " <filename>{0}</filename> 로드 중"
+
+#~ msgctxt "@info:status Don't translate the XML tag <filename>!"
+#~ msgid "Cannot open file type <filename>{0}</filename>"
+#~ msgstr "<filename>{0}</filename> 파일 형식을 열 수 없습니다"
+
+#~ msgctxt "@action:button"
+#~ msgid "Ok"
+#~ msgstr "확인"

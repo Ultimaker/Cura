@@ -37,7 +37,7 @@ TabView
         {
             reevaluateLinkedMaterials = false;
         }
-        if (!base.containerId || !base.editingEnabled || !base.currentMaterialNode)
+        if (!base.containerId || !base.editingEnabled)
         {
             return ""
         }

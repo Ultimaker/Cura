@@ -29,7 +29,6 @@ fragment =
     uniform mediump vec4 u_diffuseColor1;
     uniform mediump vec4 u_diffuseColor2;
     uniform mediump vec4 u_specularColor;
-    uniform mediump float u_opacity;
     uniform highp vec3 u_lightPosition;
     uniform mediump float u_shininess;
     uniform highp vec3 u_viewPosition;
@@ -64,13 +63,9 @@ fragment =
         highp vec3 viewVector = normalize(u_viewPosition - v_vertex);
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
-        if (v_vertex.y <= 0.0)
-        {
-            finalColor.rgb = vec3(1.0, 1.0, 1.0) - finalColor.rgb;
-        }
 
         gl_FragColor = finalColor;
-        gl_FragColor.a = u_opacity;
+        gl_FragColor.a = 1.0;
     }
 
 vertex41core =
@@ -105,7 +100,6 @@ fragment41core =
     uniform mediump vec4 u_diffuseColor1;
     uniform mediump vec4 u_diffuseColor2;
     uniform mediump vec4 u_specularColor;
-    uniform mediump float u_opacity;
     uniform highp vec3 u_lightPosition;
     uniform mediump float u_shininess;
     uniform highp vec3 u_viewPosition;
@@ -144,11 +138,7 @@ fragment41core =
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
         frag_color = finalColor;
-        if (v_vertex.y <= 0.0)
-        {
-            frag_color.rgb = vec3(1.0, 1.0, 1.0) - frag_color.rgb;
-        }
-        frag_color.a = u_opacity;
+        frag_color.a = 1.0;
     }
 
 [defaults]
@@ -156,7 +146,6 @@ u_ambientColor = [0.3, 0.3, 0.3, 1.0]
 u_diffuseColor1 = [1.0, 0.5, 0.5, 1.0]
 u_diffuseColor2 = [0.5, 0.5, 0.5, 1.0]
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
-u_opacity = 1.0
 u_shininess = 20.0
 u_width = 5.0
 u_vertical_stripes = 0

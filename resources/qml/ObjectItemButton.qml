@@ -18,18 +18,6 @@ Button
     checkable: true
     hoverEnabled: true
 
-    onHoveredChanged:
-    {
-        if(hovered && (buttonTextMetrics.elidedText != buttonText.text || perObjectSettingsInfo.visible))
-        {
-            tooltip.show()
-        } else
-        {
-            tooltip.hide()
-        }
-    }
-
-
     onClicked: Cura.SceneController.changeSelection(index)
 
     background: Rectangle
@@ -127,7 +115,7 @@ Button
                 if (perObjectSettingsCount != "")
                 {
                     result += "<br>" + catalog.i18ncp(
-                        "@label %1 is the number of settings it overrides.", "Overrides %1 setting.", "Overrides %1 settings.", perObjectSettingsCount
+                        "@label", "Overrides %1 setting.", "Overrides %1 settings.", perObjectSettingsCount
                     ).arg(perObjectSettingsCount);
                 }
                 return result;
@@ -197,6 +185,7 @@ Button
     {
         id: tooltip
         tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText
+        visible: objectItemButton.hovered && (buttonTextMetrics.elidedText != buttonText.text || perObjectSettingsInfo.visible)
     }
 
     UM.I18nCatalog
