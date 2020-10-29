@@ -14,6 +14,7 @@
         "has_variants": true,
         "preferred_variant_name": "0.4",
         "preferred_quality_type": "normal",
+        "preferred_material": "Rapidia_17-4",
         "variants_name": "Nozzle Size",
         "machine_extruder_trains": {
             "0": "rapidia_extruder_0",

@@ -4142,7 +4142,7 @@
                             "label": "Support Interface Extruder",
                             "description": "The extruder train to use for printing the roofs and floors of the support. This is used in multi-extrusion.",
                             "type": "extruder",
-                            "default_value": "0",
+                            "default_value": "1",
                             "value": "support_extruder_nr",
                             "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
                             "settable_per_mesh": false,
