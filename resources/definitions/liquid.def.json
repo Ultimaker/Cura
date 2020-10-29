@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "Liquid",
-    "inherits": "ultimaker",
+    "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Liquid 3D",
@@ -54,10 +54,27 @@
 		"machine_max_feedrate_x": { "default_value": 300 },
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
+		"machine_max_feedrate_e": {
+            "default_value": 45
+        },
         "machine_acceleration": { "default_value": 3000 },
         "gantry_height": { "value": "67" },
 		
 		"material_diameter": { "default_value": 1.75 },
+		 "material_print_temperature": {
+            "minimum_value": "0"
+        },
+        "material_bed_temperature": {
+            "minimum_value": "0",
+            "maximum_value_warning": "125"
+        },
+		"material_bed_temperature_layer_0":
+        {
+            "maximum_value_warning": "125"
+        },
+        "material_standby_temperature": {
+            "minimum_value": "0"
+        },
 		
 		"speed_travel":
         {
@@ -78,7 +95,6 @@
 		"line_width": { "value": "machine_nozzle_size * 0.875" },
 		"machine_min_cool_heat_time_window": { "value": "15" },
         "default_material_print_temperature": { "value": "200" },
-		"material_standby_temperature": { "value": "100" },
         "multiple_mesh_overlap": { "value": "0" },
 		"acceleration_support_interface": { "value": "acceleration_topbottom" },
         "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 500 / 4000)" },
