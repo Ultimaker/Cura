@@ -1,0 +1,40 @@
+{
+    "version": 2,
+    "name": "Cubicon Style",
+    "inherits": "cubicon_common",
+    "metadata": {
+        "author": "Cubicon R&D Center",
+        "manufacturer": "Cubicon",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+        "supports_usb_connection": false,
+        "machine_extruder_trains": {
+            "0": "cubicon_3dp_210f_extruder_0"
+        },
+        "platform_offset": [
+            0,
+            -18.8,
+            0
+        ]
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Cubicon Style"
+        },
+        "machine_start_gcode": {
+            "default_value": "M911 3DP-210F\nM201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+        },
+        "machine_width": {
+            "default_value": 150
+        },
+        "machine_depth": {
+            "default_value": 150
+        },
+        "machine_height": {
+            "default_value": 150
+        },
+        "material_bed_temp_wait":{
+            "default_value": false
+        }
+    }
+}

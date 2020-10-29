@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "helloBEEprusa",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0 },
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "material_diameter": { "default_value": 1.75 },
+        
+        "extruder_prime_pos_x": { "default_value": 0 },
+        "extruder_prime_pos_y": { "default_value": 0 },
+        "extruder_prime_pos_z": { "default_value": 2 }
+    }
+}

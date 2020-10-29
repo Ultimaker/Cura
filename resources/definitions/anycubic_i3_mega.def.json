@@ -1,0 +1,64 @@
+{
+    "version": 2,
+    "name": "Anycubic i3 Mega",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "TheTobby",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "platform": "anycubic_i3_mega_platform.3mf",
+        "has_materials": true,
+        "has_machine_quality": true,
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "anycubic_i3_mega_extruder_0"
+        }
+    },
+
+    "overrides":
+    {
+        "machine_name":
+        {
+            "default_value": "Anycubic i3 Mega"
+        },
+        "machine_heated_bed":
+        {
+            "default_value": true
+        },
+        "machine_width":
+        {
+            "default_value": 210
+        },
+        "machine_height":
+        {
+            "default_value": 205
+        },
+        "machine_depth":
+        {
+            "default_value": 210
+        },
+        "machine_center_is_zero":
+        {
+            "default_value": false
+        },
+        "gantry_height":
+        {
+            "value": "0"
+        },
+        "machine_gcode_flavor":
+        {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode":
+        {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F{speed_travel} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F{speed_travel}\nG0 Y20 F{speed_travel}\nM117 Printing...\nG5"
+        },
+        "machine_end_gcode":
+        {
+            "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM84 ; disable motors\nM107\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 ;X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 ;Y0 ;move X/Y to min endstops, so the head is out of the way\nG1 Y180 F2000\nM84 ;steppers off\nG90\nM300 P300 S4000"
+        }
+    }
+}

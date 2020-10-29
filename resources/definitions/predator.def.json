@@ -1,0 +1,72 @@
+{
+    "version": 2,
+    "name": "Anycubic Predator",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "ksihota",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "platform": "predator_platform.stl",
+        "platform_texture": "anycubic_predator.png",
+        "supports_usb_connection": true,
+        "visible": true,
+        "platform_offset": [0, 0, 0],
+        "has_materials": true,
+        "has_variants": false,
+        "has_machine_materials": false,
+        "has_variant_materials": false,
+        "has_machine_quality": true,
+        "quality_definition": "predator",
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "predator_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_start_gcode":
+        {
+            "default_value": "G21 ;metric values \nG90 ;absolute positioning \nM82 ;set extruder to absolute mode \nM107 ;start with the fan off \nG28 ;Home \nG1 Z15.0 F1000;short move \nG92 E0 ;zero the extruded length \nG1 F200 E3 ;extrude 3mm of feed stock adjust so I don't have to remove any filament \nG92 E0 ;zero the extruded length again \nG1 F4000 ;move to bed \n;Put printing message on LCD screen \nM117 Printing... \n;G5; this is in order to resume on Power failure (only works on SD prints)"
+        },
+        "machine_end_gcode":
+        {
+            "default_value": "M104 S0 ;extruder heater off \nM140 S0 ;heated bed heater off \nG91 ;relative positioning \nG92 E0 ;zero the extruded length \nG1 E-2 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure \nG92 E0 ;zero the extruded length \n;M107 ;fan off \nG1 Z+0.5 E-5 ;move Z up a bit and retract filament even more \n;G1 X0.0 Y0.0 Z455.0 F4500 \nG28 ;Home all axes (max endstops) \nG90 ;absolute positioning \n;M109 S60 ; wait for extruder temp to drop to 60 \n;M84 ;steppers off \n;M81 ;turn off printer"
+        },
+        "gantry_height": {
+            "value": 455
+        },
+        "machine_width": { "default_value": 370 },
+        "machine_depth": { "default_value": 370 },
+        "machine_height": { "default_value": 455 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_nozzle_size": {
+            "default_value": 0.4,
+            "minimum_value": 0.15,
+            "maximum_value": 0.80
+        },
+        "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
+        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
+        "material_bed_temperature_layer_0": { "value": "material_bed_temperature + 5" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_max_feedrate_x": { "default_value": 150 },
+        "machine_max_feedrate_y": { "default_value": 150 },
+        "machine_max_feedrate_z": { "default_value": 150 },
+        "machine_max_feedrate_e": { "default_value": 50 },
+        "machine_max_acceleration_x": { "default_value": 800 },
+        "machine_max_acceleration_y": { "default_value": 800 },
+        "machine_max_acceleration_z": { "default_value": 800 },
+        "machine_max_acceleration_e": { "default_value": 10000 },
+        "machine_acceleration": { "default_value": 3000 },
+        "machine_max_jerk_xy": { "default_value": 20 },
+        "machine_max_jerk_z": { "default_value": 20 },
+        "machine_max_jerk_e": { "default_value": 5},
+        "retraction_amount": { "default_value": 4 },
+        "retraction_speed": { "default_value": 50 },
+        "retraction_hop_enabled": { "default_value": false },
+        "retract_at_layer_change": { "default_value": true },
+        "coasting_enable": { "default_value": true }
+    }
+}

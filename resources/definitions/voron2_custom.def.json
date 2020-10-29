@@ -1,0 +1,14 @@
+{
+    "name": "VORON2 Custom",
+    "version": 2,
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "voron2_base"
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "VORON2 Custom" }
+    }
+}

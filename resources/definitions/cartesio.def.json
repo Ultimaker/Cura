@@ -1,0 +1,69 @@
+{
+    "name": "Cartesio",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Scheepers",
+        "manufacturer": "MaukCC",
+        "file_formats": "text/x-gcode",
+
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+
+        "variants_name": "Tool",
+        "preferred_variant_name": "0.8mm thermoplastic extruder",
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "normal",
+
+        "machine_extruder_trains":
+        {
+            "0": "cartesio_extruder_0",
+            "1": "cartesio_extruder_1",
+            "2": "cartesio_extruder_2",
+            "3": "cartesio_extruder_3"
+        },
+        "platform": "cartesio_platform.3mf",
+        "platform_offset": [ -220, -5, 150],
+        "first_start_actions": ["MachineSettingsAction"],
+        "supported_actions": ["MachineSettingsAction"]
+    },
+
+    "overrides": {
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": false },
+        "gantry_height": { "value": "35" },
+        "machine_height": { "default_value": 400 },
+        "machine_depth": { "default_value": 270 },
+        "machine_width": { "default_value": 430 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "material_print_temp_wait": { "default_value": false },
+        "material_bed_temp_wait": { "default_value": false },
+        "prime_tower_enable": { "default_value": false },
+        "prime_tower_min_volume": { "value": "0.7" },
+        "prime_tower_size": { "value": 24.0 },
+        "prime_tower_position_x": { "value": "125" },
+        "prime_tower_position_y": { "value": "70" },
+        "prime_blob_enable": { "default_value": false },
+        "machine_max_feedrate_z": { "default_value": 20 },
+        "machine_disallowed_areas": { "default_value": [
+            [[215, 135], [-215, 135], [-215, 75], [215, 75]]
+        ]},
+        "machine_start_gcode": {
+            "default_value": "\nM92 E159 ;2288 for V5 extruder\n\nM140 S{material_bed_temperature_layer_0}\nM104 T1 S120\nM104 T2 S120\nM104 T3 S120\n\nG21\nG90\nM42 S255 P13 ;chamber lights\nM42 S255 P12 ;fume extraction\nM204 S300 ;default acceleration\nM205 X10 ;default jerk\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\nG1 Z10 F600\nG1 X70 Y20 F9000;go to wipe point\n\nM190 S{material_bed_temperature_layer_0}\n\nM117 Heating for 50 sec.\nG4 S20\nM117 Heating for 30 sec.\nG4 S20\nM117 Heating for 10 sec.\nM300 S1200 P1000\nG4 S9\n\nM117 purging nozzle....\nT0\nG92 E0;set E\nG1 E10 F100\nG92 E0\nG1 E-1 F600\n\nM117 wiping nozzle....\nG1 X1 Y24 F3000\nG1 X70 F9000\nG1 Z10 F900\n\nM104 T1 S21\nM104 T2 S21\nM104 T3 S21\n\nM117 Printing .....\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM117 cooling down....\nM106 S255\nM140 S5\nM104 T0 S5\nM104 T1 S5\nM104 T2 S5\nM104 T3 S5\n\nG91\nG1 Z1 F900\nG90\n\nG1 X20.0 Y260.0 F6000\nG4 S7\nM84\nG4 S90\nM107\nM42 P12 S0\nM42 P13 S0\nM84\nT0\nM117 Finished.\n; -- end of GCODE --"
+        },
+        "layer_height": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
+        "layer_height_0": { "maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
+        "retraction_extra_prime_amount": { "minimum_value_warning": "-2.0" },
+        "optimize_wall_printing_order": { "default_value": true },
+        "material_initial_print_temperature": {"maximum_value_warning": "material_print_temperature + 15" },
+        "machine_nozzle_heat_up_speed": {"default_value": 20},
+        "machine_nozzle_cool_down_speed": {"default_value": 20},
+        "machine_min_cool_heat_time_window": {"default_value": 5}
+    }
+}

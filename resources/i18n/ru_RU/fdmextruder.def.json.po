@@ -1,0 +1,1724 @@
+# Cura
+# Copyright (C) 2020 Ultimaker B.V.
+# This file is distributed under the same license as the Cura package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cura 4.8\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2020-10-19 13:15+0000\n"
+"PO-Revision-Date: 2019-03-13 14:00+0200\n"
+"Last-Translator: Bothof <info@bothof.nl>\n"
+"Language-Team: Ruslan Popov <ruslan.popov@gmail.com>, Russian <info@bothof.nl>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: fdmextruder.def.json
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Принтер"
+
+#: fdmextruder.def.json
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Параметры, относящиеся к принтеру"
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr label"
+msgid "Extruder"
+msgstr "Экструдер"
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr description"
+msgid "The extruder train used for printing. This is used in multi-extrusion."
+msgstr "Экструдер, который используется для печати. Имеет значение при использовании нескольких экструдеров."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Идентификатор сопла"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Идентификатор сопла для экструдера, например \"AA 0.4\" и \"BB 0.8\"."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Диаметр сопла"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Внутренний диаметр сопла. Измените этот параметр при использовании сопла нестандартного размера."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x label"
+msgid "Nozzle X Offset"
+msgstr "X смещение сопла"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x description"
+msgid "The x-coordinate of the offset of the nozzle."
+msgstr "Смещение сопла по оси X."
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y label"
+msgid "Nozzle Y Offset"
+msgstr "Y смещение сопла"
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y description"
+msgid "The y-coordinate of the offset of the nozzle."
+msgstr "Смещение сопла по оси Y."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code label"
+msgid "Extruder Start G-Code"
+msgstr "Стартовый G-код экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code description"
+msgid "Start g-code to execute when switching to this extruder."
+msgstr "Стартовый G-код, запускающийся при переключении на данный экструдер."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs label"
+msgid "Extruder Start Position Absolute"
+msgstr "Абсолютная стартовая позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs description"
+msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
+msgstr "Устанавливает абсолютную стартовую позицию экструдера, а не относительно последней известной позиции головы."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x label"
+msgid "Extruder Start Position X"
+msgstr "Стартовая X позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x description"
+msgid "The x-coordinate of the starting position when turning the extruder on."
+msgstr "X координата стартовой позиции при включении экструдера."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y label"
+msgid "Extruder Start Position Y"
+msgstr "Стартовая Y позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y description"
+msgid "The y-coordinate of the starting position when turning the extruder on."
+msgstr "Y координата стартовой позиции при включении экструдера."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code label"
+msgid "Extruder End G-Code"
+msgstr "Завершающий G-код экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code description"
+msgid "End g-code to execute when switching away from this extruder."
+msgstr "Завершающий G-код, запускающийся при переключении с данного экструдера."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs label"
+msgid "Extruder End Position Absolute"
+msgstr "Абсолютная конечная позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs description"
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgstr "Устанавливает абсолютную конечную позицию экструдера, а не относительно последней известной позиции головы."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x label"
+msgid "Extruder End Position X"
+msgstr "Конечная X позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x description"
+msgid "The x-coordinate of the ending position when turning the extruder off."
+msgstr "X координата конечной позиции при отключении экструдера."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y label"
+msgid "Extruder End Position Y"
+msgstr "Конечная Y позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y description"
+msgid "The y-coordinate of the ending position when turning the extruder off."
+msgstr "Y координата конечной позиции при отключении экструдера."
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z координата начала печати"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Позиция кончика сопла на оси Z при старте печати."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number label"
+msgid "Extruder Print Cooling Fan"
+msgstr "Охлаждающий вентилятор экструдера, используемый во время печати"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number description"
+msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgstr "Номер охлаждающего вентилятора, используемого при печати и ассоциированного с этим экструдером. Применяемое по умолчанию значение 0 следует менять только при наличии другого охлаждающего вентилятора, используемого при печати, для каждого экструдера."
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Прилипание к столу"
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Прилипание"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "Начальная X позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "X координата позиции, в которой сопло начинает печать."
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Начальная Y позиция экструдера"
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Y координата позиции, в которой сопло начинает печать."
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr "Материал"
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr "Материал"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Диаметр"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Укажите диаметр используемой нити."
+
+#~ msgctxt "machine_extruder_start_code description"
+#~ msgid "Start g-code to execute whenever turning the extruder on."
+#~ msgstr "Стартовый G-код, который выполняется при включении экструдера."
+
+#~ msgctxt "machine_extruder_end_code description"
+#~ msgid "End g-code to execute whenever turning the extruder off."
+#~ msgstr "Завершающий G-код, который выполняется при отключении экструдера."
+
+#~ msgctxt "resolution label"
+#~ msgid "Quality"
+#~ msgstr "Качество"
+
+#~ msgctxt "layer_height label"
+#~ msgid "Layer Height"
+#~ msgstr "Высота слоя"
+
+#~ msgctxt "layer_height description"
+#~ msgid "The height of each layer in mm. Higher values produce faster prints in lower resolution, lower values produce slower prints in higher resolution."
+#~ msgstr "Высота каждого слоя в миллиметрах. Большие значения приводят к быстрой печати при низком разрешении, малые значения приводят к замедлению печати с высоким разрешением."
+
+#~ msgctxt "layer_height_0 label"
+#~ msgid "Initial Layer Height"
+#~ msgstr "Высота первого слоя"
+
+#~ msgctxt "layer_height_0 description"
+#~ msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
+#~ msgstr "Высота первого слоя в миллиметрах. Более толстый слой упрощает прилипание пластика к столу."
+
+#~ msgctxt "line_width label"
+#~ msgid "Line Width"
+#~ msgstr "Ширина линии"
+
+#~ msgctxt "line_width description"
+#~ msgid "Width of a single line. Generally, the width of each line should correspond to the width of the nozzle. However, slightly reducing this value could produce better prints."
+#~ msgstr "Ширина одной линии. Обычно, ширина каждой линии должна соответствовать диаметру сопла. Однако, небольшое уменьшение этого значение приводит к лучшей печати."
+
+#~ msgctxt "wall_line_width label"
+#~ msgid "Wall Line Width"
+#~ msgstr "Ширина линии стенки"
+
+#~ msgctxt "wall_line_width description"
+#~ msgid "Width of a single wall line."
+#~ msgstr "Ширина одной линии стенки."
+
+#~ msgctxt "wall_line_width_0 label"
+#~ msgid "Outer Wall Line Width"
+#~ msgstr "Ширина линии внешней стенки"
+
+#~ msgctxt "wall_line_width_0 description"
+#~ msgid "Width of the outermost wall line. By lowering this value, higher levels of detail can be printed."
+#~ msgstr "Ширина линии внешней стенки. Уменьшая данное значение, можно печатать более тонкие детали."
+
+#~ msgctxt "wall_line_width_x label"
+#~ msgid "Inner Wall(s) Line Width"
+#~ msgstr "Ширина линии внутренней стенки"
+
+#~ msgctxt "wall_line_width_x description"
+#~ msgid "Width of a single wall line for all wall lines except the outermost one."
+#~ msgstr "Ширина одной линии стенки для всех линий стенки, кроме самой внешней."
+
+#~ msgctxt "skin_line_width label"
+#~ msgid "Top/bottom Line Width"
+#~ msgstr "Ширина линии дна/крышки."
+
+#~ msgctxt "skin_line_width description"
+#~ msgid "Width of a single top/bottom line."
+#~ msgstr "Ширина одной линии дна/крышки."
+
+#~ msgctxt "infill_line_width label"
+#~ msgid "Infill Line Width"
+#~ msgstr "Ширина линии заполнения"
+
+#~ msgctxt "infill_line_width description"
+#~ msgid "Width of a single infill line."
+#~ msgstr "Ширина одной линии заполнения."
+
+#~ msgctxt "skirt_line_width label"
+#~ msgid "Skirt Line Width"
+#~ msgstr "Ширина линии юбки"
+
+#~ msgctxt "skirt_line_width description"
+#~ msgid "Width of a single skirt line."
+#~ msgstr "Ширина одной линии юбки."
+
+#~ msgctxt "support_line_width label"
+#~ msgid "Support Line Width"
+#~ msgstr "Ширина линии поддержки"
+
+#~ msgctxt "support_line_width description"
+#~ msgid "Width of a single support structure line."
+#~ msgstr "Ширина одной линии поддержки."
+
+#~ msgctxt "support_roof_line_width label"
+#~ msgid "Support Roof Line Width"
+#~ msgstr "Ширина линии поддерживающей крыши"
+
+#~ msgctxt "support_roof_line_width description"
+#~ msgid "Width of a single support roof line."
+#~ msgstr "Ширина одной линии поддерживающей крыши."
+
+#~ msgctxt "shell label"
+#~ msgid "Shell"
+#~ msgstr "Ограждение"
+
+#~ msgctxt "wall_thickness label"
+#~ msgid "Wall Thickness"
+#~ msgstr "Толщина стенки"
+
+#~ msgctxt "wall_thickness description"
+#~ msgid "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls."
+#~ msgstr "Толщина внешних стенок в горизонтальном направлении. Это значение, разделённое на ширину линии стенки, определяет количество линий стенки."
+
+#~ msgctxt "wall_line_count label"
+#~ msgid "Wall Line Count"
+#~ msgstr "Количество линий стенки"
+
+#~ msgctxt "wall_line_count description"
+#~ msgid "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number."
+#~ msgstr "Количество линий стенки. При вычислении толщины стенки, это значение округляется до целого."
+
+#~ msgctxt "top_bottom_thickness label"
+#~ msgid "Top/Bottom Thickness"
+#~ msgstr "Толщина дна/крышки"
+
+#~ msgctxt "top_bottom_thickness description"
+#~ msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
+#~ msgstr "Толщина слоя дна/крышки при печати. Это значение, разделённое на высоту слоя, определяет количество слоёв в дне/крышке."
+
+#~ msgctxt "top_thickness label"
+#~ msgid "Top Thickness"
+#~ msgstr "Толщина крышки"
+
+#~ msgctxt "top_thickness description"
+#~ msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
+#~ msgstr "Толщина крышки при печати. Это значение, разделённое на высоту слоя, определяет количество слоёв в крышке."
+
+#~ msgctxt "top_layers label"
+#~ msgid "Top Layers"
+#~ msgstr "Слои крышки"
+
+#~ msgctxt "top_layers description"
+#~ msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
+#~ msgstr "Количество слоёв в крышке. При вычислении толщины крышки это значение округляется до целого."
+
+#~ msgctxt "bottom_thickness label"
+#~ msgid "Bottom Thickness"
+#~ msgstr "Толщина дна"
+
+#~ msgctxt "bottom_thickness description"
+#~ msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
+#~ msgstr "Толщина дна при печати. Это значение, разделённое на высоту слоя, определяет количество слоёв в дне."
+
+#~ msgctxt "bottom_layers label"
+#~ msgid "Bottom Layers"
+#~ msgstr "Слои дна"
+
+#~ msgctxt "bottom_layers description"
+#~ msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
+#~ msgstr "Количество слоёв в дне. При вычислении толщины дна это значение округляется до целого."
+
+#~ msgctxt "top_bottom_pattern label"
+#~ msgid "Top/Bottom Pattern"
+#~ msgstr "Шаблон для крышки/дна"
+
+#~ msgctxt "top_bottom_pattern description"
+#~ msgid "The pattern of the top/bottom layers."
+#~ msgstr "Шаблон слоёв для крышки/дна."
+
+#~ msgctxt "top_bottom_pattern option lines"
+#~ msgid "Lines"
+#~ msgstr "Линии"
+
+#~ msgctxt "top_bottom_pattern option concentric"
+#~ msgid "Concentric"
+#~ msgstr "Концентрический"
+
+#~ msgctxt "top_bottom_pattern option zigzag"
+#~ msgid "Zig Zag"
+#~ msgstr "Зигзаг"
+
+#~ msgctxt "skin_alternate_rotation description"
+#~ msgid "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions."
+#~ msgstr "Изменить направление, в котором печатаются слои крышки/дна. Обычно, они печатаются по диагонали. Данный параметр добавляет направления X-только и Y-только."
+
+#~ msgctxt "skin_outline_count description"
+#~ msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
+#~ msgstr "Заменяет внешнюю часть шаблона крышки/дна рядом концентрических линий. Использование одной или двух линий улучшает мосты, которые печатаются поверх материала заполнения."
+
+#~ msgctxt "alternate_extra_perimeter description"
+#~ msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
+#~ msgstr "Печатает дополнительную стенку через определённое количество слоёв. Таким образом заполнения заключается между этими дополнительными стенками, что приводит к повышению прочности печати."
+
+#~ msgctxt "remove_overlapping_walls_enabled label"
+#~ msgid "Remove Overlapping Wall Parts"
+#~ msgstr "Удаление перекрывающихся частей стены"
+
+#~ msgctxt "remove_overlapping_walls_enabled description"
+#~ msgid "Remove parts of a wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin parts and sharp corners in models."
+#~ msgstr "Удаляет части стены, которые перекрываются. что приводит к появлению излишков материала в некоторых местах. Такие перекрытия образуются в тонких частях и острых углах моделей."
+
+#~ msgctxt "remove_overlapping_walls_0_enabled label"
+#~ msgid "Remove Overlapping Outer Wall Parts"
+#~ msgstr "Удаление перекрывающихся частей внешних стенок"
+
+#~ msgctxt "remove_overlapping_walls_0_enabled description"
+#~ msgid "Remove parts of an outer wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners."
+#~ msgstr "Удаляет части внешней стены, которые перекрываются, что приводит к появлению излишков материала в некоторых местах. Такие перекрытия образуются в тонких частях и острых углах моделей."
+
+#~ msgctxt "remove_overlapping_walls_x_enabled label"
+#~ msgid "Remove Overlapping Inner Wall Parts"
+#~ msgstr "Удаление перекрывающихся частей внутренних стенок"
+
+#~ msgctxt "remove_overlapping_walls_x_enabled description"
+#~ msgid "Remove parts of an inner wall that would otherwise overlap and cause over-extrusion. These overlaps occur in thin pieces in a model and sharp corners."
+#~ msgstr "Удаляет части внутренних стенок, которые в противном случае будут перекрываться и приводить к появлению излишков материала. Такие перекрытия образуются в тонких частях и острых углах моделей."
+
+#~ msgctxt "fill_perimeter_gaps label"
+#~ msgid "Fill Gaps Between Walls"
+#~ msgstr "Заполнение зазоров между стенками"
+
+#~ msgctxt "fill_perimeter_gaps description"
+#~ msgid "Fills the gaps between walls when overlapping inner wall parts are removed."
+#~ msgstr "Заполняет зазоры между стенами после того, как перекрывающиеся части внутренних стенок были удалены."
+
+#~ msgctxt "fill_perimeter_gaps option nowhere"
+#~ msgid "Nowhere"
+#~ msgstr "Нигде"
+
+#~ msgctxt "fill_perimeter_gaps option everywhere"
+#~ msgid "Everywhere"
+#~ msgstr "Везде"
+
+#~ msgctxt "fill_perimeter_gaps option skin"
+#~ msgid "Skin"
+#~ msgstr "Покрытие"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled label"
+#~ msgid "Compensate Wall Overlaps"
+#~ msgstr "Компенсация перекрытия стен"
+
+#~ msgctxt "travel_compensate_overlapping_walls_enabled description"
+#~ msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
+#~ msgstr "Компенсирует поток для печатаемых частей стен в местах где уже напечатана стена."
+
+#~ msgctxt "xy_offset label"
+#~ msgid "Horizontal Expansion"
+#~ msgstr "Горизонтальное расширение"
+
+#~ msgctxt "xy_offset description"
+#~ msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
+#~ msgstr "Сумма смещения применяемая ко всем полигонам на каждом слое. Позитивные значения могут возместить потери для слишком больших отверстий; негативные значения могут возместить потери для слишком малых отверстий."
+
+#~ msgctxt "z_seam_type label"
+#~ msgid "Z Seam Alignment"
+#~ msgstr "Выравнивание шва по оси Z"
+
+#~ msgctxt "z_seam_type description"
+#~ msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
+#~ msgstr "Начальная точка для каждого пути в слое. Когда пути в последовательных слоях начинаются в одной и той же точке, то на модели может возникать вертикальный шов. Проще всего удалить шов, выравнивая начало путей позади. Менее заметным шов можно сделать, случайно устанавливая начало путей. Если выбрать самый короткий путь, то печать будет быстрее."
+
+#~ msgctxt "z_seam_type option back"
+#~ msgid "Back"
+#~ msgstr "Позади"
+
+#~ msgctxt "z_seam_type option shortest"
+#~ msgid "Shortest"
+#~ msgstr "Короткий путь"
+
+#~ msgctxt "z_seam_type option random"
+#~ msgid "Random"
+#~ msgstr "Случайно"
+
+#~ msgctxt "skin_no_small_gaps_heuristic label"
+#~ msgid "Ignore Small Z Gaps"
+#~ msgstr "Игнорирование небольших зазоров по оси Z"
+
+#~ msgctxt "skin_no_small_gaps_heuristic description"
+#~ msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
+#~ msgstr "Когда модель имеет небольшие вертикальные зазоры, около 5% дополнительного времени будет потрачено на вычисления верхних и нижних поверхностей в этих узких пространствах. В этом случае, отключите данную настройку."
+
+#~ msgctxt "infill label"
+#~ msgid "Infill"
+#~ msgstr "Заполнение"
+
+#~ msgctxt "infill_sparse_density label"
+#~ msgid "Infill Density"
+#~ msgstr "Плотность заполнения"
+
+#~ msgctxt "infill_sparse_density description"
+#~ msgid "Adjusts the density of infill of the print."
+#~ msgstr "Отрегулируйте плотность заполнения при печати."
+
+#~ msgctxt "infill_line_distance label"
+#~ msgid "Line Distance"
+#~ msgstr "Дистанция заполнения"
+
+#~ msgctxt "infill_line_distance description"
+#~ msgid "Distance between the printed infill lines. This setting is calculated by the infill density and the infill line width."
+#~ msgstr "Дистанция между линиями заполнения. Этот параметр вычисляется из плотности заполнения и ширины линии заполнения."
+
+#~ msgctxt "infill_pattern label"
+#~ msgid "Infill Pattern"
+#~ msgstr "Шаблон заполнения"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle and concentric patterns are fully printed every layer."
+#~ msgstr "Шаблон для материала заполнения при печати. Заполнение линиями и зигзагом меняет направление при смене слоя, уменьшая стоимость материала. Сетчатый, треугольный и концентрический шаблоны полностью печатаются на каждом слое."
+
+#~ msgctxt "infill_pattern option grid"
+#~ msgid "Grid"
+#~ msgstr "Сетка"
+
+#~ msgctxt "infill_pattern option lines"
+#~ msgid "Lines"
+#~ msgstr "Линии"
+
+#~ msgctxt "infill_pattern option triangles"
+#~ msgid "Triangles"
+#~ msgstr "Треугольники"
+
+#~ msgctxt "infill_pattern option concentric"
+#~ msgid "Concentric"
+#~ msgstr "Концентрический"
+
+#~ msgctxt "infill_pattern option zigzag"
+#~ msgid "Zig Zag"
+#~ msgstr "Зигзаг"
+
+#~ msgctxt "infill_overlap label"
+#~ msgid "Infill Overlap"
+#~ msgstr "Перекрытие заполнения"
+
+#~ msgctxt "infill_overlap description"
+#~ msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
+#~ msgstr "Величина перекрытия между заполнением и стенками. Небольшое перекрытие позволяет стенкам плотно соединиться с заполнением."
+
+#~ msgctxt "infill_wipe_dist label"
+#~ msgid "Infill Wipe Distance"
+#~ msgstr "Дистанция окончания заполнения"
+
+#~ msgctxt "infill_wipe_dist description"
+#~ msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
+#~ msgstr "Расстояние, на которое продолжается движение сопла после печати каждой линии заполнения, для обеспечения лучшего связывания заполнения со стенками. Этот параметр похож на перекрытие заполнения, но без экструзии и только с одной стороны линии заполнения."
+
+#~ msgctxt "infill_sparse_thickness label"
+#~ msgid "Infill Layer Thickness"
+#~ msgstr "Толщина слоя заполнения"
+
+#~ msgctxt "infill_sparse_thickness description"
+#~ msgid "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded."
+#~ msgstr "Толщина слоя для материала заполнения. Данное значение должно быть всегда кратно толщине слоя и всегда округляется."
+
+#~ msgctxt "infill_before_walls label"
+#~ msgid "Infill Before Walls"
+#~ msgstr "Заполнение перед печатью стенок"
+
+#~ msgctxt "infill_before_walls description"
+#~ msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
+#~ msgstr "Печатать заполнение до печати стенок. Если печатать сначала стенки, то это может сделать их более точными, но нависающие стенки будут напечатаны хуже. Если печатать сначала заполнение, то это сделает стенки более крепкими, но шаблон заполнения может иногда прорываться сквозь поверхность стенки."
+
+#~ msgctxt "material_flow_dependent_temperature label"
+#~ msgid "Auto Temperature"
+#~ msgstr "Автоматическая температура"
+
+#~ msgctxt "material_flow_dependent_temperature description"
+#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
+#~ msgstr "Изменять температуру каждого слоя автоматически в соответствии со средней скоростью потока на этом слое."
+
+#~ msgctxt "material_print_temperature label"
+#~ msgid "Printing Temperature"
+#~ msgstr "Температура печати"
+
+#~ msgctxt "material_print_temperature description"
+#~ msgid "The temperature used for printing. Set at 0 to pre-heat the printer manually."
+#~ msgstr "Температура при печати. Установите 0 для предварительного разогрева вручную."
+
+#~ msgctxt "material_flow_temp_graph label"
+#~ msgid "Flow Temperature Graph"
+#~ msgstr "График температуры потока"
+
+#~ msgctxt "material_flow_temp_graph description"
+#~ msgid "Data linking material flow (in mm3 per second) to temperature (degrees Celsius)."
+#~ msgstr "График, объединяющий поток (в мм3 в секунду) с температурой (в градусах Цельсия)."
+
+#~ msgctxt "material_extrusion_cool_down_speed label"
+#~ msgid "Extrusion Cool Down Speed Modifier"
+#~ msgstr "Модификатор скорости охлаждения экструзии"
+
+#~ msgctxt "material_extrusion_cool_down_speed description"
+#~ msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
+#~ msgstr "Дополнительная скорость, с помощью которой сопло охлаждается во время экструзии. Это же значение используется для ускорения нагрева сопла при экструзии."
+
+#~ msgctxt "material_bed_temperature label"
+#~ msgid "Bed Temperature"
+#~ msgstr "Температура стола"
+
+#~ msgctxt "material_bed_temperature description"
+#~ msgid "The temperature used for the heated bed. Set at 0 to pre-heat the printer manually."
+#~ msgstr "Температура стола при печати. Установите 0 для предварительного разогрева вручную."
+
+#~ msgctxt "material_flow label"
+#~ msgid "Flow"
+#~ msgstr "Поток"
+
+#~ msgctxt "material_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
+#~ msgstr "Компенсация потока: объём выдавленного материала умножается на этот коэффициент."
+
+#~ msgctxt "retraction_enable label"
+#~ msgid "Enable Retraction"
+#~ msgstr "Разрешить откат"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "Откат нити при движении сопла вне зоны печати."
+
+#~ msgctxt "retraction_amount label"
+#~ msgid "Retraction Distance"
+#~ msgstr "Величина отката"
+
+#~ msgctxt "retraction_amount description"
+#~ msgid "The length of material retracted during a retraction move."
+#~ msgstr "Длина нить, которая будет извлечена по время отката."
+
+#~ msgctxt "retraction_speed label"
+#~ msgid "Retraction Speed"
+#~ msgstr "Скорость отката"
+
+#~ msgctxt "retraction_speed description"
+#~ msgid "The speed at which the filament is retracted and primed during a retraction move."
+#~ msgstr "Скорость с которой нить будет извлечена и возвращена обратно при откате."
+
+#~ msgctxt "retraction_retract_speed label"
+#~ msgid "Retraction Retract Speed"
+#~ msgstr "Скорость извлечения при откате"
+
+#~ msgctxt "retraction_retract_speed description"
+#~ msgid "The speed at which the filament is retracted during a retraction move."
+#~ msgstr "Скорость с которой нить будет извлечена при откате."
+
+#~ msgctxt "retraction_prime_speed label"
+#~ msgid "Retraction Prime Speed"
+#~ msgstr "Скорость возврата при откате"
+
+#~ msgctxt "retraction_prime_speed description"
+#~ msgid "The speed at which the filament is primed during a retraction move."
+#~ msgstr "Скорость с которой нить будет возвращена при откате."
+
+#~ msgctxt "retraction_extra_prime_amount label"
+#~ msgid "Retraction Extra Prime Amount"
+#~ msgstr "Дополнительно возвращаемый объем при откате"
+
+#~ msgctxt "retraction_extra_prime_amount description"
+#~ msgid "Some material can ooze away during a travel move, which can be compensated for here."
+#~ msgstr "Небольшое количество материала может выдавится во время движение, что может быть скомпенсировано с помощью данного параметра."
+
+#~ msgctxt "retraction_min_travel label"
+#~ msgid "Retraction Minimum Travel"
+#~ msgstr "Минимальное перемещение при откате"
+
+#~ msgctxt "retraction_min_travel description"
+#~ msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
+#~ msgstr "Минимальное расстояние на которое необходимо переместиться для отката, чтобы он произошёл. Этот параметр помогает уменьшить количество откатов на небольшой области печати."
+
+#~ msgctxt "retraction_count_max label"
+#~ msgid "Maximum Retraction Count"
+#~ msgstr "Максимальное количество откатов"
+
+#~ msgctxt "retraction_count_max description"
+#~ msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
+#~ msgstr "Данный параметр ограничивает число откатов, которые происходят внутри окна минимальной дистанции экструзии. Дальнейшие откаты внутри этого окна будут проигнорированы. Это исключает выполнение множества повторяющихся откатов над одним и тем же участком нити, что позволяет избежать проблем с истиранием нити."
+
+#~ msgctxt "retraction_extrusion_window label"
+#~ msgid "Minimum Extrusion Distance Window"
+#~ msgstr "Окно минимальной расстояния экструзии"
+
+#~ msgctxt "retraction_extrusion_window description"
+#~ msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
+#~ msgstr "Окно, в котором может быть выполнено максимальное количество откатов. Это значение приблизительно должно совпадать с расстоянием отката таким образом, чтобы количество выполненных откатов распределялось на величину выдавленного материала."
+
+#~ msgctxt "retraction_hop label"
+#~ msgid "Z Hop when Retracting"
+#~ msgstr "Поднятие оси Z при откате"
+
+#~ msgctxt "retraction_hop description"
+#~ msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+#~ msgstr "При выполнении отката между соплом и печатаемой деталью создаётся зазор. Это предотвращает возможность касания сопла частей детали при его перемещении, снижая вероятность смещения детали на столе."
+
+#~ msgctxt "speed label"
+#~ msgid "Speed"
+#~ msgstr "Скорость"
+
+#~ msgctxt "speed_print label"
+#~ msgid "Print Speed"
+#~ msgstr "Скорость печати"
+
+#~ msgctxt "speed_print description"
+#~ msgid "The speed at which printing happens."
+#~ msgstr "Скорость, на которой происходит печать."
+
+#~ msgctxt "speed_infill label"
+#~ msgid "Infill Speed"
+#~ msgstr "Скорость заполнения"
+
+#~ msgctxt "speed_infill description"
+#~ msgid "The speed at which infill is printed."
+#~ msgstr "Скорость, на которой печатается заполнение."
+
+#~ msgctxt "speed_wall label"
+#~ msgid "Wall Speed"
+#~ msgstr "Скорость печати стенок"
+
+#~ msgctxt "speed_wall description"
+#~ msgid "The speed at which the walls are printed."
+#~ msgstr "Скорость, на которой происходит печать стенок."
+
+#~ msgctxt "speed_wall_0 label"
+#~ msgid "Outer Wall Speed"
+#~ msgstr "Скорость печати внешней стенки"
+
+#~ msgctxt "speed_wall_0 description"
+#~ msgid "The speed at which the outermost walls are printed. Printing the outer wall at a lower speed improves the final skin quality. However, having a large difference between the inner wall speed and the outer wall speed will effect quality in a negative way."
+#~ msgstr "Скорость, на которой происходит печать внешних стенок. Печать внешней стенки на пониженной скорость улучшает качество поверхности модели. Однако, при большой разнице между скоростями печати внутренних стенок и внешних возникает эффект, негативно влияющий на качество."
+
+#~ msgctxt "speed_wall_x label"
+#~ msgid "Inner Wall Speed"
+#~ msgstr "Скорость печати внутренних стенок"
+
+#~ msgctxt "speed_wall_x description"
+#~ msgid "The speed at which all inner walls are printed Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
+#~ msgstr "Скорость, на которой происходит печать внутренних стенок. Печать внутренних стенок на скорости, больше скорости печати внешней стенки, ускоряет печать. Отлично работает, если скорость находится между скоростями печати внешней стенки и скорости заполнения."
+
+#~ msgctxt "speed_topbottom label"
+#~ msgid "Top/Bottom Speed"
+#~ msgstr "Скорость крышки/дна"
+
+#~ msgctxt "speed_topbottom description"
+#~ msgid "The speed at which top/bottom layers are printed."
+#~ msgstr "Скорость, на которой печатаются слои крышки/дна."
+
+#~ msgctxt "speed_support label"
+#~ msgid "Support Speed"
+#~ msgstr "Скорость печати поддержек"
+
+#~ msgctxt "speed_support description"
+#~ msgid "The speed at which the support structure is printed. Printing support at higher speeds can greatly reduce printing time. The surface quality of the support structure is not important since it is removed after printing."
+#~ msgstr "Скорость, на которой происходит печать структуры поддержек. Печать поддержек на повышенной скорости может значительно уменьшить время печати. Качество поверхности структуры поддержек не имеет значения, так как эта структура будет удалена после печати."
+
+#~ msgctxt "speed_support_lines label"
+#~ msgid "Support Wall Speed"
+#~ msgstr "Скорость печати стенок поддержки"
+
+#~ msgctxt "speed_support_lines description"
+#~ msgid "The speed at which the walls of support are printed. Printing the walls at lower speeds improves stability."
+#~ msgstr "Скорость, на которой печатаются стенки поддержек. Печать стенок на пониженных скоростях улучшает стабильность."
+
+#~ msgctxt "speed_support_roof label"
+#~ msgid "Support Roof Speed"
+#~ msgstr "Скорость печати крыши поддержек"
+
+#~ msgctxt "speed_support_roof description"
+#~ msgid "The speed at which the roofs of support are printed. Printing the support roof at lower speeds can improve overhang quality."
+#~ msgstr "Скорость, на которой происходит печать крыши поддержек. Печать крыши поддержек на пониженных скоростях может улучшить качество печати нависающих краёв модели."
+
+#~ msgctxt "speed_travel label"
+#~ msgid "Travel Speed"
+#~ msgstr "Скорость перемещения"
+
+#~ msgctxt "speed_travel description"
+#~ msgid "The speed at which travel moves are made."
+#~ msgstr "Скорость, с которой выполняется перемещение."
+
+#~ msgctxt "speed_layer_0 label"
+#~ msgid "Initial Layer Speed"
+#~ msgstr "Скорость первого слоя"
+
+#~ msgctxt "speed_layer_0 description"
+#~ msgid "The print speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
+#~ msgstr "Скорость печати первого слоя. Пониженное значение помогает улучшить прилипание материала к столу."
+
+#~ msgctxt "skirt_speed label"
+#~ msgid "Skirt Speed"
+#~ msgstr "Скорость печати юбки"
+
+#~ msgctxt "skirt_speed description"
+#~ msgid "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt at a different speed."
+#~ msgstr "Скорость, на которой происходит печать юбки и каймы. Обычно, их печать происходит на скорости печати первого слоя, но иногда вам может потребоваться печатать юбку на другой скорости."
+
+#~ msgctxt "speed_slowdown_layers label"
+#~ msgid "Number of Slower Layers"
+#~ msgstr "Количество медленных слоёв"
+
+#~ msgctxt "speed_slowdown_layers description"
+#~ msgid "The first few layers are printed slower than the rest of the object, to get better adhesion to the build plate and improve the overall success rate of prints. The speed is gradually increased over these layers."
+#~ msgstr "Первые несколько слоёв печатаются на медленной скорости, чем весь остальной объект, чтобы получить лучшее прилипание к столу и увеличить вероятность успешной печати. Скорость последовательно увеличивается по мере печати указанного количества слоёв."
+
+#~ msgctxt "travel label"
+#~ msgid "Travel"
+#~ msgstr "Перемещение"
+
+#~ msgctxt "retraction_combing label"
+#~ msgid "Enable Combing"
+#~ msgstr "Разрешить комбинг"
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is disabled, the material will retract and the nozzle moves in a straight line to the next point."
+#~ msgstr "Комбинг удерживает при перемещении сопло внутри уже напечатанных зон. Это выражается в небольшом увеличении пути, но уменьшает необходимость в откатах. При отключенном комбинге выполняется откат и сопло передвигается в следующую точку по прямой."
+
+#~ msgctxt "travel_avoid_other_parts label"
+#~ msgid "Avoid Printed Parts"
+#~ msgstr "Избегать напечатанных частей"
+
+#~ msgctxt "travel_avoid_other_parts description"
+#~ msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
+#~ msgstr "Сопло избегает уже напечатанных частей при перемещении. Эта опция доступна только при включенном комбинге."
+
+#~ msgctxt "travel_avoid_distance label"
+#~ msgid "Avoid Distance"
+#~ msgstr "Дистанция обхода"
+
+#~ msgctxt "travel_avoid_distance description"
+#~ msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
+#~ msgstr "Дистанция между соплом и уже напечатанными частями, выдерживаемая при перемещении."
+
+#~ msgctxt "coasting_enable label"
+#~ msgid "Enable Coasting"
+#~ msgstr "Разрешить накат"
+
+#~ msgctxt "cooling label"
+#~ msgid "Cooling"
+#~ msgstr "Охлаждение"
+
+#~ msgctxt "cool_fan_enabled label"
+#~ msgid "Enable Cooling Fans"
+#~ msgstr "Включить охлаждающие вентиляторы"
+
+#~ msgctxt "cool_fan_enabled description"
+#~ msgid "Enables the cooling fans while printing. The fans improve print quality on layers with short layer times and bridging / overhangs."
+#~ msgstr "Разрешает использование вентиляторов во время печати. Применение вентиляторов улучшает качество печати слоёв с малой площадью, а также мостов и нависаний."
+
+#~ msgctxt "cool_fan_speed label"
+#~ msgid "Fan Speed"
+#~ msgstr "Скорость вентилятора"
+
+#~ msgctxt "cool_fan_speed description"
+#~ msgid "The speed at which the cooling fans spin."
+#~ msgstr "Скорость, с которой вращается вентилятор."
+
+#~ msgctxt "cool_fan_speed_min label"
+#~ msgid "Regular Fan Speed"
+#~ msgstr "Обычная скорость вентилятора"
+
+#~ msgctxt "cool_fan_speed_min description"
+#~ msgid "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed."
+#~ msgstr "Скорость, с которой вращается вентилятор до достижения порога. Если слой печатается быстрее установленного порога, то вентилятор постепенно начинает вращаться быстрее."
+
+#~ msgctxt "cool_fan_speed_max label"
+#~ msgid "Maximum Fan Speed"
+#~ msgstr "Максимальная скорость вентилятора"
+
+#~ msgctxt "cool_fan_speed_max description"
+#~ msgid "The speed at which the fans spin on the minimum layer time. The fan speed gradually increases between the regular fan speed and maximum fan speed when the threshold is hit."
+#~ msgstr "Скорость, с которой вращается вентилятор при минимальной площади слоя. Если слой печатается быстрее установленного порога, то вентилятор постепенно начинает вращаться с указанной скоростью."
+
+#~ msgctxt "cool_min_layer_time_fan_speed_max label"
+#~ msgid "Regular/Maximum Fan Speed Threshold"
+#~ msgstr "Порог переключения на повышенную скорость"
+
+#~ msgctxt "cool_min_layer_time_fan_speed_max description"
+#~ msgid "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed."
+#~ msgstr "Время печати слоя, которое устанавливает порог для переключения с обычной скорости вращения вентилятора на максимальную. Слои, которые будут печататься дольше указанного значения, будут использовать обычную скорость вращения вентилятора. Для быстрых слоёв скорость вентилятора постепенно будет повышаться до максимальной."
+
+#~ msgctxt "cool_fan_full_at_height label"
+#~ msgid "Regular Fan Speed at Height"
+#~ msgstr "Обычная скорость вентилятора на высоте"
+
+#~ msgctxt "cool_fan_full_at_height description"
+#~ msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from zero to regular fan speed."
+#~ msgstr "Высота, на которой вентилятор должен вращаться с обыкновенной скорость. На более низких слоях вентилятор будет постепенно разгоняться с нуля до обычной скорости."
+
+#~ msgctxt "cool_fan_full_layer label"
+#~ msgid "Regular Fan Speed at Layer"
+#~ msgstr "Обычная скорость вентилятора на слое"
+
+#~ msgctxt "cool_fan_full_layer description"
+#~ msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
+#~ msgstr "Слой, на котором вентилятор должен вращаться с обыкновенной скорость. Если определена обычная скорость для вентилятора на высоте, это значение вычисляется и округляется до целого."
+
+#~ msgctxt "cool_min_layer_time label"
+#~ msgid "Minimum Layer Time"
+#~ msgstr "Минимальное время слоя"
+
+#~ msgctxt "cool_min_layer_time description"
+#~ msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer."
+#~ msgstr "Минимальное время затрачиваемое на печать слоя. Эта величина заставляет принтер замедлится, чтобы уложиться в указанное время при печати слоя. Это позволяет материалу остыть до нужной температуры перед печатью следующего слоя."
+
+#~ msgctxt "cool_min_speed label"
+#~ msgid "Minimum Speed"
+#~ msgstr "Минимальная скорость"
+
+#~ msgctxt "cool_min_speed description"
+#~ msgid "The minimum print speed, despite slowing down due to the minimum layer time. When the printer would slow down too much, the pressure in the nozzle would be too low and result in bad print quality."
+#~ msgstr "Минимальная скорость печати, независящая от замедления печати до минимального времени печати слоя. Если принтер начнёт слишком замедляться, давление в сопле будет слишком малым, что отрицательно скажется на качестве печати."
+
+#~ msgctxt "cool_lift_head label"
+#~ msgid "Lift Head"
+#~ msgstr "Подъём головы"
+
+#~ msgctxt "cool_lift_head description"
+#~ msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
+#~ msgstr "Когда будет произойдёт конфликт между параметрами минимальной скорости печати и минимальным временем печати слоя, голова принтера будет отведена от печатаемой модели и будет выдержана необходимая пауза для достижения минимального времени печати слоя."
+
+#~ msgctxt "draft_shield_enabled label"
+#~ msgid "Enable Draft Shield"
+#~ msgstr "Разрешить печать кожуха"
+
+#~ msgctxt "draft_shield_enabled description"
+#~ msgid "This will create a wall around the object, which traps (hot) air and shields against exterior airflow. Especially useful for materials which warp easily."
+#~ msgstr "Создаёт стенку вокруг объекта, которая удерживает (горячий) воздух и препятствует обдуву модели внешним воздушным потоком. Очень пригодится для материалов, которые легко деформируются."
+
+#~ msgctxt "draft_shield_dist label"
+#~ msgid "Draft Shield X/Y Distance"
+#~ msgstr "Дистанция X/Y до кожуха"
+
+#~ msgctxt "draft_shield_dist description"
+#~ msgid "Distance of the draft shield from the print, in the X/Y directions."
+#~ msgstr "Дистанция до стенки кожуха от модели, по осям X/Y."
+
+#~ msgctxt "draft_shield_height_limitation label"
+#~ msgid "Draft Shield Limitation"
+#~ msgstr "Ограничение кожуха"
+
+#~ msgctxt "draft_shield_height_limitation description"
+#~ msgid "Set the height of the draft shield. Choose to print the draft shield at the full height of the object or at a limited height."
+#~ msgstr "Устанавливает высоту кожуха. Можно печать кожух высотой с модель или указать определённую высоту."
+
+#~ msgctxt "draft_shield_height_limitation option full"
+#~ msgid "Full"
+#~ msgstr "Полная"
+
+#~ msgctxt "draft_shield_height_limitation option limited"
+#~ msgid "Limited"
+#~ msgstr "Ограниченная"
+
+#~ msgctxt "draft_shield_height label"
+#~ msgid "Draft Shield Height"
+#~ msgstr "Высота кожуха"
+
+#~ msgctxt "draft_shield_height description"
+#~ msgid "Height limitation of the draft shield. Above this height no draft shield will be printed."
+#~ msgstr "Ограничение по высоте для кожуха. Выше указанного значение кожух печататься не будет."
+
+#~ msgctxt "support label"
+#~ msgid "Support"
+#~ msgstr "Поддержки"
+
+#~ msgctxt "support_enable label"
+#~ msgid "Enable Support"
+#~ msgstr "Разрешить поддержки"
+
+#~ msgctxt "support_enable description"
+#~ msgid "Enable support structures. These structures support parts of the model with severe overhangs."
+#~ msgstr "Разрешить печать поддержек. Такие структуры поддерживают части моделей со значительными навесаниями."
+
+#~ msgctxt "support_type label"
+#~ msgid "Placement"
+#~ msgstr "Размещение"
+
+#~ msgctxt "support_type description"
+#~ msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+#~ msgstr "Настраивает размещение структур поддержки. Размещение может быть выбрано с касанием стола и везде. Для последнего случая структуры поддержки печатаются даже на самой модели."
+
+#~ msgctxt "support_type option buildplate"
+#~ msgid "Touching Buildplate"
+#~ msgstr "От стола"
+
+#~ msgctxt "support_type option everywhere"
+#~ msgid "Everywhere"
+#~ msgstr "Везде"
+
+#~ msgctxt "support_angle label"
+#~ msgid "Overhang Angle"
+#~ msgstr "Угол нависания"
+
+#~ msgctxt "support_angle description"
+#~ msgid "The minimum angle of overhangs for which support is added. At a value of 0° all overhangs are supported, 90° will not provide any support."
+#~ msgstr "Минимальный угол нависания при котором добавляются поддержки. При значении в 0° все нависания обеспечиваются поддержками, при 90° не получат никаких поддержек."
+
+#~ msgctxt "support_pattern label"
+#~ msgid "Support Pattern"
+#~ msgstr "Шаблон поддержек"
+
+#~ msgctxt "support_pattern description"
+#~ msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
+#~ msgstr "Шаблон печатаемой структуры поддержек. Имеющиеся варианты отличаются крепкостью или простотой удаления поддержек."
+
+#~ msgctxt "support_pattern option lines"
+#~ msgid "Lines"
+#~ msgstr "Линии"
+
+#~ msgctxt "support_pattern option grid"
+#~ msgid "Grid"
+#~ msgstr "Сетка"
+
+#~ msgctxt "support_pattern option triangles"
+#~ msgid "Triangles"
+#~ msgstr "Треугольники"
+
+#~ msgctxt "support_pattern option concentric"
+#~ msgid "Concentric"
+#~ msgstr "Концентрические"
+
+#~ msgctxt "support_pattern option zigzag"
+#~ msgid "Zig Zag"
+#~ msgstr "Зигзаг"
+
+#~ msgctxt "support_connect_zigzags label"
+#~ msgid "Connect ZigZags"
+#~ msgstr "Соединённый зигзаг"
+
+#~ msgctxt "support_connect_zigzags description"
+#~ msgid "Connect the ZigZags. This will increase the strength of the zig zag support structure."
+#~ msgstr "Соединяет зигзаги. Это увеличивает силу такой поддержки."
+
+#~ msgctxt "support_infill_rate label"
+#~ msgid "Support Density"
+#~ msgstr "Плотность поддержек"
+
+#~ msgctxt "support_infill_rate description"
+#~ msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
+#~ msgstr "Настраивает плотность структуры поддержек. Более высокое значение приводит к улучшению качества навесов, но такие поддержки сложнее удалять."
+
+#~ msgctxt "support_line_distance label"
+#~ msgid "Support Line Distance"
+#~ msgstr "Дистанция между линиями поддержки"
+
+#~ msgctxt "support_line_distance description"
+#~ msgid "Distance between the printed support structure lines. This setting is calculated by the support density."
+#~ msgstr "Дистанция между напечатанными линями структуры поддержек. Этот параметр вычисляется по плотности поддержек."
+
+#~ msgctxt "support_xy_distance label"
+#~ msgid "X/Y Distance"
+#~ msgstr "Дистанция X/Y"
+
+#~ msgctxt "support_xy_distance description"
+#~ msgid "Distance of the support structure from the print in the X/Y directions."
+#~ msgstr "Расстояние между структурами поддержек и печатаемой модели по осям X/Y."
+
+#~ msgctxt "support_z_distance label"
+#~ msgid "Z Distance"
+#~ msgstr "Z дистанция"
+
+#~ msgctxt "support_z_distance description"
+#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded down to a multiple of the layer height."
+#~ msgstr "Расстояние между верхом/низом структуры поддержек и печатаемой моделью. Этот зазор упрощает последующее удаление поддержек. Это значение округляется вниз и кратно высоте слоя."
+
+#~ msgctxt "support_top_distance label"
+#~ msgid "Top Distance"
+#~ msgstr "Дистанция сверху"
+
+#~ msgctxt "support_top_distance description"
+#~ msgid "Distance from the top of the support to the print."
+#~ msgstr "Расстояние между верхом поддержек и печатаемой моделью."
+
+#~ msgctxt "support_bottom_distance label"
+#~ msgid "Bottom Distance"
+#~ msgstr "Дистанция снизу"
+
+#~ msgctxt "support_bottom_distance description"
+#~ msgid "Distance from the print to the bottom of the support."
+#~ msgstr "Расстояние между печатаемой моделью и низом поддержки."
+
+#~ msgctxt "support_bottom_stair_step_height description"
+#~ msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
+#~ msgstr "Высота шагов лестнично-подобного низа поддержек, лежащих на модели. Малое значение усложняет последующее удаление поддержек, но слишком большое значение может сделать структуру поддержек нестабильной."
+
+#~ msgctxt "support_join_distance label"
+#~ msgid "Join Distance"
+#~ msgstr "Дистанция объединения"
+
+#~ msgctxt "support_join_distance description"
+#~ msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
+#~ msgstr "Максимальное расстояние между структурами поддержки по осям X/Y. Если отдельные структуры находятся ближе, чем определено данным значением, то такие структуры объединяются в одну."
+
+#~ msgctxt "support_offset description"
+#~ msgid "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support."
+#~ msgstr "Величина смещения, применяемая ко всем полигонам поддержки в каждом слое. Положительные значения могут сглаживать зоны поддержки и приводить к укреплению структур поддержек."
+
+#~ msgctxt "support_area_smoothing label"
+#~ msgid "Area Smoothing"
+#~ msgstr "Сглаживание зон"
+
+#~ msgctxt "support_area_smoothing description"
+#~ msgid "Maximum distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang."
+#~ msgstr "Максимальное расстояние по осям X/Y в сегменте линии, которая подлежит сглаживанию. Неровные линии появляются при дистанции объединения и поддержке в виде моста, что заставляет принтер резонировать. Сглаживание зон поддержек не приводит к нарушению ограничений, кроме возможных изменений в навесаниях."
+
+#~ msgctxt "support_roof_enable label"
+#~ msgid "Enable Support Roof"
+#~ msgstr "Разрешить крышу"
+
+#~ msgctxt "support_roof_enable description"
+#~ msgid "Generate a dense top skin at the top of the support on which the model is printed."
+#~ msgstr "Генерировать плотную поверхность наверху структуры поддержек на которой будет печататься модель."
+
+#~ msgctxt "support_roof_height label"
+#~ msgid "Support Roof Thickness"
+#~ msgstr "Толщина крыши"
+
+#~ msgctxt "support_roof_height description"
+#~ msgid "The thickness of the support roofs."
+#~ msgstr "Толщина поддерживающей крыши."
+
+#~ msgctxt "support_roof_density label"
+#~ msgid "Support Roof Density"
+#~ msgstr "Плотность крыши"
+
+#~ msgctxt "support_roof_density description"
+#~ msgid "Adjusts the density of the roof of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
+#~ msgstr "Настройте плотность крыши структуры поддержек. Большее значение приведёт к лучшим навесам, но такие поддержки будет труднее удалять."
+
+#~ msgctxt "support_roof_line_distance label"
+#~ msgid "Support Roof Line Distance"
+#~ msgstr "Дистанция линии крыши"
+
+#~ msgctxt "support_roof_line_distance description"
+#~ msgid "Distance between the printed support roof lines. This setting is calculated by the support roof Density, but can be adjusted separately."
+#~ msgstr "Расстояние между линиями поддерживающей крыши. Этот параметр вычисляется из плотности поддерживающей крыши, но также может быть указан самостоятельно."
+
+#~ msgctxt "support_roof_pattern label"
+#~ msgid "Support Roof Pattern"
+#~ msgstr "Шаблон поддерживающей крыши"
+
+#~ msgctxt "support_roof_pattern description"
+#~ msgid "The pattern with which the top of the support is printed."
+#~ msgstr "Шаблон, который будет использоваться для печати верхней части поддержек."
+
+#~ msgctxt "support_roof_pattern option lines"
+#~ msgid "Lines"
+#~ msgstr "Линии"
+
+#~ msgctxt "support_roof_pattern option grid"
+#~ msgid "Grid"
+#~ msgstr "Сетка"
+
+#~ msgctxt "support_roof_pattern option triangles"
+#~ msgid "Triangles"
+#~ msgstr "Треугольники"
+
+#~ msgctxt "support_roof_pattern option concentric"
+#~ msgid "Concentric"
+#~ msgstr "Концентрический"
+
+#~ msgctxt "support_roof_pattern option zigzag"
+#~ msgid "Zig Zag"
+#~ msgstr "Зигзаг"
+
+#~ msgctxt "support_conical_enabled label"
+#~ msgid "Conical Support"
+#~ msgstr "Конические поддержки"
+
+#~ msgctxt "support_conical_enabled description"
+#~ msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
+#~ msgstr "Экспериментальная возможность: Нижняя часть поддержек становится меньше, чем верхняя."
+
+#~ msgctxt "support_conical_angle label"
+#~ msgid "Cone Angle"
+#~ msgstr "Угол конуса"
+
+#~ msgctxt "support_conical_angle description"
+#~ msgid "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top."
+#~ msgstr "Угол наклона конических поддержек. При 0 градусах поддержки будут вертикальными, при 90 градусах будут горизонтальными. Меньшее значение углов укрепляет поддержки, но требует больше материала для них. Отрицательные углы приводят утолщению основания поддержек по сравнению с их верхней частью."
+
+#~ msgctxt "support_conical_min_width label"
+#~ msgid "Cone Minimal Width"
+#~ msgstr "Минимальная ширина конуса"
+
+#~ msgctxt "support_conical_min_width description"
+#~ msgid "Minimal width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures."
+#~ msgstr "Минимальная ширина, до которой может быть уменьшен низ конуса. Малая ширина может сделать такую структуру поддержек нестабильной."
+
+#~ msgctxt "support_use_towers label"
+#~ msgid "Use Towers"
+#~ msgstr "Использовать башни"
+
+#~ msgctxt "support_use_towers description"
+#~ msgid "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof."
+#~ msgstr "Использование специальных башен для поддержки крошечных нависающих областей. Такие башни имеют диаметр больший, чем поддерживаемый ими регион. Вблизи навесов диаметр башен увеличивается, формируя крышу."
+
+#~ msgctxt "support_tower_diameter label"
+#~ msgid "Tower Diameter"
+#~ msgstr "Диаметр башен"
+
+#~ msgctxt "support_tower_diameter description"
+#~ msgid "The diameter of a special tower."
+#~ msgstr "Диаметр специальных башен."
+
+#~ msgctxt "support_minimal_diameter label"
+#~ msgid "Minimum Diameter"
+#~ msgstr "Минимальный диаметр."
+
+#~ msgctxt "support_minimal_diameter description"
+#~ msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+#~ msgstr "Минимальный диаметр по осям X/Y небольшой области, которая будет поддерживаться с помощью специальных башен."
+
+#~ msgctxt "support_tower_roof_angle label"
+#~ msgid "Tower Roof Angle"
+#~ msgstr "Угол крыши башен"
+
+#~ msgctxt "support_tower_roof_angle description"
+#~ msgid "The angle of a rooftop of a tower. A higher value results in pointed tower roofs, a lower value results in flattened tower roofs."
+#~ msgstr "Угол верхней части башен. Большие значения приводят уменьшению площади крыши, меньшие наоборот делают крышу плоской."
+
+#~ msgctxt "adhesion_type label"
+#~ msgid "Type"
+#~ msgstr "Тип"
+
+#~ msgctxt "adhesion_type description"
+#~ msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your object to prevent warping. Raft adds a thick grid with a roof below the object. Skirt is a line printed around the object, but not connected to the model."
+#~ msgstr "Различные варианты, которы помогают улучшить прилипание пластика к столу. Кайма добавляет однослойную плоскую область вокруг основания печатаемого объекта, предотвращая его деформацию. Подложка добавляет толстую сетку с крышей под объект. Юбка - это линия, печатаемая вокруг объекта, но не соединённая с моделью."
+
+#~ msgctxt "adhesion_type option skirt"
+#~ msgid "Skirt"
+#~ msgstr "Юбка"
+
+#~ msgctxt "adhesion_type option brim"
+#~ msgid "Brim"
+#~ msgstr "Кайма"
+
+#~ msgctxt "adhesion_type option raft"
+#~ msgid "Raft"
+#~ msgstr "Подложка"
+
+#~ msgctxt "skirt_line_count label"
+#~ msgid "Skirt Line Count"
+#~ msgstr "Количество линий юбки"
+
+#~ msgctxt "skirt_line_count description"
+#~ msgid "Multiple skirt lines help to prime your extrusion better for small objects. Setting this to 0 will disable the skirt."
+#~ msgstr "Несколько линий юбки помогают лучше начать укладывание материала при печати небольших объектов. Установка этого параметра в 0 отключает печать юбки."
+
+#~ msgctxt "skirt_gap label"
+#~ msgid "Skirt Distance"
+#~ msgstr "Дистанция до юбки"
+
+#~ msgctxt "skirt_gap description"
+#~ msgid ""
+#~ "The horizontal distance between the skirt and the first layer of the print.\n"
+#~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
+#~ msgstr ""
+#~ "Расстояние по горизонтали между юбкой и первым слоем печатаемого объекта.\n"
+#~ "Это минимальное расстояние, следующие линии юбки будут печататься наружу."
+
+#~ msgctxt "skirt_minimal_length label"
+#~ msgid "Skirt Minimum Length"
+#~ msgstr "Минимальная длина юбки"
+
+#~ msgctxt "skirt_minimal_length description"
+#~ msgid "The minimum length of the skirt. If this length is not reached by the skirt line count, more skirt lines will be added until the minimum length is reached. Note: If the line count is set to 0 this is ignored."
+#~ msgstr "Минимальная длина печатаемой линии юбки. Если при печати юбки эта длина не будет выбрана, то будут добавляться дополнительные кольца юбки. Следует отметить, если количество линий юбки установлено в 0, то этот параметр игнорируется."
+
+#~ msgctxt "brim_width label"
+#~ msgid "Brim Width"
+#~ msgstr "Ширина каймы"
+
+#~ msgctxt "brim_width description"
+#~ msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
+#~ msgstr "Расстояние между моделью и самой удалённой линией каймы. Более широкая кайма увеличивает прилипание к столу, но также уменьшает эффективную область печати."
+
+#~ msgctxt "brim_line_count label"
+#~ msgid "Brim Line Count"
+#~ msgstr "Количество линий каймы"
+
+#~ msgctxt "brim_line_count description"
+#~ msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
+#~ msgstr "Количество линий, используемых для печати каймы. Большее количество линий каймы улучшает прилипание к столу, но уменьшает эффективную область печати."
+
+#~ msgctxt "raft_margin label"
+#~ msgid "Raft Extra Margin"
+#~ msgstr "Дополнительное поле подложки"
+
+#~ msgctxt "raft_margin description"
+#~ msgid "If the raft is enabled, this is the extra raft area around the object which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+#~ msgstr "Если подложка включена, это дополнительное поле вокруг объекта"
+
+#~ msgctxt "raft_airgap label"
+#~ msgid "Raft Air-gap"
+#~ msgstr "Воздушный зазор подложки"
+
+#~ msgctxt "raft_airgap description"
+#~ msgid "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft."
+#~ msgstr "Зазор между последним слоем подложки и первым слоем объекта. Первый слой объекта будет приподнят на указанное расстояние, чтобы уменьшить связь между слоем подложки и объекта. Упрощает процесс последующего отделения подложки."
+
+#~ msgctxt "raft_surface_layers label"
+#~ msgid "Raft Top Layers"
+#~ msgstr "Верхние слои подложки"
+
+#~ msgctxt "raft_surface_layers description"
+#~ msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers result in a smoother top surface than 1."
+#~ msgstr "Количество верхних слоёв над вторым слоем подложки. Это такие полностью заполненные слои, на которых размещается объект. Два слоя приводят к более гладкой поверхности чем один."
+
+#~ msgctxt "raft_surface_thickness label"
+#~ msgid "Raft Top Layer Thickness"
+#~ msgstr "Толщина верхнего слоя подложки"
+
+#~ msgctxt "raft_surface_thickness description"
+#~ msgid "Layer thickness of the top raft layers."
+#~ msgstr "Толщина верхних слоёв поддержки."
+
+#~ msgctxt "raft_surface_line_width label"
+#~ msgid "Raft Top Line Width"
+#~ msgstr "Ширина линий верха подложки"
+
+#~ msgctxt "raft_surface_line_width description"
+#~ msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
+#~ msgstr "Ширина линий верхних слоёв подложки. Это могут быть тонкие линии, которые делают подложку гладкой."
+
+#~ msgctxt "raft_surface_line_spacing label"
+#~ msgid "Raft Top Spacing"
+#~ msgstr "Дистанция между линиями верха поддержки"
+
+#~ msgctxt "raft_surface_line_spacing description"
+#~ msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+#~ msgstr "Расстояние между линиями подложки на её верхних слоёв. Расстояние должно быть равно ширине линии, тогда поверхность будет цельной."
+
+#~ msgctxt "raft_interface_thickness label"
+#~ msgid "Raft Middle Thickness"
+#~ msgstr "Толщина середины подложки"
+
+#~ msgctxt "raft_interface_thickness description"
+#~ msgid "Layer thickness of the middle raft layer."
+#~ msgstr "Толщина слоёв средних слоёв подложки."
+
+#~ msgctxt "raft_interface_line_width label"
+#~ msgid "Raft Middle Line Width"
+#~ msgstr "Ширина линий середины подложки"
+
+#~ msgctxt "raft_interface_line_width description"
+#~ msgid "Width of the lines in the middle raft layer. Making the second layer extrude more causes the lines to stick to the bed."
+#~ msgstr "Толщина линий средних слоёв подложки. Приводит к повышенному выдавливанию материала на втором слое, для лучшего прилипания к столу."
+
+#~ msgctxt "raft_interface_line_spacing label"
+#~ msgid "Raft Middle Spacing"
+#~ msgstr "Дистанция между слоями середины подложки"
+
+#~ msgctxt "raft_interface_line_spacing description"
+#~ msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
+#~ msgstr "Расстояние между линиями средних слоёв подложки. Дистанция в средних слоях должна быть достаточно широкой, чтобы создавать нужной плотность для поддержки верхних слоёв подложки."
+
+#~ msgctxt "raft_base_thickness label"
+#~ msgid "Raft Base Thickness"
+#~ msgstr "Толщина нижнего слоя подложки"
+
+#~ msgctxt "raft_base_thickness description"
+#~ msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer bed."
+#~ msgstr "Толщина нижнего слоя подложки. Она должна быть достаточно для хорошего прилипания подложки к столу."
+
+#~ msgctxt "raft_base_line_width label"
+#~ msgid "Raft Base Line Width"
+#~ msgstr "Ширина линии нижнего слоя подложки"
+
+#~ msgctxt "raft_base_line_width description"
+#~ msgid "Width of the lines in the base raft layer. These should be thick lines to assist in bed adhesion."
+#~ msgstr "Ширина линий нижнего слоя подложки. Она должна быть достаточной, чтобы улучшить прилипание к столу."
+
+#~ msgctxt "raft_base_line_spacing label"
+#~ msgid "Raft Line Spacing"
+#~ msgstr "Дистанция между линиями нижнего слоя"
+
+#~ msgctxt "raft_base_line_spacing description"
+#~ msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+#~ msgstr "Расстояние между линиями нижнего слоя подложки. Большее значение упрощает снятие модели со стола."
+
+#~ msgctxt "raft_speed label"
+#~ msgid "Raft Print Speed"
+#~ msgstr "Скорость печати подложки"
+
+#~ msgctxt "raft_speed description"
+#~ msgid "The speed at which the raft is printed."
+#~ msgstr "Скорость, на которой печатается подложка."
+
+#~ msgctxt "raft_surface_speed label"
+#~ msgid "Raft Surface Print Speed"
+#~ msgstr "Скорость печати поверхности подложки"
+
+#~ msgctxt "raft_surface_speed description"
+#~ msgid "The speed at which the surface raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
+#~ msgstr "Скорость, на которой печатается поверхность подложки. Поверхность должна печататься немного медленнее, чтобы сопло могло медленно разглаживать линии поверхности."
+
+#~ msgctxt "raft_interface_speed label"
+#~ msgid "Raft Interface Print Speed"
+#~ msgstr "Скорость печати связи подложки"
+
+#~ msgctxt "raft_interface_speed description"
+#~ msgid "The speed at which the interface raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+#~ msgstr "Скорость, на которой печатается связующий слой подложки. Она должна быть достаточно низкой, так как объём материала, выходящего из сопла, достаточно большой."
+
+#~ msgctxt "raft_base_speed label"
+#~ msgid "Raft Base Print Speed"
+#~ msgstr "Скорость печати низа подложки"
+
+#~ msgctxt "raft_base_speed description"
+#~ msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+#~ msgstr "Скорость, на которой печатается нижний слой подложки. Она должна быть достаточно низкой, так как объём материала, выходящего из сопла, достаточно большой."
+
+#~ msgctxt "raft_fan_speed label"
+#~ msgid "Raft Fan Speed"
+#~ msgstr "Скорость вентилятора для подложки"
+
+#~ msgctxt "raft_fan_speed description"
+#~ msgid "The fan speed for the raft."
+#~ msgstr "Скорость вращения вентилятора при печати подложки."
+
+#~ msgctxt "raft_surface_fan_speed label"
+#~ msgid "Raft Surface Fan Speed"
+#~ msgstr "Скорость вентилятора для поверхности подложки"
+
+#~ msgctxt "raft_surface_fan_speed description"
+#~ msgid "The fan speed for the surface raft layers."
+#~ msgstr "Скорость вращения вентилятора при печати поверхности слоёв подложки."
+
+#~ msgctxt "raft_interface_fan_speed label"
+#~ msgid "Raft Interface Fan Speed"
+#~ msgstr "Скорость вентилятора для связующего слоя"
+
+#~ msgctxt "raft_interface_fan_speed description"
+#~ msgid "The fan speed for the interface raft layer."
+#~ msgstr "Скорость вращения вентилятора при печати связующего слоя подложки."
+
+#~ msgctxt "raft_base_fan_speed label"
+#~ msgid "Raft Base Fan Speed"
+#~ msgstr "Скорость вентилятора для низа подложки"
+
+#~ msgctxt "raft_base_fan_speed description"
+#~ msgid "The fan speed for the base raft layer."
+#~ msgstr "Скорость вентилятора при печати нижнего слоя подложки."
+
+#~ msgctxt "meshfix label"
+#~ msgid "Mesh Fixes"
+#~ msgstr "Ремонт объектов"
+
+#~ msgctxt "meshfix_union_all label"
+#~ msgid "Union Overlapping Volumes"
+#~ msgstr "Объединение перекрывающихся объёмов"
+
+#~ msgctxt "meshfix_union_all description"
+#~ msgid "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavities to disappear."
+#~ msgstr "Игнорирование внутренней геометрии, возникшей при объединении объёмов и печать объёмов как единого целого. Это может привести к исчезновению внутренних поверхностей."
+
+#~ msgctxt "meshfix_union_all_remove_holes label"
+#~ msgid "Remove All Holes"
+#~ msgstr "Удаляет все отверстия"
+
+#~ msgctxt "meshfix_union_all_remove_holes description"
+#~ msgid "Remove the holes in each layer and keep only the outside shape. This will ignore any invisible internal geometry. However, it also ignores layer holes which can be viewed from above or below."
+#~ msgstr "Удаляет отверстия в каждом слое, оставляя только внешнюю форму. Вся невидимая внутренняя геометрия будет проигнорирована. Однако, также будут проигнорированы отверстия в слоях, которые могут быть видны сверху или снизу."
+
+#~ msgctxt "meshfix_extensive_stitching label"
+#~ msgid "Extensive Stitching"
+#~ msgstr "Обширное сшивание"
+
+#~ msgctxt "meshfix_extensive_stitching description"
+#~ msgid "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time."
+#~ msgstr "Обширное сшивание пытается сшить открытые отверстия в объекте, закрывая их полигонами. Эта опция может добавить дополнительное время во время обработки."
+
+#~ msgctxt "meshfix_keep_open_polygons label"
+#~ msgid "Keep Disconnected Faces"
+#~ msgstr "Сохранить отсоединённые поверхности"
+
+#~ msgctxt "meshfix_keep_open_polygons description"
+#~ msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode."
+#~ msgstr "Обычно Cura пытается закрыть небольшие отверстия в объекте и убрать части слоя с большими отверстиями. Включение этого параметра сохраняет те части, что не могут быть сшиты. Этот параметр должен использоваться как последний вариант, когда уже ничего не помогает получить нормальный GCode."
+
+#~ msgctxt "blackmagic label"
+#~ msgid "Special Modes"
+#~ msgstr "Специальные режимы"
+
+#~ msgctxt "print_sequence label"
+#~ msgid "Print Sequence"
+#~ msgstr "Последовательная печать"
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+#~ msgstr "Печатать ли все объекты послойно или каждый объект в отдельности. Отдельная печать возможно в случае, когда все модели разделены так, чтобы между ними могла проходить голова принтера и все модели ниже чем расстояние до осей X/Y."
+
+#~ msgctxt "print_sequence option all_at_once"
+#~ msgid "All at Once"
+#~ msgstr "Все за раз"
+
+#~ msgctxt "print_sequence option one_at_a_time"
+#~ msgid "One at a Time"
+#~ msgstr "По отдельности"
+
+#~ msgctxt "magic_mesh_surface_mode label"
+#~ msgid "Surface Mode"
+#~ msgstr "Поверхностный режим"
+
+#~ msgctxt "magic_mesh_surface_mode description"
+#~ msgid "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh. It's also possible to do both: print the insides of a closed volume as normal, but print all polygons not part of a closed volume as surface."
+#~ msgstr "Печатать только поверхность. Никакого заполнения, никаких верхних нижних поверхностей, просто одна стенка, которая совпадает с поверхностью объекта. Позволяет делать и печать внутренностей закрытого объёма в виде нормалей, и печать всех полигонов, не входящих в закрытый объём, в виде поверхностей."
+
+#~ msgctxt "magic_mesh_surface_mode option normal"
+#~ msgid "Normal"
+#~ msgstr "Нормаль"
+
+#~ msgctxt "magic_mesh_surface_mode option surface"
+#~ msgid "Surface"
+#~ msgstr "Поверхность"
+
+#~ msgctxt "magic_mesh_surface_mode option both"
+#~ msgid "Both"
+#~ msgstr "Оба варианта"
+
+#~ msgctxt "magic_spiralize label"
+#~ msgid "Spiralize Outer Contour"
+#~ msgstr "Спирально печатать внешний контур"
+
+#~ msgctxt "magic_spiralize description"
+#~ msgid "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom. This feature used to be called Joris in older versions."
+#~ msgstr "Спирально сглаживать движение по оси Z, печатая внешний контур. Приводит к постоянному увеличению Z координаты во время печати. Этот параметр превращает твёрдый объект в одностенную модель с твёрдым дном. Раньше этот параметр назывался Joris."
+
+#~ msgctxt "experimental label"
+#~ msgid "Experimental"
+#~ msgstr "Экспериментальное"
+
+#~ msgctxt "magic_fuzzy_skin_enabled label"
+#~ msgid "Fuzzy Skin"
+#~ msgstr "Нечёткая поверхность"
+
+#~ msgctxt "magic_fuzzy_skin_enabled description"
+#~ msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
+#~ msgstr "Вносит небольшое дрожание при печати внешней стенки, что придаёт поверхности шершавый вид."
+
+#~ msgctxt "magic_fuzzy_skin_thickness label"
+#~ msgid "Fuzzy Skin Thickness"
+#~ msgstr "Толщина шершавости"
+
+#~ msgctxt "magic_fuzzy_skin_thickness description"
+#~ msgid "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered."
+#~ msgstr "Величина амплитуды дрожания. Рекомендуется придерживаться толщины внешней стенки, так как внутренние стенки не изменяются."
+
+#~ msgctxt "magic_fuzzy_skin_point_density label"
+#~ msgid "Fuzzy Skin Density"
+#~ msgstr "Плотность шершавой стенки"
+
+#~ msgctxt "magic_fuzzy_skin_point_density description"
+#~ msgid "The average density of points introduced on each polygon in a layer. Note that the original points of the polygon are discarded, so a low density results in a reduction of the resolution."
+#~ msgstr "Средняя плотность точек, добавленных на каждом полигоне в слое. Следует отметить, что оригинальные точки полигона отбрасываются, следовательно низкая плотность приводит к уменьшению разрешения."
+
+#~ msgctxt "magic_fuzzy_skin_point_dist label"
+#~ msgid "Fuzzy Skin Point Distance"
+#~ msgstr "Дистанция между точками шершавости"
+
+#~ msgctxt "magic_fuzzy_skin_point_dist description"
+#~ msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
+#~ msgstr "Среднее расстояние между случайными точками, который вносятся в каждый сегмент линии. Следует отметить, что оригинальные точки полигона отбрасываются, таким образом, сильное сглаживание приводит к уменьшению разрешения. Это значение должно быть больше половины толщины шершавости."
+
+#~ msgctxt "wireframe_enabled label"
+#~ msgid "Wire Printing"
+#~ msgstr "Нитевая печать"
+
+#~ msgctxt "wireframe_enabled description"
+#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+#~ msgstr "Печатать только внешнюю поверхность с редкой перепончатой структурой, печатаемой \"прямо в воздухе\". Это реализуется горизонтальной печатью контуров модели с заданными Z интервалами, которые соединяются диагональными линиями."
+
+#~ msgctxt "wireframe_height label"
+#~ msgid "WP Connection Height"
+#~ msgstr "Высота соединений при нетевой печати"
+
+#~ msgctxt "wireframe_height description"
+#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
+#~ msgstr "Высота диагональных линий между горизонтальными частями. Она определяет общую плотность сетевой структуры. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_printspeed label"
+#~ msgid "WP speed"
+#~ msgstr "Скорость нитевой печати"
+
+#~ msgctxt "wireframe_printspeed description"
+#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+#~ msgstr "Скорость с которой двигается сопло, выдавая материал. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_printspeed_bottom label"
+#~ msgid "WP Bottom Printing Speed"
+#~ msgstr "Скорость печати низа"
+
+#~ msgctxt "wireframe_printspeed_bottom description"
+#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+#~ msgstr "Скорость, с которой печатается первый слой, касающийся стола. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_printspeed_flat description"
+#~ msgid "Speed of printing the horizontal contours of the object. Only applies to Wire Printing."
+#~ msgstr "Скорость, с которой печатаются горизонтальные контуры объекта. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_flow label"
+#~ msgid "WP Flow"
+#~ msgstr "Поток нитевой печати"
+
+#~ msgctxt "wireframe_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+#~ msgstr "Компенсация потока: объём выдавленного материала умножается на это значение. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_flow_connection label"
+#~ msgid "WP Connection Flow"
+#~ msgstr "Поток соединений при нитевой печати"
+
+#~ msgctxt "wireframe_flow_connection description"
+#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+#~ msgstr "Компенсация потока при движении вверх и вниз. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_flow_flat label"
+#~ msgid "WP Flat Flow"
+#~ msgstr "Поток горизонтальных линий"
+
+#~ msgctxt "wireframe_flow_flat description"
+#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+#~ msgstr "Компенсация потока при печати плоских линий. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_top_delay label"
+#~ msgid "WP Top Delay"
+#~ msgstr "Верхняя задержка при нитевой печати"
+
+#~ msgctxt "wireframe_top_delay description"
+#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+#~ msgstr "Задержка после движения вверх, чтобы такие линии были твёрже. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_bottom_delay label"
+#~ msgid "WP Bottom Delay"
+#~ msgstr "Нижняя задержка при нитевой печати"
+
+#~ msgctxt "wireframe_bottom_delay description"
+#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
+#~ msgstr "Задержка после движения вниз. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_flat_delay label"
+#~ msgid "WP Flat Delay"
+#~ msgstr "Горизонтальная задержка при нитевой печати"
+
+#~ msgctxt "wireframe_flat_delay description"
+#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
+#~ msgstr "Задержка между двумя горизонтальными сегментами. Внесение такой задержки может улучшить прилипание к предыдущим слоям в местах соединений, в то время как более длинные задержки могут вызывать провисания. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_up_half_speed description"
+#~ msgid ""
+#~ "Distance of an upward move which is extruded with half speed.\n"
+#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
+#~ msgstr ""
+#~ "Расстояние движения вверх, при котором выдавливание идёт на половине скорости.\n"
+#~ "Это может улучшить прилипание к предыдущим слоям, не перегревая материал тех слоёв. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_top_jump label"
+#~ msgid "WP Knot Size"
+#~ msgstr "Размер узла при нитевой печати"
+
+#~ msgctxt "wireframe_top_jump description"
+#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
+#~ msgstr "Создаёт небольшой узел наверху возвышающейся линии так, чтобы последующий горизонтальный слой имел больший шанс к присоединению. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_fall_down label"
+#~ msgid "WP Fall Down"
+#~ msgstr "Падение нитевой печати"
+
+#~ msgctxt "wireframe_fall_down description"
+#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние с которой материал падает вниз после восходящего выдавливания. Расстояние компенсируется. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_drag_along label"
+#~ msgid "WP Drag along"
+#~ msgstr "Протягивание при нитевой печати"
+
+#~ msgctxt "wireframe_drag_along description"
+#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние, на которое материал от восходящего выдавливания тянется во время нисходящего выдавливания. Расстояние компенсируется. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_strategy label"
+#~ msgid "WP Strategy"
+#~ msgstr "Стратегия нитевой печати"
+
+#~ msgctxt "wireframe_strategy option compensate"
+#~ msgid "Compensate"
+#~ msgstr "Компенсация"
+
+#~ msgctxt "wireframe_strategy option knot"
+#~ msgid "Knot"
+#~ msgstr "Узел"
+
+#~ msgctxt "wireframe_strategy option retract"
+#~ msgid "Retract"
+#~ msgstr "Откат"
+
+#~ msgctxt "wireframe_straight_before_down description"
+#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
+#~ msgstr "Процент диагонально нисходящей линии, которая покрывается куском горизонтальной линии. Это может предотвратить  провисание самых верхних точек восходящих линий. Применяется только при нитевой печати."
+
+#~ msgctxt "wireframe_roof_fall_down description"
+#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
+#~ msgstr "Расстояние, на котором линии горизонтальной крыши печатаются \"в воздухе\" подают вниз перед печатью. Расстояние компенсируется. Применяется только при нитевой печати."

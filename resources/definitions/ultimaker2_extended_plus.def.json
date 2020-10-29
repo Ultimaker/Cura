@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "Ultimaker 2 Extended+",
+    "inherits": "ultimaker2_plus",
+    "metadata": {
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "quality_definition": "ultimaker2_plus",
+        "weight": 2,
+        "file_formats": "text/x-gcode",
+        "platform": "ultimaker2_platform.obj",
+        "platform_texture": "Ultimaker2ExtendedPlusbackplate.png",
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker2_extended_plus_extruder_0"
+        },
+        "firmware_file": "MarlinUltimaker2extended-plus.hex"
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2 Extended+" },
+        "machine_height": {
+            "default_value": 305
+        }
+    }
+}

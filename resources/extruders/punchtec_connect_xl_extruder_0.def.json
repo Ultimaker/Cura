@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "name": "0",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "punchtec_connect_xl",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

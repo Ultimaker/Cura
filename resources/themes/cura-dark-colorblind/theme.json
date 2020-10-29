@@ -1,0 +1,30 @@
+{
+    "metadata": {
+        "name": "Colorblind Assist Dark",
+        "inherits": "cura-dark"
+    },
+
+    "colors": {
+        "x_axis": [212, 0, 0, 255],
+        "y_axis": [64, 64, 255, 255],
+
+        "model_default": [156, 201, 36, 255],
+        "model_overhang": [200, 0, 255, 255],
+
+
+        "xray_error_dark": [255,  0,  0, 255],
+        "xray_error_light": [255,  255,  0, 255],
+        "xray": [26,  26,  62, 255],
+        "xray_error": [255,  0,  0, 255],
+
+        "layerview_inset_0": [255, 64, 0, 255],
+        "layerview_inset_x": [0, 156, 128, 255],
+        "layerview_skin": [255, 255, 86, 255],
+        "layerview_support": [255, 255, 0, 255],
+
+        "layerview_infill": [0, 255, 255, 255],
+        "layerview_support_infill": [0, 200, 200, 255],
+
+        "layerview_move_retraction": [0, 100, 255, 255]
+    }
+}

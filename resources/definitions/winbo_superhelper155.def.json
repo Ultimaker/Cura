@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Winbo Super Helper 155",
+    "inherits": "winbo_superhelper105",
+    "metadata": {
+        "author": "Winbo",
+        "manufacturer": "Winbo Smart Tech Co., Ltd.",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+        "supports_usb_connection": true,
+        "machine_extruder_trains":
+        {
+            "0": "winbo_superhelper155_extruder"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Winbo Super Helper 155" },
+        "machine_width": { "default_value": 158 },
+        "machine_depth": { "default_value": 158 },
+        "machine_height": { "default_value": 208 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value":
+            [
+                [ -160, 50 ],[ -160, -30 ],[ 160, -30 ],[ 160, 50 ]
+            ]
+        }
+    }
+}

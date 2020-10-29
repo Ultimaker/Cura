@@ -1,0 +1,32 @@
+{
+    "version": 2,
+    "name": "Hellbot Magna 1",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "MUX team",
+        "manufacturer": "Hellbot",
+        "file_formats": "text/x-gcode",
+        "platform": "hellbot_magna.obj",
+        "platform_texture": "hellbot.png",
+        "platform_offset": [0, -1, 0],
+        "has_materials": true,
+        "machine_extruder_trains": {
+            "0": "hellbot_magna_i_extruder"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Hellbot Magna 1"
+        },
+        "machine_width": {
+            "default_value": 220
+        },
+        "machine_depth": {
+            "default_value": 220
+        },
+        "machine_height": {
+            "default_value": 260
+        }
+    }
+}

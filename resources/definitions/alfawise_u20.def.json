@@ -1,0 +1,72 @@
+{
+    "name": "Alfawise U20",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Samuel Pinches",
+        "manufacturer": "Alfawise",
+        "file_formats": "text/x-gcode",
+        "preferred_quality_type": "fast",
+        "machine_extruder_trains":
+        {
+            "0": "alfawise_u20_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Alfawise U20"
+        },
+        "machine_start_gcode": {
+            "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 Y60.0 Z0 E9.0 F1000.0;intro line\nG1 Y100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM104 S0                 ;turn off nozzle heater\nM140 S0                 ;turn off bed heater\nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament slightly\nG90                     ;set to absolute positioning\nG28 X0                  ;move to the X-axis origin (Home)\nG0 Y280 F600            ;bring the bed to the front for easy print removal\nM84                     ;turn off stepper motors\n; -- end of END GCODE --"
+        },
+        "machine_width": {
+            "default_value": 300
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_depth": {
+            "default_value": 300
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "value": "10"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },    
+        "material_diameter": {
+            "default_value": 1.75
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "wall_thickness": {
+            "value": "1.2"
+        },
+        "speed_print": {
+            "default_value": 40
+        },
+        "support_enable": {
+            "default_value": true
+        },
+        "retraction_enable": {
+            "default_value": true
+        },
+        "retraction_amount": {
+            "default_value": 5
+        },
+        "retraction_speed": {
+            "default_value": 45
+        }
+    }
+}

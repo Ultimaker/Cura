@@ -1,0 +1,84 @@
+{
+    "version": 2,
+    "name": "Raise3D N2 Dual",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Raise3D",
+        "manufacturer": "Raise3D",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "raise3D_N2_dual_extruder_0",
+            "1": "raise3D_N2_dual_extruder_1"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Raise3D N2 Dual" },
+        "machine_width": {
+            "default_value": 305
+        },
+        "machine_height": {
+            "default_value": 305
+        },
+        "machine_depth": {
+            "default_value": 305
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_nozzle_heat_up_speed": {
+            "default_value": 6
+        },
+        "machine_nozzle_cool_down_speed": {
+            "default_value": 4
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -75, 35 ],
+                [ -75, -18 ],
+                [ 18, 35 ],
+                [ 18, -18 ]
+            ]
+        },
+        "machine_min_cool_heat_time_window": {
+            "default_value": 3600
+        },
+        "retraction_amount": {
+            "default_value": 1.0
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "gantry_height": {
+            "value": "55"
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G90\nG21\n; home all axes\nG28\nG92 X0 Y0 Z0\n; move heatbed into position\nG1 X20.0 Y20.0 Z1.0 F1000\n; zero extruders\nG92 E0 E1\nT0; right tool\n; set extruder steps per mm\nM92 E140\nT1; left tool\n; set extruder steps per mm\nM92 E140\nT0; left tool\nG92 E0 E1\n; purge nozzle\nG1 E25 F250\nT1; left tool\nG92 E0 E1\n; purge nozzle\nG1 E25 F250\n; zero extruders\nG92 E0 E1\n; move heatbed down a little more\nG1 Z5.0 F20\n; wait 600ms\nG4 600\n; move to tack down the strands\nG1 X20.0 Y30.0 Z0 F9000\n; wait 600ms\nG4 600\n;move up a bit\nG1 Z5.0 F9000\n; wait 300ms\nG4 300\n;fast move to center\nG1 X152.5 Y152.5 F9000\nT0\n;Raise3D Job Start\nM117 Printing...\nM1001\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "M107\nM1002\nM104 S0 T1\nM104 S0 T0\nM140 S0\nM117 Print Complete.\nG28 X0 Y0\nG91\nG1 Z10\nG90\nM84"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "prime_tower_position_x": {
+            "value": "195"
+        },
+        "prime_tower_position_y": {
+            "value": "149"
+        }
+    }
+}

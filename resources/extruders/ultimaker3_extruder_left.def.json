@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "ultimaker3",
+        "position": "0",
+        "quality_definition": "ultimaker3_extruder_left"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0 },
+        "machine_nozzle_offset_y": { "default_value": 0 },
+
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "default_value": 213 },
+        "machine_extruder_start_pos_y": { "default_value": 207 },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "default_value": 213 },
+        "machine_extruder_end_pos_y": { "default_value": 207 },
+        "machine_nozzle_head_distance": { "default_value": 2.7 },
+        "extruder_prime_pos_x": { "default_value": 9 },
+        "extruder_prime_pos_y": { "default_value": 6 },
+        "extruder_prime_pos_z": { "default_value": 2 }
+    }
+}

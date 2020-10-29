@@ -1,0 +1,45 @@
+{
+    "version": 2,
+    "name": "Ultimaker",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "visible": false,
+        "exclude_materials": [ "generic_hips", "generic_petg", "structur3d_dap100silicone" ]
+    },
+    "overrides": {
+        "machine_max_feedrate_e": {
+            "default_value": 45
+        },
+        "material_print_temperature": {
+            "minimum_value": "0"
+        },
+        "material_bed_temperature": {
+            "minimum_value": "0",
+            "maximum_value_warning": "125"
+        },
+        "material_bed_temperature_layer_0":
+        {
+            "maximum_value_warning": "125"
+        },
+        "material_standby_temperature": {
+            "minimum_value": "0"
+        },
+        "extruder_prime_pos_y":
+        {
+            "minimum_value": "0",
+            "maximum_value": "machine_depth"
+        },
+        "extruder_prime_pos_x":
+        {
+            "minimum_value": "0",
+            "maximum_value": "machine_width"
+        },
+        "relative_extrusion":
+        {
+            "value": false,
+            "enabled": false
+        }
+    }
+}

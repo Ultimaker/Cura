@@ -1,0 +1,88 @@
+{
+    "version": 2,
+    "name": "Stereotech STE320",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Stereotech",
+        "manufacturer": "Stereotech LLC.",
+        "platform": "stereotech_ste320_platform.obj",
+        "platform_texture": "StereotechSte320backplate.png",
+        "platform_offset": [
+            0,
+            0,
+            -14
+        ],
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "supports_usb_connection": false,
+        "machine_extruder_trains": {
+            "0": "stereotech_ste320_1st",
+            "1": "stereotech_ste320_2nd"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Stereotech STE320"
+        },
+        "machine_width": {
+            "default_value": 218
+        },
+        "machine_height": {
+            "default_value": 200
+        },
+        "machine_depth": {
+            "default_value": 210
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [
+                    -29,
+                    22
+                ],
+                [
+                    -29,
+                    -20
+                ],
+                [
+                    27,
+                    22
+                ],
+                [
+                    27,
+                    -20
+                ]
+            ]
+        },
+        "gantry_height": {
+            "value": "25"
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 ;homing\nG1 Z15.0 F9000 ;move the platform down 15mm\nT1 ;Switch to the 2nd extruder\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F200 E-{switch_extruder_retraction_amount}\nT0 ;Switch to the 1st extruder\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 T0 S0 ;1st extruder heater off\nM104 T1 S0 ;2nd extruder heater off\nM140 S0 ;heated bed heater off\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "prime_tower_position_x": {
+            "value": "195"
+        },
+        "prime_tower_position_y": {
+            "value": "149"
+        }
+    }
+}

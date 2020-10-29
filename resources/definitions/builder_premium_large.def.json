@@ -1,0 +1,107 @@
+{
+    "version": 2,
+    "name": "Builder Premium Large",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Builder SZ",
+        "manufacturer": "Builder",
+        "quality_definition": "builder_premium_small",
+        "file_formats": "text/x-gcode",
+        "platform": "builder_premium_platform.3mf",
+        "platform_offset": [-126, -36, 117],
+        "has_machine_quality": true,
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "builder_premium_large_rear",
+            "1": "builder_premium_large_front"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Builder Premium Large" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 215 },
+        "machine_height": { "default_value": 600 },
+        "machine_depth": { "default_value": 205 },
+
+        "infill_pattern": {"value": "'triangles'" },
+        "infill_before_walls": {"value": false },
+
+        "default_material_print_temperature": { "value": "215" },
+        "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
+        "material_standby_temperature": { "value": "material_print_temperature" },
+
+        "switch_extruder_retraction_speeds": {"default_value": 15 },
+        "switch_extruder_retraction_amount": {"value": 1 },
+
+        "speed_travel": { "value": "100" },
+        "speed_layer_0": { "value": "20" },
+        "speed_prime_tower": { "value": "speed_topbottom" },
+        "speed_print": { "value": "40" },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_topbottom": { "value": "math.ceil(speed_print * 20 / 35)" },
+        "speed_wall": { "value": "math.ceil(speed_print * 30 / 40)" },
+        "speed_wall_0": { "value": "math.ceil(speed_wall * 20 / 25)" },
+        "speed_wall_x": { "value": "speed_wall" },
+
+        "prime_tower_position_x": { "value": "175" },
+        "prime_tower_position_y": { "value": "178" },
+        "prime_tower_wipe_enabled": { "default_value": false },
+        "prime_tower_min_volume": { "default_value": 50 },
+
+        "prime_blob_enable": { "enabled": true },
+
+        "acceleration_enabled": { "value": "True" },
+        "acceleration_layer_0": { "value": "acceleration_topbottom" },
+        "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
+        "acceleration_print": { "value": "3000" },
+        "acceleration_support": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
+        "acceleration_support_interface": { "value": "acceleration_topbottom" },
+        "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 1000 / 3000)" },
+        "acceleration_travel": { "value": "acceleration_print" },
+        "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 3000)" },
+        "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 1000)" },
+
+        "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
+        "cool_min_layer_time": { "default_value": 10 },
+
+        "jerk_enabled": { "value": "True" },
+        "jerk_layer_0": { "value": "jerk_topbottom" },
+        "jerk_prime_tower": { "value": "math.ceil(jerk_print * 15 / 25)" },
+        "jerk_print": { "value": "25" },
+        "jerk_support": { "value": "math.ceil(jerk_print * 15 / 25)" },
+        "jerk_support_interface": { "value": "jerk_topbottom" },
+        "jerk_topbottom": { "value": "math.ceil(jerk_print * 5 / 25)" },
+        "jerk_wall": { "value": "math.ceil(jerk_print * 10 / 25)" },
+        "jerk_wall_0": { "value": "math.ceil(jerk_wall * 5 / 10)" },
+
+        "wall_thickness": { "value": "1.2" },
+
+        "retraction_amount": { "default_value": 3 },
+        "retraction_speed": { "default_value": 15 },
+        "travel_retract_before_outer_wall": { "default_value": true },
+        "skin_overlap": { "value": "15" },
+        "adhesion_type": { "default_value": "skirt" },
+        "machine_nozzle_heat_up_speed": { "default_value": 2 },
+        "machine_nozzle_cool_down_speed": { "default_value": 2 },
+        "machine_head_with_fans_polygon": { "default_value": [[-75, -18],[-75, 35],[18, 35],[18, -18]] },
+        "gantry_height": { "value": "55" },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_start_gcode": {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E15 ;extrude 15mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\nT0 ;Start with Rear Extruder\n;Put printing message on LCD screen\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning"
+        },
+        "machine_extruder_count": { "default_value": 2 }
+    }
+}

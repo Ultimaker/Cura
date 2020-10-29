@@ -1,0 +1,57 @@
+{
+    "version": 2,
+    "name": "Mankati Fullscale XT Plus",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "RBC",
+        "manufacturer": "Mankati",
+        "file_formats": "text/x-gcode",
+        "platform": "mankati_fullscale_xt_plus_platform.3mf",
+        "machine_extruder_trains":
+        {
+            "0": "mankati_fullscale_xt_plus_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Mankati Fullscale XT Plus" },
+        "machine_width": { "default_value": 260 },
+        "machine_depth": { "default_value": 260 },
+        "machine_height": { "default_value": 300 },
+        "machine_heated_bed": { "default_value": true },
+
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [ -3,  3 ],
+                [ -3, -3 ],
+                [  3, -3 ],
+                [  3,  3 ]
+            ]
+        },
+        "gantry_height": { "value": "0" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+
+        "machine_start_gcode": {
+            "default_value": "M117 Initializing...\nG28 ; home all axes\nG90 ; use absolute coordinates\nG1 F12000 X0 Y0 Z30  ; lift nozzle 30 mm\nT0 ; select extruder 1\nG92 E0 ; reset extruder length\nG1 F100 Z30 E7 ; extrude 7mm while going up\nG92 E0 ; zero the extruder length\nM117 Printing...\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 T0 S0 ; turn off extruder 1 heating\nM140 S0 ; turn off bed heating\nG91 ; relative positioning\nG1 F12000 E-0.5 ; retract 0.5 mm\nG1 F12000 Z30 ; move Z-axes 30 mm down\nG28 X0 Y0  ; home X axis and Y axes\nM84     ; disable motors\nM117 Ready!\n"
+        },
+
+        "layer_height": { "default_value": 0.2 },
+        "wall_thickness": { "value": "0.8" },
+        "top_bottom_thickness": { "default_value": 0.3 },
+        "retraction_enable": { "default_value": true },
+        "retraction_speed": { "default_value": 50 },
+        "retraction_amount": { "default_value": 0.8 },
+        "retraction_hop": { "default_value": 0.075 },
+        "speed_print": { "default_value": 60 },
+        "speed_layer_0": {
+            "minimum_value": "0.1"
+        },
+        "cool_fan_enabled": { "default_value": false },
+        "skirt_line_count": { "default_value": 3 },
+        "skirt_gap": { "default_value": 4 },
+        "skirt_brim_minimal_length": { "default_value": 200 }
+    }
+}

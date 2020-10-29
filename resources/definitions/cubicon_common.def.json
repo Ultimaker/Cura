@@ -1,0 +1,56 @@
+{
+    "version": 2,
+    "name": "Cubicon Common",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Cubicon R&D Center",
+        "manufacturer": "Cubicon",
+        "visible": false
+    },
+    "overrides": {
+        "machine_start_gcode": {
+            "default_value": "M201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nM904\nM117 Print completed! \nM84"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "Repetier"
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "travel_compensate_overlapping_walls_enabled": {
+            "default_value": false
+        },
+        "layer_height": {
+            "default_value": 0.2
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "adhesion_type": {
+            "default_value": "raft"
+        },
+        "top_bottom_pattern": { "default_value": "lines" },
+        "fill_perimeter_gaps": { "default_value": "everywhere" },
+        "infill_sparse_density": { "default_value": 20 },
+        "infill_before_walls": { "default_value": false },
+        "top_bottom_thickness": {
+            "default_value": 1.0
+        },
+        "bottom_thickness": {
+            "value": "top_bottom_thickness * 0.6"
+        },
+        "material_flow_layer_0": { "default_value": 100 },
+        "max_skin_angle_for_expansion": { "default_value": 90 },
+        "skin_angles": { "default_value": "[135,45]" },
+        "coasting_volume": { "default_value": 0.032 },
+        "wall_thickness": { "value": "1.2" },
+        "cool_min_layer_time_fan_speed_max": { "default_value": 15 },
+        "cool_min_layer_time": { "default_value": 15 },
+        "support_interface_pattern": { "default_value": "zigzag" },
+        "support_pattern": { "default_value": "zigzag" },
+        "retraction_amount": { "default_value": 1.5 }
+    }
+}

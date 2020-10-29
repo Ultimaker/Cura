@@ -1,0 +1,82 @@
+{
+    "name": "Mendel90",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Wilmer Gaona",
+        "manufacturer": "Nophead",
+        "file_formats": "text/x-gcode",
+        "platform": "mendel90_platform.3mf",
+        "platform_offset": [0, -23.6, 0],
+        "machine_extruder_trains":
+        {
+            "0": "mendel90_extruder_0"
+        }
+    },
+
+    "pages": [
+        "BedLeveling"
+    ],
+
+    "overrides": {
+        "machine_name": { "default_value": "Mendel90" },
+        "machine_start_gcode": {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;absolute extrusion\nM107 ;start with the fan off\nG28 ;home\nG92 E0 ;zero the extruded length\nM140 S{material_bed_temperature_layer_0} ; set the bed temperature and continue on\nG1 X-50 Y98 F9000 ;go to the left of the top\nG1 Z0.05 ; close to the bed\nM104 S{material_print_temperature_layer_0}; pre-heat the extruder continue on\nM190 S{material_bed_temperature_layer_0} ;set the bed temp & wait\nM109 S{material_print_temperature_layer_0};set the extruder temp for layer 0 & wait\nG92 E0 ;zero the extruded length\nG1 X50 E10 F300 ; make a thick line to prime extruder\nG92 E0 ; reset extruder\nG1 E-4 F1800\nG1 Z0.3 ;lift Z\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nM107 ;carriage fan off\nG91 ;relative positioning\nG1 Z10 ;Move up Z 10mm\nG90 ;back to absolute mode\nG1 E-1 F1200 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG92 E0 ;zero the extruded length\nG1 Z200 X-100 F9000 ; go to top\nG1 Y100 F5000 ;Move Y to back\nM42 P42 S255 ;Turn on Bed cooling fan on\nG4 S10 ;Wait 10 seconds\nM42 P42 S0 ;Turn off bed cooling fan\nM84 ;steppers off\n"
+        },
+        "material_bed_temp_wait": {
+            "default_value": true
+        },
+        "material_print_temp_prepend": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 200
+        },
+        "machine_height": {
+            "default_value": 200
+        },
+        "machine_depth": {
+            "default_value": 200
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": true
+        },
+        "machine_extruder_count": {
+            "default_value": 1
+        },
+        "machine_nozzle_tip_outer_diameter": {
+            "default_value": 1
+        },
+        "machine_nozzle_head_distance": {
+            "default_value": 5
+        },
+        "machine_heat_zone_length": { 
+            "default_value": 16
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "gantry_height": {
+            "value": "55"
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -12, 9 ],
+                [ -12, -9 ],
+                [ 14, 9 ],
+                [ 14, -9 ]
+            ]
+        }
+    }
+}
+
+                    

@@ -1,0 +1,75 @@
+{
+    "version": 2,
+    "name": "BQ Witbox 2",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "BQ",
+        "manufacturer": "BQ",
+        "file_formats": "text/x-gcode",
+        "platform": "bq_witbox_platform.3mf",
+        "platform_offset": [0, -145, -38],
+        "machine_extruder_trains":
+        {
+            "0": "bq_witbox_2_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "BQ Witbox 2" },
+        "machine_start_gcode": {
+            "default_value": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\n; -- end of START GCODE --"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --"
+        },
+        "machine_width": {
+            "default_value": 297
+        },
+        "machine_depth": {
+            "default_value": 210
+        },
+        "machine_height": {
+            "default_value": 200
+        },
+        "machine_heated_bed": {
+            "default_value": false
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "layer_height": {
+            "default_value": 0.2
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "wall_thickness": {
+            "value": "1.2"
+        },
+        "top_bottom_thickness": {
+            "default_value": 1.2
+        },
+        "infill_sparse_density": {
+            "default_value": 20
+        },
+        "speed_print": {
+            "default_value": 60
+        },
+        "skirt_line_count": {
+            "default_value": 4
+        },
+        "skirt_brim_minimal_length": {
+            "default_value": 30
+        },
+        "skirt_gap": {
+            "default_value": 6
+        },
+        "support_enable": {
+            "default_value": false
+        }
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "Vertex K8400",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "manufacturer": "Velleman N.V.",
+        "file_formats": "text/x-gcode",
+        "platform": "Vertex_build_panel.3mf",
+        "platform_offset": [0, -3, 0],
+        "supports_usb_connection": true,
+        "supported_actions": ["MachineSettingsAction"],
+        "machine_extruder_trains":
+        {
+            "0": "vertex_k8400_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Vertex K8400" },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 200
+        },
+        "machine_height": {
+            "default_value": 190
+        },
+        "machine_depth": {
+            "default_value": 200
+        },
+        "machine_disallowed_areas": { "default_value": [
+            [[-100,100],[-100,80],[100,80],[100,100]]
+        ]},
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-60, -40],
+                [-60, 40],
+                [18, 40],
+                [18, -40]
+            ]
+        },
+        "gantry_height": {
+            "value": "18"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "M104 T0 S{material_print_temperature_layer_0}\nG28 ;Home extruder\nG90 ;Absolute positioning\nM82 ;Extruder in absolute mode\nG1 Z1 F100\nG92 E0 ;Reset extruder position\nM109 T0 S{material_print_temperature_layer_0}\nG1 E20 F100\nG92 E0 ;Reset extruder position"
+        },
+        "machine_end_gcode": {
+            "default_value": "G1 X0 Y0 Z130 ;Get extruder out of way\nM107 ;Turn off fan\n;Disable all extruders\nG91 ;Relative positioning\nT0\nG1 E-1 ;Reduce filament pressure\nM104 T0 S0\nG90 ;Absolute positioning\nG92 E0 ;Reset extruder position\nM140 S0 ;Disable heated bed\nM84 ;Turn steppers off"
+        }
+    }
+}

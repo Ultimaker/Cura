@@ -1,0 +1,44 @@
+{
+    "version": 2,
+    "name": "uBuild-3D Mr Bot 280",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "uBuild-3D",
+        "manufacturer": "uBuild-3D",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "ubuild-3d_mr_bot_280_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Mr Bot 280" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 275 },
+        "machine_height": { "default_value": 275 },
+        "machine_depth": { "default_value": 275 },
+        "machine_center_is_zero": { "default_value": false },
+        "layer_height_0": { "default_value": 0.1 },
+        "retraction_amount": { "default_value": 2 },
+        "retraction_speed": { "default_value": 50 },
+        "adhesion_type": { "default_value": "skirt" },
+        "machine_nozzle_heat_up_speed": { "default_value": 2 },
+        "machine_nozzle_cool_down_speed": { "default_value": 2 },
+        "machine_head_with_fans_polygon": { "default_value": [[-20,20],[10,10],[10,10],[10,10]] },
+        "gantry_height": { "value": "275" },
+        "machine_max_feedrate_z": { "default_value": 15 },
+        "machine_max_feedrate_e": { "default_value": 60 },
+        "machine_max_acceleration_z": { "default_value": 1000 },
+        "machine_acceleration": { "default_value": 2000 },
+        "machine_max_jerk_xy": { "default_value": 20 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_start_gcode": { "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nM140 S{material_bed_temperature} ; set bed temp\nM104 S{material_print_temperature} ; set extruder temp\nG28 ; home X, Y and Z\nG29 ; probe sequence (for auto-leveling)\nG1 Z15 F600 ; go to Z15 position\nG1 X0 Y-20 F10000 ; go to X0 Y-20 position\nM190 S{material_bed_temperature} ; wait for bed temp\nM109 S{material_print_temperature} ; wait for extruder temp\nG92 E0 ; reset extruder distance position\nG1 E25 F100 ; extrude 25mm of material\nG92 E0 ; reset extruder distance position\nM117 Printing..." },
+        "machine_end_gcode": { "default_value": "M400 ; wait for moves to finish\nG92 Z0 E0 ; reset Z position\nG1 E-2 F9000 ; retract material\nG1 Z2 ; get extruder out of the way\nM104 S0 ; turn off extruder\nG1 Y285 F3000 ; present finished print\nM140 S0 ; turn off bed\nM84 ; disable motors\nM117 Print complete" }
+    }
+}

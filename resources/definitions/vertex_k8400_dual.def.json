@@ -1,0 +1,63 @@
+{
+    "version": 2,
+    "name": "Vertex K8400 Dual",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "manufacturer": "Velleman N.V.",
+        "file_formats": "text/x-gcode",
+        "platform": "Vertex_build_panel.3mf",
+        "platform_offset": [0, -3, 0],
+        "machine_extruder_trains": {
+            "0": "vertex_k8400_dual_1st",
+            "1": "vertex_k8400_dual_2nd"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Vertex K8400 Dual" },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 223.7
+        },
+        "machine_height": {
+            "default_value": 190
+        },
+        "machine_depth": {
+            "default_value": 200
+        },
+        "machine_disallowed_areas": { "default_value": [
+            [[-111.85,100],[111.85,100],[-111.85,80],[111.85,80]]
+        ]},
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-60, -40],
+                [-60, 40],
+                [18, 40],
+                [18, -40]
+            ]
+        },
+        "gantry_height": {
+            "value": "18"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning"
+        }
+    }
+}
