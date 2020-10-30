@@ -66,7 +66,8 @@
         "retraction_hop_enabled" : { "value": "True"},
         "retraction_hop_only_when_collides" : { "value": "True"},
         "retraction_hop" : { "value": "0.5"},
-        "support_infill_angle" : { "value": "45"},
+        "support_infill_angles
+        " : { "value": "45"},
         "adhesion_type": { "default_value": "brim" },
         "brim_width" : { "value": "2"},
 
