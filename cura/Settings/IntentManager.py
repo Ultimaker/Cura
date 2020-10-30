@@ -69,7 +69,6 @@ class IntentManager(QObject):
         categories = set()
         for intent in self.intentMetadatas(definition_id, nozzle_id, material_id):
             categories.add(intent["intent_category"])
-        categories.add("default") #The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
         return list(categories)
 
     def getCurrentAvailableIntents(self) -> List[Tuple[str, str]]:
