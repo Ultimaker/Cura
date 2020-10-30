@@ -291,7 +291,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def supportsPrintJobQueue(self) -> bool:
         """Gets whether the printer supports a queue"""
 
-        return "queue" in self._cluster.capabilities if self._cluster.capabilities else False
+        return "queue" in self._cluster.capabilities if self._cluster.capabilities else True
 
     def setJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the remote print job state."""
