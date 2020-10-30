@@ -34,4 +34,12 @@ intent_translations["evap_support"] = {
     "name": catalog.i18nc("@label", "Evap Support"),
     "description": catalog.i18nc("@text", "This profile is designed to print evaporative support material.")
 }
+intent_translations["solid"] = {
+    "name": catalog.i18nc("@label", "Solid"),
+                "description": catalog.i18nc("@text", "This profile is designed to print solid infill.")
+}
+intent_translations["sparse"] = {
+    "name": catalog.i18nc("@label", "Sparse"),
+    "description": catalog.i18nc("@text", "This profile is designed to print sparse infill.")
+}
 

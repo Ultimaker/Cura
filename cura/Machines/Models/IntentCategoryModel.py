@@ -65,6 +65,14 @@ class IntentCategoryModel(ListModel):
                 "name": catalog.i18nc("@label", "Evap Support"),
                 "description": catalog.i18nc("@text", "This profile is designed to print evaporative support material.")
             }
+            cls._translations["solid"] = {
+                "name": catalog.i18nc("@label", "Solid"),
+                "description": catalog.i18nc("@text", "This profile is designed to print solid infill.")
+            }
+            cls._translations["sparse"] = {
+                "name": catalog.i18nc("@label", "Sparse"),
+                "description": catalog.i18nc("@text", "This profile is designed to print sparse infill.")
+            }
         return cls._translations
 
     def __init__(self, intent_category: str) -> None:
