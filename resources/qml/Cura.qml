@@ -838,17 +838,22 @@ UM.MainWindow
         }
     }
 
-    DiscardOrKeepProfileChangesDialog
+    Component
     {
-        id: discardOrKeepProfileChangesDialog
+        id: discardOrKeepProfileChangesDialogComponent
+        DiscardOrKeepProfileChangesDialog { }
     }
-
+    Loader
+    {
+        id: discardOrKeepProfileChangesDialogLoader
+    }
     Connections
     {
         target: CuraApplication
         onShowDiscardOrKeepProfileChanges:
         {
-            discardOrKeepProfileChangesDialog.show()
+            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.show()
         }
     }
 
