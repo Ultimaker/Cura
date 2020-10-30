@@ -4948,7 +4948,7 @@
                         }
                     }
                 },
-                "support_interface_offset": 
+                "support_interface_offset":
                 {
                     "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",
