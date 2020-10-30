@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import numpy
 from pynest2d import Point, Box, Item, NfpConfig, nest
 from typing import List, TYPE_CHECKING, Optional, Tuple
@@ -50,7 +53,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
             continue
         converted_points = []
         for point in hull_polygon.getPoints():
-            converted_points.append(Point(point[0] * factor, point[1] * factor))
+            converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
         item = Item(converted_points)
         node_items.append(item)
 
@@ -74,7 +77,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
         if clipped_area.getPoints() is not None:  # numpy array has to be explicitly checked against None
             for point in clipped_area.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
+                converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
 
             disallowed_area = Item(converted_points)
             disallowed_area.markAsDisallowedAreaInBin(0)
