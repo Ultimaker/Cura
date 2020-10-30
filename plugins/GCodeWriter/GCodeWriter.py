@@ -141,7 +141,7 @@ class GCodeWriter(MeshWriter):
             container_with_profile.setMetaDataEntry("type", "quality_changes")
             container_with_profile.setMetaDataEntry("quality_type", quality_type)
             if stack.getMetaDataEntry("position") is not None:  # For extruder stacks, the quality changes should include an intent category.
-                container_with_profile.setMetaDataEntry("intent_category", stack.intent.getMetaDataEntry("intent_category", "default"))
+                container_with_profile.setMetaDataEntry("intent_category", stack.intent.getMetaDataEntry("intent_category", "solid"))
             container_with_profile.setDefinition(machine_definition_id_for_quality)
             container_with_profile.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 

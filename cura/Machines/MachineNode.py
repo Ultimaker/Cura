@@ -133,11 +133,11 @@ class MachineNode(ContainerNode):
                 # parent to application seems to work.
                 from cura.CuraApplication import CuraApplication
                 groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"],
-                                                           intent_category = quality_changes.get("intent_category", "default"),
+                                                           intent_category = quality_changes.get("intent_category", "solid"),
                                                            parent = CuraApplication.getInstance())
 
-            elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
-                groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
+            elif groups_by_name[name].intent_category == "solid":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
+                groups_by_name[name].intent_category = quality_changes.get("intent_category", "solid")
 
             if quality_changes.get("position") is not None and quality_changes.get("position") != "None":  # An extruder profile.
                 groups_by_name[name].metadata_per_extruder[int(quality_changes["position"])] = quality_changes

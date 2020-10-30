@@ -334,8 +334,8 @@ class QualityManagementModel(ListModel):
                     "quality_group": quality_group,
                     "quality_type": quality_group.quality_type,
                     "quality_changes_group": None,
-                    "intent_category": "default",
-                    "section_name": catalog.i18nc("@label", "Default"),
+                    "intent_category": "solid",
+                    "section_name": catalog.i18nc("@label", "Solid"),
                     "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)

@@ -310,7 +310,7 @@ class ContainerManager(QObject):
                 quality_changes.setMetaDataEntry("quality_type", current_quality_type)
                 if stack.getMetaDataEntry("position") is not None:  # Extruder stacks.
                     quality_changes.setMetaDataEntry("position", stack.getMetaDataEntry("position"))
-                    quality_changes.setMetaDataEntry("intent_category", stack.quality.getMetaDataEntry("intent_category", "default"))
+                    quality_changes.setMetaDataEntry("intent_category", stack.quality.getMetaDataEntry("intent_category", "solid"))
                 quality_changes.setMetaDataEntry("setting_version", application.SettingVersion)
                 quality_changes.setDefinition(machine_definition_id)
                 container_registry.addContainer(quality_changes)

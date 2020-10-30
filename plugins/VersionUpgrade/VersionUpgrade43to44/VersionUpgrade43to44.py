@@ -56,7 +56,7 @@ class VersionUpgrade43to44(VersionUpgrade):
 
         # Intent profiles were added, so the quality changes should match with no intent (so "default")
         if parser["metadata"].get("type", "") == "quality_changes":
-            parser["metadata"]["intent_category"] = "default"
+            parser["metadata"]["intent_category"] = "solid"
 
         if "values" in parser:
             # Alternate skin rotation should be translated to top/bottom line directions.

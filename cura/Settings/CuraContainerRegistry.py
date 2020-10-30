@@ -687,7 +687,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container.setMetaDataEntry("setting_version", application.SettingVersion)
                     extruder_quality_changes_container.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
                     extruder_quality_changes_container.setMetaDataEntry("quality_type", machine_quality_changes.getMetaDataEntry("quality_type"))
-                    extruder_quality_changes_container.setMetaDataEntry("intent_category", "default")  # Intent categories weren't a thing back then.
+                    extruder_quality_changes_container.setMetaDataEntry("intent_category", "solid")  # Intent categories weren't a thing back then.
                     extruder_quality_changes_container.setDefinition(machine_quality_changes.getDefinition().getId())
 
                     self.addContainer(extruder_quality_changes_container)

@@ -639,7 +639,7 @@ class MachineManager(QObject):
         for extruder in global_container_stack.extruderList:
             if not extruder.isEnabled:
                 continue
-            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            category = extruder.intent.getMetaDataEntry("intent_category", "solid")
             if category != active_intent_category:
                 result.append(str(int(extruder.getMetaDataEntry("position")) + 1))
 
@@ -1103,7 +1103,7 @@ class MachineManager(QObject):
         for metadata in metadatas:
             metadata["quality_type"] = "not_supported"  # This actually changes the metadata of the container since they are stored by reference!
         quality_changes_group.quality_type = "not_supported"
-        quality_changes_group.intent_category = "default"
+        quality_changes_group.intent_category = "solid"
 
     def _setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
         if self._global_container_stack is None:
@@ -1247,13 +1247,13 @@ class MachineManager(QObject):
             return
         Logger.log("d", "Updating intent due to quality change")
 
-        category = "default"
+        category = "solid"
 
         for extruder in global_stack.extruderList:
             if not extruder.isEnabled:
                 continue
-            current_category = extruder.intent.getMetaDataEntry("intent_category", "default")
-            if current_category != "default" and current_category != category:
+            current_category = extruder.intent.getMetaDataEntry("intent_category", "solid")
+            if current_category != "solid" and current_category != category:
                 category = current_category
                 continue
             # It's also possible that the qualityChanges has an opinion about the intent_category.
@@ -1263,8 +1263,8 @@ class MachineManager(QObject):
             # Do not ask empty quality changes for intent category.
             if extruder.qualityChanges.getId() == empty_quality_changes_container.getId():
                 continue
-            current_category = extruder.qualityChanges.getMetaDataEntry("intent_category", "default")
-            if current_category != "default" and current_category != category:
+            current_category = extruder.qualityChanges.getMetaDataEntry("intent_category", "solid")
+            if current_category != "solid" and current_category != category:
                 category = current_category
         self.setIntentByCategory(category)
 
@@ -1570,7 +1570,7 @@ class MachineManager(QObject):
         display_name = global_stack.quality.getName()
 
         intent_category = self.activeIntentCategory
-        if intent_category != "default":
+        if intent_category != "solid":
             intent_display_name = IntentCategoryModel.translation(intent_category,
                                                                   "name",
                                                                   catalog.i18nc("@label", "Unknown"))

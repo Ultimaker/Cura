@@ -145,7 +145,7 @@ class IntentManager(QObject):
         active_extruder_stack = application.getMachineManager().activeStack
         if active_extruder_stack is None:
             return ""
-        return active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
+        return active_extruder_stack.intent.getMetaDataEntry("intent_category", "solid")
 
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
