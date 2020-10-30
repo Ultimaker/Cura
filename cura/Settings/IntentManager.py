@@ -84,7 +84,7 @@ class IntentManager(QObject):
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
-            return [("default", "normal")]
+            return [("solid", "normal")]
             # TODO: We now do this (return a default) if the global stack is missing, but not in the code below,
             #       even though there should always be defaults. The problem then is what to do with the quality_types.
             #       Currently _also_ inconsistent with 'currentAvailableIntentCategories', which _does_ return default.
@@ -120,7 +120,7 @@ class IntentManager(QObject):
 
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
-            return ["default"]
+            return ["solid"]
         current_definition_id = global_stack.definition.getId()
         final_intent_categories = set()  # type: Set[str]
         for extruder_stack in global_stack.extruderList:
