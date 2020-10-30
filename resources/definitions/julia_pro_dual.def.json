@@ -108,9 +108,9 @@
         "prime_tower_brim_enable" : { "value": "True"},
         "brim_replaces_support": {"value": false},
         "support_brim_enable":{"value": true},
-        "bridge_over_support":{"value": true},
+        
         "bridge_wall_min_length":{"value": 0},
-        "bridge_skin_min_area":{"value": 0},
+        
         "bridge_wall_coast":{"value": 0},
         "bridge_wall_speed":{"value": "cool_min_speed if int(support_interface_extruder_nr) == 1 else max(cool_min_speed, speed_wall_0 / 1.5)"},
         "bridge_wall_material_flow" :{"value": "material_flow"},
@@ -126,7 +126,7 @@
         "speed_support_roof" : {"value": "speed_support_interface/2 if int(support_infill_extruder_nr) == 0 and int(support_interface_extruder_nr) == 1  else speed_support_interface" },
         "wall_overhang_angle" : {"value": 40},
         "wall_overhang_speed_factor" : {"value": 60},
-        "wall_overhang_over_support" : {"value": true},
+        
         "support_fan_enable" : {"value": true}
     }
 }
