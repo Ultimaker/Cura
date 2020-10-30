@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Trimaker Nebula",
+        "machine": "trimaker_nebula",
         "position": "0"
     },
 
