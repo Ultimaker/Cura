@@ -19,6 +19,7 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
@@ -108,6 +109,10 @@ class ThreeMFReader(MeshReader):
 
         um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
+        try:
+            um_node.addDecorator(ConvexHullDecorator())
+        except:
+            pass
         um_node.setName(node_name)
         um_node.setId(node_id)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())

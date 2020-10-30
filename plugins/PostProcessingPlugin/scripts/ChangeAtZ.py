@@ -889,7 +889,7 @@ class ChangeAtZProcessor:
 
         # set feedrate percentage
         if "speed" in values:
-            codes.append("M220 S" + str(values["speed"]) + " T1")
+            codes.append("M220 S" + str(values["speed"]) + "")
 
         # set print rate percentage
         if "printspeed" in values:
@@ -1305,7 +1305,7 @@ class ChangeAtZProcessor:
         self.targetLayer = None
         self.targetZ = None
         self.layerHeight = None
-        self.lastValues = {}
+        self.lastValues = {"speed": 100}
         self.linearRetraction = True
         self.insideTargetLayer = False
         self.targetValuesInjected = False

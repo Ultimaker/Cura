@@ -172,7 +172,6 @@
         "toolbox_header_button_text_inactive": [128, 128, 128, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],
-        "monitor_text_primary": [229, 229, 229, 255],
         "monitor_text_disabled": [102, 102, 102, 255],
         "monitor_icon_primary": [229, 229, 229, 255],
         "monitor_icon_accent": [51, 53, 54, 255],

@@ -71,12 +71,7 @@ class ClusterPrinterStatus(BaseModel):
 
         :param controller: - The controller of the model.
         """
-
-        # FIXME
-        # Note that we're using '2' here as extruder count. We have hardcoded this for now to prevent issues where the
-        # amount of extruders coming back from the API is actually lower (which it can be if a printer was just added
-        # to a cluster). This should be fixed in the future, probably also on the cluster API side.
-        model = PrinterOutputModel(controller, 2, firmware_version = self.firmware_version)
+        model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
         self.updateOutputModel(model)
         return model
 
