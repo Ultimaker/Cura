@@ -72,6 +72,7 @@ Component
                 top: printers.bottom
                 topMargin: 48 * screenScaleFactor // TODO: Theme!
             }
+            visible: OutputDevice.supportsPrintJobQueue
         }
 
         PrinterVideoStream
