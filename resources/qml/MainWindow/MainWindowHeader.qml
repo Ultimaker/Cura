@@ -19,20 +19,6 @@ Item
     implicitHeight: UM.Theme.getSize("main_window_header").height
     implicitWidth: UM.Theme.getSize("main_window_header").width
 
-    Image
-    {
-        id: logo
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        anchors.verticalCenter: parent.verticalCenter
-
-        source: UM.Theme.getImage("logo")
-        width: UM.Theme.getSize("logo").width
-        height: UM.Theme.getSize("logo").height
-        fillMode: Image.PreserveAspectFit
-        sourceSize.width: width
-        sourceSize.height: height
-    }
 
     Row
     {
