@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "twotrees_sapphire_plus",
+        "machine": "ideagen3D_sapphire_plus",
         "position": "0"
     },
 
