@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+from typing import Optional, List
 
 from ..BaseModel import BaseModel
 
@@ -11,7 +11,8 @@ class CloudClusterResponse(BaseModel):
 
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
-                 friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", printer_count: int = 1, **kwargs) -> None:
+                 friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", printer_count: int = 1,
+                 capabilities: Optional[List[str]] = None, **kwargs) -> None:
         """Creates a new cluster response object.
 
         :param cluster_id: The secret unique ID, e.g. 'kBEeZWEifXbrXviO8mRYLx45P8k5lHVGs43XKvRniPg='.
@@ -36,6 +37,7 @@ class CloudClusterResponse(BaseModel):
         self.friendly_name = friendly_name
         self.printer_type = printer_type
         self.printer_count = printer_count
+        self.capabilities = capabilities
         super().__init__(**kwargs)
 
     # Validates the model, raising an exception if the model is invalid.
