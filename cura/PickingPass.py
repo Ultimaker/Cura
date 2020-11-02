@@ -44,7 +44,7 @@ class PickingPass(RenderPass):
                 return
 
         width, height = self.getSize()
-        self._gl.glViewport(0, 0, width, height)
+        self._gl.glViewport(0, 0, int(width), int(height))
         self._gl.glClearColor(1.0, 1.0, 1.0, 0.0)
         self._gl.glClear(self._gl.GL_COLOR_BUFFER_BIT | self._gl.GL_DEPTH_BUFFER_BIT)
 
