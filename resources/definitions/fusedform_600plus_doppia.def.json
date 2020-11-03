@@ -4,11 +4,11 @@
     "inherits": "fusedform_base",
     "metadata": {
         "visible": true,
-        "machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"},
         "quality_definition": "fusedform_base"
     },
 
     "overrides": {
+        "machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"},
         "machine_name": { "default_value": "FF600plus Doppia" },
         "machine_width": { "default_value": 600 },
         "machine_depth": { "default_value": 600 },
