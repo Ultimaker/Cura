@@ -33,47 +33,6 @@ UM.Dialog
 
         color: UM.Theme.getColor("main_window_header_background")
 
-        Image
-        {
-            id: logo
-            width: (base.minimumWidth * 0.85) | 0
-            height: (width * (UM.Theme.getSize("logo").height / UM.Theme.getSize("logo").width)) | 0
-            source: UM.Theme.getImage("logo")
-            sourceSize.width: width
-            sourceSize.height: height
-            fillMode: Image.PreserveAspectFit
-
-            anchors.top: parent.top
-            anchors.topMargin: parent.topPadding
-            anchors.horizontalCenter: parent.horizontalCenter
-
-            UM.I18nCatalog{id: catalog; name: "cura"}
-        }
-
-        Label
-        {
-            id: version
-
-            text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
-            font: UM.Theme.getFont("large_bold")
-            color: UM.Theme.getColor("button_text")
-            anchors.right : logo.right
-            anchors.top: logo.bottom
-            anchors.topMargin: (UM.Theme.getSize("default_margin").height / 2) | 0
-        }
-    }
-
-    Label
-    {
-        id: description
-        width: parent.width
-
-        //: About dialog application description
-        text: catalog.i18nc("@label","End-to-end solution for fused filament 3D printing.")
-        font: UM.Theme.getFont("system")
-        wrapMode: Text.WordWrap
-        anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
     }
 
     Label
@@ -82,7 +41,7 @@ UM.Dialog
         width: parent.width
 
         //: About dialog application author note
-        text: catalog.i18nc("@info:credit","Cura is developed by Ultimaker B.V. in cooperation with the community.\nCura proudly uses the following open source projects:")
+        text: catalog.i18nc("@info:credit","Rapidia Cura is based on Ultimaker Cura and uses the following open source projects:")
         font: UM.Theme.getFont("system")
         wrapMode: Text.WordWrap
         anchors.top: description.bottom
