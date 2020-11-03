@@ -6,7 +6,7 @@
         "author": "Juan Blanco",
         "manufacturer": "Fused Form",
         "visible": false,
-        "machine_extruder_trains":{"0": "fusedform_base_extruder_0"},
+        "machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"},
 	"preferred_material": "generic_pla",
         "exclude_materials": [ "structur3d_dap100silicone" ],
 	"has_machine_quality": true,

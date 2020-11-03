@@ -8,8 +8,7 @@
     },
 
     "overrides": {
-        "metadata": {"machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"} },
-        "machine_name": { "default_value": "FF600 Doppia" },
+	"machine_name": { "default_value": "FF600 Doppia" },
         "machine_width": { "default_value": 500 },
         "machine_depth": { "default_value": 500 },
         "machine_height": { "default_value": 600 },

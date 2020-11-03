@@ -8,7 +8,6 @@
     },
 
     "overrides": {
-        "metadata": {"machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"} },
         "machine_name": { "default_value": "FFSTD Doppia" },
         "machine_width": { "default_value": 220 },
         "machine_depth": { "default_value": 200 },
