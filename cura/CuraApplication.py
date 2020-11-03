@@ -1901,9 +1901,10 @@ class CuraApplication(QtApplication):
 
             if select_models_on_load:
                 Selection.add(node)
-
-        arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
-
+        try:
+            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+        except:
+            Logger.logException("e", "Failed to arrange the models")
         self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):
