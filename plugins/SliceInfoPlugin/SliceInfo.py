@@ -126,7 +126,7 @@ class SliceInfo(QObject, Extension):
             data["cura_version"] = self._application.getVersion()
             data["cura_build_type"] = ApplicationMetadata.CuraBuildType
             org_id = user_profile.get("organization_id", None) if user_profile else None
-            data["organization_id"] = org_id if len(org_id) > 0 else None
+            data["organization_id"] = org_id if org_id else None
             data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
 
             active_mode = self._application.getPreferences().getValue("cura/active_mode")
