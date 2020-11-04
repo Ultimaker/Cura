@@ -387,7 +387,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         result = convex_hull
         if scale_factor != 1.0 and not self.getNode().callDecoration("isGroup"):
             center = None
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            if self._global_stack.isInOneAtATimeMode():
                 # Find the root node that's placed in the scene; the root of the mesh group.
                 ancestor = self.getNode()
                 while ancestor.getParent() != self._root:
@@ -491,11 +491,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return False
         return self._global_stack is not None \
-            and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
+            and self._global_stack.isInOneAtATimeMode() \
             and not self.hasGroupAsParent(self._node)
 
     _affected_settings = [
-        "adhesion_type", "raft_margin", "print_sequence",
+        "adhesion_type", "raft_margin", "print_sequence", "extruders_enabled_count",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
     _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage"}

@@ -301,6 +301,16 @@ class GlobalStack(CuraContainerStack):
                 return False
         return True
 
+    def isInOneAtATimeMode(self) -> bool:
+        """
+        Gets whether the one-at-a-time mode is activated, provided that there is only one active extruder
+        """
+        one_at_a_time_mode_is_active = self.getProperty("print_sequence", "value") == "one_at_a_time"
+        extruders_enabled_count = self.definitionChanges.getProperty("extruders_enabled_count", "value")
+        if extruders_enabled_count:
+            one_at_a_time_mode_is_active &= extruders_enabled_count == 1
+        return one_at_a_time_mode_is_active
+
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 

@@ -162,7 +162,8 @@ class BuildVolume(SceneNode):
             self.rebuild()
 
             self._scene_objects = new_scene_objects
-            self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
+            self._onSettingPropertyChanged("print_sequence", "value")
+            self._onSettingPropertyChanged("extruders_enabled_count", "value")  # Create fake event, so right settings are triggered.
 
     def _updateNodeListeners(self, node: SceneNode):
         """Updates the listeners that listen for changes in per-mesh stacks.
@@ -627,7 +628,7 @@ class BuildVolume(SceneNode):
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+            if self._global_container_stack.isInOneAtATimeMode() and len(self._scene_objects) > 1:
                 self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                 if self._height < machine_height:
                     self._build_volume_message.show()
@@ -667,9 +668,9 @@ class BuildVolume(SceneNode):
         update_extra_z_clearance = True
 
         for setting_key in self._changed_settings_since_last_rebuild:
-            if setting_key == "print_sequence":
+            if setting_key == "print_sequence" or setting_key == "extruders_enabled_count":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
-                if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+                if self._application.getGlobalContainerStack().isInOneAtATimeMode() and len(self._scene_objects) > 1:
                     self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
                     if self._height < machine_height:
                         self._build_volume_message.show()
@@ -1151,7 +1152,7 @@ class BuildVolume(SceneNode):
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
-        if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+        if container_stack.isInOneAtATimeMode():
             return 0.1
 
         bed_adhesion_size = self._calculateBedAdhesionSize(used_extruders)

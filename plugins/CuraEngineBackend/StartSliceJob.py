@@ -201,7 +201,7 @@ class StartSliceJob(Job):
 
         # Get the objects in their groups to print.
         object_groups = []
-        if stack.getProperty("print_sequence", "value") == "one_at_a_time" and stack.getProperty("print_sequence", "enabled"):
+        if stack.isInOneAtATimeMode():
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
