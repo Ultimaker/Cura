@@ -28,7 +28,7 @@
         "expand_skins_expand_distance":{"value":0.8},
         "fill_outline_gaps":{"default_value":false},
         "infill_sparse_density":{"value":15},
-        "meshfix_maximum_resolution":{"value":0.05},
+        "meshfix_maximum_resolution":{"value":0.25},
         "optimize_wall_printing_order":{"value":true},
         "retract_at_layer_change":{"value":false},
         "retraction_amount":{"value":4.5},

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.7\n"
+"Project-Id-Version: Cura 4.8\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-07-31 12:48+0200\n"
-"PO-Revision-Date: 2020-04-15 17:46+0200\n"
+"POT-Creation-Date: 2020-10-19 13:15+0200\n"
+"PO-Revision-Date: 2020-08-21 13:40+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
 "Language: ja_JP\n"
@@ -19,8 +19,8 @@ msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:110
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:351
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1566
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:361
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1581
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
 msgctxt "@label"
@@ -43,13 +43,14 @@ msgid "Not overridden"
 msgstr "上書きできません"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/GlobalStacksModel.py:76
-msgctxt "@label ({} is object name)"
-msgid "Are you sure you wish to remove {}? This cannot be undone!"
+#, python-brace-format
+msgctxt "@label {0} is the name of a printer that's about to be deleted."
+msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:42
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:11
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:332
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:338
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
@@ -101,18 +102,18 @@ msgctxt "@label"
 msgid "Custom"
 msgstr "カスタム"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:370
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
 msgctxt "@label"
 msgid "Custom profiles"
 msgstr "カスタムプロファイル"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:405
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:418
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "すべてのサポートのタイプ ({0})"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:406
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:419
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "全てのファイル"
@@ -123,26 +124,26 @@ msgid "Login failed"
 msgstr "ログインに失敗しました"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:31
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:24
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "造形物のために新しい位置を探索中"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:35
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:28
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "位置確認"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:105
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:111
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:41
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:76
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "全ての造形物の造形サイズに対し、適切な位置が確認できません"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:106
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:42
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "位置を確保できません"
@@ -280,98 +281,97 @@ msgctxt "@label OpenGL version"
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:261
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:264
 msgctxt "@label"
 msgid "Not yet initialized<br/>"
 msgstr "初期化されていません<br/>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:264
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:267
 #, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGLバージョン: {version}</li>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:265
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:268
 #, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGLベンダー: {vendor}</li>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:266
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:269
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGLレンダラー: {renderer}</li>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:300
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:303
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "エラー・トレースバック"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:386
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:389
 msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "ログ"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:414
+#: /home/trin/Gedeeld/Projects/Cura/cura/CrashHandler.py:417
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "レポート送信"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:520
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:521
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "プリンターを読み込み中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:527
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:528
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
 msgstr "プレファレンスをセットアップ中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:656
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:657
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "アクティブなプリンターを初期化中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:787
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:788
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "プリンターマネージャーを初期化中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:801
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:802
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "ビルドボリュームを初期化中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:867
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:870
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "シーンをセットアップ中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:903
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:906
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "インターフェイスを読み込み中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:908
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:911
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "エンジンを初期化中..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1218
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1221
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1769
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1777
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一度に一つのG-codeしか読み取れません。{0}の取り込みをスキップしました。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1770
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1873
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1778
 #: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:188
 #: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:242
 #: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
@@ -380,13 +380,13 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "警告"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1779
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1787
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-codeを読み込み中は他のファイルを開くことができません。{0}の取り込みをスキップしました。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1780
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1788
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:146
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:153
 #: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:139
@@ -394,27 +394,22 @@ msgctxt "@info:title"
 msgid "Error"
 msgstr "エラー"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1872
-msgctxt "@info:status"
-msgid "The selected model was too small to load."
-msgstr "選択したモデルは読み込むのに小さすぎます。"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:31
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:26
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "造形データを増やす、配置する"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:32
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:28
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "造形データを配置"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:111
+#: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:77
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "造形データを配置"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:89
+#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:90
 msgctxt "@message"
 msgid "Could not read response."
 msgstr "応答を読み取れません。"
@@ -437,28 +432,28 @@ msgstr "ログイン時に予期しないエラーが発生しました。やり
 #: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:187
 msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
-msgstr ""
+msgstr "新しいサインインプロセスを開始できません。別のサインインの試行がアクティブなままになっていないか確認します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:242
 msgctxt "@info"
 msgid "Unable to reach the Ultimaker account server."
 msgstr "Ultimaker アカウントサーバーに到達できません。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:203
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:205
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "すでに存在するファイルです"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:204
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:206
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:133
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "<filename>{0}</filename> は既に存在します。ファイルを上書きしますか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:450
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:453
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:452
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/ContainerManager.py:455
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "無効なファイルのURL:"
@@ -517,49 +512,60 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "このプロファイル<filename>{0}</filename>には、正しくないデータが含まれているため、インポートできません。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:334
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:338
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename>からプロファイルの取り込みに失敗しました:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:337
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:342
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Successfully imported profile {0}"
-msgstr "プロファイル {0}の取り込み完了"
+msgid "Successfully imported profile {0}."
+msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:340
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:349
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "ファイル{0}には、正しいプロファイルが含まれていません。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:343
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:352
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "プロファイル{0}は不特定なファイルまたは破損があります。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:410
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:423
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "カスタムプロファイル"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:426
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:439
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "プロファイルはクオリティータイプが不足しています。"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:440
-#, python-brace-format
-msgctxt "@info:status"
-msgid "Could not find a quality type {0} for the current configuration."
-msgstr "進行中のプリント構成にあったクオリティータイプ{0}が見つかりませんでした。"
-
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:443
 msgctxt "@info:status"
+msgid "Global stack is missing."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:449
+msgctxt "@info:status"
 msgid "Unable to add the profile."
+msgstr "プロファイルを追加できません。"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:463
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:468
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:36
@@ -572,23 +578,23 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:703
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:712
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:216
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "ノズル"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:851
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:860
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "現在利用可能な次のエクストルーダーに合わせて設定が変更されました:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:853
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:862
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "設定が更新されました"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1436
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1447
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "エクストルーダーを無効にしました"
@@ -604,10 +610,10 @@ msgstr "追加"
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/WelcomePagesModel.py:263
 msgctxt "@action:button"
 msgid "Finish"
-msgstr ""
+msgstr "終わる"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:406
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:441
 #: /home/trin/Gedeeld/Projects/Cura/plugins/ImageReader/ConfigUI.qml:234
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
@@ -696,7 +702,7 @@ msgstr "次"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:171
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:173
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:127
 msgctxt "@action:button"
 msgid "Close"
@@ -721,40 +727,40 @@ msgstr ""
 "<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:521
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:535
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "プロジェクトファイル <filename>{0}</filename> に不明なマシンタイプ <message>{1}</message> があります。マシンをインポートできません。代わりにモデルをインポートします。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:524
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:538
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "プロジェクトファイルを開く"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:622
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:634
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
-msgstr ""
+msgstr "プロジェクトファイル<filename>{0}</filename>が突然アクセスできなくなりました：<message>{1}</message>。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:623
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635
 msgctxt "@info:title"
 msgid "Can't Open Project File"
-msgstr ""
+msgstr "プロジェクトファイルを開けません"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:668
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:686
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
-msgstr ""
+msgstr "プロジェクトファイル<filename>{0}</filename>はこのバージョンのUltimaker Curaでは認識できないプロファイルを使用して作成されています。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:186
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:203
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "推奨"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:188
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:205
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "カスタム"
@@ -775,6 +781,11 @@ msgstr "3MFリーダーのプラグインが破損しています。"
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "この作業スペースに書き込む権限がありません。"
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:96
+msgctxt "@error:zip"
+msgid "The operating system does not allow saving a project file to this location or with this file name."
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:185
 msgctxt "@error:zip"
@@ -919,7 +930,7 @@ msgstr "必要なアップデートの情報にアクセスできません。"
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
-msgstr ""
+msgstr "お使いの{machine_name}について新機能またはバグ修正が利用できる可能性があります。まだ最新のバージョンでない場合は、プリンターのファームウェアをバージョン{latest_version}に更新することを推奨します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
 #, python-format
@@ -1183,12 +1194,12 @@ msgstr "レイヤービュー"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:70
 msgctxt "@info:status"
 msgid "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."
-msgstr ""
+msgstr "モデルはマニホールドではありません。ハイライトされたエリアは、欠けている表面または無関係な表面を示します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:72
 msgctxt "@info:title"
 msgid "Model errors"
-msgstr ""
+msgstr "モデルエラー"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/__init__.py:12
 msgctxt "@item:inmenu"
@@ -1296,7 +1307,7 @@ msgstr "Ultimakerフォーマットパッケージ"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UFPWriter/UFPWriter.py:146
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
-msgstr ""
+msgstr "UFPファイルに書き込めません："
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:24
 msgctxt "@action"
@@ -1308,90 +1319,123 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr "アップグレードを選択する"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:148
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:152
 msgctxt "@action:button"
 msgid "Print via cloud"
-msgstr ""
+msgstr "クラウドからプリントする"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:149
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:153
 msgctxt "@properties:tooltip"
 msgid "Print via cloud"
-msgstr ""
+msgstr "クラウドからプリントする"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:150
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:154
 msgctxt "@info:status"
 msgid "Connected via cloud"
+msgstr "クラウド経由で接続"
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:264
+#, python-brace-format
+msgctxt "@error:send"
+msgid "Unknown error code when uploading print job: {0}"
 msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:226
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:227
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
-msgstr[0] ""
+msgstr[0] "Ultimakerアカウントから新しいプリンターが検出されました"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
+#, python-brace-format
+msgctxt "info:status Filled in with printer name and printer model."
+msgid "Adding printer {name} ({model}) from your account"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:255
+#, python-brace-format
+msgctxt "info:{0} gets replaced by a number of printers"
+msgid "... and {0} other"
+msgid_plural "... and {0} others"
+msgstr[0] ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
-msgid "Adding printer {} ({}) from your account"
+msgid "Printers added from Digital Factory:"
 msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:258
-msgctxt "info:hidden list items"
-msgid "<li>... and {} others</li>"
-msgstr ""
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:265
-msgctxt "info:status"
-msgid "Printers added from Digital Factory:<ul>{}</ul>"
-msgstr ""
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:316
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
-msgstr[0] ""
+msgstr[0] "一部のプリンターではクラウド接続は利用できません"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:332
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
-msgstr[0] ""
+msgstr[0] "これらのプリンターはDigital Factoryとリンクされていません："
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:338
-msgctxt "info:status"
-msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
+msgctxt "info:name"
+msgid "Ultimaker Digital Factory"
 msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:344
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:333
+#, python-brace-format
+msgctxt "info:status"
+msgid "To establish a connection, please visit the {website_link}"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:337
 msgctxt "@action:button"
 msgid "Keep printer configurations"
-msgstr ""
+msgstr "プリンターの構成を維持"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:349
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342
 msgctxt "@action:button"
 msgid "Remove printers"
+msgstr "プリンターを取り除く"
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:421
+#, python-brace-format
+msgctxt "@message {printer_name} is replaced with the name of the printer"
+msgid "{printer_name} will be removed until the next account sync."
 msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:428
-msgctxt "@label ({} is printer name)"
-msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
+#, python-brace-format
+msgctxt "@message {printer_name} is replaced with the name of the printer"
+msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:423
+#, python-brace-format
+msgctxt "@message {printer_name} is replaced with the name of the printer"
+msgid "Are you sure you want to remove {printer_name} temporarily?"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:460
 msgctxt "@title:window"
 msgid "Remove printers?"
-msgstr ""
+msgstr "プリンターを削除しますか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:469
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:463
+#, python-brace-format
 msgctxt "@label"
 msgid ""
-"You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
+"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr ""
+msgid_plural ""
+"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr[0] ""
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:471
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
 msgid ""
-"You are about to remove all printers from Cura. This action cannot be undone. \n"
+"You are about to remove all printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
 msgstr ""
 
@@ -1403,7 +1447,7 @@ msgstr "Ultimaker のアカウントを使用して、どこからでも印刷�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:33
 msgctxt "@info:status Ultimaker Cloud should not be translated."
 msgid "Connect to Ultimaker Digital Factory"
-msgstr ""
+msgstr "Ultimaker Digital Factoryに接続"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:36
 msgctxt "@action"
@@ -1477,6 +1521,16 @@ msgctxt "@info:status"
 msgid "Uploading print job to printer."
 msgstr "プリントジョブをプリンターにアップロードしています。"
 
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:16
+msgctxt "@info:status"
+msgid "Print job queue is full. The printer can't accept a new job."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:17
+msgctxt "@info:title"
+msgid "Queue Full"
+msgstr ""
+
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:15
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
@@ -1537,17 +1591,17 @@ msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "USBにて接続する"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:106
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:110
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "USBプリントを実行しています。Cura を閉じるとこのプリントも停止します。実行しますか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:134
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
 msgstr "現在印刷中です。Curaは、前の印刷が完了するまでUSBを介した次の印刷を開始できません。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:134
 msgctxt "@message"
 msgid "Print in Progress"
 msgstr "現在印刷中"
@@ -1572,96 +1626,85 @@ msgctxt "@title:window"
 msgid "Open Project"
 msgstr "プロジェクトを開く"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:61
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
 msgstr "既存を更新する"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:62
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "新しいものを作成する"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:74
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "サマリーCuraプロジェクト"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:92
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:96
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "プリンターの設定"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:108
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:112
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "このプリンターの問題をどのように解決すればいいか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:115
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:124
-msgctxt "@action:ComboBox option"
-msgid "Update"
-msgstr "アップデート"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:116
-msgctxt "@action:ComboBox option"
-msgid "Create new"
-msgstr "新しいものを作成する"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:143
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:165
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
 msgctxt "@action:label"
 msgid "Type"
 msgstr "タイプ"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:159
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:181
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "プリンターグループ"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:180
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:203
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "プロファイル設定"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:196
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:219
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "このプロファイルの問題をどのように解決すればいいか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:323
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:239
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:349
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:242
 msgctxt "@action:label"
 msgid "Name"
 msgstr "ネーム"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:255
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:246
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:271
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "プロファイル内にない"
 
 # Can’t edit the Japanese text
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:251
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:276
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
 msgstr[0] "%1個の設定を上書き"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:262
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:287
 msgctxt "@action:label"
 msgid "Derivative from"
 msgstr "次から引き出す"
@@ -1669,48 +1712,48 @@ msgstr "次から引き出す"
 # can’t inset the japanese text
 # %1: print quality profile name
 # %2: number of overridden ssettings
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:267
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:292
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
 msgstr[0] "%2の%1個の設定を上書き"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:283
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:309
 msgctxt "@action:label"
 msgid "Material settings"
 msgstr "フィラメント設定"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:299
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:325
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the material be resolved?"
 msgstr "このフィラメントの問題をどのように解決すればいいか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:342
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:369
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "視野設定"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:351
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:378
 msgctxt "@action:label"
 msgid "Mode"
 msgstr "モード"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:367
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:394
 msgctxt "@action:label"
 msgid "Visible settings:"
 msgstr "ビジブル設定:"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:372
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:399
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "%2のうち%1"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:398
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:425
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
 msgstr "プロジェクトを読み込むとビルドプレート上のすべてのモデルがクリアされます。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:416
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:453
 msgctxt "@action:button"
 msgid "Open"
 msgstr "開く"
@@ -2137,17 +2180,12 @@ msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "エクストルーダーの数"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:339
-msgctxt "@label"
-msgid "Shared Heater"
-msgstr "共有ヒーター"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:365
+#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:374
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "G-Codeの開始"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:376
+#: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:385
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-codeの終了"
@@ -2169,7 +2207,7 @@ msgctxt "@info"
 msgid "Please connect your printer to the network."
 msgstr "プリンターをネットワークに接続してください。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:156
+#: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:155
 msgctxt "@label link to technical assistance"
 msgid "View user manuals online"
 msgstr "ユーザーマニュアルをオンラインで見る"
@@ -2450,7 +2488,7 @@ msgstr "更新済み"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:27
 msgctxt "@label"
 msgid "Premium"
-msgstr ""
+msgstr "プレミアム"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
@@ -2572,12 +2610,12 @@ msgctxt "@label"
 msgid "You need to accept the license to install the package"
 msgstr "パッケージをインストールするにはライセンスに同意する必要があります"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:93
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:95
 msgctxt "@label"
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:100
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxAuthorPage.qml:102
 msgctxt "@label"
 msgid "Email"
 msgstr "電子メール"
@@ -2626,34 +2664,34 @@ msgstr "Curaパッケージデータベースに接続できません。接続�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:33
 msgctxt "@title:tab"
 msgid "Installed plugins"
-msgstr ""
+msgstr "インストールされたプラグイン"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:72
 msgctxt "@info"
 msgid "No plugin has been installed."
-msgstr ""
+msgstr "プラグインはインストールされていません。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:86
 msgctxt "@title:tab"
 msgid "Installed materials"
-msgstr ""
+msgstr "インストールされた材料"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:125
 msgctxt "@info"
 msgid "No material has been installed."
-msgstr ""
+msgstr "材料はインストールされていません。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:139
 msgctxt "@title:tab"
 msgid "Bundled plugins"
-msgstr ""
+msgstr "バンドルされたプラグイン"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:184
 msgctxt "@title:tab"
 msgid "Bundled materials"
-msgstr ""
+msgstr "バンドルされた材料"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxLoadingPage.qml:16
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxLoadingPage.qml:17
 msgctxt "@info"
 msgid "Fetching packages..."
 msgstr "パッケージ取得中..."
@@ -2661,7 +2699,7 @@ msgstr "パッケージ取得中..."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:22
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-msgstr ""
+msgstr "検証済みのUltimaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/Toolbox.qml:19
 msgctxt "@title"
@@ -2848,7 +2886,7 @@ msgid "Override will use the specified settings with the existing printer config
 msgstr "上書きは、既存のプリンタ構成で指定された設定を使用します。これにより、印刷が失敗する場合があります。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:192
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
 msgctxt "@label"
 msgid "Glass"
@@ -2933,22 +2971,17 @@ msgctxt "@window:title"
 msgid "Abort print"
 msgstr "プリント中止"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:155
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:154
 msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "プリンター管理"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:256
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:514
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:519
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "キューをリモートで管理するには、プリンターのファームウェアを更新してください。"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:289
-msgctxt "@info"
-msgid "The webcam is not available because you are monitoring a cloud printer."
-msgstr "クラウドプリンタをモニタリングしている場合は、ウェブカムを利用できません。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
@@ -2970,22 +3003,27 @@ msgctxt "@label:status"
 msgid "Idle"
 msgstr "アイドル"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:401
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:365
+msgctxt "@label:status"
+msgid "Printing"
+msgstr "プリント中"
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:406
 msgctxt "@label"
 msgid "Untitled"
 msgstr "無題"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:422
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:427
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "匿名"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:449
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:454
 msgctxt "@label:status"
 msgid "Requires configuration changes"
 msgstr "構成の変更が必要です"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:487
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:492
 msgctxt "@action:button"
 msgid "Details"
 msgstr "詳細"
@@ -3053,27 +3091,27 @@ msgctxt "@label"
 msgid "Queued"
 msgstr "順番を待つ"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:66
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
 msgstr "ブラウザで管理する"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:99
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
 msgstr "キューに印刷ジョブがありません。追加するには、スライスしてジョブを送信します。"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:115
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:110
 msgctxt "@label"
 msgid "Print jobs"
 msgstr "プリントジョブ"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:131
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:122
 msgctxt "@label"
 msgid "Total print time"
 msgstr "合計印刷時間"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:147
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:134
 msgctxt "@label"
 msgid "Waiting for"
 msgstr "待ち時間"
@@ -3123,47 +3161,42 @@ msgstr "アカウントを作成する"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:28
 msgctxt "@label"
 msgid "Checking..."
-msgstr ""
+msgstr "確認しています..."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:35
 msgctxt "@label"
 msgid "Account synced"
-msgstr ""
+msgstr "アカウント同期"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:42
 msgctxt "@label"
 msgid "Something went wrong..."
-msgstr ""
+msgstr "問題が発生しました..."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:96
 msgctxt "@button"
 msgid "Install pending updates"
-msgstr ""
+msgstr "保留中の更新をインストール"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/SyncState.qml:118
 msgctxt "@button"
 msgid "Check for account updates"
-msgstr ""
+msgstr "アカウントの更新を確認"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:81
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
-msgstr ""
-
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:99
-msgctxt "@button"
-msgid "Ultimaker Digital Factory"
-msgstr ""
+msgstr "最終更新：%1"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:109
 msgctxt "@button"
 msgid "Ultimaker Account"
-msgstr ""
+msgstr "Ultimakerアカウント"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:125
 msgctxt "@button"
 msgid "Sign Out"
-msgstr ""
+msgstr "サインアウト"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/OutputProcessWidget.qml:59
 msgctxt "@label"
@@ -3657,30 +3690,40 @@ msgstr "ポリゴンクリッピングライブラリー"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
 msgctxt "@Label"
 msgid "Static type checker for Python"
-msgstr ""
+msgstr "Python用の静的型チェッカー"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@Label"
 msgid "Root Certificates for validating SSL trustworthiness"
-msgstr ""
+msgstr "SSLの信頼性を検証するためのルート証明書"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:158
 msgctxt "@Label"
 msgid "Python Error tracking library"
+msgstr "Pythonエラー追跡ライブラリー"
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:159
+msgctxt "@label"
+msgid "Polygon packing library, developed by Prusa Research"
 msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 msgctxt "@label"
+msgid "Python bindings for libnest2d"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
+msgctxt "@label"
 msgid "Font"
 msgstr "フォント"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:161
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
 msgid "SVG icons"
 msgstr "SVGアイコン"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:164
 msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux 分散アプリケーションの開発"
@@ -3720,7 +3763,7 @@ msgctxt "@text:window, %1 is a profile name"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to Keep these changed settings after switching profiles?\n"
-"Alternatively, you can Discard the changes to load the defaults from '%1'."
+"Alternatively, you can discard the changes to load the defaults from '%1'."
 msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:111
@@ -3731,7 +3774,7 @@ msgstr "プロファイル設定"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:125
 msgctxt "@title:column"
 msgid "Current changes"
-msgstr ""
+msgstr "現在の変更"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:747
@@ -3752,12 +3795,12 @@ msgstr "キープし、再度確認しない"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:197
 msgctxt "@action:button"
 msgid "Discard changes"
-msgstr ""
+msgstr "変更を破棄"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:210
 msgctxt "@action:button"
 msgid "Keep changes"
-msgstr ""
+msgstr "変更を維持"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@text:window"
@@ -3914,12 +3957,12 @@ msgctxt "@label"
 msgid "Enabled"
 msgstr "有効"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:251
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:267
 msgctxt "@label"
 msgid "Material"
 msgstr "フィラメント"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:378
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:394
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
 msgstr "この材料の組み合わせの接着に接着材を使用する。"
@@ -3946,12 +3989,12 @@ msgstr "コピーの数"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/FileMenu.qml:33
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
-msgstr ""
+msgstr "プロジェクトを保存... (&S)"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/FileMenu.qml:54
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
-msgstr "&エクスポート..."
+msgstr "エクスポート... (&E)"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/FileMenu.qml:65
 msgctxt "@action:inmenu menubar:file"
@@ -4103,28 +4146,28 @@ msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "本当にプリントを中止してもいいですか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:102
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:114
 msgctxt "@label"
 msgid "Is printed as support."
-msgstr ""
+msgstr "サポートとしてプリントされます。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:105
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:117
 msgctxt "@label"
 msgid "Other models overlapping with this model are modified."
-msgstr ""
+msgstr "このモデルに重なる他のモデルは修正されます。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:108
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:120
 msgctxt "@label"
 msgid "Infill overlapping with this model is modified."
-msgstr ""
+msgstr "このモデルとのインフィル交差は修正されます。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:111
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:123
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
-msgstr ""
+msgstr "このモデルとの重なりはサポートされません。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:118
-msgctxt "@label"
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:130
+msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
 msgstr[0] ""
@@ -4182,12 +4225,12 @@ msgstr "ディスプレイオーバーハング"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:351
 msgctxt "@info:tooltip"
 msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
-msgstr ""
+msgstr "モデルの欠けている部分または不要な表面部分を、警告マークを使用してハイライトします。ツールパスは意図したジオメトリの欠けている部分になることが多くあります。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:360
 msgctxt "@option:check"
 msgid "Display model errors"
-msgstr ""
+msgstr "モデルエラーを表示"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:368
 msgctxt "@info:tooltip"
@@ -4300,12 +4343,12 @@ msgstr "ファイルを開くまた保存"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:570
 msgctxt "@info:tooltip"
 msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
-msgstr ""
+msgstr "デスクトップまたは外部アプリケーションから開いたファイルをCuraの同じインスタンスで開く必要がありますか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:575
 msgctxt "@option:check"
 msgid "Use a single instance of Cura"
-msgstr ""
+msgstr "Curaの単一インスタンスを使用"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:585
 msgctxt "@info:tooltip"
@@ -4664,7 +4707,7 @@ msgid "Update profile with current settings/overrides"
 msgstr "プロファイルを現在のセッティング"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:561
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:258
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "今の変更を破棄する"
@@ -4839,29 +4882,29 @@ msgstr "このプリンターはつながっていません。"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:47
 msgctxt "@status"
 msgid "The cloud printer is offline. Please check if the printer is turned on and connected to the internet."
-msgstr ""
+msgstr "クラウドプリンターがオフラインです。プリンターの電源が入っている状態で、インターネットに接続されているかどうかを確認してください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:51
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
-msgstr ""
+msgstr "このプリンターはお使いのアカウントにリンクされていません。Ultimaker Digital Factoryにアクセスして接続を確立してください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer."
-msgstr ""
+msgstr "クラウド接続は現在利用できません。サインインしてクラウドプリンターに接続してください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:60
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please check your internet connection."
-msgstr ""
+msgstr "クラウド接続は現在利用できません。インターネット接続を確認してください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:238
 msgctxt "@button"
 msgid "Add printer"
 msgstr "プリンターの追加"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:254
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:255
 msgctxt "@button"
 msgid "Manage printers"
 msgstr "プリンター管理"
@@ -4911,7 +4954,7 @@ msgstr ""
 "いくらかの設定プロファイルにある値とことなる場合無効にします。\n"
 "プロファイルマネージャーをクリックして開いてください。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "カスタムプロファイル"
@@ -5105,52 +5148,52 @@ msgstr "タイプ表示"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:47
 msgctxt "@label"
 msgid "Add a Cloud printer"
-msgstr ""
+msgstr "クラウドプリンターを追加"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:73
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:74
 msgctxt "@label"
 msgid "Waiting for Cloud response"
-msgstr ""
+msgstr "クラウドの応答を待機しています"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:84
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:86
 msgctxt "@label"
 msgid "No printers found in your account?"
-msgstr ""
+msgstr "アカウントにプリンターが見つかりませんか？"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:118
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:121
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
-msgstr ""
+msgstr "アカウントの以下のプリンターがCuraに追加されました。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:200
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:204
 msgctxt "@button"
 msgid "Add printer manually"
-msgstr ""
+msgstr "プリンタを手動で追加する"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:214
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:218
 msgctxt "@button"
 msgid "Finish"
 msgstr "終わる"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:231
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:230
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "製造元"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:245
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:247
 msgctxt "@label"
 msgid "Profile author"
-msgstr ""
+msgstr "プロファイル作成者"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:260
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:265
 msgctxt "@label"
 msgid "Printer name"
 msgstr "プリンター名"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:269
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:274
 msgctxt "@text"
-msgid "Please give your printer a name"
-msgstr "プリンター名を入力してください"
+msgid "Please name your printer"
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:24
 msgctxt "@label"
@@ -5162,7 +5205,7 @@ msgctxt "@label"
 msgid "Add a networked printer"
 msgstr "ネットワークプリンターの追加"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:95
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:90
 msgctxt "@label"
 msgid "Add a non-networked printer"
 msgstr "非ネットワークプリンターの追加"
@@ -5172,22 +5215,22 @@ msgctxt "@label"
 msgid "There is no printer found over your network."
 msgstr "ネットワークにプリンターはありません。"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:181
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:182
 msgctxt "@label"
 msgid "Refresh"
 msgstr "更新"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:192
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:193
 msgctxt "@label"
 msgid "Add printer by IP"
 msgstr "IP でプリンターを追加"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:203
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:204
 msgctxt "@label"
 msgid "Add cloud printer"
-msgstr ""
+msgstr "クラウドプリンターを追加"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:239
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:240
 msgctxt "@label"
 msgid "Troubleshooting"
 msgstr "トラブルシューティング"
@@ -5200,7 +5243,7 @@ msgstr "IP アドレスでプリンターを追加"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:133
 msgctxt "@text"
 msgid "Enter your printer's IP address."
-msgstr ""
+msgstr "プリンターのIPアドレスを入力します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:158
 msgctxt "@button"
@@ -5266,7 +5309,7 @@ msgstr "- Ultimakerプリンターのリモートワークフローを活用し�
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:157
 msgctxt "@button"
 msgid "Skip"
-msgstr ""
+msgstr "スキップ"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
@@ -5870,21 +5913,31 @@ msgstr "バージョン4.5から4.6へのアップグレード"
 #: VersionUpgrade/VersionUpgrade460to462/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr ""
+msgstr "構成をCura 4.6.0からCura 4.6.2に更新します。"
 
 #: VersionUpgrade/VersionUpgrade460to462/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr ""
+msgstr "4.6.0から4.6.2へのバージョン更新"
 
 #: VersionUpgrade/VersionUpgrade462to47/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr ""
+msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
 
 #: VersionUpgrade/VersionUpgrade462to47/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2から4.7へのバージョン更新"
+
+#: VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr ""
+
+#: VersionUpgrade/VersionUpgrade47to48/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
 msgstr ""
 
 #: X3DReader/plugin.json
@@ -5916,6 +5969,97 @@ msgstr "透視ビューイング。"
 msgctxt "name"
 msgid "X-Ray View"
 msgstr "透視ビュー"
+
+#~ msgctxt "@label ({} is object name)"
+#~ msgid "Are you sure you wish to remove {}? This cannot be undone!"
+#~ msgstr "{}を取り除いてもよろしいですか？この操作は元に戻せません。"
+
+#~ msgctxt "@info:status"
+#~ msgid "The selected model was too small to load."
+#~ msgstr "選択したモデルは読み込むのに小さすぎます。"
+
+#~ msgctxt "@info:status"
+#~ msgid "Successfully imported profile {0}"
+#~ msgstr "プロファイル {0}の取り込み完了"
+
+#~ msgctxt "@info:status"
+#~ msgid "Could not find a quality type {0} for the current configuration."
+#~ msgstr "進行中のプリント構成にあったクオリティータイプ{0}が見つかりませんでした。"
+
+#~ msgctxt "info:status"
+#~ msgid "Adding printer {} ({}) from your account"
+#~ msgstr "アカウントからプリンター{}（{}）を追加しています"
+
+#~ msgctxt "info:hidden list items"
+#~ msgid "<li>... and {} others</li>"
+#~ msgstr "<li>...および{}その他</li>"
+
+#~ msgctxt "info:status"
+#~ msgid "Printers added from Digital Factory:<ul>{}</ul>"
+#~ msgstr "Digital Factoryからプリンターが追加されました：<ul>{}</ul>"
+
+#~ msgctxt "info:status"
+#~ msgid "<ul>{}</ul>To establish a connection, please visit the <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>."
+#~ msgstr "<ul>{}</ul>接続を確立するには、<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>にアクセスしてください。"
+
+#~ msgctxt "@label ({} is printer name)"
+#~ msgid "{} will be removed until the next account sync. <br> To remove {} permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. <br><br>Are you sure you want to remove {} temporarily?"
+#~ msgstr "次回のアカウントの同期までに{}は削除されます。<br>{}を完全に削除するには、<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>にアクセスします。<br><br>{}を一時的に削除してもよろしいですか？"
+
+#~ msgctxt "@label"
+#~ msgid ""
+#~ "You are about to remove {} printer(s) from Cura. This action cannot be undone. \n"
+#~ "Are you sure you want to continue?"
+#~ msgstr ""
+#~ "Curaから{}台のプリンターを削除しようとしています。この操作は元に戻せません。\n"
+#~ "続行してもよろしいですか？"
+
+#~ msgctxt "@label"
+#~ msgid ""
+#~ "You are about to remove all printers from Cura. This action cannot be undone. \n"
+#~ "Are you sure you want to continue?"
+#~ msgstr ""
+#~ "Curaからすべてのプリンターを削除しようとしています。この操作は元に戻せません。\n"
+#~ "続行してもよろしいですか？"
+
+#~ msgctxt "@action:ComboBox option"
+#~ msgid "Update"
+#~ msgstr "アップデート"
+
+#~ msgctxt "@action:ComboBox option"
+#~ msgid "Create new"
+#~ msgstr "新しいものを作成する"
+
+#~ msgctxt "@label"
+#~ msgid "Shared Heater"
+#~ msgstr "共有ヒーター"
+
+#~ msgctxt "@info"
+#~ msgid "The webcam is not available because you are monitoring a cloud printer."
+#~ msgstr "クラウドプリンタをモニタリングしている場合は、ウェブカムを利用できません。"
+
+#~ msgctxt "@button"
+#~ msgid "Ultimaker Digital Factory"
+#~ msgstr "Ultimaker Digital Factory"
+
+#~ msgctxt "@text:window, %1 is a profile name"
+#~ msgid ""
+#~ "You have customized some profile settings.\n"
+#~ "Would you like to Keep these changed settings after switching profiles?\n"
+#~ "Alternatively, you can Discard the changes to load the defaults from '%1'."
+#~ msgstr ""
+#~ "一部のプロファイル設定がカスタマイズされています。\n"
+#~ "これらの変更された設定をプロファイルの切り替え後も維持しますか？\n"
+#~ "変更を破棄して'%1'からデフォルトの設定を読み込むこともできます。"
+
+#~ msgctxt "@label"
+#~ msgid "Overrides %1 setting."
+#~ msgid_plural "Overrides %1 settings."
+#~ msgstr[0] "%1個の設定を上書きします。"
+
+#~ msgctxt "@text"
+#~ msgid "Please give your printer a name"
+#~ msgstr "プリンター名を入力してください"
 
 #~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 #~ msgid "New features are available for your {machine_name}! It is recommended to update the firmware on your printer."
@@ -7340,10 +7484,6 @@ msgstr "透視ビュー"
 #~ msgctxt "@label:status"
 #~ msgid "Preparing to print"
 #~ msgstr "印刷の準備をする"
-
-#~ msgctxt "@label:status"
-#~ msgid "Printing"
-#~ msgstr "プリント中"
 
 #~ msgctxt "@label:status"
 #~ msgid "Available"

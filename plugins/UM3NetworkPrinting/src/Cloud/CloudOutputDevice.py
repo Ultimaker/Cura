@@ -1,11 +1,13 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from time import time
 import os
-from typing import List, Optional, cast
+from typing import cast, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest  # Parse errors specific to print job uploading.
 
 from UM import i18nCatalog
 from UM.Backend.Backend import BackendState
@@ -22,6 +24,7 @@ from ..ExportFileJob import ExportFileJob
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
+from ..Messages.PrintJobUploadQueueFullMessage import PrintJobUploadQueueFullMessage
 from ..Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
@@ -108,8 +111,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         if self.isConnected():
             return
+        Logger.log("i", "Attempting to connect to cluster %s", self.key)
         super().connect()
-        Logger.log("i", "Connected to cluster %s", self.key)
+
         CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
         self._update()
 
@@ -192,7 +196,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # The mesh didn't change, let's not upload it to the cloud again.
         # Note that self.writeFinished is called in _onPrintUploadCompleted as well.
         if self._uploaded_print_job:
-            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted)
+            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
             return
 
         # Export the scene to the correct file type.
@@ -228,11 +232,17 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
                                  self._onUploadError)
 
     def _onPrintJobUploaded(self) -> None:
-        """Requests the print to be sent to the printer when we finished uploading the mesh."""
+        """
+        Requests the print to be sent to the printer when we finished uploading
+        the mesh.
+        """
 
         self._progress.update(100)
         print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
-        self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted)
+        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._uploaded_print_job to `None`.
+            # TODO: Maybe _onUploadError shouldn't set the _uploaded_print_job to None or we need to prevent such asynchronous cases.
+            return  # Prevent a crash.
+        self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
 
     def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
         """Shows a message when the upload has succeeded
@@ -243,9 +253,23 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         PrintJobUploadSuccessMessage().show()
         self.writeFinished.emit()
 
-    def _onUploadError(self, message: str = None) -> None:
-        """Displays the given message if uploading the mesh has failed
+    def _onPrintUploadSpecificError(self, reply: "QNetworkReply", _: "QNetworkReply.NetworkError"):
+        """
+        Displays a message when an error occurs specific to uploading print job (i.e. queue is full).
+        """
+        error_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        if error_code == 409:
+            PrintJobUploadQueueFullMessage().show()
+        else:
+            PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send", "Unknown error code when uploading print job: {0}", error_code)).show()
 
+        self._progress.hide()
+        self._uploaded_print_job = None
+        self.writeError.emit()
+
+    def _onUploadError(self, message: str = None) -> None:
+        """
+        Displays the given message if uploading the mesh has failed due to a generic error (i.e. lost connection).
         :param message: The message to display.
         """
         self._progress.hide()
@@ -262,6 +286,12 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         version_number = self.printers[0].firmwareVersion.split(".")
         firmware_version = Version([version_number[0], version_number[1], version_number[2]])
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
+
+    @pyqtProperty(bool)
+    def supportsPrintJobQueue(self) -> bool:
+        """Gets whether the printer supports a queue"""
+
+        return "queue" in self._cluster.capabilities if self._cluster.capabilities else True
 
     def setJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the remote print job state."""

@@ -9,6 +9,8 @@
 # form of "a;b;c" or "a,b,c". By default all plugins will be installed.
 #
 
+option(PRINT_PLUGIN_LIST "Should the list of plugins that are installed be printed?" ON)
+
 # FIXME: Remove the code for CMake <3.12 once we have switched over completely.
 # FindPython3 is a new module since CMake 3.12. It deprecates FindPythonInterp and FindPythonLibs. The FindPython3
 # module is copied from the CMake repository here so in CMake <3.12 we can still use it.
@@ -81,7 +83,9 @@ foreach(_plugin_json_path ${_plugin_json_list})
     endif()
 
     if(_add_plugin)
-        message(STATUS "[+] PLUGIN TO INSTALL: ${_rel_plugin_dir}")
+        if(${PRINT_PLUGIN_LIST})
+            message(STATUS "[+] PLUGIN TO INSTALL: ${_rel_plugin_dir}")
+        endif()
         get_filename_component(_rel_plugin_parent_dir ${_rel_plugin_dir} DIRECTORY)
         install(DIRECTORY ${_rel_plugin_dir}
                 DESTINATION lib${LIB_SUFFIX}/cura/${_rel_plugin_parent_dir}
@@ -90,7 +94,9 @@ foreach(_plugin_json_path ${_plugin_json_list})
                 )
         list(APPEND _install_plugin_list ${_plugin_dir})
     elseif(_is_no_install_plugin)
-        message(STATUS "[-] PLUGIN TO REMOVE : ${_rel_plugin_dir}")
+        if(${PRINT_PLUGIN_LIST})
+            message(STATUS "[-] PLUGIN TO REMOVE : ${_rel_plugin_dir}")
+        endif()
         execute_process(COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mod_bundled_packages_json.py
                         -d ${CMAKE_CURRENT_SOURCE_DIR}/resources/bundled_packages
                         ${_plugin_dir_name}

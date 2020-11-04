@@ -466,15 +466,13 @@ UM.MainWindow
             insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/Materials/MaterialsPage.qml"));
 
             insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
-
-            //Force refresh
-            setPage(0);
+            currentPage = 0;
         }
 
         onVisibleChanged:
         {
             // When the dialog closes, switch to the General page.
-            // This prevents us from having a heavy page like Setting Visiblity active in the background.
+            // This prevents us from having a heavy page like Setting Visibility active in the background.
             setPage(0);
         }
     }
@@ -838,17 +836,22 @@ UM.MainWindow
         }
     }
 
-    DiscardOrKeepProfileChangesDialog
+    Component
     {
-        id: discardOrKeepProfileChangesDialog
+        id: discardOrKeepProfileChangesDialogComponent
+        DiscardOrKeepProfileChangesDialog { }
     }
-
+    Loader
+    {
+        id: discardOrKeepProfileChangesDialogLoader
+    }
     Connections
     {
         target: CuraApplication
         onShowDiscardOrKeepProfileChanges:
         {
-            discardOrKeepProfileChangesDialog.show()
+            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.show()
         }
     }
 

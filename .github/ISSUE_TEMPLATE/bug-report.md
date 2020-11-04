@@ -40,7 +40,7 @@ Thank you for using Cura!
 (What should happen after the above steps have been followed.)
 
 **Project file**
-(For slicing bugs, provide a project which clearly shows the bug, by going to File->Save. For big files you may need to use WeTransfer or similar file sharing sites.)
+(For slicing bugs, provide a project which clearly shows the bug, by going to File->Save Project. For big files you may need to use WeTransfer or similar file sharing sites. G-code files are not project files!)
 
 **Log file**
 (See https://github.com/Ultimaker/Cura#logging-issues to find the log file to upload, or copy a relevant snippet from it.)

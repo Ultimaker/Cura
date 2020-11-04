@@ -330,6 +330,14 @@ Item
                 }
             }
 
+            /* The "Shared Heater" feature is temporarily disabled because its
+            implementation is incomplete. Printers with multiple filaments going
+            into one nozzle will keep the inactive filaments retracted at the
+            start of a print. However CuraEngine assumes that all filaments
+            start at the nozzle tip. So it'll start printing the second filament
+            without unretracting it.
+            See: https://github.com/Ultimaker/Cura/issues/8148
+
             Cura.SimpleCheckBox  // "Shared Heater"
             {
                 id: sharedHeaterCheckBox
@@ -341,6 +349,7 @@ Item
                 labelWidth: base.labelWidth
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
+            */
         }
     }
 
