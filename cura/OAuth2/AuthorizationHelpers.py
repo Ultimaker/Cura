@@ -127,7 +127,7 @@ class AuthorizationHelpers:
             user_id = user_data["user_id"],
             username = user_data["username"],
             profile_image_url = user_data.get("profile_image_url", ""),
-            organization_id = user_data.get("organization", {}).get("organization_id", ""),
+            organization_id = user_data.get("organization", {}).get("organization_id"),
             subscriptions = user_data.get("subscriptions", [])
         )
 
