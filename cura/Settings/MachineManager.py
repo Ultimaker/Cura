@@ -128,6 +128,7 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
 
         self.activeStackValueChanged.connect(self._reCalculateNumUserSettings)
+        self.numberExtrudersEnabledChanged.connect(self._correctPrintSequence)
 
     activeQualityDisplayNameChanged = pyqtSignal()
 
@@ -826,11 +827,6 @@ class MachineManager(QObject):
         result = []  # type: List[str]
         for setting_instance in container.findInstances():
             setting_key = setting_instance.definition.key
-            if setting_key == "print_sequence":
-                old_value = container.getProperty(setting_key, "value")
-                Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
-                result.append(setting_key)
-                continue
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
 
@@ -861,6 +857,16 @@ class MachineManager(QObject):
                 lifetime = 0,
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
+
+    def _correctPrintSequence(self) -> None:
+        """Resets the Print Sequence setting when there are more than one enabled extruders."""
+
+        setting_key = "print_sequence"
+        new_value = "all_at_once"
+        user_changes_container = self._global_container_stack.userChanges
+        if self.numberExtrudersEnabled > 1:
+            user_changes_container.setProperty(setting_key, "value", new_value)
+            Logger.log("d", f"Setting '{setting_key}' in '{user_changes_container}' to '{new_value}' because there are more than 1 enabled extruders.")
 
     def setActiveMachineExtruderCount(self, extruder_count: int) -> None:
         """Set the amount of extruders on the active machine (global stack)
