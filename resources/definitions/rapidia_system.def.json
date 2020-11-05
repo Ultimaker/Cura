@@ -29,13 +29,13 @@
             "default_value": true
         },
         "machine_width": {
-            "default_value": 212
+            "default_value": 202
         },
         "machine_height": {
-            "default_value": 243
+            "default_value": 175
         },
         "machine_depth": {
-            "default_value": 190
+            "default_value": 243
         },
         "machine_center_is_zero": {
             "default_value": false
