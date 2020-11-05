@@ -861,6 +861,9 @@ class MachineManager(QObject):
     def _correctPrintSequence(self) -> None:
         """Resets the Print Sequence setting when there are more than one enabled extruders."""
 
+        if self._global_container_stack is None:
+            return
+
         setting_key = "print_sequence"
         new_value = "all_at_once"
         user_changes_container = self._global_container_stack.userChanges
