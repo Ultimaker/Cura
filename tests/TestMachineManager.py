@@ -255,3 +255,40 @@ def test_isActiveQualityNotSupported(machine_manager):
 def test_isActiveQualityNotSupported_noQualityGroup(machine_manager):
     machine_manager.activeQualityGroup = MagicMock(return_value=None)
     assert not machine_manager.isActiveQualitySupported
+
+
+def test_correctPrintSequence_with2ExtrudersEnabled(machine_manager, application):
+    mocked_stack = application.getGlobalContainerStack()
+
+    # The definition changes container reports 2 enabled extruders so the correctPrintSequence should attempt to
+    # change the print_sequence setting to all-at-once
+    mocked_definition_changes_container = MagicMock(name="DefinitionChangesContainer")
+    mocked_definition_changes_container.getProperty = lambda key, prop: 2 if (key == "extruders_enabled_count" and prop == "value") else -1
+
+    mocked_user_changes_container = MagicMock(name="UserChangesContainer")
+
+    mocked_stack.userChanges = mocked_user_changes_container
+    mocked_stack.definitionChanges = mocked_definition_changes_container
+
+    machine_manager._correctPrintSequence()
+
+    # After the function is called, the user changes container should attempt to correct its print sequence to all-at-once
+    mocked_user_changes_container.setProperty.assert_called_once_with("print_sequence", "value", "all_at_once")
+
+
+def test_correctPrintSequence_with1ExtruderEnabled(machine_manager, application):
+    mocked_stack = application.getGlobalContainerStack()
+
+    # The definition changes container reports 1 enabled extruder so the correctPrintSequence should not change anything
+    mocked_definition_changes_container = MagicMock(name="DefinitionChangesContainer")
+    mocked_definition_changes_container.getProperty = lambda key, prop: 1 if (key == "extruders_enabled_count" and prop == "value") else -1
+
+    mocked_user_changes_container = MagicMock(name="UserChangesContainer")
+
+    mocked_stack.userChanges = mocked_user_changes_container
+    mocked_stack.definitionChanges = mocked_definition_changes_container
+
+    machine_manager._correctPrintSequence()
+
+    # After the function is called, the user changes container should not have tried to change any properties
+    assert not mocked_user_changes_container.setProperty.called, "Method should not have been called"
