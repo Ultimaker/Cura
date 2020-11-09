@@ -1360,9 +1360,9 @@ msgstr "Добавление принтера {name} ({model}) из вашей �
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "... и еще {0} другой"
+msgstr[1] "... и еще {0} других"
+msgstr[2] "... и еще {0} других"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
@@ -1439,9 +1439,9 @@ msgid ""
 msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Вы удаляете {0} принтер из Cura. Это действие невозможно будет отменить.\nПродолжить?"
+msgstr[1] "Вы удаляете {0} принтера из Cura. Это действие невозможно будет отменить.\nПродолжить?"
+msgstr[2] "Вы удаляете {0} принтеров из Cura. Это действие невозможно будет отменить.\nПродолжить?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
@@ -4195,9 +4195,9 @@ msgstr "Перекрытия с этой моделью не поддержив�
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Переопределяет %1 настройку."
+msgstr[1] "Переопределяет %1 настройки."
+msgstr[2] "Переопределяет %1 настроек."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
