@@ -861,15 +861,29 @@ class MachineManager(QObject):
     def _correctPrintSequence(self) -> None:
         """Resets the Print Sequence setting when there are more than one enabled extruders."""
 
-        if self._global_container_stack is None:
-            return
-
         setting_key = "print_sequence"
         new_value = "all_at_once"
+
+        if self._global_container_stack is None \
+                or self._global_container_stack.getProperty(setting_key, "value") == new_value \
+                or self.numberExtrudersEnabled < 2:
+            return
+
         user_changes_container = self._global_container_stack.userChanges
-        if self.numberExtrudersEnabled > 1:
+        quality_changes_container = self._global_container_stack.qualityChanges
+        print_sequence_in_quality_changes = quality_changes_container.getProperty(setting_key, "value")
+        print_sequence_in_user_changes = user_changes_container.getProperty(setting_key, "value")
+
+        # If the quality changes has the wrong value, then set the correct value in the user changes
+        if print_sequence_in_quality_changes and print_sequence_in_quality_changes != new_value:
             user_changes_container.setProperty(setting_key, "value", new_value)
             Logger.log("d", "Setting '{}' in '{}' to '{}' because there are more than 1 enabled extruders.".format(setting_key, user_changes_container, new_value))
+        # If the quality changes has no value or the correct value and the user changes container has the wrong value,
+        # then reset the setting in the user changes (so that the circular revert-changes arrow will now show up in the
+        # interface)
+        elif print_sequence_in_user_changes and print_sequence_in_user_changes != new_value:
+            user_changes_container.removeInstance(setting_key)
+            Logger.log("d", "Resetting '{}' in container '{}' because there are more than 1 enabled extruders.".format(setting_key, user_changes_container))
 
     def setActiveMachineExtruderCount(self, extruder_count: int) -> None:
         """Set the amount of extruders on the active machine (global stack)
