@@ -2062,7 +2062,7 @@ msgstr "打印平台温度"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "用于加热构建板的温度。如果此项为 0，则保持不加热构建板。"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2072,7 +2072,7 @@ msgstr "打印平台温度起始层"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "打印第一层时用于加热构建板的温度。如果此项为 0，则在打印第一层期间保持不加热构建板。"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2097,12 +2097,12 @@ msgstr "表面能。"
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "缩放因子收缩补偿"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "为了补偿材料在冷却时的收缩，将用此因子缩放模型。"
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5076,7 +5076,7 @@ msgstr "网格处理等级"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "在考虑多个重叠的填充网格时确定此网格的优先级。其中有多个填充网格重叠的区域将采用等级最低的网格的设置。具有较高顺序的填充网格将修改具有较低顺序的填充网格和普通网格的填充。"
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
