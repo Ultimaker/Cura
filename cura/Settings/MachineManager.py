@@ -128,7 +128,7 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
 
         self.activeStackValueChanged.connect(self._reCalculateNumUserSettings)
-        self.numberExtrudersEnabledChanged.connect(self._correctPrintSequence)
+        self.numberExtrudersEnabledChanged.connect(self.correctPrintSequence)
 
     activeQualityDisplayNameChanged = pyqtSignal()
 
@@ -858,7 +858,7 @@ class MachineManager(QObject):
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
 
-    def _correctPrintSequence(self) -> None:
+    def correctPrintSequence(self) -> None:
         """
         Sets the Print Sequence setting to "all-at-once" when there are more than one enabled extruders.
 
