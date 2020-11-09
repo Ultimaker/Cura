@@ -859,7 +859,13 @@ class MachineManager(QObject):
             caution_message.show()
 
     def _correctPrintSequence(self) -> None:
-        """Resets the Print Sequence setting when there are more than one enabled extruders."""
+        """
+        Sets the Print Sequence setting to "all-at-once" when there are more than one enabled extruders.
+
+        This setting has to be explicitly changed whenever we have more than one enabled extruders to make sure that the
+        Cura UI is properly updated to reset all the UI elements changes that occur due to the one-at-a-time mode (such
+        as the reduced build volume, the different convex hulls of the objects etc.).
+        """
 
         setting_key = "print_sequence"
         new_value = "all_at_once"
