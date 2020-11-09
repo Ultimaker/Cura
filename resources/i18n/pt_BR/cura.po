@@ -1351,7 +1351,7 @@ msgstr[1] "Novas impressoras detectadas na sua conta Ultimaker"
 #, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
-msgstr "Adicionando impressora {name} {model} da sua conta"
+msgstr "Adicionando impressora {name} ({model}) da sua conta"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:255
 #, python-brace-format
