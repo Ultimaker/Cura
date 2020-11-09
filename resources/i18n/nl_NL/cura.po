@@ -1359,8 +1359,8 @@ msgstr "Printer {name} ({model}) toevoegen vanaf uw account"
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "... en {0} andere"
+msgstr[1] "... en {0} andere"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
@@ -1435,8 +1435,8 @@ msgid ""
 msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "U staat op het punt om {0} printer uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.\nWeet u zeker dat u door wilt gaan?"
+msgstr[1] "U staat op het punt om {0} printers uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.\nWeet u zeker dat u door wilt gaan?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
@@ -4180,8 +4180,8 @@ msgstr "Overlappingen worden in dit model niet ondersteund."
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Overschrijft %1 instelling."
+msgstr[1] "Overschrijft %1 instellingen."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"

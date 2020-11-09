@@ -1372,8 +1372,8 @@ msgstr "Adicionar impressora {name} ({model}) a partir da sua conta"
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "... e {0} outra"
+msgstr[1] "... e {0} outras"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
@@ -1448,8 +1448,8 @@ msgid ""
 msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Está prestes a remover {0} impressora do Cura. Esta ação não pode ser anulada.\nTem a certeza de que pretende continuar?"
+msgstr[1] "Está prestes a remover {0} impressoras do Cura. Esta ação não pode ser anulada.\nTem a certeza de que pretende continuar?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
@@ -4207,8 +4207,8 @@ msgstr "Não são suportadas sobreposições com este modelo."
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Substitui %1 definição."
+msgstr[1] "Substitui %1 definições."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"

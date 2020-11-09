@@ -1357,7 +1357,7 @@ msgstr "アカウントからプリンター{name}（{model}）を追加して�
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
+msgstr[0] "...および{0}その他"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
@@ -1430,7 +1430,7 @@ msgid ""
 msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
+msgstr[0] "Curaから{0}台のプリンターを削除しようとしています。この操作は元に戻せません。\n続行してもよろしいですか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
@@ -4170,7 +4170,7 @@ msgstr "このモデルとの重なりはサポートされません。"
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
+msgstr[0] "%1個の設定を上書きします。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"

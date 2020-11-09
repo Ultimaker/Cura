@@ -1357,7 +1357,7 @@ msgstr "사용자 계정에서 프린터 {}({model}) 추가"
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
+msgstr[0] "... 및 기타 {}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
@@ -1430,7 +1430,7 @@ msgid ""
 msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
+msgstr[0] "Cura에서 {0} 프린터를 제거하려고 합니다. 이 작업은 실행 취소할 수 없습니다. \n정말로 계속하시겠습니까?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
@@ -4161,7 +4161,7 @@ msgstr "이 모델과의 중복은 지원되지 않습니다."
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
+msgstr[0] "%1 설정을 덮어씁니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
