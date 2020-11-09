@@ -1812,7 +1812,7 @@ msgstr "Изменение шага заполнения"
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
 msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Количество шагов уменьшения наполовину плотности заполнения вглубь модели. Области, располагающиеся ближе к краю модели, получают большую плотность, до указанной в \"Плотность заполнения.\""
+msgstr "Количество шагов уменьшения наполовину плотности заполнения вглубь модели. Области, располагающиеся ближе к краю модели, получают большую плотность, до указанной в \"Плотность заполнения."
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height label"
@@ -5076,9 +5076,7 @@ msgstr "Порядок обработки объекта"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "Определяет приоритет данного объекта при вычислении нескольких перекрывающихся заполняющих объектов. К областям с несколькими перекрывающимися заполняющими"
-" объектами будут применяться настройки объекта более низкого порядка. Заполняющий объект более высокого порядка будет модифицировать заполнение объектов"
-" более низких порядков и обычных объектов."
+msgstr "Определяет приоритет данного объекта при вычислении нескольких перекрывающихся заполняющих объектов. К областям с несколькими перекрывающимися заполняющими объектами будут применяться настройки объекта более низкого порядка. Заполняющий объект более высокого порядка будет модифицировать заполнение объектов более низких порядков и обычных объектов."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
