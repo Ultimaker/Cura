@@ -2061,7 +2061,7 @@ msgstr "Temperatura de la placa de impresión"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "La temperatura utilizada para la placa de impresión caliente. Si el valor es 0, la placa de impresión no se calentará."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2071,7 +2071,7 @@ msgstr "Temperatura de la placa de impresión en la capa inicial"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "Temperatura de la placa de impresión una vez caliente en la primera capa. Si el valor es 0, la placa de impresión no se calentará en la primera capa."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2096,12 +2096,12 @@ msgstr "Energía de la superficie."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Factor de escala para la compensación de la contracción"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "Para compensar la contracción del material a medida que se enfría, el modelo se escala con este factor."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5075,7 +5075,9 @@ msgstr "Rango de procesamiento de la malla"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Determina la prioridad de esta malla al tener en cuenta varias mallas de relleno superpuestas. Las áreas en las que se superponen varias mallas de relleno"
+" tomarán la configuración de la malla con el rango más bajo. Una malla de relleno con un orden superior modificará el relleno de las mallas de relleno"
+" con un orden inferior y las mallas normales."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"

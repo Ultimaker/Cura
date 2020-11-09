@@ -103,17 +103,20 @@ class PerObjectSettingsTool(Tool):
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
 
-        for property_key in ["top_bottom_thickness", "wall_thickness"]:
+        for property_key in ["top_bottom_thickness", "wall_thickness", "wall_line_count"]:
             if mesh_type == "infill_mesh":
                 if settings.getInstance(property_key) is None:
                     definition = stack.getSettingDefinition(property_key)
                     new_instance = SettingInstance(definition, settings)
-                    new_instance.setProperty("value", 0)
+                    # We just want the wall_line count to be there in case it was overriden in the global stack.
+                    # as such, we don't need to set a value.
+                    if property_key != "wall_line_count":
+                        new_instance.setProperty("value", 0)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     settings_visibility_changed = True
 
-            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and settings.getProperty(property_key, "value") == 0:
+            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and (settings.getProperty(property_key, "value") == 0 or property_key == "wall_line_count"):
                 settings.removeInstance(property_key)
                 settings_visibility_changed = True
 
