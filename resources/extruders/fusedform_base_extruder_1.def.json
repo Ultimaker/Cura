@@ -4,6 +4,7 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "fusedform_base",
+	"extruder_nr": { "default_value": 1 },
         "position": "1"
     },
 
