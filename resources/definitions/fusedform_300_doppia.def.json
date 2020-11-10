@@ -5,6 +5,8 @@
     "metadata": {
         "visible": true,
         "quality_definition": "fusedform_base"
+	"machine_extruder_count":  { "value": 2 },
+	"machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"},
     },
 
     "overrides": {
