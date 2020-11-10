@@ -4,14 +4,15 @@
     "inherits": "fusedform_base",
     "metadata": {
         "visible": true,
-        "quality_definition": "fusedform_base"
-	"machine_extruder_count":  { "value": 2 },
-	"machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"},
+        "quality_definition": "fusedform_base",
+        "machine_extruder_trains": {
+            "0": "fusedform_base_extruder_0",
+            "1": ""fusedform_base_extruder_1""
+        }
     },
 
     "overrides": {
-	"machine_extruder_count":  { "value": 2 },
-	"machine_extruder_trains":{"0": "fusedform_base_extruder_0","1": "fusedform_base_extruder_1"},
+	"machine_extruder_count":  { "default_value": 2 },
         "machine_name": { "default_value": "FF300 Doppia" },
         "machine_width": { "default_value": 320 },
         "machine_depth": { "default_value": 300 },
