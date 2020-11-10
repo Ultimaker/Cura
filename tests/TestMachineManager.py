@@ -336,7 +336,7 @@ def test_correctPrintSequence_TwoExtrudersEnabled_printSequenceIsOneAtATimeInUse
 
     # After the function is called, the user changes container should have tried to remove the print sequence from the
     # user changes container
-    mocked_user_changes_container.removeInstance.assert_called_once()
+    mocked_user_changes_container.removeInstance.assert_called_once_with("print_sequence")
 
 
 def test_correctPrintSequence_TwoExtrudersEnabled_printSequenceIsOneAtATimeInDefinitionChangesSettings(machine_manager, application):
