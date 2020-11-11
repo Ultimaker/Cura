@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "FF600 Doppia",
-    "inherits": "fusedform_base",
+    "inherits": "fusedform_doppia_base",
     "metadata": {
         "visible": true,
         "quality_definition": "fusedform_base"
