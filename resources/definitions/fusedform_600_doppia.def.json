@@ -4,11 +4,7 @@
     "inherits": "fusedform_base",
     "metadata": {
         "visible": true,
-        "quality_definition": "fusedform_base",
-        "machine_extruder_trains": {
-            "0": "fusedform_base_extruder_0",
-            "1": "fusedform_base_extruder_1"
-        }
+        "quality_definition": "fusedform_doppia_base"
     },
 
     "overrides": {
