@@ -111,6 +111,8 @@ geometry41core =
     uniform highp mat4 u_viewMatrix;
     uniform highp mat4 u_projectionMatrix;
 
+    uniform lowp vec4 u_starts_color;
+
     uniform int u_show_travel_moves;
     uniform int u_show_helpers;
     uniform int u_show_skin;
@@ -279,20 +281,20 @@ geometry41core =
             float w = v_line_dim[0].x / 2;
             float h = v_line_dim[0].y / 2;
 
-            myEmitVertex(v_vertex[0] + vec3( w,  h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
-            myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
-            myEmitVertex(v_vertex[0] + vec3( w, -h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h,  w, 0.0))); // Front-bottom-left
-            myEmitVertex(v_vertex[0] + vec3(-w, -h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h,  w, 0.0))); // Front-bottom-right
-            myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
-            myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
-            myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
-            myEmitVertex(v_vertex[0] + vec3( w,  h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
-            myEmitVertex(v_vertex[0] + vec3( w,  h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
-            myEmitVertex(v_vertex[0] + vec3( w, -h,  w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h,  w, 0.0))); // Front-bottom-left
-            myEmitVertex(v_vertex[0] + vec3( w, -h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h, -w, 0.0))); // Back-bottom-left
-            myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
-            myEmitVertex(v_vertex[0] + vec3( w,  h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
-            myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), vec4(1.0, 1.0, 1.0, 1.0), normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
+            myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
+            myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
+            myEmitVertex(v_vertex[0] + vec3( w, -h,  w), u_starts_color, normalize(vec3( 1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h,  w, 0.0))); // Front-bottom-left
+            myEmitVertex(v_vertex[0] + vec3(-w, -h,  w), u_starts_color, normalize(vec3(-1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h,  w, 0.0))); // Front-bottom-right
+            myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), u_starts_color, normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
+            myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
+            myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), u_starts_color, normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
+            myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
+            myEmitVertex(v_vertex[0] + vec3( w,  h, -w), u_starts_color, normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
+            myEmitVertex(v_vertex[0] + vec3( w, -h,  w), u_starts_color, normalize(vec3( 1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h,  w, 0.0))); // Front-bottom-left
+            myEmitVertex(v_vertex[0] + vec3( w, -h, -w), u_starts_color, normalize(vec3( 1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h, -w, 0.0))); // Back-bottom-left
+            myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), u_starts_color, normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
+            myEmitVertex(v_vertex[0] + vec3( w,  h, -w), u_starts_color, normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
+            myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), u_starts_color, normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
             
             EndPrimitive();
         }
@@ -339,6 +341,8 @@ u_ambientColor = [0.3, 0.3, 0.3, 0.0]
 u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_minimumAlbedo = [0.1, 0.1, 0.1, 1.0]
 u_shininess = 20.0
+
+u_starts_color = [1.0, 1.0, 1.0, 1.0]
 
 u_show_travel_moves = 0
 u_show_helpers = 1
