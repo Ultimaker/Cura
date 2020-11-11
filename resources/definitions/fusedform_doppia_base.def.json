@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "fusedform_doppia_base",
-    "inherits": "fdmprinter",
+    "inherits": "fusedform_base",
     "metadata": {
         "author": "Juan Blanco",
         "manufacturer": "Fused Form",
