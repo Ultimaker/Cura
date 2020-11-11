@@ -132,7 +132,7 @@ UM.Dialog
                 font.bold: true
             }
 
-            model: base.changesModel
+            model: userChangesModel
         }
     }
 

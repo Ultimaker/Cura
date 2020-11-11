@@ -36,6 +36,7 @@ from UM.Scene.Camera import Camera
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -52,7 +53,7 @@ from cura.API.Account import Account
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
-from cura.Arranging.ShapeArray import ShapeArray
+from cura.Arranging.Nest2DArrange import arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -126,7 +127,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 15
+    SettingVersion = 16
 
     Created = False
 
@@ -801,6 +802,8 @@ class CuraApplication(QtApplication):
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing build volume..."))
         root = self.getController().getScene().getRoot()
         self._volume = BuildVolume.BuildVolume(self, root)
+
+        # Ensure that the old style arranger still works.
         Arrange.build_volume = self._volume
 
         # initialize info objects
@@ -1379,6 +1382,7 @@ class CuraApplication(QtApplication):
     def arrangeAll(self) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
+        locked_nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
@@ -1400,8 +1404,12 @@ class CuraApplication(QtApplication):
                 # Skip nodes that are too big
                 bounding_box = node.getBoundingBox()
                 if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
-                    nodes_to_arrange.append(node)
-        self.arrange(nodes_to_arrange, fixed_nodes = [])
+                    # Arrange only the unlocked nodes and keep the locked ones in place
+                    if UM.Util.parseBool(node.getSetting(SceneNodeSettings.LockPosition)):
+                        locked_nodes.append(node)
+                    else:
+                        nodes_to_arrange.append(node)
+        self.arrange(nodes_to_arrange, locked_nodes)
 
     def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
         """Arrange a set of nodes given a set of fixed nodes
@@ -1514,13 +1522,10 @@ class CuraApplication(QtApplication):
 
         # Move each node to the same position.
         for mesh, node in zip(meshes, group_node.getChildren()):
-            transformation = node.getLocalTransformation()
-            transformation.setTranslation(zero_translation)
-            transformed_mesh = mesh.getTransformed(transformation)
-
+            node.setTransformation(Matrix())
             # Align the object around its zero position
             # and also apply the offset to center it inside the group.
-            node.setPosition(-transformed_mesh.getZeroPosition() - offset)
+            node.setPosition(-mesh.getZeroPosition() - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
@@ -1725,7 +1730,7 @@ class CuraApplication(QtApplication):
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
         """
-
+        Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
             return
 
@@ -1799,6 +1804,9 @@ class CuraApplication(QtApplication):
             return
 
         nodes = job.getResult()
+        if nodes is None:
+            Logger.error("Read mesh job returned None. Mesh loading must have failed.")
+            return
         file_name = job.getFileName()
         file_name_lower = file_name.lower()
         file_extension = file_name_lower.split(".")[-1]
@@ -1812,17 +1820,21 @@ class CuraApplication(QtApplication):
         for node_ in DepthFirstIterator(root):
             if node_.callDecoration("isSliceable") and node_.callDecoration("getBuildPlateNumber") == target_build_plate:
                 fixed_nodes.append(node_)
-        machine_width = global_container_stack.getProperty("machine_width", "value")
-        machine_depth = global_container_stack.getProperty("machine_depth", "value")
-        arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = fixed_nodes)
-        min_offset = 8
+
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
         default_extruder_id = self._global_container_stack.extruderList[int(default_extruder_position)].getId()
 
         select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
-        for original_node in nodes:
+        nodes_to_arrange = []  # type: List[CuraSceneNode]
+        
+        fixed_nodes = []
+        for node_ in DepthFirstIterator(self.getController().getScene().getRoot()):
+            # Only count sliceable objects
+            if node_.callDecoration("isSliceable"):
+                fixed_nodes.append(node_)
 
+        for original_node in nodes:
             # Create a CuraSceneNode just if the original node is not that type
             if isinstance(original_node, CuraSceneNode):
                 node = original_node
@@ -1830,8 +1842,8 @@ class CuraApplication(QtApplication):
                 node = CuraSceneNode()
                 node.setMeshData(original_node.getMeshData())
 
-                #Setting meshdata does not apply scaling.
-                if(original_node.getScale() != Vector(1.0, 1.0, 1.0)):
+                # Setting meshdata does not apply scaling.
+                if original_node.getScale() != Vector(1.0, 1.0, 1.0):
                     node.scale(original_node.getScale())
 
             node.setSelectable(True)
@@ -1862,19 +1874,15 @@ class CuraApplication(QtApplication):
 
             if file_extension != "3mf":
                 if node.callDecoration("isSliceable"):
-                    # Only check position if it's not already blatantly obvious that it won't fit.
-                    if node.getBoundingBox() is None or self._volume.getBoundingBox() is None or node.getBoundingBox().width < self._volume.getBoundingBox().width or node.getBoundingBox().depth < self._volume.getBoundingBox().depth:
-                        # Find node location
-                        offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = min_offset)
+                    # Ensure that the bottom of the bounding box is on the build plate
+                    if node.getBoundingBox():
+                        center_y = node.getWorldPosition().y - node.getBoundingBox().bottom
+                    else:
+                        center_y = 0
 
-                        # If a model is to small then it will not contain any points
-                        if offset_shape_arr is None and hull_shape_arr is None:
-                            Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
-                                    title = self._i18n_catalog.i18nc("@info:title", "Warning")).show()
-                            return
+                    node.translate(Vector(0, center_y, 0))
 
-                        # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                        arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                    nodes_to_arrange.append(node)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
@@ -1893,7 +1901,10 @@ class CuraApplication(QtApplication):
 
             if select_models_on_load:
                 Selection.add(node)
-
+        try:
+            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+        except:
+            Logger.logException("e", "Failed to arrange the models")
         self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):

@@ -261,7 +261,11 @@ class PostProcessingPlugin(QObject, Extension):
             script_str = script_str.replace(r"\\\n", "\n").replace(r"\\\\", "\\\\")  # Unescape escape sequences.
             script_parser = configparser.ConfigParser(interpolation=None)
             script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
-            script_parser.read_string(script_str)
+            try:
+                script_parser.read_string(script_str)
+            except configparser.Error as e:
+                Logger.error("Stored post-processing scripts have syntax errors: {err}".format(err = str(e)))
+                continue
             for script_name, settings in script_parser.items():  # There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
                 if script_name == "DEFAULT":  # ConfigParser always has a DEFAULT section, but we don't fill it. Ignore this one.
                     continue

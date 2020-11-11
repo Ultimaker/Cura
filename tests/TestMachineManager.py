@@ -21,7 +21,8 @@ def machine_manager(application, extruder_manager, container_registry, global_st
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         manager = MachineManager(application)
-        manager._onGlobalContainerChanged()
+        with patch.object(MachineManager, "updateNumberExtrudersEnabled", return_value = None):
+            manager._onGlobalContainerChanged()
 
     return manager
 
@@ -57,7 +58,7 @@ def test_hasUserSettings(machine_manager, application):
     mocked_instance_container = MagicMock(name="UserSettingContainer")
     mocked_instance_container.getNumInstances = MagicMock(return_value = 12)
     mocked_stack.getTop = MagicMock(return_value = mocked_instance_container)
-
+    machine_manager._reCalculateNumUserSettings()
     assert machine_manager.numUserSettings == 12
     assert machine_manager.hasUserSettings
 
@@ -74,7 +75,7 @@ def test_hasUserSettingsExtruder(machine_manager, application):
     mocked_instance_container = MagicMock(name="UserSettingContainer")
     mocked_instance_container.getNumInstances = MagicMock(return_value=200)
     extruder.getTop = MagicMock(return_value = mocked_instance_container)
-
+    machine_manager._reCalculateNumUserSettings()
     assert machine_manager.hasUserSettings
     assert machine_manager.numUserSettings == 200
 
@@ -91,7 +92,7 @@ def test_hasUserSettingsEmptyUserChanges(machine_manager, application):
     mocked_instance_container = MagicMock(name="UserSettingContainer")
     mocked_instance_container.getNumInstances = MagicMock(return_value=0)
     extruder.getTop = MagicMock(return_value = mocked_instance_container)
-
+    machine_manager._reCalculateNumUserSettings()
     assert not machine_manager.hasUserSettings
 
 

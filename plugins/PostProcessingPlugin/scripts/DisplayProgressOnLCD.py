@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
-# Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee
+# Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen
 # Date:     July 31, 2019
-# Modified: May 22, 2020
+# Modified: Okt 22, 2020
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -26,9 +26,30 @@ class DisplayProgressOnLCD(Script):
                 "time_remaining":
                 {
                     "label": "Time Remaining",
-                    "description": "When enabled, write Time Left: HHMMSS on the display using M117. This is updated every layer.",
+                    "description": "Select to write remaining time to the display.Select to write remaining time on the display using M117 status line message (almost all printers) or using M73 command (Prusa and Marlin 2 if enabled).",
                     "type": "bool",
                     "default_value": false
+                },
+                "time_remaining_method":
+                {
+                    "label": "Time Reporting Method",
+                    "description": "How should remaining time be shown on the display? It could use a generic message command (M117, almost all printers), or a specialised time remaining command (M73, Prusa and Marlin 2).",
+                    "type": "enum",
+                    "options": {
+                        "m117":"M117 - All printers",
+                        "m73":"M73 - Prusa, Marlin 2"
+                    },
+                    "enabled": "time_remaining",
+                    "default_value": "m117"
+                },
+                "update_frequency":
+                {
+                    "label": "Update frequency",
+                    "description": "Update remaining time for every layer or periodically every minute or faster.",
+                    "type": "enum",
+                    "options": {"0":"Every layer","15":"Every 15 seconds","30":"Every 30 seconds","60":"Every minute"},
+                    "default_value": "0",
+                    "enabled": "time_remaining"
                 },
                 "percentage":
                 {
@@ -46,34 +67,44 @@ class DisplayProgressOnLCD(Script):
         list_split = re.split(":", line)  # Split at ":" so we can get the numerical value
         return float(list_split[1])  # Convert the numerical portion to a float
 
-    def outputTime(self, lines, line_index, time_left):
+    def outputTime(self, lines, line_index, time_left, mode):
         # Do some math to get the time left in seconds into the right format. (HH,MM,SS)
+        time_left = max(time_left, 0)
         m, s = divmod(time_left, 60)
         h, m = divmod(m, 60)
         # Create the string
-        current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
-        # And now insert that into the GCODE
-        lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
+        if mode == "m117":
+            current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
+            # And now insert that into the GCODE
+            lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
+        else:  # Must be m73.
+            mins = int(60 * h + m + s / 30)
+            lines.insert(line_index, "M73 R{}".format(mins))
 
     def execute(self, data):
         output_time = self.getSettingValueByKey("time_remaining")
+        output_time_method = self.getSettingValueByKey("time_remaining_method")
+        output_frequency = int(self.getSettingValueByKey("update_frequency"))
         output_percentage = self.getSettingValueByKey("percentage")
         line_set = {}
         if output_percentage or output_time:
             total_time = -1
             previous_layer_end_percentage = 0
+            previous_layer_end_time = 0
             for layer in data:
                 layer_index = data.index(layer)
                 lines = layer.split("\n")
 
                 for line in lines:
-                    if line.startswith(";TIME:") and total_time == -1:
+                    if (line.startswith(";TIME:") or line.startswith(";PRINT.TIME:")) and total_time == -1:
                         # This line represents the total time required to print the gcode
                         total_time = self.getTimeValue(line)
                         line_index = lines.index(line)
 
+                        # In the beginning we may have 2 M73 lines, but it makes logic less complicated
                         if output_time:
-                            self.outputTime(lines, line_index, total_time)
+                            self.outputTime(lines, line_index, total_time, output_time_method)
+
                         if output_percentage:
                             # Emit 0 percent to sure Marlin knows we are overriding the completion percentage
                             lines.insert(line_index, "M73 P0")
@@ -96,8 +127,34 @@ class DisplayProgressOnLCD(Script):
                         line_index = lines.index(line)
                         
                         if output_time:
-                            # Here we calculate remaining time
-                            self.outputTime(lines, line_index, total_time - current_time)
+                            if output_frequency == 0:
+                                # Here we calculate remaining time
+                                self.outputTime(lines, line_index, total_time - current_time, output_time_method)
+                            else:
+                                # Here we calculate remaining time and how many outputs are expected for the layer
+                                layer_time_delta = int(current_time - previous_layer_end_time)
+                                layer_step_delta = int((current_time - previous_layer_end_time) / output_frequency)
+                                # If this layer represents less than 1 step then we don't need to emit anything, continue to the next layer
+                                if layer_step_delta != 0:
+                                    # Grab the index of the current line and figure out how many lines represent one second
+                                    step = line_index / layer_time_delta
+                                    # Move new lines further as we add new lines above it
+                                    lines_added = 1
+                                    # Run through layer in seconds
+                                    for seconds in range(1, layer_time_delta + 1):
+                                        # Time from start to decide when to update
+                                        line_time = int(previous_layer_end_time + seconds)
+                                        # Output every X seconds and after last layer
+                                        if line_time % output_frequency == 0 or line_time == total_time:
+                                            # Line to add the output
+                                            time_line_index = int((seconds * step) + lines_added)
+
+                                            # Insert remaining time into the GCODE
+                                            self.outputTime(lines, time_line_index, total_time - line_time, output_time_method)
+                                            # Next line will be again lower
+                                            lines_added = lines_added + 1
+
+                                    previous_layer_end_time = int(current_time)
 
                         if output_percentage:
                             # Calculate percentage value this layer ends at
