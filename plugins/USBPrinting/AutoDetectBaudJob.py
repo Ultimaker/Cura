@@ -71,7 +71,9 @@ class AutoDetectBaudJob(Job):
                 timeout_time = time() + wait_response_timeout
 
                 while timeout_time > time():
-                    # If baudrate is wrong, then readline() might never return, even with timeouts set. Using read_until with size limit seems to fix this.
+                    # If baudrate is wrong, then readline() might never
+                    # return, even with timeouts set. Using read_until
+                    # with size limit seems to fix this.
                     line = serial.read_until(size = 100)
                     if b"ok" in line and b"T:" in line:
                         successful_responses += 1
