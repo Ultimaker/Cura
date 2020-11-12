@@ -60,6 +60,27 @@ Cura.ExpandablePopup
                         width: height
                     }
 
+                    // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
+                    UM.RecolorImage
+                    {
+                        id: configurationWarning
+
+                        property var extruderStack: Cura.MachineManager.activeMachine.extruders[model.index]
+                        property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
+                        property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
+
+                        visible: valueWarning || valueError
+
+                        anchors.left: extruderIcon.right
+                        anchors.leftMargin: visible ? UM.Theme.getSize("thin_margin").width : 0
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        source: valueError ? UM.Theme.getIcon("cross2") : UM.Theme.getIcon("warning")
+                        color: valueError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_warning_background")
+                        width: visible ? UM.Theme.getSize("section_icon").width : 0
+                        height: width
+                    }
+
                     // Label for the brand of the material
                     Label
                     {
@@ -74,7 +95,7 @@ Cura.ExpandablePopup
                         anchors
                         {
                             top: extruderIcon.top
-                            left: extruderIcon.right
+                            left: configurationWarning.right
                             leftMargin: UM.Theme.getSize("default_margin").width
                             right: parent.right
                             rightMargin: UM.Theme.getSize("default_margin").width
@@ -95,7 +116,7 @@ Cura.ExpandablePopup
 
                         anchors
                         {
-                            left: extruderIcon.right
+                            left: configurationWarning.right
                             leftMargin: UM.Theme.getSize("default_margin").width
                             top: typeAndBrandNameLabel.bottom
                             right: parent.right
