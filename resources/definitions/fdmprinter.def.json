@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "setting_version": 16,
-        "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
+        "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
         "has_variants": false,
@@ -1244,7 +1244,7 @@
                     "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric'",
+                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1823,7 +1823,7 @@
                     "type": "int",
                     "minimum_value": "1",
                     "maximum_value_warning": "infill_line_distance / infill_line_width",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag'",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4954,7 +4954,7 @@
                         }
                     }
                 },
-                "support_interface_offset": 
+                "support_interface_offset":
                 {
                     "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",

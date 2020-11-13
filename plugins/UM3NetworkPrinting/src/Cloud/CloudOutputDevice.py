@@ -287,6 +287,12 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         firmware_version = Version([version_number[0], version_number[1], version_number[2]])
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
+    @pyqtProperty(bool)
+    def supportsPrintJobQueue(self) -> bool:
+        """Gets whether the printer supports a queue"""
+
+        return "queue" in self._cluster.capabilities if self._cluster.capabilities else True
+
     def setJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the remote print job state."""
 

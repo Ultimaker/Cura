@@ -21,7 +21,8 @@ def machine_manager(application, extruder_manager, container_registry, global_st
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         manager = MachineManager(application)
-        manager._onGlobalContainerChanged()
+        with patch.object(MachineManager, "updateNumberExtrudersEnabled", return_value = None):
+            manager._onGlobalContainerChanged()
 
     return manager
 

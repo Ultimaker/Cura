@@ -1522,13 +1522,10 @@ class CuraApplication(QtApplication):
 
         # Move each node to the same position.
         for mesh, node in zip(meshes, group_node.getChildren()):
-            transformation = node.getLocalTransformation()
-            transformation.setTranslation(zero_translation)
-            transformed_mesh = mesh.getTransformed(transformation)
-
+            node.setTransformation(Matrix())
             # Align the object around its zero position
             # and also apply the offset to center it inside the group.
-            node.setPosition(-transformed_mesh.getZeroPosition() - offset)
+            node.setPosition(-mesh.getZeroPosition() - offset)
 
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
@@ -1904,9 +1901,10 @@ class CuraApplication(QtApplication):
 
             if select_models_on_load:
                 Selection.add(node)
-
-        arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
-
+        try:
+            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+        except:
+            Logger.logException("e", "Failed to arrange the models")
         self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):

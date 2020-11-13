@@ -974,7 +974,7 @@
             "package_type": "material",
             "display_name": "Generic ABS",
             "description": "The generic ABS profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -992,7 +992,7 @@
             "package_type": "material",
             "display_name": "Generic BAM",
             "description": "The generic BAM profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1010,7 +1010,7 @@
             "package_type": "material",
             "display_name": "Generic CFF CPE",
             "description": "The generic CFF CPE profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1028,7 +1028,7 @@
             "package_type": "material",
             "display_name": "Generic CFF PA",
             "description": "The generic CFF PA profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1046,7 +1046,7 @@
             "package_type": "material",
             "display_name": "Generic CPE",
             "description": "The generic CPE profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1064,7 +1064,7 @@
             "package_type": "material",
             "display_name": "Generic CPE+",
             "description": "The generic CPE+ profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1082,7 +1082,7 @@
             "package_type": "material",
             "display_name": "Generic GFF CPE",
             "description": "The generic GFF CPE profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1100,7 +1100,7 @@
             "package_type": "material",
             "display_name": "Generic GFF PA",
             "description": "The generic GFF PA profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1118,7 +1118,7 @@
             "package_type": "material",
             "display_name": "Generic HIPS",
             "description": "The generic HIPS profile which other profiles can be based upon.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1136,7 +1136,7 @@
             "package_type": "material",
             "display_name": "Generic Nylon",
             "description": "The generic Nylon profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1154,7 +1154,7 @@
             "package_type": "material",
             "display_name": "Generic PC",
             "description": "The generic PC profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1172,7 +1172,7 @@
             "package_type": "material",
             "display_name": "Generic PETG",
             "description": "The generic PETG profile which other profiles can be based upon.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1190,7 +1190,7 @@
             "package_type": "material",
             "display_name": "Generic PLA",
             "description": "The generic PLA profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1208,7 +1208,7 @@
             "package_type": "material",
             "display_name": "Generic PP",
             "description": "The generic PP profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1226,7 +1226,7 @@
             "package_type": "material",
             "display_name": "Generic PVA",
             "description": "The generic PVA profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1244,7 +1244,7 @@
             "package_type": "material",
             "display_name": "Generic Tough PLA",
             "description": "The generic Tough PLA profile which other profiles can be based upon.",
-            "package_version": "1.0.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1262,7 +1262,7 @@
             "package_type": "material",
             "display_name": "Generic TPU",
             "description": "The generic TPU profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
@@ -1297,7 +1297,7 @@
             "package_type": "material",
             "display_name": "FABtotum ABS",
             "description": "This material is easy to be extruded but it is not the simplest to use. It is one of the most used in 3D printing to get very well finished objects. It is not sustainable and its smoke can be dangerous if inhaled. The reason to prefer this filament to PLA is mainly because of its precision and mechanical specs. ABS (for plastic) stands for Acrylonitrile Butadiene Styrene and it is a thermoplastic which is widely used in everyday objects. It can be printed with any FFF 3D printer which can get to high temperatures as it must be extruded in a range between 220° and 245°, so it’s compatible with all versions of the FABtotum Personal fabricator.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=40",
             "author": {
@@ -1314,7 +1314,7 @@
             "package_type": "material",
             "display_name": "FABtotum Nylon",
             "description": "When 3D printing started this material was not listed among the extrudable filaments. It is flexible as well as resistant to tractions. It is well known for its uses in textile but also in industries which require a strong and flexible material. There are different kinds of Nylon: 3D printing mostly uses Nylon 6 and Nylon 6.6, which are the most common. It requires higher temperatures to be printed, so a 3D printer must be able to reach them (around 240°C): the FABtotum, of course, can.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=53",
             "author": {
@@ -1331,7 +1331,7 @@
             "package_type": "material",
             "display_name": "FABtotum PLA",
             "description": "It is the most common filament used for 3D printing. It is studied to be bio-degradable as it comes from corn starch’s sugar mainly. It is completely made of renewable sources and has no footprint on polluting. PLA stands for PolyLactic Acid and it is a thermoplastic that today is still considered the easiest material to be 3D printed. It can be extruded at lower temperatures: the standard range of FABtotum’s one is between 185° and 195°.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=39",
             "author": {
@@ -1348,7 +1348,7 @@
             "package_type": "material",
             "display_name": "FABtotum TPU Shore 98A",
             "description": "",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=66",
             "author": {
@@ -1518,7 +1518,7 @@
             "package_type": "material",
             "display_name": "Ultimaker ABS",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1537,7 +1537,7 @@
             "package_type": "material",
             "display_name": "Ultimaker Breakaway",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/breakaway",
             "author": {
@@ -1556,7 +1556,7 @@
             "package_type": "material",
             "display_name": "Ultimaker CPE",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1575,7 +1575,7 @@
             "package_type": "material",
             "display_name": "Ultimaker CPE+",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/cpe",
             "author": {
@@ -1594,7 +1594,7 @@
             "package_type": "material",
             "display_name": "Ultimaker Nylon",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1613,7 +1613,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PC",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/pc",
             "author": {
@@ -1632,7 +1632,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PLA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1651,7 +1651,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PP",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/pp",
             "author": {
@@ -1670,7 +1670,7 @@
             "package_type": "material",
             "display_name": "Ultimaker PVA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/abs",
             "author": {
@@ -1689,7 +1689,7 @@
             "package_type": "material",
             "display_name": "Ultimaker TPU 95A",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/tpu-95a",
             "author": {
@@ -1708,7 +1708,7 @@
             "package_type": "material",
             "display_name": "Ultimaker Tough PLA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.0.3",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://ultimaker.com/products/materials/tough-pla",
             "author": {
@@ -1727,7 +1727,7 @@
             "package_type": "material",
             "display_name": "Vertex Delta ABS",
             "description": "ABS material and quality files for the Delta Vertex K8800.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://vertex3dprinter.eu",
             "author": {
@@ -1744,7 +1744,7 @@
             "package_type": "material",
             "display_name": "Vertex Delta PET",
             "description": "ABS material and quality files for the Delta Vertex K8800.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://vertex3dprinter.eu",
             "author": {
@@ -1761,7 +1761,7 @@
             "package_type": "material",
             "display_name": "Vertex Delta PLA",
             "description": "ABS material and quality files for the Delta Vertex K8800.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://vertex3dprinter.eu",
             "author": {
@@ -1778,7 +1778,7 @@
             "package_type": "material",
             "display_name": "Vertex Delta TPU",
             "description": "ABS material and quality files for the Delta Vertex K8800.",
-            "package_version": "1.0.1",
+            "package_version": "1.4.0",
             "sdk_version": "7.4.0",
             "website": "https://vertex3dprinter.eu",
             "author": {

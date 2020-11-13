@@ -440,7 +440,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
-            return False, catalog.i18nc("@info:status", "Global stack is missing.")
+            return False, catalog.i18nc("@info:status", "There is no active printer yet.")
 
         definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         profile.setDefinition(definition_id)

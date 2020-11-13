@@ -805,6 +805,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         except zipfile.BadZipFile:
             Logger.logException("w", "Unable to retrieve metadata from {fname}: 3MF archive is corrupt.".format(fname = file_name))
             return result
+        except EnvironmentError as e:
+            Logger.logException("w", "Unable to retrieve metadata from {fname}: File is inaccessible. Error: {err}".format(fname = file_name, err = str(e)))
+            return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
 

@@ -46,7 +46,7 @@ msgstr "未覆盖"
 #, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr ""
+msgstr "是否确实要删除 {0}？此操作无法撤消！"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:42
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:11
@@ -522,7 +522,7 @@ msgstr "无法从 <filename>{0}</filename> 导入配置文件："
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
-msgstr ""
+msgstr "已成功导入配置文件 {0}。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:349
 #, python-brace-format
@@ -549,7 +549,7 @@ msgstr "配置文件缺少打印质量类型定义。"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:443
 msgctxt "@info:status"
 msgid "Global stack is missing."
-msgstr ""
+msgstr "缺少全局堆栈。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:449
 msgctxt "@info:status"
@@ -560,13 +560,13 @@ msgstr "无法添加配置文件。"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
-msgstr ""
+msgstr "质量类型“{0}”与当前有效的机器定义“{1}”不兼容。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:468
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
-msgstr ""
+msgstr "警告：配置文件不可见，因为其质量类型“{0}”对当前配置不可用。请切换到可使用此质量类型的材料/喷嘴组合。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:36
 msgctxt "@info:not supported profile"
@@ -785,7 +785,7 @@ msgstr "没有在此处写入工作区的权限。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:96
 msgctxt "@error:zip"
 msgid "The operating system does not allow saving a project file to this location or with this file name."
-msgstr ""
+msgstr "操作系统不允许向此位置或用此文件名保存项目文件。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:185
 msgctxt "@error:zip"
@@ -1338,7 +1338,7 @@ msgstr "通过云连接"
 #, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
-msgstr ""
+msgstr "上传打印作业时出现未知错误代码：{0}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:227
 msgctxt "info:status"
@@ -1350,19 +1350,19 @@ msgstr[0] "从您的 Ultimaker 帐户中检测到新的打印机"
 #, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
-msgstr ""
+msgstr "正在从您的帐户添加打印机 {name} ({model})"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:255
 #, python-brace-format
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
+msgstr[0] "... 和另外 {0} 台"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
-msgstr ""
+msgstr "从 Digital Factory 添加的打印机："
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:316
 msgctxt "info:status"
@@ -1380,13 +1380,13 @@ msgstr[0] "这些打印机未链接到 Digital Factory："
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
-msgstr ""
+msgstr "Ultimaker Digital Factory"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:333
 #, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
-msgstr ""
+msgstr "要建立连接，请访问 {website_link}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:337
 msgctxt "@action:button"
@@ -1402,19 +1402,19 @@ msgstr "删除打印机"
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
-msgstr ""
+msgstr "将删除 {printer_name}，直到下次帐户同步为止。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
-msgstr ""
+msgstr "要永久删除 {printer_name}，请访问 {digital_factory_link}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:423
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
-msgstr ""
+msgstr "是否确实要暂时删除 {printer_name}？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:460
 msgctxt "@title:window"
@@ -1430,14 +1430,14 @@ msgid ""
 msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
+msgstr[0] "您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n是否确实要继续？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
 msgid ""
 "You are about to remove all printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr ""
+msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。\n是否确定继续？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:27
 msgctxt "@info:status"
@@ -1524,12 +1524,12 @@ msgstr "正在将打印作业上传至打印机。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:16
 msgctxt "@info:status"
 msgid "Print job queue is full. The printer can't accept a new job."
-msgstr ""
+msgstr "打印作业队列已满。打印机无法接受新作业。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:17
 msgctxt "@info:title"
 msgid "Queue Full"
-msgstr ""
+msgstr "队列已满"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:15
 msgctxt "@info:status"
@@ -3702,12 +3702,12 @@ msgstr "Python 错误跟踪库"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:159
 msgctxt "@label"
 msgid "Polygon packing library, developed by Prusa Research"
-msgstr ""
+msgstr "Prusa Research 开发的多边形打包库"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 msgctxt "@label"
 msgid "Python bindings for libnest2d"
-msgstr ""
+msgstr "libnest2d 的 Python 绑定"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
@@ -3760,7 +3760,7 @@ msgid ""
 "You have customized some profile settings.\n"
 "Would you like to Keep these changed settings after switching profiles?\n"
 "Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr ""
+msgstr "您已经自定义了若干配置文件设置。\n是否要在切换配置文件后保留这些更改的设置？\n或者，也可舍弃更改以从“%1”加载默认值。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:111
 msgctxt "@title:column"
@@ -4163,7 +4163,7 @@ msgstr "不支持与此模型重叠。"
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
+msgstr[0] "覆盖 %1 设置。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
@@ -5190,7 +5190,7 @@ msgstr "打印机名称"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:274
 msgctxt "@text"
 msgid "Please name your printer"
-msgstr ""
+msgstr "请为您的打印机命名"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:24
 msgctxt "@label"
@@ -5930,12 +5930,12 @@ msgstr "版本从 4.6.2 升级到 4.7"
 #: VersionUpgrade/VersionUpgrade47to48/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr ""
+msgstr "将配置从 Cura 4.7 升级到 Cura 4.8。"
 
 #: VersionUpgrade/VersionUpgrade47to48/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.7 to 4.8"
-msgstr ""
+msgstr "将版本从 4.7 升级到 4.8"
 
 #: X3DReader/plugin.json
 msgctxt "description"

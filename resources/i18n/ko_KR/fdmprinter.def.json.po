@@ -2062,7 +2062,7 @@ msgstr "빌드 플레이트 온도"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "내열 빌드 플레이트용으로 사용된 온도 0인 경우 빌드 플레이트가 가열되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2072,7 +2072,7 @@ msgstr "초기 레이어의 빌드 플레이트 온도"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "첫 번째 레이어에서 내열 빌드 플레이트에 사용되는 온도. 0인 경우, 빌드 플레이트가 첫 번째 레이어에서 가열되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2097,12 +2097,12 @@ msgstr "표면의 에너지입니다."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "확장 배율 수축 보상"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "냉각됨에 따라 재료 수축을 보상하기 위해 모델이 이 배율로 확장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5076,7 +5076,7 @@ msgstr "메쉬 처리 랭크"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "여러 오버랩 메쉬 내부채움을 고려할 때 메쉬의 우선 순위를 결정합니다. 여러 메쉬 내부채움이 오버랩하는 영역은 최저 랭크의 메쉬 설정에 착수하게 됩니다. 우선 순위가 높은 내부채움 메쉬는 우선 순위가 낮은 내부채움 메쉬와 표준 메쉬의 내부채움을 수정합니다."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"

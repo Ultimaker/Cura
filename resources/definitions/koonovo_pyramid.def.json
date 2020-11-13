@@ -1,0 +1,24 @@
+{
+    "name": "Koonovo Pyramid",
+    "version": 2,
+    "inherits": "koonovo_base",
+    "overrides": {
+        "machine_name": { "default_value": "Koonovo Pyramid" },
+        "machine_width": { "default_value": 310 },
+        "machine_depth": { "default_value": 310 },
+        "machine_height": { "default_value": 400 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+
+        "gantry_height": { "value": 0 }
+    },
+    "metadata": {
+        "quality_definition": "koonovo_base",
+        "visible": true
+    }
+}
