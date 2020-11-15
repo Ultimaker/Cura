@@ -54,6 +54,8 @@
 	"retraction_amount": { "default_value": 4 },
         "retraction_speed": { "default_value": 70},
  	"retraction_min_travel": {"value":5 },
+	"retraction_count_max": {"value":10 },
+	"retraction_extrusion_window": {"value":4 },
  	"retraction_hop": {"default_value":0.2},
 	"retraction_hop_enabled": {"value":true},
 	"speed_z_hop": {"value":2.5 },
@@ -66,8 +68,7 @@
 	"support_enable": {"value":true},
  	"support_angle": {"default_value": 50},
  	"support_brim_enable": {"value":true},
- 	"support_infill_angles
-        s": {"value":[-45]},
+ 	"support_infill_angles": {"value":[-45]},
  	"support_interface_density": {"value": 70},
  	"support_interface_enable": {"value": true },
 	"support_interface_height": {"value": 0.5},
