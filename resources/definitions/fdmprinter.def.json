@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "setting_version": 16,
-        "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
+        "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
         "has_variants": false,
@@ -1230,7 +1230,7 @@
                     "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric'",
+                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1817,7 +1817,7 @@
                     "type": "int",
                     "minimum_value": "1",
                     "maximum_value_warning": "infill_line_distance / infill_line_width",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag'",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4400,8 +4400,7 @@
                         }
                     }
                 },
-                "support_infill_angles
-        s":
+                "support_infill_angles":
                 {
                     "label": "Support Infill Line Directions",
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees.",
