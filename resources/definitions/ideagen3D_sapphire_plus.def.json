@@ -9,7 +9,6 @@
         "manufacturer": "ideagen3D",
         "file_formats": "text/x-gcode",
         "platform": "ideagen3D_sapphire_plus.3mf",
-        "platform_texture": "ideagen3D.png",
         "has_materials": true,
         "has_machine_quality": false,
         "machine_extruder_trains": { "0": "ideagen3D_sapphire_plus_0" }
