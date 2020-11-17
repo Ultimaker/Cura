@@ -143,8 +143,8 @@ ComboBox
         {
             Rectangle
             {
-                color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-                border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
+                color: delegateItem.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                border.color: delegateItem.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
                 anchors.fill: parent
             }
             text: delegateLabel.truncated ? delegateItem.text : ""
