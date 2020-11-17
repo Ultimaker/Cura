@@ -12,7 +12,7 @@
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "hellbot_magna_2_230_E1"
+            "0": "hellbot_magna_2_230_extruder_0"
         }
 
     },
