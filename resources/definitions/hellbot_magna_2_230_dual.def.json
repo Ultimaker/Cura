@@ -13,7 +13,7 @@
         "machine_extruder_trains":
         {
             "0": "hellbot_magna_2_230_dual_extruder_0",
-	    "1": "hellbot_magna_2_230_dual_extruder_0"
+	    "1": "hellbot_magna_2_230_dual_extruder_1"
         }
 
     },
