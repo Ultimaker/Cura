@@ -28,9 +28,9 @@
         "machine_depth": {
             "default_value": 300
         },        
-		"machine_heated_bed": {
-			"default_value": true 
-		},
+	"machine_heated_bed": {
+	    "default_value": true 
+	},
         "machine_center_is_zero": {
             "default_value": false
         },
