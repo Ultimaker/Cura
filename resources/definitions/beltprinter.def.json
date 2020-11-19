@@ -334,10 +334,6 @@
             "enabled": false
         },
 
-        "relative_extrusion": {
-            "enabled": false
-        },
-
         "z_offset_layer_0": {
             "enabled": false
         },
