@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Kosher Mirror",
+    "name": "Kosher_Mirror",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -21,7 +21,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Kosher Mirror" },
+        "machine_name": { "default_value": "Kosher_Mirror" },
         "machine_width": { "default_value": 75 },
         "machine_height": { "default_value": 300 },
         "machine_depth": { "default_value": 220 },

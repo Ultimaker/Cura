@@ -1,5 +1,4 @@
 {
-    "id": "kosher_mm_extruder",
     "version": 2,
     "name": "Mirror Extruder",
     "inherits": "fdmextruder",

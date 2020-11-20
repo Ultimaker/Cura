@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Kosher Duplication",
+    "name": "Kosher_Duplication",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -21,7 +21,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Kosher Duplication" },
+        "machine_name": { "default_value": "Kosher_Duplication" },
         "machine_width": { "default_value": 100 },
         "machine_height": { "default_value": 300 },
         "machine_depth": { "default_value": 220 },

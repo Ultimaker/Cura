@@ -1,5 +1,4 @@
 {
-    "id": "kosher_dm_extruder",
     "version": 2,
     "name": "Duplication Extruder",
     "inherits": "fdmextruder",
