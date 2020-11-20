@@ -6136,7 +6136,7 @@
                     "default_value": 2000,
                     "minimum_value": "0",
                     "minimum_value_warning": "500",
-                    "maximum_value_warning": "100000",
+                    "maximum_value_warning": "5000",
                     "settable_per_mesh": true
                 }
             }
