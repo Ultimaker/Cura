@@ -4,7 +4,7 @@
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "kosher_0",
+        "machine": "kosher",
         "position": "0"
     },
 

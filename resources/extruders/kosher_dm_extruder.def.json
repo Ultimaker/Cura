@@ -4,7 +4,7 @@
     "name": "Duplication Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "kosher_DM",
+        "machine": "kosher_duplication",
         "position": "0"
     },
 
