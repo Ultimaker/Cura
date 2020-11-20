@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Kosher 220",
+    "name": "Kosher",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -22,7 +22,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Kosher 220" },
+        "machine_name": { "default_value": "Kosher" },
         "machine_width": { "default_value": 220 },
         "machine_height": { "default_value": 300 },
         "machine_depth": { "default_value": 220 },
