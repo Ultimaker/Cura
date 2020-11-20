@@ -6126,6 +6126,18 @@
                     "minimum_value_warning": "0.01",
                     "maximum_value_warning": "0.3",
                     "settable_per_mesh": true
+                },
+                "meshfix_maximum_extrusion_area_deviation":
+                {
+                    "label": "Maximum Extrusion Area Deviation",
+                    "description": "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true.",
+                    "type": "float",
+                    "unit": "mm²",
+                    "default_value": 2,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.01",
+                    "maximum_value_warning": "10",
+                    "settable_per_mesh": true
                 }
             }
         },
