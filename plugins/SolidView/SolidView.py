@@ -56,7 +56,8 @@ class SolidView(View):
 
         self._extruders_model = None
         self._theme = None
-        self._support_angle = 90
+        self._support_angle = self._retrieveSupportAngle()
+        self._lowest_printable_height = self._retrieveLowestPrintHeight()
 
         self._global_stack = None
 
@@ -95,12 +96,20 @@ class SolidView(View):
             self._global_stack.propertyChanged.connect(self._onPropertyChanged)
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
-            self._onPropertyChanged("support_angle", "value")  # Force an re-evaluation
+            # Force re-evaluation:
+            self._support_angle = self._retrieveSupportAngle()
+            self._lowest_printable_height = self._retrieveLowestPrintHeight()
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
-        if key != "support_angle" or property_name != "value":
+        if property_name != "value":
             return
         # As the rendering is called a *lot* we really, dont want to re-evaluate the property every time. So we store em!
+        if key == "support_angle":
+            self._support_angle = self._retrieveSupportAngle()
+        elif key == "layer_height_0" or key == "slicing_tolerance":
+            self._lowest_printable_height = self._retrieveLowestPrintHeight()
+
+    def _retrieveSupportAngle(self) -> float:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             support_extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
@@ -111,7 +120,18 @@ class SolidView(View):
             else:
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 if angle is not None:
-                    self._support_angle = angle
+                    return angle
+        return 90.0
+
+    def _retrieveLowestPrintHeight(self) -> float:
+        min_height = 0.0
+        for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
+            init_layer_height = extruder.getProperty("layer_height_0", "value")
+            tolerance_setting = extruder.getProperty("slicing_tolerance", "value")
+            if tolerance_setting == "middle":
+                init_layer_height /= 2.0
+            min_height = max(min_height, init_layer_height / 2.0)
+        return min_height
 
     def _checkSetup(self):
         if not self._extruders_model:
@@ -194,6 +214,7 @@ class SolidView(View):
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
+        self._enabled_shader.setUniformValue("u_lowestPrintableHeight", self._lowest_printable_height)
         disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
         normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
         renderer.addRenderBatch(disabled_batch)
