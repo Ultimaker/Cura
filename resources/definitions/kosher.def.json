@@ -47,13 +47,7 @@
 	    "ironing_enabled":{"label": "Enable Ironing",
                     "description": "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material.",
                     "type": "bool", "default_value": true, "limit_to_extruder": "top_bottom_extruder_nr", "settable_per_mesh": true },
-        "machine_disallowed_areas": {
-            "default_value": [
-              [[-115,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]],
-              [[ 115,  112.5], [ 115,  102.5], [ 110,  102.5], [ 108,  112.5]],
-              [[-115, -112.5], [-115, -104.5], [ -84, -104.5], [ -82, -112.5]],
-              [[ 115, -112.5], [ 108, -112.5], [ 110, -104.5], [ 115, -104.5]]
-        ]},
+
         "machine_start_gcode": { "default_value": "M605 S0\nG21\nG90\nM82\nM107\nG28\nT1\nG92 E0\nG1 E16 F210\nG92 E0\nT0\nG92 E0\nG1 E16 F210\nG92 E0\n" },
         "machine_end_gcode": { "default_value": "G91\nG1 Z+0.5 E-16 Y+10 F9000\nG90\nM107\nM104 S0 T1\nM104 S0 T0\nM140 S0\nG28 X0 Y0\nT0\nM605 S1\nM84" },
         "machine_extruder_count": { "default_value": 2 }
