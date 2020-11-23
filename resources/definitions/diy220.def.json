@@ -8,7 +8,7 @@
         "manufacturer": "Sri Vignan Technologies",
         "weight": 3,
         "file_formats": "text/x-gcode",
-        "platform": "ultimaker3_platform.obj",
+        "platform": "diy220_platform.obj",
         "platform_texture": "svtbacktext.png",
         "platform_offset": [0, 0, 0],
         "has_materials": true,
