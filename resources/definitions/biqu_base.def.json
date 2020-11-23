@@ -83,7 +83,6 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
