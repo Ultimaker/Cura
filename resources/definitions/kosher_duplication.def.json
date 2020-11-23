@@ -42,9 +42,7 @@
         "retraction_speed": { "default_value": 30},
         
 		"adhesion_type": { "default_value": "skirt" },
-        "ironing_enabled":{"label": "Enable Ironing",
-                    "description": "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material.",
-                    "type": "bool", "default_value": true, "limit_to_extruder": "top_bottom_extruder_nr", "settable_per_mesh": true },
+        "ironing_enabled":{"default_value": true},
         "machine_gcode_flavor": { "default_value": "Marlin"},
         "machine_start_gcode": {"default_value": "M605 S0\nT0\nM605 S2 R0 X266\nG28 X\nG28 Y\nG1 X-30 F9000\nG1 Y20 F9000\nG21\nG90\nM82\nM107\nM104 S{material_print_temperature};\nM105\nM109 S{material_print_temperature};\nG92 E0\nG1 E16 F210\nG92 E0\nM605 S2 X100\nG28 X\nG28 Z\n"},
         "machine_end_gcode": {"default_value": "G91\nG1 Z+0.5 E-16 Y+10 F9000\nG90\nM107\nM104 S0\nM140 S0\nM117\nM605 S0\nG28 X0 Y0\nM605 S1\nG28 X\nM84"},
