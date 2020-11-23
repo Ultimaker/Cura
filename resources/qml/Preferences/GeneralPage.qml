@@ -157,7 +157,7 @@ UM.PreferencesPage
 
                         Component.onCompleted: {
                             append({ text: "English", code: "en_US" })
-                            append({ text: "Čeština", code: "cs_CZ" })
+                            //Czech is disabled for being incomplete: append({ text: "Čeština", code: "cs_CZ" })
                             append({ text: "Deutsch", code: "de_DE" })
                             append({ text: "Español", code: "es_ES" })
                             //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
@@ -409,7 +409,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
                     checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled
                     onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
-                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal"
+                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthographic"
                 }
 
                 //Because there is no signal for individual preferences, we need to manually link to the onPreferenceChanged signal.

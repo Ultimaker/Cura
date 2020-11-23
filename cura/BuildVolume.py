@@ -180,11 +180,20 @@ class BuildVolume(SceneNode):
     def setWidth(self, width: float) -> None:
         self._width = width
 
+    def getWidth(self) -> float:
+        return self._width
+
     def setHeight(self, height: float) -> None:
         self._height = height
 
+    def getHeight(self) -> float:
+        return self._height
+
     def setDepth(self, depth: float) -> None:
         self._depth = depth
+
+    def getDepth(self) -> float:
+        return self._depth
 
     def setShape(self, shape: str) -> None:
         if shape:
@@ -781,7 +790,10 @@ class BuildVolume(SceneNode):
                     if prime_tower_collision:  # Already found a collision.
                         break
                     if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
-                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                        brim_size = self._calculateBedAdhesionSize(used_extruders, "brim")
+                        # Use 2x the brim size, since we need 1x brim size distance due to the object brim and another
+                        # times the brim due to the brim of the prime tower
+                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(2 * brim_size, num_segments = 24))
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                     result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
@@ -833,7 +845,7 @@ class BuildVolume(SceneNode):
                 prime_tower_y += brim_size
 
             radius = prime_tower_size / 2
-            prime_tower_area = Polygon.approximatedCircle(radius)
+            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 24)
             prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
 
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
@@ -1038,16 +1050,23 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    def _calculateBedAdhesionSize(self, used_extruders):
+    def _calculateBedAdhesionSize(self, used_extruders, adhesion_override = None):
+        """Get the bed adhesion size for the global container stack and used extruders
+
+        :param adhesion_override: override adhesion type.
+          Use None to use the global stack default, "none" for no adhesion, "brim" for brim etc.
+        """
         if self._global_container_stack is None:
             return None
 
         container_stack = self._global_container_stack
-        adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        adhesion_type = adhesion_override
+        if adhesion_type is None:
+            adhesion_type = container_stack.getProperty("adhesion_type", "value")
         skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
         initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
-        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and adhesion_type != "raft"):
+        if adhesion_type == "brim":
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
@@ -1056,7 +1075,7 @@ class BuildVolume(SceneNode):
 
             # We don't create an additional line for the extruder we're printing the brim with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "skirt":  # No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
+        elif adhesion_type == "skirt":
             skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
             skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
 

@@ -1,7 +1,7 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import re #Regular expressions for parsing escape characters in the settings.
+import re  # Regular expressions for parsing escape characters in the settings.
 import json
 from typing import Optional
 
@@ -9,9 +9,10 @@ from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Logger import Logger
 from UM.i18n import i18nCatalog
+from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
+
 catalog = i18nCatalog("cura")
 
-from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
 
 class GCodeProfileReader(ProfileReader):
     """A class that reads profile data from g-code files.
@@ -29,9 +30,9 @@ class GCodeProfileReader(ProfileReader):
     """
 
     escape_characters = {
-        re.escape("\\\\"): "\\", #The escape character.
-        re.escape("\\n"): "\n",  #Newlines. They break off the comment.
-        re.escape("\\r"): "\r"   #Carriage return. Windows users may need this for visualisation in their editors.
+        re.escape("\\\\"): "\\",  # The escape character.
+        re.escape("\\n"): "\n",   # Newlines. They break off the comment.
+        re.escape("\\r"): "\r"    # Carriage return. Windows users may need this for visualisation in their editors.
     }
     """Dictionary that defines how characters are escaped when embedded in
 
@@ -41,11 +42,6 @@ class GCodeProfileReader(ProfileReader):
     not.
     """
 
-    def __init__(self):
-        """Initialises the g-code reader as a profile reader."""
-
-        super().__init__()
-
     def read(self, file_name):
         """Reads a g-code file, loading the profile from it.
 
@@ -54,6 +50,7 @@ class GCodeProfileReader(ProfileReader):
             specified file was no g-code or contained no parsable profile,
             None  is returned.
         """
+        Logger.log("i", "Attempting to read a profile from the g-code")
 
         if file_name.split(".")[-1] != "gcode":
             return None
@@ -70,7 +67,7 @@ class GCodeProfileReader(ProfileReader):
                 for line in f:
                     if line.startswith(prefix):
                         # Remove the prefix and the newline from the line and add it to the rest.
-                        serialized += line[prefix_length : -1]
+                        serialized += line[prefix_length: -1]
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
             return None
@@ -79,10 +76,10 @@ class GCodeProfileReader(ProfileReader):
         serialized = serialized.strip()
 
         if not serialized:
-            Logger.log("i", "No custom profile to import from this g-code: %s", file_name)
+            Logger.log("w", "No custom profile to import from this g-code: %s", file_name)
             raise NoProfileException()
 
-        # serialized data can be invalid JSON
+        # Serialized data can be invalid JSON
         try:
             json_data = json.loads(serialized)
         except Exception as e:

@@ -57,6 +57,22 @@
         },
         "top_bottom_thickness": {
             "default_value": 1
-        }
+        },
+        "machine_max_feedrate_x": { "default_value": 500 },
+        "machine_max_feedrate_y": { "default_value": 500 },
+        "machine_max_feedrate_z": { "default_value": 4 },
+        "machine_max_feedrate_e": { "default_value": 170 },
+        "machine_max_acceleration_x": { "value": 3000 },
+        "machine_max_acceleration_y": { "value": 1000 },
+        "machine_max_acceleration_z": { "value": 20 },
+        "machine_max_acceleration_e": { "value": 10000 },
+        "machine_acceleration": { "value": 3000 },
+        "machine_max_jerk_xy": { "value": 20 },
+        "machine_max_jerk_z": { "value": 0.4 },
+        "machine_max_jerk_e": { "value": 5 },
+        "machine_steps_per_mm_x": { "default_value": 80 },
+        "machine_steps_per_mm_y": { "default_value": 80 },
+        "machine_steps_per_mm_z": { "default_value": 2560 },
+        "machine_steps_per_mm_e": { "default_value": 98 }
     }
 }

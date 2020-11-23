@@ -1,3 +1,5 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 # Created by Wayne Porter
 
 from ..Script import Script
@@ -18,7 +20,7 @@ class TimeLapse(Script):
                 "trigger_command":
                 {
                     "label": "Trigger camera command",
-                    "description": "Gcode command used to trigger camera.",
+                    "description": "G-code command used to trigger camera.",
                     "type": "str",
                     "default_value": "M240"
                 },

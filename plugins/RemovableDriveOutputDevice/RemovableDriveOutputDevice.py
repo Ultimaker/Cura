@@ -59,7 +59,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
             # Take the intersection between file_formats and machine_file_formats.
             format_by_mimetype = {format["mime_type"]: format for format in file_formats}
-            file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
+            file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats if mimetype in format_by_mimetype]  # Keep them ordered according to the preference in machine_file_formats.
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
@@ -79,7 +79,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         if extension:  # Not empty string.
             extension = "." + extension
-        file_name = os.path.join(self.getId(), os.path.splitext(file_name)[0] + extension)
+        file_name = os.path.join(self.getId(), file_name + extension)
 
         try:
             Logger.log("d", "Writing to %s", file_name)

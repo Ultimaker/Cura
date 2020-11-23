@@ -26,7 +26,7 @@ Item
             left: queuedPrintJobs.left
             top: parent.top
         }
-        color: UM.Theme.getColor("monitor_text_primary")
+        color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
         renderType: Text.NativeRendering
@@ -47,7 +47,7 @@ Item
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
-            color: UM.Theme.getColor("monitor_text_link")
+            color: UM.Theme.getColor("text_link")
             source: UM.Theme.getIcon("external_link")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
@@ -58,12 +58,11 @@ Item
             anchors
             {
                 left: externalLinkIcon.right
-                leftMargin: 6 * screenScaleFactor // TODO: Theme!
+                leftMargin: UM.Theme.getSize("narrow_margin").width
                 verticalCenter: externalLinkIcon.verticalCenter
             }
-            color: UM.Theme.getColor("monitor_text_link")
+            color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium") // 14pt, regular
-            linkColor: UM.Theme.getColor("monitor_text_link")
             text: catalog.i18nc("@label link to connect manager", "Manage in browser")
             renderType: Text.NativeRendering
         }
@@ -89,7 +88,7 @@ Item
         anchors
         {
             left: queuedPrintJobs.left
-            leftMargin: 6 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("narrow_margin").width
             top: queuedLabel.bottom
             topMargin: 24 * screenScaleFactor // TODO: Theme!
         }
@@ -98,14 +97,10 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "There are no print jobs in the queue. Slice and send a job to add one.")
-            color: UM.Theme.getColor("monitor_text_primary")
-            elide: Text.ElideRight
-            font: UM.Theme.getFont("medium") // 14pt, regular
+            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("medium")
             anchors.verticalCenter: parent.verticalCenter
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count === 0
         }
@@ -113,15 +108,11 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: UM.Theme.getColor("monitor_text_primary")
-            elide: Text.ElideRight
+            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: 284 * screenScaleFactor // TODO: Theme! (Should match column size)
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
@@ -129,15 +120,11 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: UM.Theme.getColor("monitor_text_primary")
-            elide: Text.ElideRight
+            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
@@ -145,15 +132,11 @@ Item
         Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: UM.Theme.getColor("monitor_text_primary")
-            elide: Text.ElideRight
+            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
 
-            // FIXED-LINE-HEIGHT:
-            height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }

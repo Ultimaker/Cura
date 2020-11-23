@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import threading
@@ -114,9 +114,15 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         :param only_list_usb: If true, only usb ports are listed
         """
         base_list = []
-        for port in serial.tools.list_ports.comports():
+        try:
+            port_list = serial.tools.list_ports.comports()
+        except TypeError:  # Bug in PySerial causes a TypeError if port gets disconnected while processing.
+            port_list = []
+        for port in port_list:
             if not isinstance(port, tuple):
                 port = (port.device, port.description, port.hwid)
+            if not port[2]:  # HWID may be None if the device is not USB or the system doesn't report the type.
+                continue
             if only_list_usb and not port[2].startswith("USB"):
                 continue
 

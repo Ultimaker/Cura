@@ -6,7 +6,7 @@
         "type": "extruder",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 15,
+        "setting_version": 16,
         "visible": false,
         "position": "0"
     },

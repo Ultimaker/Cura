@@ -151,13 +151,6 @@ class Toolbox(QObject, Extension):
         self._package_used_materials = []  # type: List[Tuple[GlobalStack, str, str]]
         self._package_used_qualities = []  # type: List[Tuple[GlobalStack, str, str]]
 
-    @pyqtSlot(str, int)
-    def ratePackage(self, package_id: str, rating: int) -> None:
-        url = "{base_url}/packages/{package_id}/ratings".format(base_url = CloudApiModel.api_url, package_id = package_id)
-        data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
-
-        self._application.getHttpRequestManager().put(url, data = data.encode(), scope = self._json_scope)
-
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
 

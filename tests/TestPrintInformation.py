@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import functools
 
 from UM.Qt.Duration import Duration
@@ -55,7 +58,7 @@ def setup_module():
      MimeTypeDatabase.addMimeType(
          MimeType(
              name = "application/x-cura-gcode-file",
-             comment = "Cura GCode File",
+             comment = "Cura G-code File",
              suffixes = ["gcode"]
          )
      )
