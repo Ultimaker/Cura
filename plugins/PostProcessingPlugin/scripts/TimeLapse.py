@@ -77,7 +77,7 @@ class TimeLapse(Script):
                 },
                 "zhop":
                 {
-                    "label": "Z-Hop when parking",
+                    "label": "Z-Hop Height When Parking",
                     "description": "Z-hop length before parking",
                     "unit": "mm",
                     "type": "float",
