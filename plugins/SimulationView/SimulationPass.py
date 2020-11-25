@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Math.Color import Color
@@ -112,9 +112,9 @@ class SimulationPass(RenderPass):
 
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
-                nozzle_node.setVisible(False)
+                nozzle_node.setVisible(False)  # Don't set to true, we render it separately!
 
-            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
+            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh"):
                 disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
 
             elif isinstance(node, SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():
@@ -189,7 +189,6 @@ class SimulationPass(RenderPass):
         # but the user is not using the layer slider, and the compatibility mode is not enabled
         if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
-                nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())

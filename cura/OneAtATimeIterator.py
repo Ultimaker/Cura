@@ -27,9 +27,12 @@ class OneAtATimeIterator(Iterator.Iterator):
             if not issubclass(type(node), SceneNode):
                 continue
 
+            # Node can't be printed, so don't bother sending it.
+            if getattr(node, "_outside_buildarea", False):
+                continue
+
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)
-
 
         if len(node_list) < 2:
             self._node_stack = node_list[:]
@@ -38,8 +41,8 @@ class OneAtATimeIterator(Iterator.Iterator):
         # Copy the list
         self._original_node_list = node_list[:]
 
-        ## Initialise the hit map (pre-compute all hits between all objects)
-        self._hit_map = [[self._checkHit(i,j) for i in node_list] for j in node_list]
+        # Initialise the hit map (pre-compute all hits between all objects)
+        self._hit_map = [[self._checkHit(i, j) for i in node_list] for j in node_list]
 
         # Check if we have to files that block each other. If this is the case, there is no solution!
         for a in range(0, len(node_list)):

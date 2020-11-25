@@ -345,6 +345,9 @@ class ContainerManager(QObject):
         # user changes are possibly added to make the current setup match the current enabled extruders
         machine_manager.correctExtruderSettings()
 
+        # The Print Sequence should be changed to match the current setup
+        machine_manager.correctPrintSequence()
+
         for container in send_emits_containers:
             container.sendPostponedEmits()
 

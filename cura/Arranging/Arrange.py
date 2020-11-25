@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
+from UM.Decorators import deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
 from UM.Math.Polygon import Polygon
@@ -32,6 +33,7 @@ class Arrange:
 
     build_volume = None  # type: Optional[BuildVolume]
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def __init__(self, x, y, offset_x, offset_y, scale = 0.5):
         self._scale = scale  # convert input coordinates to arrange coordinates
         world_x, world_y = int(x * self._scale), int(y * self._scale)
@@ -45,6 +47,7 @@ class Arrange:
         self._is_empty = True
 
     @classmethod
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250, min_offset = 8) -> "Arrange":
         """Helper to create an :py:class:`cura.Arranging.Arrange.Arrange` instance
 
@@ -101,6 +104,7 @@ class Arrange:
 
         self._last_priority = 0
 
+    @deprecated("Use the functions in Nest2dArrange instead", "4.8")
     def findNodePlacement(self, node: SceneNode, offset_shape_arr: ShapeArray, hull_shape_arr: ShapeArray, step = 1) -> bool:
         """Find placement for a node (using offset shape) and place it (using hull shape)
 
