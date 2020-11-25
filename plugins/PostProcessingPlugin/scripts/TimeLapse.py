@@ -73,7 +73,7 @@ class TimeLapse(Script):
                     "description": "Filament retraction distance for camera trigger.",
                     "unit": "mm",
                     "type": "int",
-                    "default_value": 1
+                    "default_value": 0
                 },
                 "zhop":
                 {
