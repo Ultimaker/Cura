@@ -81,7 +81,7 @@ class TimeLapse(Script):
                     "description": "Z-hop length before parking",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.8
+                    "default_value": 0
                 }
             }
         }"""
