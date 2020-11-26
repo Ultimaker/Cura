@@ -73,15 +73,15 @@ class TimeLapse(Script):
                     "description": "Filament retraction distance for camera trigger.",
                     "unit": "mm",
                     "type": "int",
-                    "default_value": 1
+                    "default_value": 0
                 },
                 "zhop":
                 {
-                    "label": "Z-Hop when parking",
+                    "label": "Z-Hop Height When Parking",
                     "description": "Z-hop length before parking",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.8
+                    "default_value": 0
                 }
             }
         }"""
