@@ -873,7 +873,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable') or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -2614,7 +2614,7 @@
                             "minimum_value": "5",
                             "minimum_value_warning": "50",
                             "maximum_value_warning": "150",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
