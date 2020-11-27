@@ -43,12 +43,6 @@
         "material_diameter": {
             "default_value": 0.64
         },
-        "layer_height": {
-            "default_value": 0.25
-        },
-        "layer_height_0": {
-            "default_value": 0.25
-        },
         "retraction_amount": {
             "default_value": 2
         },
