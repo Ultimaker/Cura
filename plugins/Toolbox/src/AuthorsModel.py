@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, cast
 
 from PyQt5.QtCore import Qt, pyqtProperty
 
@@ -68,7 +68,7 @@ class AuthorsModel(ListModel):
         # Execute all filters.
         filtered_items = list(items)
 
-        filtered_items.sort(key = lambda k: k["name"])
+        filtered_items.sort(key = lambda k: cast(str, k["name"]))
         self.setItems(filtered_items)
 
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
