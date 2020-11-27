@@ -1067,6 +1067,19 @@
                     "default_value": "inward_distributed",
                     "limit_to_extruder": "wall_0_extruder_nr"
                 },
+                "wall_transition_length":
+                {
+                    "label": "Wall Transition Length",
+                    "description": "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.4,
+                    "value": "line_width",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.5 * line_width",
+                    "maximum_value_warning": "2 * line_width",
+                    "maximum_value": "min_bead_width * 3 * math.pi"
+                },
                 "wall_0_wipe_dist":
                 {
                     "label": "Outer Wall Wipe Distance",
