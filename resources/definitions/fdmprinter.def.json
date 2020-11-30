@@ -1080,6 +1080,18 @@
                     "maximum_value_warning": "2 * line_width",
                     "maximum_value": "min_bead_width * 3 * math.pi"
                 },
+                "wall_transition_angle":
+                {
+                    "label": "Wall Transition Angle",
+                    "description": "When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.",
+                    "type": "float",
+                    "unit": "°",
+                    "default_value": 30,
+                    "minimum_value": "1",
+                    "minimum_value_warning": "15",
+                    "maximum_value_warning": "50",
+                    "maximum_value": "59"
+                },
                 "wall_0_wipe_dist":
                 {
                     "label": "Outer Wall Wipe Distance",
