@@ -2061,7 +2061,7 @@ msgstr "Température du plateau"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "Température utilisée pour le plateau de fabrication chauffé. Si elle est définie sur 0, le plateau de fabrication ne sera pas chauffé."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2071,7 +2071,8 @@ msgstr "Température du plateau couche initiale"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "Température utilisée pour le plateau de fabrication chauffé à la première couche. Si elle est définie sur 0, le plateau de fabrication ne sera pas chauffé"
+" lors de la première couche."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2096,12 +2097,12 @@ msgstr "Énergie de la surface."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Mise à l'échelle du facteur de compensation de contraction"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "Pour compenser la contraction du matériau lors de son refroidissement, le modèle est mis à l'échelle avec ce facteur."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5075,7 +5076,9 @@ msgstr "Rang de traitement du maillage"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Détermine la priorité de cette maille lorsque plusieurs chevauchements de mailles de remplissage sont pris en considération. Les zones comportant plusieurs"
+" chevauchements de mailles de remplissage prendront en compte les paramètres du maillage ayant l'ordre le plus bas. Une maille de remplissage possédant"
+" un ordre plus élevé modifiera le remplissage des mailles de remplissage ayant un ordre plus bas et des mailles normales."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"

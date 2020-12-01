@@ -2061,7 +2061,7 @@ msgstr "Temperatur Druckplatte"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "Die Temperatur, die für das beheizte Druckbett verwendet wird. Beträgt dieser Wert 0, wird das Bett nicht beheizt."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2071,7 +2071,7 @@ msgstr "Temperatur der Druckplatte für die erste Schicht"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "Die Temperatur, auf die das Druckbett für die erste Schicht erhitzt wird. Beträgt dieser Wert 0, wird das Druckbett für die erste Schicht nicht beheizt."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2096,12 +2096,12 @@ msgstr "Oberflächenenergie."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Kompensation der Schrumpfung des Skalierungsfaktors"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "Um die Schrumpfung des Materials beim Abkühlen zu kompensieren, wird das Modell mit diesem Faktor skaliert."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5075,7 +5075,9 @@ msgstr "Rang der Netzverarbeitung"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Legt fest, welche Priorität dieses Netz (Mesh) bei mehreren überlappenden Mesh-Füllungen hat. Bereiche, in denen mehrere Mesh-Füllungen überlappen, übernehmen"
+" die Einstellungen des Netzes mit dem niedrigsten Rang. Wird eine Mesh-Füllung höher gerankt, führt dies zu einer Modifizierung der Füllungen oder Mesh-Füllungen,"
+" deren Priorität niedriger oder normal ist."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"

@@ -1,9 +1,8 @@
 [4.8.0]
-
-* (NOTE: Draft release notes for Beta, these may change for final.)
+<i>For an overview of the new features in Cura 4.8, please see this video: <a href="https://www.youtube.com/watch?v=BI1n4IDHbuA">Change log overview</a>.</i>
 
 * New arrange algorithm!
-Shoutout to Prusa, since they made the libnest2d library for this, and allowed a licence change.
+Shout-out to Prusa Research, since they made the libnest2d library for this, and allowed a licence change.
 
 * When opening a project file, pick any matching printer in addition to just exact match and new definition.
 Previously, when someone sent you a project, you either had to have the exact same printer under the exact same name, or create an entirely new instance. Now, in the open project dialog, you can specify any printer that has a(n exactly) matching printer-type.
@@ -11,8 +10,8 @@ Previously, when someone sent you a project, you either had to have the exact sa
 * Show warning message on profiles that where successfully imported, but not supported by the currently active configuration.
 People where a bit confused when adding profiles, which then didn't show up. With this new version, when you add a profile that isn't supported by the current instance (but otherwise correctly imported), you get a warning-message.
 
-* Show parts of the model below the buildplate in a different color.
-When viewing the buildplate from below, there's now shadow visible anymore. As this helped the user determine what part of the model was below the buildplate, we decided to color that part differently instead.
+* Show parts of the model below the build-plate in a different color.
+When viewing the build-plate from below, there's now shadow visible anymore. As this helped the user determine what part of the model was below the buildplate, we decided to color that part differently instead.
 
 * Show the familiar striped pattern for objects outside of the build-volume in Preview mode as well.
 Models outside of the build-volume can of course not be sliced. In the Prepare mode, this was already visible with solid objects indicated in the familiar grey-yellow striped pattern. Now you can also see the objects that are still in the scene just outside if the build-volume in Preview mode.
@@ -24,7 +23,7 @@ Ironing was only used for top-layers, or every layer. But what is the biggest fl
 Certain plugins, such as the very useful Settings Guide, occasionally have very large tooltips. This update allows you to scroll through those.
 
 * Bug Fixes
-- Fix the simplify algorithm. Again.
+- <u>Fixed under-simplification (blobs, zits) on some printer models.</u> <i>An oversight in 4.6.x resulted in an oversimplification (smoothing) of models. The attempted fix in 4.7.x overcompensated, which gave difficulty (zits, blobs) for some printer models when the resulting gcode became too intricate. This is now fixed, though some profiles might need to be updated, since they where made against 4.6.x, and therefore may rely on the over-simplification.</i>
 - Fix percentage text-fields when scaling non-uniformly.
 - Fix cloud printer stuck in connect/disconnect loop.
 - Fix rare crash when processing stair stepping in support.
@@ -40,8 +39,13 @@ Certain plugins, such as the very useful Settings Guide, occasionally have very 
 - Fix off-by-one error that could cause horizontal faces to shift one layer upwards.
 - Fix out of bounds array and lost checks for segments ended with mesh vertices, contributed bt skarasov
 - Remove redundant 'successful responses' variable, contributed by aerotog
+- In rare cases, brim and prime-tower-bim would overlap.
+- Fix support for some models when bottom distance and stair step height where both 0 (like with PVA).
+- An issue with infill only overlap modifier when the wall line count was overridden in the global settings.
+- Filling gaps between walls would also fill between skin and infill.
 
 * Printer definitions and profiles
+- <i>Introducing the <b>Ultimaker 2+ Connect</b></i>
 - Artillery Sidewinder X1, Artillery Sidewinder Genius, contributed by cataclism
 - AnyCubic Kossel, contributed by FoxExe
 - BIQU B1, contributed by looxonline
@@ -53,7 +57,7 @@ Certain plugins, such as the very useful Settings Guide, occasionally have very 
 - Add Acetate profiles for Strateo3D, contributed by KOUBeMT
 
 [4.7.1]
-For an overview of the new features in Cura 4.7, please see this video: <a href="https://www.youtube.com/watch?v=vuKuil0dJqE">Change log overview</a>
+<i>For an overview of the new features in Cura 4.7, please see this video: <a href="https://www.youtube.com/watch?v=vuKuil0dJqE">Change log overview</a>.</i>
 
 * Bug fixes
 - Fixed a crash when duplicating a built-in profile.
