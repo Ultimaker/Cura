@@ -13,6 +13,7 @@
     "metadata": {
         "quality_definition": "mingda_base",
         "visible": true,
-		
+		"platform": "artillery_genius.stl",
+        "platform_offset": [ -0, -72, -20]
     }
 }
