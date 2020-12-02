@@ -28,8 +28,8 @@ class VersionUpgrade49to50(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number. Disabled until we ensure that 18 will be the 5.0 setting version number
-        # parser["metadata"]["setting_version"] = "18"
+        # Update version number.
+        parser["metadata"]["setting_version"] = "18"
 
         # Remove deleted settings from the visible settings list.
         if "general" in parser and "visible_settings" in parser["general"]:
@@ -59,8 +59,8 @@ class VersionUpgrade49to50(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
-        # Update version number. Disabled until we ensure that 18 will be the 5.0 setting version number
-        # parser["metadata"]["setting_version"] = "18"
+        # Update version number.
+        parser["metadata"]["setting_version"] = "18"
 
         if "values" in parser:
             # Remove deleted settings from the instance containers.
@@ -88,10 +88,10 @@ class VersionUpgrade49to50(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number. Disabled until we ensure that 18 will be the 5.0 setting version number
+        # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        # parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "18"
 
         result = io.StringIO()
         parser.write(result)
