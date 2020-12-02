@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -9,12 +9,7 @@ from UM.VersionUpgrade import VersionUpgrade
 _removed_settings = {
     "travel_compensate_overlapping_walls_enabled",
     "travel_compensate_overlapping_walls_0_enabled",
-    "travel_compensate_overlapping_walls_x_enabled",
-    "fill_perimeter_gaps",
-    "wall_min_flow",
-    "wall_min_flow_retract",
-    "speed_equalize_flow_enabled",
-    "speed_equalize_flow_min"
+    "travel_compensate_overlapping_walls_x_enabled"
 }
 
 
@@ -42,12 +37,6 @@ class VersionUpgrade49to50(VersionUpgrade):
             for removed in _removed_settings:
                 if removed in visible_settings:
                     visible_settings.remove(removed)
-
-            # Replace Outer Before Inner Walls with equivalent.
-            if "outer_inset_first" in visible_settings:
-                visible_settings.remove("outer_inset_first")
-                visible_settings.add("inset_direction")
-
             parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
@@ -79,13 +68,6 @@ class VersionUpgrade49to50(VersionUpgrade):
                 if removed in parser["values"]:
                     del parser["values"][removed]
 
-            # Replace Outer Before Inner Walls with equivalent setting.
-            if "outer_inset_first" in parser["values"]:
-                old_value = parser["values"]["outer_inset_first"]
-                if old_value.startswith("="):  # Was already a formula.
-                    old_value = old_value[1:]
-                parser["values"]["inset_direction"] = f"='outside_in' if ({old_value}) else 'inside_out'"  # Makes it work both with plain setting values and formulas.
-
             # Disable Fuzzy Skin as it doesn't work with with the libArachne walls
             if "magic_fuzzy_skin_enabled" in parser["values"]:
                 parser["values"]["magic_fuzzy_skin_enabled"] = "False"
@@ -109,8 +91,6 @@ class VersionUpgrade49to50(VersionUpgrade):
         # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-
-        parser["general"]["version"] = "5"
         parser["metadata"]["setting_version"] = "18"
 
         result = io.StringIO()
