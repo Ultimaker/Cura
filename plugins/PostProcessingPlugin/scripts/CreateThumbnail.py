@@ -1,5 +1,4 @@
 import base64
-import re
 
 from UM.Logger import Logger
 from cura.Snapshot import Snapshot
