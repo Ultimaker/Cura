@@ -101,6 +101,7 @@ class CreateThumbnail(Script):
                         line_index = lines.index(line)
                         insert_index = line_index + 1
                         lines[insert_index:insert_index] = snapshot_gcode
+                        break
 
                 final_lines = "\n".join(lines)
                 data[layer_index] = final_lines
