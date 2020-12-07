@@ -1,6 +1,6 @@
 {
-    "name": "Maker Made 300x",
     "version": 2,
+    "name": "Maker Made 300x",    
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
