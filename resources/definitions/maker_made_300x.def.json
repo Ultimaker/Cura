@@ -25,7 +25,7 @@
         "machine_width": {"default_value": 300},
         "machine_height": {"default_value": 400},
         "machine_depth": {"default_value": 300},
-        "machine_head_polygon": {"default_value": [[-30, 34],[-30, -32],[30, -32],[30, 34]]},
+        "machine_head_with_fans_polygon": {"default_value": [[-30, 34],[-30, -32],[30, -32],[30, 34]]},
         "gantry_height": {"value": "30"},
         "machine_heated_bed": {"default_value": true},
         "material_diameter": {"default_value": 1.75},
