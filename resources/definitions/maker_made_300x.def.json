@@ -120,7 +120,6 @@
         "support_wall_count": {"value": 0},
         "zig_zaggify_support":  {"value": false },
         "support_infill_rate": {"value": "15 if support_enable else 0"},
-        "support_infill_angle": {"value": 0},
         "support_brim_enable":  {"value": true },
         "support_brim_line_count": {"value": 5},
         "support_z_distance": {"value": 0.2},
