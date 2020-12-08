@@ -211,7 +211,7 @@ if Platform.isLinux() and getattr(sys, "frozen", False):
 # When using the KDE qqc2-desktop-style, the UI layout is completely broken, and
 # even worse, it crashes when switching to the "Preview" pane.
 if Platform.isLinux():
-    os.environ["QT_QUICK_CONTROLS_STYLE"] = "material"
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "default"
     
 app = CuraApplication()
 app.run()
