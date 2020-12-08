@@ -37,19 +37,6 @@
         ]
     },
 
-    "settings": {
-        "blackbelt_settings":
-        {
-            "children":
-            {
-                "blackbelt_z_offset_gap":
-                {
-                    "default_value": 0.3
-                }
-            }
-        }
-    },
-
     "overrides": {
         "machine_name": {
             "default_value": "BLACKBELT 3D varioDrive"
@@ -88,6 +75,9 @@
         },
         "coasting_enable": {
             "value": "False"
+        },
+        "coasting_volume": {
+            "value": "0"
         }
     }
 }
