@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
@@ -9,7 +9,7 @@ from UM.Version import Version
 
 import urllib.request
 from urllib.error import URLError
-from typing import Dict, Optional
+from typing import Dict
 import ssl
 
 import certifi
@@ -21,8 +21,9 @@ from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 
-##  This job checks if there is an update available on the provided URL.
 class FirmwareUpdateCheckerJob(Job):
+    """This job checks if there is an update available on the provided URL."""
+
     STRING_ZERO_VERSION = "0.0.0"
     STRING_EPSILON_VERSION = "0.0.1"
     ZERO_VERSION = Version(STRING_ZERO_VERSION)
@@ -44,6 +45,7 @@ class FirmwareUpdateCheckerJob(Job):
         try:
             # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
             context = ssl.SSLContext(protocol = ssl.PROTOCOL_TLSv1_2)
+            context.verify_mode = ssl.CERT_REQUIRED
             context.load_verify_locations(cafile = certifi.where())
 
             request = urllib.request.Request(url, headers = self._headers)
@@ -112,7 +114,7 @@ class FirmwareUpdateCheckerJob(Job):
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
                     Logger.log("i", "Showing firmware update message for new version: {version}".format(version = current_version))
-                    message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name,
+                    message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name, current_version,
                                                            self._lookups.getRedirectUserUrl())
                     message.actionTriggered.connect(self._callback)
                     message.show()

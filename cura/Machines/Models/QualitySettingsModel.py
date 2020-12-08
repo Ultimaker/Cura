@@ -1,18 +1,21 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
+from typing import Set
 
 import cura.CuraApplication
+from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
+import os
 
-#
-# This model is used to show details settings of the selected quality in the quality management page.
-#
+
 class QualitySettingsModel(ListModel):
+    """This model is used to show details settings of the selected quality in the quality management page."""
+
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
     UnitRole = Qt.UserRole + 3
@@ -23,7 +26,7 @@ class QualitySettingsModel(ListModel):
 
     GLOBAL_STACK_POSITION = -1
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent = parent)
 
         self.addRoleName(self.KeyRole, "key")
@@ -38,7 +41,9 @@ class QualitySettingsModel(ListModel):
         self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._application.getMachineManager().activeStackChanged.connect(self._update)
 
-        self._selected_position = self.GLOBAL_STACK_POSITION #Must be either GLOBAL_STACK_POSITION or an extruder position (0, 1, etc.)
+        # Must be either GLOBAL_STACK_POSITION or an extruder position (0, 1, etc.)
+        self._selected_position = self.GLOBAL_STACK_POSITION
+
         self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
 
@@ -47,14 +52,14 @@ class QualitySettingsModel(ListModel):
     selectedPositionChanged = pyqtSignal()
     selectedQualityItemChanged = pyqtSignal()
 
-    def setSelectedPosition(self, selected_position):
+    def setSelectedPosition(self, selected_position: int) -> None:
         if selected_position != self._selected_position:
             self._selected_position = selected_position
             self.selectedPositionChanged.emit()
             self._update()
 
     @pyqtProperty(int, fset = setSelectedPosition, notify = selectedPositionChanged)
-    def selectedPosition(self):
+    def selectedPosition(self) -> int:
         return self._selected_position
 
     def setSelectedQualityItem(self, selected_quality_item):
@@ -67,7 +72,7 @@ class QualitySettingsModel(ListModel):
     def selectedQualityItem(self):
         return self._selected_quality_item
 
-    def _update(self):
+    def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         if not self._selected_quality_item:
@@ -79,11 +84,17 @@ class QualitySettingsModel(ListModel):
         global_container_stack = self._application.getGlobalContainerStack()
         definition_container = global_container_stack.definition
 
+        # Try and find a translation catalog for the definition
+        for file_name in definition_container.getInheritedFiles():
+            catalog = i18nCatalog(os.path.basename(file_name))
+            if catalog.hasTranslationLoaded():
+                self._i18n_catalog = catalog
+
         quality_group = self._selected_quality_item["quality_group"]
         quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
         quality_node = None
-        settings_keys = set()
+        settings_keys = set()  # type: Set[str]
         if quality_group:
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 quality_node = quality_group.node_for_global
@@ -98,7 +109,8 @@ class QualitySettingsModel(ListModel):
         # the settings in that quality_changes_group.
         if quality_changes_group is not None:
             container_registry = ContainerRegistry.getInstance()
-            global_containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
+            metadata_for_global = quality_changes_group.metadata_for_global
+            global_containers = container_registry.findContainers(id = metadata_for_global["id"])
             global_container = None if len(global_containers) == 0 else global_containers[0]
             extruders_containers = {pos: container_registry.findContainers(id = quality_changes_group.metadata_per_extruder[pos]["id"]) for pos in quality_changes_group.metadata_per_extruder}
             extruders_container = {pos: None if not containers else containers[0] for pos, containers in extruders_containers.items()}
@@ -149,7 +161,7 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
             else:
-                extruder_stack = global_container_stack.extruders[str(self._selected_position)]
+                extruder_stack = global_container_stack.extruderList[self._selected_position]
                 user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
 
             if profile_value is None and user_value is None:

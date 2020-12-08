@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -50,7 +50,7 @@ class ImageReader(MeshReader):
         size = max(self._ui.getWidth(), self._ui.getDepth())
         return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher, self._ui.use_transparency_model, self._ui.transmittance_1mm)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
+    def _generateSceneNode(self, file_name, xz_size, height_from_base, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
         scene_node = SceneNode()
 
         mesh = MeshBuilder()
@@ -68,8 +68,10 @@ class ImageReader(MeshReader):
         if img.width() < 2 or img.height() < 2:
             img = img.scaled(width, height, Qt.IgnoreAspectRatio)
 
+        height_from_base = max(height_from_base, 0)
         base_height = max(base_height, 0)
-        peak_height = max(peak_height, -base_height)
+        peak_height = base_height + height_from_base
+
 
         xz_size = max(xz_size, 1)
         scale_vector = Vector(xz_size, peak_height, xz_size)
@@ -96,7 +98,7 @@ class ImageReader(MeshReader):
         texel_width = 1.0 / (width_minus_one) * scale_vector.x
         texel_height = 1.0 / (height_minus_one) * scale_vector.z
 
-        height_data = numpy.zeros((height, width), dtype=numpy.float32)
+        height_data = numpy.zeros((height, width), dtype = numpy.float32)
 
         for x in range(0, width):
             for y in range(0, height):
@@ -112,7 +114,7 @@ class ImageReader(MeshReader):
             height_data = 1 - height_data
 
         for _ in range(0, blur_iterations):
-            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode= "edge")
+            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode = "edge")
 
             height_data += copy[1:-1, 2:]
             height_data += copy[1:-1, :-2]
@@ -165,7 +167,7 @@ class ImageReader(MeshReader):
         offsetsz = numpy.array(offsetsz, numpy.float32).reshape(-1, 1) * texel_height
 
         # offsets for each texel quad
-        heightmap_vertex_offsets = numpy.concatenate([offsetsx, numpy.zeros((offsetsx.shape[0], offsetsx.shape[1]), dtype=numpy.float32), offsetsz], 1)
+        heightmap_vertex_offsets = numpy.concatenate([offsetsx, numpy.zeros((offsetsx.shape[0], offsetsx.shape[1]), dtype = numpy.float32), offsetsz], 1)
         heightmap_vertices += heightmap_vertex_offsets.repeat(6, 0).reshape(-1, 6, 3)
 
         # apply height data to y values
@@ -174,7 +176,7 @@ class ImageReader(MeshReader):
         heightmap_vertices[:, 2, 1] = heightmap_vertices[:, 3, 1] = height_data[1:, 1:].reshape(-1)
         heightmap_vertices[:, 4, 1] = height_data[:-1, 1:].reshape(-1)
 
-        heightmap_indices = numpy.array(numpy.mgrid[0:heightmap_face_count * 3], dtype=numpy.int32).reshape(-1, 3)
+        heightmap_indices = numpy.array(numpy.mgrid[0:heightmap_face_count * 3], dtype = numpy.int32).reshape(-1, 3)
 
         mesh._vertices[0:(heightmap_vertices.size // 3), :] = heightmap_vertices.reshape(-1, 3)
         mesh._indices[0:(heightmap_indices.size // 3), :] = heightmap_indices
@@ -223,7 +225,7 @@ class ImageReader(MeshReader):
             mesh.addFaceByPoints(geo_width, 0, y, geo_width, 0, ny, geo_width, he1, ny)
             mesh.addFaceByPoints(geo_width, he1, ny, geo_width, he0, y, geo_width, 0, y)
 
-        mesh.calculateNormals(fast=True)
+        mesh.calculateNormals(fast = True)
 
         scene_node.setMeshData(mesh.build())
 

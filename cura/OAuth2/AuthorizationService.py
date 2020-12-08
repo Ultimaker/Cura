@@ -3,33 +3,34 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Optional, TYPE_CHECKING
-from urllib.parse import urlencode
+from typing import Optional, TYPE_CHECKING, Dict
+from urllib.parse import urlencode, quote_plus
 
 import requests.exceptions
-
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
-
-from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
+from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
+from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse
 
-from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
     from UM.Preferences import Preferences
 
+MYCLOUD_LOGOFF_URL = "https://mycloud.ultimaker.com/logoff"
 
-##  The authorization service is responsible for handling the login flow,
-#   storing user credentials and providing account information.
 class AuthorizationService:
+    """The authorization service is responsible for handling the login flow, storing user credentials and providing
+    account information.
+    """
+
     # Emit signal when authentication is completed.
     onAuthStateChanged = Signal()
 
@@ -61,11 +62,16 @@ class AuthorizationService:
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
-    ##  Get the user profile as obtained from the JWT (JSON Web Token).
-    #   If the JWT is not yet parsed, calling this will take care of that.
-    #   \return UserProfile if a user is logged in, None otherwise.
-    #   \sa _parseJWT
     def getUserProfile(self) -> Optional["UserProfile"]:
+        """Get the user profile as obtained from the JWT (JSON Web Token).
+
+        If the JWT is not yet parsed, calling this will take care of that.
+
+        :return: UserProfile if a user is logged in, None otherwise.
+
+        See also: :py:method:`cura.OAuth2.AuthorizationService.AuthorizationService._parseJWT`
+        """
+
         if not self._user_profile:
             # If no user profile was stored locally, we try to get it from JWT.
             try:
@@ -83,9 +89,12 @@ class AuthorizationService:
 
         return self._user_profile
 
-    ##  Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
-    #   \return UserProfile if it was able to parse, None otherwise.
     def _parseJWT(self) -> Optional["UserProfile"]:
+        """Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
+
+        :return: UserProfile if it was able to parse, None otherwise.
+        """
+
         if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
             Logger.log("d", "There was no auth data or access token")
@@ -108,8 +117,9 @@ class AuthorizationService:
         self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
-    ##  Get the access token as provided by the repsonse data.
     def getAccessToken(self) -> Optional[str]:
+        """Get the access token as provided by the repsonse data."""
+
         if self._auth_data is None:
             Logger.log("d", "No auth data to retrieve the access_token from")
             return None
@@ -124,8 +134,9 @@ class AuthorizationService:
 
         return self._auth_data.access_token if self._auth_data else None
 
-    ##  Try to refresh the access token. This should be used when it has expired.
     def refreshAccessToken(self) -> None:
+        """Try to refresh the access token. This should be used when it has expired."""
+
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
@@ -137,14 +148,16 @@ class AuthorizationService:
             Logger.log("w", "Failed to get a new access token from the server.")
             self.onAuthStateChanged.emit(logged_in = False)
 
-    ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:
+        """Delete the authentication data that we have stored locally (eg; logout)"""
+
         if self._auth_data is not None:
             self._storeAuthData()
             self.onAuthStateChanged.emit(logged_in = False)
 
-    ##  Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login.
-    def startAuthorizationFlow(self) -> None:
+    def startAuthorizationFlow(self, force_browser_logout: bool = False) -> None:
+        """Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login."""
+
         Logger.log("d", "Starting new OAuth2 flow...")
 
         # Create the tokens needed for the code challenge (PKCE) extension for OAuth2.
@@ -155,8 +168,8 @@ class AuthorizationService:
 
         state = AuthorizationHelpers.generateVerificationCode()
 
-        # Create the query string needed for the OAuth2 flow.
-        query_string = urlencode({
+        # Create the query dict needed for the OAuth2 flow.
+        query_parameters_dict = {
             "client_id": self._settings.CLIENT_ID,
             "redirect_uri": self._settings.CALLBACK_URL,
             "scope": self._settings.CLIENT_SCOPES,
@@ -164,16 +177,43 @@ class AuthorizationService:
             "state": state,  # Forever in our Hearts, RIP "(.Y.)" (2018-2020)
             "code_challenge": challenge_code,
             "code_challenge_method": "S512"
-        })
-
-        # Open the authorization page in a new browser window.
-        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
+        }
 
         # Start a local web server to receive the callback URL on.
-        self._server.start(verification_code, state)
+        try:
+            self._server.start(verification_code, state)
+        except OSError:
+            Logger.logException("w", "Unable to create authorization request server")
+            Message(i18n_catalog.i18nc("@info", "Unable to start a new sign in process. Check if another sign in attempt is still active."),
+                    title=i18n_catalog.i18nc("@info:title", "Warning")).show()
+            return
 
-    ##  Callback method for the authentication flow.
+        auth_url = self._generate_auth_url(query_parameters_dict, force_browser_logout)
+        # Open the authorization page in a new browser window.
+        QDesktopServices.openUrl(QUrl(auth_url))
+
+    def _generate_auth_url(self, query_parameters_dict: Dict[str, Optional[str]], force_browser_logout: bool) -> str:
+        """
+        Generates the authentications url based on the original auth_url and the query_parameters_dict to be included.
+        If there is a request to force logging out of mycloud in the browser, the link to logoff from mycloud is
+        prepended in order to force the browser to logoff from mycloud and then redirect to the authentication url to
+        login again. This case is used to sync the accounts between Cura and the browser.
+
+        :param query_parameters_dict: A dictionary with the query parameters to be url encoded and added to the
+                                      authentication link
+        :param force_browser_logout: If True, Cura will prepend the MYCLOUD_LOGOFF_URL link before the authentication
+                                     link to force the a browser logout from mycloud.ultimaker.com
+        :return: The authentication URL, properly formatted and encoded
+        """
+        auth_url = "{}?{}".format(self._auth_url, urlencode(query_parameters_dict))
+        if force_browser_logout:
+            # The url after '?next=' should be urlencoded
+            auth_url = "{}?next={}".format(MYCLOUD_LOGOFF_URL, quote_plus(auth_url))
+        return auth_url
+
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:
+        """Callback method for the authentication flow."""
+
         if auth_response.success:
             self._storeAuthData(auth_response)
             self.onAuthStateChanged.emit(logged_in = True)
@@ -181,8 +221,9 @@ class AuthorizationService:
             self.onAuthenticationError.emit(logged_in = False, error_message = auth_response.err_message)
         self._server.stop()  # Stop the web server at all times.
 
-    ##  Load authentication data from preferences.
     def loadAuthDataFromPreferences(self) -> None:
+        """Load authentication data from preferences."""
+
         if self._preferences is None:
             Logger.log("e", "Unable to load authentication data, since no preference has been set!")
             return
@@ -203,13 +244,14 @@ class AuthorizationService:
         except ValueError:
             Logger.logException("w", "Could not load auth data from preferences")
 
-    ##  Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
+        """Store authentication data in preferences."""
+
         Logger.log("d", "Attempting to store the auth data")
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return
-        
+
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()

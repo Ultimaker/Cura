@@ -42,8 +42,9 @@ ctypes.windll.kernel32.DeviceIoControl.argtypes = [ #type: ignore
 ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL #type: ignore
 
 
-## Removable drive support for windows
 class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
+    """Removable drive support for windows"""
+
     def checkRemovableDrives(self):
         drives = {}
 

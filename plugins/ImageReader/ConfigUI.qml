@@ -43,7 +43,7 @@ UM.Dialog
                 TextField {
                     id: peak_height
                     objectName: "Peak_Height"
-                    validator: RegExpValidator {regExp: /^-?\d{1,3}([\,|\.]\d*)?$/}
+                    validator: RegExpValidator {regExp: /^\d{1,3}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
                     onTextChanged: { manager.onPeakHeightChanged(text) }
                 }

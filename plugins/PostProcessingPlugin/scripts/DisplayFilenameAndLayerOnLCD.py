@@ -56,7 +56,7 @@ class DisplayFilenameAndLayerOnLCD(Script):
                 }
             }
         }"""
-    
+
     def execute(self, data):
         max_layer = 0
         if self.getSettingValueByKey("name") != "":
@@ -96,5 +96,5 @@ class DisplayFilenameAndLayerOnLCD(Script):
                     i += 1
             final_lines = "\n".join(lines)
             data[layer_index] = final_lines
-            
+
         return data

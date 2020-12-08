@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Column
@@ -85,7 +85,7 @@ Column
         MouseArea
         {
             anchors.fill: parent
-            onClicked: Qt.openUrlExternally(parent.whereToBuyUrl)
+            onClicked: UM.UrlUtil.openUrl(parent.whereToBuyUrl, ["https", "http"])
         }
     }
 

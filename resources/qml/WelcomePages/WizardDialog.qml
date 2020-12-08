@@ -22,8 +22,8 @@ Window
     flags: Qt.Dialog
     modality: Qt.ApplicationModal
 
-    minimumWidth: 580 * screenScaleFactor
-    minimumHeight: 600 * screenScaleFactor
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
 
     color: UM.Theme.getColor("main_background")
 
@@ -40,6 +40,7 @@ Window
         id: wizardPanel
         anchors.fill: parent
         model: dialog.model
+        visible: dialog.visible
     }
 
     // Close this dialog when there's no more page to show

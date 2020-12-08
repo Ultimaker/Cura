@@ -3,7 +3,7 @@
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
-        "visible": true,
+        "visible": false,
         "author": "Ultimaker",
         "manufacturer": "Custom",
         "file_formats": "text/x-gcode",

@@ -74,7 +74,7 @@ UM.MainWindow
     WelcomeDialogItem
     {
         id: welcomeDialogItem
-        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
+        visible: false
         z: greyOutBackground.z + 1
     }
 
@@ -82,6 +82,21 @@ UM.MainWindow
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
         CuraApplication.purgeWindows()
+    }
+
+    Connections
+    {
+        // This connection is used when there is no ActiveMachine and the user is logged in
+        target: CuraApplication
+        onShowAddPrintersUncancellableDialog:
+        {
+            Cura.Actions.parent = backgroundItem
+
+            // Reuse the welcome dialog item to show "Add a printer" only.
+            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+            welcomeDialogItem.progressBarVisible = false
+            welcomeDialogItem.visible = true
+        }
     }
 
     Connections
@@ -114,6 +129,15 @@ UM.MainWindow
             if (CuraApplication.shouldShowWhatsNewDialog())
             {
                 welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
+            }
+
+            // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
+            // machine and the user is logged in.
+            if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
+            {
+                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
                 welcomeDialogItem.progressBarVisible = false
                 welcomeDialogItem.visible = true
             }
@@ -442,15 +466,13 @@ UM.MainWindow
             insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/Materials/MaterialsPage.qml"));
 
             insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
-
-            //Force refresh
-            setPage(0);
+            currentPage = 0;
         }
 
         onVisibleChanged:
         {
             // When the dialog closes, switch to the General page.
-            // This prevents us from having a heavy page like Setting Visiblity active in the background.
+            // This prevents us from having a heavy page like Setting Visibility active in the background.
             setPage(0);
         }
     }
@@ -560,8 +582,8 @@ UM.MainWindow
     MessageDialog
     {
         id: exitConfirmationDialog
-        title: catalog.i18nc("@title:window", "Closing Cura")
-        text: catalog.i18nc("@label", "Are you sure you want to exit Cura?")
+        title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
+        text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
         icon: StandardIcon.Question
         modality: Qt.ApplicationModal
         standardButtons: StandardButton.Yes | StandardButton.No
@@ -573,7 +595,7 @@ UM.MainWindow
             if (!visible)
             {
                 // reset the text to default because other modules may change the message text.
-                text = catalog.i18nc("@label", "Are you sure you want to exit Cura?");
+                text = catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName);
             }
         }
     }
@@ -814,17 +836,22 @@ UM.MainWindow
         }
     }
 
-    DiscardOrKeepProfileChangesDialog
+    Component
     {
-        id: discardOrKeepProfileChangesDialog
+        id: discardOrKeepProfileChangesDialogComponent
+        DiscardOrKeepProfileChangesDialog { }
     }
-
+    Loader
+    {
+        id: discardOrKeepProfileChangesDialogLoader
+    }
     Connections
     {
         target: CuraApplication
         onShowDiscardOrKeepProfileChanges:
         {
-            discardOrKeepProfileChangesDialog.show()
+            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.show()
         }
     }
 
@@ -842,6 +869,7 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "What's New")
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
+        visible: false
     }
 
     Connections

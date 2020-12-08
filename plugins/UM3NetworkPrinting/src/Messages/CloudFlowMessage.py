@@ -30,7 +30,7 @@ class CloudFlowMessage(Message):
             option_state=False,
             image_source=QUrl.fromLocalFile(image_path),
             image_caption=I18N_CATALOG.i18nc("@info:status Ultimaker Cloud should not be translated.",
-                                             "Connect to Ultimaker Cloud"),
+                                             "Connect to Ultimaker Digital Factory"),
         )
         self._address = address
         self.addAction("", I18N_CATALOG.i18nc("@action", "Get started"), "", "")

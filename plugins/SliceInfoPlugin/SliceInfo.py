@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -26,10 +26,13 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
-#       The data is only sent when the user in question gave permission to do so. All data is anonymous and
-#       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(QObject, Extension):
+    """This Extension runs in the background and sends several bits of information to the Ultimaker servers.
+
+    The data is only sent when the user in question gave permission to do so. All data is anonymous and
+    no model files are being sent (Just a SHA256 hash of the model).
+    """
+
     info_url = "https://stats.ultimaker.com/api/cura"
 
     def __init__(self, parent = None):
@@ -54,9 +57,11 @@ class SliceInfo(QObject, Extension):
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
 
-    ##  Perform action based on user input.
-    #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
+        """Perform action based on user input.
+
+        Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
+        """
         self._application.getPreferences().setValue("info/asked_send_slice_info", True)
         if action_id == "MoreInfo":
             self.showMoreInfoDialog()
@@ -96,7 +101,7 @@ class SliceInfo(QObject, Extension):
 
         user_modified_setting_keys = set()  # type: Set[str]
 
-        for stack in [global_stack] + list(global_stack.extruders.values()):
+        for stack in [global_stack] + global_stack.extruderList:
             # Get all settings in user_changes and quality_changes
             all_keys = stack.userChanges.getAllKeys() | stack.qualityChanges.getAllKeys()
             user_modified_setting_keys |= all_keys
@@ -111,6 +116,7 @@ class SliceInfo(QObject, Extension):
 
             machine_manager = self._application.getMachineManager()
             print_information = self._application.getPrintInformation()
+            user_profile = self._application.getCuraAPI().account.userProfile
 
             global_stack = machine_manager.activeMachine
 
@@ -119,6 +125,9 @@ class SliceInfo(QObject, Extension):
             data["schema_version"] = 0
             data["cura_version"] = self._application.getVersion()
             data["cura_build_type"] = ApplicationMetadata.CuraBuildType
+            org_id = user_profile.get("organization_id", None) if user_profile else None
+            data["organization_id"] = org_id if org_id else None
+            data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
 
             active_mode = self._application.getPreferences().getValue("cura/active_mode")
             if active_mode == 0:
@@ -147,7 +156,7 @@ class SliceInfo(QObject, Extension):
 
             # add extruder specific data to slice info
             data["extruders"] = []
-            extruders = list(global_stack.extruders.values())
+            extruders = global_stack.extruderList
             extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
 
             for extruder in extruders:
@@ -194,7 +203,7 @@ class SliceInfo(QObject, Extension):
                                              "maximum": {"x": bounding_box.maximum.x,
                                                          "y": bounding_box.maximum.y,
                                                          "z": bounding_box.maximum.z}}
-                    model["transformation"] = {"data": str(node.getWorldTransformation().getData()).replace("\n", "")}
+                    model["transformation"] = {"data": str(node.getWorldTransformation(copy = False).getData()).replace("\n", "")}
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
                     model["extruder"] = 0 if extruder_position is None else int(extruder_position)
 

@@ -26,7 +26,7 @@
         "layer_height_0": { "default_value": 0.2 },
         
         "infill_sparse_density": { "default_value": 20 },
-        "wall_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" },
         "top_bottom_thickness": { "default_value": 1 },
 
         "machine_width": { "default_value": 240 },

@@ -12,8 +12,12 @@ from UM.Qt.ListModel import ListModel
 from .ConfigsModel import ConfigsModel
 
 
-##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
+    """Model that holds Cura packages.
+
+    By setting the filter property the instances held by this model can be changed.
+    """
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -41,9 +45,6 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 20, "links")
         self.addRoleName(Qt.UserRole + 21, "website")
         self.addRoleName(Qt.UserRole + 22, "login_required")
-        self.addRoleName(Qt.UserRole + 23, "average_rating")
-        self.addRoleName(Qt.UserRole + 24, "num_ratings")
-        self.addRoleName(Qt.UserRole + 25, "user_rating")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
@@ -67,16 +68,21 @@ class PackagesModel(ListModel):
 
             links_dict = {}
             if "data" in package:
+                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
+                # to process.
+                link_list = package["data"]["links"] if "links" in package["data"] else []
+                links_dict = {d["title"]: d["url"] for d in link_list}
+
+                # This code never gets executed because the API response does not contain "supported_configs" in it
+                # It is so because 2y ago when this was created - it did contain it. But it was a prototype only
+                # and never got to production. As agreed with the team, it'll stay here for now, in case we decide to rework and use it
+                # The response payload has been changed. Please see:
+                # https://github.com/Ultimaker/Cura/compare/CURA-7072-temp?expand=1
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
                         has_configs = True
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
-
-                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
-                # to process.
-                link_list = package["data"]["links"] if "links" in package["data"] else []
-                links_dict = {d["title"]: d["url"] for d in link_list}
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""
@@ -105,9 +111,6 @@ class PackagesModel(ListModel):
                 "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
                 "login_required":       "login-required" in package.get("tags", []),
-                "average_rating":       float(package.get("rating", {}).get("average", 0)),
-                "num_ratings":          package.get("rating", {}).get("count", 0),
-                "user_rating":          package.get("rating", {}).get("user_rating", 0)
             })
 
         # Filter on all the key-word arguments.
@@ -126,9 +129,11 @@ class PackagesModel(ListModel):
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
 
-    ##  Set the filter of this model based on a string.
-    #   \param filter_dict \type{Dict} Dictionary to do the filtering by.
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
+        """Set the filter of this model based on a string.
+
+        :param filter_dict: Dictionary to do the filtering by.
+        """
         if filter_dict != self._filter:
             self._filter = filter_dict
             self._update()

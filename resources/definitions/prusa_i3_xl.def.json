@@ -7,7 +7,7 @@
         "author": "guigashm",
         "manufacturer": "Prusa3D",
         "file_formats": "text/x-gcode",
-        "platform": "prusai3_xl_platform.stl",
+        "platform": "prusai3_xl_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "prusa_i3_xl_extruder_0"

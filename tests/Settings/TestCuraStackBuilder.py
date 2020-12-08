@@ -6,6 +6,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from cura.Machines.QualityGroup import QualityGroup
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
+
 @pytest.fixture
 def global_variant():
     container = InstanceContainer(container_id="global_variant")
@@ -13,12 +14,14 @@ def global_variant():
 
     return container
 
+
 @pytest.fixture
 def material_instance_container():
     container = InstanceContainer(container_id="material container")
     container.setMetaDataEntry("type", "material")
 
     return container
+
 
 @pytest.fixture
 def quality_container():
@@ -54,16 +57,12 @@ def test_createMachineWithUnknownDefinition(application, container_registry):
 
 def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container,
                        quality_container, intent_container, quality_changes_container):
-    variant_manager = MagicMock(name = "Variant Manager")
-    quality_manager = MagicMock(name = "Quality Manager")
     global_variant_node = MagicMock(name = "global variant node")
     global_variant_node.container = global_variant
 
-    variant_manager.getDefaultVariantNode = MagicMock(return_value = global_variant_node)
     quality_group = QualityGroup(name = "zomg", quality_type = "normal")
     quality_group.node_for_global = MagicMock(name = "Node for global")
     quality_group.node_for_global.container = quality_container
-    quality_manager.getQualityGroups = MagicMock(return_value = {"normal": quality_group})
 
     application.getContainerRegistry = MagicMock(return_value=container_registry)
     application.empty_material_container = material_instance_container

@@ -4,6 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import UM 1.3 as UM
 
 Rectangle
 {
@@ -14,6 +15,7 @@ Rectangle
     Label
     {
         text: catalog.i18nc("@info", "Fetching packages...")
+        color: UM.Theme.getColor("text")
         anchors
         {
             centerIn: parent

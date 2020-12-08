@@ -18,8 +18,9 @@ from cura.Arranging.ShapeArray import ShapeArray
 from typing import List
 
 
-##  Do arrangements on multiple build plates (aka builtiplexer)
 class ArrangeArray:
+    """Do arrangements on multiple build plates (aka builtiplexer)"""
+
     def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]) -> None:
         self._x = x
         self._y = y

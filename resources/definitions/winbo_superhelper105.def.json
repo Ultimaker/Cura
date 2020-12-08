@@ -5,7 +5,6 @@
     "metadata": {
         "author": "Winbo",
         "manufacturer": "Winbo Smart Tech Co., Ltd.",
-        "category": "Other",
         "visible": true,
         "file_formats": "text/x-gcode",
         "supports_usb_connection": true,
@@ -22,7 +21,6 @@
         "machine_height": { "default_value": 158 },
         "machine_heated_bed": { "default_value": false },
         "material_bed_temp_wait": { "default_value": false },
-        "machine_filament_park_distance": { "value": "machine_heat_zone_length" },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
         "machine_head_with_fans_polygon":
@@ -115,7 +113,7 @@
         "support_bottom_height": { "value": "max((0.15 if(0.15%layer_height==0) else layer_height*int((0.15+layer_height)/layer_height)),layer_height)" },
         "support_bottom_pattern": { "value": "'zigzag'" },
         "support_connect_zigzags": { "value": "False" },
-        "support_infill_rate": { "value": "8 if support_enable else 0 if support_tree_enable else 8" },
+        "support_infill_rate": { "value": "8 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 8" },
         "support_interface_density": { "value": "80" },
         "support_interface_enable": { "value": "True" },
         "support_interface_height": { "value": "0.5" },

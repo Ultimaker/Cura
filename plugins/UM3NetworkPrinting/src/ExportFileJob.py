@@ -9,8 +9,8 @@ from cura.CuraApplication import CuraApplication
 from .MeshFormatHandler import MeshFormatHandler
 
 
-## Job that exports the build plate to the correct file format for the target cluster.
 class ExportFileJob(WriteFileJob):
+    """Job that exports the build plate to the correct file format for the target cluster."""
 
     def __init__(self, file_handler: Optional[FileHandler], nodes: List[SceneNode], firmware_version: str) -> None:
 
@@ -27,12 +27,14 @@ class ExportFileJob(WriteFileJob):
         extension = self._mesh_format_handler.preferred_format.get("extension", "")
         self.setFileName("{}.{}".format(job_name, extension))
 
-    ## Get the mime type of the selected export file type.
     def getMimeType(self) -> str:
+        """Get the mime type of the selected export file type."""
+
         return self._mesh_format_handler.mime_type
 
-    ## Get the job result as bytes as that is what we need to upload to the cluster.
     def getOutput(self) -> bytes:
+        """Get the job result as bytes as that is what we need to upload to the cluster."""
+
         output = self.getStream().getvalue()
         if isinstance(output, str):
             output = output.encode("utf-8")

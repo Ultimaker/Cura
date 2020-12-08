@@ -60,16 +60,12 @@ UM.Dialog
     CheckBox
     {
         id: toggleShowAll
-
         anchors
         {
             top: parent.top
             right: parent.right
         }
-
         text: catalog.i18nc("@label:checkbox", "Show all")
-        checked: listview.model.showAll
-        onClicked: listview.model.showAll = checked
     }
 
     ScrollView
@@ -85,7 +81,7 @@ UM.Dialog
         }
         ListView
         {
-            id:listview
+            id: listview
             model: UM.SettingDefinitionsModel
             {
                 id: definitionsModel
@@ -98,6 +94,7 @@ UM.Dialog
                     excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings)
                     return excluded_settings
                 }
+                showAll: toggleShowAll.checked || filterInput.text !== ""
             }
             delegate:Loader
             {

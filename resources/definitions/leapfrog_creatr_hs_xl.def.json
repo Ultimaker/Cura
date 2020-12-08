@@ -1,0 +1,35 @@
+{
+    "version": 2, 
+    "name": "Leapfrog Creatr HS XL",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Psychometer",
+        "manufacturer": "Leapfrog B.V.",
+        "file_formats": "text/x-gcode",
+        "supports_usb_connection": true,
+        "machine_extruder_trains":
+        {
+            "0": "leapfrog_creatr_hs_xl_extruder_right",
+            "1": "leapfrog_creatr_hs_xl_extruder_left"
+        }
+    },
+    "overrides": {
+        "machine_name": {"default_value": "Leapfrog Creatr HS XL" },
+        "machine_width": {"default_value": 270},
+        "machine_depth": {"default_value": 280},
+		"machine_height": {"default_value": 590},
+		"machine_shape": { "default_value": "Rectangular"},
+		"machine_center_is_zero": {"default_value": false},
+		"machine_heated_bed": {"default_value": true},
+		"build_volume_temperature": {"enabled": false},
+		"machine_gcode_flavor": {"default_value": "Marlin"},
+		
+		"machine_head_with_fans_polygon": {"default_value": [[-40, -50 ], [-40, 100], [40, -50 ], [40, 100]]},
+		"gantry_height": {"value": "2"},
+        "machine_extruder_count": {"default_value": 2},
+		
+        "machine_start_gcode": {"default_value": "M107 ; start with the fan off\nG28 X0 Y0 ; home XY axes\nG28 Z0 ; home Z\nG92 X0 Y0 Z0 E0 ; reset software positions\nG1 Z15.0 F180\nT0\nG92 E0 ; zero the extruded length\nG1 E3 F200\nG92 E0 ; zero the extruded length again\nG1 F225"},
+        "machine_end_gcode": {"default_value": "G92 E0 ; Zero extruder\nG1 E-6.00 F1500 ; Retract filament\nM104 S0 T0 ; turn off right extruder\nM104 S0 T1 ; turn off left extruder\nM140 S0 T0 ; turn off bed\nG1 Z590 F1200 ; drop bed\nG28 X0 ; home X axis\nG1 Y270 F12000 ; Move Y axis to the backside\nM84 ; disable motors"}
+    }
+}

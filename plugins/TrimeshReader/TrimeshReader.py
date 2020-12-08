@@ -22,8 +22,10 @@ from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator  # Adde
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
 
-##  Class that leverages Trimesh to import files.
+
 class TrimeshReader(MeshReader):
+    """Class that leverages Trimesh to import files."""
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -79,11 +81,13 @@ class TrimeshReader(MeshReader):
             )
         )
 
-    ##  Reads a file using Trimesh.
-    #   \param file_name The file path. This is assumed to be one of the file
-    #   types that Trimesh can read. It will not be checked again.
-    #   \return A scene node that contains the file's contents.
     def _read(self, file_name: str) -> Union["SceneNode", List["SceneNode"]]:
+        """Reads a file using Trimesh.
+
+        :param file_name: The file path. This is assumed to be one of the file
+        types that Trimesh can read. It will not be checked again.
+        :return: A scene node that contains the file's contents.
+        """
         # CURA-6739
         # GLTF files are essentially JSON files. If you directly give a file name to trimesh.load(), it will
         # try to figure out the format, but for GLTF, it loads it as a binary file with flags "rb", and the json.load()
@@ -108,7 +112,7 @@ class TrimeshReader(MeshReader):
             mesh.merge_vertices()
             mesh.remove_unreferenced_vertices()
             mesh.fix_normals()
-            mesh_data = self._toMeshData(mesh)
+            mesh_data = self._toMeshData(mesh, file_name)
 
             file_base_name = os.path.basename(file_name)
             new_node = CuraSceneNode()
@@ -130,12 +134,14 @@ class TrimeshReader(MeshReader):
             node.setParent(group_node)
         return group_node
 
-    ##  Converts a Trimesh to Uranium's MeshData.
-    #   \param tri_node A Trimesh containing the contents of a file that was
-    #   just read.
-    #   \return Mesh data from the Trimesh in a way that Uranium can understand
-    #   it.
-    def _toMeshData(self, tri_node: trimesh.base.Trimesh) -> MeshData:
+    def _toMeshData(self, tri_node: trimesh.base.Trimesh, file_name: str = "") -> MeshData:
+        """Converts a Trimesh to Uranium's MeshData.
+
+        :param tri_node: A Trimesh containing the contents of a file that was just read.
+        :param file_name: The full original filename used to watch for changes
+        :return: Mesh data from the Trimesh in a way that Uranium can understand it.
+        """
+
         tri_faces = tri_node.faces
         tri_vertices = tri_node.vertices
 
@@ -157,5 +163,5 @@ class TrimeshReader(MeshReader):
         indices = numpy.asarray(indices, dtype = numpy.int32)
         normals = calculateNormalsFromIndexedVertices(vertices, indices, face_count)
 
-        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals)
+        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals, file_name = file_name)
         return mesh_data

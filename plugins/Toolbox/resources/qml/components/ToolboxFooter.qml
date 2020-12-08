@@ -20,12 +20,13 @@ Item
         color: UM.Theme.getColor("text")
         height: UM.Theme.getSize("toolbox_footer_button").height
         verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.WordWrap
         anchors
         {
             top: restartButton.top
             left: parent.left
             leftMargin: UM.Theme.getSize("wide_margin").width
-            right: restartButton.right
+            right: restartButton.left
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         renderType: Text.NativeRendering
@@ -42,7 +43,7 @@ Item
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
         height: UM.Theme.getSize("toolbox_footer_button").height
-        text: catalog.i18nc("@info:button", "Quit Cura")
+        text: catalog.i18nc("@info:button, %1 is the application name", "Quit %1").arg(CuraApplication.applicationDisplayName)
         onClicked: toolbox.restart()
     }
 

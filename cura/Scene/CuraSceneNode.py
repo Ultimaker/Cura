@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from copy import deepcopy
@@ -15,9 +15,11 @@ from cura.Settings.ExtruderStack import ExtruderStack  # For typing.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator  # For per-object settings.
 
 
-##  Scene nodes that are models are only seen when selecting the corresponding build plate
-#   Note that many other nodes can just be UM SceneNode objects.
 class CuraSceneNode(SceneNode):
+    """Scene nodes that are models are only seen when selecting the corresponding build plate
+
+    Note that many other nodes can just be UM SceneNode objects.
+    """
     def __init__(self, parent: Optional["SceneNode"] = None, visible: bool = True, name: str = "", no_setting_override: bool = False) -> None:
         super().__init__(parent = parent, visible = visible, name = name)
         if not no_setting_override:
@@ -36,15 +38,23 @@ class CuraSceneNode(SceneNode):
     def isSelectable(self) -> bool:
         return super().isSelectable() and self.callDecoration("getBuildPlateNumber") == cura.CuraApplication.CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
-    ##  Get the extruder used to print this node. If there is no active node, then the extruder in position zero is returned
-    #   TODO The best way to do it is by adding the setActiveExtruder decorator to every node when is loaded
+    def isSupportMesh(self) -> bool:
+        per_mesh_stack = self.callDecoration("getStack")
+        if not per_mesh_stack:
+            return False
+        return per_mesh_stack.getProperty("support_mesh", "value")
+
     def getPrintingExtruder(self) -> Optional[ExtruderStack]:
+        """Get the extruder used to print this node. If there is no active node, then the extruder in position zero is returned
+
+        TODO The best way to do it is by adding the setActiveExtruder decorator to every node when is loaded
+        """
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return None
 
         per_mesh_stack = self.callDecoration("getStack")
-        extruders = list(global_container_stack.extruders.values())
+        extruders = global_container_stack.extruderList
 
         # Use the support extruder instead of the active extruder if this is a support_mesh
         if per_mesh_stack:
@@ -69,8 +79,9 @@ class CuraSceneNode(SceneNode):
         # This point should never be reached
         return None
 
-    ##  Return the color of the material used to print this model
     def getDiffuseColor(self) -> List[float]:
+        """Return the color of the material used to print this model"""
+
         printing_extruder = self.getPrintingExtruder()
 
         material_color = "#808080"  # Fallback color
@@ -86,8 +97,9 @@ class CuraSceneNode(SceneNode):
             1.0
         ]
 
-    ##  Return if any area collides with the convex hull of this scene node
     def collidesWithAreas(self, areas: List[Polygon]) -> bool:
+        """Return if any area collides with the convex hull of this scene node"""
+
         convex_hull = self.callDecoration("getPrintingArea")
         if convex_hull:
             if not convex_hull.isValid():
@@ -101,14 +113,15 @@ class CuraSceneNode(SceneNode):
                 return True
         return False
 
-    ##  Override of SceneNode._calculateAABB to exclude non-printing-meshes from bounding box
     def _calculateAABB(self) -> None:
+        """Override of SceneNode._calculateAABB to exclude non-printing-meshes from bounding box"""
+
         self._aabb = None
         if self._mesh_data:
-            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation())
-        else:  # If there is no mesh_data, use a boundingbox that encompasses the local (0,0,0)
+            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy = False))
+        else:  # If there is no mesh_data, use a bounding box that encompasses the local (0,0,0)
             position = self.getWorldPosition()
-            self._aabb = AxisAlignedBox(minimum=position, maximum=position)
+            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
 
         for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
@@ -122,10 +135,11 @@ class CuraSceneNode(SceneNode):
             else:
                 self._aabb = self._aabb + child.getBoundingBox()
 
-    ##  Taken from SceneNode, but replaced SceneNode with CuraSceneNode
     def __deepcopy__(self, memo: Dict[int, object]) -> "CuraSceneNode":
+        """Taken from SceneNode, but replaced SceneNode with CuraSceneNode"""
+
         copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
-        copy.setTransformation(self.getLocalTransformation())
+        copy.setTransformation(self.getLocalTransformation(copy= False))
         copy.setMeshData(self._mesh_data)
         copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
         copy._selectable = cast(bool, deepcopy(self._selectable, memo))

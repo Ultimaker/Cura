@@ -31,7 +31,7 @@
         "layer_height_0": { "default_value": 0.15 },
         "material_flow": { "default_value": 100 },
         "infill_sparse_density": { "default_value": 10 },
-        "wall_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "1.2" },
         "retraction_amount": { "default_value": 3 },
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 40 },

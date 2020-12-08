@@ -7,7 +7,7 @@
         "author": "KEMIQ",
         "manufacturer": "KEMIQ",
         "file_formats": "text/x-gcode",
-        "platform": "kemiq_q2.stl",
+        "platform": "kemiq_q2.3mf",
         "has_machine_quality": true,
         "has_materials": true,
         "machine_extruder_trains":

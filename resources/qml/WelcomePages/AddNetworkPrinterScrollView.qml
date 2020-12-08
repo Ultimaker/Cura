@@ -24,6 +24,7 @@ Item
 
     signal refreshButtonClicked()
     signal addByIpButtonClicked()
+    signal addCloudPrinterButtonClicked()
 
     Item
     {
@@ -40,6 +41,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "There is no printer found over your network.")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
             visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.
@@ -56,7 +58,7 @@ Item
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-            height: Math.min(contentHeight, maxItemCountAtOnce * UM.Theme.getSize("action_button").height)
+            height: Math.min(contentHeight, (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height)
 
             visible: networkPrinterListView.count > 0
 
@@ -191,6 +193,20 @@ Item
             text: catalog.i18nc("@label", "Add printer by IP")
             height: UM.Theme.getSize("message_action_button").height
             onClicked: base.addByIpButtonClicked()
+        }
+
+        Cura.SecondaryButton
+        {
+            id: addCloudPrinterButton
+            anchors.left: addPrinterByIpButton.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            text: catalog.i18nc("@label", "Add cloud printer")
+            height: UM.Theme.getSize("message_action_button").height
+            onClicked: {
+                CuraApplication.getDiscoveredCloudPrintersModel().clear()
+                base.addCloudPrinterButtonClicked()
+            }
         }
 
         Item

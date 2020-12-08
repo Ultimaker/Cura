@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
@@ -15,35 +15,9 @@ from ..BaseModel import BaseModel
 from ...ClusterOutputController import ClusterOutputController
 
 
-## Model for the status of a single print job in a cluster.
 class ClusterPrintJobStatus(BaseModel):
+    """Model for the status of a single print job in a cluster."""
 
-    ## Creates a new cloud print job status model.
-    #  \param assigned_to: The name of the printer this job is assigned to while being queued.
-    #  \param configuration: The required print core configurations of this print job.
-    #  \param constraints: Print job constraints object.
-    #  \param created_at: The timestamp when the job was created in Cura Connect.
-    #  \param force: Allow this job to be printed despite of mismatching configurations.
-    #  \param last_seen: The number of seconds since this job was checked.
-    #  \param machine_variant: The machine type that this job should be printed on.Coincides with the machine_type field
-    #       of the printer object.
-    #  \param name: The name of the print job. Usually the name of the .gcode file.
-    #  \param network_error_count: The number of errors encountered when requesting data for this print job.
-    #  \param owner: The name of the user who added the print job to Cura Connect.
-    #  \param printer_uuid: UUID of the printer that the job is currently printing on or assigned to.
-    #  \param started: Whether the job has started printing or not.
-    #  \param status: The status of the print job.
-    #  \param time_elapsed: The remaining printing time in seconds.
-    #  \param time_total: The total printing time in seconds.
-    #  \param uuid: UUID of this print job. Should be used for identification purposes.
-    #  \param deleted_at: The time when this print job was deleted.
-    #  \param printed_on_uuid: UUID of the printer used to print this job.
-    #  \param configuration_changes_required: List of configuration changes the printer this job is associated with
-    #       needs to make in order to be able to print this job
-    #  \param build_plate: The build plate (type) this job needs to be printed on.
-    #  \param compatible_machine_families: Family names of machines suitable for this print job
-    #  \param impediments_to_printing: A list of reasons that prevent this job from being printed on the associated
-    #       printer
     def __init__(self, created_at: str, force: bool, machine_variant: str, name: str, started: bool, status: str,
                  time_total: int, uuid: str,
                  configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
@@ -57,7 +31,39 @@ class ClusterPrintJobStatus(BaseModel):
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  compatible_machine_families: List[str] = None,
                  impediments_to_printing: List[Union[Dict[str, Any], ClusterPrintJobImpediment]] = None,
+                 preview_url: Optional[str] = None,
                  **kwargs) -> None:
+
+        """Creates a new cloud print job status model.
+
+        :param assigned_to: The name of the printer this job is assigned to while being queued.
+        :param configuration: The required print core configurations of this print job.
+        :param constraints: Print job constraints object.
+        :param created_at: The timestamp when the job was created in Cura Connect.
+        :param force: Allow this job to be printed despite of mismatching configurations.
+        :param last_seen: The number of seconds since this job was checked.
+        :param machine_variant: The machine type that this job should be printed on.Coincides with the machine_type field
+        of the printer object.
+        :param name: The name of the print job. Usually the name of the .gcode file.
+        :param network_error_count: The number of errors encountered when requesting data for this print job.
+        :param owner: The name of the user who added the print job to Cura Connect.
+        :param printer_uuid: UUID of the printer that the job is currently printing on or assigned to.
+        :param started: Whether the job has started printing or not.
+        :param status: The status of the print job.
+        :param time_elapsed: The remaining printing time in seconds.
+        :param time_total: The total printing time in seconds.
+        :param uuid: UUID of this print job. Should be used for identification purposes.
+        :param deleted_at: The time when this print job was deleted.
+        :param printed_on_uuid: UUID of the printer used to print this job.
+        :param configuration_changes_required: List of configuration changes the printer this job is associated with
+        needs to make in order to be able to print this job
+        :param build_plate: The build plate (type) this job needs to be printed on.
+        :param compatible_machine_families: Family names of machines suitable for this print job
+        :param impediments_to_printing: A list of reasons that prevent this job from being printed on the associated
+        printer
+        :param preview_url: URL to the preview image (same as wou;d've been included in the ufp).
+        """
+
         self.assigned_to = assigned_to
         self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
         self.constraints = self.parseModels(ClusterPrintJobConstraints, constraints)
@@ -76,6 +82,7 @@ class ClusterPrintJobStatus(BaseModel):
         self.uuid = uuid
         self.deleted_at = deleted_at
         self.printed_on_uuid = printed_on_uuid
+        self.preview_url = preview_url
 
         self.configuration_changes_required = self.parseModels(ClusterPrintJobConfigurationChange,
                                                                configuration_changes_required) \
@@ -87,33 +94,37 @@ class ClusterPrintJobStatus(BaseModel):
 
         super().__init__(**kwargs)
 
-    ## Creates an UM3 print job output model based on this cloud cluster print job.
-    #  \param printer: The output model of the printer
     def createOutputModel(self, controller: ClusterOutputController) -> UM3PrintJobOutputModel:
+        """Creates an UM3 print job output model based on this cloud cluster print job.
+
+        :param printer: The output model of the printer
+        """
+
         model = UM3PrintJobOutputModel(controller, self.uuid, self.name)
         self.updateOutputModel(model)
         return model
 
-    ## Creates a new configuration model
     def _createConfigurationModel(self) -> PrinterConfigurationModel:
+        """Creates a new configuration model"""
+
         extruders = [extruder.createConfigurationModel() for extruder in self.configuration or ()]
         configuration = PrinterConfigurationModel()
         configuration.setExtruderConfigurations(extruders)
         configuration.setPrinterType(self.machine_variant)
         return configuration
 
-    ## Updates an UM3 print job output model based on this cloud cluster print job.
-    #  \param model: The model to update.
     def updateOutputModel(self, model: UM3PrintJobOutputModel) -> None:
+        """Updates an UM3 print job output model based on this cloud cluster print job.
+
+        :param model: The model to update.
+        """
+
         model.updateConfiguration(self._createConfigurationModel())
         model.updateTimeTotal(self.time_total)
         model.updateTimeElapsed(self.time_elapsed)
         model.updateOwner(self.owner)
         model.updateState(self.status)
         model.setCompatibleMachineFamilies(self.compatible_machine_families)
-        model.updateTimeTotal(self.time_total)
-        model.updateTimeElapsed(self.time_elapsed)
-        model.updateOwner(self.owner)
 
         status_set_by_impediment = False
         for impediment in self.impediments_to_printing:

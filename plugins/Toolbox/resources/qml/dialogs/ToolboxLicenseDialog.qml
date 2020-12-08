@@ -42,8 +42,7 @@ UM.Dialog
         Row {
             id: packageRow
 
-            anchors.left: parent.left
-            anchors.right: parent.right
+            Layout.fillWidth: true
             height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("narrow_margin").width
@@ -53,8 +52,10 @@ UM.Dialog
                 id: icon
                 width: 30 * screenScaleFactor
                 height: width
+                sourceSize.width: width
+                sourceSize.height: height
                 fillMode: Image.PreserveAspectFit
-                source: licenseModel.iconUrl || "../../images/logobot.svg"
+                source: licenseModel.iconUrl || "../../images/placeholder.svg"
                 mipmap: true
             }
 

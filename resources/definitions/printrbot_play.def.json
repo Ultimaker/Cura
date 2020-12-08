@@ -7,7 +7,7 @@
         "author": "Chris Pearson",
         "manufacturer": "Printrbot",
         "file_formats": "text/x-gcode",
-        "platform": "printrbot_play.stl",
+        "platform": "printrbot_play.3mf",
         "machine_extruder_trains":
         {
             "0": "printrbot_play_extruder_0"

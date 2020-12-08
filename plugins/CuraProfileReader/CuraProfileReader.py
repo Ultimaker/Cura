@@ -13,23 +13,30 @@ from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
 
-##  A plugin that reads profile data from Cura profile files.
-#
-#   It reads a profile from a .curaprofile file, and returns it as a profile
-#   instance.
+
 class CuraProfileReader(ProfileReader):
-    ##  Initialises the cura profile reader.
-    #   This does nothing since the only other function is basically stateless.
+    """A plugin that reads profile data from Cura profile files.
+
+    It reads a profile from a .curaprofile file, and returns it as a profile
+    instance.
+    """
+
     def __init__(self) -> None:
+        """Initialises the cura profile reader.
+
+        This does nothing since the only other function is basically stateless.
+        """
         super().__init__()
 
-    ##  Reads a cura profile from a file and returns it.
-    #
-    #   \param file_name The file to read the cura profile from.
-    #   \return The cura profiles that were in the file, if any. If the file
-    #   could not be read or didn't contain a valid profile, ``None`` is
-    #   returned.
     def read(self, file_name: str) -> List[Optional[InstanceContainer]]:
+        """Reads a cura profile from a file and returns it.
+
+        :param file_name: The file to read the cura profile from.
+        :return: The cura profiles that were in the file, if any. If the file
+            could not be read or didn't contain a valid profile, ``None`` is
+            returned.
+        """
+
         try:
             with zipfile.ZipFile(file_name, "r") as archive:
                 results = []  # type: List[Optional[InstanceContainer]]
@@ -50,13 +57,14 @@ class CuraProfileReader(ProfileReader):
                 serialized_bytes = fhandle.read()
             return [self._loadProfile(serialized, profile_id) for serialized, profile_id in self._upgradeProfile(serialized_bytes, file_name)]
 
-    ##  Convert a profile from an old Cura to this Cura if needed.
-    #
-    #   \param serialized The profile data to convert in the serialized on-disk
-    #   format.
-    #   \param profile_id The name of the profile.
-    #   \return List of serialized profile strings and matching profile names.
     def _upgradeProfile(self, serialized: str, profile_id: str) -> List[Tuple[str, str]]:
+        """Convert a profile from an old Cura to this Cura if needed.
+
+        :param serialized: The profile data to convert in the serialized on-disk format.
+        :param profile_id: The name of the profile.
+        :return: List of serialized profile strings and matching profile names.
+        """
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -75,12 +83,14 @@ class CuraProfileReader(ProfileReader):
         else:
             return [(serialized, profile_id)]
 
-    ##  Load a profile from a serialized string.
-    #
-    #   \param serialized The profile data to read.
-    #   \param profile_id The name of the profile.
-    #   \return The profile that was stored in the string.
     def _loadProfile(self, serialized: str, profile_id: str) -> Optional[InstanceContainer]:
+        """Load a profile from a serialized string.
+
+        :param serialized: The profile data to read.
+        :param profile_id: The name of the profile.
+        :return: The profile that was stored in the string.
+        """
+
         # Create an empty profile.
         profile = InstanceContainer(profile_id)
         profile.setMetaDataEntry("type", "quality_changes")
@@ -102,13 +112,15 @@ class CuraProfileReader(ProfileReader):
             profile.setMetaDataEntry("definition", active_quality_definition)
         return profile
 
-    ##  Upgrade a serialized profile to the current profile format.
-    #
-    #   \param serialized The profile data to convert.
-    #   \param profile_id The name of the profile.
-    #   \param source_version The profile version of 'serialized'.
-    #   \return List of serialized profile strings and matching profile names.
     def _upgradeProfileVersion(self, serialized: str, profile_id: str, main_version: int, setting_version: int) -> List[Tuple[str, str]]:
+        """Upgrade a serialized profile to the current profile format.
+
+        :param serialized: The profile data to convert.
+        :param profile_id: The name of the profile.
+        :param source_version: The profile version of 'serialized'.
+        :return: List of serialized profile strings and matching profile names.
+        """
+
         source_version = main_version * 1000000 + setting_version
 
         from UM.VersionUpgradeManager import VersionUpgradeManager

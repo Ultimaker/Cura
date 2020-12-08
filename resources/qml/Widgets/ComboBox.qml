@@ -124,6 +124,7 @@ ComboBox
 
         contentItem: Label
         {
+            id: delegateLabel
             // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
             anchors.fill: parent
             anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
@@ -138,10 +139,15 @@ ComboBox
             verticalAlignment: Text.AlignVCenter
         }
 
-        background: Rectangle
+        background: UM.TooltipArea
         {
-            color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-            border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
+            Rectangle
+            {
+                color: delegateItem.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                border.color: delegateItem.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
+                anchors.fill: parent
+            }
+            text: delegateLabel.truncated ? delegateItem.text : ""
         }
     }
 }

@@ -125,7 +125,16 @@ class Test_Update:
         application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value = group_scene_node)
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
             objects_model._update()
-            assert objects_model.items == [{'name': 'Group #1', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': group_scene_node}]
+            assert objects_model.items == [{
+                'name': 'Group #1',
+                'selected': False,
+                'outside_build_area': False,
+                'buildplate_number': None,
+                'node': group_scene_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }]
 
     def test_updateWithNonGroup(self, objects_model, application_with_mocked_scene, slicable_scene_node):
         objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
@@ -133,7 +142,16 @@ class Test_Update:
         application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=slicable_scene_node)
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
             objects_model._update()
-            assert objects_model.items == [{'name': 'YAY(1)', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': slicable_scene_node}]
+            assert objects_model.items == [{
+                'name': 'YAY(1)',
+                'selected': False,
+                'outside_build_area': False,
+                'buildplate_number': None,
+                'node': slicable_scene_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }]
 
     def test_updateWithNonTwoNodes(self, objects_model, application_with_mocked_scene, slicable_scene_node):
         objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
@@ -143,7 +161,25 @@ class Test_Update:
         application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=slicable_scene_node)
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
             objects_model._update()
-            assert objects_model.items == [{'name': 'YAY', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': slicable_scene_node}, {'name': 'YAY(1)', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': copied_node}]
+            assert objects_model.items == [{
+                'name': 'YAY',
+                'selected': False,
+                'outside_build_area': False,
+                'buildplate_number': None,
+                'node': slicable_scene_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }, {
+                'name': 'YAY(1)',
+                'selected': False,
+                'outside_build_area': False,
+                'buildplate_number': None,
+                'node': copied_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }]
 
     def test_updateWithNonTwoGroups(self, objects_model, application_with_mocked_scene, group_scene_node):
         objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
@@ -153,7 +189,25 @@ class Test_Update:
         application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=group_scene_node)
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
             objects_model._update()
-            assert objects_model.items == [{'name': 'Group #1', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': group_scene_node}, {'name': 'Group #2', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': copied_node}]
+            assert objects_model.items == [{
+                'name': 'Group #1',
+                'selected': False,
+                'outside_build_area': False,
+                'buildplate_number': None,
+                'node': group_scene_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }, {
+                'name': 'Group #2',
+                'selected': False,
+                'outside_build_area': False,
+                'buildplate_number': None,
+                'node': copied_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }]
 
     def test_updateOutsideBuildplate(self, objects_model, application_with_mocked_scene, group_scene_node):
         objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
@@ -162,5 +216,14 @@ class Test_Update:
         application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=group_scene_node)
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
             objects_model._update()
-            assert objects_model.items == [{'name': 'Group #1', 'selected': False, 'outside_build_area': True, 'buildplate_number': None, 'node': group_scene_node}]
+            assert objects_model.items == [{
+                'name': 'Group #1',
+                'selected': False,
+                'outside_build_area': True,
+                'buildplate_number': None,
+                'node': group_scene_node,
+                "extruder_number": -1,
+                "per_object_settings_count": 0,
+                "mesh_type": ""
+            }]
 

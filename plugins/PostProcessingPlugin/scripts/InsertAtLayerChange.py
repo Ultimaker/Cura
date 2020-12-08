@@ -1,3 +1,5 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 # Created by Wayne Porter
 
 from ..Script import Script
@@ -24,8 +26,8 @@ class InsertAtLayerChange(Script):
                 },
                 "gcode_to_add":
                 {
-                    "label": "GCODE to insert.",
-                    "description": "GCODE to add before or after layer change.",
+                    "label": "G-code to insert.",
+                    "description": "G-code to add before or after layer change.",
                     "type": "str",
                     "default_value": ""
                 }

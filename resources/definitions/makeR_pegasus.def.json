@@ -7,7 +7,7 @@
         "author": "makeR",
         "manufacturer": "makeR",
         "file_formats": "text/x-gcode",
-        "platform": "makeR_pegasus_platform.stl",
+        "platform": "makeR_pegasus_platform.3mf",
         "platform_offset": [-200, -10, 200],
         "machine_extruder_trains":
         {

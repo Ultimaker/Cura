@@ -193,22 +193,22 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 
-                Component.onCompleted:
+                text:
                 {
                     if (!bedTemperature.properties.value)
                     {
-                        text = "";
+                        return "";
                     }
                     if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
                     {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
                         // (if user has explicitly set this).
-                        text = bedTemperature.resolve;
+                        return bedTemperature.resolve;
                     }
                     else
                     {
-                        text = bedTemperature.properties.value;
+                        return bedTemperature.properties.value;
                     }
                 }
             }

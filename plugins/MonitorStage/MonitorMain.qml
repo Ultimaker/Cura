@@ -99,7 +99,7 @@ Rectangle
             visible: isNetworkConfigured && !isConnected
             text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             lineHeight: UM.Theme.getSize("monitor_text_line_large").height
             lineHeightMode: Text.FixedHeight
@@ -116,7 +116,7 @@ Rectangle
             visible: !isNetworkConfigured && isNetworkConfigurable
             text: catalog.i18nc("@info", "Please connect your printer to the network.")
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("monitor_text_primary")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
             width: contentWidth
             lineHeight: UM.Theme.getSize("monitor_text_line_large").height
@@ -136,7 +136,7 @@ Rectangle
             {
                 id: externalLinkIcon
                 anchors.verticalCenter: parent.verticalCenter
-                color: UM.Theme.getColor("monitor_text_link")
+                color: UM.Theme.getColor("text_link")
                 source: UM.Theme.getIcon("external_link")
                 width: UM.Theme.getSize("monitor_external_link_icon").width
                 height: UM.Theme.getSize("monitor_external_link_icon").height
@@ -150,9 +150,8 @@ Rectangle
                     leftMargin: UM.Theme.getSize("narrow_margin").width
                     verticalCenter: externalLinkIcon.verticalCenter
                 }
-                color: UM.Theme.getColor("monitor_text_link")
+                color: UM.Theme.getColor("text_link")
                 font: UM.Theme.getFont("medium")
-                linkColor: UM.Theme.getColor("monitor_text_link")
                 text: catalog.i18nc("@label link to technical assistance", "View user manuals online")
                 renderType: Text.NativeRendering
             }

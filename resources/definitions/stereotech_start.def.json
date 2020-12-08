@@ -7,7 +7,7 @@
         "author": "Stereotech",
         "manufacturer": "Stereotech LLC.",
         "file_formats": "text/x-gcode",
-        "platform": "stereotech_start.stl",
+        "platform": "stereotech_start.3mf",
         "icon": "icon_ultimaker2",
         "platform_offset": [0, 0, 0],
         "machine_extruder_trains":
