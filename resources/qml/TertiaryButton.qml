@@ -12,7 +12,7 @@ Cura.ActionButton
     shadowEnabled: true
     shadowColor: enabled ? UM.Theme.getColor("secondary_button_shadow"): UM.Theme.getColor("action_button_disabled_shadow")
     color: "transparent"
-    textColor: UM.Theme.getColor("secondary_button_text")
+    textColor: UM.Theme.getColor("text_link")
     outlineColor: "transparent"
     disabledColor: UM.Theme.getColor("action_button_disabled")
     textDisabledColor: UM.Theme.getColor("action_button_disabled_text")

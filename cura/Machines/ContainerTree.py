@@ -171,7 +171,7 @@ class ContainerTree:
 
             The ``JobQueue`` will schedule this on a different thread.
             """
-
+            Logger.log("d", "Started background loading of MachineNodes")
             for stack in self.container_stacks:  # Load all currently-added containers.
                 if not isinstance(stack, GlobalStack):
                     continue
@@ -182,3 +182,4 @@ class ContainerTree:
                 definition_id = stack.definition.getId()
                 if not self.tree_root.machines.is_loaded(definition_id):
                     _ = self.tree_root.machines[definition_id]
+            Logger.log("d", "All MachineNode loading completed")

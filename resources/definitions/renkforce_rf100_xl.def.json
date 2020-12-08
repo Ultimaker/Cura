@@ -189,7 +189,7 @@
             "value": "False"
         },
         "support_infill_rate": {
-            "value": "15 if support_enable else 0 if support_tree_enable else 15"
+            "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15"
         },
         "support_line_width": {
             "value": "0.6"

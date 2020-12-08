@@ -1,0 +1,16 @@
+{
+    "name": "Anycubic Kossel Pulley",
+    "version": 2,
+    "inherits": "anycubic_kossel",
+    "metadata": {
+        "visible": true,
+        "machine_extruder_trains": {
+            "0": "anycubic_kossel_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Anycubic Kossel Pulley"
+        }
+    }
+}

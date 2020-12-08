@@ -63,7 +63,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         # Write preferences to archive
         original_preferences = Application.getInstance().getPreferences() #Copy only the preferences that we use to the workspace.
         temp_preferences = Preferences()
-        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded"}:
+        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded", "metadata/setting_version"}:
             temp_preferences.addPreference(preference, None)
             temp_preferences.setValue(preference, original_preferences.getValue(preference))
         preferences_string = StringIO()
@@ -91,6 +91,10 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         except PermissionError:
             self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
             Logger.error("No permission to write workspace to this stream.")
+            return False
+        except EnvironmentError as e:
+            self.setInformation(catalog.i18nc("@error:zip", "The operating system does not allow saving a project file to this location or with this file name."))
+            Logger.error("EnvironmentError when writing workspace to this stream: {err}".format(err = str(e)))
             return False
         mesh_writer.setStoreArchive(False)
         return True
@@ -127,15 +131,29 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         file_name = "Cura/%s.%s" % (container.getId(), file_suffix)
 
-        if file_name in archive.namelist():
-            return  # File was already saved, no need to do it again. Uranium guarantees unique ID's, so this should hold.
+        try:
+            if file_name in archive.namelist():
+                return  # File was already saved, no need to do it again. Uranium guarantees unique ID's, so this should hold.
 
-        file_in_archive = zipfile.ZipInfo(file_name)
-        # For some reason we have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
-        file_in_archive.compress_type = zipfile.ZIP_DEFLATED
+            file_in_archive = zipfile.ZipInfo(file_name)
+            # For some reason we have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
+            file_in_archive.compress_type = zipfile.ZIP_DEFLATED
 
-        # Do not include the network authentication keys
-        ignore_keys = {"network_authentication_id", "network_authentication_key", "octoprint_api_key"}
-        serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
+            # Do not include the network authentication keys
+            ignore_keys = {
+                "um_cloud_cluster_id",
+                "um_network_key",
+                "um_linked_to_account",
+                "removal_warning",
+                "host_guid",
+                "group_name",
+                "group_size",
+                "connection_type",
+                "octoprint_api_key"
+            }
+            serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
-        archive.writestr(file_in_archive, serialized_data)
+            archive.writestr(file_in_archive, serialized_data)
+        except (FileNotFoundError, EnvironmentError):
+            Logger.error("File became inaccessible while writing to it: {archive_filename}".format(archive_filename = archive.fp.name))
+            return

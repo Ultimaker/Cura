@@ -252,7 +252,7 @@ class TestCalculateExtraZClearance:
             return properties.get(args[2])
 
     def test_noContainerStack(self, build_volume: BuildVolume):
-        assert build_volume._calculateExtraZClearance([]) is 0
+        assert build_volume._calculateExtraZClearance([]) == 0
 
     def test_withRetractionHop(self, build_volume: BuildVolume):
         mocked_global_stack = MagicMock(name="mocked_global_stack")

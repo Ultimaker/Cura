@@ -45,10 +45,6 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     # States indicating if a print job is queued.
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
 
-    # Time in seconds since last network response after which we consider this device offline.
-    # We set this a bit higher than some of the other intervals to make sure they don't overlap.
-    NETWORK_RESPONSE_CONSIDER_OFFLINE = 10.0  # seconds
-
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
 
@@ -86,6 +82,10 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # The job upload progress message modal.
         self._progress = PrintJobUploadProgressMessage()
+
+        self._timeout_time = 30
+
+        self._num_is_host_check_failed = 0
 
     @pyqtProperty(str, constant=True)
     def address(self) -> str:
@@ -213,8 +213,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
 
     def _update(self) -> None:
-        self._checkStillConnected()
         super()._update()
+        self._checkStillConnected()
 
     def _checkStillConnected(self) -> None:
         """Check if we're still connected by comparing the last timestamps for network response and the current time.
@@ -224,7 +224,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         TODO: it would be nice to have this logic in the managers, but connecting those with signals causes crashes.
         """
         time_since_last_response = time() - self._time_of_last_response
-        if time_since_last_response > self.NETWORK_RESPONSE_CONSIDER_OFFLINE:
+        if time_since_last_response > self._timeout_time:
+            Logger.log("d", "It has been %s seconds since the last response for outputdevice %s, so assume a timeout", time_since_last_response, self.key)
             self.setConnectionState(ConnectionState.Closed)
             if self.key in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
                 CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
@@ -241,6 +242,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             return
 
         # Indicate this device is now connected again.
+        Logger.log("d", "Reconnecting output device after timeout.")
         self.setConnectionState(ConnectionState.Connected)
 
         # If the device was already registered we don't need to register it again.
@@ -293,8 +295,16 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkIfClusterHost(self):
         """Check is this device is a cluster host and takes the needed actions when it is not."""
-
         if len(self._printers) < 1 and self.isConnected():
+            self._num_is_host_check_failed += 1
+        else:
+            self._num_is_host_check_failed = 0
+
+        # Since we request the status of the cluster itself way less frequent in the cloud, it can happen that a cloud
+        # printer reports having 0 printers (since they are offline!) but we haven't asked if the entire cluster is
+        # offline. (See CURA-7360)
+        # So by just counting a number of subsequent times that this has happened fixes the incorrect display.
+        if self._num_is_host_check_failed >= 6:
             NotClusterHostMessage(self).show()
             self.close()
             CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)

@@ -76,8 +76,8 @@ class PreviewPass(RenderPass):
                 Logger.error("Unable to compile shader program: overhang.shader")
 
         if not self._non_printing_shader:
+            self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
             if self._non_printing_shader:
-                self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))
                 self._non_printing_shader.setUniformValue("u_diffuseColor", [0.5, 0.5, 0.5, 0.5])
                 self._non_printing_shader.setUniformValue("u_opacity", 0.6)
 
@@ -114,12 +114,12 @@ class PreviewPass(RenderPass):
                             1.0]
                         uniforms["diffuse_color"] = prettier_color(diffuse_color)
                         uniforms["diffuse_color_2"] = diffuse_color2
-                        batch_support_mesh.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
+                        batch_support_mesh.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), uniforms = uniforms)
                     else:
                         # Normal scene node
                         uniforms = {}
                         uniforms["diffuse_color"] = prettier_color(cast(CuraSceneNode, node).getDiffuseColor())
-                        batch.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
+                        batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), uniforms = uniforms)
 
         self.bind()
 

@@ -35,7 +35,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     """
     _non_thumbnail_visible_settings = {"anti_overhang_mesh", "infill_mesh", "cutting_mesh", "support_mesh"}
 
-    def __init__(self):
+    def __init__(self, *, force_update = True):
         super().__init__()
         self._stack = PerObjectContainerStack(container_id = "per_object_stack_" + str(id(self)))
         self._stack.setDirty(False)  # This stack does not need to be saved.
@@ -46,6 +46,10 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         self._is_non_printing_mesh = False
         self._is_non_thumbnail_visible_mesh = False
+        self._is_support_mesh = False
+        self._is_cutting_mesh = False
+        self._is_infill_mesh = False
+        self._is_anti_overhang_mesh = False
 
         self._stack.propertyChanged.connect(self._onSettingChanged)
 
@@ -53,13 +57,14 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         Application.getInstance().globalContainerStackChanged.connect(self._updateNextStack)
         self.activeExtruderChanged.connect(self._updateNextStack)
-        self._updateNextStack()
+        if force_update:
+            self._updateNextStack()
 
     def _generateUniqueName(self):
         return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
 
     def __deepcopy__(self, memo):
-        deep_copy = SettingOverrideDecorator()
+        deep_copy = SettingOverrideDecorator(force_update = False)
         """Create a fresh decorator object"""
 
         instance_container = copy.deepcopy(self._stack.getContainer(0), memo)
@@ -73,11 +78,6 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # Properly set the right extruder on the copy
         deep_copy.setActiveExtruder(self._extruder_stack)
-
-        # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
-        # has not been updated yet.
-        deep_copy._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
-        deep_copy._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
 
         return deep_copy
 
@@ -104,7 +104,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         """
 
         # for support_meshes, always use the support_extruder
-        if self.getStack().getProperty("support_mesh", "value"):
+        if self._is_support_mesh:
             global_container_stack = Application.getInstance().getGlobalContainerStack()
             if global_container_stack:
                 return str(global_container_stack.getProperty("support_extruder_nr", "value"))
@@ -113,6 +113,30 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if containers:
             container_stack = containers[0]
             return container_stack.getMetaDataEntry("position", default=None)
+
+    def isCuttingMesh(self):
+        return self._is_cutting_mesh
+
+    def isSupportMesh(self):
+        return self._is_support_mesh
+
+    def isInfillMesh(self):
+        return self._is_infill_mesh
+
+    def isAntiOverhangMesh(self):
+        return self._is_anti_overhang_mesh
+
+    def _evaluateAntiOverhangMesh(self):
+        return bool(self._stack.userChanges.getProperty("anti_overhang_mesh", "value"))
+
+    def _evaluateIsCuttingMesh(self):
+        return bool(self._stack.userChanges.getProperty("cutting_mesh", "value"))
+
+    def _evaluateIsSupportMesh(self):
+        return bool(self._stack.userChanges.getProperty("support_mesh", "value"))
+
+    def _evaluateInfillMesh(self):
+        return bool(self._stack.userChanges.getProperty("infill_mesh", "value"))
 
     def isNonPrintingMesh(self):
         return self._is_non_printing_mesh
@@ -132,6 +156,16 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             # Trigger slice/need slicing if the value has changed.
             self._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
             self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
+
+            if setting_key == "anti_overhang_mesh":
+                self._is_anti_overhang_mesh = self._evaluateAntiOverhangMesh()
+            elif setting_key == "support_mesh":
+                self._is_support_mesh = self._evaluateIsSupportMesh()
+            elif setting_key == "cutting_mesh":
+                self._is_cutting_mesh = self._evaluateIsCuttingMesh()
+            elif setting_key == "infill_mesh":
+                self._is_infill_mesh = self._evaluateInfillMesh()
+
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 

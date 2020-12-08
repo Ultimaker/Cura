@@ -74,11 +74,11 @@ class ExtruderConfigurationModel(QObject):
         # Empty materials should be ignored for comparison
         if self.activeMaterial is not None and other.activeMaterial is not None:
             if self.activeMaterial.guid != other.activeMaterial.guid:
-                if self.activeMaterial.guid != "" and other.activeMaterial.guid != "":
-                    return False
-                else:
+                if self.activeMaterial.guid == "" and other.activeMaterial.guid == "":
                     # At this point there is no material, so it doesn't matter what the hotend is.
                     return True
+                else:
+                    return False
 
         if self.hotendID != other.hotendID:
             return False

@@ -118,7 +118,7 @@ class CuraSceneNode(SceneNode):
 
         self._aabb = None
         if self._mesh_data:
-            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation())
+            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy = False))
         else:  # If there is no mesh_data, use a bounding box that encompasses the local (0,0,0)
             position = self.getWorldPosition()
             self._aabb = AxisAlignedBox(minimum = position, maximum = position)
@@ -139,7 +139,7 @@ class CuraSceneNode(SceneNode):
         """Taken from SceneNode, but replaced SceneNode with CuraSceneNode"""
 
         copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
-        copy.setTransformation(self.getLocalTransformation())
+        copy.setTransformation(self.getLocalTransformation(copy= False))
         copy.setMeshData(self._mesh_data)
         copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
         copy._selectable = cast(bool, deepcopy(self._selectable, memo))

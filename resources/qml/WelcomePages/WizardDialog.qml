@@ -40,6 +40,7 @@ Window
         id: wizardPanel
         anchors.fill: parent
         model: dialog.model
+        visible: dialog.visible
     }
 
     // Close this dialog when there's no more page to show

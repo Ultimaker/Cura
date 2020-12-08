@@ -57,11 +57,7 @@ UM.Dialog
             expanded: ["*"]
             visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
         }
-        UM.I18nCatalog
-        {
-            id: catalog
-            name: "cura"
-        }
+
         SystemPalette
         {
             id: palette

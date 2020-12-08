@@ -73,11 +73,6 @@ Item
                     {
                         Cura.API.account.login()
                     }
-                    else
-                    {
-                        Qt.openUrlExternally("https://mycloud.ultimaker.com/")
-                    }
-
                 }
             }
         }

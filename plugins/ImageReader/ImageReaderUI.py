@@ -172,7 +172,7 @@ class ImageReaderUI(QObject):
 
     @pyqtSlot(int)
     def onColorModelChanged(self, value):
-        self.use_transparency_model = (value == 0)
+        self.use_transparency_model = (value == 1)
 
     @pyqtSlot(int)
     def onTransmittanceChanged(self, value):

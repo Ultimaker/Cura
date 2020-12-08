@@ -1,23 +1,28 @@
-#Copyright (c) 2020 Ultimaker B.V.
-#Cura is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import cast
+from typing import cast, List, Dict
 
-from Charon.VirtualFile import VirtualFile #To open UFP files.
-from Charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
-from io import StringIO #For converting g-code to bytes.
+from Charon.VirtualFile import VirtualFile  # To open UFP files.
+from Charon.OpenMode import OpenMode  # To indicate that we want to write to UFP files.
+from io import StringIO  # For converting g-code to bytes.
 
 from UM.Logger import Logger
-from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
+from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
-from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
+from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
+
+METADATA_OBJECTS_PATH = "metadata/objects"
+
 catalog = i18nCatalog("cura")
 
 
@@ -53,12 +58,14 @@ class UFPWriter(MeshWriter):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
 
-        #Store the g-code from the scene.
+        self._writeObjectList(archive)
+
+        # Store the g-code from the scene.
         archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
-        gcode_textio = StringIO() #We have to convert the g-code into bytes.
+        gcode_textio = StringIO()  # We have to convert the g-code into bytes.
         gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
         success = gcode_writer.write(gcode_textio, None)
-        if not success: #Writing the g-code failed. Then I can also not write the gzipped g-code.
+        if not success:  # Writing the g-code failed. Then I can also not write the gzipped g-code.
             self.setInformation(gcode_writer.getInformation())
             return False
         gcode = archive.getStream("/3D/model.gcode")
@@ -67,7 +74,7 @@ class UFPWriter(MeshWriter):
 
         self._createSnapshot()
 
-        #Store the thumbnail.
+        # Store the thumbnail.
         if self._snapshot:
             archive.addContentType(extension = "png", mime_type = "image/png")
             thumbnail = archive.getStream("/Metadata/thumbnail.png")
@@ -78,7 +85,9 @@ class UFPWriter(MeshWriter):
             thumbnail_image.save(thumbnail_buffer, "PNG")
 
             thumbnail.write(thumbnail_buffer.data())
-            archive.addRelation(virtual_path = "/Metadata/thumbnail.png", relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail", origin = "/3D/model.gcode")
+            archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
+                                relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+                                origin = "/3D/model.gcode")
         else:
             Logger.log("d", "Thumbnail not created, cannot save it")
 
@@ -139,3 +148,32 @@ class UFPWriter(MeshWriter):
             Logger.error(error_msg)
             return False
         return True
+
+    @staticmethod
+    def _writeObjectList(archive):
+        """Write a json list of object names to the METADATA_OBJECTS_PATH metadata field
+
+        To retrieve, use: `archive.getMetadata(METADATA_OBJECTS_PATH)`
+        """
+
+        objects_model = CuraApplication.getInstance().getObjectsModel()
+        object_metas = []
+
+        for item in objects_model.items:
+            object_metas.extend(UFPWriter._getObjectMetadata(item["node"]))
+
+        data = {METADATA_OBJECTS_PATH: object_metas}
+        archive.setMetadata(data)
+
+    @staticmethod
+    def _getObjectMetadata(node: SceneNode) -> List[Dict[str, str]]:
+        """Get object metadata to write for a Node.
+
+        :return: List of object metadata dictionaries.
+                 Might contain > 1 element in case of a group node.
+                 Might be empty in case of nonPrintingMesh
+        """
+
+        return [{"name": item.getName()}
+                for item in DepthFirstIterator(node)
+                if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]

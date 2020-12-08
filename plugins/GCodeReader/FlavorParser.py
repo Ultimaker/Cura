@@ -312,7 +312,7 @@ class FlavorParser:
     # F5, that gcode SceneNode will be removed because it doesn't have a file to be reloaded from.
     #
     def processGCodeStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
-        Logger.log("d", "Preparing to load GCode")
+        Logger.log("d", "Preparing to load g-code")
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
@@ -352,7 +352,7 @@ class FlavorParser:
         self._message.setProgress(0)
         self._message.show()
 
-        Logger.log("d", "Parsing Gcode...")
+        Logger.log("d", "Parsing g-code...")
 
         current_position = Position(0, 0, 0, 0, [0])
         current_path = [] #type: List[List[float]]
@@ -363,7 +363,7 @@ class FlavorParser:
 
         for line in stream.split("\n"):
             if self._cancelled:
-                Logger.log("d", "Parsing Gcode file cancelled")
+                Logger.log("d", "Parsing g-code file cancelled.")
                 return None
             current_line += 1
 
@@ -482,7 +482,7 @@ class FlavorParser:
         gcode_dict = {active_build_plate_id: gcode_list}
         CuraApplication.getInstance().getController().getScene().gcode_dict = gcode_dict #type: ignore #Because gcode_dict is generated dynamically.
 
-        Logger.log("d", "Finished parsing Gcode")
+        Logger.log("d", "Finished parsing g-code.")
         self._message.hide()
 
         if self._layer_number == 0:
@@ -493,7 +493,7 @@ class FlavorParser:
             machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
-        Logger.log("d", "GCode loading finished")
+        Logger.log("d", "G-code loading finished.")
 
         if CuraApplication.getInstance().getPreferences().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(

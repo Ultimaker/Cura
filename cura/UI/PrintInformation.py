@@ -202,7 +202,11 @@ class PrintInformation(QObject):
         self._material_costs[build_plate_number] = []
         self._material_names[build_plate_number] = []
 
-        material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
+        try:
+            material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
+        except json.JSONDecodeError:
+            Logger.warning("Material preference values are corrupt. Will revert to defaults!")
+            material_preference_values = {}
 
         for index, extruder_stack in enumerate(global_stack.extruderList):
             if index >= len(self._material_amounts):

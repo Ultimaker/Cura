@@ -99,7 +99,7 @@ class ExtruderOutputModel(QObject):
             self._is_preheating = pre_heating
             self.isPreheatingChanged.emit()
 
-    @pyqtProperty(bool, notify=isPreheatingChanged)
+    @pyqtProperty(bool, notify = isPreheatingChanged)
     def isPreheating(self) -> bool:
         return self._is_preheating
 

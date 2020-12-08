@@ -135,9 +135,7 @@ class MachineNode(ContainerNode):
                 groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"],
                                                            intent_category = quality_changes.get("intent_category", "default"),
                                                            parent = CuraApplication.getInstance())
-                # CURA-6882
-                # Custom qualities are always available, even if they are based on the "not supported" profile.
-                groups_by_name[name].is_available = True
+
             elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
                 groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
 
@@ -145,6 +143,18 @@ class MachineNode(ContainerNode):
                 groups_by_name[name].metadata_per_extruder[int(quality_changes["position"])] = quality_changes
             else:  # Global profile.
                 groups_by_name[name].metadata_for_global = quality_changes
+
+        quality_groups = self.getQualityGroups(variant_names, material_bases, extruder_enabled)
+        for quality_changes_group in groups_by_name.values():
+            if quality_changes_group.quality_type not in quality_groups:
+                if quality_changes_group.quality_type == "not_supported":
+                    # Quality changes based on an empty profile are always available. 
+                    quality_changes_group.is_available = True
+                else:
+                    quality_changes_group.is_available = False
+            else:
+                # Quality changes group is available iff the quality group it depends on is available. Irrespective of whether the intent category is available.
+                quality_changes_group.is_available = quality_groups[quality_changes_group.quality_type].is_available
 
         return list(groups_by_name.values())
 

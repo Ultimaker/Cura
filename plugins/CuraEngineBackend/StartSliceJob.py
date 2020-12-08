@@ -8,12 +8,14 @@ import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
 import Arcus #For typing.
+from PyQt5.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingRelation import SettingRelation #For typing.
 
@@ -203,10 +205,6 @@ class StartSliceJob(Job):
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
-                # Node can't be printed, so don't bother sending it.
-                if getattr(node, "_outside_buildarea", False):
-                    continue
-
                 # Filter on current build plate
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
                 if build_plate_number is not None and build_plate_number != self._build_plate_number:
@@ -352,8 +350,7 @@ class StartSliceJob(Job):
 
         result = {}
         for key in stack.getAllKeys():
-            value = stack.getProperty(key, "value")
-            result[key] = value
+            result[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
@@ -373,9 +370,11 @@ class StartSliceJob(Job):
         self._all_extruders_settings = {
             "-1": self._buildReplacementTokens(global_stack)
         }
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
             self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         """Replace setting tokens in a piece of g-code.
@@ -420,10 +419,15 @@ class StartSliceJob(Job):
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
         settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 
+        global_definition = cast(ContainerInterface, cast(ContainerStack, stack.getNextStack()).getBottom())
+        own_definition = cast(ContainerInterface, stack.getBottom())
+
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
-            if not stack.getProperty(key, "settable_per_extruder"):
-                continue
+            # Since these can only be set in definition files, we only have to ask there.
+            if not global_definition.getProperty(key, "settable_per_extruder") and \
+                    not own_definition.getProperty(key, "settable_per_extruder"):
+                    continue
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             setting.value = str(value).encode("utf-8")
@@ -454,11 +458,10 @@ class StartSliceJob(Job):
         print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"]
         pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
         settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) == None
+
         # Replace the setting tokens in start and end g-code.
         # Use values from the first used extruder by default so we get the expected temperatures
-        initial_extruder_stack = CuraApplication.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
-        initial_extruder_nr = initial_extruder_stack.getProperty("extruder_nr", "value")
-
+        initial_extruder_nr = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
         settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
         settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
 
