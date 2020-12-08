@@ -281,7 +281,7 @@ class BuildVolume(SceneNode):
                     continue
                 # If the entire node is below the build plate, still mark it as outside.
                 node_bounding_box = node.getBoundingBox()
-                if node_bounding_box and node_bounding_box.top < 0:
+                if node_bounding_box and node_bounding_box.top < 0 and not node.getParent().callDecoration("isGroup"):
                     node.setOutsideBuildArea(True)
                     continue
                 # Mark the node as outside build volume if the set extruder is disabled
@@ -344,7 +344,12 @@ class BuildVolume(SceneNode):
 
             # Mark the node as outside build volume if the set extruder is disabled
             extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+            try:
+                if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+                    node.setOutsideBuildArea(True)
+                    return
+            except IndexError:
+                # If the extruder doesn't exist, also mark it as unprintable.
                 node.setOutsideBuildArea(True)
                 return
 
