@@ -92,7 +92,6 @@
         "outer_inset_first":         {"value": true },
         "alternate_extra_perimeter": {"value": false },
         "filter_out_tiny_gaps":      {"value": true },
-        "fill_outline_gaps":         {"value": true },
         "z_seam_type":               {"value": "'shortest'"},
         "z_seam_x":                  {"value": "300"},
         "z_seam_y":                  {"value": "325"},
