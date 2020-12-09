@@ -8,6 +8,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Logger import Logger
 from UM.Version import Version
+from UM.Message import Message
 
 from cura.Settings.CuraContainerStack import _ContainerIndexes as ContainerIndexes
 from UM.i18n import i18nCatalog
@@ -31,6 +32,7 @@ import math
 import os.path
 import re
 import json
+from hashlib import md5
 
 class BlackBeltPlugin(Extension):
     def __init__(self):
@@ -62,6 +64,22 @@ class BlackBeltPlugin(Extension):
         if "UpdateChecker" not in plugin_registry._disabled_plugins:
             Logger.log("d", "Disabling Update Checker plugin")
             plugin_registry._disabled_plugins.append("UpdateChecker")
+
+        self._startend_gcode_message = Message(
+            i18n_catalog.i18nc("@info:status", "Your configuration is not using the recommended start and end gcode scripts.\nDo you want to reset the start and end scripts to their defaults or keep using the custom scripts?"),
+            lifetime=0, dismissable=True, use_inactivity_timer=False
+        )
+        self._startend_gcode_message.addAction(
+            "reset", i18n_catalog.i18nc("@action:button", "Use default scripts"), "",
+            i18n_catalog.i18nc("@action:tooltip", "Reset the start and end gcode scripts to the recommended defaults."),
+            button_style=Message.ActionButtonStyle.DEFAULT
+        )
+        self._startend_gcode_message.addAction(
+            "custom", i18n_catalog.i18nc("@action:button", "Use custom scripts"), "",
+            i18n_catalog.i18nc("@action:tooltip", "Keep using the customised start and end gcode scripts."),
+            button_style=Message.ActionButtonStyle.DEFAULT
+        )
+        self._startend_gcode_message.actionTriggered.connect(self._onStartEndGcodeMessageActionTriggered)
 
     def _onPluginsLoaded(self):
         # make sure the we connect to engineCreatedSignal later than PrepareStage does, so we can substitute our own sidebar
@@ -215,6 +233,7 @@ class BlackBeltPlugin(Extension):
     def _onGlobalContainerStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingValueChanged)
+            self._startend_gcode_message.hide()
 
         self._global_container_stack = self._application.getGlobalContainerStack()
 
@@ -230,6 +249,8 @@ class BlackBeltPlugin(Extension):
 
             # HOTFIXES for Blackbelt stacks
             if definition_container.getId() in ["blackbelt", "blackbeltvd"] and self._application._machine_manager:
+                self._onSettingValueChanged("machine_start_gcode", "value") # check if start/end gcode scripts are default
+
                 extruder_stack = self._application.getMachineManager()._active_container_stack
 
                 if extruder_stack:
@@ -299,11 +320,36 @@ class BlackBeltPlugin(Extension):
         if property_name != "value" or not self._global_container_stack.hasProperty("blackbelt_gantry_angle", "value"):
             return
 
-        elif key == "blackbelt_gantry_angle":
+        if key == "blackbelt_gantry_angle":
             # Setting the gantry angle changes the build volume.
             # Force rebuilding the build volume by reloading the global container stack.
             # This is a bit of a hack, but it seems quick enough.
             self._application.globalContainerStackChanged.emit()
+
+        if key in ["machine_start_gcode", "machine_end_gcode"]:
+            definition_changes_container = self._global_container_stack.definitionChanges
+            if definition_changes_container.hasProperty("machine_start_gcode", "value") or definition_changes_container.hasProperty("machine_end_gcode", "value"):
+                startend_gcode_hash = md5(
+                    (self._global_container_stack.getProperty("machine_start_gcode", "value") + self._global_container_stack.getProperty("machine_end_gcode", "value")).encode()
+                ).hexdigest()
+
+                if startend_gcode_hash != self._global_container_stack.getMetaDataEntry("blackbelt_accepted_startend_gcode_hash", ""):
+                    self._startend_gcode_message.show()
+
+    def _onStartEndGcodeMessageActionTriggered(self, message, action):
+        self._startend_gcode_message.hide()
+        definition_changes_container = self._global_container_stack.definitionChanges
+        if action == "reset":
+            definition_changes_container.removeInstance("machine_start_gcode", postpone_emit = True)
+            definition_changes_container.removeInstance("machine_end_gcode", postpone_emit = False)
+            self._global_container_stack.setMetaDataEntry("blackbelt_accepted_startend_gcode_hash", "")
+            self._application.globalContainerStackChanged.emit()
+        elif action == "custom":
+            startend_gcode_hash = md5(
+                (self._global_container_stack.getProperty("machine_start_gcode", "value") + self._global_container_stack.getProperty("machine_end_gcode", "value")).encode()
+            ).hexdigest()
+
+            self._global_container_stack.setMetaDataEntry("blackbelt_accepted_startend_gcode_hash", startend_gcode_hash)
 
     def _onPreferencesChanged(self, preference):
         if preference == "general/visible_settings":
