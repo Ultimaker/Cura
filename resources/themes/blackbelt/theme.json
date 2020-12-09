@@ -4,36 +4,6 @@
         "inherits": "cura-light"
     },
 
-    "colors": {
-        "tooltip_text": [31, 36, 39, 255],
-        "button_tooltip": [234, 234, 234, 220],
-        "tooltip": [234, 234, 234, 220],
-
-        "text_inactive": [0, 0, 0, 128],
-
-        "viewport_background": [220, 220, 220, 255],
-        "sidebar": [189, 189, 189, 255],
-
-        "setting_category": [31, 36, 39, 255],
-        "setting_category_hover": [31, 36, 39, 255],
-        "setting_category_active": [31, 36, 39, 255],
-        "setting_category_active_hover": [31, 36, 39, 255],
-        "setting_category_border": [31, 36, 39, 255],
-        "setting_category_disabled_border": [31, 36, 39, 255],
-        "setting_category_active_border": [31, 36, 39, 255],
-
-        "setting_category_text": [255, 255, 255, 255],
-        "setting_category_disabled_text": [189, 189, 189, 101],
-        "setting_category_hover_text": [255, 255, 255, 255],
-        "setting_category_active_text": [255, 255, 255, 255],
-        "setting_category_active_hover_text": [255, 255, 255, 255],
-
-        "sidebar_lining": [189, 189, 189, 255],
-        "sidebar_lining_thin": [189, 189, 189, 255],
-
-        "topbar_button_text_inactive": [31, 36, 39, 255]
-    },
-
     "sizes": {
         "sidebar_lining": [0, 0],
         "sidebar_lining_thin": [0, 0]
