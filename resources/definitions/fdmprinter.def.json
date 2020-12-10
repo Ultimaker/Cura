@@ -1366,19 +1366,6 @@
                     "enabled": "wall_min_flow > 0",
                     "settable_per_mesh": true
                 },
-                "fill_perimeter_gaps":
-                {
-                    "label": "Fill Gaps Between Walls",
-                    "description": "Fills the gaps between walls where no walls fit.",
-                    "type": "enum",
-                    "options": {
-                        "nowhere": "Nowhere",
-                        "everywhere": "Everywhere"
-                    },
-                    "default_value": "everywhere",
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "filter_out_tiny_gaps":
                 {
                     "label": "Filter Out Tiny Gaps",
