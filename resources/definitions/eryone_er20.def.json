@@ -24,8 +24,8 @@
         "machine_height":{ "default_value": 200 },
         "machine_depth":{ "default_value": 220 },
         "machine_center_is_zero":{ "default_value": false },
-		"machine_gcode_flavor":{ "default_value": "RepRap (Marlin/Sprinter)" },
-		"machine_head_with_fans_polygon": {
+	"machine_gcode_flavor":{ "default_value": "RepRap (Marlin/Sprinter)" },
+	"machine_head_with_fans_polygon": {
             "default_value": [
                 [-10, -10],
                 [-10, 10],
