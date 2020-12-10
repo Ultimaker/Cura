@@ -45,6 +45,9 @@
     "machine_gcode_flavor": {
       "default_value": "RepRap (RepRap)"
     },
+    "fill_outline_gaps": {
+      "value": true
+    },
     "retraction_speed": {
       "default_value": 85,
       "maximum_value_warning": 130

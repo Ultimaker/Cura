@@ -590,6 +590,9 @@
         "jerk_roofing": {
             "value": "10"
         },
+        "fill_outline_gaps": {
+            "default_value": true
+        },
         "layer_height": {
             "default_value": 0.2
         },

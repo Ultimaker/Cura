@@ -86,6 +86,7 @@
         "infill_wipe_dist": { "value": 0 },
         "wall_0_wipe_dist": { "value": 0.2 },
 
+        "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": true },
 
         "retraction_speed": {

@@ -47,6 +47,7 @@
         "adhesion_type": { "default_value": "skirt" },
         "skirt_line_count": {"default_value": 2},
         "skirt_gap": { "default_value": 2},
+        "fill_outline_gaps": { "default_value": true},
         "infill_sparse_density": { "default_value": 15},
         "retraction_amount": { "default_value": 2.5},
         "retraction_speed": { "default_value": 30},

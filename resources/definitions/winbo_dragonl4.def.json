@@ -55,6 +55,7 @@
         "cool_fan_speed": { "value": "100" },
         "cool_fan_speed_max": { "value": "100" },
         "cool_min_speed": { "value": "5" },
+        "fill_outline_gaps": { "value": "True" },
         "infill_overlap": { "value": "0" },
         "min_infill_area": { "value": "1" },
         "min_skin_width_for_expansion": { "value": "2" },
