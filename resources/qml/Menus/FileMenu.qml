@@ -22,6 +22,11 @@ Menu
     {
         id: openMenu
         action: Cura.Actions.open
+        visible: CuraApplication.fileProviders.length > 0 // DEBUG: It's > 0 so that both options are visible for debugging purposes
+    }
+
+    OpenFilesMenu {
+        visible: CuraApplication.fileProviders.length > 0 // DEBUG: It's > 0 so that both options are visible for debugging purposes
     }
 
     RecentFilesMenu { }
