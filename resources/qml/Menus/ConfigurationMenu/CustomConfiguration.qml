@@ -231,7 +231,7 @@ Item
                         target: enabledCheckbox
                         property: "checked"
                         value: Cura.MachineManager.activeStack.isEnabled
-                        when: Cura.MachineManger.activeStack != null
+                        when: Cura.MachineManager.activeStack != null
                     }
 
                     /* Use a MouseArea to process the click on this checkbox.

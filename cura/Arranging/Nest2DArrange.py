@@ -1,8 +1,12 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import numpy
 from pynest2d import Point, Box, Item, NfpConfig, nest
 from typing import List, TYPE_CHECKING, Optional, Tuple
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Polygon import Polygon
 from UM.Math.Quaternion import Quaternion
@@ -44,9 +48,12 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     node_items = []
     for node in nodes_to_arrange:
         hull_polygon = node.callDecoration("getConvexHull")
+        if not hull_polygon or hull_polygon.getPoints is None:
+            Logger.log("w", "Object {} cannot be arranged because it has no convex hull.".format(node.getName()))
+            continue
         converted_points = []
         for point in hull_polygon.getPoints():
-            converted_points.append(Point(point[0] * factor, point[1] * factor))
+            converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
         item = Item(converted_points)
         node_items.append(item)
 
@@ -70,7 +77,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
         if clipped_area.getPoints() is not None:  # numpy array has to be explicitly checked against None
             for point in clipped_area.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
+                converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
 
             disallowed_area = Item(converted_points)
             disallowed_area.markAsDisallowedAreaInBin(0)
@@ -81,7 +88,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         converted_points = []
         hull_polygon = node.callDecoration("getConvexHull")
 
-        if hull_polygon.getPoints() is not None:  # numpy array has to be explicitly checked against None
+        if hull_polygon is not None and hull_polygon.getPoints() is not None:  # numpy array has to be explicitly checked against None
             for point in hull_polygon.getPoints():
                 converted_points.append(Point(point[0] * factor, point[1] * factor))
             item = Item(converted_points)

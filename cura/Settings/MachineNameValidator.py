@@ -31,7 +31,7 @@ class MachineNameValidator(QObject):
         # special character, and that up to [machine_name_max_length / 12] times.
         maximum_special_characters = int(machine_name_max_length / 12)
         unescaped = r"[a-zA-Z0-9_\-\.\/]"
-        self.machine_name_regex = r"^((" + unescaped + "){0,12}|.){0," + str(maximum_special_characters) + r"}$"
+        self.machine_name_regex = r"^[^\.]((" + unescaped + "){0,12}|.){0," + str(maximum_special_characters) + r"}$"
 
     validationChanged = pyqtSignal()
 

@@ -281,7 +281,7 @@ class BuildVolume(SceneNode):
                     continue
                 # If the entire node is below the build plate, still mark it as outside.
                 node_bounding_box = node.getBoundingBox()
-                if node_bounding_box and node_bounding_box.top < 0:
+                if node_bounding_box and node_bounding_box.top < 0 and not node.getParent().callDecoration("isGroup"):
                     node.setOutsideBuildArea(True)
                     continue
                 # Mark the node as outside build volume if the set extruder is disabled
@@ -344,7 +344,12 @@ class BuildVolume(SceneNode):
 
             # Mark the node as outside build volume if the set extruder is disabled
             extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+            try:
+                if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+                    node.setOutsideBuildArea(True)
+                    return
+            except IndexError:
+                # If the extruder doesn't exist, also mark it as unprintable.
                 node.setOutsideBuildArea(True)
                 return
 
@@ -791,7 +796,9 @@ class BuildVolume(SceneNode):
                         break
                     if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                         brim_size = self._calculateBedAdhesionSize(used_extruders, "brim")
-                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(brim_size))
+                        # Use 2x the brim size, since we need 1x brim size distance due to the object brim and another
+                        # times the brim due to the brim of the prime tower
+                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(2 * brim_size, num_segments = 24))
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                     result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
@@ -843,7 +850,7 @@ class BuildVolume(SceneNode):
                 prime_tower_y += brim_size
 
             radius = prime_tower_size / 2
-            prime_tower_area = Polygon.approximatedCircle(radius)
+            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 24)
             prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
 
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))

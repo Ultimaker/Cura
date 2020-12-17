@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "setting_version": 16,
-        "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
+        "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
         "has_variants": false,
@@ -652,7 +652,7 @@
                 {
                     "label": "Steps per Millimeter (X)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the X direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -662,7 +662,7 @@
                 {
                     "label": "Steps per Millimeter (Y)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the Y direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -672,7 +672,7 @@
                 {
                     "label": "Steps per Millimeter (Z)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the Z direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -682,7 +682,7 @@
                 {
                     "label": "Steps per Millimeter (E)",
                     "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 1600,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -873,7 +873,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable') or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -1230,7 +1230,7 @@
                     "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric'",
+                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1817,7 +1817,7 @@
                     "type": "int",
                     "minimum_value": "1",
                     "maximum_value_warning": "infill_line_distance / infill_line_width",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag'",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2065,7 +2065,7 @@
                 "max_skin_angle_for_expansion":
                 {
                     "label": "Maximum Skin Angle for Expansion",
-                    "description": "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical.",
+                    "description": "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
@@ -2353,7 +2353,7 @@
                     "default_value": -4,
                     "enabled": false,
                     "minimum_value_warning": "-switch_extruder_retraction_amount",
-                    "maximum_value_warning": "0",
+                    "maximum_value": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2379,7 +2379,7 @@
                     "default_value": -16,
                     "enabled": false,
                     "minimum_value_warning": "-retraction_amount * 4",
-                    "maximum_value_warning": "0",
+                    "maximum_value": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2420,7 +2420,7 @@
                     "default_value": -50,
                     "enabled": false,
                     "minimum_value_warning": "-100",
-                    "maximum_value_warning": "0",
+                    "maximum_value": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2614,7 +2614,7 @@
                             "minimum_value": "5",
                             "minimum_value_warning": "50",
                             "maximum_value_warning": "150",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -4948,7 +4948,7 @@
                         }
                     }
                 },
-                "support_interface_offset": 
+                "support_interface_offset":
                 {
                     "label": "Support Interface Horizontal Expansion",
                     "description": "Amount of offset applied to the support interface polygons.",
@@ -6161,7 +6161,7 @@
                 "infill_mesh_order":
                 {
                     "label": "Mesh Processing Rank",
-                    "description": "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "description": "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes.",
                     "default_value": 0,
                     "value": "1 if infill_mesh else 0",
                     "minimum_value_warning": "1",
