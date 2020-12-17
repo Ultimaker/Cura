@@ -1,0 +1,18 @@
+{
+    "name": "goofoo_Tiny",
+    "version": 2,
+    "inherits": "goofoo_far",
+    "overrides": {
+        "machine_name": { "default_value": "tiny" },
+        "machine_width": { "default_value": 100 },
+        "machine_depth": { "default_value": 100 },
+        "machine_height": { "default_value": 100 },
+        "machine_heated_bed": { "default_value": false },
+        "raft_margin": { "default_value": 5 }
+    },
+    "metadata": {
+        "author": "goofoo",
+        
+        "visible": true
+    }
+}

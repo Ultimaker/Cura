@@ -1,0 +1,22 @@
+{
+    "name": "goofoo_T-one",
+    "version": 2,
+    "inherits": "goofoo_far",
+    "overrides": {
+        "machine_name": { "default_value": "t-one" },
+        "machine_width": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 150 },
+        "machine_extruder_count": {
+            "default_value": 2
+        }
+    },
+    "metadata": {
+        "author": "goofoo",
+        "machine_extruder_trains": {
+            "0": "goofoo_tone_1st",
+            "1": "goofoo_tone_2st"
+        },
+        "visible": true
+    }
+}

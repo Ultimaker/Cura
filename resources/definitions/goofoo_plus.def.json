@@ -1,0 +1,16 @@
+{
+    "name": "goofoo_Plus",
+    "version": 2,
+    "inherits": "goofoo_near",
+    "overrides": {
+        "machine_name": { "default_value": "plus" },
+        "machine_width": { "default_value": 360 },
+        "machine_depth": { "default_value": 360 },
+        "machine_height": { "default_value": 400 }
+
+    },
+    "metadata": {
+        "author": "goofoo",
+        "visible": true
+    }
+}
