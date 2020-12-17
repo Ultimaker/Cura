@@ -20,18 +20,8 @@
                 [27, 45]
             ]
         },
-        "gantry_height": { "value": 30 },
+        "gantry_height": { "value": 40 },
 
-        "machine_end_gcode": { "default_value": "G91 ; Set Positioning to Relative\nG1 E-4 F3000 ; Retract 4mm of filament\nG1 Z5 F600 ; Raise nozzle 5mm to clear print\nG1 X5 Y5 F3600 ; Move to safe parking position\nG1 Z10 ; Raise nozzle an additonal 10mm\nG90 ; Set positioning to absolute\nG1 X0 Y{machine_depth} ; Present completed print\nM106 S0 ; Turn off part fan\nM104 S0 ; Set nozzle temp to zero\nM140 S0 ; set bed temp to zero\nM84 X Y E ; Disable X Y and E steppers\n" },
-
-        "machine_max_feedrate_x": { "value": 300 },
-        "machine_max_feedrate_y": { "value": 300 },
-        "machine_max_feedrate_z": { "value": 10 },
-        "machine_max_feedrate_e": { "value": 120 },
-        "machine_max_acceleration_x": { "value": 150 },
-        "machine_max_acceleration_y": { "value": 150 },
-        "machine_max_acceleration_z": { "value": 150 },
-        "machine_max_acceleration_e": { "value": 150 },
-        "machine_acceleration": { "value": 100 }
+        "machine_end_gcode": { "default_value": "G91 ; Set Positioning to Relative\nG92 E0 ; Reset Extruder\nG1 E-4 F3000 ; Retract 4mm of filament\nG1 Z5 F600 ; Raise nozzle 5mm to clear print\nG1 X5 Y5 F3600 ; Move to safe parking position\nG1 Z10 ; Raise nozzle an additonal 10mm\nG90 ; Set positioning to absolute\nG1 X0 Y{machine_depth} ; Present completed print\nM106 S0 ; Turn off part fan\nM104 S0 ; Set nozzle temp to zero\nM140 S0 ; set bed temp to zero\nM84 X Y E ; Disable X Y and E steppers\n" }
     }
 }
