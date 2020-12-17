@@ -29,13 +29,13 @@
         "machine_max_feedrate_x": { "value": 300 },
         "machine_max_feedrate_y": { "value": 300 },
         "machine_max_feedrate_z": { "value": 10 },
-        "machine_max_feedrate_e": { "value": 100 },
+        "machine_max_feedrate_e": { "value": 300 },
 
-        "machine_max_acceleration_x": { "value": 120 },
-        "machine_max_acceleration_y": { "value": 120 },
-        "machine_max_acceleration_z": { "value": 120 },
-        "machine_max_acceleration_e": { "value": 120 },
-        "machine_acceleration": { "value": 100 },
+        "machine_max_acceleration_x": { "value": 3500 },
+        "machine_max_acceleration_y": { "value": 3500 },
+        "machine_max_acceleration_z": { "value": 3500 },
+        "machine_max_acceleration_e": { "value": 3500 },
+        "machine_acceleration": { "value": 1500 },
 
         "machine_max_jerk_xy": { "value": 20 },
         "machine_max_jerk_z": { "value": 0.4 },
@@ -99,7 +99,8 @@
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 
-        "retraction_speed": {
+        "retraction_amount": {"value": 5 },
+        "retraction_speed": {"value": 60 },
             "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
@@ -160,6 +161,8 @@
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
-        "wall_thickness": {"value": "line_width * 2" }
+        "wall_thickness": {"value": "line_width * 2" },
+		"top_bottom_pattern": {"value": "zigzag" },
+		"top_bottom_pattern_0": {"value": "zigzag" }
     }
 }
