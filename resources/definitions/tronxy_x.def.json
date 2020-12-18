@@ -95,7 +95,6 @@
         "infill_overlap": { "value": 30.0 },
         "skin_overlap": { "value": 10.0 },
         "infill_wipe_dist": { "value": 0.0 },
-        "wall_0_wipe_dist": { "value": 0.0 },
 
         "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
