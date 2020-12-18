@@ -46,8 +46,6 @@ class Toolbox(QObject, Extension):
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
-
         # Network:
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
