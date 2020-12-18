@@ -164,6 +164,8 @@
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * 3" },
-        "wall_thickness": { "value": "line_width * 2" }
+        "wall_thickness": { "value": "line_width * 2" },
+        "top_bottom_pattern": { "value": "'zigzag'" },
+        "top_bottom_pattern_0": { "value": "'zigzag'" }
     }
 }
