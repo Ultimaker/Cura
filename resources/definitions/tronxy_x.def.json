@@ -86,8 +86,8 @@
         "wall_0_material_flow": { "value": 95 },
         "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
-        "z_seam_type": { "value": "'back'" },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
         
         "infill_sparse_density": { "value": "20" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
