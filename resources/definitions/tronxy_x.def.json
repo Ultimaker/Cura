@@ -100,7 +100,8 @@
         "filter_out_tiny_gaps": { "value": false },
 
         "retraction_amount": {"default_value": 5 },
-        "retraction_speed": {"default_value": 60 },
+        "retraction_speed": {
+		    "default_value": 60,
             "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
