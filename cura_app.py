@@ -56,6 +56,8 @@ if with_sentry_sdk:
         sentry_env = "development"  # Master is always a development version.
     elif "beta" in ApplicationMetadata.CuraVersion or "BETA" in ApplicationMetadata.CuraVersion:
         sentry_env = "beta"
+    elif "alpha" in ApplicationMetadata.CuraVersion or "ALPHA" in ApplicationMetadata.CuraVersion:
+        sentry_env = "alpha"
     try:
         if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
             sentry_env = "nightly"

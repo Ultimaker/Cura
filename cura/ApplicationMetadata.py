@@ -46,6 +46,7 @@ except ImportError:
 # Various convenience flags indicating what kind of Cura build it is.
 __ENTERPRISE_VERSION_TYPE = "enterprise"
 IsEnterpriseVersion = CuraBuildType.lower() == __ENTERPRISE_VERSION_TYPE
+IsAlternateVersion = CuraBuildType.lower() not in [DEFAULT_CURA_BUILD_TYPE, __ENTERPRISE_VERSION_TYPE]
 
 try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore
