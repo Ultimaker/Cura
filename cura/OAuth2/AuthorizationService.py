@@ -17,7 +17,7 @@ from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse
-
+import keyring
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
@@ -229,6 +229,11 @@ class AuthorizationService:
             return
         try:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
+
+            # Since we stored all the sensitive stuff in the keyring, restore that now.
+            preferences_data["access_token"] = keyring.get_password("cura", "access_token")
+            preferences_data["refresh_token"] = keyring.get_password("cura", "refresh_token")
+
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
                 # Also check if we can actually get the user profile information.
@@ -255,6 +260,15 @@ class AuthorizationService:
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()
+
+            # Store all the sensitive stuff in the keyring
+            keyring.set_password("cura", "access_token", auth_data.access_token)
+            keyring.set_password("cura", "refresh_token", auth_data.refresh_token)
+
+            # And remove that data again so it isn't stored in the preferences.
+            auth_data.access_token = None
+            auth_data.refresh_token = None
+
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
         else:
             self._user_profile = None
