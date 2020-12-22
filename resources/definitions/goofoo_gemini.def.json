@@ -7,6 +7,7 @@
         "machine_width": { "default_value": 360 },
         "machine_depth": { "default_value": 250 },
         "machine_height": { "default_value": 200 },
+        "machine_head_with_fans_polygon":{"default_value":[[0, 0], [0, 0], [0, 0], [0, 0]]},
         "machine_extruder_count": {
             "default_value": 2
         }
