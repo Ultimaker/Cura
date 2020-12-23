@@ -11,15 +11,14 @@ import "../Dialogs"
 
 Menu
 {
-    id: menu
+    id: openFilesMenu
     title: catalog.i18nc("@title:menu menubar:file", "Open File(s)...")
     iconName: "document-open-recent";
-
 
     Instantiator
     {
         id: fileProviders
-        model: UM.FileProviderModel { }
+        model: CuraApplication.getFileProviderModel()
         MenuItem
         {
             text:
@@ -34,12 +33,12 @@ Menu
                 }
                 else
                 {
-                    fileProviders.model.trigger(model.name);
+                    CuraApplication.getFileProviderModel().trigger(model.name);
                 }
             }
             shortcut: model.shortcut
         }
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: openFilesMenu.insertItem(index, object)
+        onObjectRemoved: openFilesMenu.removeItem(object)
     }
 }

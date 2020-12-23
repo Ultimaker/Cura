@@ -22,11 +22,23 @@ Menu
     {
         id: openMenu
         action: Cura.Actions.open
-        visible: CuraApplication.fileProviders.length > 0 // DEBUG: It's > 0 so that both options are visible for debugging purposes
+        visible: (CuraApplication.getFileProviderModel().count == 1)
     }
 
-    OpenFilesMenu {
-        visible: CuraApplication.fileProviders.length > 0 // DEBUG: It's > 0 so that both options are visible for debugging purposes
+    OpenFilesMenu
+    {
+        id: openFilesMenu
+        visible: (CuraApplication.getFileProviderModel().count > 1)
+    }
+
+    Connections
+    {
+        target: CuraApplication.getFileProviderModel()
+        onItemsChanged:
+        {
+            openMenu.visible = (CuraApplication.getFileProviderModel().count == 1) // 1 because the open local files menu should always exist in the model
+            openFilesMenu.visible = (CuraApplication.getFileProviderModel().count > 1)
+        }
     }
 
     RecentFilesMenu { }
