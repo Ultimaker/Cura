@@ -14,6 +14,7 @@ from cura.CuraApplication import CuraApplication
 import Savitar
 
 import numpy
+import datetime
 
 MYPY = False
 try:
@@ -145,7 +146,18 @@ class ThreeMFWriter(MeshWriter):
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             savitar_scene = Savitar.Scene()
-            savitar_scene.setMetaDataEntry("Application", CuraApplication.getInstance().getApplicationDisplayName())
+
+            metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
+            current_time_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            if "Application" not in metadata_to_store:
+                # This might sound a bit strange, but this field should store the original application that created
+                # the 3mf. So if it was already set, leave it to whatever it was.
+                savitar_scene.setMetaDataEntry("Application", CuraApplication.getInstance().getApplicationDisplayName())
+            if "CreationDate" not in metadata_to_store:
+                savitar_scene.setMetaDataEntry("CreationDate", current_time_string)
+
+            savitar_scene.setMetaDataEntry("ModificationDate", current_time_string)
+
             transformation_matrix = Matrix()
             transformation_matrix._data[1, 1] = 0
             transformation_matrix._data[1, 2] = -1
