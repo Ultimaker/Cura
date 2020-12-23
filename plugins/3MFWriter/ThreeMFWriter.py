@@ -145,6 +145,7 @@ class ThreeMFWriter(MeshWriter):
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             savitar_scene = Savitar.Scene()
+            savitar_scene.setMetaDataEntry("Application", CuraApplication.getInstance().getApplicationDisplayName())
             transformation_matrix = Matrix()
             transformation_matrix._data[1, 1] = 0
             transformation_matrix._data[1, 2] = -1
