@@ -159,7 +159,7 @@ class ThreeMFReader(MeshReader):
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
-
+            known_setting_keys = um_node.callDecoration("getStack").getAllKeys()
             for key in settings:
                 setting_value = settings[key]
 
@@ -171,7 +171,10 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key, "value", setting_value)
+                if key in known_setting_keys:
+                    setting_container.setProperty(key, "value", setting_value)
+                else:
+                    Logger.log("w", "Unable to set setting %s", key)
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
             if len(um_node.getAllChildren()) == 1:
