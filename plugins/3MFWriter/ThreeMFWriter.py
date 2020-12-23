@@ -148,6 +148,10 @@ class ThreeMFWriter(MeshWriter):
             savitar_scene = Savitar.Scene()
 
             metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
+
+            for key, value in metadata_to_store.items():
+                savitar_scene.setMetaDataEntry(key, value)
+
             current_time_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if "Application" not in metadata_to_store:
                 # This might sound a bit strange, but this field should store the original application that created
