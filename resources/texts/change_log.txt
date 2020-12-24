@@ -32,6 +32,8 @@ Variable Line Strategy: How the walls are spread over the available space.
 
 <br>Wall Transition Filter Distance: If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.
 
+<br>Maximum Extrusion Area Deviation: Influences extrusion line simplification. The maximum extrusion area deviation allowed when removing intermediate points from a straight line. Keeping it low may cause (too) little simplification to occur (with all the problems that causes), but if you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls.
+
 * Removed/Renamed/Altered Settings
 
 Print Thin Walls: Behaviour altered.
