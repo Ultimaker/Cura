@@ -231,7 +231,7 @@ class AuthorizationService:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
 
             # Since we stored all the sensitive stuff in the keyring, restore that now.
-            preferences_data["access_token"] = keyring.get_password("cura", "access_token")
+            # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             preferences_data["refresh_token"] = keyring.get_password("cura", "refresh_token")
 
             if preferences_data:
@@ -262,11 +262,11 @@ class AuthorizationService:
             self._user_profile = self.getUserProfile()
 
             # Store all the sensitive stuff in the keyring
-            keyring.set_password("cura", "access_token", auth_data.access_token)
+            # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             keyring.set_password("cura", "refresh_token", auth_data.refresh_token)
 
             # And remove that data again so it isn't stored in the preferences.
-            auth_data.access_token = None
+            # Keep the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             auth_data.refresh_token = None
 
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
