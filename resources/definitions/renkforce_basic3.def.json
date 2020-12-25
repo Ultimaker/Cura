@@ -1,7 +1,7 @@
 {
     "name": "Renkforce Basic 3",
     "version": 2,
-    "inherits": "goofoo_far",
+    "inherits": "goofoo_small",
     "overrides": {
         "machine_name": { "default_value": "Basic 3" },
         "machine_width": { "default_value": 120 },
@@ -10,7 +10,7 @@
         "machine_heated_bed": { "default_value": false }
     },
     "metadata": {
-        "author": "goofoo",
+        "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
         "manufacturer": "Renkforce",
         "visible": true
     }
