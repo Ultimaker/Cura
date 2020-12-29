@@ -35,6 +35,7 @@ class SimulationPass(RenderPass):
         self._disabled_shader = None
         self._old_current_layer = 0
         self._old_current_path = 0
+        self._old_head_info = {}  # type: Dict[str, Union[List[float], bool]]
         self._switching_layers = True # It tracks when the user is moving the layers' slider
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
@@ -187,12 +188,34 @@ class SimulationPass(RenderPass):
 
         # The nozzle is drawn when once we know the correct position of the head,
         # but the user is not using the layer slider, and the compatibility mode is not enabled
-        if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
-            if head_position is not None:
+        if not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
+            position_in_viewport = (0., 0.)
+            nozzle_visible = False
+            if head_position is not None and not self._switching_layers:
+                nozzle_visible = True
                 nozzle_node.setPosition(head_position)
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
                 nozzle_batch.render(self._scene.getActiveCamera())
+
+                camera = self._scene.getActiveCamera()
+                if camera:
+                    projected_position = camera.project(head_position)
+                    position_in_viewport = [
+                        ((projected_position[0] + 1) / 2) * camera.getViewportWidth(),
+                        (1 - (projected_position[1] + 1) / 2) * camera.getViewportHeight()
+                    ]
+
+            head_info = {
+                "visible": nozzle_visible,
+                "position": list(head_position.getData()) if nozzle_visible else (0., 0., 0.),
+                "positionInViewport": position_in_viewport
+            }
+
+            if head_info != self._old_head_info:
+                if self._layer_view:
+                    self._layer_view.headInfoChanged.emit(head_info)
+                self._old_head_info = head_info
 
         if len(disabled_batch.items) > 0:
             disabled_batch.render(self._scene.getActiveCamera())

@@ -457,6 +457,7 @@ class SimulationView(CuraView):
     preferencesChanged = Signal()
     busyChanged = Signal()
     activityChanged = Signal()
+    headInfoChanged = Signal()
 
     def getProxy(self, engine, script_engine):
         """Hackish way to ensure the proxy is already created

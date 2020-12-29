@@ -25,6 +25,29 @@ Item
 
     visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
+    //Rounds a floating point number to 4 decimals. This prevents floating
+    //point rounding errors.
+    //
+    //input:    The number to round.
+    //decimals: The number of decimals (digits after the radix) to round to.
+    //return:   The rounded number.
+    function roundFloat(input, decimals)
+    {
+        //First convert to fixed-point notation to round the number to 4 decimals and not introduce new floating point errors.
+        //Then convert to a string (is implicit). The fixed-point notation will be something like "3.200".
+        //Then remove any trailing zeroes and the radix.
+        var output = "";
+        if (input !== undefined)
+        {
+            output = input.toFixed(decimals).replace(/\.?0*$/, ""); //Match on periods, if any ( \.? ), followed by any number of zeros ( 0* ), then the end of string ( $ ).
+        }
+        if (output == "-0")
+        {
+            output = "0";
+        }
+        return output;
+    }
+
     // A slider which lets users trace a single layer (XY movements)
     PathSlider
     {
@@ -240,5 +263,28 @@ Item
             layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
             layerSlider.setUpperValue(UM.SimulationView.currentLayer)
         }
+    }
+
+    // This rectangle displays the information about the current position of the nozzle etc.
+    Rectangle
+    {
+        id: nozzleInfo
+        property var headInfo: UM.SimulationView.headInfo
+        x: visible ? Math.floor(headInfo.positionInViewport.x) + UM.Theme.getSize("default_margin").width : 0
+        y: visible ? Math.floor(headInfo.positionInViewport.y) + UM.Theme.getSize("default_margin").height - contentItem.y: 0
+
+        width: toolHint.width + UM.Theme.getSize("default_margin").width
+        height: toolHint.height;
+        color: UM.Theme.getColor("tooltip")
+        Label
+        {
+            id: toolHint
+            text: visible ? "X: %0\nY: %1\nZ: %2".arg(roundFloat(parent.headInfo.position.x,3)).arg(roundFloat(parent.headInfo.position.z,3)).arg(roundFloat(parent.headInfo.position.y,3)) : ""
+            color: UM.Theme.getColor("tooltip_text")
+            font: UM.Theme.getFont("default")
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        visible: headInfo != undefined ? headInfo.visible : false
     }
 }

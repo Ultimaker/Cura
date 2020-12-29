@@ -1,8 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, List, Union
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, QPoint
+from PyQt5.QtGui import QVector3D
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 
@@ -14,10 +15,13 @@ class SimulationViewProxy(QObject):
     def __init__(self, simulation_view: "SimulationView", parent=None) -> None:
         super().__init__(parent)
         self._simulation_view = simulation_view
+        self._simulation_view.headInfoChanged.connect(self._onHeadInfoChanged)
         self._current_layer = 0
         self._controller = Application.getInstance().getController()
         self._controller.activeViewChanged.connect(self._onActiveViewChanged)
         self.is_simulationView_selected = False
+        self._head_info = {}  # type: Dict[str, Union[List[float], bool]]
+
         self._onActiveViewChanged()
 
     currentLayerChanged = pyqtSignal()
@@ -28,6 +32,26 @@ class SimulationViewProxy(QObject):
     globalStackChanged = pyqtSignal()
     preferencesChanged = pyqtSignal()
     busyChanged = pyqtSignal()
+    headInfoChanged = pyqtSignal()
+
+    def _onHeadInfoChanged(self, head_info: Dict[str, Union[List[float], bool]]) -> None:
+        self._head_info = head_info
+        self.headInfoChanged.emit()
+
+    @pyqtProperty("QVariant", notify=headInfoChanged)
+    def headInfo(self) -> Dict[str, Union[List[float], bool]]:
+        if not self._head_info:
+            return {
+                "visible": False,
+                "position": QVector3D(),
+                "positionInViewport": QPoint(),
+            }
+
+        return {
+            "visible": self._head_info["visible"],
+            "position": QVector3D(*self._head_info["position"]),
+            "positionInViewport": QPoint(*self._head_info["positionInViewport"]),
+        }
 
     @pyqtProperty(bool, notify=activityChanged)
     def layerActivity(self):
