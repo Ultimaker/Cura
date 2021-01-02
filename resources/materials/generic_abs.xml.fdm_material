@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic ABS profile. The data in this file may not be correct for your specific machine.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>ABS</material>
+            <color>Generic</color>
+        </name>
+        <GUID>60636bb4-518f-42e7-8237-fe77b194ebe0</GUID>
+        <version>24</version>
+        <color_code>#8cb219</color_code>
+        <description>Tough and durable. ABS is good for mechanical parts. It is impact resistant, dimensionally stable and handles temperatures up to 85ºC.</description>
+        <adhesion_info>Use glue, to avoid chipping of the glass.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.10</density>
+        <diameter>2.85</diameter>
+    </properties>
+    <settings>
+        <setting key="anti ooze retract position">-4</setting>
+        <setting key="anti ooze retract speed">5</setting>
+        <setting key="break preparation position">-16</setting>
+        <setting key="break preparation speed">10</setting>
+        <setting key="break preparation temperature">230</setting>
+        <setting key="break position">-50</setting>
+        <setting key="break speed">25</setting>
+        <setting key="break temperature">85</setting>
+        <setting key="maximum park duration">7200</setting>
+        <setting key="no load move factor">0.95</setting>
+        <setting key="flush purge speed">0.5</setting>
+        <setting key="end of filament purge speed">0.5</setting>
+        <setting key="flush purge length">60</setting>
+        <setting key="end of filament purge length">20</setting>
+        <setting key="print temperature">230</setting>
+        <setting key="heated bed temperature">80</setting>
+        <setting key="standby temperature">200</setting>
+        <setting key="adhesion tendency">0</setting>
+        <setting key="surface energy">70</setting>
+        <cura:setting key="material_shrinkage_percentage">100</cura:setting>
+        <setting key="build volume temperature">36</setting>
+
+        <!-- For material flow sensor -->
+        <setting key="relative extrusion">1.0</setting>
+        <setting key="flow sensor detection margin">0.8</setting>
+        <setting key="retract compensation">0</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 2+"/>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 2 Extended+"/>
+
+            <hotend id="0.25 mm" />
+            <hotend id="0.4 mm" />
+            <hotend id="0.6 mm" />
+            <hotend id="0.8 mm" />
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 3"/>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 3 Extended"/>
+            <hotend id="BB 0.4" />
+            <hotend id="BB 0.8" />
+            <hotend id="AA 0.25">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">225</setting>
+                <setting key="standby temperature">100</setting>
+                <setting key="print cooling">40</setting>
+                <setting key="retraction amount">6.5</setting>
+            </hotend>
+            <hotend id="AA 0.4">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print cooling">5</setting>
+            </hotend>
+            <hotend id="AA 0.8">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="heated bed temperature">90</setting>
+            </hotend>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker 2+ Connect"/>
+            <setting key="hardware compatible">yes</setting>
+            <setting key="heated bed temperature">85</setting>
+            <hotend id="0.25 mm">
+                <setting key="print temperature">245</setting>
+            </hotend>
+            <hotend id="0.4 mm">
+                <setting key="print temperature">250</setting>
+            </hotend>
+            <hotend id="0.6 mm">
+                <setting key="print temperature">260</setting>
+            </hotend>
+            <hotend id="0.8 mm">
+                <setting key="print temperature">260</setting>
+            </hotend>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker S3"/>
+            <setting key="heated bed temperature">85</setting>
+
+            <hotend id="BB 0.4" />
+            <hotend id="BB 0.8" />
+            <hotend id="CC 0.6" />
+            <hotend id="AA 0.25">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">225</setting>
+                <setting key="standby temperature">85</setting>
+                <setting key="print cooling">40</setting>
+                <setting key="retraction amount">6.5</setting>
+            </hotend>
+            <hotend id="AA 0.4">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print cooling">2</setting>
+                <setting key="standby temperature">85</setting>
+                <setting key="retraction amount">5</setting>
+            </hotend>
+            <hotend id="AA 0.8">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker S5"/>
+            <setting key="heated bed temperature">85</setting>
+
+            <hotend id="BB 0.4" />
+            <hotend id="BB 0.8" />
+            <hotend id="CC 0.6" />
+            <hotend id="AA 0.25">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">225</setting>
+                <setting key="standby temperature">85</setting>
+                <setting key="print cooling">40</setting>
+                <setting key="retraction amount">6.5</setting>
+            </hotend>
+            <hotend id="AA 0.4">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print cooling">2</setting>
+                <setting key="standby temperature">85</setting>
+                <setting key="retraction amount">5</setting>
+            </hotend>
+            <hotend id="AA 0.8">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">5</setting>
+            </hotend>
+            <buildplate id="Glass">
+                <setting key="hardware compatible">no</setting>
+                <setting key="hardware recommended">yes</setting>
+            </buildplate>
+            <buildplate id="Aluminum">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="hardware recommended">yes</setting>
+            </buildplate>
+        </machine>
+    </settings>
+</fdmmaterial>
