@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -96,7 +96,7 @@ Item
             id: openFileButton
             height: UM.Theme.getSize("stage_menu").height
             width: UM.Theme.getSize("stage_menu").height
-            onClicked: Cura.Actions.open.trigger()
+            onClicked: CuraApplication.getFileProviderModel().triggerFirst()
             hoverEnabled: true
 
             contentItem: Item

@@ -629,12 +629,6 @@ UM.MainWindow
 
     Connections
     {
-        target: Cura.Actions.open
-        onTriggered: openDialog.open()
-    }
-
-    Connections
-    {
         target: Cura.Actions.showProfileFolder
         onTriggered:
         {
