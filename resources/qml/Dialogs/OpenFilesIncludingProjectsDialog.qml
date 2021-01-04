@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -33,9 +33,6 @@ UM.Dialog
     function loadProjectFile(projectFile)
     {
         UM.WorkspaceFileHandler.readLocalFile(projectFile);
-
-        var meshName = backgroundItem.getMeshName(projectFile.toString());
-        backgroundItem.hasMesh(decodeURIComponent(meshName));
     }
 
     function loadModelFiles(fileUrls)
@@ -44,9 +41,6 @@ UM.Dialog
         {
             CuraApplication.readLocalFile(fileUrls[i], "open_as_model");
         }
-
-        var meshName = backgroundItem.getMeshName(fileUrls[0].toString());
-        backgroundItem.hasMesh(decodeURIComponent(meshName));
     }
 
     Column
@@ -107,6 +101,12 @@ UM.Dialog
                     base.hide();
                 }
             }
+        }
+
+        UM.I18nCatalog
+        {
+            id: catalog
+            name: "cura"
         }
     }
 }

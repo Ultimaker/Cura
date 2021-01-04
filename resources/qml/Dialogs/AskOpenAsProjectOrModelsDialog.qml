@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -32,30 +32,24 @@ UM.Dialog
 
     // load the entire project
     function loadProjectFile() {
-
         // update preference
         if (rememberChoiceCheckBox.checked) {
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_project")
         }
 
         UM.WorkspaceFileHandler.readLocalFile(base.fileUrl)
-        var meshName = backgroundItem.getMeshName(base.fileUrl.toString())
-        backgroundItem.hasMesh(decodeURIComponent(meshName))
 
         base.hide()
     }
 
     // load the project file as separated models
     function loadModelFiles() {
-
         // update preference
         if (rememberChoiceCheckBox.checked) {
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_model")
         }
 
         CuraApplication.readLocalFile(base.fileUrl, "open_as_model")
-        var meshName = backgroundItem.getMeshName(base.fileUrl.toString())
-        backgroundItem.hasMesh(decodeURIComponent(meshName))
 
         base.hide()
     }
