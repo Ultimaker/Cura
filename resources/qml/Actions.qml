@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -12,7 +12,6 @@ import Cura 1.0 as Cura
 Item
 {
     property alias newProject: newProjectAction;
-    property alias open: openAction;
     property alias quit: quitAction;
 
     property alias undo: undoAction;
@@ -411,14 +410,6 @@ Item
         id: resetAllAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Model Transformations");
         onTriggered: CuraApplication.resetAll();
-    }
-
-    Action
-    {
-        id: openAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
-        iconName: "document-open";
-        shortcut: StandardKey.Open;
     }
 
     Action
