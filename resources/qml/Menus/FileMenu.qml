@@ -11,6 +11,7 @@ Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
+    property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     MenuItem
     {
@@ -22,23 +23,13 @@ Menu
     {
         id: openMenu
         action: Cura.Actions.open
-        visible: (CuraApplication.getFileProviderModel().count == 1)
+        visible: (base.fileProviderModel.count == 1)
     }
 
     OpenFilesMenu
     {
         id: openFilesMenu
-        visible: (CuraApplication.getFileProviderModel().count > 1)
-    }
-
-    Connections
-    {
-        target: CuraApplication.getFileProviderModel()
-        onItemsChanged:
-        {
-            openMenu.visible = (CuraApplication.getFileProviderModel().count == 1) // 1 because the open local files menu should always exist in the model
-            openFilesMenu.visible = (CuraApplication.getFileProviderModel().count > 1)
-        }
+        visible: (base.fileProviderModel.count > 1)
     }
 
     RecentFilesMenu { }
