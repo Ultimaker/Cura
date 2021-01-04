@@ -13,7 +13,7 @@
         "preferred_quality_type": "normal",
         "preferred_material": "redd_pla",
         
-        "platform_offset": [-117.5, -40, 145],
+        "platform_offset": [-117.5, -40, 147.5],
         "has_materials": true,
         "machine_extruder_trains": {"0": "trimaker_nebula_extruder"},
         "exclude_materials": [
