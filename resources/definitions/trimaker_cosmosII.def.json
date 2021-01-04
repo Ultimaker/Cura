@@ -166,7 +166,7 @@
         "wall_thickness": {"value": "line_width * 3" },
         "top_bottom_thickness": {"value":  "layer_height * 6"},
         "infill_sparse_density": {"default_value": 25},
-        "infill_pattern": {"value": "grid"},
+        "infill_pattern": {"value": "'grid'"},
         "infill_sparse_thickness": {"value": "resolveOrValue('layer_height')"}, 
         "default_material_bed_temperature": {"default_value": 60},
         "default_material_print_temperature": {"default_value": 200},
