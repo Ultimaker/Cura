@@ -13,7 +13,7 @@ OldControls.TableView
 {
     itemDelegate: Item
     {
-        height: tableCellLabel.implicitHeight + UM.Theme.getSize("thin_margin").height
+        height: tableCellLabel.implicitHeight
 
         Label
         {
@@ -29,7 +29,8 @@ OldControls.TableView
 
     rowDelegate: Rectangle
     {
-        color: styleData.selected ? UM.Theme.getColor("toolbar_button_hover") : UM.Theme.getColor("main_background")
+        color: styleData.selected ? UM.Theme.getColor("secondary") : UM.Theme.getColor("main_background")
+        height: UM.Theme.getSize("table_row").height
     }
 
     // Use the old styling technique since it's the only way to make the scrollbars themed in the TableView
