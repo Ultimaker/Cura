@@ -47,6 +47,9 @@ except ImportError:
 __ENTERPRISE_VERSION_TYPE = "enterprise"
 IsEnterpriseVersion = CuraBuildType.lower() == __ENTERPRISE_VERSION_TYPE
 IsAlternateVersion = CuraBuildType.lower() not in [DEFAULT_CURA_BUILD_TYPE, __ENTERPRISE_VERSION_TYPE]
+# NOTE: IsAlternateVersion is to make it possibile to have 'non-numbered' versions, at least as presented to the user.
+#       (Internally, it'll still have some sort of version-number, but the user is never meant to see it in the GUI).
+#       Warning: This will also change (some of) the icons/splash-screen to the 'work in progress' alternatives!
 
 try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore
