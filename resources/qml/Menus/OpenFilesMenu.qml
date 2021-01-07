@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -21,8 +21,21 @@ Menu
         model: CuraApplication.getFileProviderModel()
         MenuItem
         {
-            text: model.displayText
-            onTriggered: CuraApplication.getFileProviderModel().trigger(model.name)
+            text:
+            {
+                return model.displayText;
+            }
+            onTriggered:
+            {
+                if (model.index == 0)  // The 0th element is the "From Disk" option, which should activate the open local file dialog
+                {
+                    Cura.Actions.open.trigger()
+                }
+                else
+                {
+                    CuraApplication.getFileProviderModel().trigger(model.name);
+                }
+            }
             shortcut: model.shortcut
         }
         onObjectAdded: openFilesMenu.insertItem(index, object)

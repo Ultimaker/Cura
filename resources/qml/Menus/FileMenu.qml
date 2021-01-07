@@ -22,7 +22,7 @@ Menu
     MenuItem
     {
         id: openMenu
-        onTriggered: CuraApplication.getFileProviderModel().triggerFirst()
+        action: Cura.Actions.open
         visible: (base.fileProviderModel.count == 1)
     }
 

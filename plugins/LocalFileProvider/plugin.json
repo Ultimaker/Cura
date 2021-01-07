@@ -1,8 +1,0 @@
-{
-    "name": "Local File Provider",
-    "description": "Enables opening files from the local file system.",
-    "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "api": "7.4.0",
-    "i18n-catalog": "cura"
-}
