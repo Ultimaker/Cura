@@ -1735,7 +1735,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
-    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None, add_to_recent_files: str = True):
+    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None, add_to_recent_files: bool = True):
         """Open a local file
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
