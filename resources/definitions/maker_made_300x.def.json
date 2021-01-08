@@ -73,7 +73,6 @@
         "infill_before_walls": {"value": false },
         "infill_support_enabled": {"value": false },
         "max_skin_angle_for_expansion": {"value": 90},
-        "material_diameter": {"value": 1.75},
         "default_material_print_temperature": {"value": 220},
         "material_print_temperature": {"value": 220},
         "material_print_temperature_layer_0": {"value": 220},
