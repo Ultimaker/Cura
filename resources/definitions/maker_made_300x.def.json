@@ -12,7 +12,7 @@
         "has_variants": false,
         "has_machine_materials": true,
         "preferred_quality_type": "normal",
-        "has_machine_quality": true,
+        "has_machine_quality": false,
         "preferred_material": "generic_pla",
         "machine_extruder_trains":
         {
