@@ -1,7 +1,6 @@
 {
     "name": "Extruder 1",
     "version": 2,
-    "name": "0.4mm Nozzle",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "maker_made_300x",
