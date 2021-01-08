@@ -1735,7 +1735,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
-    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None):
+    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None, add_to_recent_files: str = True):
         """Open a local file
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
@@ -1760,7 +1760,7 @@ class CuraApplication(QtApplication):
         if is_project_file and project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
-            workspace_handler.readLocalFile(file)
+            workspace_handler.readLocalFile(file, add_to_recent_files = add_to_recent_files)
             return
 
         if is_project_file and project_mode == "always_ask":
@@ -1801,7 +1801,7 @@ class CuraApplication(QtApplication):
         if extension in self._non_sliceable_extensions:
             self.deleteAll(only_selectable = False)
 
-        job = ReadMeshJob(f)
+        job = ReadMeshJob(f, add_to_recent_files = add_to_recent_files)
         job.finished.connect(self._readMeshFinished)
         job.start()
 
