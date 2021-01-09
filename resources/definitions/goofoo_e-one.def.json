@@ -1,7 +1,7 @@
 {
     "name": "goofoo_E-one",
     "version": 2,
-    "inherits": "goofoo_base",
+    "inherits": "goofoo_open",
     "overrides": {
         "machine_name": { "default_value": "e-one" },
         "machine_width": { "default_value": 300 },
@@ -10,7 +10,21 @@
     },
     "metadata": {
         "author": "goofoo",
-        "quality_definition": "goofoo_far",
-        "visible": true
+        "visible": true,
+        "exclude_materials": [
+            "goofoo_bronze_pla",
+            "goofoo_peek",
+            "goofoo_tpe_83a",
+            "goofoo_tpu_87a",
+            "goofoo_tpu_95a",
+            "goofoo_pa_cf",
+            "goofoo_pc",
+            "goofoo_pa",
+            "goofoo_asa",
+            "goofoo_abs",
+            "goofoo_pva",
+            "goofoo_hips",
+            "goofoo_pva"
+        ]
     }
 }

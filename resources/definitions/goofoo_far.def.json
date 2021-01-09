@@ -5,6 +5,12 @@
     "metadata": {
         "author": "goofoo",
         "quality_definition": "goofoo_far",
-        "visible": false
+        "visible": false,
+        "exclude_materials": [
+            "goofoo_bronze_pla",
+            "goofoo_tpe_83a",
+            "goofoo_tpu_87a",
+            "goofoo_tpu_95a"
+        ]
     }
 }
