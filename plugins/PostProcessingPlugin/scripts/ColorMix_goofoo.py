@@ -44,12 +44,12 @@ class ColorMix_goofoo(Script):
                 "mix_radio":
                 {
                     "label": "mix ratio",
-                    "description": "First extruder percentage 0-100",
+                    "description": "First extruder percentage 5-95",
                     "type": "int",
-                    "default_value": 100,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100"
+                    "default_value": 95,
+                    "minimum_value": "5",
+                    "minimum_value_warning": "5",
+                    "maximum_value_warning": "95"
                 }
             }
         }"""
@@ -169,14 +169,14 @@ class ColorMix_goofoo(Script):
             nextObj = layerObjs[i+1]
             if None != itemObj and None != nextObj:
                 # or setObj['isSetEnd'] == 1
-                # if 5 > int(itemObj['sRatio']):
-                #     itemObj['sRatio'] = 5
-                # if 95 < int(itemObj['sRatio']):
-                #     itemObj['sRatio'] = 95
-                # if 5 > int(nextObj['sRatio']):
-                #     nextObj['sRatio'] = 5
-                # if 95 < int(nextObj['sRatio']):
-                #     nextObj['sRatio'] = 95
+                if 5 > int(itemObj['sRatio']):
+                    itemObj['sRatio'] = 5
+                if 95 < int(itemObj['sRatio']):
+                    itemObj['sRatio'] = 95
+                if 5 > int(nextObj['sRatio']):
+                    nextObj['sRatio'] = 5
+                if 95 < int(nextObj['sRatio']):
+                    nextObj['sRatio'] = 95
                 if 0 == itemObj['fixed']:
                     itemObj['incRation'] = float((nextObj['sRatio']-itemObj['sRatio'])/(nextObj['layer']-itemObj['layer']))
                 else:
@@ -225,14 +225,14 @@ class ColorMix_goofoo(Script):
                 if start == 0 and ";LAYER_COUNT" in line:
                     start = 1
                 if start == 1:
-                    if itemObj != None and "G1" in line or "G0" in line and "E" in line:
-                        modified_gcode += "M6050 S{0:2f} P{1:2f} Z{2:f}\n".format(float(firstExtruderValue/100.0),0.0,float(curHeight))
+                    # if itemObj != None and "G1" in line or "G0" in line and "E" in line:
+                    #     modified_gcode += "M6050 S{0:2f} P{1:2f} Z{2:f}\n".format(float(firstExtruderValue/100.0),0.0,float(curHeight))
                     if ("G1" in line or "G0" in line) and "Z" in line:
                         itemObj = self.findLayerInfo(int(curLayer),layerObjs)
                         if None != itemObj:
                             firstExtruderValue = int(((curLayer - itemObj['layer']) * itemObj['incRation']) + itemObj['sRatio'])
                             curHeight = self.getValue(line,"Z",0.0)
-                            modified_gcode += "M6050 S{0:2f} P{1:2f} Z{2:f}\n".format(float(firstExtruderValue/100.0),float(itemObj['incRation']/100),float(curHeight))
+                            modified_gcode += "M6050 S{0:2f} P{1:2f} Z{2:f}\n".format(float(firstExtruderValue/100.0),0.0,float(curHeight))
                         curLayer+=1
                 if line != "":
                     modified_gcode += line + "\n"
