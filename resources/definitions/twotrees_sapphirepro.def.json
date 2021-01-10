@@ -13,7 +13,7 @@
         "platform_offset": [0, 0, 0],
         "machine_extruder_trains":
 		{
-			"0": "twotrees_sapphirepro_extruder_0"
+			"0": "twotrees_sapphirepro_extruder_0",
 			"1": "twotrees_sapphirepro_extruder_1"
 		}
     },
