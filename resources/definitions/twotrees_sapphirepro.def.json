@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "TwoTrees Sapphire Pro",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "MLoewe",
+        "manufacturer": "TwoTrees",
+        "file_formats": "text/x-gcode",
+        "platform": "twotrees_sapphirepro.stl",
+        "platform_texture": "twotrees_sapphirepro.png",
+        "platform_offset": [0, 0, 0],
+        "machine_extruder_trains":
+		{
+			"0": "twotrees_sapphirepro_extruder_0"
+			"1": "twotrees_sapphirepro_extruder_1"
+		}
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "Two Trees Sapphire Pro" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 220 },
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 220 },
+        "machine_head_with_fans_polygon": { "default_value": [
+               [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+        "machine_start_gcode": { "default_value": "; Two Trees Sapphire Pro Custom Start GCode\nM140 S{material_bed_temperature_layer_0} ; Heat up the buildplate\nM104 S100 ; Preheat the hotend\nM105 ;report Temperatures\n\n; M280 P0 S160 ; BLTouch alarm release\n; G4 P100 ; delay for BLTouch\nG28 X Y ; home X Y\nG0 X115 Y115 F10000 ; position head in the center\nM190 S{material_bed_temperature_layer_0} ; wait for buildplate temperature settle down\nM104 S{material_initial_print_temperature} ; heat up the hotend for printing\nG28 Z ; home Z\nG0 X0 Y0 F10000 ; position head in the front corner\nM109 S{material_initial_print_temperature} ; wait for hotend temperature settle down\nG92 E0 ; zero extruder\nG1 E10 F150 ; extract 10mm filament for priming the nozzle\nG1 E8 F1200 ; retract 2mm\n; M420 S; Activate Bed Leveling Mesh" },
+        "machine_end_gcode": { "default_value": "; Sapphire Pro Custom End GCode\nM400\nM300 S440 P100 ;play finish tone\nG0 Z230 F1200;Bed Down\nG0 X0 Y0 ;park the head\nG92 E0 ;zero extruder\nM104 S0 ;turn nozzle off\nM140 S0 ;turn bed off\nM84 ;switch steppers off\nM107 ;switch fan off" },
+		"gantry_height": { "value": 25 }
+    }
+}
