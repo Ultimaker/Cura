@@ -209,6 +209,9 @@
             "maximum_value": 200
         },
         
+        "retraction_hop_enabled": { "value": true },
+        "retraction_hop": { "value": "layer_height*2" },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'" },
         "retraction_combing_max_distance": { "value": 30 },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
