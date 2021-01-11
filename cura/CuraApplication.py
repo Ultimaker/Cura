@@ -30,6 +30,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Preferences import Preferences
+from UM.Qt.Bindings.FileProviderModel import FileProviderModel
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 from UM.Resources import Resources
 from UM.Scene.Camera import Camera
@@ -822,6 +823,9 @@ class CuraApplication(QtApplication):
         self._add_printer_pages_model_without_cancel.initialize(cancellable = False)
         self._whats_new_pages_model.initialize()
 
+        # Initialize the FileProviderModel
+        self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
+
         # Detect in which mode to run and execute that mode
         if self._is_headless:
             self.runWithoutGUI()
@@ -1050,6 +1054,13 @@ class CuraApplication(QtApplication):
         if self._simple_mode_settings_manager is None:
             self._simple_mode_settings_manager = SimpleModeSettingsManager()
         return self._simple_mode_settings_manager
+
+    @pyqtSlot(result = QObject)
+    def getFileProviderModel(self) -> FileProviderModel:
+        return self._file_provider_model
+
+    def _onFileProviderEnabledChanged(self):
+        self._file_provider_model.update()
 
     def event(self, event):
         """Handle Qt events"""

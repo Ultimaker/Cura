@@ -11,6 +11,7 @@ Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
+    property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     MenuItem
     {
@@ -22,6 +23,13 @@ Menu
     {
         id: openMenu
         action: Cura.Actions.open
+        visible: (base.fileProviderModel.count == 1)
+    }
+
+    OpenFilesMenu
+    {
+        id: openFilesMenu
+        visible: (base.fileProviderModel.count > 1)
     }
 
     RecentFilesMenu { }

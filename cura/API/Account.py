@@ -81,7 +81,8 @@ class Account(QObject):
             CLIENT_ID="um----------------------------ultimaker_cura",
             CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download "
                           "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write "
-                          "cura.printjob.read cura.printjob.write cura.mesh.read cura.mesh.write",
+                          "library.project.read library.project.write cura.printjob.read cura.printjob.write "
+                          "cura.mesh.read cura.mesh.write",
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
