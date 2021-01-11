@@ -3,6 +3,7 @@
 
 import os
 import sys
+import tempfile
 import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
@@ -1477,7 +1478,8 @@ class CuraApplication(QtApplication):
 
         for file_name, nodes in objects_in_filename.items():
             for node in nodes:
-                job = ReadMeshJob(file_name)
+                file_path = os.path.normpath(os.path.dirname(file_name))
+                job = ReadMeshJob(file_name, add_to_recent_files = file_path != tempfile.gettempdir())  # Don't add temp files to the recent files list
                 job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
