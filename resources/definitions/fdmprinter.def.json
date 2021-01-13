@@ -2713,6 +2713,18 @@
                     "maximum_value_warning": "150",
                     "settable_per_mesh": true
                 },
+                "material_flow_advance":
+                {
+                    "label": "Flow Advance",
+                    "description": "Adjust the flow rate of extrusion moves ahead of time, before the flow change actually needs to happen, to account for a delay in flow rate response of material coming out of the nozzle.",
+                    "unit": "s",
+                    "default_value": 0,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
