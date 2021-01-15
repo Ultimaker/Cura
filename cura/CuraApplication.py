@@ -1918,6 +1918,11 @@ class CuraApplication(QtApplication):
             arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
         except:
             Logger.logException("e", "Failed to arrange the models")
+
+        # Ensure that we don't have any weird floaty objects (CURA-7855)
+        for node in nodes_to_arrange:
+            node.translate(Vector(0, -node.getBoundingBox().bottom, 0), SceneNode.TransformSpace.World)
+
         self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):
