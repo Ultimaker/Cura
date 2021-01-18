@@ -17,4 +17,12 @@
         <density>1.24</density>
         <weight>1000</weight>
     </properties>
+    <settings>
+        <setting key="standby temperature">200</setting>
+        <setting key="print cooling">100.0</setting>
+        <setting key="retraction amount">6.2</setting>
+        <setting key="print temperature">200</setting>
+        <setting key="heated bed temperature">60.0</setting>
+        <setting key="retraction speed">40.0</setting>
+    </settings>
 </fdmmaterial>
