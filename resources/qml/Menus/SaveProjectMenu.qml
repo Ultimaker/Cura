@@ -12,7 +12,7 @@ import "../Dialogs"
 Menu
 {
     id: saveProjectMenu
-    title: catalog.i18nc("@title:menu menubar:file", "Save project...")
+    title: catalog.i18nc("@title:menu menubar:file", "Save Project...")
     property alias model: projectOutputDevices.model
 
     Instantiator
