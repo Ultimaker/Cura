@@ -23,7 +23,7 @@ Menu
             text: model.name
             onTriggered:
             {
-                var args = { "file_type": "workspace" };
+                var args = {};
                 if (UM.Preferences.getValue("cura/dialog_on_project_save"))
                 {
                     saveWorkspaceDialog.deviceId = model.id
@@ -35,8 +35,8 @@ Menu
                     UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, args)
                 }
             }
-            // Unassign the shortcuts when the submenu is invisible (i.e. when there is only one file provider) to avoid ambiguous shortcuts.
-            // When there is a signle file provider, the openAction is assigned with the Ctrl+O shortcut instead.
+            // Unassign the shortcuts when the submenu is invisible (i.e. when there is only one project output device) to avoid ambiguous shortcuts.
+            // When there is only the LocalFileOutputDevice, the Ctrl+S shortcut is assigned to the saveWorkspaceMenu MenuItem
             shortcut: saveProjectMenu.visible ? model.shortcut : ""
         }
         onObjectAdded: saveProjectMenu.insertItem(index, object)
