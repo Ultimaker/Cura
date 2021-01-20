@@ -23,7 +23,7 @@ Menu
             text: model.name
             onTriggered:
             {
-                var args = {};
+                var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };
                 if (UM.Preferences.getValue("cura/dialog_on_project_save"))
                 {
                     saveWorkspaceDialog.deviceId = model.id
