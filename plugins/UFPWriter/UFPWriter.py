@@ -72,24 +72,25 @@ class UFPWriter(MeshWriter):
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
-        self._createSnapshot()
-
-        # Store the thumbnail.
-        if self._snapshot:
-            archive.addContentType(extension = "png", mime_type = "image/png")
-            thumbnail = archive.getStream("/Metadata/thumbnail.png")
-
-            thumbnail_buffer = QBuffer()
-            thumbnail_buffer.open(QBuffer.ReadWrite)
-            thumbnail_image = self._snapshot
-            thumbnail_image.save(thumbnail_buffer, "PNG")
-
-            thumbnail.write(thumbnail_buffer.data())
-            archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
-                                relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
-                                origin = "/3D/model.gcode")
-        else:
-            Logger.log("d", "Thumbnail not created, cannot save it")
+        # TODO temporarily commented out, as is causes a crash whenever the UFPWriter is called outside of the main thread
+        # self._createSnapshot()
+        #
+        # # Store the thumbnail.
+        # if self._snapshot:
+        #     archive.addContentType(extension = "png", mime_type = "image/png")
+        #     thumbnail = archive.getStream("/Metadata/thumbnail.png")
+        #
+        #     thumbnail_buffer = QBuffer()
+        #     thumbnail_buffer.open(QBuffer.ReadWrite)
+        #     thumbnail_image = self._snapshot
+        #     thumbnail_image.save(thumbnail_buffer, "PNG")
+        #
+        #     thumbnail.write(thumbnail_buffer.data())
+        #     archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
+        #                         relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+        #                         origin = "/3D/model.gcode")
+        # else:
+        #     Logger.log("d", "Thumbnail not created, cannot save it")
 
         # Store the material.
         application = CuraApplication.getInstance()
