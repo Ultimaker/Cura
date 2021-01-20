@@ -72,6 +72,7 @@ class UFPWriter(MeshWriter):
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
+        # TODO temporarily commented out, as is causes a crash whenever the UFPWriter is called outside of the main thread
         # self._createSnapshot()
         #
         # # Store the thumbnail.
