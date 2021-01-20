@@ -15,7 +15,7 @@ from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
-
+from cura.LayerPolygon import LayerPolygon
 
 import os.path
 import numpy
@@ -167,8 +167,9 @@ class SimulationPass(RenderPass):
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
 
-                    # The first line does not have a previous line: add a zero in front
-                    prev_line_types = numpy.concatenate([numpy.asarray([0], dtype=numpy.float32), layer_data._attributes["line_types"]["value"]])
+                    # The first line does not have a previous line: add a MoveCombingType in front for start detection
+                    # this way the first start of the layer can also be drawn 
+                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
                     # Remove the last element 
                     prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
                     layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
