@@ -7,19 +7,20 @@ from Charon.VirtualFile import VirtualFile  # To open UFP files.
 from Charon.OpenMode import OpenMode  # To indicate that we want to write to UFP files.
 from io import StringIO  # For converting g-code to bytes.
 
+from PyQt5.QtCore import QBuffer
+
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
-from PyQt5.QtCore import QBuffer
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
-from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
+from plugins.CuraEngineBackend.CuraEngineBackend import CuraEngineBackend
 
 METADATA_OBJECTS_PATH = "metadata/objects"
 
@@ -37,17 +38,6 @@ class UFPWriter(MeshWriter):
                 suffixes = ["ufp"]
             )
         )
-
-        self._snapshot = None
-
-    def _createSnapshot(self, *args):
-        # must be called from the main thread because of OpenGL
-        Logger.log("d", "Creating thumbnail image...")
-        try:
-            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
-        except Exception:
-            Logger.logException("w", "Failed to create snapshot image")
-            self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
 
     # This needs to be called on the main thread (Qt thread) because the serialization of material containers can
     # trigger loading other containers. Because those loaded containers are QtObjects, they must be created on the
@@ -72,25 +62,26 @@ class UFPWriter(MeshWriter):
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
-        # TODO temporarily commented out, as is causes a crash whenever the UFPWriter is called outside of the main thread
-        # self._createSnapshot()
-        #
-        # # Store the thumbnail.
-        # if self._snapshot:
-        #     archive.addContentType(extension = "png", mime_type = "image/png")
-        #     thumbnail = archive.getStream("/Metadata/thumbnail.png")
-        #
-        #     thumbnail_buffer = QBuffer()
-        #     thumbnail_buffer.open(QBuffer.ReadWrite)
-        #     thumbnail_image = self._snapshot
-        #     thumbnail_image.save(thumbnail_buffer, "PNG")
-        #
-        #     thumbnail.write(thumbnail_buffer.data())
-        #     archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
-        #                         relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
-        #                         origin = "/3D/model.gcode")
-        # else:
-        #     Logger.log("d", "Thumbnail not created, cannot save it")
+        snapshot = None
+        backend = CuraApplication.getInstance().getBackend()
+        if isinstance(backend, CuraEngineBackend):
+            snapshot = backend.getLatestSnapshot()
+
+        # Store the thumbnail.
+        if snapshot:
+            archive.addContentType(extension = "png", mime_type = "image/png")
+            thumbnail = archive.getStream("/Metadata/thumbnail.png")
+
+            thumbnail_buffer = QBuffer()
+            thumbnail_buffer.open(QBuffer.ReadWrite)
+            snapshot.save(thumbnail_buffer, "PNG")
+
+            thumbnail.write(thumbnail_buffer.data())
+            archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
+                                relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+                                origin = "/3D/model.gcode")
+        else:
+            Logger.log("w", "Thumbnail not created, cannot save it")
 
         # Store the material.
         application = CuraApplication.getInstance()
