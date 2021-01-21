@@ -62,12 +62,9 @@ class UFPWriter(MeshWriter):
         gcode.write(gcode_textio.getvalue().encode("UTF-8"))
         archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
 
-        snapshot = None
+        # Attempt to store the thumbnail, if any:
         backend = CuraApplication.getInstance().getBackend()
-        if isinstance(backend, CuraEngineBackend):
-            snapshot = backend.getLatestSnapshot()
-
-        # Store the thumbnail.
+        snapshot = None if getattr(backend, "getLatestSnapshot", None) is None else backend.getLatestSnapshot()
         if snapshot:
             archive.addContentType(extension = "png", mime_type = "image/png")
             thumbnail = archive.getStream("/Metadata/thumbnail.png")

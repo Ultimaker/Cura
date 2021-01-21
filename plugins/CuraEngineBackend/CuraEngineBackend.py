@@ -257,7 +257,7 @@ class CuraEngineBackend(QObject, Backend):
             Logger.logException("w", "Failed to create snapshot image")
             self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
 
-    def getLatestSnapShot(self) -> Optional[QImage]:
+    def getLatestSnapshot(self) -> Optional[QImage]:
         return self._snapshot
 
     def slice(self) -> None:
