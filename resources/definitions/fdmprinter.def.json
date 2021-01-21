@@ -2725,6 +2725,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_min_flow_change_duration":
+                {
+                    "label": "Minimum Flow Change Duration",
+                    "description": "If the flow rate changes for a duration shorter than this amount of time, do not allow the flow rate to change. Instead of changing the flow and then shortly after changing it again, it will change the flow only once in the middle of the original brief flow change, leaving out the brief flow change entirely. Useful to prevent flow adjustments in the middle of straight lines for tiny future travel moves.",
+                    "unit": "s",
+                    "default_value": 0,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "material_flow_advance / 2",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
