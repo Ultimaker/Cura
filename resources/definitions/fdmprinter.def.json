@@ -6520,8 +6520,8 @@
                 },
                 "conical_overhang_hole_size": 
                 {
-                   "label": "Maximum Hole Area",
-                   "description": "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 will fill all holes in the models base.",
+                   "label": "Maximum Overhang Hole Area",
+                   "description": "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base.",
                    "unit": "mm²",
                    "type": "float",
                    "minimum_value": "0",
