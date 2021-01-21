@@ -2733,7 +2733,7 @@
                             "default_value": 0,
                             "value": "material_flow_advance",
                             "type": "float",
-                            "minimum_value": 0,
+                            "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -2743,7 +2743,7 @@
                             "label": "Flow Advance at Reducing Flow",
                             "description": "Adjust the flow rate of extrusion moves ahead of time, before the flow change actually needs to happen, to account for a delay in flow rate response of material coming out of the nozzle. This setting only applies to when the flow rate is reduced.",
                             "unit": "s",
-                            "default_value": 0,
+                            "default_value": "0",
                             "value": "material_flow_advance",
                             "type": "float",
                             "minimum_value": 0,
@@ -2752,6 +2752,19 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "material_flow_advance_overcompensation":
+                {
+                    "label": "Flow Advance Overcompensation Factor",
+                    "description": "During the Flow Advance and an equal period of time after the desired flow change, overcompensate for the change in flow by increasing or reducing the flow rate even more, temporarily. This is intended to cause the flow rate to adjust more rapidly by creating under- or over-pressure in the nozzle chamber, similar to Linear Advance.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "200",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "material_min_flow_change_duration":
                 {
