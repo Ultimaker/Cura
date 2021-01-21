@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import cast, List, Dict
@@ -20,7 +20,6 @@ from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
-from plugins.CuraEngineBackend.CuraEngineBackend import CuraEngineBackend
 
 METADATA_OBJECTS_PATH = "metadata/objects"
 
