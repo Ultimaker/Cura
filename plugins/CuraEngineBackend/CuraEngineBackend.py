@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
@@ -8,6 +8,8 @@ from PyQt5.QtCore import QObject, QTimer, pyqtSlot
 import sys
 from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
+
+from PyQt5.QtGui import QImage
 
 from UM.Backend.Backend import Backend, BackendState
 from UM.Scene.SceneNode import SceneNode
@@ -24,6 +26,8 @@ from UM.Tool import Tool #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Snapshot import Snapshot
+from cura.Utils.Threading import call_on_qt_thread
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
 
@@ -153,6 +157,8 @@ class CuraEngineBackend(QObject, Backend):
         self.determineAutoSlicing()
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
+        self._snapshot = None #type: Optional[QImage]
+
         application.initializationFinished.connect(self.initialize)
 
     def initialize(self) -> None:
@@ -241,8 +247,23 @@ class CuraEngineBackend(QObject, Backend):
         self.markSliceAll()
         self.slice()
 
+    @call_on_qt_thread  # must be called from the main thread because of OpenGL
+    def _createSnapshot(self) -> None:
+        self._snapshot = None
+        Logger.log("i", "Creating thumbnail image (just before slice)...")
+        try:
+            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+        except:
+            Logger.logException("w", "Failed to create snapshot image")
+            self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
+
+    def getLatestSnapshot(self) -> Optional[QImage]:
+        return self._snapshot
+
     def slice(self) -> None:
         """Perform a slice of the scene."""
+
+        self._createSnapshot()
 
         Logger.log("i", "Starting to slice...")
         self._slice_start_time = time()
@@ -331,7 +352,6 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStartSliceCompleted(self, job: StartSliceJob) -> None:
         """Event handler to call when the job to initiate the slicing process is
-
         completed.
 
         When the start slice job is successfully completed, it will be happily

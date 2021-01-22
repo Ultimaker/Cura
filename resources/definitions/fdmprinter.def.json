@@ -652,7 +652,7 @@
                 {
                     "label": "Steps per Millimeter (X)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the X direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -662,7 +662,7 @@
                 {
                     "label": "Steps per Millimeter (Y)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the Y direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -672,7 +672,7 @@
                 {
                     "label": "Steps per Millimeter (Z)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the Z direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -682,7 +682,7 @@
                 {
                     "label": "Steps per Millimeter (E)",
                     "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 1600,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -873,7 +873,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable') or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -1230,7 +1230,7 @@
                     "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
+                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (initial_bottom_layers > 0 and top_bottom_pattern_0 == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2614,7 +2614,7 @@
                             "minimum_value": "5",
                             "minimum_value_warning": "50",
                             "maximum_value_warning": "150",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -6161,7 +6161,7 @@
                 "infill_mesh_order":
                 {
                     "label": "Mesh Processing Rank",
-                    "description": "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "description": "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes.",
                     "default_value": 0,
                     "value": "1 if infill_mesh else 0",
                     "minimum_value_warning": "1",

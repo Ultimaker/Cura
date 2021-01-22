@@ -69,7 +69,9 @@ class AuthorizationHelpers:
         try:
             return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
         except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
+            return AuthenticationResponse(success = False, err_message = "Unable to connect to remote server")
+        except OSError as e:
+            return AuthenticationResponse(success = False, err_message = "Operating system is unable to set up a secure connection: {err}".format(err = str(e)))
 
     @staticmethod
     def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":

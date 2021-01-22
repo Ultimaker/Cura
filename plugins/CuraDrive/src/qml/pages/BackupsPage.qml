@@ -69,7 +69,7 @@ Item
         BackupListFooter
         {
             id: backupListFooter
-            showInfoButton: backupList.model.length > 4
+            
         }
     }
 }

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -241,7 +241,7 @@ class AuthorizationService:
 
                     self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
                     self._unable_to_get_data_message.show()
-        except ValueError:
+        except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
 
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:

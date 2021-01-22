@@ -52,11 +52,8 @@ class ImageReader(MeshReader):
 
     def _generateSceneNode(self, file_name, xz_size, height_from_base, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
         scene_node = SceneNode()
-
         mesh = MeshBuilder()
-
         img = QImage(file_name)
-
         if img.isNull():
             Logger.log("e", "Image is corrupt.")
             return None
@@ -70,11 +67,10 @@ class ImageReader(MeshReader):
 
         height_from_base = max(height_from_base, 0)
         base_height = max(base_height, 0)
-        peak_height = base_height + height_from_base
 
 
         xz_size = max(xz_size, 1)
-        scale_vector = Vector(xz_size, peak_height, xz_size)
+        scale_vector = Vector(xz_size, height_from_base, xz_size)
 
         if width > height:
             scale_vector = scale_vector.set(z=scale_vector.z * aspect)
@@ -132,7 +128,7 @@ class ImageReader(MeshReader):
 
         if use_transparency_model:
             divisor = 1.0 / math.log(transmittance_1mm / 100.0) # log-base doesn't matter here. Precompute this value for faster computation of each pixel.
-            min_luminance = (transmittance_1mm / 100.0) ** (peak_height - base_height)
+            min_luminance = (transmittance_1mm / 100.0) ** height_from_base
             for (y, x) in numpy.ndindex(height_data.shape):
                 mapped_luminance = min_luminance + (1.0 - min_luminance) * height_data[y, x]
                 height_data[y, x] = base_height + divisor * math.log(mapped_luminance) # use same base as a couple lines above this

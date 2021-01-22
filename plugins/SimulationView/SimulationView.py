@@ -104,7 +104,7 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
 
-        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 0)
+        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
 
         Application.getInstance().getPreferences().addPreference("layerview/show_travel_moves", False)
