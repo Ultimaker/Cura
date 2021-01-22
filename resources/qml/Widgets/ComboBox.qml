@@ -23,7 +23,7 @@ ComboBox
 
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
-    enabled: model.count > 0
+    enabled: delegateModel.count > 0
 
     onVisibleChanged: { popup.close() }
 
@@ -81,7 +81,7 @@ ComboBox
 
         text:
         {
-            if (control.model.count == 0)
+            if (control.delegateModel.count == 0)
             {
                 return control.defaultTextOnEmptyModel != "" ? control.defaultTextOnEmptyModel : control.defaultTextOnEmptyIndex
             }
