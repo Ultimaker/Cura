@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -1762,7 +1762,7 @@ class CuraApplication(QtApplication):
         if is_project_file and project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
-            workspace_handler.readLocalFile(file, add_to_recent_files = add_to_recent_files)
+            workspace_handler.readLocalFile(file, add_to_recent_files_hint = add_to_recent_files)
             return
 
         if is_project_file and project_mode == "always_ask":
