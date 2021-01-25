@@ -1403,6 +1403,32 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "hole_xy_offset_max_size":
+                {
+                    "label": "Max Hole Diameter to Expand",
+                    "description": "The max diameter of the holes will be expanded.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 0,
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "hole_xy_offset_max_length":
+                        {
+                            "label": "Max Hole Length to Expand",
+                            "description": "The length of the outline of the holes will be expanded.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "default_value": 0,
+                            "value": "hole_xy_offset_max_size * math.pi",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
