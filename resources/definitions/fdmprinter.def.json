@@ -485,7 +485,7 @@
                 "machine_use_extruder_offset_to_offset_coords":
                 {
                     "label": "Offset with Extruder",
-                    "description": "Apply the extruder offset to the coordinate system.",
+                    "description": "Apply the extruder offset to the coordinate system. Affects all extruders.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
