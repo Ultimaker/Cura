@@ -2960,7 +2960,7 @@
                 "speed_layer_0":
                 {
                     "label": "Initial Layer Speed",
-                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate.",
+                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
