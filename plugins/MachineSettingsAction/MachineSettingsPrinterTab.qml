@@ -360,13 +360,13 @@ Item
             Cura.SimpleCheckBox  // "Shared Heater"
             {
                 id: sharedHeaterCheckBox
-				containerStackId: machineStackId
-				settingKey: "machine_extruders_share_heater"
-				settingStoreIndex: propertyStoreIndex
-				labelText: catalog.i18nc("@label", "Shared Heater")
-				labelFont: base.labelFont
-				labelWidth: base.labelWidth
-				forceUpdateOnChangeFunction: forceUpdateFunction
+                containerStackId: machineStackId
+                settingKey: "machine_extruders_share_heater"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Shared Heater")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
             */
         }
