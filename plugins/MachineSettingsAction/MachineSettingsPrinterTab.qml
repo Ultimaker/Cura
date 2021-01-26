@@ -338,9 +338,9 @@ Item
 			*/
             Cura.SimpleCheckBox  // "GCode Affected By Extruder Offsets"
             {
-				id: applyExtruderOffsetsCheckbox
+                id: applyExtruderOffsetsCheckbox
                 containerStackId: machineStackId
-				settingKey: "machine_use_extruder_offset_to_offset_coords"
+                settingKey: "machine_use_extruder_offset_to_offset_coords"
                 settingStoreIndex: propertyStoreIndex
                 labelText: catalog.i18nc("@label", "Apply Extruder offsets to GCode")
                 labelFont: base.labelFont
@@ -360,13 +360,13 @@ Item
             Cura.SimpleCheckBox  // "Shared Heater"
             {
                 id: sharedHeaterCheckBox
-                containerStackId: machineStackId
-                settingKey: "machine_extruders_share_heater"
-                settingStoreIndex: propertyStoreIndex
-                labelText: catalog.i18nc("@label", "Shared Heater")
-                labelFont: base.labelFont
-                labelWidth: base.labelWidth
-                forceUpdateOnChangeFunction: forceUpdateFunction
+				containerStackId: machineStackId
+				settingKey: "machine_extruders_share_heater"
+				settingStoreIndex: propertyStoreIndex
+				labelText: catalog.i18nc("@label", "Shared Heater")
+				labelFont: base.labelFont
+				labelWidth: base.labelWidth
+				forceUpdateOnChangeFunction: forceUpdateFunction
             }
             */
         }
