@@ -6526,7 +6526,6 @@
                    "type": "float",
                    "minimum_value": "0",
                    "minimum_value_warning": "0",
-                   "maximum_value": "99999999999",
                    "default_value": 0,
                    "enabled": "conical_overhang_enabled"
                 },
