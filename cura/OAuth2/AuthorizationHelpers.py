@@ -58,7 +58,7 @@ class AuthorizationHelpers:
         :return: An AuthenticationResponse object.
         """
 
-        Logger.log("d", "Refreshing the access token.")
+        Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -110,7 +110,9 @@ class AuthorizationHelpers:
         """
 
         try:
-            token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
+            check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
+            Logger.log("d", "Checking the access token for [%s]", check_token_url)
+            token_request = requests.get(check_token_url, headers = {
                 "Authorization": "Bearer {}".format(access_token)
             })
         except requests.exceptions.ConnectionError:
