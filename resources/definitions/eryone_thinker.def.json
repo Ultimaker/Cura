@@ -25,7 +25,7 @@
     "overrides":
     {
         "machine_name": { 
-            "default_value": "Eryone Thinker" 
+            "default_value": "Eryone Thinker Series" 
         },
         "machine_heated_bed": { 
             "default_value": true 
