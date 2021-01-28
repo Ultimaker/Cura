@@ -15,12 +15,12 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
     NameRole = Qt.UserRole + 1
     QualityTypeRole = Qt.UserRole + 2
-    LayerHeightRole = Qt.UserRole + 3
-    LayerHeightUnitRole = Qt.UserRole + 4
-    AvailableRole = Qt.UserRole + 5
-    QualityGroupRole = Qt.UserRole + 6
-    QualityChangesGroupRole = Qt.UserRole + 7
-    IsExperimentalRole = Qt.UserRole + 8
+    # LayerHeightRole = Qt.UserRole + 3
+    # LayerHeightUnitRole = Qt.UserRole + 4
+    AvailableRole = Qt.UserRole + 3
+    QualityGroupRole = Qt.UserRole + 4
+    QualityChangesGroupRole = Qt.UserRole + 5
+    IsExperimentalRole = Qt.UserRole + 6
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -90,7 +90,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         item_list = []
         for quality_group in quality_group_dict.values():
-            layer_height = fetchLayerHeight(quality_group)
+            # layer_height = fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
                     "quality_type": quality_group.quality_type,

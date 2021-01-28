@@ -43,8 +43,8 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
         item_list = []
         for quality_changes_group in sorted(quality_changes_list, key = lambda qgc: qgc.name.lower()):
             item = {"name": quality_changes_group.name,
-                    "layer_height": "",
-                    "layer_height_without_unit": "",
+                    # "layer_height": "",
+                    # "layer_height_without_unit": "",
                     "available": quality_changes_group.is_available,
                     "quality_changes_group": quality_changes_group}
 
