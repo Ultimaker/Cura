@@ -27,8 +27,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")
-        self.addRoleName(self.LayerHeightRole, "layer_height")
-        self.addRoleName(self.LayerHeightUnitRole, "layer_height_unit")
+        # self.addRoleName(self.LayerHeightRole, "layer_height")
+        # self.addRoleName(self.LayerHeightUnitRole, "layer_height_unit")
         self.addRoleName(self.AvailableRole, "available") #Whether the quality profile is available in our current nozzle + material.
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
@@ -94,8 +94,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
             item = {"name": quality_group.name,
                     "quality_type": quality_group.quality_type,
-                    "layer_height": layer_height,
-                    "layer_height_unit": self._layer_height_unit,
+                    # "layer_height": layer_height,
+                    # "layer_height_unit": self._layer_height_unit,
                     "available": quality_group.is_available,
                     "quality_group": quality_group,
                     "is_experimental": quality_group.is_experimental}
@@ -103,6 +103,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
             item_list.append(item)
 
         # Sort items based on layer_height
-        item_list = sorted(item_list, key = lambda x: x["layer_height"])
+        # item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         self.setItems(item_list)

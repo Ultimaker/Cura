@@ -341,7 +341,7 @@ class QualityManagementModel(ListModel):
             item_list.append(item)
 
         # Sort by layer_height for built-in qualities
-        item_list = sorted(item_list, key = lambda x: x["layer_height"])
+        # item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         # Create intent items (non-default)
         available_intent_list = IntentManager.getInstance().getCurrentAvailableIntents()

@@ -95,7 +95,7 @@ class IntentModel(ListModel):
                                   "available": False})
                 added_quality_type_set.add(quality_type)
 
-        new_items = sorted(new_items, key = lambda x: x["layer_height"])
+        # new_items = sorted(new_items, key = lambda x: x["layer_height"])
         self.setItems(new_items)
 
     def _getActiveMaterials(self) -> Set["MaterialNode"]:
