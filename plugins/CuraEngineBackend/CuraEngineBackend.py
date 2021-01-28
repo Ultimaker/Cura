@@ -250,7 +250,7 @@ class CuraEngineBackend(QObject, Backend):
     @call_on_qt_thread  # must be called from the main thread because of OpenGL
     def _createSnapshot(self) -> None:
         self._snapshot = None
-        if not CuraApplication.getInstance().isVisible():
+        if not CuraApplication.getInstance().isVisible:
             Logger.log("w", "Attempt to create snapshot before complete initialization.")
             return
         Logger.log("i", "Creating thumbnail image (just before slice)...")
