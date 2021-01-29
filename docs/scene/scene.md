@@ -36,7 +36,7 @@ As it is visible, aside from the BuildVolume, the Cameras, and the objects, the 
 Accessing SceneNodes in the Scene
 ----
 
-SceneNodes can be accessed using a BreadthFirstIterator or a DepthFirstIterator. Each iterator traverses the scene graph and returns a Python iterator, which yield all the SceneNodes and their children. 
+SceneNodes can be accessed using a `BreadthFirstIterator` or a `DepthFirstIterator`. Each iterator traverses the scene graph and returns a Python iterator, which yields all the SceneNodes and their children. 
 
 ``` python
 for node in BreadthFirstIterator(scene.getRoot()):
@@ -73,6 +73,6 @@ Layer Data
 
 Once the Slicing has completed and the CuraEngine has returned the slicing data, Cura creates a CuraSceneNode inside the BuildVolume which holds all the layer data. This CuraSceneNode can be identified via its LayerDataDecorator.
 
-<img src = "https://github.com/Ultimaker/Cura/blob/master/docs/scene/images/layer_data_scene_node.jpg" width = "250" alt="Layer Data Scene Node">
+![Layer Data Scene Node](images/layer_data_scene_node.jpg)
 
 **Note:** This CuraSceneNode is created once Cura has completed processing the Layer data (after the user clicks on the Preview tab after slicing). The CuraSceneNode then is destroyed once any action that changes the Scene occurs (e.g. if the user moves/rotates/scales an object or changes a setting value).
