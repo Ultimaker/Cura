@@ -32,7 +32,8 @@ UM.Dialog
 
     function loadProjectFile(projectFile)
     {
-        UM.WorkspaceFileHandler.readLocalFile(projectFile);
+        var addToRecent = UM.WorkspaceFileHandler.getAddToRecentFilesHint(projectFile);
+        UM.WorkspaceFileHandler.readLocalFile(projectFile, addToRecent);
     }
 
     function loadModelFiles(fileUrls)

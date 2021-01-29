@@ -37,7 +37,8 @@ UM.Dialog
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_project")
         }
 
-        UM.WorkspaceFileHandler.readLocalFile(base.fileUrl)
+        var addToRecent = UM.WorkspaceFileHandler.getAddToRecentFilesHint(base.fileUrl);
+        UM.WorkspaceFileHandler.readLocalFile(base.fileUrl, addToRecent);
 
         base.hide()
     }
