@@ -331,10 +331,10 @@ Item
             }
 
             /* 
-               - Proposed fix for this issue: https://github.com/Ultimaker/Cura/issues/9167 
+               - Fix for this issue: https://github.com/Ultimaker/Cura/issues/9167 
                - Allows user to toggle if GCODE coordinates are affected by the extruder offset. 
                - Machine wide setting. CuraEngine/src/gcodeExport.cpp is not set up to evaluate per extruder currently.
-               - If it is moved to per-extruder (unlikely), then this should be moved to the extruder tab)
+               - If it is moved to per-extruder (unlikely), then this should be moved to the extruder tab.
             */
             Cura.SimpleCheckBox  // "GCode Affected By Extruder Offsets"
             {
