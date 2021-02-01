@@ -72,6 +72,35 @@ Example result when iterating the above scene graph:
   * 17 = {CuraSceneNode} <CuraSceneNode object: 'Cylinder.stl'>
   * 18 = {CuraSceneNode} <CuraSceneNode object: 'Cube.stl'>
 
+SceneNodeDecorators
+----
+
+SceneNodeDecorators are decorators that can be added to the nodes of the scene to provide them with additional functions. 
+
+Cura provides the following classes derived from the SceneNodeDecorator class:
+  1. GroupDecorator
+  2. ConvexHullDecorator
+  3. SettingOverrideDecorator
+  4. SliceableObjectDecorator
+  5. BuildPlatedecorator
+  6. LayerDataDecorator
+  7. ZOffsetDecorator
+  8. BlockSlicingDecorator
+  9. GCodeListDecorator
+
+GroupDecorator
+----
+
+Whenever objects on the buildplate are grouped together, a new node is added in the scene as the parent of the grouped objects. Group nodes can be identified when traversing the SceneGraph by running the following:
+
+```python
+node.callDecoration("isGroup") == True
+```
+
+Group nodes decorated by GroupDecorators are added in the scene either by reading project files which contain grouped objects, or when the user selects multiple objects and groups them together (Ctrl + G).
+
+Group nodes that are left with only one child are removed from the scene, making their only child a child of their parent. Group nodes without any remaining children are removed from the scene.
+
 Layer Data
 ----
 
