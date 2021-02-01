@@ -171,10 +171,10 @@ BuildPlateDecorator
 
 The BuildPlateDecorator is added to all the CuraSceneNodes. This decorator is linked to a legacy feature which allowed the user to have multiple build plates open in Cura at the same time. With this decorator it was possible to determine which nodes are present on each build plate, and therefore, which objects should be visible in the currently active build plate. It indicates the number of the build plate this scene node belongs to, which currently is always the build plate -1. 
 
-This decorator provides the following function to the node:
+This decorator provides a function to the node that returns the number of the build plate it belongs to:
 
 ```python
-node.callDecoration("isSliceable")
+node.callDecoration("getBuildPlateNumber")
 ```
 
 **Note:** Changing the active build plate is a disabled feature in Cura and it is intended to be completely removed (internal ticket: CURA-4975).
