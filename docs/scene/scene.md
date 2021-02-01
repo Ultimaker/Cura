@@ -78,15 +78,15 @@ SceneNodeDecorators
 SceneNodeDecorators are decorators that can be added to the nodes of the scene to provide them with additional functions. 
 
 Cura provides the following classes derived from the SceneNodeDecorator class:
-  1. GroupDecorator
-  2. ConvexHullDecorator
-  3. SettingOverrideDecorator
-  4. SliceableObjectDecorator
-  5. BuildPlatedecorator
-  6. LayerDataDecorator
-  7. ZOffsetDecorator
-  8. BlockSlicingDecorator
-  9. GCodeListDecorator
+  1. [GroupDecorator](#groupdecorator)
+  2. [ConvexHullDecorator](#convexhulldecorator)
+  3. [SettingOverrideDecorator](#settingoverridedecorator)
+  4. [SliceableObjectDecorator](#sliceableobjectdecorator)
+  5. [LayerDataDecorator](#layerdatadecorator)
+  6. [ZOffsetDecorator](#zoffsetdecorator)
+  7. [BlockSlicingDecorator](#blockslicingdecorator)
+  8. [GCodeListDecorator](#gcodelistdecorator)
+  9. [BuildPlateDecorator](#buildplatedecorator)
 
 GroupDecorator
 ----
@@ -146,7 +146,38 @@ This decorator provides the following function to the node:
 node.callDecoration("isSliceable")
 ```
 
+LayerDataDecorator
+----
 
+TODO
+
+ZOffsetDecorator
+----
+
+TODO
+
+BlockSlicingDecorator
+----
+
+TODO
+
+GCodeListDecorator
+----
+
+TODO
+
+BuildPlateDecorator
+----
+
+The BuildPlateDecorator is added to all the CuraSceneNodes. This decorator is linked to a legacy feature which allowed the user to have multiple build plates open in Cura at the same time. With this decorator it was possible to determine which nodes are present on each build plate, and therefore, which objects should be visible in the currently active build plate. It indicates the number of the build plate this scene node belongs to, which currently is always the build plate -1. 
+
+This decorator provides the following function to the node:
+
+```python
+node.callDecoration("isSliceable")
+```
+
+**Note:** Changing the active build plate is a disabled feature in Cura and it is intended to be completely removed (internal ticket: CURA-4975).
 
 Layer Data
 ----
