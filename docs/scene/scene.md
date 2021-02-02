@@ -109,7 +109,7 @@ As seen in the scene graph of the scene example, each CuraSceneNode that represe
 In essence, the CuraSceneNode has a ConvexHullDecorator which points to the ConvexHullNode of the object. The data of the **object**'s convex hull can be accessed via
 
 ```python
-node.callDecoration("getConvexHull")
+convex_hull_polygon = node.callDecoration("getConvexHull")
 ```
 
 The ConvexHullDecorator also provides convex hulls for the object that include the head, the fans, and the adhesion of the object. These are primarily used in One-at-a-time mode. 
@@ -164,17 +164,42 @@ This CuraSceneNode is created once Cura has completed processing the Layer data 
 ZOffsetDecorator
 ----
 
-TODO
+The ZOffsetDecorator is added to an object in the scene when that object is moved below the build plate. It is primarily used when the "Automatically drop models to the build plate" preference is enabled, in order to make sure that the GravityOperation, which drops the mode on the build plate, is not applied when the object is moved under the build plate.
+
+The amount the object is moved under the build plate can be retrieved by calling the "getZOffset" decoration on the node:
+
+```python
+z_offset = node.callDecoration("getZOffset")
+```
+
+The ZOffsetDecorator is removed from the node when the node is move above the build plate.
 
 BlockSlicingDecorator
 ----
 
-TODO
+The BlockSlicingDecorator is the opposite of the SliceableObjectDecorator. It is added on objects loaded on the scene which should not be sliced. This decorator is primarily added on objects loaded from ".gcode", ".ufp", ".g", and ".gz" files. Such an object already contains all the slice information and therefore should not allow Cura to slice it. 
+
+If an object with a BlockSlicingDecorator appears in the scene, the backend (CuraEngine) and the print setup (changing print settings) become disabled, considering that G-code files cannot be modified.
+
+The BlockSlicingDecorator adds the following decoration function to the node:
+
+```python
+node.callDecoration("isBlockSlicing")
+```
 
 GCodeListDecorator
 ----
 
-TODO
+The GCodeListDecorator is also added only when a file containing GCode is loaded in the scene. It's purpose is to hold a list of all the GCode data of the loaded object.
+The GCode list data is stored in the scene's gcode_dict attribute which then is used in other places in the Cura code, e.g. to provide the GCode to the GCodeWriter or to the PostProcessingPlugin.
+
+The GCode data becomes available by calling the "getGCodeList" decoration of the node:
+
+```python
+gcode_list = node.callDecoration("getGCodeList")
+```
+
+The CuraSceneNode with the GCodeListDecorator is destroyed when another object or project file is loaded in the Scene.
 
 BuildPlateDecorator
 ----
