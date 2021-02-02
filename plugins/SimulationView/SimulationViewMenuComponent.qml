@@ -251,12 +251,15 @@ Cura.ExpandableComponent
                         preference: "layerview/show_infill",
                         colorId:  "layerview_infill"
                     });
-                    typesLegendModel.append({
-                        label: catalog.i18nc("@label", "Starts"),
-                        initialValue: viewSettings.show_starts,
-                        preference: "layerview/show_starts",
-                        colorId:  "layerview_starts"
-                    });
+                    if (! UM.SimulationView.compatibilityMode)
+                    {
+                        typesLegendModel.append({
+                            label: catalog.i18nc("@label", "Starts"),
+                            initialValue: viewSettings.show_starts,
+                            preference: "layerview/show_starts",
+                            colorId:  "layerview_starts"
+                        });
+                    }
                 }
             }
 
