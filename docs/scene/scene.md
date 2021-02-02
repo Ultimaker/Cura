@@ -35,7 +35,7 @@ The scene graph in this case is the following:
 
 **Note 2:** The ConvexHullNodes are not actually named after the object they decorate. Their names are used in the image to convey how the ConvexHullNodes are related to the objects in the scene.
 
-**Note 3:** The CuraSceneNode that holds the layer data (inside the BuildVolume) is created and destroyed according to the availability of sliced layer data provided by the CuraEngine. See [Layer Data](#layer-data) for more information.
+**Note 3:** The CuraSceneNode that holds the layer data (inside the BuildVolume) is created and destroyed according to the availability of sliced layer data provided by the CuraEngine. See the [LayerDataDecorator](#layerdatadecorator) for more information.
 
 Accessing SceneNodes in the Scene
 ----
@@ -127,7 +127,7 @@ For more information on the functions added to the node by this decorator, visit
 SliceableObjectDecorator
 ----
 
-This is a convenience decorator that allows us to easily identify the nodes which can be sliced. All **individual** objects (meshes) added to the build plate receive this decorator. 
+This is a convenience decorator that allows us to easily identify the nodes which can be sliced. All **individual** objects (meshes) added to the build plate receive this decorator, apart from the nodes loaded from GCode files (.gcode, .g, .gz, .ufp).
 
 The SceneNodes that do not receive this decorator are:
 
@@ -139,6 +139,7 @@ The SceneNodes that do not receive this decorator are:
   - The CuraSceneNode that serves as the layer data node
   - ToolHandles
   - NozzleNode
+  - Nodes that contain GCode data. See the [BlockSlicingDecorator](#blockslicingdecorator) for more information on that. 
 
 This decorator provides the following function to the node:
 
