@@ -106,7 +106,7 @@ ConvexHullDecorator
 
 As seen in the scene graph of the scene example, each CuraSceneNode that represents an object on the build plate is linked to a ConvexHullNode that provides the convex hull of the object as a shadow on the build plate. The ConvexHullDecorator is the link between these two nodes. 
 
-In essence, the CuraSceneNode has a ConvexHullDecorator which points to the ConvexHullNode of the object. The data of the object's convex hull can be accessed via
+In essence, the CuraSceneNode has a ConvexHullDecorator which points to the ConvexHullNode of the object. The data of the **object**'s convex hull can be accessed via
 
 ```python
 node.callDecoration("getConvexHull")
@@ -119,7 +119,7 @@ For more information on the functions added to the node by this decorator, visit
 SettingOverrideDecorator
 ----
 
-SettingOverrideDecorators are primarily used for modifier meshes such as support meshes, cutting meshes, infill meshes, and anti-overhang meshes. This decorator adds a PerObjectContainerStack to a node, which allows the user to modify the settings of a specific model. 
+SettingOverrideDecorators are primarily used for modifier meshes such as support meshes, cutting meshes, infill meshes, and anti-overhang meshes. When a user converts an object to a modifier mesh, the object's node is decorated by a SettingOverrideDecorator. This decorator adds a PerObjectContainerStack to the CuraSceneNode, which allows the user to modify the settings of the specific model. 
 
 For more information on the functions added to the node by this decorator, visit the [SettingOverrideDecorator.py](https://github.com/Ultimaker/Cura/blob/master/cura/Settings/SettingOverrideDecorator.py).
 
@@ -135,7 +135,7 @@ The SceneNodes that do not receive this decorator are:
   - BuildVolume
   - Platform
   - ConvexHullNodes
-  - CuraSceneNodes that serve as group nodes
+  - CuraSceneNodes that serve as group nodes (these have a GroupDecorator instead)
   - The CuraSceneNode that serves as the layer data node
   - ToolHandles
   - NozzleNode
@@ -149,7 +149,17 @@ node.callDecoration("isSliceable")
 LayerDataDecorator
 ----
 
-TODO
+Once the Slicing has completed and the CuraEngine has returned the slicing data, Cura creates a CuraSceneNode inside the BuildVolume which is decorated by a LayerDataDecorator. This decorator holds the layer data of the scene. 
+
+![Layer Data Scene Node](images/layer_data_scene_node.jpg)
+
+The layer data can be accessed through the function given to the aforementioned CuraSceneNode by the LayerDataDecorator:
+
+```python
+node.callDecoration("getLayerData")
+```
+
+This CuraSceneNode is created once Cura has completed processing the Layer data (after the user clicks on the Preview tab after slicing). The CuraSceneNode then is destroyed once any action that changes the Scene occurs (e.g. if the user moves/rotates/scales an object or changes a setting value), indicating that the layer data is no longer available. When that happens, the "Slice" button becomes available again.
 
 ZOffsetDecorator
 ----
@@ -178,12 +188,3 @@ node.callDecoration("getBuildPlateNumber")
 ```
 
 **Note:** Changing the active build plate is a disabled feature in Cura and it is intended to be completely removed (internal ticket: CURA-4975).
-
-Layer Data
-----
-
-Once the Slicing has completed and the CuraEngine has returned the slicing data, Cura creates a CuraSceneNode inside the BuildVolume which holds all the layer data. This CuraSceneNode can be identified via its LayerDataDecorator.
-
-![Layer Data Scene Node](images/layer_data_scene_node.jpg)
-
-This CuraSceneNode is created once Cura has completed processing the Layer data (after the user clicks on the Preview tab after slicing). The CuraSceneNode then is destroyed once any action that changes the Scene occurs (e.g. if the user moves/rotates/scales an object or changes a setting value).
