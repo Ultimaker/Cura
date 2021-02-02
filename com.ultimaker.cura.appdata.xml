@@ -24,7 +24,9 @@
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default" width="1280" height="720">http://software.ultimaker.com/Cura.png</screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/Ultimaker/Cura/master/screenshot.png</image>
+    </screenshot>
   </screenshots>
   <url type="homepage">https://ultimaker.com/en/products/cura-software?utm_source=cura&amp;utm_medium=software&amp;utm_campaign=resources</url>
   <translation type="gettext">Cura</translation>
