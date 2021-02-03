@@ -2127,7 +2127,7 @@
                 "lightning_infill_support_angle":
                 {
                     "label": "Lightning Infill Support Angle",
-                    "description": "The difference two lightning infill layers can have while still supporting each other. Measured in the angle given the thickness.",
+                    "description": "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
@@ -2140,9 +2140,25 @@
                     "settable_per_extruder": true,
                     "children":
                     {
+                        "lightning_infill_overhang_angle":
+                        {
+                            "label": "Lightning Infill Overhang Angle",
+                            "description": "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness.",
+                            "unit": "°",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "lightning_infill_support_angle"
+                        },
                         "lightning_infill_prune_angle":
                         {
-                            "label": "Lightning Infill Support Prune Angle",
+                            "label": "Lightning Infill Prune Angle",
                             "description": "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness.",
                             "unit": "°",
                             "type": "float",
@@ -2158,7 +2174,7 @@
                         },
                         "lightning_infill_straightening_angle":
                         {
-                            "label": "Lightning Infill Support Straightening Angle",
+                            "label": "Lightning Infill Straightening Angle",
                             "description": "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness.",
                             "unit": "°",
                             "type": "float",
