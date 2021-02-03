@@ -51,7 +51,7 @@ This tool allows the user to rotate the selected object(s). The RotateTool is ac
 
 ![Rotate Tool](images/rotate_tool.jpg)
 
-The RotateTool contains the RotateToolHandle, which draws the donuts (tori) and arrow handles on the selected object(s). The RotateTool generates RotateOperations whenever the object is rotated.
+The RotateTool contains the RotateToolHandle, which draws the donuts (tori) and arrow handles on the selected object(s). The RotateTool generates RotateOperations whenever the object is rotated or if a face is selected to be laid flat on the build plate. It also contains the `layFlat()` action, which generates the [LayFlatOperation](operations.md#layflatoperation).
 
 
 ### MirrorTool
