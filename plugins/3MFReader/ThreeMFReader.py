@@ -51,6 +51,10 @@ class ThreeMFReader(MeshReader):
         self._root = None
         self._base_name = ""
         self._unit = None
+        self._empty_project = False
+
+    def emptyFileHintSet(self) -> bool:
+        return self._empty_project
 
     def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
         if transformation == "":
@@ -256,6 +260,9 @@ class ThreeMFReader(MeshReader):
                             um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
+
+            if len(result) == 0:
+                self._empty_project = True
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")
