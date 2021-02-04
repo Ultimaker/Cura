@@ -197,6 +197,7 @@ class ThreeMFReader(MeshReader):
         return um_node
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
+        self._empty_project = False
         result = []
         # The base object of 3mf is a zipped archive.
         try:
