@@ -20,11 +20,11 @@ The scene lives in the Controller of the Application, and it is primarily intera
 
 A Typical Scene
 ----
-Cura's scene has a few nodes that are always present, and a few nodes that are repeated for every object that the user loads onto their build plate. The root of the scene graph is a SceneNode that lives inside the Scene and contains all the other children SceneNodes of the scene. Typically, inside the root you can find the SceneNodes that are always loaded (the Cameras, the [BuildVolume](build_volume.md), and the Platform), the objects that are loaded on the platform, and finally a ConvexHullNode for each object and each group of objects in the Scene.
+Cura's scene has a few nodes that are always present, and a few nodes that are repeated for every object that the user loads onto their build plate. The root of the scene graph is a SceneNode that lives inside the Scene and contains all the other children SceneNodes of the scene. Typically, inside the root you can find the SceneNodes that are always loaded (the Cameras, the [BuildVolume](build_volume.md), and the Platform), the objects that are loaded on the platform, and finally a ConvexHullNode for each object and each group of objects in the Scene. 
 
 Let's take the following example Scene:
 
-![scene_example.png](images/scene_example.png)
+![scene_example.png](images/scene_example.jpg)
 
 The scene graph in this case is the following:
 
@@ -91,7 +91,7 @@ Cura provides the following classes derived from the SceneNodeDecorator class:
 GroupDecorator
 ----
 
-Whenever objects on the buildplate are grouped together, a new node is added in the scene as the parent of the grouped objects. Group nodes can be identified when traversing the SceneGraph by running the following:
+Whenever objects on the build plate are grouped together, a new node is added in the scene as the parent of the grouped objects. Group nodes can be identified when traversing the SceneGraph by running the following:
 
 ```python
 node.callDecoration("isGroup") == True
@@ -99,20 +99,20 @@ node.callDecoration("isGroup") == True
 
 Group nodes decorated by GroupDecorators are added in the scene either by reading project files which contain grouped objects, or when the user selects multiple objects and groups them together (Ctrl + G).
 
-Group nodes that are left with only one child are removed from the scene, making their only child a child of the group's parent. Group nodes without any remaining children are removed from the scene.
+Group nodes that are left with only one child are removed from the scene, making their only child a child of the group's parent. In addition, group nodes without any remaining children are removed from the scene.
 
 ConvexHullDecorator
 ----
 
-As seen in the scene graph of the scene example, each CuraSceneNode that represents an object on the build plate is linked to a ConvexHullNode that provides the convex hull of the object as a shadow on the build plate. The ConvexHullDecorator is the link between these two nodes. 
+As seen in the scene graph of the scene example, each CuraSceneNode that represents an object on the build plate is linked to a ConvexHullNode which is rendered as the object's shadow on the build plate. The ConvexHullDecorator is the link between these two nodes. 
 
-In essence, the CuraSceneNode has a ConvexHullDecorator which points to the ConvexHullNode of the object. The data of the **object**'s convex hull can be accessed via
+In essence, the CuraSceneNode has a ConvexHullDecorator which points to the ConvexHullNode of the object. The data of the object's convex hull can be accessed via
 
 ```python
-convex_hull_polygon = node.callDecoration("getConvexHull")
+convex_hull_polygon = object_node.callDecoration("getConvexHull")
 ```
 
-The ConvexHullDecorator also provides convex hulls for the object that include the head, the fans, and the adhesion of the object. These are primarily used in One-at-a-time mode. 
+The ConvexHullDecorator also provides convex hulls that include the head, the fans, and the adhesion of the object. These are primarily used and rendered when One-at-a-time mode is activated. 
 
 For more information on the functions added to the node by this decorator, visit the [ConvexHullDecorator.py](https://github.com/Ultimaker/Cura/blob/master/cura/Scene/ConvexHullDecorator.py).
 
