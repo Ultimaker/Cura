@@ -416,9 +416,13 @@ Item
     Action
     {
         id: openAction;
+        property var fileProviderModel: CuraApplication.getFileProviderModel()
+
         text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
         iconName: "document-open";
-        shortcut: StandardKey.Open;
+        // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
+        // enabled instead, and Ctrl+O is assigned to the local file provider
+        shortcut: fileProviderModel.count == 1 ? StandardKey.Open : "";
     }
 
     Action

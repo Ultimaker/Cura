@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2016 Richard Hughes <richard@hughsie.com> -->
 <component type="desktop">
-  <id>cura.desktop</id>
+  <id>com.ultimaker.cura.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LGPL-3.0 and CC-BY-SA-4.0</project_license>
   <name>Cura</name>
@@ -24,7 +24,9 @@
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default" width="1280" height="720">http://software.ultimaker.com/Cura.png</screenshot>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/Ultimaker/Cura/master/screenshot.png</image>
+    </screenshot>
   </screenshots>
   <url type="homepage">https://ultimaker.com/en/products/cura-software?utm_source=cura&amp;utm_medium=software&amp;utm_campaign=resources</url>
   <translation type="gettext">Cura</translation>

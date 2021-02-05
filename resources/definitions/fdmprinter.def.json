@@ -485,7 +485,7 @@
                 "machine_use_extruder_offset_to_offset_coords":
                 {
                     "label": "Offset with Extruder",
-                    "description": "Apply the extruder offset to the coordinate system.",
+                    "description": "Apply the extruder offset to the coordinate system. Affects all extruders.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -652,7 +652,7 @@
                 {
                     "label": "Steps per Millimeter (X)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the X direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -662,7 +662,7 @@
                 {
                     "label": "Steps per Millimeter (Y)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the Y direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -672,7 +672,7 @@
                 {
                     "label": "Steps per Millimeter (Z)",
                     "description": "How many steps of the stepper motor will result in one millimeter of movement in the Z direction.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 50,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -682,7 +682,7 @@
                 {
                     "label": "Steps per Millimeter (E)",
                     "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
-                    "type": "int",
+                    "type": "float",
                     "default_value": 1600,
                     "minimum_value": "0.0000001",
                     "settable_per_mesh": false,
@@ -1293,7 +1293,7 @@
                     "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
+                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (initial_bottom_layers > 0 and top_bottom_pattern_0 == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -3002,7 +3002,7 @@
                 "speed_layer_0":
                 {
                     "label": "Initial Layer Speed",
-                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate.",
+                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
@@ -6571,6 +6571,17 @@
                     "maximum_value": "89",
                     "default_value": 50,
                     "enabled": "conical_overhang_enabled"
+                },
+                "conical_overhang_hole_size": 
+                {
+                   "label": "Maximum Overhang Hole Area",
+                   "description": "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base.",
+                   "unit": "mm²",
+                   "type": "float",
+                   "minimum_value": "0",
+                   "minimum_value_warning": "0",
+                   "default_value": 0,
+                   "enabled": "conical_overhang_enabled"
                 },
                 "coasting_enable":
                 {

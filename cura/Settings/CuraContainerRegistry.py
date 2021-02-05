@@ -400,7 +400,9 @@ class CuraContainerRegistry(ContainerRegistry):
         try:
             if int(metadata["setting_version"]) != cura.CuraApplication.CuraApplication.SettingVersion:
                 return False
-        except ValueError: #Not parsable as int.
+        except ValueError:  # Not parsable as int.
+            return False
+        except TypeError:  # Expecting string input here, not e.g. list or anything.
             return False
         return True
 

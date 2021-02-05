@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -27,13 +27,7 @@ Menu
                 var path = decodeURIComponent(modelData.toString())
                 return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
             }
-            onTriggered:
-            {
-                CuraApplication.readLocalFile(modelData);
-
-                var meshName = backgroundItem.getMeshName(modelData.toString())
-                backgroundItem.hasMesh(decodeURIComponent(meshName))
-            }
+            onTriggered: CuraApplication.readLocalFile(modelData)
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
