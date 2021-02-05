@@ -1743,6 +1743,7 @@ class CuraApplication(QtApplication):
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
+        :param add_to_recent_files: Whether or not to add the file as an option to the Recent Files list.
         """
         Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
@@ -1756,6 +1757,10 @@ class CuraApplication(QtApplication):
                 break
 
         is_project_file = self.checkIsValidProjectFile(file)
+
+        if is_project_file is False:
+            # The file isn't a valid project file so abort reading it.
+            return
 
         if project_mode is None:
             project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
@@ -1940,6 +1945,13 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
+        except FileNotFoundError:
+            result_message = Message(text = self._i18n_catalog.i18nc("@info:status Don't translate the XML tag <filename>!",
+                                                                     "Failed to load <filename>{0}</filename>. No such file or directory.",
+                                                                     file_path), lifetime = 0,
+                                     title = self._i18n_catalog.i18nc("@info:title", "Unable to Open File"))
+            result_message.show()
+            return False
         except Exception:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
