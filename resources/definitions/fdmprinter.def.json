@@ -1116,6 +1116,17 @@
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
                     "maximum_value_warning": "10 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x"
                 },
+                "wall_0_lock_factor":
+                {
+                    "label": "Outer Wall Lock Factor",
+                    "description": "How much the outer walls should be locked in place versus how much they should react to inner walls. The full 100% is completely lock into place, 0% doesn't do any locking (other than redistribution to get the relative distribution of widths of outer versus inner walls correct). A higher factor gives far fewer artifacts on straight walls that have differing widths of model behind them, but this comes at the cost of some flexibility in the variable line width algorithms.",
+                    "type": "int",
+                    "unit": "%",
+                    "default_value": 100,
+                    "value": "100",
+                    "minimum_value": "0",
+                    "maximum_value": "100"
+                },
                 "wall_0_wipe_dist":
                 {
                     "label": "Outer Wall Wipe Distance",
