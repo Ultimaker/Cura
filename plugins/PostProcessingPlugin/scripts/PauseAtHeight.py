@@ -182,8 +182,7 @@ class PauseAtHeight(Script):
                         "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
-                    "enabled": false,
-                    "default_value": ""
+                    "enabled": false
                 },
                 "custom_gcode_before_pause":
                 {

@@ -51,6 +51,10 @@ class ThreeMFReader(MeshReader):
         self._root = None
         self._base_name = ""
         self._unit = None
+        self._empty_project = False
+
+    def emptyFileHintSet(self) -> bool:
+        return self._empty_project
 
     def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
         if transformation == "":
@@ -196,6 +200,7 @@ class ThreeMFReader(MeshReader):
         return um_node
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
+        self._empty_project = False
         result = []
         # The base object of 3mf is a zipped archive.
         try:
@@ -263,6 +268,9 @@ class ThreeMFReader(MeshReader):
                             um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
+
+            if len(result) == 0:
+                self._empty_project = True
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")

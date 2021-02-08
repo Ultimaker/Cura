@@ -15,9 +15,10 @@ from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
-
+from cura.LayerPolygon import LayerPolygon
 
 import os.path
+import numpy
 
 ## RenderPass used to display g-code paths.
 from .NozzleNode import NozzleNode
@@ -60,6 +61,9 @@ class SimulationPass(RenderPass):
             self._current_shader = self._layer_shader
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+        if not self._compatibility_mode:
+            self._layer_shader.setUniformValue("u_starts_color", Color(*Application.getInstance().getTheme().getColor("layerview_starts").getRgb()))
+            
         if self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
@@ -71,6 +75,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+            self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
@@ -83,6 +88,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
+            self._layer_shader.setUniformValue("u_show_starts", 1)
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
@@ -160,6 +166,13 @@ class SimulationPass(RenderPass):
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
+
+                    # The first line does not have a previous line: add a MoveCombingType in front for start detection
+                    # this way the first start of the layer can also be drawn 
+                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
+                    # Remove the last element 
+                    prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
+                    layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)

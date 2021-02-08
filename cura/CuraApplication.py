@@ -1,8 +1,9 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 import sys
+import tempfile
 import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
@@ -30,6 +31,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Preferences import Preferences
+from UM.Qt.Bindings.FileProviderModel import FileProviderModel
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 from UM.Resources import Resources
 from UM.Scene.Camera import Camera
@@ -822,6 +824,9 @@ class CuraApplication(QtApplication):
         self._add_printer_pages_model_without_cancel.initialize(cancellable = False)
         self._whats_new_pages_model.initialize()
 
+        # Initialize the FileProviderModel
+        self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
+
         # Detect in which mode to run and execute that mode
         if self._is_headless:
             self.runWithoutGUI()
@@ -1050,6 +1055,13 @@ class CuraApplication(QtApplication):
         if self._simple_mode_settings_manager is None:
             self._simple_mode_settings_manager = SimpleModeSettingsManager()
         return self._simple_mode_settings_manager
+
+    @pyqtSlot(result = QObject)
+    def getFileProviderModel(self) -> FileProviderModel:
+        return self._file_provider_model
+
+    def _onFileProviderEnabledChanged(self):
+        self._file_provider_model.update()
 
     def event(self, event):
         """Handle Qt events"""
@@ -1466,7 +1478,8 @@ class CuraApplication(QtApplication):
 
         for file_name, nodes in objects_in_filename.items():
             for node in nodes:
-                job = ReadMeshJob(file_name)
+                file_path = os.path.normpath(os.path.dirname(file_name))
+                job = ReadMeshJob(file_name, add_to_recent_files = file_path != tempfile.gettempdir())  # Don't add temp files to the recent files list
                 job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
@@ -1722,9 +1735,10 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
 
+    @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
-    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None):
+    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None, add_to_recent_files: bool = True):
         """Open a local file
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
@@ -1749,7 +1763,7 @@ class CuraApplication(QtApplication):
         if is_project_file and project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
-            workspace_handler.readLocalFile(file)
+            workspace_handler.readLocalFile(file, add_to_recent_files_hint = add_to_recent_files)
             return
 
         if is_project_file and project_mode == "always_ask":
@@ -1790,7 +1804,7 @@ class CuraApplication(QtApplication):
         if extension in self._non_sliceable_extensions:
             self.deleteAll(only_selectable = False)
 
-        job = ReadMeshJob(f)
+        job = ReadMeshJob(f, add_to_recent_files = add_to_recent_files)
         job.finished.connect(self._readMeshFinished)
         job.start()
 
@@ -1905,6 +1919,11 @@ class CuraApplication(QtApplication):
             arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
         except:
             Logger.logException("e", "Failed to arrange the models")
+
+        # Ensure that we don't have any weird floaty objects (CURA-7855)
+        for node in nodes_to_arrange:
+            node.translate(Vector(0, -node.getBoundingBox().bottom, 0), SceneNode.TransformSpace.World)
+
         self.fileCompleted.emit(file_name)
 
     def addNonSliceableExtension(self, extension):
