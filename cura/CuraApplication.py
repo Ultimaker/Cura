@@ -1733,7 +1733,7 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+    openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
     @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
@@ -1773,7 +1773,7 @@ class CuraApplication(QtApplication):
 
         if is_project_file and project_mode == "always_ask":
             # present a dialog asking to open as project or import models
-            self.callLater(self.openProjectFile.emit, file)
+            self.callLater(self.openProjectFile.emit, file, add_to_recent_files)
             return
 
         # Either the file is a model file or we want to load only models from project. Continue to load models.
