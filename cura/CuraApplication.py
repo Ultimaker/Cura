@@ -1941,14 +1941,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except FileNotFoundError:
-            result_message = Message(text = self._i18n_catalog.i18nc("@info:status Don't translate the XML tag <filename>!",
-                                                                     "Failed to load <filename>{0}</filename>. File is moved or deleted.",
-                                                                     file_path), lifetime = 0,
-                                     title = self._i18n_catalog.i18nc("@info:title", "Unable to Open File"))
-            result_message.show()
-            return False
-        except Exception:
+        except:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 
