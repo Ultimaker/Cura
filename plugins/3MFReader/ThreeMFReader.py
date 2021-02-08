@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -178,7 +178,7 @@ class ThreeMFReader(MeshReader):
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)
                 else:
-                    Logger.log("w", "Unable to set setting %s", key)
+                    um_node.metadata[key] = settings[key]
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
             if len(um_node.getAllChildren()) == 1:

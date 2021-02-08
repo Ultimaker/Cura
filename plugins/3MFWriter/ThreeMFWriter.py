@@ -109,7 +109,11 @@ class ThreeMFWriter(MeshWriter):
 
             # Get values for all changed settings & save them.
             for key in changed_setting_keys:
-                savitar_node.setSetting(key, str(stack.getProperty(key, "value")))
+                savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+
+        # Store the metadata.
+        for key, value in um_node.metadata.items():
+            savitar_node.setSetting(key, value)
 
         for child_node in um_node.getChildren():
             # only save the nodes on the active build plate
