@@ -161,7 +161,7 @@ class ThreeMFReader(MeshReader):
             setting_container = um_node.callDecoration("getStack").getTop()
             known_setting_keys = um_node.callDecoration("getStack").getAllKeys()
             for key in settings:
-                setting_value = settings[key]
+                setting_value = settings[key].value
 
                 # Extruder_nr is a special case.
                 if key == "extruder_nr":
