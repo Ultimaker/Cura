@@ -1758,10 +1758,6 @@ class CuraApplication(QtApplication):
 
         is_project_file = self.checkIsValidProjectFile(file)
 
-        if is_project_file is False:
-            # The file isn't a valid project file so abort reading it.
-            return
-
         if project_mode is None:
             project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
 
