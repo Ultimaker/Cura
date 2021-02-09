@@ -692,7 +692,7 @@ UM.MainWindow
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
             // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
-            openFilesIncludingProjectsDialog.addtoRecent = true;
+            openFilesIncludingProjectsDialog.addToRecent = true;
 
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
