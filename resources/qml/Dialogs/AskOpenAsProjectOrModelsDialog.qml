@@ -29,7 +29,7 @@ UM.Dialog
     modality: Qt.WindowModal
 
     property var fileUrl
-    property var addToRecent: true
+    property var addToRecent: true //Whether to add this file to the recent files list after reading it.
 
     // load the entire project
     function loadProjectFile() {
