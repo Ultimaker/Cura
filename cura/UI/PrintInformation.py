@@ -301,6 +301,7 @@ class PrintInformation(QObject):
         if self._base_name == "":
             self._job_name = self.UNTITLED_JOB_NAME
             self._is_user_specified_job_name = False
+            self._application.getController().getScene().clearMetaData()
             self.jobNameChanged.emit()
             return
 
