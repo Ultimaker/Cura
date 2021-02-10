@@ -28,19 +28,19 @@ UM.Dialog
     modality: Qt.WindowModal
 
     property var fileUrls: []
+    property var addToRecent: true
     property int spacerHeight: 10 * screenScaleFactor
 
     function loadProjectFile(projectFile)
     {
-        var addToRecent = UM.WorkspaceFileHandler.getAddToRecentFilesHint(projectFile);
-        UM.WorkspaceFileHandler.readLocalFile(projectFile, addToRecent);
+        UM.WorkspaceFileHandler.readLocalFile(projectFile, base.addToRecent);
     }
 
     function loadModelFiles(fileUrls)
     {
         for (var i in fileUrls)
         {
-            CuraApplication.readLocalFile(fileUrls[i], "open_as_model");
+            CuraApplication.readLocalFile(fileUrls[i], "open_as_model", base.addToRecent);
         }
     }
 

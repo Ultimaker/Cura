@@ -1733,7 +1733,7 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+    openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
     @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
@@ -1743,6 +1743,7 @@ class CuraApplication(QtApplication):
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
+        :param add_to_recent_files: Whether or not to add the file as an option to the Recent Files list.
         """
         Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
@@ -1768,7 +1769,7 @@ class CuraApplication(QtApplication):
 
         if is_project_file and project_mode == "always_ask":
             # present a dialog asking to open as project or import models
-            self.callLater(self.openProjectFile.emit, file)
+            self.callLater(self.openProjectFile.emit, file, add_to_recent_files)
             return
 
         # Either the file is a model file or we want to load only models from project. Continue to load models.
@@ -1940,7 +1941,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except Exception:
+        except:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 
