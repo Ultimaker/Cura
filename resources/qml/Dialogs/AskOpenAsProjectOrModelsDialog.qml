@@ -29,6 +29,7 @@ UM.Dialog
     modality: Qt.WindowModal
 
     property var fileUrl
+    property var addToRecent: true //Whether to add this file to the recent files list after reading it.
 
     // load the entire project
     function loadProjectFile() {
@@ -37,8 +38,7 @@ UM.Dialog
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_project")
         }
 
-        var addToRecent = UM.WorkspaceFileHandler.getAddToRecentFilesHint(base.fileUrl);
-        UM.WorkspaceFileHandler.readLocalFile(base.fileUrl, addToRecent);
+        UM.WorkspaceFileHandler.readLocalFile(base.fileUrl, base.addToRecent);
 
         base.hide()
     }
@@ -50,7 +50,7 @@ UM.Dialog
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_model")
         }
 
-        CuraApplication.readLocalFile(base.fileUrl, "open_as_model")
+        CuraApplication.readLocalFile(base.fileUrl, "open_as_model", base.addToRecent)
 
         base.hide()
     }

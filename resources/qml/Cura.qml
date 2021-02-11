@@ -691,6 +691,9 @@ UM.MainWindow
 
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
+            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+            openFilesIncludingProjectsDialog.addToRecent = true;
+
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
             {
@@ -717,6 +720,7 @@ UM.MainWindow
                 {
                     // ask whether to open as project or as models
                     askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.addToRecent = true;
                     askOpenAsProjectOrModelsDialog.show();
                 }
             }
@@ -776,6 +780,7 @@ UM.MainWindow
         onOpenProjectFile:
         {
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
             askOpenAsProjectOrModelsDialog.show();
         }
     }
