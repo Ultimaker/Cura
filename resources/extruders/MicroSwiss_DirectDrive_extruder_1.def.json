@@ -1,32 +1,29 @@
 {
-    "version": 2,
+    "version": 3,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-		"_MachineComment": "Ender3_MicroSwiss_DirectDrive",
-        "machine": "creality_base",
+        "machine": "Ender3_MicroSwiss_DirectDrive",
         "position": "1"
     },
-
+	
     "overrides": {
         "extruder_nr": { "default_value": 1 },
-		"machine_nozzle_offset_x":{"default_value": -24},
-		"machine_nozzle_offset_y":{"default_value": -1.0},
-		"machine_extruder_cooling_fan_number": {"default_value": 0 },
-		
+        "machine_nozzle_offset_x":{"default_value": -24},
+        "machine_nozzle_offset_y":{"default_value": -1.0},
+        "machine_extruder_cooling_fan_number": {"default_value": 0 },
+
         "machine_nozzle_size": { "default_value": 0.4 },
         "material_diameter": { "default_value": 1.75 },
 
-		"machine_extruder_start_code":
-		{
-			"description": "Start g-code to execute when switching to this extruder.",
-			"default_value": ";Nozzle 2 Active ( T1 )\n"
-		},		
-		
-		"machine_extruder_end_code":
-		{
-			"description": "End g-code to execute when switching away from this extruder.",
-			"default_value": ";Prep Nozzle Switch \n G91 \n G0 Z2 \n G90 \n"
-		}		
+        "machine_extruder_start_code": {
+             "description": "Start g-code to execute when switching to this extruder.",
+             "default_value": ";Nozzle 2 Active ( T1 )\n"
+        },
+
+        "machine_extruder_end_code": {
+             "description": "End g-code to execute when switching away from this extruder.",
+             "default_value": ";Prep Nozzle Switch \n G91 \n G0 Z2 \n G90 \n"
+        }		
     }
 }
