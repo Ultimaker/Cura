@@ -1,6 +1,6 @@
 {
     "name": "Ender3_MicroSwiss_DirectDrive",
-    "version": 3,
+    "version": 2,
     "inherits": "creality_ender3",
     "metadata": {
         "quality_definition": "creality_base",
