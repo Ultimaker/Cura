@@ -80,3 +80,6 @@ CuraEngine
 plugins/__init__.py
 
 /venv
+
+#Remove my comment lines from my commits -- https://gist.github.com/koudaiii/54e3c438a85a52c7c368
+add *..def.json filter=IgnoreComments
