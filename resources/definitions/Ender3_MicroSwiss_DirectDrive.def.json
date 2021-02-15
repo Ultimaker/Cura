@@ -1,7 +1,7 @@
 {
     "name": "Ender3_MicroSwiss_DirectDrive",
     "version": 2,
-    "inherits": "creality_ender3",
+    "inherits": "creality_base",
     "metadata": {
         "quality_definition": "creality_base",
         "visible": true,
@@ -17,13 +17,13 @@
 
     "overrides": {
         "machine_name": { "default_value": "Ender-3 MicroSwiss DirectDrive" },
-        "machine_extruder_count": { "default_value": 1, "maximum_value": "2" },
-        "extruders_enabled_count": { "default_value": 1 },
-        "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
+        "machine_extruder_count": { "value": 1, "maximum_value": "2" },
+        "extruders_enabled_count": { "value": 1 },
+        "machine_use_extruder_offset_to_offset_coords": { "value": false },
         
-        "machine_width": { "default_value": 230 },
-        "machine_depth": { "default_value": 230 },
-        "machine_height": { "default_value": 175 },
+        "machine_width": { "value": 230 },
+        "machine_depth": { "value": 230 },
+        "machine_height": { "value": 175 },
         "gantry_height": { "value": 35 },
 
         "machine_disallowed_areas": {
@@ -45,23 +45,23 @@
         "_Comment_Cura_Keywords":  "http://files.fieldofview.com/cura/Replacement_Patterns.html" ,
         
         "_Comment_Retraction": "MicroSwiss recomends maximum of 1.5mm @ 35mm/s for retraction settings when using their all-metal hot end with Direct Drive extruder",
-        "retraction_amount": { "default_value": 0.75 },
-        "retraction_extrusion_window": { "default_value":  "retraction_amount * 2" },
-        "retraction_speed": { "default_value": 15.0 }, 
+        "retraction_amount": { "default_value": 0.75, "value": 0.75 },
+        "retraction_speed": { "default_value": 15.0, "value": 15.0 }, 
+        "retraction_extrusion_window": { "value":  "retraction_amount * 2" },
 
         "_Comment_HeatZoneLength": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
         "machine_heat_zone_length":  { "default_value": 16.0 },
         
         "_Comment_ExtruderSwitchingSettings": "Settings to retract material when switching over to the other nozzle",
-        "switch_extruder_retraction_amount": { "default_value": "machine_heat_zone_length" , "value": 16},
-        "switch_extruder_retraction_speed": { "default_value": 15.0 },
-        "switch_extruder_prime_speed": { "default_value": 15.0 },
+        "switch_extruder_retraction_amount": { "value": 16},
+        "switch_extruder_retraction_speed": { "value": 15.0 },
+        "switch_extruder_prime_speed": { "value": 15.0 },
         "switch_extruder_extra_prime_amount": { "default_value": 0 },
         
         "_Comment_PrimeTower": "Default position for the Prime Tower to reside -> Default Extruder End Code moves here before switching nozzles and waiting for next nozzle to reach temp.",
         "prime_tower_size": { "default_value": 10.0 },
-        "prime_tower_position_x": { "default_value": 135 },
-        "prime_tower_position_y": { "default_value": 190 },
+        "prime_tower_position_x": { "value": 135 },
+        "prime_tower_position_y": { "value": 190 },
 
         "_Comment_Misc_Print_Settings": "Misc default settings that I preferred to tighten up my print consistency",
         "speed_print_layer_0": { "value": 20 },
