@@ -19,15 +19,12 @@
         "machine_name": { "default_value": "Ender-3 MicroSwiss DirectDrive" },
         "machine_extruder_count": { "default_value": 1, "maximum_value": "2" },
         "extruders_enabled_count": { "default_value": 1 },
-
-        "machine_use_extruder_offset_to_offset_coords": { 
-            "description_": "Apply the extruder offset to the coordinate system.",
-            "default_value": false 
-        },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
         
         "machine_width": { "default_value": 230 },
         "machine_depth": { "default_value": 230 },
         "machine_height": { "default_value": 175 },
+        "gantry_height": { "value": 35 },
 
         "machine_disallowed_areas": {
             "description": "A list of polygons with areas the print head is not allowed to enter.",
@@ -45,11 +42,6 @@
             ]
         },
 
-        "gantry_height": { 
-            "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
-            "value": 35 
-        },
-        
         "_Comment_Cura_Keywords":  "http://files.fieldofview.com/cura/Replacement_Patterns.html" ,
         
         "_Comment_Retraction": "MicroSwiss recomends maximum of 1.5mm @ 35mm/s for retraction settings when using their all-metal hot end with Direct Drive extruder",
@@ -57,10 +49,8 @@
         "retraction_extrusion_window": { "default_value":  "retraction_amount * 2" },
         "retraction_speed": { "default_value": 15.0 }, 
 
-        "machine_heat_zone_length":  { 
-            "description__": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
-            "default_value": 16.0 
-        },
+        "_Comment_HeatZoneLength": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
+        "machine_heat_zone_length":  { "default_value": 16.0 },
         
         "_Comment_ExtruderSwitchingSettings": "Settings to retract material when switching over to the other nozzle",
         "switch_extruder_retraction_amount": { "default_value": "machine_heat_zone_length" , "value": 16},
