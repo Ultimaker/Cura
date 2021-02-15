@@ -10,32 +10,9 @@
         "platform_offset": [ 0, 0, 0]
     },
     "overrides": {
-        "machine_name": { "value": "Proton X" },
-        "machine_width": { "value": 304 },
-        "machine_depth": { "value": 304 },
-        "machine_height": { "value": 650 },
-        "machine_head_with_fans_polygon": {
-            "value": [
-                [
-                    -86,
-                    66
-                ],
-                [
-                    44,
-                    66
-                ],
-                [
-                    44,
-                    -96
-                ],
-                [
-                    -86,
-                    -96
-                ]
-            ]
-        },
-
-        "gantry_height": { "value": 34 }
-
+        "machine_name": { "default_value": "Proton X Rod" },
+        "machine_width": { "default_value": 304 },
+        "machine_depth": { "default_value": 304 },
+        "machine_height": { "default_value": 650 }
     }
 }

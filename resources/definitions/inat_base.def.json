@@ -26,57 +26,46 @@
             "default_value": "G28 ;Home\nG29\nG0 X0 Y0 Z30 F6000\nM84 E\nM0\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\n"
         },
         "machine_end_gcode": {
-            "default_value": "M400\nM104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X R5\nG0 Y300 F2000\nM84\n"
+            "default_value": "M400\nM104 S0\nM140 S0\nM107\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X R5\nG0 Y300 F2000\nM84\n"
         },
         "material_diameter": {
-            "value": 1.75
-        },
-        "machine_width": {
-            "value": 304
-        },
-        "machine_depth": {
-            "value": 304
+            "default_value": 1.75
         },
         "machine_shape": {
-            "value": "rectangular"
-        },
-        "machine_height": {
-            "value": 430
+            "default_value": "rectangular"
         },
         "machine_heated_bed": {
-            "value": true
+            "default_value": true
         },
         "machine_heated_build_volume": {
-            "value": false
+            "default_value": false
         },
         "machine_gcode_flavor": {
-            "value": "RepRap (Marlin/Sprinter)"
+            "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_head_with_fans_polygon": {
-            "value": [
+            "default_value": [
                 [
-                    -20,
-                    10
+                    -86,
+                    66
                 ],
                 [
-                    10,
-                    10
+                    44,
+                    66
                 ],
                 [
-                    10,
-                    -10
+                    44,
+                    -96
                 ],
                 [
-                    -20,
-                    -10
+                    -86,
+                    -96
                 ]
             ]
         },
-        "gantry_height": {
-            "value": 99999999999
-        },
+        "gantry_height": { "default_value": 34 },
         "machine_nozzle_size": {
-            "value": 0.4
+            "default_value": 0.4
         },
         "machine_max_feedrate_x": {
             "value": 200
