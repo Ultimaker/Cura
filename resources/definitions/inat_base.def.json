@@ -63,7 +63,7 @@
                 ]
             ]
         },
-        "gantry_height": { "default_value": 34 },
+        "gantry_height": { "value": 34 },
         "machine_nozzle_size": {
             "default_value": 0.4
         },
