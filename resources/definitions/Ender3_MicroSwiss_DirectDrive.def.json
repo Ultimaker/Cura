@@ -41,29 +41,22 @@
                 [32, 34]
             ]
         },
-
-        "_Comment_Cura_Keywords":  "http://files.fieldofview.com/cura/Replacement_Patterns.html" ,
         
-        "_Comment_Retraction": "MicroSwiss recomends maximum of 1.5mm @ 35mm/s for retraction settings when using their all-metal hot end with Direct Drive extruder",
         "retraction_amount": { "default_value": 0.75, "value": 0.75 },
         "retraction_speed": { "default_value": 15.0, "value": 15.0 }, 
         "retraction_extrusion_window": { "value":  "retraction_amount * 2" },
 
-        "_Comment_HeatZoneLength": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
         "machine_heat_zone_length":  { "default_value": 16.0 },
         
-        "_Comment_ExtruderSwitchingSettings": "Settings to retract material when switching over to the other nozzle",
         "switch_extruder_retraction_amount": { "value": 16},
         "switch_extruder_retraction_speed": { "value": 15.0 },
         "switch_extruder_prime_speed": { "value": 15.0 },
         "switch_extruder_extra_prime_amount": { "default_value": 0 },
         
-        "_Comment_PrimeTower": "Default position for the Prime Tower to reside -> Default Extruder End Code moves here before switching nozzles and waiting for next nozzle to reach temp.",
         "prime_tower_size": { "default_value": 10.0 },
         "prime_tower_position_x": { "value": 135 },
         "prime_tower_position_y": { "value": 190 },
 
-        "_Comment_Misc_Print_Settings": "Misc default settings that I preferred to tighten up my print consistency",
         "speed_print_layer_0": { "value": 20 },
         "speed_slowdown_layers": { "value": 4 },
         "brim_replaces_support": { "value": true },
@@ -72,21 +65,18 @@
         "support_z_distance":              { "value": "layer_height * 2" },
         "support_bottom_distance":         { "value": "layer_height" },
 
-        "_Comment_Feedrate": "The maximum speed for the motor of the specified direction. (mm/s)",
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
         "machine_max_feedrate_z": { "value": 10 },
         "machine_max_feedrate_e": { "value": 50 },
         "speed_print": { "value": 50.0 } ,
                 
-        "_Comment_Acceleration": "Maximum acceleration for the motor. (mm/s²)",
         "machine_max_acceleration_x": { "value": 1500 },
         "machine_max_acceleration_y": { "value": 1500 },
         "machine_max_acceleration_z": { "value": 100 },
         "machine_max_acceleration_e": { "value": 5000 },
         "machine_acceleration": { "value": 750 },
 
-        "_Comment_Jerk": "The maximum instantaneous velocity change.",
         "machine_max_jerk_xy": { "value": 10 },
         "machine_max_jerk_z": { "value": 0.4 },
         "machine_max_jerk_e": { "value": 5 },
