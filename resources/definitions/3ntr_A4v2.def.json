@@ -1,0 +1,22 @@
+{
+    "name": "3ntr A4v2",
+    "version": 2,
+    "inherits": "3ntr",
+    "metadata": {
+        "author": "Ste Serioli - github.com/StuSerious",
+        "manufacturer": "3ntr",
+        "file_formats": "text/x-gcode",
+        "visible": true,
+        "platform": "3ntr_platform.stl",
+        "platform_offset": [-155, 0, 125],
+        "has_variants": false,
+        "has_machine_quality": false,
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains": {
+            "0": "3ntr_extruder_0",
+            "1": "3ntr_extruder_1",
+            "2": "3ntr_extruder_2"
+        }
+    },
+    "overrides": {}
+}
