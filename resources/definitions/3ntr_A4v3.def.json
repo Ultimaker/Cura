@@ -8,7 +8,11 @@
         "file_formats": "text/x-gcode",
         "visible": true,
         "platform": "3ntr_platform.stl",
-        "platform_offset": [-155, 0, 125],
+        "platform_offset": [
+            -155,
+            0,
+            125
+        ],
         "has_variants": false,
         "has_machine_quality": false,
         "preferred_quality_type": "draft",

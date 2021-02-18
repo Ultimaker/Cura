@@ -19,39 +19,107 @@
         }
     },
     "overrides": {
-        "machine_name": {"default_value":"3ntr Base Definition"},
-        "machine_start_gcode":{"default_value":""},
-        "machine_end_gcode":{"default_value":""},
-        "machine_width":{"default_value":0},
-        "machine_depth":{"default_value":0},
-        "machine_height":{"default_value":0},
-        "machine_heated_bed":{"default_value": true},
-        "machine_extruder_count":{"default_value":3},
-        "extruders_enabled_count":{"default_value":3},
-        "gantry_height":{"default_value":3},
-        "machine_nozzle_tip_outer_diameter":{"default_value":1},
-        "machine_nozzle_expansion_angle":{"default_value":1},
-        "machine_heat_zone_length":{"default_value":1},
-        "machine_nozzle_heat_up_speed":{"default_value":6.1},
-        "machine_nozzle_cool_down_speed":{"default_value":1},
-        "machine_min_cool_heat_time_window":{"default_value":40},
-        "machine_head_with_fans_polygon":{"default_value":[]},
-        "machine_use_extruder_offset_to_offset_coords":{"default_value": true},
-        "machine_max_feedrate_x":{"default_value":380},
-        "machine_max_feedrate_y":{"default_value":380},
-        "machine_max_feedrate_z":{"default_value":6},
-        "machine_max_feedrate_e":{"default_value":70},
-        "machine_max_acceleration_x":{"default_value":3500},
-        "machine_max_acceleration_y":{"default_value":3500},
-        "machine_max_acceleration_z":{"default_value":100},
-        "machine_max_acceleration_e":{"default_value":5000},
-        "machine_acceleration":{"default_value":3200},
-        "machine_max_jerk_xy":{"default_value":10},
-        "machine_max_jerk_z":{"default_value":0.4},
-        "machine_max_jerk_e":{"default_value":5},
-        "machine_steps_per_mm_x":{"default_value":89},
-        "machine_steps_per_mm_y":{"default_value":89},
-        "machine_steps_per_mm_z":{"default_value":3200},
-        "machine_steps_per_mm_e":{"default_value":517.50}
+        "machine_name": {
+            "default_value": "3ntr Base Definition"
+        },
+        "machine_start_gcode": {
+            "default_value": ""
+        },
+        "machine_end_gcode": {
+            "default_value": ""
+        },
+        "machine_width": {
+            "default_value": 0
+        },
+        "machine_depth": {
+            "default_value": 0
+        },
+        "machine_height": {
+            "default_value": 0
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_extruder_count": {
+            "default_value": 3
+        },
+        "extruders_enabled_count": {
+            "default_value": 3
+        },
+        "gantry_height": {
+            "default_value": 3
+        },
+        "machine_nozzle_tip_outer_diameter": {
+            "default_value": 1
+        },
+        "machine_nozzle_expansion_angle": {
+            "default_value": 1
+        },
+        "machine_heat_zone_length": {
+            "default_value": 1
+        },
+        "machine_nozzle_heat_up_speed": {
+            "default_value": 6.1
+        },
+        "machine_nozzle_cool_down_speed": {
+            "default_value": 1
+        },
+        "machine_min_cool_heat_time_window": {
+            "default_value": 40
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": []
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_max_feedrate_x": {
+            "default_value": 380
+        },
+        "machine_max_feedrate_y": {
+            "default_value": 380
+        },
+        "machine_max_feedrate_z": {
+            "default_value": 6
+        },
+        "machine_max_feedrate_e": {
+            "default_value": 70
+        },
+        "machine_max_acceleration_x": {
+            "default_value": 3500
+        },
+        "machine_max_acceleration_y": {
+            "default_value": 3500
+        },
+        "machine_max_acceleration_z": {
+            "default_value": 100
+        },
+        "machine_max_acceleration_e": {
+            "default_value": 5000
+        },
+        "machine_acceleration": {
+            "default_value": 3200
+        },
+        "machine_max_jerk_xy": {
+            "default_value": 10
+        },
+        "machine_max_jerk_z": {
+            "default_value": 0.4
+        },
+        "machine_max_jerk_e": {
+            "default_value": 5
+        },
+        "machine_steps_per_mm_x": {
+            "default_value": 89
+        },
+        "machine_steps_per_mm_y": {
+            "default_value": 89
+        },
+        "machine_steps_per_mm_z": {
+            "default_value": 3200
+        },
+        "machine_steps_per_mm_e": {
+            "default_value": 517.5
+        }
     }
 }
