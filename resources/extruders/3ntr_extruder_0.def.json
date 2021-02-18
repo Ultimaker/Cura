@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "name": "Extruder 0",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "3ntr",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 0 },
+        "machine_nozzle_size": {"default_value": 0.4},
+        "machine_nozzle_offset_x": {"default_value": 0},
+        "machine_nozzle_offset_y": {"default_value": 0},
+        "material_diameter": {"default_value": 2.85}
+    }
+}
