@@ -3,7 +3,7 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "3ntr",
+        "machine": "3ntr_base",
         "position": "2"
     },
     "overrides": {
