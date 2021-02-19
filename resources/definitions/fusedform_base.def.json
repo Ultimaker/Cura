@@ -78,6 +78,6 @@
  	"support_z_distance": {"value": 0.3 },
 
 
- 	"adhesion_type": {"default_value":"skirt"}
+ 	"brim_enable": { "default_value": false }
     }
 }

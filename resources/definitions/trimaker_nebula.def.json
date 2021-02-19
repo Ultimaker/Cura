@@ -185,7 +185,7 @@
         "support_pattern": {"default_value": "zigzag"},
         "support_z_distance": {"default_value": 0.17},
         "support_xy_distance": {"default_value": 0.7},
-        "adhesion_type": {"default_value": "skirt"},
+        "brim_enable": { "default_value": false },
        
         "gantry_height": {"value": 2},
         "machine_start_gcode": {"default_value": ";Trimaker Nebula Start Code\n G21; Unidades en mm\n G90; Posicion absoluta\n M82; Extrusor en modo absoluto\n M107; Fan apagado\n G28 X Y Z; Enviamos a home a todos los ejes\n M900 K=0; Linear advance desactivado\n M104 S110; Precalentamos el extrusor hasta 110 grados\n M190 S{material_bed_temperature_layer_0}; Calentamos cama y esperamos\n M109 S{material_print_temperature}; Calentamos extrusor y esperamos\n G92 E0; E=0\n G1 F200 X0.5 Y0.5 Z0.300\n G1 F900 X0.5 Y51.5 E2.56436; Hacemos una linea para limpiar extrusor\n"},

@@ -35,7 +35,8 @@
         "machine_head_with_fans_polygon": {
             "default_value": [[75, 18],[18, 18],[18, 35],[75, 35]]
         },
-        "adhesion_type": {"options": {"raft": "Raft" ,"none": "None", "brim": "Brim"},  "default_value": "raft"},
+        "raft_enable": { "default_value":  true },
+        "skirt_line_count": { "default_value":  0, "enabled":  false },
         "machine_gcode_flavor":        {   "default_value": "RepRap (Marlin/Sprinter)"      },
         "machine_start_gcode":
         {

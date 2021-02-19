@@ -82,9 +82,8 @@
     "speed_layer_0": {
       "value": "math.ceil(speed_print * 0.25)"
     },
-    "adhesion_type": {
-      "value": "'none'"
-    },
+    "brim_enable": { "default_value":  false },
+    "skirt_line_count": { "default_value":  0 },
     "speed_travel": {
       "value": 120,
       "maximum_value_warning": 251,

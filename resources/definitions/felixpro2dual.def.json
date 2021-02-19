@@ -57,7 +57,7 @@
         "retraction_speed": { "default_value": 50},
         "material_flow": { "default_value": 100 },
         "material_flow_layer_0": { "default_value" : 110, "value": "material_flow * 1.1" },
-        "adhesion_type": { "default_value": "skirt" },
+        "brim_enable": { "default_value": false },
         "skirt_brim_minimal_length": { "default_value": 130 },
         "skirt_line_count": { "default_value": 3 },
 

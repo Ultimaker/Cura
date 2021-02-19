@@ -68,7 +68,7 @@
         "machine_max_jerk_xy": { "default_value": 20 },
         "machine_max_jerk_z": { "default_value": 0.4 },
         "machine_max_jerk_e": { "default_value": 5},
-        "adhesion_type": { "default_value": "raft" },
+        "raft_enable": { "default_value": true },
         "raft_margin": { "default_value": 5 },
         "raft_airgap": { "default_value": 0.2625 },
         "raft_base_thickness": { "value": "0.30625" },

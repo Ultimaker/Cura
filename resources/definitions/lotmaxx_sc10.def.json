@@ -57,8 +57,8 @@
         "cool_min_layer_time":{ "value":10 },
         "meshfix_maximum_resolution":{ "value":"0.25" },
         "meshfix_maximum_travel_resolution":{ "value":"meshfix_maximum_resolution" },
-        "adhesion_type": { "value": "'none' if support_enable else 'skirt'" },
-        "skirt_gap":{ "value":5.0 },
-        "skirt_line_count":{ "value":4 }
+        "brim_enable": { "default_value": false },
+        "skirt_gap": { "value": 5.0 },
+        "skirt_line_count": { "value": "0 if support_enable else 4" }
     }
 }

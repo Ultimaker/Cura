@@ -27,7 +27,7 @@
         "machine_center_is_zero": { "default_value": false },
         "retraction_amount": { "default_value": 3 },
         "retraction_speed": { "default_value": 70},
-        "adhesion_type": { "default_value": "skirt" },
+        "brim_enable": { "default_value": false },
         "gantry_height": { "value": "30" },
         "speed_print": { "default_value": 60 },
         "machine_max_acceleration_x": { "default_value": 500 },

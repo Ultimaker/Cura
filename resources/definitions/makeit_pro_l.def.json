@@ -86,9 +86,7 @@
         "cool_min_layer_time_fan_speed_max": {
           "default_value": 5
         },
-        "adhesion_type": {
-          "default_value": "skirt"
-        },
+        "brim_enable": { "default_value": false },
         "machine_heated_bed": {
             "default_value": true
         },

@@ -165,7 +165,7 @@
         "support_interface_height":  {"value": "layer_height * 3"},
         "support_bottom_height":     {"value": "layer_height"},
 
-        "adhesion_type":             {"value": "'brim'"},
+        "brim_enable":               {"value": true},
         "skirt_gap":                 {"value": 1},
         "skirt_brim_minimal_length": {"value": 50},
 

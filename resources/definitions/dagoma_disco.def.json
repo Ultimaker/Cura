@@ -46,9 +46,7 @@
         "retraction_speed": {
             "default_value": 50
         },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
+        "brim_enable": { "default_value": false },
         "skirt_line_count": {
             "default_value": 2
         },

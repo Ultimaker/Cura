@@ -26,7 +26,7 @@
         "layer_height": { "default_value": 0.15 },
         "retraction_amount": { "default_value": 4.5 },
         "retraction_speed": { "default_value": 35 },
-        "adhesion_type": { "default_value": "brim" },
+        "brim_enable": { "default_value": true },
         "machine_head_with_fans_polygon": { "default_value": [[-42,29],[42,29],[42,-55],[-42,-55]] },
         "gantry_height": { "value": "32" },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },

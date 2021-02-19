@@ -133,7 +133,7 @@
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 
-        "adhesion_type": { "value": "'skirt'" },
+        "brim_enable": { "default_value": false },
         "brim_replaces_support": { "value": false },
         "skirt_gap": { "value": 6.0 },
         "skirt_line_count": { "value": 3 }

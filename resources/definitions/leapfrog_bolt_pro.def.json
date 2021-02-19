@@ -99,7 +99,7 @@
         "gantry_height": {"value": "20"},
         "retraction_combing": { "default_value": "all" },
         "retraction_amount": {"default_value": 2},
-        "adhesion_type": {"default_value": "skirt"},
+        "brim_enable": { "default_value": false },
         "skirt_line_count": {"default_value": 3},
         "machine_use_extruder_offset_to_offset_coords": {"default_value": true},
         "machine_start_gcode": {"default_value": "G90\nG28 X0 Y0 Z0\nG1 Z5 F1000\nG92 E0\nG1 Y-32 F12000\nG1 E15 F1000\nG1 E45 F150\nG4 S5"},

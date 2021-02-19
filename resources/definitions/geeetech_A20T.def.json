@@ -34,7 +34,7 @@
         "layer_height_0": { "default_value": 0.15 },
         "retraction_amount": { "default_value": 0.8 },
         "retraction_speed": { "default_value": 35 },
-        "adhesion_type": { "default_value": "skirt" },
+        "brim_enable": { "default_value": false },
         "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
         "gantry_height": { "value": "28" },
         "machine_max_feedrate_z": { "default_value": 12 },

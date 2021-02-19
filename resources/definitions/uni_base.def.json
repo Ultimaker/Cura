@@ -185,7 +185,7 @@
         "support_brim_enable":               {"value": "True"},
         "support_infill_rate":               {"value": "20"},
         "support_offset":                    {"value": "2"},
-        "adhesion_type":                     {"value": "'brim'"},
+        "brim_enable":                       {"value": "True"},
         "brim_width":                        {"value": "5"},
         "bridge_settings_enabled":           {"value": "True"}
     }

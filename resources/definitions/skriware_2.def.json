@@ -242,9 +242,7 @@
         "brim_line_count": {
             "value": "17"
         },
-        "adhesion_type": {
-            "default_value": "raft"
-        },
+        "raft_enable": { "default_value": true },
         "switch_extruder_retraction_amount": {
             "value": "16"
         },

@@ -37,9 +37,7 @@
         "retraction_hop_enabled": {
             "value": true
         },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
+        "brim_enable": { "default_value": false },
         "skirt_brim_minimal_length": {
             "value": 1500
         },

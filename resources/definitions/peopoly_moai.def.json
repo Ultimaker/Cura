@@ -123,9 +123,8 @@
         "infill_overlap": {
             "value": 15
         },
-        "adhesion_type": {
-            "value": "'none'"
-        },
+        "brim_enable": { "default_value":  false },
+        "skirt_line_count": { "default_value":  0 },
         "print_sequence": {
             "enabled": false
         },

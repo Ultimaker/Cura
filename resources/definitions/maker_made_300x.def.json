@@ -137,7 +137,7 @@
         "support_use_towers":  {"value": true },
         "support_tower_diameter":  {"value": 3},
         "support_tower_roof_angle":  {"value": "65"},
-        "adhesion_type":  {"value": "'skirt'"},
+        "brim_enable":  { "default_value": false},
         "skirt_line_count": {"value": 2},
         "skirt_gap":  {"value": 3},
         "meshfix_union_all":  {"value": true },

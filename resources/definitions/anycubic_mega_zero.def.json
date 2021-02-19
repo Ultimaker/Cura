@@ -107,7 +107,7 @@
         "retraction_min_travel": { "value": 1.5 },
 
         "cool_fan_full_at_height": { "value": "layer_height_0" },
-        "adhesion_type": { "value": "'skirt'" },
+        "brim_enable": { "default_value": false },
         "skirt_line_count": {"default_value": 3},
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },

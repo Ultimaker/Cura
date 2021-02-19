@@ -56,9 +56,7 @@
         "retraction_speed": {
             "default_value": 25
         },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
+        "brim_enable": { "default_value": false },
         "machine_head_with_fans_polygon": {
             "default_value": [
                 [-75, 35],

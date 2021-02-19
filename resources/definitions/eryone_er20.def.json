@@ -71,8 +71,8 @@
         "acceleration_travel": {
             "value": 1800
         },
-        "adhesion_type": { 
-            "value": "'brim'"
+        "brim_enable": {
+            "value": true
         },
         "brim_width": {
             "value": 5

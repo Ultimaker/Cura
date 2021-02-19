@@ -25,7 +25,7 @@
         "layer_height_0": { "default_value": 0.1 },
         "retraction_amount": { "default_value": 2 },
         "retraction_speed": { "default_value": 50 },
-        "adhesion_type": { "default_value": "skirt" },
+        "brim_enable": { "default_value": false },
         "machine_nozzle_heat_up_speed": { "default_value": 2 },
         "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": { "default_value": [[-20,20],[10,10],[10,10],[10,10]] },

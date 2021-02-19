@@ -227,10 +227,11 @@
         "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
 
-        "adhesion_type": { "value": "'none' if support_enable else 'skirt'" },
+
+        "brim_enable": { "default_value": false },
         "brim_replaces_support": { "value": false },
         "skirt_gap": { "value": 10.0 },
-        "skirt_line_count": { "value": 4 },
+        "skirt_line_count": { "value": "0 if support_enable else 4" },
 
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
@@ -257,8 +258,8 @@
         "support_interface_skip_height": { "value": 0.2 },
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
-        "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
-        "wall_thickness": {"value": "line_width * 2" }
+        "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * 3" },
+        "wall_thickness": { "value": "line_width * 2" }
 
     }
 }

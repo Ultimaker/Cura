@@ -49,7 +49,7 @@
         "z_seam_relative":{"value":true},
         "z_seam_type":{"default_value":"sharpest_corner"},
         "zig_zaggify_infill":{"value":true},
-        "adhesion_type":{"default_value":"skirt"},
+        "brim_enable":{"default_value":false},
         "prime_tower_enable":{"value":true},
         "prime_tower_position_x":{"value": 50},
         "prime_tower_position_y":{"value": 50},

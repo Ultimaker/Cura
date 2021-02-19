@@ -53,9 +53,7 @@
         "retraction_amount": {
             "default_value": 1.0
         },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
+        "brim_enable": { "default_value": false },
         "gantry_height": {
             "value": "55"
         },

@@ -28,7 +28,8 @@
         "machine_depth": { "default_value": 170 },
         "machine_width": { "default_value": 180 },
         "retraction_speed": {"default_value":100},
-        "adhesion_type": { "default_value": "none" },
+        "brim_enable": { "default_value": false },
+        "skirt_line_count": { "default_value": 0 },
         "machine_head_with_fans_polygon": {
             "default_value": [
                 [-15, -25],

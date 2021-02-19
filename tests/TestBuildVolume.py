@@ -49,7 +49,7 @@ def test_clamp(build_volume):
 
 
 class TestCalculateBedAdhesionSize:
-    setting_property_dict = {"adhesion_type": {"value": "brim"},
+    setting_property_dict = {"adhesion_type": { "value": "brim"},
                              "skirt_brim_line_width": {"value": 0},
                              "initial_layer_line_width_factor": {"value": 0},
                              "brim_line_count": {"value": 0},
@@ -79,12 +79,12 @@ class TestCalculateBedAdhesionSize:
 
     @pytest.mark.parametrize("setting_dict, result", [
         ({}, 0),
-        ({"adhesion_type": {"value": "skirt"}}, 0),
-        ({"adhesion_type": {"value": "raft"}}, 0),
-        ({"adhesion_type": {"value": "none"}}, 0),
-        ({"adhesion_type": {"value": "skirt"}, "skirt_line_count": {"value": 2}, "initial_layer_line_width_factor": {"value": 1}, "skirt_brim_line_width": {"value": 2}}, 0.02),
+        ({"adhesion_type": { "value": "skirt"}}, 0),
+        ({"adhesion_type": { "value": "raft"}}, 0),
+        ({"adhesion_type": { "value": "none"}}, 0),
+        ({"adhesion_type": { "value": "skirt"}, "skirt_line_count": {"value": 2}, "initial_layer_line_width_factor": {"value": 1}, "skirt_brim_line_width": {"value": 2}}, 0.02),
         # Even though it's marked as skirt, it should behave as a brim as the prime tower has a brim (skirt line count is still at 0!)
-        ({"adhesion_type": {"value": "skirt"}, "prime_tower_brim_enable": {"value": True}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, -0.06),
+        ({"adhesion_type": { "value": "skirt"}, "prime_tower_brim_enable": {"value": True}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, -0.06),
         ({"brim_line_count": {"value": 1}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0),
         ({"brim_line_count": {"value": 2}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0.06),
         ({"brim_line_count": {"value": 9000000}, "skirt_brim_line_width": {"value": 90000}, "initial_layer_line_width_factor": {"value": 9000}}, 100),  # Clamped at half the max size of buildplate
@@ -100,7 +100,7 @@ class TestCalculateBedAdhesionSize:
     def test_unknownBedAdhesion(self, build_volume: BuildVolume):
         self.createAndSetGlobalStack(build_volume)
         patched_dictionary = self.setting_property_dict.copy()
-        patched_dictionary.update({"adhesion_type": {"value": "OMGZOMGBBQ"}})
+        patched_dictionary.update({"adhesion_type": { "value": "OMGZOMGBBQ"}})
         with patch.dict(self.setting_property_dict, patched_dictionary):
             with pytest.raises(Exception):
                 build_volume._calculateBedAdhesionSize([])
@@ -157,7 +157,7 @@ class TestUpdateRaftThickness:
                              "raft_surface_thickness": {"value": 1},
                              "raft_airgap": {"value": 1},
                              "layer_0_z_overlap": {"value": 1},
-                             "adhesion_type": {"value": "raft"}}
+                             "adhesion_type": { "value": "raft"}}
 
     def getPropertySideEffect(*args, **kwargs):
         properties = TestUpdateRaftThickness.setting_property_dict.get(args[1])

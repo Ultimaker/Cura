@@ -89,7 +89,7 @@ class BuildVolume(SceneNode):
 
         self._raft_thickness = 0.0
         self._extra_z_clearance = 0.0
-        self._adhesion_type = None  # type: Any
+        self._skirt_line_count = 0  # type: Any
         self._platform = Platform(self)
 
         self._edge_disallowed_size = None

@@ -227,10 +227,10 @@
         "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
 
-        "adhesion_type": { "value": "'none' if support_enable else 'skirt'" },
+        "brim_enable": { "default_value":  false },
+        "skirt_line_count": { "value": "0 if support_enable else 4" },
         "brim_replaces_support": { "value": false },
         "skirt_gap": { "value": 10.0 },
-        "skirt_line_count": { "value": 4 },
 
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },

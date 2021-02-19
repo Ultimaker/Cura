@@ -243,7 +243,7 @@
         "support_brim_width": { "value": 4 },
         "support_use_towers": { "value": false },
 
-        "adhesion_type": { "value": "'skirt'" },
+        "brim_enable": { "default_value": false },
         "skirt_line_count": { "value": 3 },
         "skirt_gap": { "value": 10 },
         "skirt_brim_minimal_length": { "value": 50 },
