@@ -89,6 +89,7 @@ Cura.ExpandableComponent
         property bool show_gradient: UM.SimulationView.compatibilityMode ? false : UM.Preferences.getValue("layerview/layer_view_type") == 2 || UM.Preferences.getValue("layerview/layer_view_type") == 3
         property bool show_feedrate_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 2
         property bool show_thickness_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 3
+        property bool show_line_width_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 4
         property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
         property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
@@ -117,8 +118,12 @@ Cura.ExpandableComponent
                 type_id: 2
             })
             layerViewTypes.append({
-                text: catalog.i18nc("@label:listbox", "Layer thickness"),
+                text: catalog.i18nc("@label:listbox", "Layer Thickness"),
                 type_id: 3  // these ids match the switching in the shader
+            })
+            layerViewTypes.append({
+                text: catalog.i18nc("@label:listbox", "Line Width"),
+                type_id: 4
             })
         }
 
@@ -145,9 +150,10 @@ Cura.ExpandableComponent
             {
                 // Update the visibility of the legends.
                 viewSettings.show_legend = UM.SimulationView.compatibilityMode || (type_id == 1);
-                viewSettings.show_gradient = !UM.SimulationView.compatibilityMode && (type_id == 2 || type_id == 3);
+                viewSettings.show_gradient = !UM.SimulationView.compatibilityMode && (type_id == 2 || type_id == 3 || type_id == 4);
                 viewSettings.show_feedrate_gradient = viewSettings.show_gradient && (type_id == 2);
                 viewSettings.show_thickness_gradient = viewSettings.show_gradient && (type_id == 3);
+                viewSettings.show_line_width_gradient = viewSettings.show_gradient && (type_id == 4);
             }
         }
 
@@ -390,6 +396,11 @@ Cura.ExpandableComponent
                         {
                             return parseFloat(UM.SimulationView.getMinThickness()).toFixed(2)
                         }
+                        //Line width selected
+                        if(UM.Preferences.getValue("layerview/layer_view_type") == 4)
+                        {
+                            return parseFloat(UM.SimulationView.getMinLineWidth()).toFixed(2);
+                        }
                     }
                     return catalog.i18nc("@label","min")
                 }
@@ -412,6 +423,11 @@ Cura.ExpandableComponent
                         }
                         // Layer thickness selected
                         if (UM.Preferences.getValue("layerview/layer_view_type") == 3)
+                        {
+                            return "mm"
+                        }
+                        //Line width selected
+                        if(UM.Preferences.getValue("layerview/layer_view_type") == 4)
                         {
                             return "mm"
                         }
@@ -439,6 +455,11 @@ Cura.ExpandableComponent
                         {
                             return parseFloat(UM.SimulationView.getMaxThickness()).toFixed(2)
                         }
+                        //Line width selected
+                        if(UM.Preferences.getValue("layerview/layer_view_type") == 4)
+                        {
+                            return parseFloat(UM.SimulationView.getMaxLineWidth()).toFixed(2);
+                        }
                     }
                     return catalog.i18nc("@label","max")
                 }
@@ -453,7 +474,7 @@ Cura.ExpandableComponent
         Rectangle
         {
             id: feedrateGradient
-            visible: viewSettings.show_feedrate_gradient
+            visible: viewSettings.show_feedrate_gradient || viewSettings.show_line_width_gradient
             anchors.left: parent.left
             anchors.right: parent.right
             height: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)

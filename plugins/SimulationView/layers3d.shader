@@ -10,6 +10,8 @@ vertex41core =
     uniform lowp float u_min_feedrate;
     uniform lowp float u_max_thickness;
     uniform lowp float u_min_thickness;
+    uniform lowp float u_max_line_width;
+    uniform lowp float u_min_line_width;
     uniform lowp int u_layer_view_type;
     uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
@@ -66,6 +68,19 @@ vertex41core =
         return vec4(red, green, blue, 1.0);
     }
 
+    vec4 lineWidthGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float value = (abs_value - min_value) / (max_value - min_value);
+        float red = value;
+        float green = 1 - abs(1 - 4 * value);
+        if(value > 0.375)
+        {
+            green = 0.5;
+        }
+        float blue = max(1 - 4 * value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
+
     void main()
     {
         vec4 v1_vertex = a_vertex;
@@ -87,6 +102,9 @@ vertex41core =
                 break;
             case 3:  // "Layer thickness"
                 v_color = layerThicknessGradientColor(a_line_dim.y, u_min_thickness, u_max_thickness);
+                break;
+            case 4:  // "Line width"
+                v_color = lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
                 break;
         }
 
