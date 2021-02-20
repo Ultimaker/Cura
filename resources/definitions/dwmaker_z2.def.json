@@ -11,7 +11,7 @@
             "default_value": "DWMaker Z2 (Duet Touch)"
         },
         "machine_width": {
-            "default_value": 238
+            "default_value": 223
         },
         "machine_depth": {
             "default_value": 223
