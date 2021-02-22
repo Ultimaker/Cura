@@ -23,7 +23,7 @@
     },
     "overrides": {
         "machine_start_gcode": {
-            "default_value": "G28 ;Home\nG0 Z0.3 F200 ;Move nozzle down\nM192 S40 ; Wait for probe temperature to settle\nG29\nG0 X0 Y0 Z30 F6000\nM84 E\nM0\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\n"
+            "default_value": "G28 ;Home\nG0 Z0.3 F200 ;Move nozzle down\nM192 S50 ; Wait for probe temperature to settle\nG29\nG0 X0 Y0 Z30 F6000\nM84 E\nM0\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\n"
         },
         "machine_end_gcode": {
             "default_value": "M400\nM104 S0\nM140 S0\nM107\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X R5\nG0 Y300 F3000\nM84\n"
