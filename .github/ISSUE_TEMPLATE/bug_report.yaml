@@ -1,0 +1,30 @@
+name: Bug report
+about: Create a report to help us fix issues.
+labels: "Type: Bug"
+issue_body: true
+body:
+- type: input
+  attributes:
+    label: Application Version
+    description: The version of Cura this issue occurs with.
+    placeholder: 4.8.0
+- type: input
+  attributes:
+    label: Platform
+    description: Information about the operating system the issue occurs on. Include at least the operating system and maybe GPU.
+    placeholder: Windows 10
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Printer
+    description: Which printer was selected in Cura?
+    placeholder: Ultimaker S5    
+- type: textarea
+  attributes:
+    label: Additional Information
+    description: Extra information relevant to the issue.
+    placeholder: Tell us what you see!
+    value: "A bug happened!"
+  validations:
+    required: true
