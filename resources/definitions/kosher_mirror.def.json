@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Kosher_Mirror",
+    "name": "Kosher Mirror",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -13,7 +13,7 @@
         "platform_offset": [65, 0, 0],
         "has_material": true,
         "has_variants": true,
-        "preferred_variant_name": "0.4 mm",
+        "preferred_variant_name": "0.4 mm Nozzle",
         "machine_extruder_trains":
         {
             "0": "kosher_mm_extruder"

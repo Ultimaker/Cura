@@ -14,7 +14,7 @@
         "platform_offset": [0, 0, 0],
         "has_materials": true,
         "has_variants": true,
-        "preferred_variant_name": "0.4 mm",
+        "preferred_variant_name": "0.4 mm Nozzle",
         "machine_extruder_trains":
         {
             "0": "diy220_extruder_0"
