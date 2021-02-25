@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
@@ -8,7 +8,7 @@ from .ClusterBuildPlate import ClusterBuildPlate
 from .ClusterPrintJobConfigurationChange import ClusterPrintJobConfigurationChange
 from .ClusterPrintJobImpediment import ClusterPrintJobImpediment
 from .ClusterPrintCoreConfiguration import ClusterPrintCoreConfiguration
-from .ClusterPrintJobConstraint import ClusterPrintJobConstraints
+from .ClusterPrintJobConstraints import ClusterPrintJobConstraints
 from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from ..ConfigurationChangeModel import ConfigurationChangeModel
 from ..BaseModel import BaseModel
@@ -18,13 +18,24 @@ from ...ClusterOutputController import ClusterOutputController
 class ClusterPrintJobStatus(BaseModel):
     """Model for the status of a single print job in a cluster."""
 
-    def __init__(self, created_at: str, force: bool, machine_variant: str, name: str, started: bool, status: str,
-                 time_total: int, uuid: str,
+    def __init__(self,
+                 created_at: str,
+                 force: bool,
+                 machine_variant: str,
+                 name: str,
+                 started: bool,
+                 status: str,
+                 time_total: int,
+                 uuid: str,
                  configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
-                 constraints: List[Union[Dict[str, Any], ClusterPrintJobConstraints]],
-                 last_seen: Optional[float] = None, network_error_count: Optional[int] = None,
-                 owner: Optional[str] = None, printer_uuid: Optional[str] = None, time_elapsed: Optional[int] = None,
-                 assigned_to: Optional[str] = None, deleted_at: Optional[str] = None,
+                 constraints: Optional[Union[Dict[str, Any], ClusterPrintJobConstraints]] = None,
+                 last_seen: Optional[float] = None,
+                 network_error_count: Optional[int] = None,
+                 owner: Optional[str] = None,
+                 printer_uuid: Optional[str] = None,
+                 time_elapsed: Optional[int] = None,
+                 assigned_to: Optional[str] = None,
+                 deleted_at: Optional[str] = None,
                  printed_on_uuid: Optional[str] = None,
                  configuration_changes_required: List[
                      Union[Dict[str, Any], ClusterPrintJobConfigurationChange]] = None,
@@ -66,7 +77,7 @@ class ClusterPrintJobStatus(BaseModel):
 
         self.assigned_to = assigned_to
         self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
-        self.constraints = self.parseModels(ClusterPrintJobConstraints, constraints)
+        self.constraints = self.parseModel(ClusterPrintJobConstraints, constraints)
         self.created_at = created_at
         self.force = force
         self.last_seen = last_seen
