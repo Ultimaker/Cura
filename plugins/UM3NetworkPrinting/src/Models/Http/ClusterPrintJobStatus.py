@@ -74,10 +74,9 @@ class ClusterPrintJobStatus(BaseModel):
         printer
         :param preview_url: URL to the preview image (same as wou;d've been included in the ufp).
         """
-
         self.assigned_to = assigned_to
         self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
-        self.constraints = self.parseModel(ClusterPrintJobConstraints, constraints)
+        self.constraints = self.parseModel(ClusterPrintJobConstraints, constraints) if constraints else None
         self.created_at = created_at
         self.force = force
         self.last_seen = last_seen
@@ -94,7 +93,6 @@ class ClusterPrintJobStatus(BaseModel):
         self.deleted_at = deleted_at
         self.printed_on_uuid = printed_on_uuid
         self.preview_url = preview_url
-
         self.configuration_changes_required = self.parseModels(ClusterPrintJobConfigurationChange,
                                                                configuration_changes_required) \
             if configuration_changes_required else []
