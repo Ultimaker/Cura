@@ -305,7 +305,7 @@ class PrintInformation(QObject):
             self.jobNameChanged.emit()
             return
 
-        base_name = self._stripAccents(self._base_name)
+        base_name = self._base_name
         self._defineAbbreviatedMachineName()
 
         # Only update the job name when it's not user-specified.
@@ -400,11 +400,6 @@ class PrintInformation(QObject):
         active_machine_type_name = global_container_stack.definition.getName()
 
         self._abbr_machine = self._application.getMachineManager().getAbbreviatedMachineName(active_machine_type_name)
-
-    def _stripAccents(self, to_strip: str) -> str:
-        """Utility method that strips accents from characters (eg: â -> a)"""
-
-        return ''.join(char for char in unicodedata.normalize('NFD', to_strip) if unicodedata.category(char) != 'Mn')
 
     @pyqtSlot(result = "QVariantMap")
     def getFeaturePrintTimes(self) -> Dict[str, Duration]:
