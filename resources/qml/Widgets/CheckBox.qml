@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 
 //
-// ComboBox with Cura styling.
+// Checkbox with Cura styling.
 //
 CheckBox
 {

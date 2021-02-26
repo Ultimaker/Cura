@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -148,15 +148,6 @@ UM.MainWindow
     {
         id: backgroundItem
         anchors.fill: parent
-
-        signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
-        function getMeshName(path)
-        {
-            //takes the path the complete path of the meshname and returns only the filebase
-            var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.indexOf("."))
-            return fileBase
-        }
 
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
@@ -700,6 +691,9 @@ UM.MainWindow
 
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
+            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+            openFilesIncludingProjectsDialog.addToRecent = true;
+
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
             {
@@ -726,6 +720,7 @@ UM.MainWindow
                 {
                     // ask whether to open as project or as models
                     askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.addToRecent = true;
                     askOpenAsProjectOrModelsDialog.show();
                 }
             }
@@ -785,6 +780,7 @@ UM.MainWindow
         onOpenProjectFile:
         {
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
             askOpenAsProjectOrModelsDialog.show();
         }
     }

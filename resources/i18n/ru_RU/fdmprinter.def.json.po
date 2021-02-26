@@ -1812,7 +1812,7 @@ msgstr "Изменение шага заполнения"
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
 msgid "Number of times to reduce the infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Infill Density."
-msgstr "Количество шагов уменьшения наполовину плотности заполнения вглубь модели. Области, располагающиеся ближе к краю модели, получают большую плотность, до указанной в \"Плотность заполнения.\""
+msgstr "Количество шагов уменьшения наполовину плотности заполнения вглубь модели. Области, располагающиеся ближе к краю модели, получают большую плотность, до указанной в \"Плотность заполнения."
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height label"
@@ -2062,7 +2062,7 @@ msgstr "Температура стола"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "Температура, задаваемая для нагреваемой печатной пластины. Если значение равно 0, печатная пластина не нагревается."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2072,7 +2072,7 @@ msgstr "Температура стола для первого слоя"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "Температура, задаваемая для нагреваемой печатной пластины на первом слое. Если значение равно 0, печатная пластина не нагревается при печати первого слоя."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2097,12 +2097,12 @@ msgstr "Поверхностная энергия."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Коэффициент масштабирования для компенсации усадки"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "Для компенсации усадки материала при остывании модель будет масштабирована с этим коэффициентом."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5076,7 +5076,7 @@ msgstr "Порядок обработки объекта"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Определяет приоритет данного объекта при вычислении нескольких перекрывающихся заполняющих объектов. К областям с несколькими перекрывающимися заполняющими объектами будут применяться настройки объекта более низкого порядка. Заполняющий объект более высокого порядка будет модифицировать заполнение объектов более низких порядков и обычных объектов."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"

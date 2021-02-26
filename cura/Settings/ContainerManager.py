@@ -221,6 +221,7 @@ class ContainerManager(QObject):
         except OSError:
             return {"status": "error", "message": "Unable to write to this location.", "path": file_url}
 
+        Logger.info("Successfully exported container to {path}".format(path = file_url))
         return {"status": "success", "message": "Successfully exported container", "path": file_url}
 
     @pyqtSlot(QUrl, result = "QVariantMap")
@@ -344,6 +345,9 @@ class ContainerManager(QObject):
 
         # user changes are possibly added to make the current setup match the current enabled extruders
         machine_manager.correctExtruderSettings()
+
+        # The Print Sequence should be changed to match the current setup
+        machine_manager.correctPrintSequence()
 
         for container in send_emits_containers:
             container.sendPostponedEmits()

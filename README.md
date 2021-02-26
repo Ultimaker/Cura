@@ -28,7 +28,7 @@ Dependencies
 
 Build scripts
 -------------
-Please checkout [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
+Please check out [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
 
 Running from Source
 -------------

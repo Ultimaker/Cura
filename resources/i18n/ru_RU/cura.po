@@ -46,7 +46,7 @@ msgstr "Не переопределен"
 #, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr ""
+msgstr "Действительно удалить {0}? Это действие невозможно будет отменить!"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:42
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:11
@@ -522,7 +522,7 @@ msgstr "Не удалось импортировать профиль из <file
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
-msgstr ""
+msgstr "Профиль {0} успешно импортирован."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:349
 #, python-brace-format
@@ -549,7 +549,7 @@ msgstr "У профайла отсутствует тип качества."
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:443
 msgctxt "@info:status"
 msgid "Global stack is missing."
-msgstr ""
+msgstr "Общий стек отсутствует."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:449
 msgctxt "@info:status"
@@ -560,13 +560,13 @@ msgstr "Невозможно добавить профиль."
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
-msgstr ""
+msgstr "Тип качества \"{0}\" несовместим с текущим определением активной машины \"{1}\"."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:468
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
-msgstr ""
+msgstr "Внимание! Профиль не отображается, так как его тип качества \"{0}\" недоступен для текущей конфигурации. Выберите комбинацию материала и сопла, которым подходит этот тип качества."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:36
 msgctxt "@info:not supported profile"
@@ -742,7 +742,7 @@ msgstr "Открыть файл проекта"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
-msgstr "Файл проекта <filename>{0}</filename> внезапно стал недоступен: <message>{1}.</message>"
+msgstr "Файл проекта <filename>{0}</filename> внезапно стал недоступен: <message>{1}.</message>."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635
 msgctxt "@info:title"
@@ -785,7 +785,7 @@ msgstr "Права на запись рабочей среды отсутств�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:96
 msgctxt "@error:zip"
 msgid "The operating system does not allow saving a project file to this location or with this file name."
-msgstr ""
+msgstr "Операционная система не позволяет сохранять файл проекта в этом каталоге или с этим именем файла."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:185
 msgctxt "@error:zip"
@@ -1338,7 +1338,7 @@ msgstr "Подключено через облако"
 #, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
-msgstr ""
+msgstr "Неизвестный код ошибки при загрузке задания печати: {0}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:227
 msgctxt "info:status"
@@ -1352,21 +1352,21 @@ msgstr[2] "новых принтеров обнаружено из учетно�
 #, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
-msgstr ""
+msgstr "Добавление принтера {name} ({model}) из вашей учетной записи"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:255
 #, python-brace-format
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
 msgid_plural "... and {0} others"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "... и еще {0} другой"
+msgstr[1] "... и еще {0} других"
+msgstr[2] "... и еще {0} других"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
-msgstr ""
+msgstr "Принтеры, добавленные из Digital Factory:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:316
 msgctxt "info:status"
@@ -1388,13 +1388,13 @@ msgstr[2] "Эти принтеры не подключены Digital Factory:"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
-msgstr ""
+msgstr "Ultimaker Digital Factory"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:333
 #, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
-msgstr ""
+msgstr "Чтобы установить подключение, перейдите на сайт {website_link}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:337
 msgctxt "@action:button"
@@ -1410,19 +1410,19 @@ msgstr "Удалить принтеры"
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
-msgstr ""
+msgstr "{printer_name} будет удален до следующей синхронизации учетной записи."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
-msgstr ""
+msgstr "Чтобы удалить {printer_name} без возможности восстановления, перейдите на сайт {digital_factory_link}"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:423
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
-msgstr ""
+msgstr "Действительно удалить {printer_name} временно?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:460
 msgctxt "@title:window"
@@ -1439,15 +1439,21 @@ msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
 msgstr[0] ""
+"Вы удаляете {0} принтер из Cura. Это действие невозможно будет отменить.\n"
+"Продолжить?"
 msgstr[1] ""
+"Вы удаляете {0} принтера из Cura. Это действие невозможно будет отменить.\n"
+"Продолжить?"
 msgstr[2] ""
+"Вы удаляете {0} принтеров из Cura. Это действие невозможно будет отменить.\n"
+"Продолжить?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
 msgid ""
 "You are about to remove all printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
-msgstr ""
+msgstr "Вы удаляете все принтеры из Cura. Это действие невозможно будет отменить.Продолжить?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:27
 msgctxt "@info:status"
@@ -1534,12 +1540,12 @@ msgstr "Загрузка задания печати в принтер."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:16
 msgctxt "@info:status"
 msgid "Print job queue is full. The printer can't accept a new job."
-msgstr ""
+msgstr "Очередь заданий печати заполнена. Принтер не может принять новое задание."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadQueueFullMessage.py:17
 msgctxt "@info:title"
 msgid "Queue Full"
-msgstr ""
+msgstr "Очередь заполнена"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:15
 msgctxt "@info:status"
@@ -3726,12 +3732,12 @@ msgstr "Библиотека отслеживания ошибок Python"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:159
 msgctxt "@label"
 msgid "Polygon packing library, developed by Prusa Research"
-msgstr ""
+msgstr "Библиотека упаковки полигонов, разработанная Prusa Research"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 msgctxt "@label"
 msgid "Python bindings for libnest2d"
-msgstr ""
+msgstr "Интерфейс Python для libnest2d"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
@@ -3785,6 +3791,9 @@ msgid ""
 "Would you like to Keep these changed settings after switching profiles?\n"
 "Alternatively, you can discard the changes to load the defaults from '%1'."
 msgstr ""
+"Вы изменили некоторые настройки профиля.\n"
+"Сохранить измененные настройки после переключения профилей?\n"
+"Изменения можно отменить и загрузить настройки по умолчанию из \"%1\"."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:111
 msgctxt "@title:column"
@@ -4193,9 +4202,9 @@ msgstr "Перекрытия с этой моделью не поддержив�
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Переопределяет %1 настройку."
+msgstr[1] "Переопределяет %1 настройки."
+msgstr[2] "Переопределяет %1 настроек."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
@@ -5224,7 +5233,7 @@ msgstr "Имя принтера"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:274
 msgctxt "@text"
 msgid "Please name your printer"
-msgstr ""
+msgstr "Присвойте имя принтеру"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:24
 msgctxt "@label"
@@ -5964,12 +5973,12 @@ msgstr "Обновление версии с 4.6.2 до 4.7"
 #: VersionUpgrade/VersionUpgrade47to48/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr ""
+msgstr "Обновляет конфигурации Cura 4.7 до Cura 4.8."
 
 #: VersionUpgrade/VersionUpgrade47to48/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.7 to 4.8"
-msgstr ""
+msgstr "Обновление версии 4.7 до 4.8"
 
 #: X3DReader/plugin.json
 msgctxt "description"

@@ -34,6 +34,9 @@ ToolTip
         NumberAnimation { duration: 100; }
     }
 
+    onAboutToShow: show()
+    onAboutToHide: hide()
+
     // If the text is not set, just set the height to 0 to prevent it from showing
     height: text != "" ? label.contentHeight + 2 * UM.Theme.getSize("thin_margin").width: 0
 

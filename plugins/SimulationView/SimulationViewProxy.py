@@ -117,6 +117,14 @@ class SimulationViewProxy(QObject):
     def getMaxThickness(self):
         return self._simulation_view.getMaxThickness()
 
+    @pyqtSlot(result=float)
+    def getMaxLineWidth(self):
+        return self._simulation_view.getMaxLineWidth()
+
+    @pyqtSlot(result=float)
+    def getMinLineWidth(self):
+        return self._simulation_view.getMinLineWidth()
+
     # Opacity 0..1
     @pyqtSlot(int, float)
     def setExtruderOpacity(self, extruder_nr, opacity):

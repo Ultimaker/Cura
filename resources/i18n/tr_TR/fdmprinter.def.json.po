@@ -57,8 +57,8 @@ msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
 msgstr ""
-" \n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları."
+"ile ayrılan, başlangıçta yürütülecek G-code komutları\n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,8 +71,8 @@ msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
 msgstr ""
-" \n"
-" ile ayrılan, bitişte yürütülecek G-code komutları."
+"ile ayrılan, bitişte yürütülecek G-code komutları\n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -2061,7 +2061,7 @@ msgstr "Yapı Levhası Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "Isıtıcı yapı plakası için kullanılan sıcaklık. Bu değer 0 olduğunda yapı plakası ısıtılmaz."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2071,7 +2071,7 @@ msgstr "İlk Katman Yapı Levhası Sıcaklığı"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "İlk katmanda ısıtıcı yapı plakası için kullanılan sıcaklık. Bu değer 0 olduğunda yapı plakası ilk katman boyunca ısıtılmaz."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2096,12 +2096,12 @@ msgstr "Yüzey enerjisi."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Ölçekleme Faktörü Büzülme Telafisi"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "Malzemenin soğudukça büzülmesini telafi etmek için model bu faktöre göre ölçeklenecektir."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -5075,7 +5075,7 @@ msgstr "Örgü İşleme Sıralaması"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgstr "Çakışan birden çok dolgu örgüsünü göz önüne alarak bu örgünün önceliğini belirler. Birden çok dolgu örgüsünün çakıştığı alanlar en düşük sıralamaya sahip örgünün ayarlarını alacaktır. Daha yüksek sıralamaya sahip dolgu örgüsü, dolgu örgülerinin dolgusunu daha düşük sıralı ve normal örgüler ile değiştirecektir."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
