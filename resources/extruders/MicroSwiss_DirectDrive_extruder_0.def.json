@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Ender3 MicroSwiss DirectDrive",
+        "machine": "Ender3_MicroSwiss_DirectDrive",
         "position": "0"
     },
 
