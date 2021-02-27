@@ -18,7 +18,7 @@
 
         "machine_extruder_start_code": {
              "description": "Start g-code to execute when switching to this extruder.",
-             "default_value": ";Nozzle 2 Active ( T1 )\n"
+             "default_value": "T1 ;Nozzle 2 Active\n"
         },
 
         "machine_extruder_end_code": {
