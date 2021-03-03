@@ -247,7 +247,7 @@ class AuthorizationService:
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
         """Store authentication data in preferences."""
 
-        Logger.log("d", "Attempting to store the auth data")
+        Logger.log("d", "Attempting to store the auth data for [%s]", self._settings.OAUTH_SERVER_URL)
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return

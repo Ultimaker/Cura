@@ -43,6 +43,10 @@ class DriveApiService:
                 return
 
             backup_list_response = HttpRequestManager.readJSON(reply)
+            if backup_list_response is None:
+                Logger.error("List of back-ups can't be parsed.")
+                changed([])
+                return
             if "data" not in backup_list_response:
                 Logger.log("w", "Could not get backups from remote, actual response body was: %s",
                            str(backup_list_response))

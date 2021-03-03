@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -894,14 +894,14 @@ class CuraApplication(QtApplication):
         diagonal = self.getBuildVolume().getDiagonalSize()
         if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
             diagonal = 375
-        camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
+        camera.setPosition(Vector(-80, 180, 700) * diagonal / 375)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
         if camera_tool:
-            camera_tool.setOrigin(Vector(0, 100, 0))
+            camera_tool.setOrigin(Vector(0, 30, 0))
             camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
@@ -1733,8 +1733,9 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+    openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
+    @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
     def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None, add_to_recent_files: bool = True):
@@ -1742,6 +1743,7 @@ class CuraApplication(QtApplication):
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
+        :param add_to_recent_files: Whether or not to add the file as an option to the Recent Files list.
         """
         Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
@@ -1762,12 +1764,12 @@ class CuraApplication(QtApplication):
         if is_project_file and project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
-            workspace_handler.readLocalFile(file, add_to_recent_files = add_to_recent_files)
+            workspace_handler.readLocalFile(file, add_to_recent_files_hint = add_to_recent_files)
             return
 
         if is_project_file and project_mode == "always_ask":
             # present a dialog asking to open as project or import models
-            self.callLater(self.openProjectFile.emit, file)
+            self.callLater(self.openProjectFile.emit, file, add_to_recent_files)
             return
 
         # Either the file is a model file or we want to load only models from project. Continue to load models.
@@ -1939,7 +1941,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except Exception:
+        except:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 

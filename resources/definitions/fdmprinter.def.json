@@ -485,7 +485,7 @@
                 "machine_use_extruder_offset_to_offset_coords":
                 {
                     "label": "Offset with Extruder",
-                    "description": "Apply the extruder offset to the coordinate system.",
+                    "description": "Apply the extruder offset to the coordinate system. Affects all extruders.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -977,7 +977,7 @@
         },
         "shell":
         {
-            "label": "Shell",
+            "label": "Walls",
             "icon": "category_shell",
             "description": "Shell",
             "type": "category",
@@ -1064,184 +1064,6 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "machine_nozzle_size * 2",
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "roofing_extruder_nr":
-                {
-                    "label": "Top Surface Skin Extruder",
-                    "description": "The extruder train used for printing the top most skin. This is used in multi-extrusion.",
-                    "type": "optional_extruder",
-                    "default_value": "-1",
-                    "value": "top_bottom_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true,
-                    "settable_globally": true,
-                    "enabled": "extruders_enabled_count > 1 and max(extruderValues('roofing_layer_count')) > 0 and max(extruderValues('top_layers')) > 0"
-                },
-                "roofing_layer_count":
-                {
-                    "label": "Top Surface Skin Layers",
-                    "description": "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces.",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "top_layers - 1",
-                    "type": "int",
-                    "value": "0",
-                    "limit_to_extruder": "roofing_extruder_nr",
-                    "settable_per_mesh": true,
-                    "enabled": "top_layers > 0"
-                },
-                "top_bottom_extruder_nr":
-                {
-                    "label": "Top/Bottom Extruder",
-                    "description": "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion.",
-                    "type": "optional_extruder",
-                    "default_value": "-1",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true,
-                    "settable_globally": true,
-                    "enabled": "extruders_enabled_count > 1"
-                },
-                "top_bottom_thickness":
-                {
-                    "label": "Top/Bottom Thickness",
-                    "description": "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
-                    "unit": "mm",
-                    "default_value": 0.8,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0.6",
-                    "maximum_value": "machine_height",
-                    "type": "float",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "top_thickness":
-                        {
-                            "label": "Top Thickness",
-                            "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
-                            "unit": "mm",
-                            "default_value": 0.8,
-                            "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
-                            "maximum_value": "machine_height",
-                            "type": "float",
-                            "value": "top_bottom_thickness",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true,
-                            "children":
-                            {
-                                "top_layers":
-                                {
-                                    "label": "Top Layers",
-                                    "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
-                                    "default_value": 8,
-                                    "minimum_value": "0",
-                                    "maximum_value_warning": "100",
-                                    "type": "int",
-                                    "minimum_value_warning": "2",
-                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
-                                    "limit_to_extruder": "top_bottom_extruder_nr",
-                                    "settable_per_mesh": true
-                                }
-                            }
-                        },
-                        "bottom_thickness":
-                        {
-                            "label": "Bottom Thickness",
-                            "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
-                            "unit": "mm",
-                            "default_value": 0.6,
-                            "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
-                            "type": "float",
-                            "value": "top_bottom_thickness",
-                            "maximum_value": "machine_height",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true,
-                            "children":
-                            {
-                                "bottom_layers":
-                                {
-                                    "label": "Bottom Layers",
-                                    "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
-                                    "minimum_value": "0",
-                                    "minimum_value_warning": "2",
-                                    "default_value": 6,
-                                    "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
-                                    "limit_to_extruder": "top_bottom_extruder_nr",
-                                    "settable_per_mesh": true
-                                },
-                                "initial_bottom_layers":
-                                {
-                                    "label": "Initial Bottom Layers",
-                                    "description": "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number.",
-                                    "minimum_value": "0",
-                                    "minimum_value_warning": "2",
-                                    "default_value": 6,
-                                    "type": "int",
-                                    "value": "bottom_layers",
-                                    "limit_to_extruder": "top_bottom_extruder_nr",
-                                    "settable_per_mesh": true
-                                }
-                            }
-                        }
-                    }
-                },
-                "top_bottom_pattern":
-                {
-                    "label": "Top/Bottom Pattern",
-                    "description": "The pattern of the top/bottom layers.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "lines": "Lines",
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default_value": "lines",
-                    "enabled": "top_layers > 0 or bottom_layers > 0",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "top_bottom_pattern_0":
-                {
-                    "label": "Bottom Pattern Initial Layer",
-                    "description": "The pattern on the bottom of the print on the first layer.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "lines": "Lines",
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default_value": "lines",
-                    "enabled": "top_layers > 0 or bottom_layers > 0",
-                    "value": "top_bottom_pattern",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "connect_skin_polygons":
-                {
-                    "label": "Connect Top/Bottom Polygons",
-                    "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (initial_bottom_layers > 0 and top_bottom_pattern_0 == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "skin_angles":
-                {
-                    "label": "Top/Bottom Line Directions",
-                    "description": "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
-                    "type": "[int]",
-                    "default_value": "[ ]",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "wall_0_inset":
@@ -1495,6 +1317,194 @@
                     "enabled": "z_seam_type == 'back'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
+                }
+            }
+        },
+        "top_bottom":
+        {
+            "label": "Top/Bottom",
+            "icon": "category_topbottom",
+            "description": "Top/Bottom",
+            "type": "category",
+            "children":
+            {
+                "roofing_extruder_nr":
+                {
+                    "label": "Top Surface Skin Extruder",
+                    "description": "The extruder train used for printing the top most skin. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "top_bottom_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "extruders_enabled_count > 1 and max(extruderValues('roofing_layer_count')) > 0 and max(extruderValues('top_layers')) > 0"
+                },
+                "roofing_layer_count":
+                {
+                    "label": "Top Surface Skin Layers",
+                    "description": "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces.",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "top_layers - 1",
+                    "type": "int",
+                    "value": "0",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true,
+                    "enabled": "top_layers > 0"
+                },
+                "top_bottom_extruder_nr":
+                {
+                    "label": "Top/Bottom Extruder",
+                    "description": "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "extruders_enabled_count > 1"
+                },
+                "top_bottom_thickness":
+                {
+                    "label": "Top/Bottom Thickness",
+                    "description": "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
+                    "unit": "mm",
+                    "default_value": 0.8,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0.6",
+                    "maximum_value": "machine_height",
+                    "type": "float",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "top_thickness":
+                        {
+                            "label": "Top Thickness",
+                            "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
+                            "unit": "mm",
+                            "default_value": 0.8,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
+                            "maximum_value": "machine_height",
+                            "type": "float",
+                            "value": "top_bottom_thickness",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "top_layers":
+                                {
+                                    "label": "Top Layers",
+                                    "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
+                                    "default_value": 8,
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "100",
+                                    "type": "int",
+                                    "minimum_value_warning": "2",
+                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        },
+                        "bottom_thickness":
+                        {
+                            "label": "Bottom Thickness",
+                            "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
+                            "unit": "mm",
+                            "default_value": 0.6,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
+                            "type": "float",
+                            "value": "top_bottom_thickness",
+                            "maximum_value": "machine_height",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "bottom_layers":
+                                {
+                                    "label": "Bottom Layers",
+                                    "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "2",
+                                    "default_value": 6,
+                                    "type": "int",
+                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "initial_bottom_layers":
+                                {
+                                    "label": "Initial Bottom Layers",
+                                    "description": "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number.",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "2",
+                                    "default_value": 6,
+                                    "type": "int",
+                                    "value": "bottom_layers",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "top_bottom_pattern":
+                {
+                    "label": "Top/Bottom Pattern",
+                    "description": "The pattern of the top/bottom layers.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "enabled": "top_layers > 0 or bottom_layers > 0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "top_bottom_pattern_0":
+                {
+                    "label": "Bottom Pattern Initial Layer",
+                    "description": "The pattern on the bottom of the print on the first layer.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "enabled": "top_layers > 0 or bottom_layers > 0",
+                    "value": "top_bottom_pattern",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "connect_skin_polygons":
+                {
+                    "label": "Connect Top/Bottom Polygons",
+                    "description": "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "((top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'concentric') or (initial_bottom_layers > 0 and top_bottom_pattern_0 == 'concentric') or (roofing_layer_count > 0 and roofing_pattern == 'concentric')",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "skin_angles":
+                {
+                    "label": "Top/Bottom Line Directions",
+                    "description": "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
+                    "type": "[int]",
+                    "default_value": "[ ]",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
                 {
@@ -1663,6 +1673,123 @@
                             "maximum_value_warning": "machine_nozzle_size",
                             "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
                             "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "skin_preshrink":
+                {
+                    "label": "Skin Removal Width",
+                    "description": "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "enabled": "top_layers > 0 or bottom_layers > 0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "top_skin_preshrink":
+                        {
+                            "label": "Top Skin Removal Width",
+                            "description": "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1,
+                            "value": "skin_preshrink",
+                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                            "minimum_value": "0",
+                            "enabled": "top_layers > 0 or bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "bottom_skin_preshrink":
+                        {
+                            "label": "Bottom Skin Removal Width",
+                            "description": "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1,
+                            "value": "skin_preshrink",
+                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                            "minimum_value": "0",
+                            "enabled": "top_layers > 0 or bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "expand_skins_expand_distance":
+                {
+                    "label": "Skin Expand Distance",
+                    "description": "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "minimum_value": "-skin_preshrink",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "enabled": "top_layers > 0 or bottom_layers > 0",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "top_skin_expand_distance":
+                        {
+                            "label": "Top Skin Expand Distance",
+                            "description": "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1,
+                            "value": "expand_skins_expand_distance",
+                            "minimum_value": "-top_skin_preshrink",
+                            "enabled": "top_layers > 0 or bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "bottom_skin_expand_distance":
+                        {
+                            "label": "Bottom Skin Expand Distance",
+                            "description": "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 1,
+                            "value": "expand_skins_expand_distance",
+                            "minimum_value": "-bottom_skin_preshrink",
+                            "enabled": "top_layers > 0 or bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "max_skin_angle_for_expansion":
+                {
+                    "label": "Maximum Skin Angle for Expansion",
+                    "description": "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 90,
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_skin_expand_distance > 0 or bottom_skin_expand_distance > 0)",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "min_skin_width_for_expansion":
+                        {
+                            "label": "Minimum Skin Width for Expansion",
+                            "description": "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0,
+                            "value": "top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
+                            "minimum_value": "0",
+                            "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_skin_expand_distance > 0 or bottom_skin_expand_distance > 0)",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -1974,123 +2101,6 @@
                     "enabled": "infill_sparse_density > 0 and infill_support_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
-                },
-                "skin_preshrink":
-                {
-                    "label": "Skin Removal Width",
-                    "description": "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1,
-                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
-                    "enabled": "top_layers > 0 or bottom_layers > 0",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "top_skin_preshrink":
-                        {
-                            "label": "Top Skin Removal Width",
-                            "description": "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 1,
-                            "value": "skin_preshrink",
-                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
-                            "minimum_value": "0",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        },
-                        "bottom_skin_preshrink":
-                        {
-                            "label": "Bottom Skin Removal Width",
-                            "description": "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 1,
-                            "value": "skin_preshrink",
-                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
-                            "minimum_value": "0",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "expand_skins_expand_distance":
-                {
-                    "label": "Skin Expand Distance",
-                    "description": "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1,
-                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
-                    "minimum_value": "-skin_preshrink",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "enabled": "top_layers > 0 or bottom_layers > 0",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "top_skin_expand_distance":
-                        {
-                            "label": "Top Skin Expand Distance",
-                            "description": "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 1,
-                            "value": "expand_skins_expand_distance",
-                            "minimum_value": "-top_skin_preshrink",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        },
-                        "bottom_skin_expand_distance":
-                        {
-                            "label": "Bottom Skin Expand Distance",
-                            "description": "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 1,
-                            "value": "expand_skins_expand_distance",
-                            "minimum_value": "-bottom_skin_preshrink",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "max_skin_angle_for_expansion":
-                {
-                    "label": "Maximum Skin Angle for Expansion",
-                    "description": "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded.",
-                    "unit": "°",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "2",
-                    "maximum_value": "90",
-                    "default_value": 90,
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_skin_expand_distance > 0 or bottom_skin_expand_distance > 0)",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "min_skin_width_for_expansion":
-                        {
-                            "label": "Minimum Skin Width for Expansion",
-                            "description": "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 0,
-                            "value": "top_layers * layer_height / math.tan(math.radians(max_skin_angle_for_expansion))",
-                            "minimum_value": "0",
-                            "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_skin_expand_distance > 0 or bottom_skin_expand_distance > 0)",
-                            "limit_to_extruder": "top_bottom_extruder_nr",
-                            "settable_per_mesh": true
-                        }
-                    }
                 },
                 "skin_edge_support_thickness":
                 {
@@ -2960,7 +2970,7 @@
                 "speed_layer_0":
                 {
                     "label": "Initial Layer Speed",
-                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate.",
+                    "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft.",
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 30,
@@ -6517,6 +6527,17 @@
                     "maximum_value": "89",
                     "default_value": 50,
                     "enabled": "conical_overhang_enabled"
+                },
+                "conical_overhang_hole_size": 
+                {
+                   "label": "Maximum Overhang Hole Area",
+                   "description": "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base.",
+                   "unit": "mm²",
+                   "type": "float",
+                   "minimum_value": "0",
+                   "minimum_value_warning": "0",
+                   "default_value": 0,
+                   "enabled": "conical_overhang_enabled"
                 },
                 "coasting_enable":
                 {

@@ -4,7 +4,6 @@
 import json
 import math
 import os
-import unicodedata
 from typing import Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer
@@ -301,10 +300,11 @@ class PrintInformation(QObject):
         if self._base_name == "":
             self._job_name = self.UNTITLED_JOB_NAME
             self._is_user_specified_job_name = False
+            self._application.getController().getScene().clearMetaData()
             self.jobNameChanged.emit()
             return
 
-        base_name = self._stripAccents(self._base_name)
+        base_name = self._base_name
         self._defineAbbreviatedMachineName()
 
         # Only update the job name when it's not user-specified.
@@ -399,11 +399,6 @@ class PrintInformation(QObject):
         active_machine_type_name = global_container_stack.definition.getName()
 
         self._abbr_machine = self._application.getMachineManager().getAbbreviatedMachineName(active_machine_type_name)
-
-    def _stripAccents(self, to_strip: str) -> str:
-        """Utility method that strips accents from characters (eg: â -> a)"""
-
-        return ''.join(char for char in unicodedata.normalize('NFD', to_strip) if unicodedata.category(char) != 'Mn')
 
     @pyqtSlot(result = "QVariantMap")
     def getFeaturePrintTimes(self) -> Dict[str, Duration]:
