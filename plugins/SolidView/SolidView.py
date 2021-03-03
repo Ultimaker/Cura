@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -130,7 +130,7 @@ class SolidView(View):
             tolerance_setting = extruder.getProperty("slicing_tolerance", "value")
             if tolerance_setting == "middle":
                 init_layer_height /= 2.0
-            min_height = max(min_height, init_layer_height / 2.0)
+            min_height = max(min_height, init_layer_height)
         return min_height
 
     def _checkSetup(self):
