@@ -67,7 +67,7 @@ class SolidView(View):
         self._xray_checking_update_time = 30.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
         self._xray_warning_message = Message(
-            catalog.i18nc("@info:status", "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and import it again into Cura."),
+            catalog.i18nc("@info:status", "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."),
             lifetime = 60 * 5, # leave message for 5 minutes
             title = catalog.i18nc("@info:title", "Model Errors"),
             option_text = catalog.i18nc("@info:option_text", "Do not show this message again"),
