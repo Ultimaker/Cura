@@ -6,8 +6,8 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt5.QtGui import QOpenGLContext, QImage
-from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QOpenGLContext, QDesktopServices, QImage
+from PyQt5.QtCore import QSize, QUrl
 
 import numpy as np
 import time
@@ -68,19 +68,26 @@ class SolidView(View):
         self._xray_checking_update_time = 30.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
         self._xray_warning_message = Message(
-            catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
+            catalog.i18nc("@info:status", "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."),
             lifetime = 60 * 5, # leave message for 5 minutes
-            title = catalog.i18nc("@info:title", "Model errors"),
+            title = catalog.i18nc("@info:title", "Model Errors"),
             option_text = catalog.i18nc("@info:option_text", "Do not show this message again"),
             option_state = False
         )
         self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         application.getPreferences().addPreference(self._show_xray_warning_preference, True)
+        self._xray_warning_message.addAction("manifold", catalog.i18nc("@action:button", "Learn more"), "[no_icon]", "[no_description]",
+                          button_style = Message.ActionButtonStyle.LINK,
+                          button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
+        self._xray_warning_message.actionTriggered.connect(self._onNonManifoldLearnMoreClicked)
 
         application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
         Application.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
+
+    def _onNonManifoldLearnMoreClicked(self, action, message) -> None:
+        QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360014055959"))
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:
