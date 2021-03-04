@@ -1,5 +1,5 @@
 name: BugReport
-about: Create a report to help us fix issues.
+description: Create a report to help us fix issues.
 labels: "Type: Bug"
 issue_body: true
 body:
