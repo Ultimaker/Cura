@@ -1,4 +1,4 @@
-name: FeatureRequest
+name: Feature Request
 description: Suggest an idea for this project.
 labels: "Type: New Feature"
 issue_body: true
