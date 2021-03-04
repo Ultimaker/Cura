@@ -35,7 +35,6 @@
 	"retraction_amount": { "default_value": 4 },
         "retraction_speed": { "default_value": 45 },
         "adhesion_type": { "default_value": "skirt" },
-        "spiralize": { "default_value": false },
         "gantry_height": { "value": 10 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": {
