@@ -27,7 +27,7 @@ body:
     required: true
 - type: textarea
   attributes:
-    label: Describe alternatives you've considerd
+    label: Describe alternatives you've considered
     description: A clear and concise description of any alternative solutions or features you've considered. Again, if possible, think about why these alternatives are not working out.
     placeholder: The alternatives I've considered are...
   validations:
