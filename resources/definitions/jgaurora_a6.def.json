@@ -12,6 +12,7 @@
 	"supports_network_connection": false,
 	"has_materials": true,
 	"has_machine_quality": true,
+	"quality_definition": "jgaurora_a6",
 	"has_variants": false,
 	"preferred_quality_type": "normal",
 	"machine_extruder_trains":
