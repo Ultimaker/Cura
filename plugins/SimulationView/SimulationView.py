@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -258,7 +258,6 @@ class SimulationView(CuraView):
                 self._minimum_layer_num = self._current_layer_num
 
             self._startUpdateTopLayers()
-
             self.currentLayerNumChanged.emit()
 
     def setMinimumLayer(self, value: int) -> None:
@@ -272,7 +271,6 @@ class SimulationView(CuraView):
                 self._current_layer_num = self._minimum_layer_num
 
             self._startUpdateTopLayers()
-
             self.currentLayerNumChanged.emit()
 
     def setPath(self, value: int) -> None:
@@ -293,13 +291,12 @@ class SimulationView(CuraView):
             self._minimum_path_num = value
             if self._minimum_path_num < 0:
                 self._minimum_path_num = 0
-            if self._minimum_path_num > self._max_layers:
-                self._minimum_path_num = self._max_layers
+            if self._minimum_path_num > self._max_paths:
+                self._minimum_path_num = self._max_paths
             if self._minimum_path_num > self._current_path_num:
                 self._current_path_num = self._minimum_path_num
 
             self._startUpdateTopLayers()
-
             self.currentPathNumChanged.emit()
 
     def setSimulationViewType(self, layer_view_type: int) -> None:
