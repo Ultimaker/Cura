@@ -249,52 +249,32 @@ class SimulationView(CuraView):
 
     def setLayer(self, value: int) -> None:
         if self._current_layer_num != value:
-            self._current_layer_num = value
-            if self._current_layer_num < 0:
-                self._current_layer_num = 0
-            if self._current_layer_num > self._max_layers:
-                self._current_layer_num = self._max_layers
-            if self._current_layer_num < self._minimum_layer_num:
-                self._minimum_layer_num = self._current_layer_num
+            self._current_layer_num = min(max(value, 0), self._max_layers)
+            self._minimum_layer_num = min(self._current_layer_num, self._minimum_layer_num)
 
             self._startUpdateTopLayers()
             self.currentLayerNumChanged.emit()
 
     def setMinimumLayer(self, value: int) -> None:
         if self._minimum_layer_num != value:
-            self._minimum_layer_num = value
-            if self._minimum_layer_num < 0:
-                self._minimum_layer_num = 0
-            if self._minimum_layer_num > self._max_layers:
-                self._minimum_layer_num = self._max_layers
-            if self._minimum_layer_num > self._current_layer_num:
-                self._current_layer_num = self._minimum_layer_num
+            self._minimum_layer_num = min(max(value, 0), self._max_layers)
+            self._current_layer_num = max(self._current_layer_num, self._minimum_layer_num)
 
             self._startUpdateTopLayers()
             self.currentLayerNumChanged.emit()
 
     def setPath(self, value: int) -> None:
         if self._current_path_num != value:
-            self._current_path_num = value
-            if self._current_path_num < 0:
-                self._current_path_num = 0
-            if self._current_path_num > self._max_paths:
-                self._current_path_num = self._max_paths
-            if self._current_path_num < self._minimum_path_num:
-                self._minimum_path_num = self._current_path_num
+            self._current_path_num = min(max(value, 0), self._max_paths)
+            self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
 
     def setMinimumPath(self, value: int) -> None:
         if self._minimum_path_num != value:
-            self._minimum_path_num = value
-            if self._minimum_path_num < 0:
-                self._minimum_path_num = 0
-            if self._minimum_path_num > self._max_paths:
-                self._minimum_path_num = self._max_paths
-            if self._minimum_path_num > self._current_path_num:
-                self._current_path_num = self._minimum_path_num
+            self._minimum_path_num = min(max(value, 0), self._max_paths)
+            self._current_path_num = max(self._current_path_num, self._minimum_path_num)
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
