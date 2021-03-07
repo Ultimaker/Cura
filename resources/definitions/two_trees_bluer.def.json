@@ -9,12 +9,12 @@
         "machine_depth": { "default_value": 230 },
         "machine_height": { "default_value": 280 },
         "machine_head_with_fans_polygon": { "default_value": [
-		[-47, 37],
-		[-47, -23],
-		[47, -23],
-		[47, 37]
-		]
-		},
+        [-47, 37],
+        [-47, -23],
+        [47, -23],
+        [47, 37]
+        ]
+        },
 
         "gantry_height": { "value": 28 },
 		"speed_print": { "value": 50.0 },
