@@ -78,7 +78,7 @@
         "travel_retract_before_outer_wall": { "value": true },
         
         "retraction_enable": { "value": true },
-		"retraction_speed": { "default_value" : 40 },
+        "retraction_speed": { "default_value" : 40 },
         "retraction_amount": { "default_value" : 7 }, 
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 10 },
