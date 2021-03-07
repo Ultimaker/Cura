@@ -22,10 +22,10 @@
         "retraction_speed": { "default_value" : 50 },
         "retraction_amount": { "default_value" : 8 },
 		
-		"material_flow": { "value": 90 },
-		"infill_material_flow": { "value": 100 },
-		
-		"infill_overlap": { "value": 30 },
+        "material_flow": { "value": 90 },
+        "infill_material_flow": { "value": 100 },
+        
+        "infill_overlap": { "value": 30 },
         "skin_overlap": { "value": 20 }
     },
     "metadata": {
