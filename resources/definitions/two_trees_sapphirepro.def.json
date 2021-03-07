@@ -19,9 +19,9 @@
         "gantry_height": { "value": 65 },
 
         "speed_print": { "value": 60.0 },
-		"speed_travel": { "value": 180 },
-		"speed_travel_layer_0": { "value": 100 },
-		"retraction_speed": { "default_value" : 40 },
+        "speed_travel": { "value": 180 },
+        "speed_travel_layer_0": { "value": 100 },
+        "retraction_speed": { "default_value" : 40 },
         "retraction_amount": { "default_value" : 7 },
 		
         "material_flow": { "value": 90 },
