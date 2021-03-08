@@ -2,20 +2,20 @@
 
 <h1>Arachne engine alpha</h1>
 
-Cura Team, as part of and with help from Ultimaker R&D in a more general sense, have been working on a large project that changes the core of how our slicing engine works.
+The Cura Team, as part of and with help from Ultimaker R&D in a more general sense, have been working on a large project that changes the core of how our slicing engine works.
 The goal is to have variable line widths (instead of static) for each extrusion, and better path-planning, in order to better fit the eventual printed part to the specifications.
 
-<br>If after you've used this alpha you want to give some feedback (please do, it's the main reason we're doing this), please see <a href="https://github.com/Ultimaker/Cura/discussions/8965">the discussion here</a>.
+If after you've used this alpha you want to give some feedback (please do, it's the main reason we're doing this), please see <a href="https://github.com/Ultimaker/Cura/discussions/8965">the discussion here</a>.
 
-<br>This effort is still ongoing, but we're at the point where we would very much like to have the feedback and input of the wider community.
+This effort is still ongoing, but we're at the point where we would very much like to have the feedback and input of the wider community.
 
-<br>In order to get this done, we've decided to release an 'Alpha' build, or an early preview.
+In order to get this done, we've decided to release an 'Alpha' build, or an early preview.
 
-<br>Not everything has been implemented, and there are even an amount of known bugs (see below), as well as very probably a comparable amount of unknown issues.
+Not everything has been implemented, and there are even an amount of known bugs (see below), as well as very probably a comparable amount of unknown issues.
 On top of that, we added some parameters (and removed a few others). These have hardly been tuned, even for our own printers, let alone 3rd party ones.
 In other words, don't expect perfection. In fact, the default settings as they are now are likely to be worse as what's there in a lot of cases.
 
-<br>Note: This is _not_ otherwise build on a specific version (like '4.8.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the Variable Line Width feature-set!
+Note: This is _not_ otherwise build on a specific version (like '4.8.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the Variable Line Width feature-set!
 
 * New Settings
 
@@ -24,21 +24,21 @@ Variable Line Strategy: How the walls are spread over the available space.
   - Distributed: Distributes the width variations equally over all walls.
   - Inward Distributed: Is a balance between the other two, distributing the changes in width over all walls but keeping the walls on the outside slightly more consistent.
 
-<br>Minimum Variable Line Width: The smallest line width, as a factor of the normal line width, beyond which it will choose to use fewer, but wider lines to fill the available space. Reduce this threshold to use more, thinner lines. Increase to use fewer, wider lines.
+Minimum Variable Line Width: The smallest line width, as a factor of the normal line width, beyond which it will choose to use fewer, but wider lines to fill the available space. Reduce this threshold to use more, thinner lines. Increase to use fewer, wider lines.
 
-<br>Wall Transition Length: When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines.
+Wall Transition Length: When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines.
 
-<br>Wall Transition Angle: When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.
+Wall Transition Angle: When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.
 
-<br>Wall Transition Filter Distance: If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.
+Wall Transition Filter Distance: If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.
 
-<br>Maximum Extrusion Area Deviation: Influences extrusion line simplification. The maximum extrusion area deviation allowed when removing intermediate points from a straight line. Keeping it low may cause (too) little simplification to occur (with all the problems that causes), but if you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls.
+Maximum Extrusion Area Deviation: Influences extrusion line simplification. The maximum extrusion area deviation allowed when removing intermediate points from a straight line. Keeping it low may cause (too) little simplification to occur (with all the problems that causes), but if you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls.
 
 * Removed/Renamed/Altered Settings
 
 Print Thin Walls: Behaviour altered.
 
-<br>Optimize Wall Printing Order is renamed to Order Inner Walls By Inset. Behaviour altered.
+Optimize Wall Printing Order is renamed to Order Inner Walls By Inset. Behaviour altered.
 
 * To Implement
 
@@ -48,42 +48,42 @@ Not all initially planned sub-features are in yet, any subsequent non-patch rele
 
 SkeletalTrapezoidation not robust to unsimplified input. For very intricate and or small models, crashes may occur. Please attach any crashing model to the discussion/feedback link above.
 
-<br>Different extruders for inner and outer walls. The used extruder alternate each layer but the inner and outer wall are printed with the same extruder (used at that layer)
+Different extruders for inner and outer walls. The used extruder alternate each layer but the inner and outer wall are printed with the same extruder (used at that layer)
 
-<br>Spiralise bugs:
+Spiralise bugs:
   - Bottom layers issue in spiralize mode.
   - Stringing when in spiralized mode.
   - Last bottom layer missing for some models.
 
-<br>Support not being correctly generated. It might start mid-air or not providing enough support for some parts of the model.
+Support not being correctly generated. It might start mid-air or not providing enough support for some parts of the model.
 
-<br>Gradual infill support not being correctly generated. Support walls don't seem to be printed well when gradual infill support is enabled. Ultimaker printers enable this by default for PVA.
+Gradual infill support not being correctly generated. Support walls don't seem to be printed well when gradual infill support is enabled. Ultimaker printers enable this by default for PVA.
 
-<br>Combing in the wrong part when printing dual extrusion Visible, for example, when printing with dual extrusion with two different colors. E.g.: 'Bleeding' of red into white parts.
+Combing in the wrong part when printing dual extrusion Visible, for example, when printing with dual extrusion with two different colors. E.g.: 'Bleeding' of red into white parts.
 
-<br>Printed travel moves.
+Printed travel moves.
 
-<br>Gaps between inner wall and skin.
+Gaps between inner wall and skin.
 
-<br>Z-Seam Sharpest Corner broken. The seam is not placed in the sharpest corner
+Z-Seam Sharpest Corner broken. The seam is not placed in the sharpest corner
 
-<br>Small line width and overlap. When using the Center Deviation setting on a thin model some wall lines may overlap or leave a gap.
+Small line width and overlap. When using the Center Deviation setting on a thin model some wall lines may overlap or leave a gap.
 
-<br>Wall positioning is imprecise. On some models, the walls are not centered properly within the outline nor have the correct width.
+Wall positioning is imprecise. On some models, the walls are not centered properly within the outline nor have the correct width.
 
-<br>Connected and gradual infill results in overextrusion. When gradual infill and connect infill lines is enabled, it'll connect different pieces of infill on top of each other, causing overextrusion.
+Connected and gradual infill results in overextrusion. When gradual infill and connect infill lines is enabled, it'll connect different pieces of infill on top of each other, causing overextrusion.
 
-<br>Connect Top/Bottom polygon not working currently. The issue occurs when concentric is the infill pattern.
+Connect Top/Bottom polygon not working currently. The issue occurs when concentric is the infill pattern.
 
-<br>Small travel line segments in infill/support. This is causing unnecessary traveling and stringing.
+Small travel line segments in infill/support. This is causing unnecessary traveling and stringing.
 
-<br>Wrong Infill Layer Thickness. In combination with a higher Extra Infill Line Count, some parts are not generating infill lines.
+Wrong Infill Layer Thickness. In combination with a higher Extra Infill Line Count, some parts are not generating infill lines.
 
-<br>Inward/Distributed overextrusion. Seen on models with multiplied infill walls.
+Inward/Distributed overextrusion. Seen on models with multiplied infill walls.
 
-<br>Overlapping skin and alternating wall. The extra wall at each alternating step will overlap with the skin
+Overlapping skin and alternating wall. The extra wall at each alternating step will overlap with the skin
 
-<br>Assertion failure in SkeletalTrapezoidation. Can cause the engine to crash on certain models.
+Assertion failure in SkeletalTrapezoidation. Can cause the engine to crash on certain models.
 
 [4.8.0]
 <i>For an overview of the new features in Cura 4.8, please see this video: <a href="https://www.youtube.com/watch?v=BI1n4IDHbuA">Change log overview</a>.</i>
