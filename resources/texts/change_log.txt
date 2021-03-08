@@ -1,3 +1,58 @@
+[Arachne engine beta]
+<h1>Arachne engine beta</h1>
+
+This is a beta of Ultimaker Cura's "Arachne" engine, which implements variable line widths. The objective is to fill the available space better with walls, reduce variability in flow rate, preventing gaps and overextrusion and improving path planning. This allows for a more consistent print and better fit to the specifications of the original 3D model.
+
+This is a second preview, bringing the engine to a more stable state than the alpha that was released in December. This release should be more appropriate to tune profiles with in preparation for the actual release. The actual release will still have its own beta in the same fashion as the ordinary release cycle.
+
+While the bugs and features that greatly influence print quality have been resolved and implemented, there are still some things left to do (see below). The profiles have hardly been tuned, even for Ultimaker's own printers. Don't expect perfection. In fact, the default settings as they are now likely result in a worse print quality than the stable release.
+
+Note: This is _not_ based on a specific stable version of the front-end of Cura (like '4.8.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the variable line width feature-set!
+
+* Line Width Color Scheme
+A new color scheme has been added that shows the line width of individual lines in layer view.
+
+* Static Outer Wall
+The outer wall will no longer adjust its width or position if there are any inner walls adjacent to it with the (inward) distributed line width strategy. This reduces ringing effects in thin shapes.
+
+* Randomize Infill Start
+The Randomize Infill Start setting should work again with Arachne.
+
+* Infill Travel Optimization
+The Infill Travel Optimization setting should work again with Arachne.
+
+* Connect Top/Bottom Polygons
+The Connect Top/Bottom Polygons setting should work again with Arachne.
+
+* Layer Thickness
+The Infill Layer Thickness and Support Layer Thickness should work properly again with Arachne.
+
+* Bug fixes
+- Fix crash on MacOS when printing parts with a single wall.
+- Fix crash when the model contains very small holes (~0.1mm).
+- Fix crash when using Support Infill.
+- Fix crash when the model contains faces that are almost exactly parallel.
+- Fix crash when simplifying due to Maximum Resolution causes self-intersections to appear in the layer outline.
+- Fix crash when multiple transitions come together in the same point.
+- Fix crash when transitions between different numbers of walls connect the wrong two perimeters together.
+- Infill and support layer thickness should no longer overlap with itself if gradual infill or gradual support is used.
+- Only generate connecting wall segments for the sparsest density when using gradual infill or gradual support.
+- Sharp corners in the infill volume will no longer be filled with a useless tiny infill line.
+- Initial Layer Line Width now only applies to the initial layer again.
+- When using Outer Wall Inset, there will no longer be a ridge when transitioning from 2 to 1 wall.
+- Outer Wall Wipe Distance will no longer cause unnecessary travel moves.
+- Concentric support interface patterns are no longer omitted.
+- When Wall Line Count is 0, the rest of the model will no longer be omitted.
+- When using different extruders for inner and outer walls, the extruders no longer alternate per layer.
+- Small gaps between inner wall and skin are properly filled with infill again.
+- Seam position when using Sharpest Corner set to "hide seam" now properly chooses the sharpest inner corner.
+- Transitions are no longer omitted in very sharp corners, which sometimes led to too small line widths.
+- The outline of the print is no longer shifted towards the bottom left by the Maximum Deviation setting.
+- When using Alternate Extra Wall, the extra wall no longer overlaps with skin or infill.
+
+* Known issues
+- The seam isn't positioned correctly when using the Hide or Expose or Smart Hiding placement options.
+
 [Arachne engine alpha]
 
 <h1>Arachne engine alpha</h1>
