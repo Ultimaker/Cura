@@ -221,6 +221,7 @@ class ContainerManager(QObject):
         except OSError:
             return {"status": "error", "message": "Unable to write to this location.", "path": file_url}
 
+        Logger.info("Successfully exported container to {path}".format(path = file_url))
         return {"status": "success", "message": "Successfully exported container", "path": file_url}
 
     @pyqtSlot(QUrl, result = "QVariantMap")
