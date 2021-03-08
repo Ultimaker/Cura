@@ -8,7 +8,7 @@
         "visible": true,
         "file_formats": "text/x-gcode",
         "platform": "lulzbot_taz_pro_bed.stl",
-        "platform_offset": [0, -25, 0],
+        "platform_offset": [0, -10, 0],
         "machine_extruder_trains": {
             "0": "lulzbot_taz_pro_dual_extruder_0",
             "1": "lulzbot_taz_pro_dual_extruder_1"
