@@ -9,7 +9,7 @@
         "file_formats": "text/x-gcode",
         "platform": "FlashForge_DreamerNX.obj",
         "platform_offset": [0, 0, 0],
-        "quality_definition": "flashforge_base",
+        "quality_definition": "flashforge_base"
     },
 
     "overrides": {
