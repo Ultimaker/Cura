@@ -21,7 +21,7 @@
         "variants_name": "Nozzle Size"
     },
     "overrides": {
-		"machine_heated_bed": {"default_value": true},
+        "machine_heated_bed": {"default_value": true},
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
         "machine_max_feedrate_z": { "value": 10 },
