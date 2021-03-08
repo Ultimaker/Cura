@@ -10,10 +10,6 @@
         "platform": "FlashForge_DreamerNX.obj",
         "platform_offset": [0, 0, 0],
         "quality_definition": "flashforge_base",
-        "machine_extruder_trains":
-        {
-            "0": "ff_dreamernx_extruder_0"
-        }
     },
 
     "overrides": {
