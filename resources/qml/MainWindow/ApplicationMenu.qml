@@ -109,6 +109,14 @@ Item
             MenuItem { action: Cura.Actions.whatsNew }
             MenuItem { action: Cura.Actions.about }
         }
+        Menu
+        {
+            id: dynamicalMenu
+            title: "&Dynamical"
+            MenuItem { action: Cura.Actions.dynamical }
+
+        }
+        
     }
 
     Component

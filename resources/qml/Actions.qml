@@ -65,6 +65,8 @@ Item
     property alias whatsNew: whatsNewAction
     property alias about: aboutAction;
 
+    property alias dynamical: dynamicalAction;
+
     property alias toggleFullScreen: toggleFullScreenAction;
     property alias exitFullScreen: exitFullScreenAction
 
@@ -246,8 +248,14 @@ Item
         onTriggered: CuraActions.openBugReportPage();
     }
 
-    Action
-    {
+    Action {
+        id: dynamicalAction;
+        text: "Soporte";
+        iconName: "help-contents";
+        onTriggered: CuraActions.openDynamical();
+    }
+
+    Action {
         id: whatsNewAction;
         text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
     }

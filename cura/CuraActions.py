@@ -39,6 +39,11 @@ class CuraActions(QObject):
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
+    def openDynamical(self) -> None:
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://www.dynamical3d.com/")], {})
+        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
+
+    @pyqtSlot()
     def openBugReportPage(self) -> None:
         event = CallFunctionEvent(self._openUrl, [QUrl("https://github.com/Ultimaker/Cura/issues/new/choose")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)

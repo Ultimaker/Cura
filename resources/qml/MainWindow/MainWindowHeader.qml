@@ -18,7 +18,8 @@ Item
 
     implicitHeight: UM.Theme.getSize("main_window_header").height
     implicitWidth: UM.Theme.getSize("main_window_header").width
-
+/*
+DESHABILITO EL LOGO "ULTIMAKER CURA"
     Image
     {
         id: logo
@@ -33,7 +34,7 @@ Item
         sourceSize.width: width
         sourceSize.height: height
     }
-
+*/
     Row
     {
         id: stagesListContainer
@@ -82,6 +83,8 @@ Item
 
         ExclusiveGroup { id: mainWindowHeaderMenuGroup }
     }
+/*
+DESHABILITO LOS BOTONES DE MARKETPLACE Y SIGN-IN
 
     // Shortcut button to quick access the Toolbox
     Controls2.Button
@@ -149,4 +152,5 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
         }
     }
+    */
 }

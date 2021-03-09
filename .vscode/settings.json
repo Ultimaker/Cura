@@ -1,0 +1,5 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "C:\\Users\\vfrisach\\AppData\\Local\\Programs\\Python\\Python35\\python.exe",
+    "cmake.configureOnOpen": false
+}
