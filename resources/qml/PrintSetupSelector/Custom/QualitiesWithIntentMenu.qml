@@ -118,7 +118,7 @@ Popup
                                     width: parent.width
                                     checkable: true
                                     visible: model.available
-                                    text: model.name + " - " + model.layer_height + " mm"
+                                    text: model.name
                                     checked:
                                     {
                                         if (Cura.MachineManager.hasCustomQuality)

@@ -126,8 +126,7 @@ Item
                                 {
                                     result += " - " + resultSuffix
                                 }
-                                result += " - "
-                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                                
                             }
                         }
 

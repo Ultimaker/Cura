@@ -17,16 +17,16 @@ from cura.Machines.QualityGroup import QualityGroup
 class IntentModel(ListModel):
     NameRole = Qt.UserRole + 1
     QualityTypeRole = Qt.UserRole + 2
-    LayerHeightRole = Qt.UserRole + 3
-    AvailableRole = Qt.UserRole + 4
-    IntentRole = Qt.UserRole + 5
+    # LayerHeightRole = Qt.UserRole + 3
+    AvailableRole = Qt.UserRole + 3
+    IntentRole = Qt.UserRole + 4
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")
-        self.addRoleName(self.LayerHeightRole, "layer_height")
+        # self.addRoleName(self.LayerHeightRole, "layer_height")
         self.addRoleName(self.AvailableRole, "available")
         self.addRoleName(self.IntentRole, "intent_category")
 
@@ -87,15 +87,15 @@ class IntentModel(ListModel):
         for quality_type, quality_group in quality_groups.items():
             # Add the intents that are of the correct category
             if quality_type not in added_quality_type_set:
-                layer_height = fetchLayerHeight(quality_group)
+                # layer_height = fetchLayerHeight(quality_group)
                 new_items.append({"name": "Unavailable",
                                   "quality_type": quality_type,
-                                  "layer_height": layer_height,
+                                #   "layer_height": layer_height,
                                   "intent_category": self._intent_category,
                                   "available": False})
                 added_quality_type_set.add(quality_type)
 
-        new_items = sorted(new_items, key = lambda x: x["layer_height"])
+        # new_items = sorted(new_items, key = lambda x: x["layer_height"])
         self.setItems(new_items)
 
     def _getActiveMaterials(self) -> Set["MaterialNode"]:
@@ -130,14 +130,14 @@ class IntentModel(ListModel):
             if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
                 continue
             quality_group = quality_groups[quality_node.quality_type]
-            layer_height = fetchLayerHeight(quality_group)
+            # layer_height = fetchLayerHeight(quality_group)
 
             for intent_id, intent_node in quality_node.intents.items():
                 if intent_node.intent_category != self._intent_category:
                     continue
                 extruder_intents.append({"name": quality_group.name,
                                          "quality_type": quality_group.quality_type,
-                                         "layer_height": layer_height,
+                                        #  "layer_height": layer_height,
                                          "available": quality_group.is_available,
                                          "intent_category": self._intent_category
                                          })

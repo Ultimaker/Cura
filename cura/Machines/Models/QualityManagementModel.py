@@ -327,7 +327,7 @@ class QualityManagementModel(ListModel):
             if not quality_group.is_available:
                 continue
 
-            layer_height = fetchLayerHeight(quality_group)
+            # layer_height = fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
                     "is_read_only": True,
@@ -336,12 +336,12 @@ class QualityManagementModel(ListModel):
                     "quality_changes_group": None,
                     "intent_category": "solid",
                     "section_name": catalog.i18nc("@label", "Solid"),
-                    "layer_height": layer_height,  # layer_height is only used for sorting
+                    # "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)
 
         # Sort by layer_height for built-in qualities
-        item_list = sorted(item_list, key = lambda x: x["layer_height"])
+        # item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         # Create intent items (non-default)
         available_intent_list = IntentManager.getInstance().getCurrentAvailableIntents()
