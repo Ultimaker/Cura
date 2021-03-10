@@ -36,13 +36,15 @@ class SimulationPass(RenderPass):
         self._disabled_shader = None
         self._old_current_layer = 0
         self._old_current_path = 0
-        self._switching_layers = True # It tracks when the user is moving the layers' slider
+        self._switching_layers = True  # Tracking whether the user is moving across layers (True) or across paths (False). If false, lower layers render as shadowy.
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
         self._extruder_manager = ExtruderManager.getInstance()
 
         self._layer_view = None
         self._compatibility_mode = None
+
+        self._scene.sceneChanged.connect(self._onSceneChanged)
 
     def setSimulationView(self, layerview):
         self._layer_view = layerview
@@ -219,3 +221,9 @@ class SimulationPass(RenderPass):
             tool_handle_batch.render(self._scene.getActiveCamera())
 
         self.release()
+
+    def _onSceneChanged(self, changed_object: SceneNode):
+        if changed_object.callDecoration("getLayerData"):  # Any layer data has changed.
+            self._switching_layers = True
+            self._old_current_layer = 0
+            self._old_current_path = 0
