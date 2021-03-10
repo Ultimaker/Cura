@@ -23,8 +23,9 @@ Item
     UM.ApplicationMenu
     {
         id: applicationMenu
-
-        FileMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&File") }
+        FileMenu { 
+            title: catalog.i18nc("@title:menu menubar:toplevel", "&File") 
+        }
 
         Menu
         {
@@ -44,6 +45,15 @@ Item
             MenuItem { action: Cura.Actions.groupObjects }
             MenuItem { action: Cura.Actions.mergeObjects }
             MenuItem { action: Cura.Actions.unGroupObjects }
+
+            style: MenuStyle {
+                itemDelegate.label: Label {
+                    color: "red"
+                    text: styleData.text
+
+                    // stuff above here
+                }
+            }
         }
 
         ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View") }
@@ -119,8 +129,7 @@ Item
         
     }
 
-    Component
-    {
+    Component {
         id: extensionsMenuItem
 
         MenuItem
