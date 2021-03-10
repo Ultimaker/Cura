@@ -4,7 +4,6 @@
 import json
 import math
 import os
-import unicodedata
 from typing import Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer

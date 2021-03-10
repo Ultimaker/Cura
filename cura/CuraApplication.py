@@ -1268,9 +1268,10 @@ class CuraApplication(QtApplication):
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
-
         if print_information:
             print_information.setPreSliced(is_block_slicing_node)
+
+        self.getWorkspaceFileHandler().setEnabled(not is_block_slicing_node)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
