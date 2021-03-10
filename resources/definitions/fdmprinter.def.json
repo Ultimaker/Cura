@@ -410,11 +410,13 @@
                 },
                 "machine_extruders_shared_nozzle_initial_retraction":
                 {
-                    "label": "Shared nozzle initial retraction",
+                    "label": "Shared Nozzle Initial Retraction",
                     "description": "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts.",
                     "unit": "mm",
                     "default_value": 0,
+                    "minimum_value": "0",
                     "type": "float",
+                    "enabled": "machine_extruders_share_nozzle",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
