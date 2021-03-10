@@ -207,12 +207,12 @@
                     "description": "The X coordinate of the position where the nozzle primes at the start of printing.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0,
+                    "default_value": 99,
                     "minimum_value_warning": "machine_nozzle_offset_x",
                     "maximum_value": "machine_width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "enabled": false
+                    "enabled": true
                 },
                 "extruder_prime_pos_y":
                 {
@@ -220,12 +220,12 @@
                     "description": "The Y coordinate of the position where the nozzle primes at the start of printing.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0,
+                    "default_value": 99,
                     "minimum_value_warning": "machine_nozzle_offset_y",
                     "maximum_value_warning": "machine_depth",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "enabled": false
+                    "enabled": true
                 }
             }
         },

@@ -5142,8 +5142,8 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "enabled": false,
+                    "settable_per_extruder": false,
+                    "enabled": true,
                     "warning_value": "True if resolveOrValue('print_sequence') == 'one_at_a_time' else None"
                 },
                 "extruder_prime_pos_x":
@@ -5152,12 +5152,12 @@
                     "description": "The X coordinate of the position where the nozzle primes at the start of printing.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0,
+                    "default_value": 100,
                     "minimum_value_warning": "machine_width / -2 if machine_center_is_zero else 0",
                     "maximum_value_warning": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "enabled": false
+                    "settable_per_extruder": false,
+                    "enabled": true
                 },
                 "extruder_prime_pos_y":
                 {
@@ -5165,12 +5165,12 @@
                     "description": "The Y coordinate of the position where the nozzle primes at the start of printing.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0,
+                    "default_value": 100,
                     "minimum_value_warning": "machine_depth / -2 if machine_center_is_zero else 0",
                     "maximum_value_warning": "machine_depth / 2 if machine_center_is_zero else machine_depth",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "enabled": false
+                    "settable_per_extruder": false,
+                    "enabled": true
                 },
                 "adhesion_type":
                 {
