@@ -68,6 +68,9 @@ The Infill Layer Thickness and Support Layer Thickness should work properly agai
 - Bottom layers of a spiralized model with surface mode enabled, looks like inner walls.
 - Last bottom layer might disappear for a spiralized model.
 - Stringing when spiralized is enabled.
+- Random infill start isn't implemented.
+- Fuzzy skin isn't implemented.
+- Connect Top/Bottom polygons isn't implemented.
 
 
 [Arachne engine alpha]
