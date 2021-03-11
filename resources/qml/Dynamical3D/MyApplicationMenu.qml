@@ -27,6 +27,7 @@ Rectangle {
     Keys.forwardTo: menu.__contentItem;
 
     property color menuBackgroundColor: UM.Theme.getColor("viewport_overlay")
+    property color menuForeColor: UM.Theme.getColor("xray")
     
     MenuBar
     {
@@ -37,83 +38,43 @@ Rectangle {
             __contentItem.parent = menuBackground;
         }
         style: MenuBarStyle {
-
-            padding {
-                left: 0
-                right: 20
-                top: 3
-                bottom: 3
-            }
             background: Rectangle {
                 id: rect
                 color: menuBackgroundColor
             }
 
-            itemDelegate: Rectangle {            // the menus
-                implicitWidth: lab.contentWidth + 15          // adjust width the way you prefer it
-                implicitHeight: lab.contentHeight            // adjust height the way you prefer it
-                color: styleData.selected || styleData.open ? UM.Theme.getColor("xray") : menuBackgroundColor
+            itemDelegate: Rectangle {
+                implicitWidth: lab.contentWidth + 15   
+                implicitHeight: lab.contentHeight      
+                color: styleData.selected || styleData.open ? menuForeColor : menuBackgroundColor
                 Label {
                     id: lab
-                    //anchors.horizontalCenter: parent.horizontalCenter
-                    text: styleData.text.replace("&","")
+                    text: formatMnemonic(styleData.text, true) 
+                    font: UM.Theme.getFont("large_bold")
                 }
             }
 
-
-
-            menuStyle: MenuStyle {               // the menus items
+            menuStyle: MenuStyle {
                 id: menuStyle
-
                 frame: Rectangle {
                     color: menuBackgroundColor
                 }
-
                 itemDelegate {
                     background: Rectangle {
-                        color:  styleData.selected || styleData.open ? UM.Theme.getColor("xray") : menuBackgroundColor
+                        color:  styleData.selected || styleData.open ? menuForeColor : menuBackgroundColor
                         radius: styleData.selected ? 3 : 0
                     }
-
                     label: Label {
-                        //color: styleData.selected ? menuBackgroundColor : UM.Theme.getColor("xray")
-                        text: styleData.text.replace("&","")
+                        text: formatMnemonic(styleData.text, true) 
+                        font: UM.Theme.getFont("large")
                     }
-
-
-
                     shortcut: Label {
-                        //color: styleData.selected ? menuBackgroundColor : UM.Theme.getColor("xray")
                         text: styleData.shortcut
                     }
-
                 }
-
-
             }
         }
     }
-
-            // delegate: MenuBarItem {
-        //     id: menuBarItem
-
-        //     contentItem: Text {
-        //         text: menuBarItem.text
-        //         font: menuBarItem.font
-        //         opacity: enabled ? 1.0 : 0.3
-        //         color: menuBarItem.highlighted ? "#ffffff" : "#21be2b"
-        //         horizontalAlignment: Text.AlignLeft
-        //         verticalAlignment: Text.AlignVCenter
-        //         elide: Text.ElideRight
-        //     }
-
-        //     background: Rectangle {
-        //         implicitWidth: 40
-        //         implicitHeight: 40
-        //         opacity: enabled ? 1 : 0.3
-        //         color: menuBarItem.highlighted ? "#21be2b" : "transparent"
-        //     }
-        // }
 
     SystemPalette {
         id: palette
