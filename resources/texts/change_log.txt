@@ -51,7 +51,24 @@ The Infill Layer Thickness and Support Layer Thickness should work properly agai
 - When using Alternate Extra Wall, the extra wall no longer overlaps with skin or infill.
 
 * Known issues
+- Some models might still crash the engine, although it is less frequent then before.
+- Infill support can crash the engine.
 - The seam isn't positioned correctly when using the Hide or Expose or Smart Hiding placement options.
+- User specified seam is not aligned.
+- Paths for concentric ironing aren't generated.
+- Concentric support pattern can intersects with model.
+- Lines are not always symmetrical in width at the transitioning point to a lower wall count.
+- Center line is not generated for centre deviation strategy.
+- Missing infill/support walls in certain areas when using Extra Infill/Support Wall Count.
+- Brim lines ordered wrongly.
+- Raft interface layers and raft layers don't align.
+- Connected infill and gradual infill results in overextrusion.
+- Bottom Skin Expand Distance at zero causes skin to expand beyond walls.
+- Spiralize could generate both inner and outer surfaces.
+- Bottom layers of a spiralized model with surface mode enabled, looks like inner walls.
+- Last bottom layer might disappear for a spiralized model.
+- Stringing when spiralized is enabled.
+
 
 [Arachne engine alpha]
 
@@ -105,7 +122,7 @@ SkeletalTrapezoidation not robust to unsimplified input. For very intricate and 
 
 Different extruders for inner and outer walls. The used extruder alternate each layer but the inner and outer wall are printed with the same extruder (used at that layer)
 
-Spiralise bugs:
+Spiralize bugs:
   - Bottom layers issue in spiralize mode.
   - Stringing when in spiralized mode.
   - Last bottom layer missing for some models.
