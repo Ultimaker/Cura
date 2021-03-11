@@ -19,16 +19,17 @@ Item
     width: applicationMenu.width
     height: applicationMenu.height
     property alias window: applicationMenu.window
-
     UM.ApplicationMenu
     {
         id: applicationMenu
+ 
         FileMenu { 
             title: catalog.i18nc("@title:menu menubar:toplevel", "&File") 
+            style: MenuStyle {
+            }
         }
 
-        Menu
-        {
+        Menu {
             title: catalog.i18nc("@title:menu menubar:toplevel", "&Edit")
 
             MenuItem { action: Cura.Actions.undo }
@@ -47,24 +48,24 @@ Item
             MenuItem { action: Cura.Actions.unGroupObjects }
 
             style: MenuStyle {
-                itemDelegate.label: Label {
-                    color: "red"
-                    text: styleData.text
-
-                    // stuff above here
-                }
             }
         }
 
-        ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View") }
+        ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View")
+            style: MenuStyle {
+            }
+        }
 
-        SettingsMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Settings") }
+        SettingsMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
+            style: MenuStyle {
+            }
+        }
 
-        Menu
-        {
+        Menu {
             id: extensionMenu
             title: catalog.i18nc("@title:menu menubar:toplevel", "E&xtensions")
-
+            style: MenuStyle {
+            }
             Instantiator
             {
                 id: extensions
@@ -98,19 +99,19 @@ Item
             }
         }
 
-        Menu
-        {
+        Menu {
             id: preferencesMenu
             title: catalog.i18nc("@title:menu menubar:toplevel", "P&references")
-
+            style: MenuStyle {
+            }
             MenuItem { action: Cura.Actions.preferences }
         }
 
-        Menu
-        {
+        Menu {
             id: helpMenu
             title: catalog.i18nc("@title:menu menubar:toplevel", "&Help")
-
+            style: MenuStyle {
+            }
             MenuItem { action: Cura.Actions.showProfileFolder }
             MenuItem { action: Cura.Actions.showTroubleshooting}
             MenuItem { action: Cura.Actions.documentation }
@@ -119,12 +120,17 @@ Item
             MenuItem { action: Cura.Actions.whatsNew }
             MenuItem { action: Cura.Actions.about }
         }
-        Menu
-        {
+        Menu{
             id: dynamicalMenu
             title: "&Dynamical"
+            style: MenuStyle {
+            }
             MenuItem { action: Cura.Actions.dynamical }
 
+        }
+        Menu{
+            id: dynamicalMenu2
+            title: "Longitud: " + applicationMenu.width
         }
         
     }

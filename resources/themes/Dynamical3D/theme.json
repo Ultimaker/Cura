@@ -153,7 +153,7 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
-        "primary": [50, 130, 255, 255],
+        "primary": [204, 2, 65, 255],
         "primary_shadow": [64, 47, 205, 255],
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [222, 222, 222, 255],

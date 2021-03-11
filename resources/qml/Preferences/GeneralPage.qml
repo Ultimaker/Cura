@@ -13,6 +13,7 @@ UM.PreferencesPage
 {
     //: General configuration page title
     title: catalog.i18nc("@title:tab", "General")
+
     id: generalPreferencesPage
 
     function setDefaultLanguage(languageCode)
