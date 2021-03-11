@@ -1,13 +1,15 @@
 [Arachne engine beta]
 <h1>Arachne engine beta</h1>
 
-This is a beta of Ultimaker Cura's "Arachne" engine, which implements variable line widths. The objective is to fill the available space better with walls, reduce variability in flow rate, preventing gaps and overextrusion and improving path planning. This allows for a more consistent print and better fit to the specifications of the original 3D model.
+This is the beta release of Ultimaker Cura's "Arachne" engine. The objective is to fill the available space better with walls, reduce variability in flow rate, preventing gaps and overextrusion and improving path planning by implementing variable line widths. This allows for a more consistent print and better fit to the specifications of the original 3D model.
 
-This is a second preview, bringing the engine to a more stable state than the alpha that was released in December. This release should be more appropriate to tune profiles with in preparation for the actual release. The actual release will still have its own beta in the same fashion as the ordinary release cycle.
+This is a second preview, bringing the engine to a more stable state than the alpha that was released in December. This release should be more appropriate to tune profiles within preparation for the stable release. The stable release will still have its own beta in the same fashion as the ordinary release cycle.
 
-While the bugs and features that greatly influence print quality have been resolved and implemented, there are still some things left to do (see below). The profiles have hardly been tuned, even for Ultimaker's own printers. Don't expect perfection. In fact, the default settings as they are now likely result in a worse print quality than the stable release.
+While the bugs and features that greatly influence print quality have been resolved and implemented, there are still some things left to do (see known issues). The profiles have hardly been tuned, even for Ultimaker's own printers. Please don't expect perfection. In fact, the default settings as they are now likely result in a worse print quality than the stable release.
 
 Note: This is _not_ based on a specific stable version of the front-end of Cura (like '4.8.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the variable line width feature-set!
+
+** New features in Arachne engine beta:
 
 * Line Width Color Scheme
 A new color scheme has been added that shows the line width of individual lines in layer view.
@@ -15,19 +17,11 @@ A new color scheme has been added that shows the line width of individual lines 
 * Static Outer Wall
 The outer wall will no longer adjust its width or position if there are any inner walls adjacent to it with the (inward) distributed line width strategy. This reduces ringing effects in thin shapes.
 
-* Randomize Infill Start
-The Randomize Infill Start setting should work again with Arachne.
-
-* Infill Travel Optimization
-The Infill Travel Optimization setting should work again with Arachne.
-
-* Connect Top/Bottom Polygons
-The Connect Top/Bottom Polygons setting should work again with Arachne.
-
-* Layer Thickness
-The Infill Layer Thickness and Support Layer Thickness should work properly again with Arachne.
-
 * Bug fixes
+- The Randomize Infill Start setting is now working on Arachne. 
+- The Infill Travel Optimization setting is now working on Arachne.
+- The Connect Top/Bottom Polygons setting is now working on Arachne.
+- The Infill Layer Thickness and Support Layer Thickness is now working on Arachne.
 - Fix crash on MacOS when printing parts with a single wall.
 - Fix crash when the model contains very small holes (~0.1mm).
 - Fix crash when using Support Infill.
