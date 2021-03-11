@@ -66,9 +66,6 @@ The outer wall will no longer adjust its width or position if there are any inne
 - Fuzzy skin isn't implemented.
 - Connect Top/Bottom polygons isn't implemented.
 
-
-[Arachne engine alpha]
-
 <h1>Arachne engine alpha</h1>
 
 The Cura Team, as part of and with help from Ultimaker R&D in a more general sense, have been working on a large project that changes the core of how our slicing engine works.
