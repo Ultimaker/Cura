@@ -17,7 +17,8 @@ from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse
-import keyring
+from cura.OAuth2.SecretStorage import SecretStorage
+
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
@@ -51,6 +52,8 @@ class AuthorizationService:
         self._unable_to_get_data_message = None  # type: Optional[Message]
 
         self.onAuthStateChanged.connect(self._authChanged)
+
+        self._secret_storage = SecretStorage()
 
     def _authChanged(self, logged_in):
         if logged_in and self._unable_to_get_data_message is not None:
@@ -232,7 +235,7 @@ class AuthorizationService:
 
             # Since we stored all the sensitive stuff in the keyring, restore that now.
             # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
-            preferences_data["refresh_token"] = keyring.get_password("cura", "refresh_token")
+            preferences_data["refresh_token"] = self._secret_storage["refresh_token"]
 
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
@@ -263,7 +266,8 @@ class AuthorizationService:
 
             # Store all the sensitive stuff in the keyring
             # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
-            keyring.set_password("cura", "refresh_token", auth_data.refresh_token)
+            self._secret_storage["refresh_token"] = auth_data.refresh_token
+
 
             # And remove that data again so it isn't stored in the preferences.
             # Keep the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
@@ -275,4 +279,3 @@ class AuthorizationService:
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
 
         self.accessTokenChanged.emit()
-
