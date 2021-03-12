@@ -3,6 +3,8 @@
 
 This is the beta release of Ultimaker Cura's "Arachne" engine. The objective is to fill the available space better with walls, reduce variability in flow rate, preventing gaps and overextrusion and improving path planning by implementing variable line widths. This allows for a more consistent print and better fit to the specifications of the original 3D model.
 
+If you've tried this beta and want to give some feedback, please see <a href="https://github.com/Ultimaker/Cura/discussions/9388">the discussion here</a>.
+
 This is a second preview, bringing the engine to a more stable state than the alpha that was released in December. This release should be more appropriate to tune profiles within preparation for the stable release. The stable release will still have its own beta in the same fashion as the ordinary release cycle.
 
 While the bugs and features that greatly influence print quality have been resolved and implemented, there are still some things left to do (see known issues). The profiles have hardly been tuned, even for Ultimaker's own printers. Please don't expect perfection. In fact, the default settings as they are now likely result in a worse print quality than the stable release.
