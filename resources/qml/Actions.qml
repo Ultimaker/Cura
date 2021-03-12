@@ -103,7 +103,7 @@ Item
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
@@ -113,7 +113,7 @@ Item
     Action
     {
         id: redoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
         onTriggered: UM.OperationStack.redo();
@@ -123,7 +123,7 @@ Item
     Action
     {
         id: quitAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Quit")
+        text: catalog.i18nc("@action:inmenu menubar:file","Quit")
         iconName: "application-exit"
         shortcut: StandardKey.Quit
     }

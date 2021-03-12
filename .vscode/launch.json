@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Arranque de la aplicación",
+            "type": "python",
+            "request": "launch",
+            "program": "cura_app.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python: Archivo actual",
             "type": "python",
             "request": "launch",
