@@ -22,7 +22,6 @@ The outer wall will no longer adjust its width or position if there are any inne
 * Bug fixes
 - The Randomize Infill Start setting is now working on Arachne. 
 - The Infill Travel Optimization setting is now working on Arachne.
-- The Connect Top/Bottom Polygons setting is now working on Arachne.
 - The Infill Layer Thickness and Support Layer Thickness is now working on Arachne.
 - Fix crash on MacOS when printing parts with a single wall.
 - Fix crash when the model contains very small holes (~0.1mm).
@@ -64,7 +63,6 @@ The outer wall will no longer adjust its width or position if there are any inne
 - Bottom layers of a spiralized model with surface mode enabled, looks like inner walls.
 - Last bottom layer might disappear for a spiralized model.
 - Stringing when spiralized is enabled.
-- Random infill start isn't implemented.
 - Fuzzy skin isn't implemented.
 - Connect Top/Bottom polygons isn't implemented.
 
