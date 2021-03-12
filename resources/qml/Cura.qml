@@ -149,6 +149,9 @@ UM.MainWindow
         id: backgroundItem
         anchors.fill: parent
 
+        
+
+
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
         {
@@ -158,17 +161,15 @@ UM.MainWindow
             }
         }
 
-        ApplicationMenu
-        {
+        ApplicationMenu {
             id: applicationMenu
-            window: base
+            window: base   
+            
         }
 
-        Item
-        {
+        Item {
             id: headerBackground
-            anchors
-            {
+            anchors {
                 top: applicationMenu.bottom
                 left: parent.left
                 right: parent.right
@@ -212,8 +213,7 @@ UM.MainWindow
             }
         }
 
-        MainWindowHeader
-        {
+        MainWindowHeader {
             id: mainWindowHeader
             anchors
             {
@@ -223,8 +223,7 @@ UM.MainWindow
             }
         }
 
-        Item
-        {
+        Item {
             id: contentItem
 
             anchors

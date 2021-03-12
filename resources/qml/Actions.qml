@@ -65,6 +65,8 @@ Item
     property alias whatsNew: whatsNewAction
     property alias about: aboutAction;
 
+    property alias dynamical: dynamicalAction;
+
     property alias toggleFullScreen: toggleFullScreenAction;
     property alias exitFullScreen: exitFullScreenAction
 
@@ -101,7 +103,7 @@ Item
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
@@ -111,7 +113,7 @@ Item
     Action
     {
         id: redoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
         onTriggered: UM.OperationStack.redo();
@@ -121,7 +123,7 @@ Item
     Action
     {
         id: quitAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Quit")
+        text: catalog.i18nc("@action:inmenu menubar:file","Quit")
         iconName: "application-exit"
         shortcut: StandardKey.Quit
     }
@@ -246,8 +248,14 @@ Item
         onTriggered: CuraActions.openBugReportPage();
     }
 
-    Action
-    {
+    Action {
+        id: dynamicalAction;
+        text: "Soporte";
+        iconName: "help-contents";
+        onTriggered: CuraActions.openDynamical();
+    }
+
+    Action {
         id: whatsNewAction;
         text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
     }
