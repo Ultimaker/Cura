@@ -1,8 +1,8 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from UM.Logger import Logger
 import re
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from PyQt5.QtCore import QTimer, Qt
 
@@ -31,13 +31,17 @@ class _NodeInfo:
         self.is_group = is_group  # type: bool
 
 
-##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
+    """Keep track of all objects in the project"""
+
     NameRole = Qt.UserRole + 1
     SelectedRole = Qt.UserRole + 2
     OutsideAreaRole = Qt.UserRole + 3
     BuilplateNumberRole = Qt.UserRole + 4
     NodeRole = Qt.UserRole + 5
+    PerObjectSettingsCountRole = Qt.UserRole + 6
+    MeshTypeRole = Qt.UserRole + 7
+    ExtruderNumberRole = Qt.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -46,6 +50,9 @@ class ObjectsModel(ListModel):
         self.addRoleName(self.SelectedRole, "selected")
         self.addRoleName(self.OutsideAreaRole, "outside_build_area")
         self.addRoleName(self.BuilplateNumberRole, "buildplate_number")
+        self.addRoleName(self.ExtruderNumberRole, "extruder_number")
+        self.addRoleName(self.PerObjectSettingsCountRole, "per_object_settings_count")
+        self.addRoleName(self.MeshTypeRole, "mesh_type")
         self.addRoleName(self.NodeRole, "node")
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSceneDelayed)
@@ -91,7 +98,8 @@ class ObjectsModel(ListModel):
 
         return True
 
-    def _renameNodes(self, node_info_dict: Dict[str, _NodeInfo]) -> List[SceneNode]:
+    @staticmethod
+    def _renameNodes(node_info_dict: Dict[str, _NodeInfo]) -> List[SceneNode]:
         # Go through all names and find out the names for all nodes that need to be renamed.
         all_nodes = []  # type: List[SceneNode]
         for name, node_info in node_info_dict.items():
@@ -111,9 +119,7 @@ class ObjectsModel(ListModel):
                 else:
                     new_group_name = "{0}#{1}".format(name, current_index)
 
-                old_name = node.getName()
                 node.setName(new_group_name)
-                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_group_name)
                 all_nodes.append(node)
         return all_nodes
 
@@ -172,11 +178,54 @@ class ObjectsModel(ListModel):
 
             node_build_plate_number = node.callDecoration("getBuildPlateNumber")
 
+            node_mesh_type = ""
+            per_object_settings_count = 0
+
+            per_object_stack = node.callDecoration("getStack")
+            if per_object_stack:
+                per_object_settings_count = per_object_stack.getTop().getNumInstances()
+
+                if node.callDecoration("isAntiOverhangMesh"):
+                    node_mesh_type = "anti_overhang_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+                elif node.callDecoration("isSupportMesh"):
+                    node_mesh_type = "support_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+                elif node.callDecoration("isCuttingMesh"):
+                    node_mesh_type = "cutting_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+                elif node.callDecoration("isInfillMesh"):
+                    node_mesh_type = "infill_mesh"
+                    per_object_settings_count -= 1  # do not count this mesh type setting
+
+                if per_object_settings_count > 0:
+                    if node_mesh_type == "support_mesh":
+                        # support meshes only allow support settings
+                        per_object_settings_count = 0
+                        for key in per_object_stack.getTop().getAllKeys():
+                            if per_object_stack.getTop().getInstance(key).definition.isAncestor("support"):
+                                per_object_settings_count += 1
+                    elif node_mesh_type == "anti_overhang_mesh":
+                        # anti overhang meshes ignore per model settings
+                        per_object_settings_count = 0
+
+            extruder_position = node.callDecoration("getActiveExtruderPosition")
+            if extruder_position is None:
+                extruder_number = -1
+            else:
+                extruder_number = int(extruder_position)
+            if node_mesh_type == "anti_overhang_mesh" or node.callDecoration("isGroup"):
+                # for anti overhang meshes and groups the extruder nr is irrelevant
+                extruder_number = -1
+
             nodes.append({
                 "name": node.getName(),
                 "selected": Selection.isSelected(node),
                 "outside_build_area": is_outside_build_area,
                 "buildplate_number": node_build_plate_number,
+                "extruder_number": extruder_number,
+                "per_object_settings_count": per_object_settings_count,
+                "mesh_type": node_mesh_type,
                 "node": node
             })
 

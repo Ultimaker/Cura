@@ -58,7 +58,7 @@ Item
                 Label
                 {
                     text: printJob && printJob.name ? printJob.name : ""
-                    color: UM.Theme.getColor("monitor_text_primary")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -89,7 +89,7 @@ Item
                 Label
                 {
                     text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                    color: UM.Theme.getColor("monitor_text_primary")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -120,7 +120,7 @@ Item
                 {
                     id: printerAssignmentLabel
                     anchors.verticalCenter: parent.verticalCenter
-                    color: UM.Theme.getColor("monitor_text_primary")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
@@ -188,7 +188,7 @@ Item
 
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
-                color: UM.Theme.getColor("monitor_text_primary")
+                color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.top: printerConfiguration.top

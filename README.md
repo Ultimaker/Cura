@@ -1,6 +1,8 @@
 Cura
 ====
-This is the new, shiny frontend for Cura. Check [daid/LegacyCura](https://github.com/daid/LegacyCura) for the legacy Cura that everyone knows and loves/hates. We re-worked the whole GUI code at Ultimaker, because the old code started to become unmaintainable.
+Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
+
+![Screenshot](screenshot.png)
 
 Logging Issues
 ------------
@@ -26,7 +28,7 @@ Dependencies
 
 Build scripts
 -------------
-Please checkout [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
+Please check out [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
 
 Running from Source
 -------------

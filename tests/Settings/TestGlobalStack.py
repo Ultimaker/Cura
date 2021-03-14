@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest #This module contains unit tests.
@@ -16,11 +16,13 @@ import UM.Settings.SettingDefinition #To add settings to the definition.
 from cura.Settings.cura_empty_instance_containers import empty_container
 
 
-##  Gets an instance container with a specified container type.
-#
-#   \param container_type The type metadata for the instance container.
-#   \return An instance container instance.
 def getInstanceContainer(container_type) -> InstanceContainer:
+    """Gets an instance container with a specified container type.
+
+    :param container_type: The type metadata for the instance container.
+    :return: An instance container instance.
+    """
+
     container = InstanceContainer(container_id = "InstanceContainer")
     container.setMetaDataEntry("type", container_type)
     return container
@@ -37,41 +39,43 @@ class InstanceContainerSubClass(InstanceContainer):
         self.setMetaDataEntry("type", container_type)
 
 
-#############################START OF TEST CASES################################
+############################START OF TEST CASES################################
 
 
-##  Tests whether adding a container is properly forbidden.
 def test_addContainer(global_stack):
+    """Tests whether adding a container is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         global_stack.addContainer(unittest.mock.MagicMock())
 
 
-##  Tests adding extruders to the global stack.
 def test_addExtruder(global_stack):
+    """Tests adding extruders to the global stack."""
+
     mock_definition = unittest.mock.MagicMock()
     mock_definition.getProperty = lambda key, property, context = None: 2 if key == "machine_extruder_count" and property == "value" else None
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.definition = mock_definition
 
-    assert len(global_stack.extruders) == 0
+    assert len(global_stack.extruderList) == 0
     first_extruder = unittest.mock.MagicMock()
     first_extruder.getMetaDataEntry = lambda key: 0 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(first_extruder)
-    assert len(global_stack.extruders) == 1
-    assert global_stack.extruders[0] == first_extruder
+    assert len(global_stack.extruderList) == 1
+    assert global_stack.extruderList[0] == first_extruder
     second_extruder = unittest.mock.MagicMock()
     second_extruder.getMetaDataEntry = lambda key: 1 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(second_extruder)
-    assert len(global_stack.extruders) == 2
-    assert global_stack.extruders[1] == second_extruder
+    assert len(global_stack.extruderList) == 2
+    assert global_stack.extruderList[1] == second_extruder
     # Disabled for now for Custom FDM Printer
     # with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
     #     with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
     #         global_stack.addExtruder(unittest.mock.MagicMock())
-    assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
+    assert len(global_stack.extruderList) == 2  # Didn't add the faulty extruder.
 
 
 #Tests setting user changes profiles to invalid containers.
@@ -213,9 +217,12 @@ def test_constrainDefinitionValid(container, global_stack):
     global_stack.definition = container #Should not give an error.
 
 
-##  Tests whether deserialising completes the missing containers with empty ones. The initial containers are just the
-#   definition and the definition_changes (that cannot be empty after CURA-5281)
 def test_deserializeCompletesEmptyContainers(global_stack):
+    """Tests whether deserialising completes the missing containers with empty ones. The initial containers are just the
+
+    definition and the definition_changes (that cannot be empty after CURA-5281)
+    """
+
     global_stack._containers = [DefinitionContainer(container_id = "definition"), global_stack.definitionChanges] #Set the internal state of this stack manually.
 
     with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
@@ -229,8 +236,9 @@ def test_deserializeCompletesEmptyContainers(global_stack):
         assert global_stack.getContainer(container_type_index) == empty_container #All others need to be empty.
 
 
-##  Tests whether an instance container with the wrong type gets removed when deserialising.
 def test_deserializeRemovesWrongInstanceContainer(global_stack):
+    """Tests whether an instance container with the wrong type gets removed when deserialising."""
+
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = getInstanceContainer(container_type = "wrong type")
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
@@ -240,8 +248,9 @@ def test_deserializeRemovesWrongInstanceContainer(global_stack):
     assert global_stack.quality == global_stack._empty_instance_container #Replaced with empty.
 
 
-##  Tests whether a container with the wrong class gets removed when deserialising.
 def test_deserializeRemovesWrongContainerClass(global_stack):
+    """Tests whether a container with the wrong class gets removed when deserialising."""
+
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = DefinitionContainer(container_id = "wrong class")
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
@@ -251,8 +260,9 @@ def test_deserializeRemovesWrongContainerClass(global_stack):
     assert global_stack.quality == global_stack._empty_instance_container #Replaced with empty.
 
 
-##  Tests whether an instance container in the definition spot results in an error.
 def test_deserializeWrongDefinitionClass(global_stack):
+    """Tests whether an instance container in the definition spot results in an error."""
+
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = getInstanceContainer(container_type = "definition") #Correct type but wrong class.
 
     with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
@@ -260,8 +270,9 @@ def test_deserializeWrongDefinitionClass(global_stack):
             global_stack.deserialize("")
 
 
-##  Tests whether an instance container with the wrong type is moved into the correct slot by deserialising.
 def test_deserializeMoveInstanceContainer(global_stack):
+    """Tests whether an instance container with the wrong type is moved into the correct slot by deserialising."""
+
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = getInstanceContainer(container_type = "material") #Not in the correct spot.
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
@@ -272,8 +283,9 @@ def test_deserializeMoveInstanceContainer(global_stack):
     assert global_stack.material != empty_container
 
 
-##  Tests whether a definition container in the wrong spot is moved into the correct spot by deserialising.
 def test_deserializeMoveDefinitionContainer(global_stack):
+    """Tests whether a definition container in the wrong spot is moved into the correct spot by deserialising."""
+
     global_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Material] = DefinitionContainer(container_id = "some definition") #Not in the correct spot.
 
     with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
@@ -283,8 +295,9 @@ def test_deserializeMoveDefinitionContainer(global_stack):
     assert global_stack.definition != empty_container
 
 
-##  Tests whether getProperty properly applies the stack-like behaviour on its containers.
 def test_getPropertyFallThrough(global_stack):
+    """Tests whether getProperty properly applies the stack-like behaviour on its containers."""
+
     #A few instance container mocks to put in the stack.
     mock_layer_heights = {} #For each container type, a mock container that defines layer height to something unique.
     mock_no_settings = {} #For each container type, a mock container that has no settings at all.
@@ -326,8 +339,9 @@ def test_getPropertyFallThrough(global_stack):
     assert global_stack.getProperty("layer_height", "value") == container_indexes.UserChanges
 
 
-##  In definitions, test whether having no resolve allows us to find the value.
 def test_getPropertyNoResolveInDefinition(global_stack):
+    """In definitions, test whether having no resolve allows us to find the value."""
+
     value = unittest.mock.MagicMock() #Just sets the value for bed temperature.
     value.getProperty = lambda key, property, context = None: 10 if (key == "material_bed_temperature" and property == "value") else None
 
@@ -336,8 +350,9 @@ def test_getPropertyNoResolveInDefinition(global_stack):
     assert global_stack.getProperty("material_bed_temperature", "value") == 10 #No resolve, so fall through to value.
 
 
-##  In definitions, when the value is asked and there is a resolve function, it must get the resolve first.
 def test_getPropertyResolveInDefinition(global_stack):
+    """In definitions, when the value is asked and there is a resolve function, it must get the resolve first."""
+
     resolve_and_value = unittest.mock.MagicMock() #Sets the resolve and value for bed temperature.
     resolve_and_value.getProperty = lambda key, property, context = None: (7.5 if property == "resolve" else 5) if (key == "material_bed_temperature" and property in ("resolve", "value")) else None #7.5 resolve, 5 value.
 
@@ -346,8 +361,9 @@ def test_getPropertyResolveInDefinition(global_stack):
     assert global_stack.getProperty("material_bed_temperature", "value") == 7.5 #Resolve wins in the definition.
 
 
-##  In instance containers, when the value is asked and there is a resolve function, it must get the value first.
 def test_getPropertyResolveInInstance(global_stack):
+    """In instance containers, when the value is asked and there is a resolve function, it must get the value first."""
+
     container_indices = cura.Settings.CuraContainerStack._ContainerIndexes
     instance_containers = {}
     for container_type in container_indices.IndexTypeMap:
@@ -373,8 +389,9 @@ def test_getPropertyResolveInInstance(global_stack):
     assert global_stack.getProperty("material_bed_temperature", "value") == 5
 
 
-##  Tests whether the value in instances gets evaluated before the resolve in definitions.
 def test_getPropertyInstancesBeforeResolve(global_stack):
+    """Tests whether the value in instances gets evaluated before the resolve in definitions."""
+
     def getValueProperty(key, property, context = None):
         if key != "material_bed_temperature":
             return None
@@ -393,19 +410,20 @@ def test_getPropertyInstancesBeforeResolve(global_stack):
 
     value = unittest.mock.MagicMock() #Sets just the value.
     value.getProperty = unittest.mock.MagicMock(side_effect = getValueProperty)
-    value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
+    value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality_changes")
     resolve = unittest.mock.MagicMock() #Sets just the resolve.
     resolve.getProperty = unittest.mock.MagicMock(side_effect = getResolveProperty)
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = resolve
-    global_stack.quality = value
+    global_stack.qualityChanges = value
 
     assert global_stack.getProperty("material_bed_temperature", "value") == 10
 
 
-##  Tests whether the hasUserValue returns true for settings that are changed in the user-changes container.
 def test_hasUserValueUserChanges(global_stack):
+    """Tests whether the hasUserValue returns true for settings that are changed in the user-changes container."""
+
     container = unittest.mock.MagicMock()
     container.getMetaDataEntry = unittest.mock.MagicMock(return_value = "user")
     container.hasProperty = lambda key, property: key == "layer_height" #Only have the layer_height property set.
@@ -416,8 +434,9 @@ def test_hasUserValueUserChanges(global_stack):
     assert not global_stack.hasUserValue("")
 
 
-##  Tests whether the hasUserValue returns true for settings that are changed in the quality-changes container.
 def test_hasUserValueQualityChanges(global_stack):
+    """Tests whether the hasUserValue returns true for settings that are changed in the quality-changes container."""
+
     container = unittest.mock.MagicMock()
     container.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality_changes")
     container.hasProperty = lambda key, property: key == "layer_height" #Only have the layer_height property set.
@@ -428,8 +447,9 @@ def test_hasUserValueQualityChanges(global_stack):
     assert not global_stack.hasUserValue("")
 
 
-##  Tests whether a container in some other place on the stack is correctly not recognised as user value.
 def test_hasNoUserValue(global_stack):
+    """Tests whether a container in some other place on the stack is correctly not recognised as user value."""
+
     container = unittest.mock.MagicMock()
     container.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
     container.hasProperty = lambda key, property: key == "layer_height" #Only have the layer_height property set.
@@ -438,20 +458,23 @@ def test_hasNoUserValue(global_stack):
     assert not global_stack.hasUserValue("layer_height") #However this container is quality, so it's not a user value.
 
 
-##  Tests whether inserting a container is properly forbidden.
 def test_insertContainer(global_stack):
+    """Tests whether inserting a container is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         global_stack.insertContainer(0, unittest.mock.MagicMock())
 
 
-##  Tests whether removing a container is properly forbidden.
 def test_removeContainer(global_stack):
+    """Tests whether removing a container is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         global_stack.removeContainer(unittest.mock.MagicMock())
 
 
-##  Tests whether changing the next stack is properly forbidden.
 def test_setNextStack(global_stack):
+    """Tests whether changing the next stack is properly forbidden."""
+
     with pytest.raises(InvalidOperationError):
         global_stack.setNextStack(unittest.mock.MagicMock())
 

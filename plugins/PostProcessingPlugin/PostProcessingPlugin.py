@@ -16,7 +16,7 @@ from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
-from UM.Trust import Trust
+from UM.Trust import Trust, TrustBasics
 from UM.i18n import i18nCatalog
 from cura import ApplicationMetadata
 from cura.CuraApplication import CuraApplication
@@ -27,9 +27,8 @@ if TYPE_CHECKING:
     from .Script import Script
 
 
-##  The post processing plugin is an Extension type plugin that enables pre-written scripts to post process generated
-#   g-code files.
 class PostProcessingPlugin(QObject, Extension):
+    """Extension type plugin that enables pre-written scripts to post process g-code files."""
     def __init__(self, parent = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
@@ -69,8 +68,9 @@ class PostProcessingPlugin(QObject, Extension):
         except IndexError:
             return ""
 
-    ##  Execute all post-processing scripts on the gcode.
     def execute(self, output_device) -> None:
+        """Execute all post-processing scripts on the gcode."""
+
         scene = Application.getInstance().getController().getScene()
         # If the scene does not have a gcode, do nothing
         if not hasattr(scene, "gcode_dict"):
@@ -119,9 +119,10 @@ class PostProcessingPlugin(QObject, Extension):
             self.selectedIndexChanged.emit() #Ensure that settings are updated
             self._propertyChanged()
 
-    ##  Remove a script from the active script list by index.
     @pyqtSlot(int)
     def removeScriptByIndex(self, index: int) -> None:
+        """Remove a script from the active script list by index."""
+
         self._script_list.pop(index)
         if len(self._script_list) - 1 < self._selected_script_index:
             self._selected_script_index = len(self._script_list) - 1
@@ -129,17 +130,21 @@ class PostProcessingPlugin(QObject, Extension):
         self.selectedIndexChanged.emit()  # Ensure that settings are updated
         self._propertyChanged()
 
-    ##  Load all scripts from all paths where scripts can be found.
-    #
-    #   This should probably only be done on init.
     def loadAllScripts(self) -> None:
+        """Load all scripts from all paths where scripts can be found.
+
+        This should probably only be done on init.
+        """
+
         if self._loaded_scripts: # Already loaded.
             return
 
         # The PostProcessingPlugin path is for built-in scripts.
         # The Resources path is where the user should store custom scripts.
         # The Preferences path is legacy, where the user may previously have stored scripts.
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
+        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
+        for root in resource_folders:
             if root is None:
                 continue
             path = os.path.join(root, "scripts")
@@ -152,12 +157,31 @@ class PostProcessingPlugin(QObject, Extension):
 
             self.loadScripts(path)
 
-    ##  Load all scripts from provided path.
-    #   This should probably only be done on init.
-    #   \param path Path to check for scripts.
     def loadScripts(self, path: str) -> None:
-        ## Load all scripts in the scripts folders
+        """Load all scripts from provided path.
+
+        This should probably only be done on init.
+        :param path: Path to check for scripts.
+        """
+
+        if ApplicationMetadata.IsEnterpriseVersion:
+            # Delete all __pycache__ not in installation folder, as it may present a security risk.
+            # It prevents this very strange scenario (should already be prevented on enterprise because signed-fault):
+            #  - Copy an existing script from the postprocessing-script folder to the appdata scripts folder.
+            #  - Also copy the entire __pycache__ folder from the first to the last location.
+            #  - Leave the __pycache__ as is, but write malicious code just before the class begins.
+            #  - It'll execute, despite that the script has not been signed.
+            # It's not known if these reproduction steps are minimal, but it does at least happen in this case.
+            install_prefix = os.path.abspath(CuraApplication.getInstance().getInstallPrefix())
+            try:
+                is_in_installation_path = os.path.commonpath([install_prefix, path]).startswith(install_prefix)
+            except ValueError:
+                is_in_installation_path = False
+            if not is_in_installation_path:
+                TrustBasics.removeCached(path)
+
         scripts = pkgutil.iter_modules(path = [path])
+        """Load all scripts in the scripts folders"""
         for loader, script_name, ispkg in scripts:
             # Iterate over all scripts.
             if script_name not in sys.modules:
@@ -239,7 +263,11 @@ class PostProcessingPlugin(QObject, Extension):
             script_str = script_str.replace(r"\\\n", "\n").replace(r"\\\\", "\\\\")  # Unescape escape sequences.
             script_parser = configparser.ConfigParser(interpolation=None)
             script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
-            script_parser.read_string(script_str)
+            try:
+                script_parser.read_string(script_str)
+            except configparser.Error as e:
+                Logger.error("Stored post-processing scripts have syntax errors: {err}".format(err = str(e)))
+                continue
             for script_name, settings in script_parser.items():  # There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
                 if script_name == "DEFAULT":  # ConfigParser always has a DEFAULT section, but we don't fill it. Ignore this one.
                     continue
@@ -261,9 +289,8 @@ class PostProcessingPlugin(QObject, Extension):
         self.scriptListChanged.emit()
         self._propertyChanged()
 
-    ##  When the global container stack is changed, swap out the list of active
-    #   scripts.
     def _onGlobalContainerStackChanged(self) -> None:
+        """When the global container stack is changed, swap out the list of active scripts."""
         if self._global_container_stack:
             self._global_container_stack.metaDataChanged.disconnect(self._restoreScriptInforFromMetadata)
 
@@ -306,8 +333,12 @@ class PostProcessingPlugin(QObject, Extension):
         # We do want to listen to other events.
         self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
 
-    ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self) -> None:
+        """Creates the view used by show popup.
+
+        The view is saved because of the fairly aggressive garbage collection.
+        """
+
         Logger.log("d", "Creating post processing plugin view.")
 
         self.loadAllScripts()
@@ -323,8 +354,9 @@ class PostProcessingPlugin(QObject, Extension):
         # Create the save button component
         CuraApplication.getInstance().addAdditionalComponent("saveButton", self._view.findChild(QObject, "postProcessingSaveAreaButton"))
 
-    ##  Show the (GUI) popup of the post processing plugin.
     def showPopup(self) -> None:
+        """Show the (GUI) popup of the post processing plugin."""
+
         if self._view is None:
             self._createView()
             if self._view is None:
@@ -332,11 +364,13 @@ class PostProcessingPlugin(QObject, Extension):
                 return
         self._view.show()
 
-    ##  Property changed: trigger re-slice
-    #   To do this we use the global container stack propertyChanged.
-    #   Re-slicing is necessary for setting changes in this plugin, because the changes
-    #   are applied only once per "fresh" gcode
     def _propertyChanged(self) -> None:
+        """Property changed: trigger re-slice
+
+        To do this we use the global container stack propertyChanged.
+        Re-slicing is necessary for setting changes in this plugin, because the changes
+        are applied only once per "fresh" gcode
+        """
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is not None:
             global_container_stack.propertyChanged.emit("post_processing_plugin", "value")

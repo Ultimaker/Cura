@@ -12,9 +12,11 @@ from UM.Settings.SettingInstance import SettingInstance
 from UM.Event import Event
 
 
-##  This tool allows the user to add & change settings per node in the scene.
-#   The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
 class PerObjectSettingsTool(Tool):
+    """This tool allows the user to add & change settings per node in the scene.
+
+    The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
+    """
     def __init__(self):
         super().__init__()
         self._model = None
@@ -48,26 +50,31 @@ class PerObjectSettingsTool(Tool):
         except AttributeError:
             return ""
 
-    ##  Gets the active extruder of the currently selected object.
-    #
-    #   \return The active extruder of the currently selected object.
     def getSelectedActiveExtruder(self):
+        """Gets the active extruder of the currently selected object.
+
+        :return: The active extruder of the currently selected object.
+        """
+
         selected_object = Selection.getSelectedObject(0)
         return selected_object.callDecoration("getActiveExtruder")
 
-    ##  Changes the active extruder of the currently selected object.
-    #
-    #   \param extruder_stack_id The ID of the extruder to print the currently
-    #   selected object with.
     def setSelectedActiveExtruder(self, extruder_stack_id):
+        """Changes the active extruder of the currently selected object.
+
+        :param extruder_stack_id: The ID of the extruder to print the currently
+        selected object with.
+        """
+
         selected_object = Selection.getSelectedObject(0)
         stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
         if not stack:
             selected_object.addDecorator(SettingOverrideDecorator())
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
 
-    ## Returns True when the mesh_type was changed, False when current mesh_type == mesh_type
     def setMeshType(self, mesh_type: str) -> bool:
+        """Returns True when the mesh_type was changed, False when current mesh_type == mesh_type"""
+
         old_mesh_type = self.getMeshType()
         if old_mesh_type == mesh_type:
             return False
@@ -96,17 +103,20 @@ class PerObjectSettingsTool(Tool):
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
 
-        for property_key in ["top_bottom_thickness", "wall_thickness"]:
+        for property_key in ["top_bottom_thickness", "wall_thickness", "wall_line_count"]:
             if mesh_type == "infill_mesh":
                 if settings.getInstance(property_key) is None:
                     definition = stack.getSettingDefinition(property_key)
                     new_instance = SettingInstance(definition, settings)
-                    new_instance.setProperty("value", 0)
+                    # We just want the wall_line count to be there in case it was overriden in the global stack.
+                    # as such, we don't need to set a value.
+                    if property_key != "wall_line_count":
+                        new_instance.setProperty("value", 0)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     settings_visibility_changed = True
 
-            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and settings.getProperty(property_key, "value") == 0:
+            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and (settings.getProperty(property_key, "value") == 0 or property_key == "wall_line_count"):
                 settings.removeInstance(property_key)
                 settings_visibility_changed = True
 

@@ -10,14 +10,8 @@ _removed_settings = {
     "machine_filament_park_distance",
 }
 
-class VersionUpgrade45to46(VersionUpgrade):
-    def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
-        parser.read_string(serialised)
-        format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
-        return format_version * 1000000 + setting_version
 
+class VersionUpgrade45to46(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades preferences to have the new version number.
@@ -32,14 +26,15 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "12"
+        parser["metadata"]["setting_version"] = "13"
 
         # Remove deleted settings from the visible settings list.
-        visible_settings = set(parser["general"]["visible_settings"].split(";"))
-        for removed in _removed_settings:
-            if removed in visible_settings:
-                visible_settings.remove(removed)
-        parser["general"]["visible_settings"] = ";".join(visible_settings)
+        if "general" in parser and "visible_settings" in parser["general"]:
+            visible_settings = set(parser["general"]["visible_settings"].split(";"))
+            for removed in _removed_settings:
+                if removed in visible_settings:
+                    visible_settings.remove(removed)
+            parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
         parser.write(result)
@@ -59,12 +54,19 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "12"
+        parser["metadata"]["setting_version"] = "13"
 
         if "values" in parser:
             for removed in _removed_settings:
                 if removed in parser["values"]:
                     del parser["values"][removed]
+
+            if "meshfix_maximum_deviation" in parser["values"]:
+                maximum_deviation = parser["values"]["meshfix_maximum_deviation"]
+                if maximum_deviation.startswith("="):
+                    maximum_deviation = maximum_deviation[1:]
+                maximum_deviation = "=(" + maximum_deviation + ") / 2"
+                parser["values"]["meshfix_maximum_deviation"] = maximum_deviation
 
         result = io.StringIO()
         parser.write(result)
@@ -84,7 +86,7 @@ class VersionUpgrade45to46(VersionUpgrade):
         # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "12"
+        parser["metadata"]["setting_version"] = "13"
 
         result = io.StringIO()
         parser.write(result)

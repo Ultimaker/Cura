@@ -130,7 +130,7 @@ Item
 
                     onTextEdited: invalidInputLabel.visible = false
 
-                    placeholderText: catalog.i18nc("@text", "Place enter your printer's IP address.")
+                    placeholderText: catalog.i18nc("@text", "Enter your printer's IP address.")
 
                     enabled: { ! (addPrinterByIpScreen.hasRequestInProgress || addPrinterByIpScreen.isPrinterDiscovered) }
                     onAccepted: addPrinterButton.clicked()

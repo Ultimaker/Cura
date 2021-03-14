@@ -11,19 +11,24 @@ if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
 
 
-##  Polygon representation as an array for use with Arrange
 class ShapeArray:
+    """Polygon representation as an array for use with :py:class:`cura.Arranging.Arrange.Arrange`"""
+
     def __init__(self, arr: numpy.array, offset_x: float, offset_y: float, scale: float = 1) -> None:
         self.arr = arr
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.scale = scale
 
-    ##  Instantiate from a bunch of vertices
-    #   \param vertices
-    #   \param scale  scale the coordinates
     @classmethod
     def fromPolygon(cls, vertices: numpy.array, scale: float = 1) -> "ShapeArray":
+        """Instantiate from a bunch of vertices
+
+        :param vertices:
+        :param scale:  scale the coordinates
+        :return: a shape array instantiated from a bunch of vertices
+        """
+
         # scale
         vertices = vertices * scale
         # flip y, x -> x, y
@@ -44,12 +49,16 @@ class ShapeArray:
             arr[0][0] = 1
         return cls(arr, offset_x, offset_y)
 
-    ##  Instantiate an offset and hull ShapeArray from a scene node.
-    #   \param node source node where the convex hull must be present
-    #   \param min_offset offset for the offset ShapeArray
-    #   \param scale scale the coordinates
     @classmethod
     def fromNode(cls, node: "SceneNode", min_offset: float, scale: float = 0.5, include_children: bool = False) -> Tuple[Optional["ShapeArray"], Optional["ShapeArray"]]:
+        """Instantiate an offset and hull ShapeArray from a scene node.
+
+        :param node: source node where the convex hull must be present
+        :param min_offset: offset for the offset ShapeArray
+        :param scale: scale the coordinates
+        :return: A tuple containing an offset and hull shape array
+        """
+
         transform = node._transformation
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
@@ -88,14 +97,19 @@ class ShapeArray:
 
         return offset_shape_arr, hull_shape_arr
 
-    ##  Create np.array with dimensions defined by shape
-    #   Fills polygon defined by vertices with ones, all other values zero
-    #   Only works correctly for convex hull vertices
-    #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
-    #   \param shape  numpy format shape, [x-size, y-size]
-    #   \param vertices
     @classmethod
     def arrayFromPolygon(cls, shape: Tuple[int, int], vertices: numpy.array) -> numpy.array:
+        """Create :py:class:`numpy.ndarray` with dimensions defined by shape
+
+        Fills polygon defined by vertices with ones, all other values zero
+        Only works correctly for convex hull vertices
+        Originally from: `Stackoverflow - generating a filled polygon inside a numpy array <https://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array>`_
+
+        :param shape:  numpy format shape, [x-size, y-size]
+        :param vertices:
+        :return: numpy array with dimensions defined by shape
+        """
+
         base_array = numpy.zeros(shape, dtype = numpy.int32)  # Initialize your array of zeros
 
         fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
@@ -111,16 +125,21 @@ class ShapeArray:
 
         return base_array
 
-    ##  Return indices that mark one side of the line, used by arrayFromPolygon
-    #   Uses the line defined by p1 and p2 to check array of
-    #   input indices against interpolated value
-    #   Returns boolean array, with True inside and False outside of shape
-    #   Originally from: http://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array
-    #   \param p1 2-tuple with x, y for point 1
-    #   \param p2 2-tuple with x, y for point 2
-    #   \param base_array boolean array to project the line on
     @classmethod
     def _check(cls, p1: numpy.array, p2: numpy.array, base_array: numpy.array) -> Optional[numpy.array]:
+        """Return indices that mark one side of the line, used by arrayFromPolygon
+
+        Uses the line defined by p1 and p2 to check array of
+        input indices against interpolated value
+        Returns boolean array, with True inside and False outside of shape
+        Originally from: `Stackoverflow - generating a filled polygon inside a numpy array <https://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array>`_
+
+        :param p1: 2-tuple with x, y for point 1
+        :param p2: 2-tuple with x, y for point 2
+        :param base_array: boolean array to project the line on
+        :return: A numpy array with indices that mark one side of the line
+        """
+
         if p1[0] == p2[0] and p1[1] == p2[1]:
             return None
         idxs = numpy.indices(base_array.shape)  # Create 3D array of indices

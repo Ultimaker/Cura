@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, Optional
@@ -45,13 +45,13 @@ class PerObjectContainerStack(CuraContainerStack):
             if "original_limit_to_extruder" in context.context:
                 limit_to_extruder = context.context["original_limit_to_extruder"]
 
-        if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in global_stack.extruders:
+        if limit_to_extruder is not None and limit_to_extruder != "-1" and int(limit_to_extruder) <= len(global_stack.extruderList):
             # set the original limit_to_extruder if this is the first stack that has a non-overridden limit_to_extruder
             if "original_limit_to_extruder" not in context.context:
                 context.context["original_limit_to_extruder"] = limit_to_extruder
 
             if super().getProperty(key, "settable_per_extruder", context):
-                result = global_stack.extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
+                result = global_stack.extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
                     context.popContainer()
                     return result

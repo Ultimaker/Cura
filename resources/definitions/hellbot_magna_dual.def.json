@@ -4,7 +4,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "MUX team",
+        "author": "Hellbot Development Team",
         "manufacturer": "Hellbot",
         "file_formats": "text/x-gcode",
         "platform": "hellbot_magna.obj",
@@ -26,6 +26,9 @@
         "machine_depth": {
             "default_value": 220
         },
+	"machine_heated_bed": { 
+	    "default_value": true 
+	},
         "machine_height": {
             "default_value": 260
         },

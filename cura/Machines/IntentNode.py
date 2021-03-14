@@ -11,10 +11,12 @@ if TYPE_CHECKING:
     from cura.Machines.QualityNode import QualityNode
 
 
-##  This class represents an intent profile in the container tree.
-#
-#   This class has no more subnodes.
 class IntentNode(ContainerNode):
+    """This class represents an intent profile in the container tree.
+
+    This class has no more subnodes.
+    """
+
     def __init__(self, container_id: str, quality: "QualityNode") -> None:
         super().__init__(container_id)
         self.quality = quality

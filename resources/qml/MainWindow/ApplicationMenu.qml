@@ -35,6 +35,7 @@ Item
             MenuSeparator { }
             MenuItem { action: Cura.Actions.selectAll }
             MenuItem { action: Cura.Actions.arrangeAll }
+            MenuItem { action: Cura.Actions.multiplySelection }
             MenuItem { action: Cura.Actions.deleteSelection }
             MenuItem { action: Cura.Actions.deleteAll }
             MenuItem { action: Cura.Actions.resetAllTranslation }

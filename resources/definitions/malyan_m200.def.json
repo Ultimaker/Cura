@@ -5,9 +5,8 @@
     "metadata": {
         "author": "Brian Corbino, Tyler Gibson",
         "manufacturer": "Malyan",
-        "category": "Other",
         "file_formats": "text/x-gcode",
-        "platform": "malyan_m200_platform.stl",
+        "platform": "malyan_m200_platform.3mf",
         "platform_offset": [0, -0.25, 0],
         "has_machine_quality": true,
         "has_materials": true,

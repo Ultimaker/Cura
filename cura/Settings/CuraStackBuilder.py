@@ -9,22 +9,24 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.MachineNode import MachineNode
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 
 
-##  Contains helper functions to create new machines.
 class CuraStackBuilder:
+    """Contains helper functions to create new machines."""
 
-    ##  Create a new instance of a machine.
-    #
-    #   \param name The name of the new machine.
-    #   \param definition_id The ID of the machine definition to use.
-    #
-    #   \return The new global stack or None if an error occurred.
     @classmethod
-    def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
+    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None) -> Optional[GlobalStack]:
+        """Create a new instance of a machine.
+
+        :param name: The name of the new machine.
+        :param definition_id: The ID of the machine definition to use.
+        :param machine_extruder_count: The number of extruders in the machine.
+
+        :return: The new global stack or None if an error occurred.
+        """
+
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
@@ -60,10 +62,18 @@ class CuraStackBuilder:
         for position in extruder_dict:
             try:
                 cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
-            except IndexError:
+            except IndexError as e:
+                Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos = position, err = str(e)))
                 return None
 
-        for new_extruder in new_global_stack.extruders.values():  # Only register the extruders if we're sure that all of them are correct.
+        # If given, set the machine_extruder_count when creating the machine, or else the extruderList used bellow will
+        # not return the correct extruder list (since by default, the machine_extruder_count is 1) in machines with
+        # settable number of extruders.
+        if machine_extruder_count and 0 <= machine_extruder_count <= len(extruder_dict):
+            new_global_stack.setProperty("machine_extruder_count", "value", machine_extruder_count)
+
+        # Only register the extruders if we're sure that all of them are correct.
+        for new_extruder in new_global_stack.extruderList:
             registry.addContainer(new_extruder)
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
@@ -72,12 +82,14 @@ class CuraStackBuilder:
 
         return new_global_stack
 
-    ##  Create a default Extruder Stack
-    #
-    #   \param global_stack The global stack this extruder refers to.
-    #   \param extruder_position The position of the current extruder.
     @classmethod
     def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
+        """Create a default Extruder Stack
+
+        :param global_stack: The global stack this extruder refers to.
+        :param extruder_position: The position of the current extruder.
+        """
+
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
@@ -121,17 +133,6 @@ class CuraStackBuilder:
 
         registry.addContainer(new_extruder)
 
-    ##  Create a new Extruder stack
-    #
-    #   \param new_stack_id The ID of the new stack.
-    #   \param extruder_definition The definition to base the new stack on.
-    #   \param machine_definition_id The ID of the machine definition to use for the user container.
-    #   \param position The position the extruder occupies in the machine.
-    #   \param variant_container The variant selected for the current extruder.
-    #   \param material_container The material selected for the current extruder.
-    #   \param quality_container The quality selected for the current extruder.
-    #
-    #   \return A new Extruder stack instance with the specified parameters.
     @classmethod
     def createExtruderStack(cls, new_stack_id: str, extruder_definition: DefinitionContainerInterface,
                             machine_definition_id: str,
@@ -139,6 +140,19 @@ class CuraStackBuilder:
                             variant_container: "InstanceContainer",
                             material_container: "InstanceContainer",
                             quality_container: "InstanceContainer") -> ExtruderStack:
+
+        """Create a new Extruder stack
+
+        :param new_stack_id: The ID of the new stack.
+        :param extruder_definition: The definition to base the new stack on.
+        :param machine_definition_id: The ID of the machine definition to use for the user container.
+        :param position: The position the extruder occupies in the machine.
+        :param variant_container: The variant selected for the current extruder.
+        :param material_container: The material selected for the current extruder.
+        :param quality_container: The quality selected for the current extruder.
+
+        :return: A new Extruder stack instance with the specified parameters.
+        """
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
@@ -168,28 +182,22 @@ class CuraStackBuilder:
 
         return stack
 
-    ##  Create a new Global stack
-    #
-    #   \param new_stack_id The ID of the new stack.
-    #   \param definition The definition to base the new stack on.
-    #   \param kwargs You can add keyword arguments to specify IDs of containers to use for a specific type, for example "variant": "0.4mm"
-    #
-    #   \return A new Global stack instance with the specified parameters.
-
-    ##  Create a new Global stack
-    #
-    #   \param new_stack_id The ID of the new stack.
-    #   \param definition The definition to base the new stack on.
-    #   \param variant_container The variant selected for the current stack.
-    #   \param material_container The material selected for the current stack.
-    #   \param quality_container The quality selected for the current stack.
-    #
-    #   \return A new Global stack instance with the specified parameters.
     @classmethod
     def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainerInterface,
                           variant_container: "InstanceContainer",
                           material_container: "InstanceContainer",
                           quality_container: "InstanceContainer") -> GlobalStack:
+
+        """Create a new Global stack
+
+        :param new_stack_id: The ID of the new stack.
+        :param definition: The definition to base the new stack on.
+        :param variant_container: The variant selected for the current stack.
+        :param material_container: The material selected for the current stack.
+        :param quality_container: The quality selected for the current stack.
+
+        :return: A new Global stack instance with the specified parameters.
+        """
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()

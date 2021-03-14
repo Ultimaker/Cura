@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -13,16 +13,17 @@ from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.Validator import ValidatorState
 
 import cura.CuraApplication
-#
-# This class performs setting error checks for the currently active machine.
-#
-# The whole error checking process is pretty heavy which can take ~0.5 secs, so it can cause GUI to lag.
-# The idea here is to split the whole error check into small tasks, each of which only checks a single setting key
-# in a stack. According to my profiling results, the maximal runtime for such a sub-task is <0.03 secs, which should
-# be good enough. Moreover, if any changes happened to the machine, we can cancel the check in progress without wait
-# for it to finish the complete work.
-#
+
+
 class MachineErrorChecker(QObject):
+    """This class performs setting error checks for the currently active machine.
+
+    The whole error checking process is pretty heavy which can take ~0.5 secs, so it can cause GUI to lag. The idea
+    here is to split the whole error check into small tasks, each of which only checks a single setting key in a
+    stack. According to my profiling results, the maximal runtime for such a sub-task is <0.03 secs, which should be
+    good enough. Moreover, if any changes happened to the machine, we can cancel the check in progress without wait
+    for it to finish the complete work.
+    """
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
@@ -49,6 +50,8 @@ class MachineErrorChecker(QObject):
         self._error_check_timer = QTimer(self)
         self._error_check_timer.setInterval(100)
         self._error_check_timer.setSingleShot(True)
+
+        self._keys_to_check = set()  # type: Set[str]
 
     def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
@@ -92,24 +95,38 @@ class MachineErrorChecker(QObject):
     def needToWaitForResult(self) -> bool:
         return self._need_to_check or self._check_in_progress
 
-    #   Start the error check for property changed
-    #   this is seperate from the startErrorCheck because it ignores a number property types
     def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
+        """Start the error check for property changed
+
+        this is seperate from the startErrorCheck because it ignores a number property types
+
+        :param key:
+        :param property_name:
+        """
+
         if property_name != "value":
             return
+        self._keys_to_check.add(key)
         self.startErrorCheck()
 
-    # Starts the error check timer to schedule a new error check.
     def startErrorCheck(self, *args: Any) -> None:
+        """Starts the error check timer to schedule a new error check.
+
+        :param args:
+        """
+
         if not self._check_in_progress:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()
         self._error_check_timer.start()
 
-    # This function is called by the timer to reschedule a new error check.
-    # If there is no check in progress, it will start a new one. If there is any, it sets the "_need_to_check" flag
-    # to notify the current check to stop and start a new one.
     def _rescheduleCheck(self) -> None:
+        """This function is called by the timer to reschedule a new error check.
+
+        If there is no check in progress, it will start a new one. If there is any, it sets the "_need_to_check" flag
+        to notify the current check to stop and start a new one.
+        """
+
         if self._check_in_progress and not self._need_to_check:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()
@@ -127,7 +144,10 @@ class MachineErrorChecker(QObject):
         # Populate the (stack, key) tuples to check
         self._stacks_and_keys_to_check = deque()
         for stack in global_stack.extruderList:
-            for key in stack.getAllKeys():
+            if not self._keys_to_check:
+                self._keys_to_check = stack.getAllKeys()
+
+            for key in self._keys_to_check:
                 self._stacks_and_keys_to_check.append((stack, key))
 
         self._application.callLater(self._checkStack)
@@ -168,18 +188,25 @@ class MachineErrorChecker(QObject):
                 validator = validator_type(key)
                 validation_state = validator(stack)
         if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
-            # Finish
-            self._setResult(True)
+            # Since we don't know if any of the settings we didn't check is has an error value, store the list for the
+            # next check.
+            keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
+            keys_to_recheck.add(key)
+            self._setResult(True, keys_to_recheck = keys_to_recheck)
             return
 
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)
 
-    def _setResult(self, result: bool) -> None:
+    def _setResult(self, result: bool, keys_to_recheck = None) -> None:
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()
             self._machine_manager.stacksValidationChanged.emit()
+        if keys_to_recheck is None:
+            self._keys_to_check = set()
+        else:
+            self._keys_to_check = keys_to_recheck
         self._need_to_check = False
         self._check_in_progress = False
         self.needToWaitForResultChanged.emit()

@@ -15,27 +15,27 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-##  Model that holds extruders.
-#
-#   This model is designed for use by any list of extruders, but specifically
-#   intended for drop-down lists of the current machine's extruders in place of
-#   settings.
 class ExtrudersModel(ListModel):
+    """Model that holds extruders.
+
+    This model is designed for use by any list of extruders, but specifically intended for drop-down lists of the
+    current machine's extruders in place of settings.
+    """
+
     # The ID of the container stack for the extruder.
     IdRole = Qt.UserRole + 1
 
-    ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 2
+    """Human-readable name of the extruder."""
 
-    ##  Colour of the material loaded in the extruder.
     ColorRole = Qt.UserRole + 3
+    """Colour of the material loaded in the extruder."""
 
-    ##  Index of the extruder, which is also the value of the setting itself.
-    #
-    #   An index of 0 indicates the first extruder, an index of 1 the second
-    #   one, and so on. This is the value that will be saved in instance
-    #   containers.
     IndexRole = Qt.UserRole + 4
+    """Index of the extruder, which is also the value of the setting itself.
+
+    An index of 0 indicates the first extruder, an index of 1 the second one, and so on. This is the value that will 
+    be saved in instance containers. """
 
     # The ID of the definition of the extruder.
     DefinitionRole = Qt.UserRole + 5
@@ -50,18 +50,18 @@ class ExtrudersModel(ListModel):
     MaterialBrandRole = Qt.UserRole + 9
     ColorNameRole = Qt.UserRole + 10
 
-    ##  Is the extruder enabled?
     EnabledRole = Qt.UserRole + 11
+    """Is the extruder enabled?"""
 
-    ##  List of colours to display if there is no material or the material has no known
-    #   colour.
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
+    """List of colours to display if there is no material or the material has no known colour. """
 
-    ##  Initialises the extruders model, defining the roles and listening for
-    #   changes in the data.
-    #
-    #   \param parent Parent QtObject of this list.
     def __init__(self, parent = None):
+        """Initialises the extruders model, defining the roles and listening for changes in the data.
+
+        :param parent: Parent QtObject of this list.
+        """
+
         super().__init__(parent)
 
         self.addRoleName(self.IdRole, "id")
@@ -101,14 +101,15 @@ class ExtrudersModel(ListModel):
     def addOptionalExtruder(self):
         return self._add_optional_extruder
 
-    ##  Links to the stack-changed signal of the new extruders when an extruder
-    #   is swapped out or added in the current machine.
-    #
-    #   \param machine_id The machine for which the extruders changed. This is
-    #   filled by the ExtruderManager.extrudersChanged signal when coming from
-    #   that signal. Application.globalContainerStackChanged doesn't fill this
-    #   signal; it's assumed to be the current printer in that case.
     def _extrudersChanged(self, machine_id = None):
+        """Links to the stack-changed signal of the new extruders when an extruder is swapped out or added in the
+         current machine.
+
+        :param machine_id: The machine for which the extruders changed. This is filled by the
+        ExtruderManager.extrudersChanged signal when coming from that signal. Application.globalContainerStackChanged
+        doesn't fill this signal; it's assumed to be the current printer in that case.
+        """
+
         machine_manager = Application.getInstance().getMachineManager()
         if machine_id is not None:
             if machine_manager.activeMachine is None:
@@ -146,11 +147,13 @@ class ExtrudersModel(ListModel):
     def _updateExtruders(self):
         self._update_extruder_timer.start()
 
-    ##  Update the list of extruders.
-    #
-    #   This should be called whenever the list of extruders changes.
     @UM.FlameProfiler.profile
     def __updateExtruders(self):
+        """Update the list of extruders.
+
+        This should be called whenever the list of extruders changes.
+        """
+
         extruders_changed = False
 
         if self.count != 0:

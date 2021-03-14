@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from time import time
@@ -22,10 +22,12 @@ from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
 
-## Output device class that forms the basis of Ultimaker networked printer output devices.
-#  Currently used for local networking and cloud printing using Ultimaker Connect.
-#  This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
 class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
+    """Output device class that forms the basis of Ultimaker networked printer output devices.
+
+    Currently used for local networking and cloud printing using Ultimaker Connect.
+    This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
+    """
 
     META_NETWORK_KEY = "um_network_key"
     META_CLUSTER_ID = "um_cloud_cluster_id"
@@ -43,16 +45,11 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     # States indicating if a print job is queued.
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
 
-    # Time in seconds since last network response after which we consider this device offline.
-    # We set this a bit higher than some of the other intervals to make sure they don't overlap.
-    NETWORK_RESPONSE_CONSIDER_OFFLINE = 10.0  # seconds
-
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
 
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
-
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
 
@@ -86,14 +83,20 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         # The job upload progress message modal.
         self._progress = PrintJobUploadProgressMessage()
 
-    ##  The IP address of the printer.
+        self._timeout_time = 30
+
+        self._num_is_host_check_failed = 0
+
     @pyqtProperty(str, constant=True)
     def address(self) -> str:
+        """The IP address of the printer."""
+
         return self._address
 
-    ##  The display name of the printer.
     @pyqtProperty(str, constant=True)
     def printerTypeName(self) -> str:
+        """The display name of the printer."""
+
         return self._printer_type_name
 
     # Get all print jobs for this cluster.
@@ -158,13 +161,15 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         self._active_printer = printer
         self.activePrinterChanged.emit()
 
-    ##  Whether the printer that this output device represents supports print job actions via the local network.
     @pyqtProperty(bool, constant=True)
     def supportsPrintJobActions(self) -> bool:
+        """Whether the printer that this output device represents supports print job actions via the local network."""
+
         return True
 
-    ##  Set the remote print job state.
     def setJobState(self, print_job_uuid: str, state: str) -> None:
+        """Set the remote print job state."""
+
         raise NotImplementedError("setJobState must be implemented")
 
     @pyqtSlot(str, name="sendJobToTop")
@@ -208,30 +213,36 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
 
     def _update(self) -> None:
-        self._checkStillConnected()
         super()._update()
+        self._checkStillConnected()
 
-    ## Check if we're still connected by comparing the last timestamps for network response and the current time.
-    #  This implementation is similar to the base NetworkedPrinterOutputDevice, but is tweaked slightly.
-    #  Re-connecting is handled automatically by the output device managers in this plugin.
-    #  TODO: it would be nice to have this logic in the managers, but connecting those with signals causes crashes.
     def _checkStillConnected(self) -> None:
+        """Check if we're still connected by comparing the last timestamps for network response and the current time.
+
+        This implementation is similar to the base NetworkedPrinterOutputDevice, but is tweaked slightly.
+        Re-connecting is handled automatically by the output device managers in this plugin.
+        TODO: it would be nice to have this logic in the managers, but connecting those with signals causes crashes.
+        """
         time_since_last_response = time() - self._time_of_last_response
-        if time_since_last_response > self.NETWORK_RESPONSE_CONSIDER_OFFLINE:
+        if time_since_last_response > self._timeout_time:
+            Logger.log("d", "It has been %s seconds since the last response for outputdevice %s, so assume a timeout", time_since_last_response, self.key)
             self.setConnectionState(ConnectionState.Closed)
             if self.key in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
                 CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
         elif self.connectionState == ConnectionState.Closed:
             self._reconnectForActiveMachine()
 
-    ## Reconnect for the active output device.
-    #  Does nothing if the device is not meant for the active machine.
     def _reconnectForActiveMachine(self) -> None:
+        """Reconnect for the active output device.
+
+        Does nothing if the device is not meant for the active machine.
+        """
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
         # Indicate this device is now connected again.
+        Logger.log("d", "Reconnecting output device after timeout.")
         self.setConnectionState(ConnectionState.Connected)
 
         # If the device was already registered we don't need to register it again.
@@ -282,16 +293,27 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         self.printersChanged.emit()
         self._checkIfClusterHost()
 
-    ## Check is this device is a cluster host and takes the needed actions when it is not.
     def _checkIfClusterHost(self):
+        """Check is this device is a cluster host and takes the needed actions when it is not."""
         if len(self._printers) < 1 and self.isConnected():
+            self._num_is_host_check_failed += 1
+        else:
+            self._num_is_host_check_failed = 0
+
+        # Since we request the status of the cluster itself way less frequent in the cloud, it can happen that a cloud
+        # printer reports having 0 printers (since they are offline!) but we haven't asked if the entire cluster is
+        # offline. (See CURA-7360)
+        # So by just counting a number of subsequent times that this has happened fixes the incorrect display.
+        if self._num_is_host_check_failed >= 6:
             NotClusterHostMessage(self).show()
             self.close()
             CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
 
-    ## Updates the local list of print jobs with the list received from the cluster.
-    #  \param remote_jobs: The print jobs received from the cluster.
     def _updatePrintJobs(self, remote_jobs: List[ClusterPrintJobStatus]) -> None:
+        """Updates the local list of print jobs with the list received from the cluster.
+
+        :param remote_jobs: The print jobs received from the cluster.
+        """
         self._responseReceived()
 
         # Keep track of the new print jobs to show.
@@ -299,7 +321,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         new_print_jobs = []
 
         # Check which print jobs need to be created or updated.
-        for index, print_job_data in enumerate(remote_jobs):
+        for print_job_data in remote_jobs:
             print_job = next(
                 iter(print_job for print_job in self._print_jobs if print_job.key == print_job_data.uuid), None)
             if not print_job:
@@ -322,26 +344,32 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         self._print_jobs = new_print_jobs
         self.printJobsChanged.emit()
 
-    ## Create a new print job model based on the remote status of the job.
-    #  \param remote_job: The remote print job data.
     def _createPrintJobModel(self, remote_job: ClusterPrintJobStatus) -> UM3PrintJobOutputModel:
+        """Create a new print job model based on the remote status of the job.
+
+        :param remote_job: The remote print job data.
+        """
         model = remote_job.createOutputModel(ClusterOutputController(self))
         if remote_job.printer_uuid:
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
         if remote_job.assigned_to:
             self._updateAssignedPrinter(model, remote_job.assigned_to)
+        if remote_job.preview_url:
+            model.loadPreviewImageFromUrl(remote_job.preview_url)
         return model
 
-    ## Updates the printer assignment for the given print job model.
     def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
+        """Updates the printer assignment for the given print job model."""
+
         printer = next((p for p in self._printers if printer_uuid == p.key), None)
         if not printer:
             return
         printer.updateActivePrintJob(model)
         model.updateAssignedPrinter(printer)
 
-    ## Load Monitor tab QML.
     def _loadMonitorTab(self) -> None:
+        """Load Monitor tab QML."""
+
         plugin_registry = CuraApplication.getInstance().getPluginRegistry()
         if not plugin_registry:
             Logger.log("e", "Could not get plugin registry")

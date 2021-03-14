@@ -36,13 +36,6 @@ infill_sparse_density = 42
         "version": 3000000
     },
     {
-        "test_name": "Negative Version", #Why not?
-        "file_data": """[general]
-version = -20
-""",
-        "version": -20000000
-    },
-    {
         "test_name": "Setting Version",
         "file_data": """[general]
 version = 1
@@ -50,15 +43,6 @@ version = 1
 setting_version = 1
 """,
         "version": 1000001
-    },
-    {
-        "test_name": "Negative Setting Version",
-        "file_data": """[general]
-version = 1
-[metadata]
-setting_version = -3
-""",
-        "version": 999997
     }
 ]
 
@@ -73,62 +57,6 @@ def test_cfgVersionGood(data, upgrader):
     version = upgrader.getCfgVersion(data["file_data"])
     assert version == data["version"]
 
-test_cfg_version_bad_data = [
-    {
-        "test_name": "Empty",
-        "file_data": "",
-        "exception": configparser.Error #Explicitly not specified further which specific error we're getting, because that depends on the implementation of configparser.
-    },
-    {
-        "test_name": "No General",
-        "file_data": """[values]
-layer_height = 0.1337
-""",
-        "exception": configparser.Error
-    },
-    {
-        "test_name": "No Version",
-        "file_data": """[general]
-true = false
-""",
-        "exception": configparser.Error
-    },
-    {
-        "test_name": "Not a Number",
-        "file_data": """[general]
-version = not-a-text-version-number
-""",
-        "exception": ValueError
-    },
-    {
-        "test_name": "Setting Value NaN",
-        "file_data": """[general]
-version = 4
-[metadata]
-setting_version = latest_or_something
-""",
-        "exception": ValueError
-    },
-    {
-        "test_name": "Major-Minor",
-        "file_data": """[general]
-version = 1.2
-""",
-        "exception": ValueError
-    }
-]
-
-##  Tests whether getting a version number from bad CFG files gives an
-#   exception.
-#
-#   \param data The parametrised data to test with. It contains a test name
-#   to debug with, the serialised contents of a CFG file and the class of
-#   exception it needs to throw.
-#   \param upgrader The instance of the upgrader to test.
-@pytest.mark.parametrize("data", test_cfg_version_bad_data)
-def test_cfgVersionBad(data, upgrader):
-    with pytest.raises(data["exception"]):
-        upgrader.getCfgVersion(data["file_data"])
 
 test_upgrade_stacks_with_not_supported_data = [
     {

@@ -1,14 +1,13 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import MagicMock, patch
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 import pytest
 
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from cura.BuildVolume import BuildVolume, PRIME_CLEARANCE
 import numpy
-
-
-
 
 @pytest.fixture
 def build_volume() -> BuildVolume:
@@ -67,9 +66,12 @@ class TestCalculateBedAdhesionSize:
             return properties.get(args[2])
 
     def createAndSetGlobalStack(self, build_volume):
-        mocked_stack = MagicMock()
+        mocked_stack = MagicMock(name = "mocked_stack")
         mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_extruder = MagicMock(name = "mocked_extruder")
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
 
+        mocked_stack.extruderList = [mocked_extruder]
         build_volume._global_container_stack = mocked_stack
 
     def test_noGlobalStack(self, build_volume: BuildVolume):
@@ -91,6 +93,7 @@ class TestCalculateBedAdhesionSize:
         self.createAndSetGlobalStack(build_volume)
         patched_dictionary = self.setting_property_dict.copy()
         patched_dictionary.update(setting_dict)
+        patched_dictionary.update({"adhesion_extruder_nr": {"value": 0}})
         with patch.dict(self.setting_property_dict, patched_dictionary):
             assert build_volume._calculateBedAdhesionSize([]) == result
 
@@ -162,11 +165,9 @@ class TestUpdateRaftThickness:
             return properties.get(args[2])
 
     def createMockedStack(self):
-        mocked_global_stack = MagicMock(name="mocked_global_stack")
-        mocked_global_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_global_stack = MagicMock(name = "mocked_global_stack")
+        mocked_global_stack.getProperty = MagicMock(side_effect = self.getPropertySideEffect)
         extruder_stack = MagicMock()
-
-        mocked_global_stack.extruders = {"0": extruder_stack}
 
         return mocked_global_stack
 
@@ -255,7 +256,7 @@ class TestCalculateExtraZClearance:
             return properties.get(args[2])
 
     def test_noContainerStack(self, build_volume: BuildVolume):
-        assert build_volume._calculateExtraZClearance([]) is 0
+        assert build_volume._calculateExtraZClearance([]) == 0
 
     def test_withRetractionHop(self, build_volume: BuildVolume):
         mocked_global_stack = MagicMock(name="mocked_global_stack")

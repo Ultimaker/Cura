@@ -6,12 +6,12 @@ from typing import Any, Dict, Optional
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 
-##  Data struct to group several quality changes instance containers together.
-#
-#   Each group represents one "custom profile" as the user sees it, which
-#   contains an instance container for the global stack and one instance
-#   container per extruder.
 class QualityChangesGroup(QObject):
+    """Data struct to group several quality changes instance containers together.
+
+    Each group represents one "custom profile" as the user sees it, which contains an instance container for the
+    global stack and one instance container per extruder.
+    """
 
     def __init__(self, name: str, quality_type: str, intent_category: str, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)

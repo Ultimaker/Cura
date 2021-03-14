@@ -6,7 +6,7 @@ import pytest
 
 from cura.Machines.QualityNode import QualityNode
 
-##  Metadata for hypothetical containers that get put in the registry.
+#  Metadata for hypothetical containers that get put in the registry.
 metadatas = [
     {
         "id": "matching_intent",  # Matches our query.

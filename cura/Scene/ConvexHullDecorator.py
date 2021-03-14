@@ -1,11 +1,10 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
-
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -23,9 +22,12 @@ if TYPE_CHECKING:
     from UM.Math.Matrix import Matrix
 
 
-##  The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
-#   If a scene node has a convex hull decorator, it will have a shadow in which other objects can not be printed.
 class ConvexHullDecorator(SceneNodeDecorator):
+    """The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
+
+    If a scene node has a convex hull decorator, it will have a shadow in which other objects can not be printed.
+    """
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -47,8 +49,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._build_volume.raftThicknessChanged.connect(self._onChanged)
 
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
-        CuraApplication.getInstance().getController().toolOperationStarted.connect(self._onChanged)
-        CuraApplication.getInstance().getController().toolOperationStopped.connect(self._onChanged)
+        controller = CuraApplication.getInstance().getController()
+        controller.toolOperationStarted.connect(self._onChanged)
+        controller.toolOperationStopped.connect(self._onChanged)
+        #CuraApplication.getInstance().sceneBoundingBoxChanged.connect(self._onChanged)
+
+        self._root = Application.getInstance().getController().getScene().getRoot()
 
         self._onGlobalStackChanged()
 
@@ -74,13 +80,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         self._onChanged()
 
-    ## Force that a new (empty) object is created upon copy.
     def __deepcopy__(self, memo):
+        """Force that a new (empty) object is created upon copy."""
+
         return ConvexHullDecorator()
 
-    ## The polygon representing the 2D adhesion area.
-    # If no adhesion is used, the regular convex hull is returned
     def getAdhesionArea(self) -> Optional[Polygon]:
+        """The polygon representing the 2D adhesion area.
+
+        If no adhesion is used, the regular convex hull is returned
+        """
         if self._node is None:
             return None
 
@@ -90,9 +99,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         return self._add2DAdhesionMargin(hull)
 
-    ##  Get the unmodified 2D projected convex hull of the node (if any)
-    #   In case of one-at-a-time, this includes adhesion and head+fans clearance
     def getConvexHull(self) -> Optional[Polygon]:
+        """Get the unmodified 2D projected convex hull of the node (if any)
+
+        In case of one-at-a-time, this includes adhesion and head+fans clearance
+        """
         if self._node is None:
             return None
         if self._node.callDecoration("isNonPrintingMesh"):
@@ -108,9 +119,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         return self._compute2DConvexHull()
 
-    ##  For one at the time this is the convex hull of the node with the full head size
-    #   In case of printing all at once this is None.
     def getConvexHullHeadFull(self) -> Optional[Polygon]:
+        """For one at the time this is the convex hull of the node with the full head size
+
+        In case of printing all at once this is None.
+        """
         if self._node is None:
             return None
 
@@ -126,10 +139,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return False
         return bool(parent.callDecoration("isGroup"))
 
-    ##  Get convex hull of the object + head size
-    #   In case of printing all at once this is None.
-    #   For one at the time this is area with intersection of mirrored head
     def getConvexHullHead(self) -> Optional[Polygon]:
+        """Get convex hull of the object + head size
+
+        In case of printing all at once this is None.
+        For one at the time this is area with intersection of mirrored head
+        """
         if self._node is None:
             return None
         if self._node.callDecoration("isNonPrintingMesh"):
@@ -142,10 +157,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return head_with_fans_with_adhesion_margin
         return None
 
-    ##  Get convex hull of the node
-    #   In case of printing all at once this None??
-    #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self) -> Optional[Polygon]:
+        """Get convex hull of the node
+
+        In case of printing all at once this None??
+        For one at the time this is the area without the head.
+        """
         if self._node is None:
             return None
 
@@ -157,10 +174,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return self._compute2DConvexHull()
         return None
 
-    ## Get the buildplate polygon where will be printed
-    #   In case of printing all at once this is the same as convex hull (no individual adhesion)
-    #   For one at the time this includes the adhesion area
     def getPrintingArea(self) -> Optional[Polygon]:
+        """Get the buildplate polygon where will be printed
+
+        In case of printing all at once this is the same as convex hull (no individual adhesion)
+        For one at the time this includes the adhesion area
+        """
         if self._isSingularOneAtATimeNode():
             # In one-at-a-time mode, every printed object gets it's own adhesion
             printing_area = self.getAdhesionArea()
@@ -168,8 +187,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
             printing_area = self.getConvexHull()
         return printing_area
 
-    ##  The same as recomputeConvexHull, but using a timer if it was set.
     def recomputeConvexHullDelayed(self) -> None:
+        """The same as recomputeConvexHull, but using a timer if it was set."""
         if self._recompute_convex_hull_timer is not None:
             self._recompute_convex_hull_timer.start()
         else:
@@ -181,23 +200,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
             CuraApplication.getInstance().callLater(self.recomputeConvexHullDelayed)
 
     def recomputeConvexHull(self) -> None:
-        controller = Application.getInstance().getController()
-        root = controller.getScene().getRoot()
-        if self._node is None or controller.isToolOperationActive() or not self.__isDescendant(root, self._node):
-            # If the tool operation is still active, we need to compute the convex hull later after the controller is
-            # no longer active.
-            if controller.isToolOperationActive():
-                self.recomputeConvexHullDelayed()
-                return
-
+        if self._node is None or not self.__isDescendant(self._root, self._node):
             if self._convex_hull_node:
+                # Convex hull node still exists, but the node is removed or no longer in the scene.
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None
             return
 
         if self._convex_hull_node:
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, root)
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, self._root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key: str, property_name: str) -> None:
@@ -224,7 +236,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return None
         if self._node.callDecoration("isGroup"):
-            points = numpy.zeros((0, 2), dtype=numpy.int32)
+            points = numpy.zeros((0, 2), dtype = numpy.int32)
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
@@ -251,16 +263,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
         else:
+            convex_hull = Polygon([])
             offset_hull = Polygon([])
             mesh = self._node.getMeshData()
             if mesh is None:
                 return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
-            world_transform = self._node.getWorldTransformation()
+            world_transform = self._node.getWorldTransformation(copy = True)
 
             # Check the cache
             if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
-                return self._2d_convex_hull_mesh_result
+                return self._offsetHull(self._2d_convex_hull_mesh_result)
 
             vertex_data = mesh.getConvexHullTransformedVertices(world_transform)
             # Don't use data below 0.
@@ -268,7 +281,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             # Do not throw away vertices: the convex hull may be too small and objects can collide.
             # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
 
-            if len(vertex_data) >= 4:  # type: ignore # mypy and numpy don't play along well just yet.
+            if vertex_data is not None and len(vertex_data) >= 4:  # type: ignore # mypy and numpy don't play along well just yet.
                 # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
                 # This is done to greatly speed up further convex hull calculations as the convex hull
                 # becomes much less complex when dealing with highly detailed models.
@@ -295,7 +308,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             # Store the result in the cache
             self._2d_convex_hull_mesh = mesh
             self._2d_convex_hull_mesh_world_transform = world_transform
-            self._2d_convex_hull_mesh_result = offset_hull
+            self._2d_convex_hull_mesh_result = convex_hull
 
             return offset_hull
 
@@ -325,9 +338,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return convex_hull.getMinkowskiHull(head_and_fans)
         return None
 
-    ##  Compensate given 2D polygon with adhesion margin
-    #   \return 2D polygon with added margin
     def _add2DAdhesionMargin(self, poly: Polygon) -> Polygon:
+        """Compensate given 2D polygon with adhesion margin
+
+        :return: 2D polygon with added margin
+        """
         if not self._global_stack:
             return Polygon()
         # Compensate for raft/skirt/brim
@@ -358,17 +373,48 @@ class ConvexHullDecorator(SceneNodeDecorator):
             poly = poly.getMinkowskiHull(extra_margin_polygon)
         return poly
 
-    ##  Offset the convex hull with settings that influence the collision area.
-    #
-    #   \param convex_hull Polygon of the original convex hull.
-    #   \return New Polygon instance that is offset with everything that
-    #   influences the collision area.
     def _offsetHull(self, convex_hull: Polygon) -> Polygon:
+        """Offset the convex hull with settings that influence the collision area.
+
+        :param convex_hull: Polygon of the original convex hull.
+        :return: New Polygon instance that is offset with everything that
+        influences the collision area.
+        """
+        # Shrinkage compensation.
+        if not self._global_stack:  # Should never happen.
+            return convex_hull
+        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
+        result = convex_hull
+        if scale_factor != 1.0 and not self.getNode().callDecoration("isGroup"):
+            center = None
+            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                # Find the root node that's placed in the scene; the root of the mesh group.
+                ancestor = self.getNode()
+                while ancestor.getParent() != self._root:
+                    ancestor = ancestor.getParent()
+                center = ancestor.getBoundingBox().center
+            else:
+                # Find the bounding box of the entire scene, which is all one mesh group then.
+                aabb = None
+                for printed_node in self._root.getChildren():
+                    if not printed_node.callDecoration("isSliceable") and not printed_node.callDecoration("isGroup"):
+                        continue  # Not a printed node.
+                    if aabb is None:
+                        aabb = printed_node.getBoundingBox()
+                    else:
+                        aabb = aabb + printed_node.getBoundingBox()
+                if aabb:
+                    center = aabb.center
+            if center:
+                result = convex_hull.scale(scale_factor, [center.x, center.z])  # Yes, use Z instead of Y. Mixed conventions there with how the OpenGL coordinates are transmitted.
+
+        # Horizontal expansion.
         horizontal_expansion = max(
             self._getSettingProperty("xy_offset", "value"),
             self._getSettingProperty("xy_offset_layer_0", "value")
         )
 
+        # Mold.
         mold_width = 0
         if self._getSettingProperty("mold_enabled", "value"):
             mold_width = self._getSettingProperty("mold_width", "value")
@@ -380,14 +426,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 [hull_offset, hull_offset],
                 [hull_offset, -hull_offset]
             ], numpy.float32))
-            return convex_hull.getMinkowskiHull(expansion_polygon)
+            return result.getMinkowskiHull(expansion_polygon)
         else:
-            return convex_hull
+            return result
 
     def _onChanged(self, *args) -> None:
         self._raft_thickness = self._build_volume.getRaftThickness()
-        if not args or args[0] == self._node:
-            self.recomputeConvexHullDelayed()
+        self.recomputeConvexHullDelayed()
 
     def _onGlobalStackChanged(self) -> None:
         if self._global_stack:
@@ -409,8 +454,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
             self._onChanged()
 
-    ##   Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property).
     def _getSettingProperty(self, setting_key: str, prop: str = "value") -> Any:
+        """Private convenience function to get a setting from the correct extruder (as defined by limit_to_extruder property)."""
+
         if self._global_stack is None or self._node is None:
             return None
         per_mesh_stack = self._node.callDecoration("getStack")
@@ -430,16 +476,18 @@ class ConvexHullDecorator(SceneNodeDecorator):
             # Limit_to_extruder is set. The global stack handles this then
             return self._global_stack.getProperty(setting_key, prop)
 
-    ##  Returns True if node is a descendant or the same as the root node.
     def __isDescendant(self, root: "SceneNode", node: Optional["SceneNode"]) -> bool:
+        """Returns True if node is a descendant or the same as the root node."""
+
         if node is None:
             return False
         if root is node:
             return True
         return self.__isDescendant(root, node.getParent())
 
-    ## True if print_sequence is one_at_a_time and _node is not part of a group
     def _isSingularOneAtATimeNode(self) -> bool:
+        """True if print_sequence is one_at_a_time and _node is not part of a group"""
+
         if self._node is None:
             return False
         return self._global_stack is not None \
@@ -450,7 +498,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
         "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
-    ##  Settings that change the convex hull.
-    #
-    #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage"}
+    """Settings that change the convex hull.
+
+    If these settings change, the convex hull should be recalculated.
+    """

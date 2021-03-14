@@ -72,6 +72,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("cura/single_instance")
+        singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
+
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         UM.Preferences.resetPreference("physics/automatic_drop_down")
@@ -86,6 +89,8 @@ UM.PreferencesPage
         prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
         UM.Preferences.resetPreference("view/show_overhang");
         showOverhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
+        UM.Preferences.resetPreference("view/show_xray_warning");
+        showXrayErrorCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_xray_warning"))
         UM.Preferences.resetPreference("view/center_on_select");
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
@@ -152,7 +157,7 @@ UM.PreferencesPage
 
                         Component.onCompleted: {
                             append({ text: "English", code: "en_US" })
-                            append({ text: "Czech", code: "cs_CZ" })
+                            //Czech is disabled for being incomplete: append({ text: "Čeština", code: "cs_CZ" })
                             append({ text: "Deutsch", code: "de_DE" })
                             append({ text: "Español", code: "es_ES" })
                             //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
@@ -331,9 +336,28 @@ UM.PreferencesPage
                     id: showOverhangCheckbox
 
                     checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
-                    onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
+                    onClicked: UM.Preferences.setValue("view/show_overhang", checked)
 
                     text: catalog.i18nc("@option:check", "Display overhang");
+                }
+            }
+
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip", "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry.")
+
+                CheckBox
+                {
+                    id: showXrayErrorCheckbox
+
+                    checked: boolCheck(UM.Preferences.getValue("view/show_xray_warning"))
+                    onClicked: UM.Preferences.setValue("view/show_xray_warning",  checked)
+
+                    text: catalog.i18nc("@option:check", "Display model errors");
                 }
             }
 
@@ -385,7 +409,7 @@ UM.PreferencesPage
                     text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
                     checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled
                     onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
-                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal"
+                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthographic"
                 }
 
                 //Because there is no signal for individual preferences, we need to manually link to the onPreferenceChanged signal.
@@ -537,6 +561,21 @@ UM.PreferencesPage
             {
                 font.bold: true
                 text: catalog.i18nc("@label","Opening and saving files")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
+
+                CheckBox
+                {
+                    id: singleInstanceCheckbox
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura")
+                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
+                }
             }
 
             UM.TooltipArea

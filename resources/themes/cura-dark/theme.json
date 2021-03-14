@@ -24,6 +24,8 @@
 
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
 
+        "account_sync_state_icon": [255, 255, 255, 204],
+
         "machine_selector_bar": [39, 44, 48, 255],
         "machine_selector_active": [39, 44, 48, 255],
         "machine_selector_printer_icon": [204, 204, 204, 255],
@@ -170,9 +172,7 @@
         "toolbox_header_button_text_inactive": [128, 128, 128, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],
-        "monitor_text_primary": [229, 229, 229, 255],
         "monitor_text_disabled": [102, 102, 102, 255],
-        "monitor_text_link": [103, 160, 252, 255],
         "monitor_icon_primary": [229, 229, 229, 255],
         "monitor_icon_accent": [51, 53, 54, 255],
         "monitor_icon_disabled": [102, 102, 102, 255],

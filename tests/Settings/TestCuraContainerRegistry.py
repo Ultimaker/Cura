@@ -1,11 +1,10 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os #To find the directory with test files and find the test files.
 import pytest #To parameterize tests.
 import unittest.mock #To mock and monkeypatch stuff.
 
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.ReaderWriters.ProfileReader import NoProfileException
 from cura.Settings.ExtruderStack import ExtruderStack #Testing for returning the correct types of stacks.
 from cura.Settings.GlobalStack import GlobalStack #Testing for returning the correct types of stacks.
@@ -43,8 +42,9 @@ def test_createUniqueName(container_registry):
     assert container_registry.createUniqueName("user", "test", "", "nope") == "nope"
 
 
-##  Tests whether addContainer properly converts to ExtruderStack.
 def test_addContainerExtruderStack(container_registry, definition_container, definition_changes_container):
+    """Tests whether addContainer properly converts to ExtruderStack."""
+
     container_registry.addContainer(definition_container)
     container_registry.addContainer(definition_changes_container)
 
@@ -62,8 +62,9 @@ def test_addContainerExtruderStack(container_registry, definition_container, def
     assert type(mock_super_add_container.call_args_list[0][0][0]) == ExtruderStack
 
 
-##  Tests whether addContainer properly converts to GlobalStack.
 def test_addContainerGlobalStack(container_registry, definition_container, definition_changes_container):
+    """Tests whether addContainer properly converts to GlobalStack."""
+
     container_registry.addContainer(definition_container)
     container_registry.addContainer(definition_changes_container)
 
@@ -250,14 +251,13 @@ def test_importProfileEmptyFileName(container_registry):
 
 
 mocked_application = unittest.mock.MagicMock(name = "application")
-mocked_plugin_registry = unittest.mock.MagicMock(name="mocked_plugin_registry")
+mocked_plugin_registry = unittest.mock.MagicMock(name = "mocked_plugin_registry")
 
 @unittest.mock.patch("UM.Application.Application.getInstance", unittest.mock.MagicMock(return_value = mocked_application))
 @unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", unittest.mock.MagicMock(return_value = mocked_plugin_registry))
 class TestImportProfile:
-    mocked_global_stack = unittest.mock.MagicMock(name="global stack")
-    mocked_global_stack.extruders = {0: unittest.mock.MagicMock(name="extruder stack")}
-    mocked_global_stack.getId = unittest.mock.MagicMock(return_value="blarg")
+    mocked_global_stack = unittest.mock.MagicMock(name = "global stack")
+    mocked_global_stack.getId = unittest.mock.MagicMock(return_value = "blarg")
     mocked_profile_reader = unittest.mock.MagicMock()
 
     mocked_plugin_registry.getPluginObject = unittest.mock.MagicMock(return_value=mocked_profile_reader)

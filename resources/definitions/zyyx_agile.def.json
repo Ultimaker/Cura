@@ -7,7 +7,7 @@
         "author": "Magicfirm Europe",
         "manufacturer": "Magicfirm Europe",
         "file_formats": "application/x3g",
-        "platform": "zyyx_platform.stl",
+        "platform": "zyyx_platform.3mf",
         "has_machine_quality": true,
         "quality_definition": "zyyx_agile",
         "preferred_material": "zyyx_pro_pla",

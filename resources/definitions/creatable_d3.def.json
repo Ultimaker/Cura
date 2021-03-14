@@ -8,7 +8,7 @@
         "manufacturer": "Ateam Ventures Co. Ltd.",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
-        "platform": "rostock_platform.stl",
+        "platform": "rostock_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "creatable_d3_extruder_0"

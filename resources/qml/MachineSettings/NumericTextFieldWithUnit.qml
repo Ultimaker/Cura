@@ -77,6 +77,8 @@ UM.TooltipArea
         anchors.left: fieldLabel.right
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         verticalAlignment: Text.AlignVCenter
+        padding: 0
+        leftPadding: UM.Theme.getSize("narrow_margin").width
         width: numericTextFieldWithUnit.controlWidth
         height: numericTextFieldWithUnit.controlHeight
 
@@ -154,12 +156,24 @@ UM.TooltipArea
             const value = propertyProvider.properties.value
             return value ? value : ""
         }
-        validator: DoubleValidator
+        property string validatorString:
         {
-            bottom: numericTextFieldWithUnit.minimum
-            top: numericTextFieldWithUnit.maximum
-            decimals: numericTextFieldWithUnit.decimals
-            notation: DoubleValidator.StandardNotation
+            var digits = Math.min(8, 1 + Math.floor(
+                Math.log(Math.max(Math.abs(numericTextFieldWithUnit.maximum), Math.abs(numericTextFieldWithUnit.minimum)))/Math.log(10)
+            ))
+            var minus = numericTextFieldWithUnit.minimum < 0 ? "-?" : ""
+            if (numericTextFieldWithUnit.decimals == 0)
+            {
+                return "^%0\\d{1,%1}$".arg(minus).arg(digits)
+            }
+            else
+            {
+                return "^%0\\d{0,%1}[.,]?\\d{0,%2}$".arg(minus).arg(digits).arg(numericTextFieldWithUnit.decimals)
+            }
+        }
+        validator: RegExpValidator
+        {
+            regExp: new RegExp(textFieldWithUnit.validatorString)
         }
 
         //Enforce actual minimum and maximum values.

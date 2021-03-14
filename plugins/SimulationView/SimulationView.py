@@ -12,6 +12,7 @@ from UM.Event import Event, KeyEvent
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Color import Color
+from UM.Math.Matrix import Matrix
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
@@ -48,8 +49,9 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
+    """The preview layer view. It is used to display g-code paths."""
+
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
@@ -89,6 +91,8 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
@@ -102,13 +106,14 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
 
-        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 0)
+        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
 
         Application.getInstance().getPreferences().addPreference("layerview/show_travel_moves", False)
         Application.getInstance().getPreferences().addPreference("layerview/show_helpers", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_starts", True)
 
         self._updateWithPreferences()
 
@@ -139,11 +144,12 @@ class SimulationView(CuraView):
     def _resetSettings(self) -> None:
         self._layer_view_type = 0  # type: int # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
-        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
         self._show_travel_moves = False
         self._show_helpers = True
         self._show_skin = True
         self._show_infill = True
+        self._show_starts = True
         self.resetLayerData()
 
     def getActivity(self) -> bool:
@@ -216,6 +222,8 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
 
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
@@ -294,29 +302,36 @@ class SimulationView(CuraView):
 
             self.currentPathNumChanged.emit()
 
-    ##  Set the layer view type
-    #
-    #   \param layer_view_type integer as in SimulationView.qml and this class
     def setSimulationViewType(self, layer_view_type: int) -> None:
+        """Set the layer view type
+
+        :param layer_view_type: integer as in SimulationView.qml and this class
+        """
+
         if layer_view_type != self._layer_view_type:
             self._layer_view_type = layer_view_type
             self.currentLayerNumChanged.emit()
 
-    ##  Return the layer view type, integer as in SimulationView.qml and this class
     def getSimulationViewType(self) -> int:
+        """Return the layer view type, integer as in SimulationView.qml and this class"""
+
         return self._layer_view_type
 
-    ##  Set the extruder opacity
-    #
-    #   \param extruder_nr 0..3
-    #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr: int, opacity: float) -> None:
-        if 0 <= extruder_nr <= 3:
-            self._extruder_opacity[extruder_nr] = opacity
+        """Set the extruder opacity
+
+        :param extruder_nr: 0..15
+        :param opacity: 0.0 .. 1.0
+        """
+
+        if 0 <= extruder_nr <= 15:
+            self._extruder_opacity[extruder_nr // 4][extruder_nr % 4] = opacity
             self.currentLayerNumChanged.emit()
 
-    def getExtruderOpacities(self)-> List[float]:
-        return self._extruder_opacity
+    def getExtruderOpacities(self) -> Matrix:
+        # NOTE: Extruder opacities are stored in a matrix for (minor) performance reasons (w.r.t. OpenGL/shaders).
+        # If more than 16 extruders are called for, this should be converted to a sampler1d.
+        return Matrix(self._extruder_opacity)
 
     def setShowTravelMoves(self, show):
         self._show_travel_moves = show
@@ -346,6 +361,13 @@ class SimulationView(CuraView):
     def getShowInfill(self) -> bool:
         return self._show_infill
 
+    def setShowStarts(self, show: bool) -> None:
+        self._show_starts = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowStarts(self) -> bool:
+        return self._show_starts
+
     def getCompatibilityMode(self) -> bool:
         return self._compatibility_mode
 
@@ -368,12 +390,20 @@ class SimulationView(CuraView):
     def getMaxThickness(self) -> float:
         return self._max_thickness
 
+    def getMaxLineWidth(self) -> float:
+        return self._max_line_width
+
+    def getMinLineWidth(self) -> float:
+        if abs(self._min_line_width - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
+        return self._min_line_width
+
     def calculateMaxLayers(self) -> None:
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
-        ## Recalculate num max layers
         new_max_layers = -1
+        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -392,6 +422,8 @@ class SimulationView(CuraView):
                 for p in layer_data.getLayer(layer_id).polygons:
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(p.lineWidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(p.lineWidths.min()), self._min_line_width)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
@@ -449,9 +481,11 @@ class SimulationView(CuraView):
     busyChanged = Signal()
     activityChanged = Signal()
 
-    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
-    #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        """Hackish way to ensure the proxy is already created
+
+        which ensures that the layerview.qml is already created as this caused some issues.
+        """
         if self._proxy is None:
             self._proxy = SimulationViewProxy(self)
         return self._proxy
@@ -627,6 +661,7 @@ class SimulationView(CuraView):
         self.setShowHelpers(bool(Application.getInstance().getPreferences().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Application.getInstance().getPreferences().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Application.getInstance().getPreferences().getValue("layerview/show_infill")))
+        self.setShowStarts(bool(Application.getInstance().getPreferences().getValue("layerview/show_starts")))
 
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
@@ -642,6 +677,7 @@ class SimulationView(CuraView):
             "layerview/show_helpers",
             "layerview/show_skin",
             "layerview/show_infill",
+            "layerview/show_starts",
             }:
             return
 

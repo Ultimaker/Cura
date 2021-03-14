@@ -130,7 +130,11 @@ Item
                 target: extruderModel
                 onModelChanged:
                 {
-                    supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
+                    var maybeColor = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
+                    if (maybeColor)
+                    {
+                        supportExtruderCombobox.color = maybeColor
+                    }
                 }
             }
             onCurrentIndexChanged:

@@ -19,8 +19,10 @@ if MYPY:
 
 catalog = i18nCatalog("cura")
 
-##  Upgrade the firmware of a machine by USB with this action.
+
 class FirmwareUpdaterMachineAction(MachineAction):
+    """Upgrade the firmware of a machine by USB with this action."""
+
     def __init__(self) -> None:
         super().__init__("UpgradeFirmware", catalog.i18nc("@action", "Update Firmware"))
         self._qml_url = "FirmwareUpdaterMachineAction.qml"

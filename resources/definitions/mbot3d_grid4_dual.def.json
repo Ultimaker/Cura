@@ -5,7 +5,6 @@
     "metadata": {
         "author": "Magicfirm",
         "manufacturer": "Magicfirm",
-        "category": "Other",
         "visible": true,
         "file_formats": "text/x-gcode",
         "platform_offset": [
@@ -14,7 +13,7 @@
             0
         ],
         "has_materials": true,
-		"machine_extruder_trains": {
+        "machine_extruder_trains": {
             "0": "mbot3d_grid4_extruder_left",
             "1": "mbot3d_grid4_extruder_right"
         }

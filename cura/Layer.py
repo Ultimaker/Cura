@@ -76,7 +76,7 @@ class Layer:
 
     def createMeshOrJumps(self, make_mesh: bool) -> MeshData:
         builder = MeshBuilder()
-        
+
         line_count = 0
         if make_mesh:
             for polygon in self._polygons:
@@ -87,7 +87,7 @@ class Layer:
 
         # Reserve the necessary space for the data upfront
         builder.reserveFaceAndVertexCount(2 * line_count, 4 * line_count)
-        
+
         for polygon in self._polygons:
             # Filter out the types of lines we are not interested in depending on whether we are drawing the mesh or the jumps.
             index_mask = numpy.logical_not(polygon.jumpMask) if make_mesh else polygon.jumpMask
@@ -96,7 +96,7 @@ class Layer:
             points = numpy.concatenate((polygon.data[:-1], polygon.data[1:]), 1)[index_mask.ravel()]
             # Line types of the points we want to draw
             line_types = polygon.types[index_mask]
-            
+
             # Shift the z-axis according to previous implementation.
             if make_mesh:
                 points[polygon.isInfillOrSkinType(line_types), 1::3] -= 0.01
@@ -118,5 +118,5 @@ class Layer:
             f_colors = numpy.repeat(polygon.mapLineTypeToColor(line_types), 4, 0)
 
             builder.addFacesWithColor(f_points, f_indices, f_colors)
-        
+
         return builder.build()

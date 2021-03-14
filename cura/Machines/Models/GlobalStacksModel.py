@@ -19,6 +19,7 @@ class GlobalStacksModel(ListModel):
     ConnectionTypeRole = Qt.UserRole + 4
     MetaDataRole = Qt.UserRole + 5
     DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
+    RemovalWarningRole = Qt.UserRole + 7
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -42,8 +43,9 @@ class GlobalStacksModel(ListModel):
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._updateDelayed()
 
-    ##  Handler for container added/removed events from registry
     def _onContainerChanged(self, container) -> None:
+        """Handler for container added/removed events from registry"""
+
         # We only need to update when the added / removed container GlobalStack
         if isinstance(container, GlobalStack):
             self._updateDelayed()
@@ -65,13 +67,21 @@ class GlobalStacksModel(ListModel):
             if parseBool(container_stack.getMetaDataEntry("hidden", False)):
                 continue
 
-            section_name = "Network enabled printers" if has_remote_connection else "Local printers"
+            device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
+            section_name = "Connected printers" if has_remote_connection else "Preset printers"
             section_name = self._catalog.i18nc("@info:title", section_name)
 
-            items.append({"name": container_stack.getMetaDataEntry("group_name", container_stack.getName()),
+            default_removal_warning = self._catalog.i18nc(
+                "@label {0} is the name of a printer that's about to be deleted.",
+                "Are you sure you wish to remove {0}? This cannot be undone!", device_name
+            )
+            removal_warning = container_stack.getMetaDataEntry("removal_warning", default_removal_warning)
+
+            items.append({"name": device_name,
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
                           "metadata": container_stack.getMetaData().copy(),
-                          "discoverySource": section_name})
-        items.sort(key = lambda i: (not i["hasRemoteConnection"], i["name"]))
+                          "discoverySource": section_name,
+                          "removalWarning": removal_warning})
+        items.sort(key=lambda i: (not i["hasRemoteConnection"], i["name"]))
         self.setItems(items)

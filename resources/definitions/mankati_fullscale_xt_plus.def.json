@@ -7,7 +7,7 @@
         "author": "RBC",
         "manufacturer": "Mankati",
         "file_formats": "text/x-gcode",
-        "platform": "mankati_fullscale_xt_plus_platform.stl",
+        "platform": "mankati_fullscale_xt_plus_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "mankati_fullscale_xt_plus_extruder_0"

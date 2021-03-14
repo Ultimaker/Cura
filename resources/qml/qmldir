@@ -35,6 +35,7 @@ RadioButton         1.0 RadioButton.qml
 Scrollable          1.0 Scrollable.qml
 TabButton           1.0 TabButton.qml
 TextField           1.0 TextField.qml
+ScrollView          1.0 ScrollView.qml
 
 
 # Cura/MachineSettings

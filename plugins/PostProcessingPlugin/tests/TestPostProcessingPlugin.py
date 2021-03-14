@@ -1,3 +1,5 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 import sys
@@ -11,7 +13,7 @@ from ..PostProcessingPlugin import PostProcessingPlugin
 # not sure if needed
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
-""" In this file, commnunity refers to regular Cura for makers."""
+""" In this file, community refers to regular Cura for makers."""
 
 mock_plugin_registry = MagicMock()
 mock_plugin_registry.getPluginPath = MagicMock(return_value = "mocked_plugin_path")

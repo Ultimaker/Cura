@@ -31,7 +31,7 @@ def readHex(filename):
         check_sum &= 0xFF
         if check_sum != 0:
             raise Exception("Checksum error in hex file: " + line)
-        
+
         if rec_type == 0:#Data record
             while len(data) < addr + rec_len:
                 data.append(0)

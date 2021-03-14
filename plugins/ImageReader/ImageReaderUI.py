@@ -155,8 +155,10 @@ class ImageReaderUI(QObject):
         if len(value) > 0:
             try:
                 self.peak_height = float(value.replace(",", "."))
+                if self.peak_height < 0:
+                    self.peak_height = 2.5
             except ValueError:  # Can happen with incomplete numbers, such as "-".
-                self._width = 0
+                self.peak_height = 2.5  # restore default
         else:
             self.peak_height = 0
 
@@ -170,7 +172,7 @@ class ImageReaderUI(QObject):
 
     @pyqtSlot(int)
     def onColorModelChanged(self, value):
-        self.use_transparency_model = (value == 0)
+        self.use_transparency_model = (value == 1)
 
     @pyqtSlot(int)
     def onTransmittanceChanged(self, value):

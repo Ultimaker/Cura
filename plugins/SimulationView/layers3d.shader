@@ -10,8 +10,10 @@ vertex41core =
     uniform lowp float u_min_feedrate;
     uniform lowp float u_max_thickness;
     uniform lowp float u_min_thickness;
+    uniform lowp float u_max_line_width;
+    uniform lowp float u_min_line_width;
     uniform lowp int u_layer_view_type;
-    uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
+    uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
     uniform highp mat4 u_normalMatrix;
 
@@ -21,6 +23,7 @@ vertex41core =
     in highp vec4 a_normal;
     in highp vec2 a_line_dim;  // line width and thickness
     in highp float a_extruder;
+    in highp float a_prev_line_type;
     in highp float a_line_type;
     in highp float a_feedrate;
     in highp float a_thickness;
@@ -31,7 +34,8 @@ vertex41core =
     out highp vec3 v_normal;
     out lowp vec2 v_line_dim;
     out highp int v_extruder;
-    out highp vec4 v_extruder_opacity;
+    out highp mat4 v_extruder_opacity;
+    out float v_prev_line_type;
     out float v_line_type;
 
     out lowp vec4 f_color;
@@ -64,6 +68,19 @@ vertex41core =
         return vec4(red, green, blue, 1.0);
     }
 
+    vec4 lineWidthGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float value = (abs_value - min_value) / (max_value - min_value);
+        float red = value;
+        float green = 1 - abs(1 - 4 * value);
+        if(value > 0.375)
+        {
+            green = 0.5;
+        }
+        float blue = max(1 - 4 * value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
+
     void main()
     {
         vec4 v1_vertex = a_vertex;
@@ -86,12 +103,16 @@ vertex41core =
             case 3:  // "Layer thickness"
                 v_color = layerThicknessGradientColor(a_line_dim.y, u_min_thickness, u_max_thickness);
                 break;
+            case 4:  // "Line width"
+                v_color = lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
+                break;
         }
 
         v_vertex = world_space_vert.xyz;
         v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
         v_extruder = int(a_extruder);
+        v_prev_line_type = a_prev_line_type;
         v_line_type = a_line_type;
         v_extruder_opacity = u_extruder_opacity;
 
@@ -108,20 +129,24 @@ geometry41core =
     uniform highp mat4 u_viewMatrix;
     uniform highp mat4 u_projectionMatrix;
 
+    uniform lowp vec4 u_starts_color;
+
     uniform int u_show_travel_moves;
     uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
+    uniform int u_show_starts;
 
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 26) out;
+    layout(triangle_strip, max_vertices = 40) out;
 
     in vec4 v_color[];
     in vec3 v_vertex[];
     in vec3 v_normal[];
     in vec2 v_line_dim[];
     in int v_extruder[];
-    in vec4 v_extruder_opacity[];
+    in mat4 v_extruder_opacity[];
+    in float v_prev_line_type[];
     in float v_line_type[];
 
     out vec4 f_color;
@@ -152,7 +177,7 @@ geometry41core =
         float size_x;
         float size_y;
 
-        if ((v_extruder_opacity[0][v_extruder[0]] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
+        if ((v_extruder_opacity[0][int(mod(v_extruder[0], 4))][v_extruder[0] / 4] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
             return;
         }
         // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
@@ -268,6 +293,29 @@ geometry41core =
 
             EndPrimitive();
         }
+
+
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
+            float w = v_line_dim[0].x / 2;
+            float h = v_line_dim[0].y / 2;
+
+            myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
+            myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
+            myEmitVertex(v_vertex[0] + vec3( w, -h,  w), u_starts_color, normalize(vec3( 1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h,  w, 0.0))); // Front-bottom-left
+            myEmitVertex(v_vertex[0] + vec3(-w, -h,  w), u_starts_color, normalize(vec3(-1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h,  w, 0.0))); // Front-bottom-right
+            myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), u_starts_color, normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
+            myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
+            myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), u_starts_color, normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
+            myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
+            myEmitVertex(v_vertex[0] + vec3( w,  h, -w), u_starts_color, normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
+            myEmitVertex(v_vertex[0] + vec3( w, -h,  w), u_starts_color, normalize(vec3( 1.0, -1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h,  w, 0.0))); // Front-bottom-left
+            myEmitVertex(v_vertex[0] + vec3( w, -h, -w), u_starts_color, normalize(vec3( 1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w, -h, -w, 0.0))); // Back-bottom-left
+            myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), u_starts_color, normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
+            myEmitVertex(v_vertex[0] + vec3( w,  h, -w), u_starts_color, normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
+            myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), u_starts_color, normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
+            
+            EndPrimitive();
+        }
     }
 
 fragment41core =
@@ -304,7 +352,7 @@ fragment41core =
 [defaults]
 u_active_extruder = 0.0
 u_layer_view_type = 0
-u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+u_extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.0]
@@ -312,10 +360,13 @@ u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_minimumAlbedo = [0.1, 0.1, 0.1, 1.0]
 u_shininess = 20.0
 
+u_starts_color = [1.0, 1.0, 1.0, 1.0]
+
 u_show_travel_moves = 0
 u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
+u_show_starts = 1
 
 u_min_feedrate = 0
 u_max_feedrate = 1
@@ -337,6 +388,7 @@ a_normal = normal
 a_line_dim = line_dim
 a_extruder = extruder
 a_material_color = material_color
+a_prev_line_type = prev_line_type
 a_line_type = line_type
 a_feedrate = feedrate
 a_thickness = thickness

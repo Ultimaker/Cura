@@ -1,31 +1,29 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List, Optional, Union, TYPE_CHECKING
 import os.path
 import zipfile
-
-import numpy
+from typing import List, Optional, Union, TYPE_CHECKING, cast
 
 import Savitar
+import numpy
 
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
-from UM.Scene.GroupDecorator import GroupDecorator
-from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
-
+from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Scene.SceneNode import SceneNode  # For typing.
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
-
+from cura.Settings.ExtruderManager import ExtruderManager
 
 try:
     if not TYPE_CHECKING:
@@ -35,8 +33,9 @@ except ImportError:
     import xml.etree.ElementTree as ET
 
 
-##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
+    """Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!"""
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -52,20 +51,27 @@ class ThreeMFReader(MeshReader):
         self._root = None
         self._base_name = ""
         self._unit = None
-        self._object_count = 0  # Used to name objects as there is no node name yet.
+        self._empty_project = False
+
+    def emptyFileHintSet(self) -> bool:
+        return self._empty_project
 
     def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
         if transformation == "":
             return Matrix()
 
         split_transformation = transformation.split()
-        ## Transformation is saved as:
-        ## M00 M01 M02 0.0
-        ## M10 M11 M12 0.0
-        ## M20 M21 M22 0.0
-        ## M30 M31 M32 1.0
-        ## We switch the row & cols as that is how everyone else uses matrices!
         temp_mat = Matrix()
+        """Transformation is saved as:
+            M00 M01 M02 0.0
+
+            M10 M11 M12 0.0
+
+            M20 M21 M22 0.0
+
+            M30 M31 M32 1.0
+        We switch the row & cols as that is how everyone else uses matrices!
+        """
         # Rotation & Scale
         temp_mat._data[0, 0] = split_transformation[0]
         temp_mat._data[1, 0] = split_transformation[1]
@@ -84,20 +90,35 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
-    #   \returns Scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
-        self._object_count += 1
+        """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
 
-        node_name = savitar_node.getName()
+        :returns: Scene node.
+        """
+        try:
+            node_name = savitar_node.getName()
+            node_id = savitar_node.getId()
+        except AttributeError:
+            Logger.log("e", "Outdated version of libSavitar detected! Please update to the newest version!")
+            node_name = ""
+            node_id = ""
+
         if node_name == "":
-            node_name = "Object %s" % self._object_count
+            if file_name != "":
+                node_name = os.path.basename(file_name)
+            else:
+                node_name = "Object {}".format(node_id)
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
+        try:
+            um_node.addDecorator(ConvexHullDecorator())
+        except:
+            pass
         um_node.setName(node_name)
+        um_node.setId(node_id)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
@@ -142,9 +163,9 @@ class ThreeMFReader(MeshReader):
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
-
+            known_setting_keys = um_node.callDecoration("getStack").getAllKeys()
             for key in settings:
-                setting_value = settings[key]
+                setting_value = settings[key].value
 
                 # Extruder_nr is a special case.
                 if key == "extruder_nr":
@@ -154,11 +175,22 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key, "value", setting_value)
+                if key in known_setting_keys:
+                    setting_container.setProperty(key, "value", setting_value)
+                else:
+                    um_node.metadata[key] = settings[key]
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
-            group_decorator = GroupDecorator()
-            um_node.addDecorator(group_decorator)
+            if len(um_node.getAllChildren()) == 1:
+                # We don't want groups of one, so move the node up one "level"
+                child_node = um_node.getChildren()[0]
+                parent_transformation = um_node.getLocalTransformation()
+                child_transformation = child_node.getLocalTransformation()
+                child_node.setTransformation(parent_transformation.multiply(child_transformation))
+                um_node = cast(CuraSceneNode, um_node.getChildren()[0])
+            else:
+                group_decorator = GroupDecorator()
+                um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
         if um_node.getMeshData():
             # Assuming that all nodes with mesh data are printable objects
@@ -168,8 +200,8 @@ class ThreeMFReader(MeshReader):
         return um_node
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
+        self._empty_project = False
         result = []
-        self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
         try:
             archive = zipfile.ZipFile(file_name, "r")
@@ -177,12 +209,16 @@ class ThreeMFReader(MeshReader):
             parser = Savitar.ThreeMFParser()
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
+
+            for key, value in scene_3mf.getMetadata().items():
+                CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
+
             for node in scene_3mf.getSceneNodes():
                 um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
-                # compensate for original center position, if object(s) is/are not around its zero position
 
+                # compensate for original center position, if object(s) is/are not around its zero position
                 transform_matrix = Matrix()
                 mesh_data = um_node.getMeshData()
                 if mesh_data is not None:
@@ -233,21 +269,26 @@ class ThreeMFReader(MeshReader):
 
                 result.append(um_node)
 
+            if len(result) == 0:
+                self._empty_project = True
+
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")
             return []
 
         return result
 
-    ##  Create a scale vector based on a unit string.
-    #   The core spec defines the following:
-    #   * micron
-    #   * millimeter (default)
-    #   * centimeter
-    #   * inch
-    #   * foot
-    #   * meter
     def _getScaleFromUnit(self, unit: Optional[str]) -> Vector:
+        """Create a scale vector based on a unit string.
+
+        .. The core spec defines the following:
+        * micron
+        * millimeter (default)
+        * centimeter
+        * inch
+        * foot
+        * meter
+        """
         conversion_to_mm = {
             "micron": 0.001,
             "millimeter": 1,

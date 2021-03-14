@@ -6,7 +6,7 @@
         "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
-        "platform": "bq_hephestos_2_platform.stl",
+        "platform": "bq_hephestos_2_platform.3mf",
         "platform_offset": [6, 1320, 0 ],
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":

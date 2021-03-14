@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -74,7 +74,7 @@ UM.MainWindow
     WelcomeDialogItem
     {
         id: welcomeDialogItem
-        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
+        visible: false
         z: greyOutBackground.z + 1
     }
 
@@ -82,6 +82,21 @@ UM.MainWindow
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
         CuraApplication.purgeWindows()
+    }
+
+    Connections
+    {
+        // This connection is used when there is no ActiveMachine and the user is logged in
+        target: CuraApplication
+        onShowAddPrintersUncancellableDialog:
+        {
+            Cura.Actions.parent = backgroundItem
+
+            // Reuse the welcome dialog item to show "Add a printer" only.
+            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+            welcomeDialogItem.progressBarVisible = false
+            welcomeDialogItem.visible = true
+        }
     }
 
     Connections
@@ -117,6 +132,15 @@ UM.MainWindow
                 welcomeDialogItem.progressBarVisible = false
                 welcomeDialogItem.visible = true
             }
+
+            // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
+            // machine and the user is logged in.
+            if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
+            {
+                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
+            }
         }
     }
 
@@ -124,15 +148,6 @@ UM.MainWindow
     {
         id: backgroundItem
         anchors.fill: parent
-
-        signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
-        function getMeshName(path)
-        {
-            //takes the path the complete path of the meshname and returns only the filebase
-            var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.indexOf("."))
-            return fileBase
-        }
 
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
@@ -442,15 +457,13 @@ UM.MainWindow
             insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/Materials/MaterialsPage.qml"));
 
             insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
-
-            //Force refresh
-            setPage(0);
+            currentPage = 0;
         }
 
         onVisibleChanged:
         {
             // When the dialog closes, switch to the General page.
-            // This prevents us from having a heavy page like Setting Visiblity active in the background.
+            // This prevents us from having a heavy page like Setting Visibility active in the background.
             setPage(0);
         }
     }
@@ -678,6 +691,9 @@ UM.MainWindow
 
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
+            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+            openFilesIncludingProjectsDialog.addToRecent = true;
+
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
             {
@@ -704,6 +720,7 @@ UM.MainWindow
                 {
                     // ask whether to open as project or as models
                     askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.addToRecent = true;
                     askOpenAsProjectOrModelsDialog.show();
                 }
             }
@@ -763,6 +780,7 @@ UM.MainWindow
         onOpenProjectFile:
         {
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
             askOpenAsProjectOrModelsDialog.show();
         }
     }
@@ -814,17 +832,22 @@ UM.MainWindow
         }
     }
 
-    DiscardOrKeepProfileChangesDialog
+    Component
     {
-        id: discardOrKeepProfileChangesDialog
+        id: discardOrKeepProfileChangesDialogComponent
+        DiscardOrKeepProfileChangesDialog { }
     }
-
+    Loader
+    {
+        id: discardOrKeepProfileChangesDialogLoader
+    }
     Connections
     {
         target: CuraApplication
         onShowDiscardOrKeepProfileChanges:
         {
-            discardOrKeepProfileChangesDialog.show()
+            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.show()
         }
     }
 
@@ -842,6 +865,7 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "What's New")
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
+        visible: false
     }
 
     Connections

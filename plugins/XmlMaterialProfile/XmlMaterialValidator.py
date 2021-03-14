@@ -3,11 +3,14 @@
 
 from typing import Any, Dict
 
-##  Makes sure that the required metadata is present for a material.
+
 class XmlMaterialValidator:
-    ##  Makes sure that the required metadata is present for a material.
+    """Makes sure that the required metadata is present for a material."""
+
     @classmethod
     def validateMaterialMetaData(cls, validation_metadata: Dict[str, Any]):
+        """Makes sure that the required metadata is present for a material."""
+
 
         if validation_metadata.get("GUID") is None:
             return "Missing GUID"

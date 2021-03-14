@@ -7,7 +7,6 @@
         "author":                          "Gabriele Rossetti",
         "visible":                         false,
         "manufacturer":                    "Deltacomb 3D Printers",
-        "category":                        "Other",
         "file_formats":                    "text/x-gcode",
         "has_machine_quality":             true,
         "has_materials":                   true,

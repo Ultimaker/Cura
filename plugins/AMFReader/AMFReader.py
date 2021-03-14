@@ -147,13 +147,13 @@ class AMFReader(MeshReader):
 
         return group_node
 
-    ##  Converts a Trimesh to Uranium's MeshData.
-    #   \param tri_node A Trimesh containing the contents of a file that was
-    #   just read.
-    #   \param file_name The full original filename used to watch for changes
-    #   \return Mesh data from the Trimesh in a way that Uranium can understand
-    #   it.
     def _toMeshData(self, tri_node: trimesh.base.Trimesh, file_name: str = "") -> MeshData:
+        """Converts a Trimesh to Uranium's MeshData.
+
+        :param tri_node: A Trimesh containing the contents of a file that was just read.
+        :param file_name: The full original filename used to watch for changes
+        :return: Mesh data from the Trimesh in a way that Uranium can understand it.
+        """
         tri_faces = tri_node.faces
         tri_vertices = tri_node.vertices
 
