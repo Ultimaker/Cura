@@ -6,6 +6,11 @@ from UM.Logger import Logger
 
 
 class SecretStorage:
+    """
+    Secret storage vault. It will by default store a secret in the system keyring. If that fails, is not available or
+    not allowed it will store in the Cura preferences. This is the unsafe "old" behaviour
+    """
+
     def __init__(self, preferences: Optional["Preferences"] = None):
         self._stored_secrets = set()
         if preferences:
@@ -16,7 +21,7 @@ class SecretStorage:
             else:
                 self._preferences.addPreference("general/keyring", "{}")
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: str):
         if key in self._stored_secrets:
             self._stored_secrets.remove(key)
             self._preferences.setValue("general/keyring", ";".join(self._stored_secrets))
@@ -25,28 +30,30 @@ class SecretStorage:
             # TODO: handle removal of secret from preferences
             pass
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: str, value: str):
         try:
             keyring.set_password("cura", key, value)
             self._stored_secrets.add(key)
-            self._preferences.setValue(f"general/{key}", None)
+            self._preferences.setValue("general/{key}".format(key = key), None)
         except:
-            Logger.logException("w", f"Could not store {key} in keyring.")
+            Logger.logException("w", "Could not store {key} in keyring.".format(key = key))
             if key in self._stored_secrets:
                 self._stored_secrets.remove(key)
-            self._preferences.addPreference("general/{key}".format(key=key), "{}")
-            self._preferences.setValue("general/{key}".format(key=key), value)
+            self._preferences.addPreference("general/{key}".format(key = key), "{}")
+            self._preferences.setValue("general/{key}".format(key = key), value)
         self._preferences.setValue("general/keyring", ";".join(self._stored_secrets))
 
-    def __getitem__(self, key):
-        secret = self._preferences.getValue(f"general/{key}")
+    def __getitem__(self, key: str) -> Optional[str]:
+        secret = None
         if key in self._stored_secrets:
             try:
                 secret = keyring.get_password("cura", key)
             except:
-                if secret:
-                    Logger.logException("w",
-                                        f"{key} obtained from preferences, consider giving Cura access to the keyring")
-        if secret is None or secret == 'null':
-            Logger.logException("w", f"Could not load {key}")
+                secret = self._preferences.getValue("general/{key}".format(key = key))
+                Logger.logException("w", "{key} obtained from preferences, consider giving Cura access to the keyring".format(key = key))
+        else:
+            secret = self._preferences.getValue(f"general/{key}")
+            Logger.logException("w", "{key} obtained from preferences, consider giving Cura access to the keyring".format(key = key))
+        if secret is None or secret == '':
+            Logger.logException("w", "Could not load {key}".format(key = key))
         return secret
