@@ -6,7 +6,7 @@
         "visible": true,
         "author": "Daniel Kurth",
         "manufacturer": "Layer One",
-        "platform_offset": [0, -40, 0],
+        "platform_offset": [0, 0, 0],
         "has_machine_quality": false,
         "has_materials": true,
         "preferred_material": "layer_one_dark_gray_pla",
@@ -14,7 +14,7 @@
         "preferred_variant_name": "PTFE hotend + 0.4mm brass nozzle",
         "preferred_quality_type": "normal",
         "variants_name": "Tool:",
-        "platform": "Atom 3 bed.stl",
+        "platform": "Atom 3 bed.3mf",
         "machine_extruder_trains":
         {
             "0": "atom3_extruder_0"
