@@ -48,7 +48,6 @@
         "machine_gcode_flavor": { "RepRap (Marlin/Sprinter)": "Marlin" },
         "machine_heated_bed": { "default_value": true },
         "material_diameter": { "default_value": 1.75},
-        "extrude_prime_pos_abs": { "default_value": true},
         "machine_start_gcode": {
             "default_value": ";MACHINE START CODE\nG21 ;metric values\nG90 ;absolute positioning\nG28 ;home\nG1 Z5 F9000\n;MACHINE START CODE"
         },
