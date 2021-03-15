@@ -267,17 +267,18 @@ class AuthorizationService:
             self._user_profile = self.getUserProfile()
 
             # Store all the sensitive stuff in the keyring
-            # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             self._secret_storage["refresh_token"] = auth_data.refresh_token
+
+            # The access_token will still be stored in the preference file on windows, due to a 255 length limitation
             self._secret_storage["access_token"] = auth_data.access_token
 
-
-            # And remove that data again so it isn't stored in the preferences.
-            # Keep the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
+            # Store the data in the preference, setting both tokens to None so they won't be written
             auth_data.refresh_token = None
             auth_data.access_token = None
-
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
+
+            # restore access token so that syncing for the current session doesn't fail
+            auth_data.access_token = self._secret_storage["access_token"]
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
