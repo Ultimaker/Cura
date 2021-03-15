@@ -53,7 +53,7 @@ class AuthorizationService:
 
         self.onAuthStateChanged.connect(self._authChanged)
 
-        self._secret_storage = SecretStorage()
+        self._secret_storage = None  # type: Optional[SecretStorage]
 
     def _authChanged(self, logged_in):
         if logged_in and self._unable_to_get_data_message is not None:
@@ -62,6 +62,7 @@ class AuthorizationService:
     def initialize(self, preferences: Optional["Preferences"] = None) -> None:
         if preferences is not None:
             self._preferences = preferences
+            self._secret_storage = SecretStorage(preferences)
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
@@ -236,6 +237,7 @@ class AuthorizationService:
             # Since we stored all the sensitive stuff in the keyring, restore that now.
             # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             preferences_data["refresh_token"] = self._secret_storage["refresh_token"]
+            preferences_data["access_token"] = self._secret_storage["access_token"]
 
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
@@ -267,11 +269,13 @@ class AuthorizationService:
             # Store all the sensitive stuff in the keyring
             # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             self._secret_storage["refresh_token"] = auth_data.refresh_token
+            self._secret_storage["access_token"] = auth_data.access_token
 
 
             # And remove that data again so it isn't stored in the preferences.
             # Keep the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
             auth_data.refresh_token = None
+            auth_data.access_token = None
 
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
         else:
