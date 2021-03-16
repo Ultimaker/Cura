@@ -17,7 +17,6 @@ from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse
-from cura.OAuth2.SecretStorage import SecretStorage
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -53,7 +52,6 @@ class AuthorizationService:
 
         self.onAuthStateChanged.connect(self._authChanged)
 
-        self._secret_storage = None  # type: Optional[SecretStorage]
 
     def _authChanged(self, logged_in):
         if logged_in and self._unable_to_get_data_message is not None:
@@ -62,7 +60,6 @@ class AuthorizationService:
     def initialize(self, preferences: Optional["Preferences"] = None) -> None:
         if preferences is not None:
             self._preferences = preferences
-            self._secret_storage = SecretStorage(preferences)
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
@@ -234,11 +231,6 @@ class AuthorizationService:
         try:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
 
-            # Since we stored all the sensitive stuff in the keyring, restore that now.
-            # Don't store the access_token, as it's very long and that (or tried workarounds) causes issues on Windows.
-            preferences_data["refresh_token"] = self._secret_storage["refresh_token"]
-            preferences_data["access_token"] = self._secret_storage["access_token"]
-
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
                 # Also check if we can actually get the user profile information.
@@ -265,20 +257,7 @@ class AuthorizationService:
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()
-
-            # Store all the sensitive stuff in the keyring
-            self._secret_storage["refresh_token"] = auth_data.refresh_token
-
-            # The access_token will still be stored in the preference file on windows, due to a 255 length limitation
-            self._secret_storage["access_token"] = auth_data.access_token
-
-            # Store the data in the preference, setting both tokens to None so they won't be written
-            auth_data.refresh_token = None
-            auth_data.access_token = None
-            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
-
-            # restore access token so that syncing for the current session doesn't fail
-            auth_data.access_token = self._secret_storage["access_token"]
+            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
