@@ -52,7 +52,6 @@ class AuthorizationService:
 
         self.onAuthStateChanged.connect(self._authChanged)
 
-
     def _authChanged(self, logged_in):
         if logged_in and self._unable_to_get_data_message is not None:
             self._unable_to_get_data_message.hide()
@@ -230,7 +229,6 @@ class AuthorizationService:
             return
         try:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
-
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
                 # Also check if we can actually get the user profile information.
