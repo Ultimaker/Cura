@@ -51,7 +51,7 @@ class AuthenticationResponse(BaseModel):
         self.refresh_token = kwargs.pop("refresh_token", None)
         super(AuthenticationResponse, self).__init__(**kwargs)
 
-    def dump(self) -> dict[Union[bool, Optional[str]]]:
+    def dump(self) -> Dict[str, Union[bool, Optional[str]]]:
         """
         Dumps the dictionary of Authentication attributes. KeyringAttributes are transformed to public attributes
         If the keyring was used, these will have a None value, otherwise they will have the secret value
