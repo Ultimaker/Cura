@@ -13,7 +13,12 @@ class KeyringAttribute:
     """
     def __get__(self, instance: Type["BaseModel"], owner: type) -> str:
         if self._store_secure:
-            return keyring.get_password("cura", self._keyring_name)
+            try:
+                return keyring.get_password("cura", self._keyring_name)
+            except keyring.errors.NoKeyringError:
+                self._store_secure = False
+                Logger.logException("w", "No keyring backend present")
+                return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)
 
@@ -26,6 +31,10 @@ class KeyringAttribute:
                 self._store_secure = False
                 setattr(instance, self._name, value)
                 Logger.logException("w", "Keyring access denied")
+            except keyring.errors.NoKeyringError:
+                self._store_secure = False
+                setattr(instance, self._name, value)
+                Logger.logException("w", "No keyring backend present")
         else:
             setattr(instance, self._name, value)
 
@@ -35,6 +44,6 @@ class KeyringAttribute:
         self._store_secure = False
         try:
             self._store_secure = keyring.backend.KeyringBackend.viable
-        except keyring.errors.KeyringError:
+        except keyring.errors.NoKeyringError:
             Logger.logException("w", "Could not use keyring")
         setattr(owner, self._name, None)
