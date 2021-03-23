@@ -185,7 +185,7 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text:
                 {
-                    var t1 = catalog.i18nc("@text", "Create a free Ultimaker acount")
+                    var t1 = catalog.i18nc("@text", "Create a free Ultimaker Account")
                     var t = "<a href='https://notusedref'>" + t1 + "</a>"
                     return t
                 }
