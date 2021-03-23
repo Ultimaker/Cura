@@ -29,26 +29,39 @@ Item
             scale: 0.666
         }
 
-        Label
+        Column
         {
-            id: titleLabel
             anchors.horizontalCenter: parent.horizontalCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
-            color: UM.Theme.getColor("primary_button")
-            font: UM.Theme.getFont("huge_bold")
-            renderType: Text.NativeRendering
+            spacing: UM.Theme.getSize("thick_margin").height
+
+            Label
+            {
+                id: titleLabel
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
+                color: UM.Theme.getColor("primary_button")
+                font: UM.Theme.getFont("huge_bold")
+                renderType: Text.NativeRendering
+            }
+
+            Label
+            {
+                id: textLabel
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura.\nThis will only take a few moments.")
+                font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
+            }
         }
 
-        Label
+        // Filler item
+        Item
         {
-            id: textLabel
-            anchors.horizontalCenter: parent.horizontalCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura.\nThis will only take a few moments.")
-            font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
+            height: UM.Theme.getSize("thick_margin").height
+            width: parent.width
         }
 
         Cura.PrimaryButton
@@ -57,6 +70,13 @@ Item
             anchors.horizontalCenter: parent.horizontalCenter
             text: catalog.i18nc("@button", "Get started")
             onClicked: base.showNextPage()
+        }
+
+        // Filler item
+        Item
+        {
+            height: UM.Theme.getSize("thick_margin").height
+            width: parent.width
         }
     }
 }
