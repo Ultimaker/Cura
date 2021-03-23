@@ -454,7 +454,7 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
                     #Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
