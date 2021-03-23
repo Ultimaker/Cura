@@ -18,6 +18,8 @@ class SingleInstance:
 
         self._single_instance_server = None
 
+        self._application.getPreferences().addPreference("cura/single_instance_clear_before_load", True)
+
     # Starts a client that checks for a single instance server and sends the files that need to opened if the server
     # exists. Returns True if the single instance server is found, otherwise False.
     def startClient(self) -> bool:
@@ -42,8 +44,9 @@ class SingleInstance:
             # "command" field is required and holds the name of the command to execute.
             # Other fields depend on the command.
 
-            payload = {"command": "clear-all"}
-            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
+            if self._application.getPreferences().getValue("cura/single_instance_clear_before_load"):
+                payload = {"command": "clear-all"}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
             payload = {"command": "focus"}
             single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
