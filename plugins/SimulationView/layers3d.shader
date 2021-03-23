@@ -136,6 +136,7 @@ geometry41core =
     uniform int u_show_skin;
     uniform int u_show_infill;
     uniform int u_show_starts;
+    uniform int u_transparent_pass;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 40) out;
@@ -192,6 +193,14 @@ geometry41core =
         }
         if ((u_show_infill == 0) && (v_line_type[0] == 6)) {
             return;
+        }
+        if ((u_transparent_pass == 0) && (v_color[0][3] < 1.0))
+        {
+            return; //Skip transparent bits if it's not the transparent pass.
+        }
+        if ((u_transparent_pass == 1) && (v_color[0][3] >= 1.0))
+        {
+            return; //Skip opaque bits if it is the transparent pass.
         }
 
         if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {

@@ -180,14 +180,19 @@ class SimulationPass(RenderPass):
                     prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
                     layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
-                    layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
-                    layers_batch.addItem(node.getWorldTransformation(), layer_data)
-                    layers_batch.render(self._scene.getActiveCamera())
+                    # Draw the layer view twice, first just the solid bits, then the transparent bits.
+                    for transparent_pass in [0, 1]:
+                        self._layer_shader.setUniformValue("u_transparent_pass", transparent_pass)
+                        blend_mode = RenderBatch.BlendMode.Normal if (transparent_pass == 1) else RenderBatch.BlendMode.NoBlending
+                        render_type = RenderBatch.RenderType.Transparent if (transparent_pass == 1) else RenderBatch.RenderType.Solid
+                        layers_batch = RenderBatch(self._current_shader, type = render_type, blend_mode = blend_mode, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
+                        layers_batch.addItem(node.getWorldTransformation(), layer_data)
+                        layers_batch.render(self._scene.getActiveCamera())
 
-                    # Current selected layer is rendered
-                    current_layer_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (current_layer_start, current_layer_end))
-                    current_layer_batch.addItem(node.getWorldTransformation(), layer_data)
-                    current_layer_batch.render(self._scene.getActiveCamera())
+                        # Current selected layer is rendered
+                        current_layer_batch = RenderBatch(self._layer_shader, type = render_type, blend_mode = blend_mode, mode = RenderBatch.RenderMode.Lines, range = (current_layer_start, current_layer_end), backface_cull = True)
+                        current_layer_batch.addItem(node.getWorldTransformation(), layer_data)
+                        current_layer_batch.render(self._scene.getActiveCamera())
 
                     self._old_current_layer = self._layer_view._current_layer_num
                     self._old_current_path = self._layer_view._current_path_num
