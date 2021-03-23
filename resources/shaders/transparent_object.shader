@@ -46,7 +46,9 @@ fragment =
         highp float NdotL = clamp(abs(dot(normal, lightDir)), 0.0, 1.0);
         finalColor += (NdotL * u_diffuseColor);
 
-        gl_FragColor = finalColor;
+        //Premultiply the alpha component into the colour. Combine this with additive blending.
+        //See https://apoorvaj.io/alpha-compositing-opengl-blending-and-premultiplied-alpha/ for a layout of theory.
+        gl_FragColor = finalColor * u_opacity;
         gl_FragColor.a = u_opacity;
     }
 
@@ -101,7 +103,9 @@ fragment41core =
         highp float NdotL = clamp(abs(dot(normal, lightDir)), 0.0, 1.0);
         finalColor += (NdotL * u_diffuseColor);
 
-        frag_color = finalColor;
+        //Premultiply the alpha component into the colour. Combine this with additive blending.
+        //See https://apoorvaj.io/alpha-compositing-opengl-blending-and-premultiplied-alpha/ for a layout of theory.
+        frag_color = finalColor * u_opacity;
         frag_color.a = u_opacity;
     }
 
