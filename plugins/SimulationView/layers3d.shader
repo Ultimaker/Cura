@@ -342,7 +342,7 @@ fragment41core =
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
-        float alpha = f_color.a;
+        finalColor.a = f_color.a;
 
         finalColor.rgb += f_color.rgb * 0.2 + u_minimumAlbedo.rgb;
 
@@ -351,8 +351,10 @@ fragment41core =
 
         // Diffuse Component
         highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
-        finalColor += (NdotL * f_color);
-        finalColor.a = alpha;  // Do not change alpha in any way
+        finalColor.rgb += (NdotL * f_color).rgb;
+        //Premultiply the alpha component into the colour. Combine this with additive blending.
+        //See https://apoorvaj.io/alpha-compositing-opengl-blending-and-premultiplied-alpha/ for a layout of theory.
+        finalColor *= f_color.a;
 
         frag_color = finalColor;
     }
