@@ -216,7 +216,7 @@ class CuraApplication(QtApplication):
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
-        self._cura_API = CuraAPI(self)
+        self._cura_API = CuraAPI(application = self)
 
         self._physics = None
         self._volume = None

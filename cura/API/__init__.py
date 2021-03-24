@@ -39,16 +39,16 @@ class CuraAPI(QObject):
         return cls.__instance
 
     def __init__(self, application: Optional["CuraApplication"] = None) -> None:
-        super().__init__(parent = CuraAPI._application)
+        super(CuraAPI, self).__init__(parent = self._application)
 
-        self._account = Account(self._application)
+        self._account = Account(application = self._application)
 
-        self._backups = Backups(self._application)
+        self._backups = Backups(application = self._application)
 
         self._connectionStatus = ConnectionStatus()
 
         # Interface API
-        self._interface = Interface(self._application)
+        self._interface = Interface(application = self._application)
 
     def initialize(self) -> None:
         self._account.initialize()

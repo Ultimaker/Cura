@@ -25,6 +25,7 @@ class SyncState:
     ERROR = 2
     IDLE = 3
 
+
 class Account(QObject):
     """The account API provides a version-proof bridge to use Ultimaker Accounts
 
@@ -58,8 +59,8 @@ class Account(QObject):
     manualSyncEnabledChanged = pyqtSignal(bool)
     updatePackagesEnabledChanged = pyqtSignal(bool)
 
-    def __init__(self, application: "CuraApplication", parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(Account, self).__init__(parent = application)
         self._application = application
         self._new_cloud_printers_detected = False
 

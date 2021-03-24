@@ -23,10 +23,9 @@ class ConnectionStatus(QObject):
             cls.__instance = cls(*args, **kwargs)
         return cls.__instance
 
-    def __init__(self, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
-
+    def __init__(self) -> None:
         manager = HttpRequestManager.getInstance()
+        super(ConnectionStatus, self).__init__(parent = manager)
         self._is_internet_reachable = manager.isInternetReachable  # type: bool
         manager.internetReachableChanged.connect(self._onInternetReachableChanged)
 
@@ -38,4 +37,3 @@ class ConnectionStatus(QObject):
         if reachable != self._is_internet_reachable:
             self._is_internet_reachable = reachable
             self.internetReachableChanged.emit()
-
