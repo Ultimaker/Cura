@@ -152,7 +152,7 @@ Item
         delegate:
             Rectangle
             {
-                implicitWidth: UM.Theme.getSize("thin_margin").width
+                width: UM.Theme.getSize("thin_margin").width
                 implicitHeight: UM.Theme.getSize("thin_margin").height
 
                 radius: width / 2
