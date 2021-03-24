@@ -19,11 +19,14 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class MaterialManagementModel(QObject):
     """Proxy class to the materials page in the preferences.
 
     This class handles the actions in that page, such as creating new materials, renaming them, etc.
     """
+    def __init__(self, parent: Optional[QObject] = None):
+        super(MaterialManagementModel, self).__init__(parent = parent)
 
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
