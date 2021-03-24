@@ -14,7 +14,7 @@ class QualityChangesGroup(QObject):
     """
 
     def __init__(self, name: str, quality_type: str, intent_category: str, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+        super(QualityChangesGroup, self).__init__(parent = parent)
         self._name = name
         self.quality_type = quality_type
         self.intent_category = intent_category
