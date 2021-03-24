@@ -26,7 +26,7 @@ class MachineErrorChecker(QObject):
     """
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
-        super().__init__(parent)
+        super(MachineErrorChecker, self).__init__(parent = parent)
 
         self._global_stack = None
 

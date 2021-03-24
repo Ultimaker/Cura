@@ -791,7 +791,7 @@ class CuraApplication(QtApplication):
         super().run()
 
         Logger.log("i", "Initializing machine error checker")
-        self._machine_error_checker = MachineErrorChecker(self)
+        self._machine_error_checker = MachineErrorChecker(parent = self)
         self._machine_error_checker.initialize()
         self.processEvents()
 
