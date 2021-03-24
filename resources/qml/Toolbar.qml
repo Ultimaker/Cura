@@ -108,6 +108,30 @@ Item
             }
         }
 
+        // rectángulo redondeado tras el botón de pausa
+        Rectangle {
+            anchors {
+                fill: pausaButton
+                leftMargin: -radius - border.width
+                rightMargin: -border.width
+                topMargin: -border.width
+                bottomMargin: -border.width
+            }
+            radius: UM.Theme.getSize("default_radius").width
+            color: UM.Theme.getColor("lining")
+        }
+
+        Button {
+            id: pausaButton
+
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.top: toolButtons.bottom
+            anchors.right: parent.right
+            spacing: UM.Theme.getSize("default_lining").height
+
+            text: "Pausa"
+        }
+
         // Used to create a rounded rectangle behind the extruderButtons
         Rectangle
         {
@@ -129,7 +153,7 @@ Item
             id: extruderButtons
 
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.top: toolButtons.bottom
+            anchors.top: pausaButton.bottom
             anchors.right: parent.right
             spacing: UM.Theme.getSize("default_lining").height
 
