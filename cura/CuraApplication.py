@@ -205,8 +205,8 @@ class CuraApplication(QtApplication):
         self._material_management_model = None
         self._quality_management_model = None
 
-        self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
-        self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
+        self._discovered_printer_model = DiscoveredPrintersModel(application = self)
+        self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(application = self)
         self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)

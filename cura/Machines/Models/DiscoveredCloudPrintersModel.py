@@ -19,8 +19,8 @@ class DiscoveredCloudPrintersModel(ListModel):
 
     cloudPrintersDetectedChanged = pyqtSignal(bool)
 
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(DiscoveredCloudPrintersModel, self).__init__(parent = application)
 
         self.addRoleName(self.DeviceKeyRole, "key")
         self.addRoleName(self.DeviceNameRole, "name")

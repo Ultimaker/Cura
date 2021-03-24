@@ -23,7 +23,7 @@ class DiscoveredPrinter(QObject):
 
     def __init__(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None], machine_type: str,
                  device: "NetworkedPrinterOutputDevice", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+        super(DiscoveredPrinter, self).__init__(parent = parent)
 
         self._ip_address = ip_address
         self._key = key
@@ -121,8 +121,8 @@ class DiscoveredPrintersModel(QObject):
      that printer to Cura as the active one).
     """
 
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(DiscoveredPrintersModel, self).__init__(parent = application)
 
         self._application = application
         self._discovered_printer_by_ip_dict = dict()  # type: Dict[str, DiscoveredPrinter]
