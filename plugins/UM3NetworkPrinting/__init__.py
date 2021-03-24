@@ -10,6 +10,6 @@ def getMetaData():
 
 def register(app):
     return {
-        "output_device": UM3OutputDevicePlugin.UM3OutputDevicePlugin(),
-        "machine_action": UltimakerNetworkedPrinterAction.UltimakerNetworkedPrinterAction()
+        "output_device": UM3OutputDevicePlugin.UM3OutputDevicePlugin(parent = app),
+        "machine_action": UltimakerNetworkedPrinterAction.UltimakerNetworkedPrinterAction(parent = app)
     }

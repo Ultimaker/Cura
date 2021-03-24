@@ -29,7 +29,7 @@ class MachineSettingsAction(MachineAction):
     It automatically detects machine definitions that it knows how to change and attaches itself to those.
     """
     def __init__(self, parent: Optional["QObject"] = None) -> None:
-        super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
+        super(MachineSettingsAction, self).__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"), parent = parent)
         self._qml_url = "MachineSettingsAction.qml"
 
         from cura.CuraApplication import CuraApplication

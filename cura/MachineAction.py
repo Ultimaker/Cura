@@ -20,14 +20,13 @@ class MachineAction(QObject, PluginObject):
     pyqtSlot() functions can be called by calling manager.func())
     """
 
-    def __init__(self, key: str, label: str = "") -> None:
+    def __init__(self, key: str, label: str = "", parent: Optional["QObject"] = None) -> None:
         """Create a new Machine action.
 
         :param key: unique key of the machine action
         :param label: Human readable label used to identify the machine action.
         """
-
-        super().__init__()
+        super(MachineAction, self).__init__(parent = parent)
         self._key = key
         self._label = label
         self._qml_url = ""

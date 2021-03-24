@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List
+from typing import List, Optional
 
 from cura.MachineAction import MachineAction
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
@@ -20,8 +20,8 @@ class BedLevelMachineAction(MachineAction):
     This is currently only used by the Ultimaker Original+
     """
 
-    def __init__(self):
-        super().__init__("BedLevel", catalog.i18nc("@action", "Level build plate"))
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(BedLevelMachineAction, self).__init__("BedLevel", catalog.i18nc("@action", "Level build plate"), parent = parent)
         self._qml_url = "BedLevelMachineAction.qml"
         self._bed_level_position = 0
 

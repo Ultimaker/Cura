@@ -9,6 +9,6 @@ def getMetaData():
 
 def register(app):
     return { "machine_action": [
-        BedLevelMachineAction.BedLevelMachineAction(),
-        UMOUpgradeSelection.UMOUpgradeSelection()
+        BedLevelMachineAction.BedLevelMachineAction(parent = app),
+        UMOUpgradeSelection.UMOUpgradeSelection(parent = app)
     ]}

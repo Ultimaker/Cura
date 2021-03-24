@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.MachineAction import MachineAction
@@ -17,8 +18,8 @@ class UMOUpgradeSelection(MachineAction):
     This action helps with selecting them, so they are added as a variant.
     """
 
-    def __init__(self):
-        super().__init__("UMOUpgradeSelection", catalog.i18nc("@action", "Select upgrades"))
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(UMOUpgradeSelection, self).__init__("UMOUpgradeSelection", catalog.i18nc("@action", "Select upgrades"), parent = parent)
         self._qml_url = "UMOUpgradeSelectionMachineAction.qml"
 
     def _reset(self):
