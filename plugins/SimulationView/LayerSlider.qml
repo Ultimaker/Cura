@@ -236,6 +236,17 @@ Item
             sliderRoot.updateRangeHandle()
         }
 
+        function upValueManually() {
+            setActiveHandle(upperHandle)
+            sliderRoot.manuallyChanged = true
+            upperHandle.setValue(upperHandleLabel.value +1)
+        }  
+        function downValueManually() {
+            setActiveHandle(upperHandle)
+            sliderRoot.manuallyChanged = true
+            upperHandle.setValue(upperHandleLabel.value -1)
+        }   
+
         Keys.onUpPressed: upperHandleLabel.setValue(upperHandleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
         Keys.onDownPressed: upperHandleLabel.setValue(upperHandleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
@@ -280,8 +291,7 @@ Item
     }
 
     // Lower handle
-    Rectangle
-    {
+    Rectangle {
         id: lowerHandle
 
         y: sliderRoot.height - sliderRoot.handleSize
@@ -370,6 +380,7 @@ Item
             }
         }
 
+        //etiqueta del límite inferior
         SimulationSliderLabel
         {
             id: lowerHandleLabel
@@ -387,5 +398,56 @@ Item
             busy: UM.SimulationView.busy
             setValue: lowerHandle.setValueManually // connect callback functions
         }
+
+        function upValueManually() {
+            setActiveHandle(lowerHandle)
+            sliderRoot.manuallyChanged = true
+            lowerHandle.setValue(lowerHandleLabel.value +1)
+        }  
+        function downValueManually() {
+            setActiveHandle(lowerHandle)
+            sliderRoot.manuallyChanged = true
+            lowerHandle.setValue(lowerHandleLabel.value -1)
+        }     
+    }
+    Button {
+        id: aumentaLimiteSuperiorButton
+        anchors.right: track.left
+        anchors.verticalCenter: track.top
+        anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        text: "+"
+        onClicked: {
+            upperHandle.upValueManually();                                                  
+        } 
+    }
+    Button {
+        id: disminuyeLimiteSuperiorButton
+        anchors.right: aumentaLimiteInferiorButton.left
+        anchors.verticalCenter: track.top
+        anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        text: "-"
+        onClicked: {
+            upperHandle.downValueManually();                                                  
+        } 
+    }
+   Button {
+        id: aumentaLimiteInferiorButton
+        anchors.right: track.left
+        anchors.verticalCenter: track.bottom
+        anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        text: "+"
+        onClicked: {
+            lowerHandle.upValueManually();                                                  
+        } 
+    }
+    Button {
+        id: disminuyeLimiteInferiorButton
+        anchors.right: aumentaLimiteInferiorButton.left
+        anchors.verticalCenter: track.bottom
+        anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        text: "-"
+        onClicked: {
+            lowerHandle.downValueManually();                                                  
+        } 
     }
 }
