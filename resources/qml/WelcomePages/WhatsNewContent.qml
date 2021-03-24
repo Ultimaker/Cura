@@ -45,12 +45,12 @@ Item
         {
             top: topSpacer.bottom
             bottom: whatsNewDots.top
+            left: parent.left
+            right: parent.right
             horizontalCenter: parent.horizontalCenter
-            margins: UM.Theme.getSize("default_margin").width
+            margins: UM.Theme.getSize("default_margin").width * 2
         }
 
-        height: parent.height - (UM.Theme.getSize("default_margin").height * 2)
-        width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
         color: UM.Theme.getColor("viewport_overlay")
 
         StackLayout
@@ -60,11 +60,11 @@ Item
             anchors
             {
                 top: parent.top
+                topMargin: UM.Theme.getSize("default_margin").width
                 horizontalCenter: parent.horizontalCenter
-                margins: UM.Theme.getSize("default_margin").width / 2
             }
-            height: parent.height - (UM.Theme.getSize("default_margin").height * 2)
-            width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
+            height: parent.height
+            width: parent.width
 
             currentIndex: whatsNewDots.currentIndex
 
@@ -72,9 +72,9 @@ Item
             {
                 anchors
                 {
-                    horizontalCenter: parent.horizontalCenter
                     top: parent.top
-                    margins: UM.Theme.getSize("default_margin").width / 2
+                    topMargin: UM.Theme.getSize("default_margin").width / 2
+                    horizontalCenter: parent.horizontalCenter
                 }
 
                 model: manager.subpageCount
@@ -83,9 +83,9 @@ Item
                 {
                     anchors
                     {
-                        horizontalCenter: parent.horizontalCenter
                         top: parent.top
-                        margins: UM.Theme.getSize("default_margin").width / 2
+                        topMargin: UM.Theme.getSize("default_margin").width / 2
+                        horizontalCenter: parent.horizontalCenter
                     }
                     color: UM.Theme.getColor("viewport_overlay")
 
@@ -100,7 +100,7 @@ Item
                             topMargin: UM.Theme.getSize("default_margin").width
                         }
                         width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
-                        height: (parent.height - (UM.Theme.getSize("default_margin").width * 2)) * 0.8
+                        height: (parent.height - UM.Theme.getSize("default_margin").height) * 0.75
                         fillMode: Image.PreserveAspectFit
 
                         source: manager.getSubpageImageSource(index)
