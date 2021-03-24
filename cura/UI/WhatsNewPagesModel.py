@@ -65,7 +65,7 @@ class WhatsNewPagesModel(WelcomePagesModel):
         texts, max_text = WhatsNewPagesModel._collectOrdinalFiles(Resources.Texts, WhatsNewPagesModel.text_formats)
         highest = max(max_image, max_text)
 
-        self._subpages = []  #type: List[Dict[str, str]]
+        self._subpages = []  #type: List[Dict[str, Optional[str]]]
         for n in range(0, highest + 1):
             self._subpages.append({
                 WhatsNewPagesModel.image_key: None if n not in images else images[n],
