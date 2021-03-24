@@ -153,7 +153,7 @@ Item
             Rectangle
             {
                 width: UM.Theme.getSize("thin_margin").width
-                implicitHeight: UM.Theme.getSize("thin_margin").height
+                height: UM.Theme.getSize("thin_margin").height
 
                 radius: width / 2
                 color:
