@@ -1,11 +1,15 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Optional, TYPE_CHECKING
 
 import UM.Settings.Models.SettingVisibilityHandler
 
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
 
 class MaterialSettingsVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
-    def __init__(self, parent = None, *args, **kwargs):
+    def __init__(self, parent: Optional["QObject"] = None, *args, **kwargs) -> None:
         super().__init__(parent = parent, *args, **kwargs)
 
         material_settings = {

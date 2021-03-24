@@ -1,7 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
+from typing import Optional, TYPE_CHECKING
 from PyQt5.QtGui import QOpenGLContext, QImage
 
 from UM.Application import Application
@@ -22,12 +22,14 @@ from cura.Scene.ConvexHullNode import ConvexHullNode
 
 from cura import XRayPass
 
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
 
 class XRayView(CuraView):
     """View used to display a see-through version of objects with errors highlighted."""
 
-    def __init__(self):
-        super().__init__(parent = None, use_empty_menu_placeholder = True)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super().__init__(parent = parent, use_empty_menu_placeholder = True)
 
         self._xray_shader = None
         self._xray_pass = None

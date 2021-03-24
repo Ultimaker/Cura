@@ -1,9 +1,10 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty
-from UM.FlameProfiler import pyqtSlot
+from typing import Optional, TYPE_CHECKING
 
+from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -14,13 +15,15 @@ import UM.Settings.Models.SettingVisibilityHandler
 from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherits-stack setting values from different extruders.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
 
 class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
     """The per object setting visibility handler ensures that only setting
 
     definitions that have a matching instance Container are returned as visible.
     """
-    def __init__(self, parent = None, *args, **kwargs):
+    def __init__(self, parent: Optional["QObject"] = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 
         self._selected_object_id = None

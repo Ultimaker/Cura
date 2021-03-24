@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
+from typing import Optional, TYPE_CHECKING
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
@@ -33,14 +33,16 @@ import math
 
 catalog = i18nCatalog("cura")
 
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
 
 class SolidView(View):
     """Standard view for mesh models."""
 
     _show_xray_warning_preference = "view/show_xray_warning"
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent: Optional["QObject"] = None):
+        super().__init__(parent)
         application = Application.getInstance()
         application.getPreferences().addPreference("view/show_overhang", True)
         application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)

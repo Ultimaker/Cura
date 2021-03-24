@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -45,6 +45,7 @@ if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
     from UM.Scene.Scene import Scene
     from UM.Settings.ContainerStack import ContainerStack
+    from PyQt5.QtCore import QObject
 
 catalog = i18nCatalog("cura")
 
@@ -60,7 +61,7 @@ class SimulationView(CuraView):
 
     _no_layers_warning_preference = "view/no_layers_warning"
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self._max_layers = 0

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -99,7 +99,7 @@ class PrintInformation(QObject):
         # Full fill message values using keys from _print_time_message_translations
         self._print_times_per_feature[build_plate_number] = {}
         for key in self._print_time_message_translations.keys():
-            self._print_times_per_feature[build_plate_number][key] = Duration(None, self)
+            self._print_times_per_feature[build_plate_number][key] = Duration(None, parent = self)
 
     def _initVariablesByBuildPlate(self, build_plate_number: int) -> None:
         if build_plate_number not in self._print_times_per_feature:
@@ -176,7 +176,7 @@ class PrintInformation(QObject):
 
         for feature, time in print_times_per_feature.items():
             if feature not in self._print_times_per_feature[build_plate_number]:
-                self._print_times_per_feature[build_plate_number][feature] = Duration(parent=self)
+                self._print_times_per_feature[build_plate_number][feature] = Duration(parent = self)
             duration = self._print_times_per_feature[build_plate_number][feature]
 
             if time != time:  # Check for NaN. Engine can sometimes give us weird values.
@@ -188,7 +188,7 @@ class PrintInformation(QObject):
             duration.setDuration(time)
 
         if build_plate_number not in self._current_print_time:
-            self._current_print_time[build_plate_number] = Duration(None, self)
+            self._current_print_time[build_plate_number] = Duration(None, parent = self)
         self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
     def _calculateInformation(self, build_plate_number: int) -> None:

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtQml import qmlRegisterSingletonType
@@ -23,6 +23,6 @@ def createSimulationViewProxy(engine, script_engine):
 
 
 def register(app):
-    simulation_view = SimulationView.SimulationView()
+    simulation_view = SimulationView.SimulationView(parent = app)
     qmlRegisterSingletonType(SimulationViewProxy.SimulationViewProxy, "UM", 1, 0, "SimulationView", simulation_view.getProxy)
     return { "view": simulation_view}
