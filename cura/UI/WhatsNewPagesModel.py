@@ -19,9 +19,9 @@ class WhatsNewPagesModel(WelcomePagesModel):
     image_key = "image"
     text_key = "text"
 
-    @classmethod
-    def _collectOrdinalFiles(cls, resource_type: int, include: List[str]) -> Tuple[Dict[int, str], int]:
-        result = {}  # Dict[int, str]
+    @staticmethod
+    def _collectOrdinalFiles(resource_type: int, include: List[str]) -> Tuple[Dict[int, str], int]:
+        result = {}  #type: Dict[int, str]
         highest = -1
         try:
             folder_path = Resources.getPath(resource_type, "whats_new")
@@ -38,8 +38,8 @@ class WhatsNewPagesModel(WelcomePagesModel):
             Logger.logException("w", "Could not find 'whats_new' folder for resource-type {0}".format(resource_type))
         return result, highest
 
-    @classmethod
-    def _loadText(cls, filename: str) -> str:
+    @staticmethod
+    def _loadText(filename: str) -> str:
         result = ""
         try:
             with open(filename, "r", encoding="utf-8") as file:
@@ -65,7 +65,7 @@ class WhatsNewPagesModel(WelcomePagesModel):
         texts, max_text = WhatsNewPagesModel._collectOrdinalFiles(Resources.Texts, WhatsNewPagesModel.text_formats)
         highest = max(max_image, max_text)
 
-        self._subpages = []  # List[Dict[str, str]]
+        self._subpages = []  #type: List[Dict[str, str]]
         for n in range(0, highest + 1):
             self._subpages.append({
                 WhatsNewPagesModel.image_key: None if n not in images else images[n],
