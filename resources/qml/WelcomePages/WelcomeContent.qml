@@ -21,40 +21,52 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         spacing: UM.Theme.getSize("thick_margin").height
 
+
+        // Filler item
+        Item
+        {
+            height: UM.Theme.getSize("thick_margin").width
+            width: parent.width
+        }
+
         Image
         {
             id: curaImage
             anchors.horizontalCenter: parent.horizontalCenter
             source: UM.Theme.getImage("first_run_welcome_cura")
-            scale: 0.666
+            fillMode: Image.PreserveAspectFit
+            width: UM.Theme.getSize("welcome_wizard_content_image_big").width
+            sourceSize.width: width
+            sourceSize.height: height
         }
 
-        Column
+        // Filler item
+        Item
         {
+            height: UM.Theme.getSize("thick_margin").width
+            width: parent.width
+        }
+
+        Label
+        {
+            id: titleLabel
             anchors.horizontalCenter: parent.horizontalCenter
-            spacing: UM.Theme.getSize("thick_margin").height
+            horizontalAlignment: Text.AlignHCenter
+            text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
+            color: UM.Theme.getColor("primary_button")
+            font: UM.Theme.getFont("huge_bold")
+            renderType: Text.NativeRendering
+        }
 
-            Label
-            {
-                id: titleLabel
-                anchors.horizontalCenter: parent.horizontalCenter
-                horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
-                color: UM.Theme.getColor("primary_button")
-                font: UM.Theme.getFont("huge_bold")
-                renderType: Text.NativeRendering
-            }
-
-            Label
-            {
-                id: textLabel
-                anchors.horizontalCenter: parent.horizontalCenter
-                horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura.\nThis will only take a few moments.")
-                font: UM.Theme.getFont("medium")
-                color: UM.Theme.getColor("text")
-                renderType: Text.NativeRendering
-            }
+        Label
+        {
+            id: textLabel
+            anchors.horizontalCenter: parent.horizontalCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura.\nThis will only take a few moments.")
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
+            renderType: Text.NativeRendering
         }
 
         // Filler item
