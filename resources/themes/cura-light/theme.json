@@ -128,11 +128,6 @@
             "italic": true,
             "family": "Noto Sans"
         },
-        "tiny": {
-            "size": 0.85,
-            "weight": 40,
-            "family": "Noto Sans"
-        },
         "small": {
             "size": 0.7,
             "weight": 40,
@@ -586,7 +581,7 @@
 
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
-        "welcome_wizard_window": [43, 43],
+        "welcome_wizard_window": [46, 45],
         "modal_window_minimum": [60.0, 45],
         "license_window_minimum": [45, 45],
         "wizard_progress": [10.0, 0.0],
@@ -643,6 +638,9 @@
         "monitor_progress_bar": [16.5, 1.0],
         "monitor_margin": [1.5, 1.5],
 
-        "table_row": [2.0, 2.0]
+        "table_row": [2.0, 2.0],
+
+        "welcome_wizard_content_image_big": [18, 15],
+        "welcome_wizard_cloud_content_image": [4, 4]
     }
 }
