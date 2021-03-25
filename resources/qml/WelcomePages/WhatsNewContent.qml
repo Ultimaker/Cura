@@ -47,7 +47,6 @@ Item
             bottom: whatsNewDots.top
             left: parent.left
             right: parent.right
-            horizontalCenter: parent.horizontalCenter
             margins: UM.Theme.getSize("default_margin").width * 2
         }
 
