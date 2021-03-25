@@ -34,29 +34,16 @@ Item
         }
     }
 
-    Label
-    {
-        id: titleLabel
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Sign in to the Ultimaker platform")
-        color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
-    }
-
     // Area where the cloud contents can be put. Pictures, texts and such.
     Item
     {
         id: cloudContentsArea
         anchors
         {
-            top: titleLabel.bottom
+            top: parent.top
             bottom: skipButton.top
             left: parent.left
             right: parent.right
-            topMargin: UM.Theme.getSize("default_margin").height
         }
 
         // Pictures and texts are arranged using Columns with spacing. The whole picture and text area is centered in
@@ -67,7 +54,25 @@ Item
             width: parent.width
             height: childrenRect.height
 
-            spacing: 20 * screenScaleFactor
+            spacing: UM.Theme.getSize("thick_margin").height
+
+            Label
+            {
+                id: titleLabel
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@label", "Sign in to the Ultimaker platform")
+                color: UM.Theme.getColor("primary_button")
+                font: UM.Theme.getFont("huge")
+                renderType: Text.NativeRendering
+            }
+
+            // Filler item
+            Item
+            {
+                height: UM.Theme.getSize("default_margin").height
+                width: parent.width
+            }
 
             // Cloud image
             Image
@@ -75,7 +80,18 @@ Item
                 id: cloudImage
                 anchors.horizontalCenter: parent.horizontalCenter
                 source: UM.Theme.getImage("first_run_ultimaker_cloud")
-                scale: 0.666
+                fillMode: Image.PreserveAspectFit
+                width: UM.Theme.getSize("welcome_wizard_content_image_big").width
+                sourceSize.width: width
+                sourceSize.height: height
+            }
+
+
+            // Filler item
+            Item
+            {
+                height: UM.Theme.getSize("default_margin").height
+                width: parent.width
             }
 
             // Motivational icons
@@ -94,16 +110,22 @@ Item
                     {
                         id: marketplaceImage
                         anchors.horizontalCenter: parent.horizontalCenter
-                        source: UM.Theme.getIcon("plugin_48px")
+                        fillMode: Image.PreserveAspectFit
+                        width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
+                        source: UM.Theme.getIcon("package")
+                        sourceSize.width: width
+                        sourceSize.height: height
                     }
                     Label
                     {
                         id: marketplaceTextLabel
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: catalog.i18nc("@text", "Add material settings and\nplugins from the Marketplace")
+                        width: parent.width
+                        text: catalog.i18nc("@text", "Add material settings and plugins from the Marketplace")
+                        wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
                         color: UM.Theme.getColor("text")
-                        font: UM.Theme.getFont("tiny")
+                        font: UM.Theme.getFont("default")
                         renderType: Text.NativeRendering
                     }
                 }
@@ -118,16 +140,22 @@ Item
                     {
                         id: syncImage
                         anchors.horizontalCenter: parent.horizontalCenter
-                        source: UM.Theme.getIcon("spool_48px")
+                        fillMode: Image.PreserveAspectFit
+                        width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
+                        source: UM.Theme.getIcon("material_spool")
+                        sourceSize.width: width
+                        sourceSize.height: height
                     }
                     Label
                     {
                         id: syncTextLabel
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: catalog.i18nc("@text", "Backup and sync your\nmaterial settings and plugins")
+                        width: parent.width
+                        text: catalog.i18nc("@text", "Backup and sync your material settings and plugins")
+                        wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
                         color: UM.Theme.getColor("text")
-                        font: UM.Theme.getFont("tiny")
+                        font: UM.Theme.getFont("default")
                         renderType: Text.NativeRendering
                     }
                 }
@@ -142,16 +170,22 @@ Item
                     {
                         id: communityImage
                         anchors.horizontalCenter: communityColumn.horizontalCenter
-                        source: UM.Theme.getIcon("group_48px")
+                        fillMode: Image.PreserveAspectFit
+                        width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
+                        source: UM.Theme.getIcon("group")
+                        sourceSize.width: width
+                        sourceSize.height: height
                     }
                     Label
                     {
                         id: communityTextLabel
                         anchors.horizontalCenter: communityColumn.horizontalCenter
-                        text: catalog.i18nc("@text", "Share ideas and get help\nfrom 48,000+ users in the\nUltimaker Community")
+                        width: parent.width
+                        text: catalog.i18nc("@text", "Share ideas and get help from 48,000+ users in the Ultimaker Community")
+                        wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignHCenter
                         color: UM.Theme.getColor("text")
-                        font: UM.Theme.getFont("tiny")
+                        font: UM.Theme.getFont("default")
                         renderType: Text.NativeRendering
                     }
                 }
@@ -161,7 +195,6 @@ Item
             Cura.PrimaryButton
             {
                 id: signInButton
-                anchors.margins: UM.Theme.getSize("default_margin").width
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: catalog.i18nc("@button", "Sign in")
                 onClicked: Cura.API.account.login()
@@ -176,26 +209,13 @@ Item
                 }
             }
 
-            // Create an account link
-            Label
+            // Create an account button
+            Cura.TertiaryButton
             {
-                id: createAccountLabel
-                width: parent.width
+                id: createAccountButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                horizontalAlignment: Text.AlignHCenter
-                text:
-                {
-                    var t1 = catalog.i18nc("@text", "Create a free Ultimaker Account")
-                    var t = "<a href='https://notusedref'>" + t1 + "</a>"
-                    return t
-                }
-                textFormat: Text.RichText
-                wrapMode: Text.WordWrap
-                font: UM.Theme.getFont("medium")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
-                onLinkActivated:  Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
-                renderType: Text.NativeRendering
+                text: catalog.i18nc("@text", "Create a free Ultimaker Account")
+                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
             }
         }
     }
