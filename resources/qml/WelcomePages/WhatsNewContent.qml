@@ -158,7 +158,7 @@ Item
                 color:
                     index === whatsNewViewport.currentIndex ?
                     UM.Theme.getColor("primary") :
-                    UM.Theme.getColor("viewport_overlay")
+                    UM.Theme.getColor("secondary_button_shadow")
             }
     }
 
