@@ -20,6 +20,7 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         spacing: UM.Theme.getSize("thick_margin").height
+        width:parent.width
 
 
         // Filler item
@@ -63,7 +64,9 @@ Item
             id: textLabel
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura.\nThis will only take a few moments.")
+            width: titleLabel.width + 2 * UM.Theme.getSize("thick_margin").width
+            text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura. This will only take a few moments.")
+            wrapMode: Text.Wrap
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
