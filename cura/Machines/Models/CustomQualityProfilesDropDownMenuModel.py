@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING
@@ -18,7 +18,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
     """This model is used for the custom profile items in the profile drop down menu."""
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+        super(CustomQualityProfilesDropDownMenuModel, self).__init__(parent = parent)
 
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         container_registry.containerAdded.connect(self._qualityChangesListChanged)

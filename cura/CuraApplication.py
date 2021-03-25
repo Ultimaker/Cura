@@ -201,17 +201,17 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
-        self._machine_settings_manager = MachineSettingsManager(self, parent = self)
+        self._machine_settings_manager = MachineSettingsManager(application = self)
         self._material_management_model = None
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(application = self)
         self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(application = self)
         self._first_start_machine_actions_model = None
-        self._welcome_pages_model = WelcomePagesModel(self, parent = self)
-        self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
-        self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(self, parent = self)
-        self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
+        self._welcome_pages_model = WelcomePagesModel(application = self)
+        self._add_printer_pages_model = AddPrinterPagesModel(application = self)
+        self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(application = self)
+        self._whats_new_pages_model = WhatsNewPagesModel(application = self)
         self._text_manager = TextManager(parent = self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -326,7 +326,7 @@ class CuraApplication(QtApplication):
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
 
-        self._machine_action_manager = MachineActionManager.MachineActionManager(self)
+        self._machine_action_manager = MachineActionManager.MachineActionManager(application = self)
         self._machine_action_manager.initialize()
 
     def __sendCommandToSingleInstance(self):
@@ -818,7 +818,7 @@ class CuraApplication(QtApplication):
         Arrange.build_volume = self._volume
 
         # initialize info objects
-        self._print_information = PrintInformation.PrintInformation(self)
+        self._print_information = PrintInformation.PrintInformation(application = self)
         self._cura_actions = CuraActions.CuraActions(self)
         self.processEvents()
         # Initialize setting visibility presets model.
@@ -1001,32 +1001,32 @@ class CuraApplication(QtApplication):
 
     def getObjectsModel(self, *args):
         if self._object_manager is None:
-            self._object_manager = ObjectsModel(self)
+            self._object_manager = ObjectsModel(parent = self)
         return self._object_manager
 
     @pyqtSlot(result = QObject)
     def getExtrudersModel(self, *args) -> "ExtrudersModel":
         if self._extruders_model is None:
-            self._extruders_model = ExtrudersModel(self)
+            self._extruders_model = ExtrudersModel(parent = self)
         return self._extruders_model
 
     @pyqtSlot(result = QObject)
     def getExtrudersModelWithOptional(self, *args) -> "ExtrudersModel":
         if self._extruders_model_with_optional is None:
-            self._extruders_model_with_optional = ExtrudersModel(self)
+            self._extruders_model_with_optional = ExtrudersModel(parent = self)
             self._extruders_model_with_optional.setAddOptionalExtruder(True)
         return self._extruders_model_with_optional
 
     @pyqtSlot(result = QObject)
     def getMultiBuildPlateModel(self, *args) -> MultiBuildPlateModel:
         if self._multi_build_plate_model is None:
-            self._multi_build_plate_model = MultiBuildPlateModel(self)
+            self._multi_build_plate_model = MultiBuildPlateModel(parent = self)
         return self._multi_build_plate_model
 
     @pyqtSlot(result = QObject)
     def getBuildPlateModel(self, *args) -> BuildPlateModel:
         if self._build_plate_model is None:
-            self._build_plate_model = BuildPlateModel(self)
+            self._build_plate_model = BuildPlateModel(parent = self)
         return self._build_plate_model
 
     def getCuraSceneController(self, *args) -> CuraSceneController:
@@ -1093,12 +1093,12 @@ class CuraApplication(QtApplication):
 
     def getQualityProfilesDropDownMenuModel(self, *args, **kwargs):
         if self._quality_profile_drop_down_menu_model is None:
-            self._quality_profile_drop_down_menu_model = QualityProfilesDropDownMenuModel(self)
+            self._quality_profile_drop_down_menu_model = QualityProfilesDropDownMenuModel(parent = self)
         return self._quality_profile_drop_down_menu_model
 
     def getCustomQualityProfilesDropDownMenuModel(self, *args, **kwargs):
         if self._custom_quality_profile_drop_down_menu_model is None:
-            self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
+            self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(parent = self)
         return self._custom_quality_profile_drop_down_menu_model
 
     def getCuraAPI(self, *args, **kwargs) -> "CuraAPI":

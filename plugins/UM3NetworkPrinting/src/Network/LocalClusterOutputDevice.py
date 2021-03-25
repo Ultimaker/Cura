@@ -32,14 +32,14 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     activeCameraUrlChanged = pyqtSignal()
 
-    def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], parent=None) -> None:
+    def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], parent: Optional["QObject"] = None) -> None:
 
         super().__init__(
-            device_id=device_id,
-            address=address,
-            properties=properties,
-            connection_type=ConnectionType.NetworkConnection,
-            parent=parent
+            device_id = device_id,
+            address = address,
+            properties = properties,
+            connection_type = ConnectionType.NetworkConnection,
+            parent = parent
         )
         self._timeout_time = 30
         self._cluster_api = None  # type: Optional[ClusterApiClient]

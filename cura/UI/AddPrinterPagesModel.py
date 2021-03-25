@@ -1,14 +1,17 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from .WelcomePagesModel import WelcomePagesModel
 
 
-#
-# This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for adding a printer,
-# so only the steps for adding a printer is included.
-#
 class AddPrinterPagesModel(WelcomePagesModel):
+    """This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for adding a
+    printer, so only the steps for adding a printer is included.
+    """
+
+    def __init__(self, application: "CuraApplication") -> None:
+        super(AddPrinterPagesModel, self).__init__(application = application)
 
     def initialize(self, cancellable: bool = True) -> None:
         self._pages.append({"id": "add_network_or_local_printer",

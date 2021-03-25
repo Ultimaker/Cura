@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from collections import deque
 import os
@@ -41,8 +41,8 @@ class WelcomePagesModel(ListModel):
     NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
     PreviousPageButtonTextRole = Qt.UserRole + 5  # The text for the previous page button
 
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(WelcomePagesModel, self).__init__(parent = application)
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.PageUrlRole, "page_url")

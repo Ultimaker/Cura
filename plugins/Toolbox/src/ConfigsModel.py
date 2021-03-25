@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt
 
@@ -9,8 +10,8 @@ from UM.Qt.ListModel import ListModel
 class ConfigsModel(ListModel):
     """Model that holds supported configurations (for material/quality packages)."""
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(ConfigsModel, self).__init__(parent = parent)
 
         self._configs = None
 

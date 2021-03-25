@@ -1,8 +1,9 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 from collections import OrderedDict
+from typing import Optional
 
 from PyQt5.QtCore import pyqtSlot, Qt
 
@@ -22,8 +23,8 @@ class UserChangesModel(ListModel):
     UserValueRole = Qt.UserRole + 6
     CategoryRole = Qt.UserRole + 7
 
-    def __init__(self, parent = None):
-        super().__init__(parent = parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(UserChangesModel, self).__init__(parent = parent)
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.ExtruderRole, "extruder")

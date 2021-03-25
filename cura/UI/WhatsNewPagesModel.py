@@ -1,14 +1,16 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from .WelcomePagesModel import WelcomePagesModel
 
 
-#
-# This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for showing the
-# "what's new" page. This is also used in the "Help" menu to show the changes log.
-#
 class WhatsNewPagesModel(WelcomePagesModel):
+    """This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for showing the
+    "what's new" page. This is also used in the "Help" menu to show the changes log.
+    """
+
+    def __init__(self, application: "CuraApplication") -> None:
+        super(WhatsNewPagesModel, self).__init__(application = application)
 
     def initialize(self) -> None:
         self._pages = []

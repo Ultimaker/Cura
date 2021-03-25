@@ -1,7 +1,7 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, Set
+from typing import Dict, Set, Optional
 
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
 
@@ -24,8 +24,8 @@ class BaseMaterialsModel(ListModel):
     extruderPositionChanged = pyqtSignal()
     enabledChanged = pyqtSignal()
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(BaseMaterialsModel, self).__init__(parent = parent)
         from cura.CuraApplication import CuraApplication
 
         self._application = CuraApplication.getInstance()

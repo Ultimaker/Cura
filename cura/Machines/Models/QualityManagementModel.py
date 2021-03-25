@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Dict, Optional, TYPE_CHECKING
@@ -38,7 +38,7 @@ class QualityManagementModel(ListModel):
     SectionNameRole = Qt.UserRole + 7
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+        super(QualityManagementModel, self).__init__(parent = parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IsReadOnlyRole, "is_read_only")

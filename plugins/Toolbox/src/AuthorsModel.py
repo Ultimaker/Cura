@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re
@@ -15,8 +15,8 @@ class AuthorsModel(ListModel):
     By setting the filter property the instances held by this model can be changed.
     """
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(AuthorsModel, self).__init__(parent = parent)
 
         self._metadata = None  # type: Optional[List[Dict[str, Union[str, List[str], int]]]]
 

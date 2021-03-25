@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import TYPE_CHECKING, Optional, List, Set, Dict
@@ -28,8 +28,8 @@ class NotUniqueMachineActionError(Exception):
 
 
 class MachineActionManager(QObject):
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent = parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(MachineActionManager, self).__init__(parent = application)
         self._application = application
         self._container_registry = self._application.getContainerRegistry()
 

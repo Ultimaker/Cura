@@ -1,25 +1,28 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt, pyqtSignal
 from UM.Qt.ListModel import ListModel
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
+
 class MaterialTypesModel(ListModel):
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(MaterialTypesModel, self).__init__(parent = parent)
 
         self.addRoleName(Qt.UserRole + 1, "name")
         self.addRoleName(Qt.UserRole + 2, "brand")
         self.addRoleName(Qt.UserRole + 3, "colors")
 
+
 class MaterialBrandsModel(BaseMaterialsModel):
 
     extruderPositionChanged = pyqtSignal()
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(MaterialBrandsModel, self).__init__(parent = parent)
 
         self.addRoleName(Qt.UserRole + 1, "name")
         self.addRoleName(Qt.UserRole + 2, "material_types")
@@ -74,14 +77,14 @@ class MaterialBrandsModel(BaseMaterialsModel):
             material_type_item_list = []
             brand_item = {
                 "name": brand,
-                "material_types": MaterialTypesModel(self)
+                "material_types": MaterialTypesModel(parent = self)
             }
 
             for material_type, material_list in material_dict.items():
                 material_type_item = {
                     "name": material_type,
                     "brand": brand,
-                    "colors": BaseMaterialsModel(self)
+                    "colors": BaseMaterialsModel(parent = self)
                 }
                 material_type_item["colors"].clear()
 

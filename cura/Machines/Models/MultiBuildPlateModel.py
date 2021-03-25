@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import QTimer, pyqtSignal, pyqtProperty
 
@@ -19,8 +20,8 @@ class MultiBuildPlateModel(ListModel):
     activeBuildPlateChanged = pyqtSignal()
     selectionChanged = pyqtSignal()
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(MultiBuildPlateModel, self).__init__(parent = parent)
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(100)

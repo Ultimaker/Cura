@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtProperty, pyqtSlot
@@ -8,12 +8,12 @@ from UM.Qt.ListModel import ListModel
 from UM.Version import Version
 
 from cura import ApplicationMetadata
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 
 class SubscribedPackagesModel(ListModel):
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(SubscribedPackagesModel, self).__init__(parent = parent)
 
         self._items = []
         self._metadata = None

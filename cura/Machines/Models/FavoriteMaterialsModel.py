@@ -1,5 +1,6 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 import cura.CuraApplication  # To listen to changes to the preferences.
@@ -7,8 +8,8 @@ import cura.CuraApplication  # To listen to changes to the preferences.
 class FavoriteMaterialsModel(BaseMaterialsModel):
     """Model that shows the list of favorite materials."""
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(FavoriteMaterialsModel, self).__init__(parent = parent)
         cura.CuraApplication.CuraApplication.getInstance().getPreferences().preferenceChanged.connect(self._onFavoritesChanged)
         self._onChanged()
 

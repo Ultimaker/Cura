@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Dict, cast
 
@@ -58,7 +58,7 @@ class WorkspaceDialog(QObject):
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = UpdatableMachinesModel(self)
+        self._updatable_machines_model = UpdatableMachinesModel(parent = self)
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()

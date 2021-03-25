@@ -1,14 +1,19 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
 from cura import CuraApplication
 
-#
-# This object contains helper/convenience functions for Recommended mode.
-#
+
 class RecommendedMode(QObject):
+    """
+    This object contains helper/convenience functions for Recommended mode.
+    """
+
+    def __init__(self, parent: Optional[QObject] = None):
+        super(RecommendedMode, self).__init__(parent = parent)
 
     # Sets to use the adhesion or not for the "Adhesion" CheckBox in Recommended mode.
     @pyqtSlot(bool)

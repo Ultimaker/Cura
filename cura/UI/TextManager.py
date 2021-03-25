@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
@@ -10,14 +10,13 @@ from UM.Resources import Resources
 from UM.Version import Version
 
 
-#
-# This manager provides means to load texts to QML.
-#
 class TextManager(QObject):
+    """
+    This manager provides means to load texts to QML.
+    """
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
-
+        super(TextManager, self).__init__(parent = parent)
         self._change_log_text = ""
 
     @pyqtSlot(result = str)

@@ -46,10 +46,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
-                 parent=None) -> None:
-
-        super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
-                         parent=parent)
+                 parent: Optional["QObject"] = None) -> None:
+        super(UltimakerNetworkedPrinterOutputDevice, self).__init__(device_id = device_id, address = address, properties = properties, connection_type = connection_type, parent = parent)
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
 

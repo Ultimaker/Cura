@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, Dict, Any, TYPE_CHECKING
@@ -24,7 +24,7 @@ class FirstStartMachineActionsModel(ListModel):
     ActionRole = Qt.UserRole + 3
 
     def __init__(self, application: "CuraApplication", parent: Optional[QObject] = None) -> None:
-        super().__init__(parent)
+        super(FirstStartMachineActionsModel, self).__init__(parent = parent)
 
         self.addRoleName(self.TitleRole, "title")
         self.addRoleName(self.ContentRole, "content")

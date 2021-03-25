@@ -1,8 +1,8 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
-from typing import Set
+from typing import Set, Optional
 
 import cura.CuraApplication
 from UM import i18nCatalog
@@ -26,8 +26,8 @@ class QualitySettingsModel(ListModel):
 
     GLOBAL_STACK_POSITION = -1
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent = parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(QualitySettingsModel, self).__init__(parent = parent)
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")

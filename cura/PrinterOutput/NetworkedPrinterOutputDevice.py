@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.FileHandler.FileHandler import FileHandler #For typing.
@@ -32,7 +32,7 @@ class AuthState(IntEnum):
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
-    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: QObject = None) -> None:
+    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: Optional[QObject] = None) -> None:
         super().__init__(device_id = device_id, connection_type = connection_type, parent = parent)
         self._manager = None    # type: Optional[QNetworkAccessManager]
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?

@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt, QTimer
 
@@ -21,8 +22,8 @@ class GlobalStacksModel(ListModel):
     DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
     RemovalWarningRole = Qt.UserRole + 7
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(GlobalStacksModel, self).__init__(parent = parent)
 
         self._catalog = i18nCatalog("cura")
 

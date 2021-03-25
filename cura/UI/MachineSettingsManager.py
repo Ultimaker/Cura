@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING
@@ -12,13 +12,13 @@ if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
 
 
-#
-# This manager provides (convenience) functions to the Machine Settings Dialog QML to update certain machine settings.
-#
 class MachineSettingsManager(QObject):
+    """
+    This manager provides (convenience) functions to the Machine Settings Dialog QML to update certain machine settings.
+    """
 
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(MachineSettingsManager, self).__init__(parent = application)
         self._i18n_catalog = i18nCatalog("cura")
 
         self._application = application

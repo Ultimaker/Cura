@@ -1,9 +1,11 @@
-#Copyright (c) 2019 Ultimaker B.V.
+#Copyright (c) 2021 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
 from PyQt5.QtCore import Qt, QTimer
 from typing import TYPE_CHECKING, Optional, Dict
+
+from PyQt5.QtQml import QQmlEngine
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
@@ -55,13 +57,15 @@ class IntentCategoryModel(ListModel):
             }
         return cls._translations
 
-    def __init__(self, intent_category: str) -> None:
+    def __init__(self, intent_category: str, parent: Optional["QObject"] = None) -> None:
         """Creates a new model for a certain intent category.
 
         :param intent_category: category to list the intent profiles for.
         """
 
-        super().__init__()
+        super(IntentCategoryModel, self).__init__(parent = parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.CppOwnership)
+
         self._intent_category = intent_category
 
         self.addRoleName(self.NameRole, "name")
@@ -104,7 +108,7 @@ class IntentCategoryModel(ListModel):
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
-            qualities = IntentModel()
+            qualities = IntentModel(parent = self)
             qualities.setIntentCategory(category)
             result.append({
                 "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),

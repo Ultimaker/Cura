@@ -1,5 +1,6 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt
 
@@ -14,8 +15,8 @@ class NozzleModel(ListModel):
     HotendNameRole = Qt.UserRole + 2
     ContainerNodeRole = Qt.UserRole + 3
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(NozzleModel, self).__init__(parent = parent)
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.HotendNameRole, "hotend_name")

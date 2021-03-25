@@ -1,3 +1,6 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, TYPE_CHECKING, List, Dict
 
 from PyQt5.QtCore import QObject, pyqtSlot, Qt, pyqtSignal, pyqtProperty

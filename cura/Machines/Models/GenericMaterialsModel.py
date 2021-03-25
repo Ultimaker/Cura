@@ -1,12 +1,13 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
 class GenericMaterialsModel(BaseMaterialsModel):
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(GenericMaterialsModel, self).__init__(parent = parent)
         self._onChanged()
 
     def _update(self):

@@ -1,8 +1,8 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
-from typing import Iterable, TYPE_CHECKING
+from typing import Iterable, TYPE_CHECKING, Optional
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -56,13 +56,12 @@ class ExtrudersModel(ListModel):
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
     """List of colours to display if there is no material or the material has no known colour. """
 
-    def __init__(self, parent = None):
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         """Initialises the extruders model, defining the roles and listening for changes in the data.
 
         :param parent: Parent QtObject of this list.
         """
-
-        super().__init__(parent)
+        super(ExtrudersModel, self).__init__(parent = parent)
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.NameRole, "name")

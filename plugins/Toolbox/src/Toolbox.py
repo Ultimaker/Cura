@@ -67,24 +67,24 @@ class Toolbox(QObject, Extension):
 
         # Models:
         self._models = {
-            "authors":              AuthorsModel(self),
-            "packages":             PackagesModel(self),
-            "updates":              PackagesModel(self)
+            "authors":              AuthorsModel(parent = self),
+            "packages":             PackagesModel(parent =self),
+            "updates":              PackagesModel(parent = self)
         }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
-        self._plugins_showcase_model = PackagesModel(self)
-        self._plugins_available_model = PackagesModel(self)
-        self._plugins_installed_model = PackagesModel(self)
+        self._plugins_showcase_model = PackagesModel(parent = self)
+        self._plugins_available_model = PackagesModel(parent = self)
+        self._plugins_installed_model = PackagesModel(parent = self)
         self._plugins_installed_model.setFilter({"is_bundled": "False"})
-        self._plugins_bundled_model = PackagesModel(self)
+        self._plugins_bundled_model = PackagesModel(parent = self)
         self._plugins_bundled_model.setFilter({"is_bundled": "True"})
-        self._materials_showcase_model = AuthorsModel(self)
-        self._materials_available_model = AuthorsModel(self)
-        self._materials_installed_model = PackagesModel(self)
+        self._materials_showcase_model = AuthorsModel(parent = self)
+        self._materials_available_model = AuthorsModel(parent = self)
+        self._materials_installed_model = PackagesModel(parent = self)
         self._materials_installed_model.setFilter({"is_bundled": "False"})
-        self._materials_bundled_model = PackagesModel(self)
+        self._materials_bundled_model = PackagesModel(parent = self)
         self._materials_bundled_model.setFilter({"is_bundled": "True"})
-        self._materials_generic_model = PackagesModel(self)
+        self._materials_generic_model = PackagesModel(parent = self)
 
         self._license_model = LicenseModel()
 

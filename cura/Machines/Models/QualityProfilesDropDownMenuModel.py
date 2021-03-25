@@ -1,5 +1,6 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt, QTimer
 
@@ -22,8 +23,8 @@ class QualityProfilesDropDownMenuModel(ListModel):
     QualityChangesGroupRole = Qt.UserRole + 7
     IsExperimentalRole = Qt.UserRole + 8
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(QualityProfilesDropDownMenuModel, self).__init__(parent = parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")

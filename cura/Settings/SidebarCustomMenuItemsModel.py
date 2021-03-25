@@ -1,7 +1,7 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any
+from typing import Any, Optional
 
 from UM.Qt.ListModel import ListModel
 from PyQt5.QtCore import pyqtSlot, Qt
@@ -13,8 +13,8 @@ class SidebarCustomMenuItemsModel(ListModel):
     menu_item_role = Qt.UserRole + 3
     menu_item_icon_name_role = Qt.UserRole + 5
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(SidebarCustomMenuItemsModel, self).__init__(parent = parent)
         self.addRoleName(self.name_role, "name")
         self.addRoleName(self.actions_role, "actions")
         self.addRoleName(self.menu_item_role, "menu_item")

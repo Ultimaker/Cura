@@ -30,8 +30,8 @@ class PrintInformation(QObject):
 
     UNTITLED_JOB_NAME = "Untitled"
 
-    def __init__(self, application: "CuraApplication", parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(PrintInformation, self).__init__(parent = application)
         self._application = application
 
         self.initializeCuraMessagePrintTimeProperties()

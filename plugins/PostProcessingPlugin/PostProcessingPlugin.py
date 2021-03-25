@@ -29,7 +29,8 @@ if TYPE_CHECKING:
 
 class PostProcessingPlugin(QObject, Extension):
     """Extension type plugin that enables pre-written scripts to post process g-code files."""
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        # super(PostProcessingPlugin, self).__init__(parent = parent)
         QObject.__init__(self, parent)
         Extension.__init__(self)
         self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Post Processing"))
@@ -396,5 +397,3 @@ class PostProcessingPlugin(QObject, Extension):
                 return True
 
         return False  # Default verdict should be False, being the most secure fallback
-
-

@@ -181,7 +181,7 @@ class LocalClusterOutputDeviceManager:
                 properties[b"printer_type"] = bytes(p_type, encoding="utf8")
                 break
 
-        device = LocalClusterOutputDevice(key, address, properties)
+        device = LocalClusterOutputDevice(key, address, properties, parent = CuraApplication.getInstance())
         discovered_printers_model = CuraApplication.getInstance().getDiscoveredPrintersModel()
         if address in list(discovered_printers_model.discoveredPrintersByAddress.keys()):
             # The printer was already added, we just update the available data.

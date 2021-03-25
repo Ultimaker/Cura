@@ -1,5 +1,6 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt
 from UM.Logger import Logger
@@ -10,8 +11,8 @@ class BuildPlateModel(ListModel):
     NameRole = Qt.UserRole + 1
     ContainerNodeRole = Qt.UserRole + 2
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(BuildPlateModel, self).__init__(parent = parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.ContainerNodeRole, "container_node")

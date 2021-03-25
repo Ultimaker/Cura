@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from UM.Logger import Logger
 import re
@@ -43,8 +43,8 @@ class ObjectsModel(ListModel):
     MeshTypeRole = Qt.UserRole + 7
     ExtruderNumberRole = Qt.UserRole + 8
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(ObjectsModel, self).__init__(parent = parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.SelectedRole, "selected")

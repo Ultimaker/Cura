@@ -1,7 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from PyQt5.QtCore import Qt
 
@@ -22,8 +22,8 @@ class UpdatableMachinesModel(ListModel):
     By setting the filter property the instances held by this model can be changed.
     """
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(UpdatableMachinesModel, self).__init__(parent = parent)
 
         self.addRoleName(Qt.UserRole + 1, "id")
         self.addRoleName(Qt.UserRole + 2, "name")

@@ -1,8 +1,8 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re
-from typing import Dict
+from typing import Dict, Optional
 
 from PyQt5.QtCore import Qt, pyqtProperty
 
@@ -18,8 +18,8 @@ class PackagesModel(ListModel):
     By setting the filter property the instances held by this model can be changed.
     """
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(PackagesModel, self).__init__(parent = parent)
 
         self._metadata = None
 
@@ -81,7 +81,7 @@ class PackagesModel(ListModel):
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
                         has_configs = True
-                        configs_model = ConfigsModel()
+                        configs_model = ConfigsModel(parent = self)
                         configs_model.setConfigs(package["data"]["supported_configs"])
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:

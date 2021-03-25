@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, Dict, Any, Set, List
 
@@ -22,7 +22,7 @@ class IntentModel(ListModel):
     IntentRole = Qt.UserRole + 5
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
-        super().__init__(parent)
+        super(IntentModel, self).__init__(parent = parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")
