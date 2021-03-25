@@ -46,7 +46,7 @@ catalog = i18nCatalog("cura")
 class CuraEngineBackend(QObject, Backend):
     backendError = Signal()
 
-    def __init__(self) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         """Starts the back-end plug-in.
 
         This registers all the signal listeners and prepares for communication
@@ -54,7 +54,8 @@ class CuraEngineBackend(QObject, Backend):
         CuraEngineBackend is exposed to qml as well.
         """
 
-        super().__init__()
+        super(CuraEngineBackend, self).__init__(parent = parent)
+
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
         executable_name = "CuraEngine"
