@@ -34,7 +34,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], parent: Optional["QObject"] = None) -> None:
 
-        super().__init__(
+        super(LocalClusterOutputDevice, self).__init__(
             device_id = device_id,
             address = address,
             properties = properties,

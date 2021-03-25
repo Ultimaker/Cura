@@ -988,7 +988,7 @@ class CuraApplication(QtApplication):
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
-            self._machine_manager = MachineManager(self, parent = self)
+            self._machine_manager = MachineManager(application = self)
         return self._machine_manager
 
     def getExtruderManager(self, *args) -> ExtruderManager:

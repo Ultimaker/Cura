@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -174,7 +174,7 @@ class CloudOutputDeviceManager:
         machine_manager = CuraApplication.getInstance().getMachineManager()
 
         for cluster_data in clusters:
-            device = CloudOutputDevice(self._api, cluster_data)
+            device = CloudOutputDevice(self._api, cluster_data, parent = machine_manager)
             # If the machine already existed before, it will be present in the host_guid_map
             if cluster_data.host_guid in host_guid_map:
                 machine = machine_manager.getMachine(device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})

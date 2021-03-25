@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -37,8 +37,8 @@ catalog = i18nCatalog("cura")
 
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
-    def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
-        super().__init__(serial_port, connection_type = ConnectionType.UsbConnection)
+    def __init__(self, serial_port: str, baud_rate: Optional[int] = None, parent: Optional["QObject"] = None) -> None:
+        super(USBPrinterOutputDevice, self).__init__(serial_port, connection_type = ConnectionType.UsbConnection, parent = parent)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
@@ -86,7 +86,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._command_received.set()
 
         self._firmware_name_requested = False
-        self._firmware_updater = AvrFirmwareUpdater(self)
+        self._firmware_updater = AvrFirmwareUpdater(output_device = self, parent = self)
 
         plugin_path = PluginRegistry.getInstance().getPluginPath("USBPrinting")
         if plugin_path:
@@ -217,7 +217,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Ensure that a printer is created.
         controller = GenericOutputController(self)
         controller.setCanUpdateFirmware(True)
-        self._printers = [PrinterOutputModel(output_controller = controller, number_of_extruders = num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller = controller, number_of_extruders = num_extruders, parent = self)]
         self._printers[0].updateName(container_stack.getName())
 
     def close(self):
@@ -419,7 +419,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)
-            print_job = PrintJobOutputModel(output_controller = controller, name = CuraApplication.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = controller, name = CuraApplication.getInstance().getPrintInformation().jobName, parent = self)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 

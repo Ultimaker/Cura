@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -54,8 +54,8 @@ if TYPE_CHECKING:
 
 
 class MachineManager(QObject):
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
+    def __init__(self, application: "CuraApplication") -> None:
+        super(MachineManager, self).__init__(parent = application)
 
         self._active_container_stack = None     # type: Optional[ExtruderStack]
         self._global_container_stack = None     # type: Optional[GlobalStack]
@@ -103,7 +103,7 @@ class MachineManager(QObject):
         # There might already be some output devices by the time the signal is connected
         self._onOutputDevicesChanged()
 
-        self._current_printer_configuration = PrinterConfigurationModel()   # Indicates the current configuration setup in this printer
+        self._current_printer_configuration = PrinterConfigurationModel(parent = self)   # Indicates the current configuration setup in this printer
         self.activeMaterialChanged.connect(self._onCurrentConfigurationChanged)
         self.activeVariantChanged.connect(self._onCurrentConfigurationChanged)
         # Force to compute the current configuration
@@ -198,7 +198,7 @@ class MachineManager(QObject):
         self._current_printer_configuration.printerType = self._global_container_stack.definition.getName()
 
         if len(self._current_printer_configuration.extruderConfigurations) != len(self._global_container_stack.extruderList):
-            self._current_printer_configuration.extruderConfigurations = [ExtruderConfigurationModel() for extruder in self._global_container_stack.extruderList]
+            self._current_printer_configuration.extruderConfigurations = [ExtruderConfigurationModel(parent = self) for extruder in self._global_container_stack.extruderList]
 
         for extruder, extruder_configuration in zip(self._global_container_stack.extruderList, self._current_printer_configuration.extruderConfigurations):
             # For compare just the GUID is needed at this moment
@@ -207,7 +207,7 @@ class MachineManager(QObject):
             mat_color = extruder.material.getMetaDataEntry("color_name") if extruder.material != empty_material_container else None
             mat_brand = extruder.material.getMetaDataEntry("brand") if extruder.material != empty_material_container else None
             mat_name = extruder.material.getMetaDataEntry("name") if extruder.material != empty_material_container else None
-            material_model = MaterialOutputModel(mat_guid, mat_type, mat_color, mat_brand, mat_name)
+            material_model = MaterialOutputModel(mat_guid, mat_type, mat_color, mat_brand, mat_name, parent = self)
 
             extruder_configuration.position = int(extruder.getMetaDataEntry("position"))
             extruder_configuration.material = material_model

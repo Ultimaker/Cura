@@ -1,11 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
 
 from enum import IntEnum
 from threading import Thread
-from typing import Union
+from typing import Union, Optional
 
 from UM.Logger import Logger
 
@@ -17,8 +17,8 @@ class FirmwareUpdater(QObject):
     firmwareProgressChanged = pyqtSignal()
     firmwareUpdateStateChanged = pyqtSignal()
 
-    def __init__(self, output_device: "PrinterOutputDevice") -> None:
-        super().__init__()
+    def __init__(self, output_device: "PrinterOutputDevice", parent: Optional[QObject]) -> None:
+        super(FirmwareUpdater, self).__init__(parent = parent)
 
         self._output_device = output_device
 
@@ -84,4 +84,3 @@ class FirmwareUpdateState(IntEnum):
     communication_error = 4
     io_error = 5
     firmware_not_found_error = 6
-

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING
@@ -19,8 +19,8 @@ class ExtruderOutputModel(QObject):
     extruderConfigurationChanged = pyqtSignal()
     isPreheatingChanged = pyqtSignal()
 
-    def __init__(self, printer: "PrinterOutputModel", position: int, parent=None) -> None:
-        super().__init__(parent)
+    def __init__(self, printer: "PrinterOutputModel", position: int, parent: Optional[QObject] = None) -> None:
+        super(ExtruderOutputModel, self).__init__(parent = parent)
         self._printer = printer  # type: PrinterOutputModel
         self._position = position
         self._target_hotend_temperature = 0.0  # type: float
@@ -30,7 +30,7 @@ class ExtruderOutputModel(QObject):
 
         # The extruder output model wraps the configuration model. This way we can use the same config model for jobs
         # and extruders alike.
-        self._extruder_configuration = ExtruderConfigurationModel()
+        self._extruder_configuration = ExtruderConfigurationModel(parent = self)
         self._extruder_configuration.position = self._position
         self._extruder_configuration.extruderConfigurationChanged.connect(self.extruderConfigurationChanged)
 

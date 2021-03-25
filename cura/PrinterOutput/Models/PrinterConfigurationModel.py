@@ -1,8 +1,8 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
-from typing import List
+from typing import List, Optional
 
 MYPY = False
 if MYPY:
@@ -13,8 +13,8 @@ class PrinterConfigurationModel(QObject):
 
     configurationChanged = pyqtSignal()
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super(PrinterConfigurationModel, self).__init__(parent = parent)
         self._printer_type = ""
         self._extruder_configurations = []     # type: List[ExtruderConfigurationModel]
         self._buildplate_configuration = ""

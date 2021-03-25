@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 
 from .ClusterBuildPlate import ClusterBuildPlate
@@ -109,7 +110,7 @@ class ClusterPrintJobStatus(BaseModel):
         :param printer: The output model of the printer
         """
 
-        model = UM3PrintJobOutputModel(controller, self.uuid, self.name)
+        model = UM3PrintJobOutputModel(controller, self.uuid, self.name, parent = CuraApplication.getInstance())
         self.updateOutputModel(model)
         return model
 
@@ -117,7 +118,7 @@ class ClusterPrintJobStatus(BaseModel):
         """Creates a new configuration model"""
 
         extruders = [extruder.createConfigurationModel() for extruder in self.configuration or ()]
-        configuration = PrinterConfigurationModel()
+        configuration = PrinterConfigurationModel(parent = CuraApplication.getInstance())
         configuration.setExtruderConfigurations(extruders)
         configuration.setPrinterType(self.machine_variant)
         return configuration

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional
 
@@ -17,8 +17,8 @@ from .ConfigurationChangeModel import ConfigurationChangeModel
 class UM3PrintJobOutputModel(PrintJobOutputModel):
     configurationChangesChanged = pyqtSignal()
 
-    def __init__(self, output_controller: PrinterOutputController, key: str = "", name: str = "", parent=None) -> None:
-        super().__init__(output_controller, key, name, parent)
+    def __init__(self, output_controller: PrinterOutputController, key: str = "", name: str = "", parent: Optional["QObject"]=None) -> None:
+        super(UM3PrintJobOutputModel, self).__init__(output_controller, key, name, parent = parent)
         self._configuration_changes = []  # type: List[ConfigurationChangeModel]
 
     @pyqtProperty("QVariantList", notify=configurationChangesChanged)

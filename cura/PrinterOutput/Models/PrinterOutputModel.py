@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
@@ -29,8 +29,8 @@ class PrinterOutputModel(QObject):
     configurationChanged = pyqtSignal()
     canUpdateFirmwareChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent=None, firmware_version = "") -> None:
-        super().__init__(parent)
+    def __init__(self, output_controller: "PrinterOutputController", number_of_extruders: int = 1, parent: Optional[QObject] = None, firmware_version = "") -> None:
+        super(PrinterOutputModel, self).__init__(parent = parent)
         self._bed_temperature = -1  # type: float  # Use -1 for no heated bed.
         self._target_bed_temperature = 0 # type: float
         self._name = ""
@@ -38,7 +38,7 @@ class PrinterOutputModel(QObject):
         self._unique_name = ""  # Unique name (used in Connect)
         self._controller = output_controller
         self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
-        self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
+        self._extruders = [ExtruderOutputModel(printer = self, position = i, parent = self) for i in range(number_of_extruders)]
         self._active_printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]

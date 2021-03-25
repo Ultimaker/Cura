@@ -3,6 +3,7 @@
 
 from typing import Optional
 
+from cura.CuraApplication import CuraApplication
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 
@@ -54,4 +55,4 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
                 "name": "Empty" if self.material == "empty" else "Unknown"
             }
 
-        return MaterialOutputModel(guid = self.guid, type = material_metadata["material"], brand = material_metadata["brand"], color = material_metadata.get("color_code", "#ffc924"), name = material_metadata["name"])
+        return MaterialOutputModel(guid = self.guid, type = material_metadata["material"], brand = material_metadata["brand"], color = material_metadata.get("color_code", "#ffc924"), name = material_metadata["name"], parent = CuraApplication.getInstance())

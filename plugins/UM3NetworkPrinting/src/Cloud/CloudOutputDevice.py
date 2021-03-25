@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from time import time
@@ -61,7 +61,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     # Therefore we create a private signal used to trigger the printersChanged signal.
     _cloudClusterPrintersChanged = pyqtSignal()
 
-    def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
+    def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: Optional[QObject] = None) -> None:
         """Creates a new cloud output device
 
         :param api_client: The client that will run the API calls
@@ -80,12 +80,12 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             b"cluster_size": str(cluster.printer_count).encode() if cluster.printer_count else b"1"
         }
 
-        super().__init__(
-            device_id=cluster.cluster_id,
-            address="",
-            connection_type=ConnectionType.CloudConnection,
-            properties=properties,
-            parent=parent
+        super(CloudOutputDevice, self).__init__(
+            device_id = cluster.cluster_id,
+            address = "",
+            connection_type = ConnectionType.CloudConnection,
+            properties = properties,
+            parent = parent
         )
 
         self._api = api_client

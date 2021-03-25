@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
@@ -11,8 +11,8 @@ class ExtruderConfigurationModel(QObject):
 
     extruderConfigurationChanged = pyqtSignal()
 
-    def __init__(self, position: int = -1) -> None:
-        super().__init__()
+    def __init__(self, position: int = -1, parent: Optional[QObject] = None) -> None:
+        super(ExtruderConfigurationModel, self).__init__(parent = parent)
         self._position = position  # type: int
         self._material = None  # type: Optional[MaterialOutputModel]
         self._hotend_id = None  # type: Optional[str]

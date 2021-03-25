@@ -1,7 +1,8 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Union, Dict, Optional, Any
 
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.Models.ExtruderOutputModel import ExtruderOutputModel
 
@@ -50,7 +51,7 @@ class ClusterPrintCoreConfiguration(BaseModel):
     def createConfigurationModel(self) -> ExtruderConfigurationModel:
         """Creates a configuration model"""
 
-        model = ExtruderConfigurationModel(position = self.extruder_index)
+        model = ExtruderConfigurationModel(position = self.extruder_index, parent = CuraApplication.getInstance())
         self.updateConfigurationModel(model)
         return model
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING, List
@@ -24,8 +24,8 @@ class PrintJobOutputModel(QObject):
     previewImageChanged = pyqtSignal()
     compatibleMachineFamiliesChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent: Optional["QObject"] = None) -> None:
+        super(PrintJobOutputModel, self).__init__(parent = parent)
         self._output_controller = output_controller
         self._state = ""
         self._time_total = 0

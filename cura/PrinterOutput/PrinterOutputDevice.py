@@ -1,9 +1,10 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from enum import IntEnum
 from typing import Callable, List, Optional, Union
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
+from PyQt5.QtQml import QQmlEngine
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Logger import Logger
@@ -195,8 +196,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     def close(self) -> None:
         """Attempt to close the connection"""
-
-        self._update_timer.stop()
+        try:
+            # FIXME: Handle more gracefull RuntimeError: wrapped C/C++ object of type QTimer has been deleted probably circular dep on it self as parent
+            self._update_timer.stop()
+        except RuntimeError:
+            pass
         self.setConnectionState(ConnectionState.Closed)
 
     def __del__(self) -> None:

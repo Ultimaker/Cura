@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from UM.Logger import Logger
 
@@ -17,8 +18,8 @@ if MYPY:
 
 
 class AvrFirmwareUpdater(FirmwareUpdater):
-    def __init__(self, output_device: "PrinterOutputDevice") -> None:
-        super().__init__(output_device)
+    def __init__(self, output_device: "PrinterOutputDevice", parent: Optional["QObject"]) -> None:
+        super(AvrFirmwareUpdater, self).__init__(output_device = output_device, parent = parent)
 
     def _updateFirmware(self) -> None:
         try:

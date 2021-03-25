@@ -150,7 +150,7 @@ class ClusterPrinterStatus(BaseModel):
                                                               right_slot: ClusterPrinterMaterialStationSlot,
                                                               printer_configuration: PrinterConfigurationModel
                                                               ) -> PrinterConfigurationModel:
-        available_configuration = PrinterConfigurationModel()
+        available_configuration = PrinterConfigurationModel(parent = printer_configuration)
         available_configuration.setExtruderConfigurations([left_slot.createConfigurationModel(),
                                                            right_slot.createConfigurationModel()])
         available_configuration.setPrinterType(printer_configuration.printerType)
