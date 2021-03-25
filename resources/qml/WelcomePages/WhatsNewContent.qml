@@ -80,12 +80,7 @@ Item
 
                 Rectangle
                 {
-                    anchors
-                    {
-                        top: parent.top
-                        topMargin: UM.Theme.getSize("default_margin").width / 2
-                        horizontalCenter: parent.horizontalCenter
-                    }
+                    Layout.alignment: Qt.AlignHCenter
                     color: UM.Theme.getColor("viewport_overlay")
 
                     Image
