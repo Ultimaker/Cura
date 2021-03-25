@@ -338,11 +338,6 @@ class PauseAtHeight(Script):
                     if current_layer < pause_layer - nbr_negative_layers:
                         continue
 
-                # Get X and Y from the next layer (better position for
-                # the nozzle)
-                next_layer = data[index + 1]
-                x, y = self.getNextXY(next_layer)
-
                 prev_layer = data[index - 1]
                 prev_lines = prev_layer.split("\n")
                 current_e = 0.
@@ -353,6 +348,13 @@ class PauseAtHeight(Script):
                     current_e = self.getValue(prevLine, "E", -1)
                     if current_e >= 0:
                         break
+                # and also find last X,Y
+                for prevLine in reversed(prev_lines):
+                    if prevLine.startswith(("G0", "G1", "G2", "G3")):
+                        if self.getValue(prevLine, "X") is not None and self.getValue(prevLine, "Y") is not None:
+                            x = self.getValue(prevLine, "X")
+                            y = self.getValue(prevLine, "Y")
+                            break
 
                 # Maybe redo the last layer.
                 if redo_layer:
