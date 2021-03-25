@@ -611,12 +611,7 @@ class CuraApplication(QtApplication):
         # If instead we first take down the global stack, PyQt will just convert `None` to `null` which succeeds, and
         # the QML code then gets `null` as the global stack and can deal with that as it deems fit.
         self.getMachineManager().setActiveMachine(None)
-
-        main_window = self.getMainWindow()
-        if main_window is not None:
-            main_window.close()
-        else:
-            self.exit(0)
+        self.closeAllWindows()
 
     # This function first performs all upon-exit checks such as USB printing that is in progress.
     # Use this to close the application.
