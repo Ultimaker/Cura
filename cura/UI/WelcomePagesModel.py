@@ -241,6 +241,7 @@ class WelcomePagesModel(ListModel):
                            },
                           {"id": "whats_new",
                            "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
+                           "next_page_button_text": self._catalog.i18nc("@action:button", "Skip"),
                            },
                           {"id": "data_collections",
                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
