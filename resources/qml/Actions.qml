@@ -66,6 +66,7 @@ Item
     property alias about: aboutAction;
 
     property alias dynamical: dynamicalAction;
+    property alias addPause: addPauseAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
     property alias exitFullScreen: exitFullScreenAction
@@ -254,6 +255,13 @@ Item
         iconName: "help-contents";
         onTriggered: CuraActions.openDynamical();
     }
+   
+    Action {
+        id: addPauseAction;
+        text: "Pausa";
+        onTriggered: CuraActions.addPause(5);
+    }
+
 
     Action {
         id: whatsNewAction;
@@ -460,4 +468,6 @@ Item
         text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
     }
+
+
 }

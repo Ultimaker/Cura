@@ -1,0 +1,7 @@
+{
+    "name": "Dynamical3D Pause",   
+    "author": "Dynamical3D",              
+    "version": "1.0.0",          
+    "supported_sdk_versions": ["7.4.0"],  
+    "description": "Pausa para las impresoras de Dynamical3D." 
+}

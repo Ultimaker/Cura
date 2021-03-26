@@ -450,4 +450,17 @@ Item
             lowerHandle.downValueManually();                                                  
         } 
     }
+
+    Button {
+        id: pausaButton
+        height: UM.Theme.getSize("button").height
+        
+        anchors.horizontalCenter: track.horizontalCenter
+        anchors.top: track.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        text: "Pausa"
+        onClicked: {
+            Cura.Actions.addPause.trigger(20)                                          
+        } 
+    }
 }

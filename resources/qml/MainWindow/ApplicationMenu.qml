@@ -124,20 +124,10 @@ Item
         }
         Menu{
             id: dynamicalMenu
-            title: "&Dynamical"
-            // style: MenuStyle {
-            // }
+            title: "&Test"
             MenuItem { action: Cura.Actions.dynamical }
 
         }
-
-
-        // Menu{
-        //     id: dynamicalMenu2
-        //     title: "Key: " + applicationMenu.estilo;
-        // }
-
-
         
     }
 

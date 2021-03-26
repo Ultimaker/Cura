@@ -44,6 +44,11 @@ class CuraActions(QObject):
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
+    def addPause(self) -> None:
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://www.dynamical3d.com/")], {})
+        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
+
+    @pyqtSlot()
     def openBugReportPage(self) -> None:
         event = CallFunctionEvent(self._openUrl, [QUrl("https://github.com/Ultimaker/Cura/issues/new/choose")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
@@ -59,6 +64,28 @@ class CuraActions(QObject):
             camera.setPosition(Vector(-80, 250, 700) * diagonal_size / 375)
             camera.setPerspective(True)
             camera.lookAt(Vector(0, 0, 0))
+
+    @pyqtSlot(int)
+    def addPause(self, altura: int) -> None:
+        """Añade una pausa a la altura indicada por altura
+
+        :param altura: La altura a la que tiene que hacerse la pausa.
+        """
+        
+        a = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
+        for extension in a:
+            meta_data = cura.CuraApplication.CuraApplication.getInstance().getPluginRegistry().getMetaData(extension.getPluginId())
+            
+            if meta_data["id"] == "PostProcessingPlugin":
+                plug = meta_data.plugin
+               
+
+
+
+           
+        if not cura.CuraApplication.CuraApplication.getInstance().getController().getToolsEnabled():
+            return
+
 
     @pyqtSlot()
     def centerSelection(self) -> None:
