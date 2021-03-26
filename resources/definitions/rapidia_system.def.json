@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Rapidia System",
+    "name": "Metal Designlab",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Rapidia",
-        "manufacturer": "Rapidia Tech",
+        "author": "ExOne",
+        "manufacturer": "ExOne",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "has_material": true,
@@ -23,7 +23,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "Rapidia System"
+            "default_value": "Metal Designlab"
         },
         "machine_heated_bed": {
             "default_value": true
