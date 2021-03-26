@@ -68,9 +68,9 @@ class CuraSplashScreen(QSplashScreen):
 
         # Draw version text
         font = QFont("Segoe UI")  # Using system-default font here
-        font.setPixelSize(36)
+        font.setPixelSize(44)
         painter.setFont(font)
-        painter.drawText(120, 200 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(110, 180 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)
@@ -83,7 +83,7 @@ class CuraSplashScreen(QSplashScreen):
         pen.setWidth(6 * self._scale)
         pen.setColor(QColor(32, 166, 219, 255))
         painter.setPen(pen)
-        painter.drawArc(60, 150, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
+        painter.drawArc(60, 250, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
 
         # Draw message text
         if self._current_message:
@@ -93,7 +93,7 @@ class CuraSplashScreen(QSplashScreen):
             pen.setColor(QColor(255, 255, 255, 255))
             painter.setPen(pen)
             painter.setFont(font)
-            painter.drawText(160, 128, 170, 64,
+            painter.drawText(100, 228, 170, 64,
                              Qt.AlignLeft | Qt.AlignVCenter | Qt.TextWordWrap,
                              self._current_message)
 
