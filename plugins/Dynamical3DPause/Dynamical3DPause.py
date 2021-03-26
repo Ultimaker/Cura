@@ -29,7 +29,8 @@ class Dynamical3DPause(Tool): #The Tool class extends from PluginObject, and we 
         #This plug-in creates a window with information about the objects we've selected. That window is lazily-loaded.
         self.info_window = None
         self._script_list = []  # type: List[Script]
-        self.points = [5]
+        #Puntos donde se va a establecer la pausa
+        self.points = []
         ## Reacting to an event. ##
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
 
@@ -37,6 +38,10 @@ class Dynamical3DPause(Tool): #The Tool class extends from PluginObject, and we 
         if self.info_window is None:
             self.info_window = self._createDialogue()
         self.info_window.show()
+
+    #añadir punto de pausa
+    def addPoint(self, p):
+        self.points.append(p)
 
     ##  Called when something happens in the scene while our tool is active.
     #
