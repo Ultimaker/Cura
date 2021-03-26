@@ -262,7 +262,7 @@ Item
     Action
     {
         id: deleteSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete Selected Model", "Delete Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Delete Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete | "Backspace"
@@ -272,7 +272,7 @@ Item
     Action
     {
         id: centerSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Center Selected Model", "Center Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Center Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "align-vertical-center";
         onTriggered: CuraActions.centerSelection();
@@ -281,7 +281,7 @@ Item
     Action
     {
         id: multiplySelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Multiply Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-duplicate";
         shortcut: "Ctrl+M"
