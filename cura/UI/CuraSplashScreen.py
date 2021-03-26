@@ -67,10 +67,10 @@ class CuraSplashScreen(QSplashScreen):
         version = Application.getInstance().getVersion().split("-")
 
         # Draw version text
-        font = QFont()  # Using system-default font here
-        font.setPixelSize(18)
+        font = QFont("Segoe UI")  # Using system-default font here
+        font.setPixelSize(36)
         painter.setFont(font)
-        painter.drawText(60, 70 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(120, 200 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)
@@ -87,13 +87,13 @@ class CuraSplashScreen(QSplashScreen):
 
         # Draw message text
         if self._current_message:
-            font = QFont()  # Using system-default font here
-            font.setPixelSize(13)
+            font = QFont("Segoe UI")  # Using system-default font here
+            font.setPixelSize(18)
             pen = QPen()
             pen.setColor(QColor(255, 255, 255, 255))
             painter.setPen(pen)
             painter.setFont(font)
-            painter.drawText(100, 128, 170, 64,
+            painter.drawText(160, 128, 170, 64,
                              Qt.AlignLeft | Qt.AlignVCenter | Qt.TextWordWrap,
                              self._current_message)
 
