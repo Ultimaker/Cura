@@ -1,10 +1,15 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Type
+from typing import Type, TYPE_CHECKING
 
 import keyring
+from keyring.backend import KeyringBackend
+from keyring.errors import NoKeyringError, PasswordSetError
 
 from UM.Logger import Logger
+
+if TYPE_CHECKING:
+    from cura.OAuth2.Models import BaseModel
 
 
 class KeyringAttribute:
@@ -15,7 +20,7 @@ class KeyringAttribute:
         if self._store_secure:
             try:
                 return keyring.get_password("cura", self._keyring_name)
-            except keyring.errors.NoKeyringError:
+            except NoKeyringError:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
@@ -27,14 +32,20 @@ class KeyringAttribute:
             setattr(instance, self._name, None)
             try:
                 keyring.set_password("cura", self._keyring_name, value)
-            except keyring.errors.PasswordSetError:
+            except PasswordSetError:
                 self._store_secure = False
                 setattr(instance, self._name, value)
                 Logger.logException("w", "Keyring access denied")
-            except keyring.errors.NoKeyringError:
+            except NoKeyringError:
                 self._store_secure = False
                 setattr(instance, self._name, value)
                 Logger.logException("w", "No keyring backend present")
+            except BaseException as e:
+                # A BaseException can occur in Windows when the keyring attempts to write a token longer than 256
+                # characters in the Windows Credentials Manager.
+                self._store_secure = False
+                setattr(instance, self._name, value)
+                Logger.log("w", "Keyring failed: {}".format(e))
         else:
             setattr(instance, self._name, value)
 
@@ -43,7 +54,7 @@ class KeyringAttribute:
         self._keyring_name = name
         self._store_secure = False
         try:
-            self._store_secure = keyring.backend.KeyringBackend.viable
-        except keyring.errors.NoKeyringError:
+            self._store_secure = KeyringBackend.viable
+        except NoKeyringError:
             Logger.logException("w", "Could not use keyring")
         setattr(owner, self._name, None)
