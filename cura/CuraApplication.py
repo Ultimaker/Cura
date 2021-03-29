@@ -603,6 +603,15 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def closeApplication(self) -> None:
         Logger.log("i", "Close application")
+
+        # Workaround: Before closing the window, remove the global stack.
+        # This is necessary because as the main window gets closed, hundreds of QML elements get updated which often
+        # request the global stack. However as the Qt-side of the Machine Manager is being dismantled, the conversion of
+        # the Global Stack to a QObject fails.
+        # If instead we first take down the global stack, PyQt will just convert `None` to `null` which succeeds, and
+        # the QML code then gets `null` as the global stack and can deal with that as it deems fit.
+        self.getMachineManager().setActiveMachine(None)
+
         main_window = self.getMainWindow()
         if main_window is not None:
             main_window.close()
