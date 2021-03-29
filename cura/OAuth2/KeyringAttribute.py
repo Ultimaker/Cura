@@ -41,7 +41,7 @@ class KeyringAttribute:
                 setattr(instance, self._name, value)
                 Logger.logException("w", "No keyring backend present")
             except BaseException as e:
-                # A BaseException can occur in Windows when the keyring attempts to write a token longer than 256
+                # A BaseException can occur in Windows when the keyring attempts to write a token longer than 1024
                 # characters in the Windows Credentials Manager.
                 self._store_secure = False
                 setattr(instance, self._name, value)
