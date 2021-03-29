@@ -3,7 +3,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.3
+import QtQuick.Layouts 1.15
 import QtQuick.Window 2.2
 
 import UM 1.2 as UM
