@@ -4,7 +4,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.15
-import QtQuick.Window 2.2
+import QtQuick.Window 2.15
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura

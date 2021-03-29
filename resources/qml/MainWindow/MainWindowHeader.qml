@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.4
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
-import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.12
 
 import "../Account"
 

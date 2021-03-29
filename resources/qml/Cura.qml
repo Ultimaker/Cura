@@ -6,7 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
-import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.12
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
