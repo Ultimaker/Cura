@@ -7,7 +7,7 @@
         "visible": true,
         "quality_definition": "inat_base",
         "platform": "inat_proton_x_buildplate.stl",
-        "platform_offset": [ 0, -0.8, 0]
+        "platform_offset": [ 0, -1.1, 0]
     },
     "overrides": {
         "machine_name": { "default_value": "Proton X Rod" },
