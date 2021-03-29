@@ -66,7 +66,7 @@ Item
     property alias about: aboutAction;
 
     property alias dynamical: dynamicalAction;
-    property alias addPause: addPauseAction;
+    // property alias addPause: addPauseAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
     property alias exitFullScreen: exitFullScreenAction
@@ -256,11 +256,11 @@ Item
         onTriggered: CuraActions.openDynamical();
     }
    
-    Action {
-        id: addPauseAction;
-        text: "Pausa";
-        onTriggered: CuraActions.addPause(5);
-    }
+    // Action {
+    //     id: addPauseAction;
+    //     text: "Pausa";
+    //     onTriggered: CuraActions.addPause(7);
+    // }
 
 
     Action {

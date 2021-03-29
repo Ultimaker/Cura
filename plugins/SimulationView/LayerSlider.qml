@@ -460,7 +460,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         text: "Pausa"
         onClicked: {
-            Cura.Actions.addPause.trigger(20)                                          
+            CuraActions.addPause(activeHandle.getValue());                                     
         } 
     }
 }

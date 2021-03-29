@@ -3,7 +3,7 @@
 
 import os.path
 import re
-from plugins.PostProcessingPlugin.Script import Script
+from . import Script
 from typing import List, Any
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt, QUrl, QObject, QVariant #To define a shortcut key and to find the QML files, and to expose information to QML.
 from PyQt5.QtQml import QQmlComponent, QQmlContext #To create a dialogue window.
@@ -12,12 +12,13 @@ from UM.Application import Application #To register the information dialogue.
 from UM.Event import Event #To understand what events to react to.
 from UM.PluginRegistry import PluginRegistry #To find the QML files in the plug-in folder.
 from UM.Scene.Selection import Selection #To get the current selection and some information about it.
-from UM.Tool import Tool #The PluginObject we're going to extend.
+# from UM.Tool import Tool #The PluginObject we're going to extend.
+from UM.Extension import Extension #The PluginObject we're going to extend.
 from UM.Application import Application
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 
-class Dynamical3DPause(Tool): #The Tool class extends from PluginObject, and we have to be a PluginObject for the plug-in to load.
+class Dynamical3DPause(Extension): #The Tool class extends from PluginObject, and we have to be a PluginObject for the plug-in to load.
     ##  Creates an instance of this tool.
     #
     #   Here you can set some additional metadata.
@@ -99,8 +100,8 @@ class Dynamical3DPause(Tool): #The Tool class extends from PluginObject, and we 
 
         current_z = 0.
         layers_started = False
-       
-
+        current_layer = 0
+        nbr_negative_layers = 0
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
         layer_0_z = 0.
         got_first_g_cmd_on_layer_0 = False
@@ -113,30 +114,28 @@ class Dynamical3DPause(Tool): #The Tool class extends from PluginObject, and we 
 
                 if not layers_started:
                     continue
+                if not line.startswith(";LAYER:"):
+                        continue
+                current_layer = line[len(";LAYER:"):]
+                try:
+                    current_layer = int(current_layer)
 
-                if (self.getValue(line, 'G') == 1 or self.getValue(line, 'G') == 0) and 'X' in line and 'Y' in line and 'Z' in line:
-                    current_z = self.getValue(line, 'Z')
-                    if not got_first_g_cmd_on_layer_0:
-                        layer_0_z = current_z
-                        got_first_g_cmd_on_layer_0 = True
+                # Couldn't cast to int. Something is wrong with this
+                # g-code data
+                except ValueError:
+                    continue
+                if current_layer <= point - nbr_negative_layers:
+                    continue
+                index = data.index(layer)
+                prepend_gcode = ";TYPE:CUSTOM\n"
+                prepend_gcode += ";added code by plugin Dynamical3D Pause\n"
+                prepend_gcode += "M0 ;stop\n"
+                layer = prepend_gcode + layer
 
-                    if current_z is not None:
-                        current_height = current_z - layer_0_z
-                        if current_height >= point:
-                            index = data.index(layer)
-
-                            prepend_gcode = ";TYPE:CUSTOM\n"
-                            prepend_gcode += ";added code by plugin Dynamical3D Pause\n"
-                            prepend_gcode += ";current z: %f \n" % current_z
-                            prepend_gcode += ";current height: %f \n" % current_height
-                            prepend_gcode += "M0 ;stop\n"
-                            layer = prepend_gcode + layer
-
-                            # Override the data of this layer with the
-                            # modified data
-                            data[index] = layer
-                            return data
-                        break
+                # Override the data of this layer with the
+                # modified data
+                data[index] = layer
+                return data
         return data
 
     def getValue(self, line: str, key: str, default = None) -> Any:

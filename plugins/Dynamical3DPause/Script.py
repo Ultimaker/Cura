@@ -17,6 +17,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 import re
 import json
 import collections
+
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:

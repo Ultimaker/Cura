@@ -43,10 +43,6 @@ class CuraActions(QObject):
         event = CallFunctionEvent(self._openUrl, [QUrl("https://www.dynamical3d.com/")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
-    @pyqtSlot()
-    def addPause(self) -> None:
-        event = CallFunctionEvent(self._openUrl, [QUrl("https://www.dynamical3d.com/")], {})
-        cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:
@@ -71,21 +67,12 @@ class CuraActions(QObject):
 
         :param altura: La altura a la que tiene que hacerse la pausa.
         """
-        
-        a = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
-        for extension in a:
-            meta_data = cura.CuraApplication.CuraApplication.getInstance().getPluginRegistry().getMetaData(extension.getPluginId())
-            
-            if meta_data["id"] == "PostProcessingPlugin":
-                plug = meta_data.plugin
-               
-
-
-
-           
-        if not cura.CuraApplication.CuraApplication.getInstance().getController().getToolsEnabled():
-            return
-
+        exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
+        pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        if pausa is not None:
+            pausa.addPoint(altura)
+        # a = cura.CuraApplication.CuraApplication.getInstance().getController().getTool("Dynamical3DPause")
+        # a.addPoint(altura)
 
     @pyqtSlot()
     def centerSelection(self) -> None:

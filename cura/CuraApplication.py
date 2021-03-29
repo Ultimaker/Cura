@@ -1073,7 +1073,7 @@ class CuraApplication(QtApplication):
                 self._open_file_queue.append(event.file())
 
         return super().event(event)
-
+    
     def getAutoSave(self) -> Optional[AutoSave]:
         return self._auto_save
 
