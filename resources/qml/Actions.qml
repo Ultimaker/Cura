@@ -3,9 +3,9 @@
 
 pragma Singleton
 
-import QtQuick 2.15
-import QtQuick.Controls 1.4
-import QtQuick.Controls 2.15 as Controls2
+import QtQuick 2.10
+import QtQuick.Controls 1.1
+import QtQuick.Controls 2.3 as Controls2
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
