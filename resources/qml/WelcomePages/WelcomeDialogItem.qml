@@ -1,10 +1,10 @@
 // Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
-import QtQuick.Controls 2.3
-import QtQuick.Window 2.2
-import QtGraphicalEffects 1.0  // For the DropShadow
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Window 2.15
+import QtGraphicalEffects 1.12  // For the DropShadow
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura

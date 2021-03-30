@@ -1,13 +1,13 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.3
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import QtGraphicalEffects 1.0 // For the dropshadow
+import QtGraphicalEffects 1.12 // For the dropshadow
 
 // The expandable component has 2 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded

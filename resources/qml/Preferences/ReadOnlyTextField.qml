@@ -2,9 +2,9 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 // Different than the name suggests, it is not always read-only.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick 2.15
+import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.3
 
 Item
 {
