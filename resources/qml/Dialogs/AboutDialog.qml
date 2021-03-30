@@ -41,7 +41,7 @@ UM.Dialog
         width: parent.width
 
         //: About dialog application author note
-        text: catalog.i18nc("@info:credit","Rapidia Cura is based on Ultimaker Cura and uses the following open source projects:")
+        text: catalog.i18nc("@info:credit","ExOne Cura is based on Ultimaker Cura and uses the following open source projects:")
         font: UM.Theme.getFont("system")
         wrapMode: Text.WordWrap
         anchors.top: description.bottom
