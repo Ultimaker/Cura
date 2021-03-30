@@ -5,6 +5,7 @@ import io
 import os
 import re
 import shutil
+from copy import deepcopy
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
 from typing import Dict, Optional, TYPE_CHECKING
 
@@ -27,6 +28,9 @@ class Backup:
     IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
     """These files should be ignored when making a backup."""
 
+    SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
+    """Secret preferences that need to obfuscated when making a backup of Cura"""
+
     catalog = i18nCatalog("cura")
     """Re-use translation catalog"""
 
@@ -42,6 +46,9 @@ class Backup:
         version_data_dir = Resources.getDataStoragePath()
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
+
+        # obfuscate sensitive secrets
+        secrets = self._obfuscate()
 
         # Ensure all current settings are saved.
         self._application.saveSettings()
@@ -78,6 +85,8 @@ class Backup:
             "profile_count": str(profile_count),
             "plugin_count": str(plugin_count)
         }
+        # Restore the obfuscated settings
+        self._illuminate(**secrets)
 
     def _makeArchive(self, buffer: "io.BytesIO", root_path: str) -> Optional[ZipFile]:
         """Make a full archive from the given root path with the given name.
@@ -134,6 +143,9 @@ class Backup:
                                    "Tried to restore a Cura backup that is higher than the current version."))
             return False
 
+        # Get the current secrets and store since the back-up doesn't contain those
+        secrets = self._obfuscate()
+
         version_data_dir = Resources.getDataStoragePath()
         archive = ZipFile(io.BytesIO(self.zip_file), "r")
         extracted = self._extractArchive(archive, version_data_dir)
@@ -145,6 +157,9 @@ class Backup:
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
             shutil.move(backup_preferences_file, preferences_file)
+
+        # Restore the obfuscated settings
+        self._illuminate(**secrets)
 
         return extracted
 
@@ -173,3 +188,28 @@ class Backup:
             Logger.logException("e", "Unable to extract the backup due to permission or file system errors.")
             return False
         return True
+
+    def _obfuscate(self) -> Dict[str, str]:
+        """
+        Obfuscate and remove the secret preferences that are specified in SECRETS_SETTINGS
+
+        :return: a dictionary of the removed secrets. Note: the '/' is replaced by '__'
+        """
+        preferences = self._application.getPreferences()
+        secrets = {}
+        for secret in self.SECRETS_SETTINGS:
+            secrets[secret.replace("/", "__")] = deepcopy(preferences.getValue(secret))
+            preferences.setValue(secret, None)
+        self._application.savePreferences()
+        return secrets
+
+    def _illuminate(self, **kwargs) -> None:
+        """
+        Restore the obfuscated settings
+
+        :param kwargs: a dict of obscured preferences. Note: the '__' of the keys will be replaced by '/'
+        """
+        preferences = self._application.getPreferences()
+        for key, value in kwargs.items():
+            preferences.setValue(key.replace("__", "/"), value)
+        self._application.savePreferences()
