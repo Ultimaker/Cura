@@ -11,7 +11,15 @@ from UM.Logger import Logger
 if TYPE_CHECKING:
     from cura.OAuth2.Models import BaseModel
 
-DONT_EVER_STORE = ["refresh_token"]
+# Need to do some extra workarounds on windows:
+import sys
+from UM.Platform import Platform
+if Platform.isWindows() and hasattr(sys, "frozen"):
+    from keyring.backends.Windows import WinVaultKeyring
+    keyring.set_keyring(WinVaultKeyring())
+
+# Even if errors happen, we don't want this stored locally:
+DONT_EVER_STORE_LOCALLY = ["refresh_token"]
 
 class KeyringAttribute:
     """
@@ -35,19 +43,19 @@ class KeyringAttribute:
                 keyring.set_password("cura", self._keyring_name, value)
             except PasswordSetError:
                 self._store_secure = False
-                if self._name not in DONT_EVER_STORE:
+                if self._name not in DONT_EVER_STORE_LOCALLY:
                     setattr(instance, self._name, value)
                 Logger.logException("w", "Keyring access denied")
             except NoKeyringError:
                 self._store_secure = False
-                if self._name not in DONT_EVER_STORE:
+                if self._name not in DONT_EVER_STORE_LOCALLY:
                     setattr(instance, self._name, value)
                 Logger.logException("w", "No keyring backend present")
             except BaseException as e:
                 # A BaseException can occur in Windows when the keyring attempts to write a token longer than 1024
                 # characters in the Windows Credentials Manager.
                 self._store_secure = False
-                if self._name not in DONT_EVER_STORE:
+                if self._name not in DONT_EVER_STORE_LOCALLY:
                     setattr(instance, self._name, value)
                 Logger.log("w", "Keyring failed: {}".format(e))
         else:
