@@ -117,7 +117,7 @@ Item
         Connections
         {
             target: toolbox
-            function onEnabledChanged() { isEnabled = toolbox.isEnabled(model.id) }
+            function onToolboxEnabledChanged() { isEnabled = toolbox.isEnabled(model.id) }
         }
     }
 }
