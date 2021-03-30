@@ -121,7 +121,7 @@ Item
             color: UM.Theme.getColor("lining")
         }
 
-        Button {
+        ToolbarButton {
             id: pausaButton
 
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -132,6 +132,14 @@ Item
                 CuraActions.showPauses();                                     
             } 
             text: "Pausa"
+            toolItem: UM.RecolorImage
+                    {
+                        source: UM.Theme.getIcon("pausa") 
+                        color: UM.Theme.getColor("icon")
+
+                        sourceSize: UM.Theme.getSize("button_icon")
+                    }
+
         }
 
         // Used to create a rounded rectangle behind the extruderButtons

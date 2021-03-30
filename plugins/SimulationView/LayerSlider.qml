@@ -410,42 +410,44 @@ Item
             lowerHandle.setValue(lowerHandleLabel.value -1)
         }     
     }
-    Button {
+ 
+    Cura.PrimaryButton {
         id: aumentaLimiteSuperiorButton
+        iconSource: UM.Theme.getIcon("plus")
         anchors.right: track.left
         anchors.verticalCenter: track.top
         anchors.rightMargin: UM.Theme.getSize("default_margin").height
-        text: "+"
         onClicked: {
             upperHandle.upValueManually();                                                  
         } 
     }
-    Button {
+    Cura.PrimaryButton {
         id: disminuyeLimiteSuperiorButton
+        iconSource: UM.Theme.getIcon("minus")
         anchors.right: aumentaLimiteInferiorButton.left
         anchors.verticalCenter: track.top
-        anchors.rightMargin: UM.Theme.getSize("default_margin").height
-        text: "-"
+        anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
+        //text: "-"
         onClicked: {
             upperHandle.downValueManually();                                                  
         } 
     }
-   Button {
+   Cura.PrimaryButton {
         id: aumentaLimiteInferiorButton
+        iconSource: UM.Theme.getIcon("plus")
         anchors.right: track.left
         anchors.verticalCenter: track.bottom
         anchors.rightMargin: UM.Theme.getSize("default_margin").height
-        text: "+"
         onClicked: {
             lowerHandle.upValueManually();                                                  
         } 
     }
-    Button {
+   Cura.PrimaryButton {
         id: disminuyeLimiteInferiorButton
+        iconSource: UM.Theme.getIcon("minus")
         anchors.right: aumentaLimiteInferiorButton.left
         anchors.verticalCenter: track.bottom
-        anchors.rightMargin: UM.Theme.getSize("default_margin").height
-        text: "-"
+        anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
         onClicked: {
             lowerHandle.downValueManually();                                                  
         } 
