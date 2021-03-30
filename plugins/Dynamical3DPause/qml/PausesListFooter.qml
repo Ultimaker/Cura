@@ -20,7 +20,6 @@ RowLayout {
         id: addPauseButton
         text: "Añadir Pausa"
         iconSource: UM.Theme.getIcon("plus")
-        // enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
         onClicked: alturaDialog.open()
         // busy: CuraDrive.isCreatingBackup
     }
@@ -30,9 +29,6 @@ RowLayout {
         modality: Qt.ApplicationModal
 
         title: "Altura"
-
-
-    
 
         signal reset()
         onReset: {
@@ -60,22 +56,8 @@ RowLayout {
                 id: alturaField
                 focus: true
                 minimumValue: 1
-                maximumValue: 99
+                maximumValue: (UM.SimulationView.numLayers <1 ) ? 100 :  UM.SimulationView.numLayers
             }
         }
     }
-
-    // function change() {
-    //     addPauseButton.text = Dynamical3DPause.Cadena
-    // }
-    
-
-    // Cura.CheckBoxWithTooltip
-    // {
-    //     id: autoBackupEnabled
-    //     // checked: CuraDrive.autoBackupEnabled
-    //     // onClicked: CuraDrive.toggleAutoBackup(autoBackupEnabled.checked)
-    //     text: catalog.i18nc("@checkbox:description", "Auto Backup")
-    //     tooltip: catalog.i18nc("@checkbox:description", "Automatically create a backup each day that Cura is started.")
-    // }
 }
