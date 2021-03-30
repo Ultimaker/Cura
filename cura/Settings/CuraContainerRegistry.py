@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -381,9 +381,10 @@ class CuraContainerRegistry(ContainerRegistry):
             if profile_count > 1:
                 continue
             # Only one profile found, this should not ever be the case, so that profile needs to be removed!
-            Logger.log("d", "Found an invalid quality_changes profile with the name %s. Going to remove that now", profile_name)
             invalid_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(name=profile_name)
-            self.removeContainer(invalid_quality_changes[0]["id"])
+            if invalid_quality_changes:
+                Logger.log("d", "Found an invalid quality_changes profile with the name %s. Going to remove that now", profile_name)
+                self.removeContainer(invalid_quality_changes[0]["id"])
 
     @override(ContainerRegistry)
     def _isMetadataValid(self, metadata: Optional[Dict[str, Any]]) -> bool:
@@ -400,7 +401,9 @@ class CuraContainerRegistry(ContainerRegistry):
         try:
             if int(metadata["setting_version"]) != cura.CuraApplication.CuraApplication.SettingVersion:
                 return False
-        except ValueError: #Not parsable as int.
+        except ValueError:  # Not parsable as int.
+            return False
+        except TypeError:  # Expecting string input here, not e.g. list or anything.
             return False
         return True
 

@@ -15,6 +15,18 @@ ComboBox
 {
     id: control
 
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
+    }
+
+    property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
+    property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
+    enabled: delegateModel.count > 0
+
+    onVisibleChanged: { popup.close() }
+
     states: [
         State
         {
@@ -67,11 +79,22 @@ ComboBox
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: downArrow.left
 
-        text: control.currentText
+        text:
+        {
+            if (control.delegateModel.count == 0)
+            {
+                return control.defaultTextOnEmptyModel != "" ? control.defaultTextOnEmptyModel : control.defaultTextOnEmptyIndex
+            }
+            else
+            {
+                return control.currentIndex == -1 ? control.defaultTextOnEmptyIndex : control.currentText
+            }
+        }
+
         textFormat: Text.PlainText
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("setting_control_text")
+        color: control.currentIndex == -1 ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
     }
@@ -81,6 +104,7 @@ ComboBox
         y: control.height - UM.Theme.getSize("default_lining").height
         width: control.width
         implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
+        bottomMargin: UM.Theme.getSize("default_margin").height
         padding: UM.Theme.getSize("default_lining").width
 
         contentItem: ListView
@@ -133,7 +157,7 @@ ComboBox
             text: delegateItem.text
             textFormat: Text.PlainText
             renderType: Text.NativeRendering
-            color: control.contentItem.color
+            color: UM.Theme.getColor("setting_control_text")
             font: UM.Theme.getFont("default")
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter

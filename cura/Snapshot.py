@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import numpy
 
@@ -42,8 +42,8 @@ class Snapshot:
         """
 
         scene = Application.getInstance().getController().getScene()
-        active_camera = scene.getActiveCamera()
-        render_width, render_height = active_camera.getWindowSize()
+        active_camera = scene.getActiveCamera() or scene.findCamera("3d")
+        render_width, render_height = (width, height) if active_camera is None else active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
         preview_pass = PreviewPass(render_width, render_height)

@@ -774,15 +774,15 @@ class ChangeAtZProcessor:
 
         # looking for wait for bed temp
         if "bedTemp" in values:
-            codes.append("BedTemp: " + str(values["bedTemp"]))
+            codes.append("BedTemp: " + str(round(values["bedTemp"])))
 
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
-            codes.append("Extruder 1 Temp: " + str(values["extruderOne"]))
+            codes.append("Extruder 1 Temp: " + str(round(values["extruderOne"])))
 
         # set our extruder two temp (if specified)
         if "extruderTwo" in values:
-            codes.append("Extruder 2 Temp: " + str(values["extruderTwo"]))
+            codes.append("Extruder 2 Temp: " + str(round(values["extruderTwo"])))
 
         # set global flow rate
         if "flowrate" in values:

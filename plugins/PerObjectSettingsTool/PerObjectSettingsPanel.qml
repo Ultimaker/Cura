@@ -237,7 +237,7 @@ Item
                             id: settingLoader
                             width: UM.Theme.getSize("setting").width
                             height: UM.Theme.getSize("section").height
-
+                            enabled: provider.properties.enabled === "True"
                             property var definition: model
                             property var settingDefinitionsModel: addedSettingsModel
                             property var propertyProvider: provider
