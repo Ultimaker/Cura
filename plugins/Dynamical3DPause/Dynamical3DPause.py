@@ -4,8 +4,8 @@
 import os.path
 import re
 from . import Script
-from typing import List, Any
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt, QUrl, QObject, QVariant #To define a shortcut key and to find the QML files, and to expose information to QML.
+from typing import Any, cast, Dict, List, Optional
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt, QUrl, QObject, QVariant,pyqtSlot#To define a shortcut key and to find the QML files, and to expose information to QML.
 from PyQt5.QtQml import QQmlComponent, QQmlContext #To create a dialogue window.
 
 from UM.Application import Application #To register the information dialogue.
@@ -17,21 +17,25 @@ from UM.Extension import Extension #The PluginObject we're going to extend.
 from UM.Application import Application
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
-class Dynamical3DPause(Extension): #The Tool class extends from PluginObject, and we have to be a PluginObject for the plug-in to load.
-    ##  Creates an instance of this tool.
-    #
-    #   Here you can set some additional metadata.
+class Dynamical3DPause(QObject,Extension): #The Tool class extends from PluginObject, and we have to be a PluginObject for the plug-in to load.
+
+    # Señal emitida al cambiar la lista de pausas
+    pausesChanged = pyqtSignal()
+
     def __init__(self):
         super().__init__()
 
+        self._window = None  # type: Optional[QObject]
         ##self._shortcut_key = Qt.Key_X
 
         #This plug-in creates a window with information about the objects we've selected. That window is lazily-loaded.
         self.info_window = None
-        self._script_list = []  # type: List[Script]
+        self._script_list = [] 
         #Puntos donde se va a establecer la pausa
-        self.points = []
+        self._points = []
         ## Reacting to an event. ##
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
 
@@ -41,9 +45,26 @@ class Dynamical3DPause(Extension): #The Tool class extends from PluginObject, an
         self.info_window.show()
 
     #añadir punto de pausa
+    @pyqtSlot(int, name = "addPoint")
     def addPoint(self, p):
-        self.points.append(p)
+        self._points.append(p)
+        self.pausesChanged.emit()
 
+    #eliminar punto de pausa
+    @pyqtSlot(int, name = "removePoint")
+    def removePoint(self, p):
+        if p in self._points:
+            self._points.remove(p)
+            self.pausesChanged.emit()
+
+
+
+    #mostrar pausas
+    # def ShowDialog(self):
+    #     if self.info_window is None:
+    #         self.info_window = self._createDialogue()
+    #     self.info_window.show()       
+        
     ##  Called when something happens in the scene while our tool is active.
     #
     #   For instance, we can react to mouse clicks, mouse movements, and so on.
@@ -56,13 +77,30 @@ class Dynamical3DPause(Extension): #The Tool class extends from PluginObject, an
                 self.info_window = self._createDialogue()
             self.info_window.show()
 
-    ##  Creates a modal dialogue with information about the selection.
-    def _createDialogue(self):
-        #Create a QML component from the SelectionInfo.qml file.
-        qml_file_path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "SelectionInfo.qml")
-        component = Application.getInstance().createQmlComponent(qml_file_path)
+    # ##  Creates a modal dialogue with information about the selection.
+    # def _createDialogue(self):
+    #     #Create a QML component from the SelectionInfo.qml file.
+        
+    #     qml_file_path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()),"qml" ,"PausesPage.qml")
+    #     self._drive_window = CuraApplication.getInstance().createQmlComponent(qml_file_path, {"CuraDrive": self})
+    #     component = Application.getInstance().createQmlComponent(qml_file_path)
+    #     return component
 
-        return component
+    @pyqtProperty("QVariantList", notify = pausesChanged)
+    def points(self):
+        return self._points
+
+
+    @pyqtProperty("QString")
+    def Cadena(self):
+        return "Hola"
+
+    def showWindow(self) -> None:
+        if not self._window:
+            qml_file_path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()),"qml" ,"Main.qml")
+            self._window = CuraApplication.getInstance().createQmlComponent(qml_file_path, {"Dynamical3DPause": self})
+        if self._window:
+            self._window.show()
 
     def execute(self, output_device) -> None:
         """Execute all post-processing scripts on the gcode."""
@@ -82,12 +120,12 @@ class Dynamical3DPause(Extension): #The Tool class extends from PluginObject, an
             return
 
         if ";POSTPROCESSED" not in gcode_list[0]:
-            for point in self.points:
+            for point in self._points:
                 try:
                     gcode_list =  self.executeScript(point,gcode_list)
                 except Exception:
                     Logger.logException("e", "Exception in post-processing script.")
-            if len(self.points):  # Add comment to g-code if any changes were made.
+            if len(self._points):  # Add comment to g-code if any changes were made.
                 gcode_list[0] += ";POSTPROCESSED\n"
             gcode_dict[active_build_plate_id] = gcode_list
             setattr(scene, "gcode_dict", gcode_dict)

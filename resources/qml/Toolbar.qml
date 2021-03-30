@@ -128,7 +128,9 @@ Item
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
             spacing: UM.Theme.getSize("default_lining").height
-
+            onClicked: {
+                CuraActions.showPauses();                                     
+            } 
             text: "Pausa"
         }
 

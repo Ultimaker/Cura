@@ -118,6 +118,23 @@
             }
         }
     },
+    "Dynamical3DPause": {
+        "package_info": {
+            "package_id": "Dynamical3DPause",
+            "package_type": "plugin",
+            "display_name": "Dynamical3D Pause",
+            "description": "Provides support for pause in Dynamical3D machines.",
+            "package_version": "1.0.0",
+            "sdk_version": "7.4.0",
+            "website": "https://www.dynamical3d.com",
+            "author": {
+                "author_id": "DynamicalPackages",
+                "display_name": "Dynamical 3D",
+                "email": "info@dynamical3d.com",
+                "website": "https://www.dynamical3d.com"
+            }
+        }
+    },
     "FirmwareUpdateChecker": {
         "package_info": {
             "package_id": "FirmwareUpdateChecker",

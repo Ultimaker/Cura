@@ -71,8 +71,15 @@ class CuraActions(QObject):
         pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
         if pausa is not None:
             pausa.addPoint(altura)
-        # a = cura.CuraApplication.CuraApplication.getInstance().getController().getTool("Dynamical3DPause")
-        # a.addPoint(altura)
+
+    @pyqtSlot()
+    def showPauses(self) -> None:
+        """Muestra la pantalla de pausas
+        """
+        exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
+        pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        if pausa is not None:
+            pausa.showWindow()
 
     @pyqtSlot()
     def centerSelection(self) -> None:

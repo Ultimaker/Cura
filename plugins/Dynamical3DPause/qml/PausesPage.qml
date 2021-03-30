@@ -5,13 +5,15 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
+
+
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../components"
+
 
 Item {
-    id: backupsPage
+    id: pausesPage
     anchors.fill: parent
     anchors.margins: UM.Theme.getSize("wide_margin").width
 
@@ -22,7 +24,7 @@ Item {
 
         Label {
             id: backupTitle
-            text: catalog.i18nc("@title", "My Backups")
+            text: "Puntos de pausa"
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
             Layout.fillWidth: true
@@ -31,38 +33,28 @@ Item {
 
         Label
         {
-            text: catalog.i18nc("@empty_state",
-                "You don't have any backups currently. Use the 'Backup Now' button to create one.")
+            text: "No hay pausas establecidas. Utiliza el botón 'Añadir pausa' para crear una."
             width: parent.width
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             wrapMode: Label.WordWrap
-            visible: backupList.model.length == 0
+            visible: pauseList.model.length == 0
             Layout.fillWidth: true
             Layout.fillHeight: true
             renderType: Text.NativeRendering
         }
 
-        BackupList {
-            id: backupList
-            model: CuraDrive.backups
+        PauseList {
+            id: pauseList
+            model: Dynamical3DPause.points
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
-        Label {
-            text: catalog.i18nc("@backup_limit_info",
-                "During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones.")
-            width: parent.width
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            wrapMode: Label.WordWrap
-            visible: backupList.model.length > 4
-            renderType: Text.NativeRendering
-        }
+        
 
-        BackupListFooter {
-            id: backupListFooter
+        PausesListFooter {
+            id: pausesListFooter
             
         }
     }
