@@ -91,6 +91,8 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
@@ -104,13 +106,14 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
 
-        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 0)
+        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
 
         Application.getInstance().getPreferences().addPreference("layerview/show_travel_moves", False)
         Application.getInstance().getPreferences().addPreference("layerview/show_helpers", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_starts", True)
 
         self._updateWithPreferences()
 
@@ -146,6 +149,7 @@ class SimulationView(CuraView):
         self._show_helpers = True
         self._show_skin = True
         self._show_infill = True
+        self._show_starts = True
         self.resetLayerData()
 
     def getActivity(self) -> bool:
@@ -218,6 +222,8 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
 
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
@@ -355,6 +361,13 @@ class SimulationView(CuraView):
     def getShowInfill(self) -> bool:
         return self._show_infill
 
+    def setShowStarts(self, show: bool) -> None:
+        self._show_starts = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowStarts(self) -> bool:
+        return self._show_starts
+
     def getCompatibilityMode(self) -> bool:
         return self._compatibility_mode
 
@@ -376,6 +389,14 @@ class SimulationView(CuraView):
 
     def getMaxThickness(self) -> float:
         return self._max_thickness
+
+    def getMaxLineWidth(self) -> float:
+        return self._max_line_width
+
+    def getMinLineWidth(self) -> float:
+        if abs(self._min_line_width - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
+        return self._min_line_width
 
     def calculateMaxLayers(self) -> None:
         scene = self.getController().getScene()
@@ -401,6 +422,8 @@ class SimulationView(CuraView):
                 for p in layer_data.getLayer(layer_id).polygons:
                     self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(p.lineWidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(p.lineWidths.min()), self._min_line_width)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
@@ -638,6 +661,7 @@ class SimulationView(CuraView):
         self.setShowHelpers(bool(Application.getInstance().getPreferences().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Application.getInstance().getPreferences().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Application.getInstance().getPreferences().getValue("layerview/show_infill")))
+        self.setShowStarts(bool(Application.getInstance().getPreferences().getValue("layerview/show_starts")))
 
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
@@ -653,6 +677,7 @@ class SimulationView(CuraView):
             "layerview/show_helpers",
             "layerview/show_skin",
             "layerview/show_infill",
+            "layerview/show_starts",
             }:
             return
 
