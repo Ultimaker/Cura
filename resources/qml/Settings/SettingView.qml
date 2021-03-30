@@ -364,7 +364,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    function onShowTooltip() { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
+                    function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
                     function onHideTooltip() { base.hideTooltip() }
                     function onShowAllHiddenInheritedSettings()
                     {
