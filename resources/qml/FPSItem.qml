@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
+import QtQuick 2.0
+import QtQuick.Window 2.2
 import UM 1.3 as UM
 
 // This is an QML item that shows the FPS and a running average of the FPS.
