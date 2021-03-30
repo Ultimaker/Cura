@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2016 Richard Hughes <richard@hughsie.com> -->
 <component type="desktop">
-  <id>rapidiacura.desktop</id>
+  <id>exonecura.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LGPL-3.0 and CC-BY-SA-4.0</project_license>
-  <name>Rapidia Cura</name>
+  <name>ExOne Cura</name>
   <summary>Based on Ultimaker Cura</summary>
   <description>
-    <p>
-      Cura creates a seamless integration between hardware, software and
-      materials for the best 3D printing experience around.
-      Cura supports the 3MF, OBJ and STL file formats and is available on
-      Windows, Mac and Linux.
-    </p>
   </description>
   <translation type="gettext">Cura</translation>
 </component>

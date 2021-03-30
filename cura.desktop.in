@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Rapidia Cura
+Name=ExOne Cura
 GenericName=3D Printing Software
 Comment=Cura converts 3D models into paths for a 3D printer. It prepares your print for maximum accuracy, minimum printing time and good reliability with many extra features that make your print come out great.
 Exec=@CMAKE_INSTALL_FULL_BINDIR@/cura %F

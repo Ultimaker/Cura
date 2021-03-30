@@ -18,8 +18,8 @@ endif()
 
 option(GENERATE_TRANSLATIONS "Should the translations be generated?" ON)
 
-set(CURA_APP_NAME "rapidia_cura" CACHE STRING "Short name of Cura, used for configuration folder")
-set(CURA_APP_DISPLAY_NAME "Rapidia Cura" CACHE STRING "Display name of Cura")
+set(CURA_APP_NAME "exone_cura" CACHE STRING "Short name of Cura, used for configuration folder")
+set(CURA_APP_DISPLAY_NAME "ExOne Cura" CACHE STRING "Display name of Cura")
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
 set(CURA_CLOUD_API_ROOT "" CACHE STRING "Alternative Cura cloud API root")
