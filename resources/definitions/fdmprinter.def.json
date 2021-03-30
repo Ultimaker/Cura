@@ -1069,8 +1069,8 @@
                 },
                 "wall_transition_threshold":
                 {
-                    "label": "Minimum Variable Line Width",
-                    "description": "The smallest line width, as a factor of the normal line width, beyond which it will choose to use fewer, but wider lines to fill the available space. Reduce this threshold to use more, thinner lines. Increase to use fewer, wider lines.",
+                    "label": "Line Compactness",
+                    "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines.",
                     "type": "float",
                     "unit": "%",
                     "default_value": 50,
