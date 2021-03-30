@@ -219,7 +219,7 @@ Button
     Connections
     {
         target: Cura.MachineManager
-        onCurrentConfigurationChanged:
+        function onCurrentConfigurationChanged()
         {
             configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
         }

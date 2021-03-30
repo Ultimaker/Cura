@@ -81,7 +81,7 @@ Column
         Connections
         {
             target: toolbox
-            onMetadataChanged:
+            function onMetadataChanged()
             {
                 canDowngrade = toolbox.canDowngrade(model.id)
             }

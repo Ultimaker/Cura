@@ -128,7 +128,7 @@ Item
             Connections
             {
                 target: extruderModel
-                onModelChanged:
+                function onModelChanged()
                 {
                     var maybeColor = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
                     if (maybeColor)

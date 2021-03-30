@@ -47,6 +47,6 @@ Window
     Connections
     {
         target: model
-        onAllFinished: dialog.hide()
+        function onAllFinished() { dialog.hide() }
     }
 }

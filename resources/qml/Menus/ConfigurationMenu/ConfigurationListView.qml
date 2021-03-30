@@ -126,7 +126,7 @@ Item
     Connections
     {
         target: outputDevice
-        onUniqueConfigurationsChanged:
+        function onUniqueConfigurationsChanged()
         {
             forceModelUpdate()
         }
@@ -135,7 +135,7 @@ Item
     Connections
     {
         target: Cura.MachineManager
-        onOutputDevicesChanged:
+        function onOutputDevicesChanged()
         {
             forceModelUpdate()
         }

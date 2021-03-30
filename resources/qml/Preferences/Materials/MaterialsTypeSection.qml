@@ -124,7 +124,7 @@ Item
     Connections
     {
         target: UM.Preferences
-        onPreferenceChanged:
+        function onPreferenceChanged(preference)
         {
             if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
             {

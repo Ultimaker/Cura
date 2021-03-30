@@ -112,8 +112,8 @@ Column
     Connections
     {
         target: toolbox
-        onInstallChanged: installed = toolbox.isInstalled(model.id)
-        onFilterChanged:
+        function onInstallChanged() { installed = toolbox.isInstalled(model.id) }
+        function onFilterChanged()
         {
             installed = toolbox.isInstalled(model.id)
         }

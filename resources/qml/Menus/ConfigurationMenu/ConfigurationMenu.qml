@@ -236,6 +236,6 @@ Cura.ExpandablePopup
     Connections
     {
         target: Cura.MachineManager
-        onGlobalContainerChanged: popupItem.manual_selected_method = -1  // When switching printers, reset the value of the manual selected method
+        function onGlobalContainerChanged() { popupItem.manual_selected_method = -1 }  // When switching printers, reset the value of the manual selected method
     }
 }

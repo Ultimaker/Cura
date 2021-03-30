@@ -41,7 +41,7 @@ Item
     Connections
     {
         target: CuraApplication.getDiscoveredPrintersModel()
-        onDiscoveredPrintersChanged:
+        function onDiscoveredPrintersChanged()
         {
             if (hasRequestFinished && currentRequestAddress)
             {
@@ -310,7 +310,7 @@ Item
                     Connections
                     {
                         target: CuraApplication.getDiscoveredPrintersModel()
-                        onManualDeviceRequestFinished:
+                        function onManualDeviceRequestFinished(success)
                         {
                             var discovered_printers_model = CuraApplication.getDiscoveredPrintersModel()
                             var printer = discovered_printers_model.discoveredPrintersByAddress[hostnameField.text]

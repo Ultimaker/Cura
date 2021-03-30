@@ -29,7 +29,7 @@ SettingItem
         Connections
         {
             target: base.extrudersWithOptionalModel
-            onModelChanged: control.color = base.extrudersWithOptionalModel.getItem(control.currentIndex).color
+            function onModelChanged() { control.color = base.extrudersWithOptionalModel.getItem(control.currentIndex).color }
         }
 
         textRole: "name"
