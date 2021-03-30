@@ -357,16 +357,16 @@ Item
                 Connections
                 {
                     target: item
-                    onContextMenuRequested:
+                    function onContextMenuRequested()
                     {
                         contextMenu.key = model.key;
                         contextMenu.settingVisible = model.visible;
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
-                    onHideTooltip: base.hideTooltip()
-                    onShowAllHiddenInheritedSettings:
+                    function onShowTooltip() { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
+                    function onHideTooltip() { base.hideTooltip() }
+                    function onShowAllHiddenInheritedSettings()
                     {
                         var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
                         for(var i = 0; i < children_with_override.length; i++)
@@ -375,7 +375,7 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
-                    onFocusReceived:
+                    function onFocusReceived()
                     {
                         contents.indexWithFocus = index;
                         animateContentY.from = contents.contentY;
@@ -383,7 +383,7 @@ Item
                         animateContentY.to = contents.contentY;
                         animateContentY.running = true;
                     }
-                    onSetActiveFocusToNextSetting:
+                    function onSetActiveFocusToNextSetting()
                     {
                         if (forward == undefined || forward)
                         {

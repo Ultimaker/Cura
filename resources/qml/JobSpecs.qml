@@ -149,7 +149,7 @@ Item
     Connections
     {
         target: CuraApplication
-        onAdditionalComponentsChanged: base.addAdditionalComponents("jobSpecsButton")
+        function onAdditionalComponentsChanged(areaId) { base.addAdditionalComponents("jobSpecsButton") }
     }
 
     function addAdditionalComponents(areaId)

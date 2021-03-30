@@ -334,13 +334,13 @@ Item
                         Connections
                         {
                             target: inheritStackProvider
-                            onPropertiesChanged: provider.forcePropertiesChanged()
+                            function onPropertiesChanged() { provider.forcePropertiesChanged() }
                         }
 
                         Connections
                         {
                             target: UM.ActiveTool
-                            onPropertiesChanged:
+                            function onPropertiesChanged()
                             {
                                 // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
                                 // so here we connect to the signal and update the those values.

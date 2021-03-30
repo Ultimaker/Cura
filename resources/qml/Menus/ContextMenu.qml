@@ -90,13 +90,13 @@ Menu
     Connections
     {
         target: UM.Controller
-        onContextMenuRequested: base.popup();
+        function onContextMenuRequested() { base.popup(); }
     }
 
     Connections
     {
         target: Cura.Actions.multiplySelection
-        onTriggered: multiplyDialog.open()
+        function onTriggered() { multiplyDialog.open() }
     }
 
     UM.SettingPropertyProvider

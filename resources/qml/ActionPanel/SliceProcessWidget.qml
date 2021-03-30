@@ -127,7 +127,7 @@ Column
     Connections
     {
         target: UM.Preferences
-        onPreferenceChanged:
+        function onPreferenceChanged(preference)
         {
             if (preference !== "general/auto_slice")
             {

@@ -416,7 +416,7 @@ UM.PreferencesPage
                 Connections
                 {
                     target: UM.Preferences
-                    onPreferenceChanged:
+                    function onPreferenceChanged(preference)
                     {
                         if(preference != "general/camera_perspective_mode")
                         {
@@ -856,7 +856,7 @@ UM.PreferencesPage
             Connections
             {
                 target: UM.Preferences
-                onPreferenceChanged:
+                function onPreferenceChanged(preference)
                 {
                     if (preference !== "info/send_slice_info")
                     {

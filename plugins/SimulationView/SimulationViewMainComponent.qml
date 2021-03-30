@@ -55,8 +55,8 @@ Item
         Connections
         {
             target: UM.SimulationView
-            onMaxPathsChanged: pathSlider.setHandleValue(UM.SimulationView.currentPath)
-            onCurrentPathChanged:
+            function onMaxPathsChanged() { pathSlider.setHandleValue(UM.SimulationView.currentPath) }
+            function onCurrentPathChanged()
             {
                 // Only pause the simulation when the layer was changed manually, not when the simulation is running
                 if (pathSlider.manuallyChanged)
@@ -89,7 +89,7 @@ Item
         Connections
         {
             target: UM.Preferences
-            onPreferenceChanged:
+            function onPreferenceChanged(preference)
             {
                 if (preference !== "view/only_show_top_layers" && preference !== "view/top_layer_count" && ! preference.match("layerview/"))
                 {
@@ -221,9 +221,9 @@ Item
         Connections
         {
             target: UM.SimulationView
-            onMaxLayersChanged: layerSlider.setUpperValue(UM.SimulationView.currentLayer)
-            onMinimumLayerChanged: layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
-            onCurrentLayerChanged:
+            function onMaxLayersChanged() { layerSlider.setUpperValue(UM.SimulationView.currentLayer) }
+            function onMinimumLayerChanged() { layerSlider.setLowerValue(UM.SimulationView.minimumLayer) }
+            function onCurrentLayerChanged()
             {
                 // Only pause the simulation when the layer was changed manually, not when the simulation is running
                 if (layerSlider.manuallyChanged)

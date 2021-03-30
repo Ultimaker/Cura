@@ -92,6 +92,15 @@ Item
         contentContainer.trySetPosition(contentContainer.x, contentContainer.y);
     }
 
+    onEnabledChanged:
+    {
+        if (!base.enabled && expanded)
+        {
+            toggleContent();
+            updateDragPosition();
+        }
+    }
+
     // Add this binding since the background color is not updated otherwise
     Binding
     {
@@ -100,20 +109,6 @@ Item
         value:
         {
             return base.enabled ? (expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
-        }
-    }
-
-    // The panel needs to close when it becomes disabled
-    Connections
-    {
-        target: base
-        onEnabledChanged:
-        {
-            if (!base.enabled && expanded)
-            {
-                toggleContent();
-                updateDragPosition();
-            }
         }
     }
 
@@ -300,7 +295,7 @@ Item
                 Connections
                 {
                     target: UM.Preferences
-                    onPreferenceChanged:
+                    function onPreferenceChanged(preference)
                     {
                         if
                         (
@@ -342,8 +337,8 @@ Item
     {
         // Since it could be that the content is dynamically populated, we should also take these changes into account.
         target: content.contentItem
-        onWidthChanged: content.width = content.contentItem.width + 2 * content.padding
-        onHeightChanged:
+        function onWidthChanged() { content.width = content.contentItem.width + 2 * content.padding }
+        function onHeightChanged()
         {
             content.height = content.contentItem.height + 2 * content.padding
             contentContainer.height = contentHeader.height + content.height

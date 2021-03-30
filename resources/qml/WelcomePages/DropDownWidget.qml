@@ -35,7 +35,7 @@ Item
     Connections
     {
         target: header
-        onClicked:
+        function onClicked()
         {
             base.contentShown = !base.contentShown
             clicked()
