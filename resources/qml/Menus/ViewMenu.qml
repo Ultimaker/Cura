@@ -31,7 +31,7 @@ Menu
         Connections
         {
             target: UM.Preferences
-            onPreferenceChanged:
+            function onPreferenceChanged(preference)
             {
                 if (preference !== "general/camera_perspective_mode")
                 {

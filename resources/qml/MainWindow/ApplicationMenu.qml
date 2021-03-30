@@ -169,7 +169,7 @@ Item
     Connections
     {
         target: Cura.Actions.newProject
-        onTriggered:
+        function onTriggered()
         {
             if(Printer.platformActivity || Cura.MachineManager.hasUserSettings)
             {
@@ -182,7 +182,7 @@ Item
     Connections
     {
         target: Cura.Actions.browsePackages
-        onTriggered:
+        function onTriggered()
         {
             curaExtensions.callExtensionMethod("Toolbox", "launch")
         }
@@ -192,7 +192,7 @@ Item
     Connections
     {
         target: Cura.Actions.marketplaceMaterials
-        onTriggered:
+        function onTriggered()
         {
             curaExtensions.callExtensionMethod("Toolbox", "launch")
             curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")

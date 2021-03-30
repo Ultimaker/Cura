@@ -84,7 +84,7 @@ Item
             Connections
             {
                 target: UM.Preferences
-                onPreferenceChanged:
+                function onPreferenceChanged(preference)
                 {
                     if (preference !== "view/settings_list_height" && preference !== "general/window_height" && preference !== "general/window_state")
                     {

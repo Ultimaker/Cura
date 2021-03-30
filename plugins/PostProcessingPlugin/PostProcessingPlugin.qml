@@ -414,7 +414,7 @@ UM.Dialog
                         {
                             target: item
 
-                            onShowTooltip:
+                            function onShowTooltip(text)
                             {
                                 tooltip.text = text
                                 var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0)
