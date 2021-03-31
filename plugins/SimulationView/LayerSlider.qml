@@ -6,8 +6,8 @@ import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
-import Cura 1.0 as Cura
+import UM 1.3 as UM
+import Cura 1.1 as Cura
 
 Item
 {
@@ -410,95 +410,86 @@ Item
             lowerHandle.setValue(lowerHandleLabel.value -1)
         }     
     }
- 
-    Cura.PrimaryButton {
+
+    UM.SimpleButton {
         id: aumentaLimiteSuperiorButton
-        //iconSource: UM.Theme.getIcon("plus")
-        width: UM.Theme.getSize("small_button").width
-        height: UM.Theme.getSize("small_button").height
+        iconSource: UM.Theme.getIcon("plus")
         anchors.right: track.left
         anchors.verticalCenter: track.top
         anchors.rightMargin: UM.Theme.getSize("default_margin").height
-        background: Item {
-            UM.RecolorImage {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width
-                height: width
-                sourceSize.height: width
-                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
-                source: UM.Theme.getIcon("plus")  
-            }
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
+        iconMargin: UM.Theme.getSize("thick_lining").width
+        UM.TooltipArea {
+            anchors.fill: parent
+            text: "Aumentar capa superior"
         }
         onClicked: {
             upperHandle.upValueManually();                                                  
         } 
     }
-    Cura.PrimaryButton {
+
+    UM.SimpleButton {
         id: disminuyeLimiteSuperiorButton
-        //iconSource: UM.Theme.getIcon("minus")
-        width: UM.Theme.getSize("small_button").width
-        height: UM.Theme.getSize("small_button").height
+        iconSource: UM.Theme.getIcon("minus")
         anchors.right: aumentaLimiteInferiorButton.left
         anchors.verticalCenter: track.top
-        //anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
-        background: Item {
-            UM.RecolorImage {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width * 0.66
-                height: width
-                //sourceSize.height: width
-                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
-                source: UM.Theme.getIcon("minus")  
-            }
+        width: UM.Theme.getSize("small_button").width * 0.66
+        height: UM.Theme.getSize("small_button").height
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
+        iconMargin: UM.Theme.getSize("thick_lining").width
+        UM.TooltipArea {
+            anchors.fill: parent
+            text: "Disminuir capa superior"
         }
         onClicked: {
             upperHandle.downValueManually();                                                  
         } 
-    }
-   Cura.PrimaryButton {
+    } 
+
+    UM.SimpleButton {
         id: aumentaLimiteInferiorButton
-        //iconSource: UM.Theme.getIcon("plus")
-        width: UM.Theme.getSize("small_button").width
-        height: UM.Theme.getSize("small_button").height
+        iconSource: UM.Theme.getIcon("plus")
         anchors.right: track.left
         anchors.verticalCenter: track.bottom
         anchors.rightMargin: UM.Theme.getSize("default_margin").height
-        background: Item {
-            UM.RecolorImage {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width
-                height: width
-                sourceSize.height: width
-                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
-                source: UM.Theme.getIcon("plus")  
-            }
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
+        iconMargin: UM.Theme.getSize("thick_lining").width
+        UM.TooltipArea {
+            anchors.fill: parent
+            text: "Aumentar capa inferior"
         }
         onClicked: {
             lowerHandle.upValueManually();                                                  
         } 
     }
-   Cura.PrimaryButton {
+
+
+    UM.SimpleButton {
         id: disminuyeLimiteInferiorButton
-        //iconSource: UM.Theme.getIcon("minus")
-        width: UM.Theme.getSize("small_button").width
-        height: UM.Theme.getSize("small_button").height
+        iconSource: UM.Theme.getIcon("minus")
         anchors.right: aumentaLimiteInferiorButton.left
         anchors.verticalCenter: track.bottom
-        //anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
-        background: Item {
-            UM.RecolorImage {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width * 0.66
-                height: width
-                //sourceSize.height: width
-                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
-                source: UM.Theme.getIcon("minus")  
-            }
+        width: UM.Theme.getSize("small_button").width * 0.66
+        height: UM.Theme.getSize("small_button").height
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
+        iconMargin: UM.Theme.getSize("thick_lining").width
+        UM.TooltipArea {
+            anchors.fill: parent
+            text: "Disminuir capa superior"
         }
         onClicked: {
             lowerHandle.downValueManually();                                                  
         } 
-    }
+    } 
+
 
     Button {
         id: pausaButton
