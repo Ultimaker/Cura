@@ -869,11 +869,11 @@ UM.MainWindow
     //     visible: false
     // }
 
-    Connections
-    {
-        target: Cura.Actions.whatsNew
-        onTriggered: whatsNewDialog.show()
-    }
+    // Connections
+    // {
+    //     target: Cura.Actions.whatsNew
+    //     onTriggered: whatsNewDialog.show()
+    // }
 
     Connections
     {
