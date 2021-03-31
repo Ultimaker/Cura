@@ -320,6 +320,8 @@ UM.MainWindow
                     anchors.fill: parent
                     text: "Deshacer"
                 }
+                onClicked: UM.OperationStack.undo();
+                enabled: UM.OperationStack.canUndo;
             }
 
             UM.SimpleButton {
@@ -337,6 +339,8 @@ UM.MainWindow
                     anchors.fill: parent
                     text: "Rehacer"
                 }
+                onClicked: UM.OperationStack.redo();
+                enabled: UM.OperationStack.canRedo;
             }
 
             Toolbar {
