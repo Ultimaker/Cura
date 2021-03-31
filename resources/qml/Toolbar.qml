@@ -123,15 +123,15 @@ Item
 
         ToolbarButton {
             id: pausaButton
-
+            text: "Pausas"
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
             spacing: UM.Theme.getSize("default_lining").height
+            enabled: UM.SimulationView.layerActivity && CuraApplication.platformActivity
             onClicked: {
                 CuraActions.showPauses();                                     
             } 
-            text: "Pausa"
             toolItem: UM.RecolorImage
                     {
                         source: UM.Theme.getIcon("pausa") 

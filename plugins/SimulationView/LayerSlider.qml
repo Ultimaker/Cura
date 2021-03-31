@@ -413,41 +413,88 @@ Item
  
     Cura.PrimaryButton {
         id: aumentaLimiteSuperiorButton
-        iconSource: UM.Theme.getIcon("plus")
+        //iconSource: UM.Theme.getIcon("plus")
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
         anchors.right: track.left
         anchors.verticalCenter: track.top
         anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        background: Item {
+            UM.RecolorImage {
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                height: width
+                sourceSize.height: width
+                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
+                source: UM.Theme.getIcon("plus")  
+            }
+        }
         onClicked: {
             upperHandle.upValueManually();                                                  
         } 
     }
     Cura.PrimaryButton {
         id: disminuyeLimiteSuperiorButton
-        iconSource: UM.Theme.getIcon("minus")
+        //iconSource: UM.Theme.getIcon("minus")
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
         anchors.right: aumentaLimiteInferiorButton.left
         anchors.verticalCenter: track.top
-        anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
-        //text: "-"
+        //anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
+        background: Item {
+            UM.RecolorImage {
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.66
+                height: width
+                //sourceSize.height: width
+                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
+                source: UM.Theme.getIcon("minus")  
+            }
+        }
         onClicked: {
             upperHandle.downValueManually();                                                  
         } 
     }
    Cura.PrimaryButton {
         id: aumentaLimiteInferiorButton
-        iconSource: UM.Theme.getIcon("plus")
+        //iconSource: UM.Theme.getIcon("plus")
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
         anchors.right: track.left
         anchors.verticalCenter: track.bottom
         anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        background: Item {
+            UM.RecolorImage {
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                height: width
+                sourceSize.height: width
+                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
+                source: UM.Theme.getIcon("plus")  
+            }
+        }
         onClicked: {
             lowerHandle.upValueManually();                                                  
         } 
     }
    Cura.PrimaryButton {
         id: disminuyeLimiteInferiorButton
-        iconSource: UM.Theme.getIcon("minus")
+        //iconSource: UM.Theme.getIcon("minus")
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
         anchors.right: aumentaLimiteInferiorButton.left
         anchors.verticalCenter: track.bottom
-        anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
+        //anchors.rightMargin: UM.Theme.getSize("narrow_margin").height
+        background: Item {
+            UM.RecolorImage {
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width * 0.66
+                height: width
+                //sourceSize.height: width
+                color: control.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
+                source: UM.Theme.getIcon("minus")  
+            }
+        }
         onClicked: {
             lowerHandle.downValueManually();                                                  
         } 

@@ -236,8 +236,7 @@ UM.MainWindow
 
             Keys.forwardTo: applicationMenu
 
-            DropArea
-            {
+            DropArea {
                 // The drop area is here to handle files being dropped onto Cura.
                 anchors.fill: parent
                 onDropped:
@@ -267,8 +266,7 @@ UM.MainWindow
                 }
             }
 
-            ObjectSelector
-            {
+            ObjectSelector {
                 id: objectSelector
                 visible: CuraApplication.platformActivity
                 anchors
@@ -281,8 +279,7 @@ UM.MainWindow
                 }
             }
 
-            JobSpecs
-            {
+            JobSpecs {
                 id: jobSpecs
                 visible: CuraApplication.platformActivity
                 anchors
@@ -296,20 +293,53 @@ UM.MainWindow
                 }
             }
 
-            ViewOrientationControls
-            {
+            ViewOrientationControls {
                 id: viewOrientationControls
 
-                anchors
-                {
+                anchors {
                     left: toolbar.right
                     bottom: parent.bottom
                     margins: UM.Theme.getSize("default_margin").width
                 }
             }
 
-            Toolbar
-            {
+        
+
+            UM.SimpleButton {
+                id: undoButton
+                iconSource: UM.Theme.getIcon("reset")
+                anchors.left: viewOrientationControls.right
+                anchors.verticalCenter: viewOrientationControls.verticalCenter
+                anchors.leftMargin: UM.Theme.getSize("wide_margin").height
+                width: UM.Theme.getSize("small_button").width
+                height: UM.Theme.getSize("small_button").height
+                hoverColor: UM.Theme.getColor("small_button_text_hover")
+                color: UM.Theme.getColor("small_button_text")
+                iconMargin: UM.Theme.getSize("thick_lining").width
+                UM.TooltipArea {
+                    anchors.fill: parent
+                    text: "Deshacer"
+                }
+            }
+
+            UM.SimpleButton {
+                id: redoButton
+                iconSource: UM.Theme.getIcon("redo")
+                anchors.left: undoButton.right
+                anchors.verticalCenter: viewOrientationControls.verticalCenter
+                anchors.leftMargin: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("small_button").width
+                height: UM.Theme.getSize("small_button").height
+                hoverColor: UM.Theme.getColor("small_button_text_hover")
+                color: UM.Theme.getColor("small_button_text")
+                iconMargin: UM.Theme.getSize("thick_lining").width
+                UM.TooltipArea {
+                    anchors.fill: parent
+                    text: "Rehacer"
+                }
+            }
+
+            Toolbar {
                 // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
                 // plugins)
                 id: toolbar

@@ -26,8 +26,9 @@ Rectangle {
 
     Keys.forwardTo: menu.__contentItem;
 
-    property color menuBackgroundColor: UM.Theme.getColor("viewport_overlay")
-    property color menuForeColor: UM.Theme.getColor("xray")
+    property color menuBackgroundColor: UM.Theme.getColor("primary_button_text")
+    property color menuForeColor: UM.Theme.getColor("secondary_button_hover")
+    property color menuTextColor: UM.Theme.getColor("viewport_overlay")
     
     MenuBar
     {
@@ -44,13 +45,15 @@ Rectangle {
             }
 
             itemDelegate: Rectangle {
-                implicitWidth: lab.contentWidth + 15   
+                implicitWidth: lab.contentWidth + 20   
                 implicitHeight: lab.contentHeight      
                 color: styleData.selected || styleData.open ? menuForeColor : menuBackgroundColor
                 Label {
                     id: lab
                     text: formatMnemonic(styleData.text, true) 
-                    font: UM.Theme.getFont("large_bold")
+                    font: UM.Theme.getFont("large")
+                    color: menuTextColor
+                    leftPadding: 10
                 }
             }
 
@@ -67,9 +70,11 @@ Rectangle {
                     label: Label {
                         text: formatMnemonic(styleData.text, true) 
                         font: UM.Theme.getFont("large")
+                        color: menuTextColor
                     }
                     shortcut: Label {
                         text: styleData.shortcut
+                        color: menuTextColor
                     }
                 }
             }
