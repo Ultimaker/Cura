@@ -3,7 +3,7 @@
     "name": "Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "stream30ultrasc",
+        "machine": "stream30ultra",
         "position": "0"
     },
 

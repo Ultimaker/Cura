@@ -1,10 +1,9 @@
 {
-    "id": "STREAM20_dual_extruder_1",
     "version": 2,
     "name": "Extrudeur droit",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "VOLUMIC STREAM20DUAL MK2",
+        "machine": "stream20dual_mk2",
         "position": "1"
     },
 

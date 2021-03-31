@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura">
+  <metadata>
+    <name>
+      <brand>Volumic</brand>
+      <material>NYLON</material>
+      <color>Generic</color>
+      <label>STRONG Ultra</label>
+    </name>
+    <GUID>e266efca-37e9-4af8-bb04-a4c43877073a</GUID>
+    <description>Le Strong Ultra v2, successeur du Strong Ultra, est une version revue et corrigé avec une technologie unique anti-abrasive qui diminue drastiquement l'abrasion ce qui permet de l'imprimer bien plus facilement avec une usure buse/entrainement faible, tout ça pour un cout bien inférieur à la première version.
+Le Strong Ultra est un Nylon chargé à la fibre de verre, lui conférant une résistance hors pair.
+Buse INOX/ACIER et entrainement INOX vivement conseillé.</description>
+    <version>2</version>
+    <adhesion_info>Plateau laqué</adhesion_info>
+    <compatible>True</compatible>
+    <color_code>#00ff00</color_code>
+  </metadata>
+  <properties>
+    <density>1.35</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="retraction speed">25.0</setting>
+    <setting key="print cooling">0.0</setting>
+    <setting key="retraction amount">2.0</setting>
+    <setting key="standby temperature">175.0</setting>
+    <setting key="adhesion tendency">0</setting>
+    <setting key="heated bed temperature">75.0</setting>
+    <setting key="print temperature">245.0</setting>
+  </settings>
+</fdmmaterial>

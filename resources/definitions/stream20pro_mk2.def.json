@@ -11,7 +11,7 @@
         "platform": "STREAM20PRO_platform.STL",
         "has_materials": true,
         "has_machine_quality": true,
-        "machine_extruder_trains":{"0": "stream20_30_extruder"}
+        "machine_extruder_trains":{"0": "stream20_extruder"}
     },
 
     "overrides": {
