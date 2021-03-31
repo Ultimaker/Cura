@@ -4,7 +4,8 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "jgaurora_a6",
-        "position": "0"
+        "position": "0",
+        "quality_definition": "jgaurora_a6"
     },
 
     "overrides": {
