@@ -4,10 +4,8 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "jgaurora_a6",
-        "position": "0",
-        "quality_definition": "jgaurora_a6"
+        "position": "0"
     },
-
     "overrides": {
         "extruder_nr": { "default_value": 0 },
         "machine_nozzle_size": { "default_value": 0.4 },
