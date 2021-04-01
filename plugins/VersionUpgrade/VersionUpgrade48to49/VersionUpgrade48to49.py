@@ -9,6 +9,9 @@ from UM.VersionUpgrade import VersionUpgrade
 
 
 class VersionUpgrade48to49(VersionUpgrade):
+    _moved_visibility_settings = ["top_bottom_extruder_nr", "top_bottom_thickness", "top_thickness", "top_layers",
+                                  "bottom_thickness", "bottom_layers", "ironing_enabled"]
+
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades preferences to have the new version number.
@@ -25,6 +28,9 @@ class VersionUpgrade48to49(VersionUpgrade):
 
         # Update visibility settings to include new top_bottom category
         parser["general"]["visible_settings"] += ";top_bottom"
+
+        if any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
+            parser["cura"]["categories_expanded"] += ";top_bottom"
 
         result = io.StringIO()
         parser.write(result)
@@ -106,9 +112,6 @@ class VersionUpgrade48to49(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None, allow_no_value=True)
         parser.read_string(serialized)
 
-        moved_settings = ["top_bottom_extruder_nr", "top_bottom_thickness", "top_thickness", "top_layers",
-                          "bottom_thickness", "bottom_layers", "ironing_enabled"]
-
         # add version number for the first time
         parser["general"]["version"] = "2"
 
@@ -117,7 +120,7 @@ class VersionUpgrade48to49(VersionUpgrade):
 
         if "shell" in parser:
             for setting in parser["shell"]:
-                if setting in moved_settings:
+                if setting in self._moved_visibility_settings:
                     parser["top_bottom"][setting] = None
                     del parser["shell"][setting]
 
