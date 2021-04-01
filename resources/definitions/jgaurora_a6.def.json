@@ -10,7 +10,6 @@
         "platform": "jgaurora_a6_platform.stl",
 	"supports_usb_connection": true,
 	"supports_network_connection": false,
-	"has_materials": true,
 	"has_machine_quality": true,
 	"quality_definition": "jgaurora_a6",
 	"has_variants": false,
