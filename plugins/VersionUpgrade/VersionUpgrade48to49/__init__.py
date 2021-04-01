@@ -20,6 +20,7 @@ def getMetaData() -> Dict[str, Any]:
             ("definition_changes", 4000016): ("definition_changes", 4000017, upgrade.upgradeInstanceContainer),
             ("quality_changes", 4000016):    ("quality_changes", 4000017,    upgrade.upgradeInstanceContainer),
             ("quality", 4000016):            ("quality", 4000017,            upgrade.upgradeInstanceContainer),
+            ("setting_visibility", 1000000): ("setting_visibility", 2000017, upgrade.upgradeSettingVisibility),
             ("user", 4000016):               ("user", 4000017,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
@@ -46,6 +47,10 @@ def getMetaData() -> Dict[str, Any]:
             "quality": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./quality"}
+            },
+            "setting_visibility": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./setting_visibility"}
             },
             "user": {
                 "get_version": upgrade.getCfgVersion,
