@@ -23,6 +23,9 @@ class VersionUpgrade48to49(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "17"
 
+        # Update visibility settings to include new top_bottom category
+        parser["general"]["visible_settings"] += ";top_bottom"
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
