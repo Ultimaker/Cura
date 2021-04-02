@@ -17,11 +17,7 @@ def getMetaData() -> Dict[str, Any]:
             ("preferences", 6000016):        ("preferences", 6000017,        upgrade.upgradePreferences),
             ("machine_stack", 4000016):      ("machine_stack", 4000017,      upgrade.upgradeStack),
             ("extruder_train", 4000016):     ("extruder_train", 4000017,     upgrade.upgradeStack),
-            ("definition_changes", 4000016): ("definition_changes", 4000017, upgrade.upgradeInstanceContainer),
-            ("quality_changes", 4000016):    ("quality_changes", 4000017,    upgrade.upgradeInstanceContainer),
-            ("quality", 4000016):            ("quality", 4000017,            upgrade.upgradeInstanceContainer),
             ("setting_visibility", 1000000): ("setting_visibility", 2000017, upgrade.upgradeSettingVisibility),
-            ("user", 4000016):               ("user", 4000017,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
             "preferences": {
@@ -36,25 +32,9 @@ def getMetaData() -> Dict[str, Any]:
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./extruders"}
             },
-            "definition_changes": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./definition_changes"}
-            },
-            "quality_changes": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./quality_changes"}
-            },
-            "quality": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./quality"}
-            },
             "setting_visibility": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./setting_visibility"}
-            },
-            "user": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./user"}
             }
         }
     }

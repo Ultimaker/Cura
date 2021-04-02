@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -31,24 +31,6 @@ class VersionUpgrade48to49(VersionUpgrade):
 
         if any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
             parser["cura"]["categories_expanded"] += ";top_bottom"
-
-        result = io.StringIO()
-        parser.write(result)
-        return [filename], [result.getvalue()]
-
-    def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        """
-        Upgrades instance containers to have the new version number.
-        :param serialized: The original contents of the instance container.
-        :param filename: The original file name of the instance container.
-        :return: A list of new file names, and a list of the new contents for
-        those files.
-        """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
-        parser.read_string(serialized)
-
-        # Update version number.
-        parser["metadata"]["setting_version"] = "17"
 
         result = io.StringIO()
         parser.write(result)
