@@ -24,6 +24,8 @@ Window
 
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
+    maximumWidth: minimumWidth
+    maximumHeight: minimumHeight
 
     color: UM.Theme.getColor("main_background")
 
