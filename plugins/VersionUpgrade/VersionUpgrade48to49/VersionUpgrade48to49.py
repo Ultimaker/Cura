@@ -50,9 +50,9 @@ class VersionUpgrade48to49(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        if "metadata" not in parser:
-            parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "17"
+        if "general" not in parser:
+            parser["general"] = {}
+        parser["general"]["version"] = "5"
 
         # Update Display Progress on LCD script parameters if present.
         if "post_processing_scripts" in parser["metadata"]:
