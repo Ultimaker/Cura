@@ -38,12 +38,6 @@ msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "Inicializuji správce zařízení..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/GlobalStacksModel.py:76
-#, python-brace-format
-msgctxt "@label {0} is the name of a printer that's about to be deleted."
-msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr "Doopravdy chcete odstranit {0}? Toto nelze vrátit zpět!"
-
 #: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:813
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
@@ -98,6 +92,12 @@ msgstr "Nelze otevřít žádný jiný soubor, když se načítá G kód. Přesk
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Chyba"
+
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/GlobalStacksModel.py:76
+#, python-brace-format
+msgctxt "@label {0} is the name of a printer that's about to be deleted."
+msgid "Are you sure you wish to remove {0}? This cannot be undone!"
+msgstr "Doopravdy chcete odstranit {0}? Toto nelze vrátit zpět!"
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/MaterialManagementModel.py:226
 msgctxt "@label"
@@ -497,6 +497,7 @@ msgid "Profile is missing a quality type."
 msgstr "V profilu chybí typ kvality."
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:446
+msgctxt "@info:status"
 msgid "There is no active printer yet."
 msgstr ""
 
@@ -6051,7 +6052,6 @@ msgstr "Zálohujte a obnovte konfiguraci."
 msgctxt "name"
 msgid "Cura Backups"
 msgstr "Cura zálohy"
-
 
 #~ msgctxt "@info:status"
 #~ msgid "Global stack is missing."

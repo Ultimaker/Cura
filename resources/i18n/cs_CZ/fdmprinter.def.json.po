@@ -5103,8 +5103,8 @@ msgstr "Pořadí zpracování sítě"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "Určuje prioritu této sítě, když se překrývá více sítí výplně. U oblastí, kde se překrývá více sítí výplně, se nastavení přebírá ze sítě s nejnižším pořadím. Síť výplně s vyšším pořadím bude modifikovat výplň sítě výplně s nižším pořadím a běžné sítě."
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -6399,6 +6399,10 @@ msgstr "Matice rotace sítě"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformační matice, která se použije na model při načítání ze souboru."
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Určuje prioritu této sítě, když se překrývá více sítí výplně. U oblastí, kde se překrývá více sítí výplně, se nastavení přebírá ze sítě s nejnižším pořadím. Síť výplně s vyšším pořadím bude modifikovat výplň sítě výplně s nižším pořadím a běžné sítě."
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
 #~ msgid "Apply the extruder offset to the coordinate system."
