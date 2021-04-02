@@ -103,7 +103,6 @@ class VersionUpgrade48to49(VersionUpgrade):
         """
         Upgrades setting visibility to have a version number and move moved settings to a different category
 
-        This updates the post-processing scripts with new parameters.
         :param serialized: The original contents of the stack.
         :param filename: The original file name of the stack.
         :return: A list of new file names, and a list of the new contents for
