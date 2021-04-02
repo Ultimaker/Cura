@@ -15,22 +15,12 @@ def getMetaData() -> Dict[str, Any]:
         "version_upgrade": {
             # From                           To                              Upgrade function
             ("preferences", 6000016):        ("preferences", 6000017,        upgrade.upgradePreferences),
-            ("machine_stack", 4000016):      ("machine_stack", 4000017,      upgrade.upgradeStack),
-            ("extruder_train", 4000016):     ("extruder_train", 4000017,     upgrade.upgradeStack),
             ("setting_visibility", 1000000): ("setting_visibility", 2000017, upgrade.upgradeSettingVisibility),
         },
         "sources": {
             "preferences": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"."}
-            },
-            "machine_stack": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./machine_instances"}
-            },
-            "extruder_train": {
-                "get_version": upgrade.getCfgVersion,
-                "location": {"./extruders"}
             },
             "setting_visibility": {
                 "get_version": upgrade.getCfgVersion,
