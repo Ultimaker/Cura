@@ -17,7 +17,7 @@ Column
         id: title
         anchors.horizontalCenter: parent.horizontalCenter
         renderType: Text.NativeRendering
-        text: "Sign in to the Ultimaker platform"
+        text: catalog.i18nc("@label",  "Sign in to the Ultimaker platform")
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
     }
