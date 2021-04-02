@@ -24,7 +24,7 @@ class VersionUpgrade48to49(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "17"
+        parser["general"]["version"] = "7"
 
         # Update visibility settings to include new top_bottom category
         parser["general"]["visible_settings"] += ";top_bottom"
