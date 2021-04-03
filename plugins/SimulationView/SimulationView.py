@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -30,6 +30,7 @@ from UM.View.GL.ShaderProgram import ShaderProgram
 
 from UM.i18n import i18nCatalog
 from cura.CuraView import CuraView
+from cura.LayerPolygon import LayerPolygon  # To distinguish line types.
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
 
@@ -399,11 +400,32 @@ class SimulationView(CuraView):
         return self._min_line_width
 
     def calculateMaxLayers(self) -> None:
+        """
+        Calculates number of layers, and the limits of each statistic for the colour schemes.
+        """
         scene = self.getController().getScene()
+
+        visible_line_types = []
+        if self.getShowSkin():  # Actually "shell".
+            visible_line_types.append(LayerPolygon.SkinType)
+            visible_line_types.append(LayerPolygon.Inset0Type)
+            visible_line_types.append(LayerPolygon.InsetXType)
+        if self.getShowStarts():
+            visible_line_types.append(LayerPolygon.NoneType)
+        if self.getShowInfill():
+            visible_line_types.append(LayerPolygon.InfillType)
+        if self.getShowHelpers():
+            visible_line_types.append(LayerPolygon.PrimeTowerType)
+            visible_line_types.append(LayerPolygon.SkirtType)
+            visible_line_types.append(LayerPolygon.SupportType)
+            visible_line_types.append(LayerPolygon.SupportInfillType)
+            visible_line_types.append(LayerPolygon.SupportInterfaceType)
+        if self.getShowTravelMoves():
+            visible_line_types.append(LayerPolygon.MoveCombingType)
+            visible_line_types.append(LayerPolygon.MoveRetractionType)
 
         self._old_max_layers = self._max_layers
         new_max_layers = -1
-        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -420,13 +442,18 @@ class SimulationView(CuraView):
 
                 # Store the max and min feedrates and thicknesses for display purposes
                 for p in layer_data.getLayer(layer_id).polygons:
-                    self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
-                    self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
-                    self._max_line_width = max(float(p.lineWidths.max()), self._max_line_width)
-                    self._min_line_width = min(float(p.lineWidths.min()), self._min_line_width)
-                    self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
+                    is_visible = numpy.isin(p.types, visible_line_types)
+                    visible_indices = numpy.where(is_visible)
+                    visible_feedrates = numpy.take(p.lineFeedrates, visible_indices)
+                    visible_linewidths = numpy.take(p.lineWidths, visible_indices)
+                    visible_thicknesses = numpy.take(p.lineThicknesses, visible_indices)
+                    self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
+                    self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
+                    self._max_thickness = max(float(visible_thicknesses.max()), self._max_thickness)
                     try:
-                        self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
+                        self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
                     except ValueError:
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
                         # the zero) can't be calculated
