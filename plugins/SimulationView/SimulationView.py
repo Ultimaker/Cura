@@ -221,12 +221,6 @@ class SimulationView(CuraView):
     def resetLayerData(self) -> None:
         self._current_layer_mesh = None
         self._current_layer_jumps = None
-        self._max_feedrate = sys.float_info.min
-        self._min_feedrate = sys.float_info.max
-        self._max_thickness = sys.float_info.min
-        self._min_thickness = sys.float_info.max
-        self._max_line_width = sys.float_info.min
-        self._min_line_width = sys.float_info.max
 
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
@@ -473,6 +467,13 @@ class SimulationView(CuraView):
         old_max_linewidth = self._max_line_width
         old_min_thickness = self._min_thickness
         old_max_thickness = self._max_thickness
+
+        self._min_feedrate = sys.float_info.max
+        self._max_feedrate = sys.float_info.min
+        self._min_line_width = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_thickness = sys.float_info.max
+        self._max_thickness = sys.float_info.min
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
