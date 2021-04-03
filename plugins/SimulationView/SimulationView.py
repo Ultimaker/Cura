@@ -116,6 +116,7 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_starts", True)
 
+        self.visibleStructuresChanged.connect(self.calculateColorSchemeLimits)
         self._updateWithPreferences()
 
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
@@ -199,6 +200,7 @@ class SimulationView(CuraView):
         if node.getMeshData() is None:
             return
         self.setActivity(False)
+        self.calculateColorSchemeLimits()
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
 
@@ -335,36 +337,51 @@ class SimulationView(CuraView):
         return Matrix(self._extruder_opacity)
 
     def setShowTravelMoves(self, show):
+        if show == self._show_travel_moves:
+            return
         self._show_travel_moves = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowTravelMoves(self):
         return self._show_travel_moves
 
     def setShowHelpers(self, show: bool) -> None:
+        if show == self._show_helpers:
+            return
         self._show_helpers = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowHelpers(self) -> bool:
         return self._show_helpers
 
     def setShowSkin(self, show: bool) -> None:
+        if show == self._show_skin:
+            return
         self._show_skin = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowSkin(self) -> bool:
         return self._show_skin
 
     def setShowInfill(self, show: bool) -> None:
+        if show == self._show_infill:
+            return
         self._show_infill = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowInfill(self) -> bool:
         return self._show_infill
 
     def setShowStarts(self, show: bool) -> None:
+        if show == self._show_starts:
+            return
         self._show_starts = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowStarts(self) -> bool:
         return self._show_starts
@@ -401,11 +418,10 @@ class SimulationView(CuraView):
 
     def calculateMaxLayers(self) -> None:
         """
-        Calculates number of layers, and the limits of each statistic for the colour schemes.
+        Calculates number of layers, triggers signals if the number of layers changed and makes sure the top layers are
+        recalculated for legacy layer view.
         """
         scene = self.getController().getScene()
-
-        self.calculateColorSchemeLimits()
 
         self._old_max_layers = self._max_layers
         new_max_layers = -1
@@ -519,6 +535,7 @@ class SimulationView(CuraView):
     preferencesChanged = Signal()
     busyChanged = Signal()
     activityChanged = Signal()
+    visibleStructuresChanged = Signal()
 
     def getProxy(self, engine, script_engine):
         """Hackish way to ensure the proxy is already created
@@ -550,6 +567,7 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+            self.calculateColorSchemeLimits()
             self.calculateMaxLayers()
             self.calculateMaxPathsOnLayer(self._current_layer_num)
 
