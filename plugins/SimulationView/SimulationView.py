@@ -501,8 +501,8 @@ class SimulationView(CuraView):
             for layer_index in layer_data.getLayers():
                 for polyline in layer_data.getLayer(layer_index).polygons:
                     is_visible = numpy.isin(polyline.types, visible_line_types)
-                    visible_indices = numpy.where(is_visible)
-                    if visible_indices[0].size == 0:  # No items to take maximum or minimum of.
+                    visible_indices = numpy.where(is_visible)[0]
+                    if visible_indices.size == 0:  # No items to take maximum or minimum of.
                         continue
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
