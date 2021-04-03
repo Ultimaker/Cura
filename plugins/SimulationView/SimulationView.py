@@ -405,24 +405,7 @@ class SimulationView(CuraView):
         """
         scene = self.getController().getScene()
 
-        visible_line_types = []
-        if self.getShowSkin():  # Actually "shell".
-            visible_line_types.append(LayerPolygon.SkinType)
-            visible_line_types.append(LayerPolygon.Inset0Type)
-            visible_line_types.append(LayerPolygon.InsetXType)
-        if self.getShowStarts():
-            visible_line_types.append(LayerPolygon.NoneType)
-        if self.getShowInfill():
-            visible_line_types.append(LayerPolygon.InfillType)
-        if self.getShowHelpers():
-            visible_line_types.append(LayerPolygon.PrimeTowerType)
-            visible_line_types.append(LayerPolygon.SkirtType)
-            visible_line_types.append(LayerPolygon.SupportType)
-            visible_line_types.append(LayerPolygon.SupportInfillType)
-            visible_line_types.append(LayerPolygon.SupportInterfaceType)
-        if self.getShowTravelMoves():
-            visible_line_types.append(LayerPolygon.MoveCombingType)
-            visible_line_types.append(LayerPolygon.MoveRetractionType)
+        self.calculateColorSchemeLimits()
 
         self._old_max_layers = self._max_layers
         new_max_layers = -1
@@ -440,24 +423,6 @@ class SimulationView(CuraView):
                 if len(layer_data.getLayer(layer_id).polygons) < 1:
                     continue
 
-                # Store the max and min feedrates and thicknesses for display purposes
-                for p in layer_data.getLayer(layer_id).polygons:
-                    is_visible = numpy.isin(p.types, visible_line_types)
-                    visible_indices = numpy.where(is_visible)
-                    visible_feedrates = numpy.take(p.lineFeedrates, visible_indices)
-                    visible_linewidths = numpy.take(p.lineWidths, visible_indices)
-                    visible_thicknesses = numpy.take(p.lineThicknesses, visible_indices)
-                    self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
-                    self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
-                    self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
-                    self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
-                    self._max_thickness = max(float(visible_thicknesses.max()), self._max_thickness)
-                    try:
-                        self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
-                    except ValueError:
-                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
-                        # the zero) can't be calculated
-                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
@@ -480,6 +445,53 @@ class SimulationView(CuraView):
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
         self._startUpdateTopLayers()
+
+    def calculateColorSchemeLimits(self) -> None:
+        """
+        Calculates the limits of the colour schemes, depending on the layer view data that is visible to the user.
+        """
+        # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
+        visible_line_types = []
+        if self.getShowSkin():  # Actually "shell".
+            visible_line_types.append(LayerPolygon.SkinType)
+            visible_line_types.append(LayerPolygon.Inset0Type)
+            visible_line_types.append(LayerPolygon.InsetXType)
+        if self.getShowInfill():
+            visible_line_types.append(LayerPolygon.InfillType)
+        if self.getShowHelpers():
+            visible_line_types.append(LayerPolygon.PrimeTowerType)
+            visible_line_types.append(LayerPolygon.SkirtType)
+            visible_line_types.append(LayerPolygon.SupportType)
+            visible_line_types.append(LayerPolygon.SupportInfillType)
+            visible_line_types.append(LayerPolygon.SupportInterfaceType)
+        if self.getShowTravelMoves():
+            visible_line_types.append(LayerPolygon.MoveCombingType)
+            visible_line_types.append(LayerPolygon.MoveRetractionType)
+
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+
+            for layer_index in layer_data.getLayers():
+                if len(layer_data.getLayer(layer_index).polygons) <= 0:  # Empty layer.
+                    continue  # Skip for performance.
+                for polyline in layer_data.getLayer(layer_index).polygons:
+                    is_visible = numpy.isin(polyline.types, visible_line_types)
+                    visible_indices = numpy.where(is_visible)
+                    visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
+                    visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
+                    visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
+                    self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
+                    self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
+                    self._max_thickness = max(float(visible_thicknesses.max()), self._max_thickness)
+                    try:
+                        self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
+                    except ValueError:
+                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
+                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
