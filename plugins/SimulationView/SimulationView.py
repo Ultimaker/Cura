@@ -466,6 +466,14 @@ class SimulationView(CuraView):
         """
         Calculates the limits of the colour schemes, depending on the layer view data that is visible to the user.
         """
+        # Before we start, save the old values so that we can tell if any of the spectrums need to change.
+        old_min_feedrate = self._min_feedrate
+        old_max_feedrate = self._max_feedrate
+        old_min_linewidth = self._min_line_width
+        old_max_linewidth = self._max_line_width
+        old_min_thickness = self._min_thickness
+        old_max_thickness = self._max_thickness
+
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
         if self.getShowSkin():  # Actually "shell".
@@ -509,6 +517,11 @@ class SimulationView(CuraView):
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
                         Logger.log("i", "Min thickness can't be calculated because all the values are zero")
 
+        if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
+                or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness:
+            self.colorSchemeLimitsChanged.emit()
+
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
         scene = self.getController().getScene()
@@ -536,6 +549,7 @@ class SimulationView(CuraView):
     busyChanged = Signal()
     activityChanged = Signal()
     visibleStructuresChanged = Signal()
+    colorSchemeLimitsChanged = Signal()
 
     def getProxy(self, engine, script_engine):
         """Hackish way to ensure the proxy is already created
