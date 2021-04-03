@@ -44,7 +44,15 @@ vertex41core =
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value)/(max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = value;
         float green = 1-abs(1-4*value);
         if (value > 0.375)
@@ -57,7 +65,15 @@ vertex41core =
 
     vec4 layerThicknessGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value)/(max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = min(max(4*value-2, 0), 1);
         float green = min(1.5*value, 0.75);
         if (value > 0.75)
@@ -70,7 +86,15 @@ vertex41core =
 
     vec4 lineWidthGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value) / (max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = value;
         float green = 1 - abs(1 - 4 * value);
         if(value > 0.375)
