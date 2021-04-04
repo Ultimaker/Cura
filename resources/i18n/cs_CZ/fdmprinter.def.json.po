@@ -5234,7 +5234,7 @@ msgstr "Použijte spíše relativní extruzi než absolutní extruzi. Použití 
 #: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr "Experimentálí"
+msgstr "Experimentální"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
