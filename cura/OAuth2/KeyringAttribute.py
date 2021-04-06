@@ -29,7 +29,8 @@ class KeyringAttribute:
     def __get__(self, instance: Type["BaseModel"], owner: type) -> str:
         if self._store_secure:
             try:
-                return keyring.get_password("cura", self._keyring_name)
+                value = keyring.get_password("cura", self._keyring_name)
+                return value if value != "" else None
             except NoKeyringError:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
@@ -41,7 +42,7 @@ class KeyringAttribute:
         if self._store_secure:
             setattr(instance, self._name, None)
             try:
-                keyring.set_password("cura", self._keyring_name, value)
+                keyring.set_password("cura", self._keyring_name, value if value is not None else "")
             except PasswordSetError:
                 self._store_secure = False
                 if self._name not in DONT_EVER_STORE_LOCALLY:
