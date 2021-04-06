@@ -7,6 +7,9 @@ When entering the Preview mode, you don't have to switch manually to line type.
 This ensures that you will know whether the seam will be sufficiently hidden in the end product. This will also indicate the starting point of the print.  
 <i> Thanks to BasF0 for contributing to this feature </i>
 
+* New 'line width' color-scheme available in preview mode.
+Line-width can now be selected as a color-scheme in preview mode.
+
 * Weight estimation in decimals.
 This provides a more detailed idea of the amount of material used - which is especially useful for smaller prints. 
 
@@ -19,9 +22,15 @@ The ability to have thumbnails embedded. Contributed by Gravedigger7789.
 * Add checkbox for Extruder Offsets.
 Ability to enable or disable  the extruder offsets to gcode. This will be enabled by default, unless it is in the printer's def.json file. Contributed by RFBomb. 
 
-*Upgrade Phyton to 3.8.
+* Various Mac OSX (and other) fixes afforded by upgrades to Python (to 3.8) and Qt (to 5.15).
+If you had (UX, visual, graphics card) problems, specifically on (newer) Mac OSX versions, please try this new version.
 
-*Upgrade Qt to 5.15.
+* Known UX issues that will be fixed before final in our current plan
+- Custom menu Materials and Nozzle menu now open at cursor position instead of under the menu button.
+- Visuals of Preference screen are large.
+- Drop downs in Preference screen don't react to mouse-scroll.
+- Default language not selected in Preference screen.
+- Changelog takes long too load.
 
 * Bug Fixes
 - Fixed a security vulnerability on windows permitting the openssl library used to launch other programs. Thanks to Xavier Danest for raising this bug.
@@ -53,7 +62,7 @@ Ability to enable or disable  the extruder offsets to gcode. This will be enable
 - Fixed message for non manifold models. 
 - Fixed setting category arrows. Contributed by fieldOfView.
 - Fixed metadate tags for 3MF files. 
-- Fixed engine crash when using low-desity Cross Infill
+- Fixed engine crash when using low-density Cross Infill
 
 * Printer definitions, profiles and materials
 - 3DFuel Pro PLA and SnapSupport materials, contributed by grk3010.
