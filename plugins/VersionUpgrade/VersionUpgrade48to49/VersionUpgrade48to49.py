@@ -29,7 +29,7 @@ class VersionUpgrade48to49(VersionUpgrade):
         # Update visibility settings to include new top_bottom category
         parser["general"]["visible_settings"] += ";top_bottom"
 
-        if any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
+        if "categories_expanded" in parser["cura"] and any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
             parser["cura"]["categories_expanded"] += ";top_bottom"
 
         result = io.StringIO()
