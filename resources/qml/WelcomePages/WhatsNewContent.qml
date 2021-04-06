@@ -93,8 +93,8 @@ Item
                             top: parent.top
                             topMargin: UM.Theme.getSize("default_margin").width
                         }
-                        width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
-                        height: (parent.height - UM.Theme.getSize("default_margin").height) * 0.75
+                        width: Math.round(parent.width - (UM.Theme.getSize("default_margin").width * 2))
+                        height: Math.round((parent.height - UM.Theme.getSize("default_margin").height) * 0.75)
                         fillMode: Image.PreserveAspectFit
 
                         source: manager.getSubpageImageSource(index)
@@ -110,7 +110,7 @@ Item
                             bottom: parent.bottom
                             horizontalCenter: parent.horizontalCenter
                         }
-                        width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
+                        width: Math.round(parent.width - (UM.Theme.getSize("default_margin").width * 2))
 
                         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
