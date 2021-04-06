@@ -1,13 +1,13 @@
 // Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 UM.PreferencesPage
 {
@@ -123,8 +123,6 @@ UM.PreferencesPage
         width: parent.width
         height: parent.height
 
-        flickableItem.flickableDirection: Flickable.VerticalFlick;
-
         Column
         {
 
@@ -148,39 +146,44 @@ UM.PreferencesPage
                     text: "Language:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
                 }
 
+                ListModel
+                {
+                    id: languageList
+
+                    Component.onCompleted:
+                    {
+                        append({ text: "English", code: "en_US" })
+                        //Czech is disabled for being incomplete: append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "Deutsch", code: "de_DE" })
+                        append({ text: "Español", code: "es_ES" })
+                        //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
+                        append({ text: "Français", code: "fr_FR" })
+                        append({ text: "Italiano", code: "it_IT" })
+                        append({ text: "日本語", code: "ja_JP" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
+                        append({ text: "Português do Brasil", code: "pt_BR" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
+                        append({ text: "正體字", code: "zh_TW" })
+
+                        var date_object = new Date();
+                        if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
+                        {
+                            append({ text: "Pirate", code: "en_7S" })
+                        }
+                    }
+                }
+
                 ComboBox
                 {
                     id: languageComboBox
-                    model: ListModel
-                    {
-                        id: languageList
 
-                        Component.onCompleted: {
-                            append({ text: "English", code: "en_US" })
-                            append({ text: "Čeština", code: "cs_CZ" })
-                            append({ text: "Deutsch", code: "de_DE" })
-                            append({ text: "Español", code: "es_ES" })
-                            //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
-                            append({ text: "Français", code: "fr_FR" })
-                            append({ text: "Italiano", code: "it_IT" })
-                            append({ text: "日本語", code: "ja_JP" })
-                            append({ text: "한국어", code: "ko_KR" })
-                            append({ text: "Nederlands", code: "nl_NL" })
-                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
-                            append({ text: "Português do Brasil", code: "pt_BR" })
-                            append({ text: "Português", code: "pt_PT" })
-                            append({ text: "Русский", code: "ru_RU" })
-                            append({ text: "Türkçe", code: "tr_TR" })
-                            append({ text: "简体中文", code: "zh_CN" })
-                            append({ text: "正體字", code: "zh_TW" })
-
-                            var date_object = new Date();
-                            if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
-                            {
-                                append({ text: "Pirate", code: "en_7S" })
-                            }
-                        }
-                    }
+                    textRole: "text"
+                    model: languageList
 
                     currentIndex:
                     {
@@ -229,22 +232,25 @@ UM.PreferencesPage
                     text: catalog.i18nc("@label","Theme:")
                 }
 
+                ListModel
+                {
+                    id: themeList
+
+                    Component.onCompleted: {
+                        var themes = UM.Theme.getThemes()
+                        for (var i = 0; i < themes.length; i++)
+                        {
+                            append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
+                        }
+                    }
+                }
+
                 ComboBox
                 {
                     id: themeComboBox
 
-                    model: ListModel
-                    {
-                        id: themeList
-
-                        Component.onCompleted: {
-                            var themes = UM.Theme.getThemes()
-                            for (var i = 0; i < themes.length; i++)
-                            {
-                                append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
-                            }
-                        }
-                    }
+                    model: themeList
+                    textRole: "text"
 
                     currentIndex:
                     {
@@ -519,19 +525,22 @@ UM.PreferencesPage
                     {
                         text: catalog.i18nc("@window:text", "Camera rendering:")
                     }
+                    ListModel
+                    {
+                        id: comboBoxList
+                        Component.onCompleted:
+                        {
+                            append({ text: catalog.i18n("Perspective"), code: "perspective" })
+                            append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
+                        }
+                    }
+
                     ComboBox
                     {
                         id: cameraComboBox
 
-                        model: ListModel
-                        {
-                            id: comboBoxList
-
-                            Component.onCompleted: {
-                                append({ text: catalog.i18n("Perspective"), code: "perspective" })
-                                append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
-                            }
-                        }
+                        model: comboBoxList
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -683,6 +692,7 @@ UM.PreferencesPage
                                 append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
                             }
                         }
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -749,6 +759,7 @@ UM.PreferencesPage
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Always transfer changed settings to new profile"), code: "always_keep" })
                             }
                         }
+                        textRole: "text"
 
                         currentIndex:
                         {
