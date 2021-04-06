@@ -99,11 +99,9 @@ UM.MainWindow
         }
     }
 
-    Connections
-    {
+    Connections {
         target: CuraApplication
-        onInitializationFinished:
-        {
+        onInitializationFinished: {
             // Workaround silly issues with QML Action's shortcut property.
             //
             // Currently, there is no way to define shortcuts as "Application Shortcut".
@@ -144,13 +142,9 @@ UM.MainWindow
         }
     }
 
-    Item
-    {
+    Item {
         id: backgroundItem
         anchors.fill: parent
-
-        
-
 
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
@@ -302,8 +296,6 @@ UM.MainWindow
                     margins: UM.Theme.getSize("default_margin").width
                 }
             }
-
-        
 
             UM.SimpleButton {
                 id: undoButton

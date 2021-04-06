@@ -6,9 +6,9 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
-import UM 1.3 as UM
-import Cura 1.0 as Cura
 
+import UM 1.3 as UM
+import Cura 1.1 as Cura
 
 
 RowLayout {
@@ -21,8 +21,17 @@ RowLayout {
         text: "Añadir Pausa"
         iconSource: UM.Theme.getIcon("plus")
         onClicked: alturaDialog.open()
-        // busy: CuraDrive.isCreatingBackup
+ 
     }
+
+    // Cura.PrimaryButton {
+    //     id: closeButton
+    //     anchors.right: parent.right
+    //     anchors.left: undefined
+    //     text: catalog.i18nc("@action:button", "Aceptar")
+    //     onClicked: parent.parent.cerrar()
+
+    // }
 
     Dialog {
         id: alturaDialog

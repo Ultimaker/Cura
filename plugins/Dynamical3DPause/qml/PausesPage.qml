@@ -27,8 +27,13 @@ Item {
             text: "Puntos de pausa"
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
+            //color: UM.Theme.getColor("main_background")
+
             Layout.fillWidth: true
             renderType: Text.NativeRendering
+            background: Rectangle {
+                color: UM.Theme.getColor("main_background")
+            }
         }
 
         Label
@@ -55,7 +60,12 @@ Item {
 
         PausesListFooter {
             id: pausesListFooter
+            width: parent.width
             
         }
+        function cerrar() {
+            parent.cerrar()
+        }
     }
+
 }

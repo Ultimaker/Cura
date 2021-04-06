@@ -13,7 +13,7 @@ UM.Dialog
 
     //: About dialog title
     title: catalog.i18nc("@title:window The argument is the application name.", "About %1").arg(CuraApplication.applicationDisplayName)
-
+    // flags: Qt.Dialog |  Qt.WindowCloseButtonHint;
     minimumWidth: 500 * screenScaleFactor
     minimumHeight: 650 * screenScaleFactor
     width: minimumWidth
@@ -31,7 +31,7 @@ UM.Dialog
 
         property real topPadding: UM.Theme.getSize("wide_margin").height
 
-        color: UM.Theme.getColor("main_window_header_background")
+        color: UM.Theme.getColor("main_background")
 
         Image
         {
