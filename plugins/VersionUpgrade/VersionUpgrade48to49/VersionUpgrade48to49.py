@@ -68,7 +68,7 @@ class VersionUpgrade48to49(VersionUpgrade):
                 # Update Display Progress on LCD parameters.
                 script_id = script_parser.sections()[0]
                 if script_id == "DisplayProgressOnLCD":
-                    script_parser[script_id]["time_remaining"] = "m117" if script_parser[script_id]["time_remaining"] == "True" else "none"
+                    script_parser[script_id]["time_remaining_method"] = "m117" if script_parser[script_id]["time_remaining"] == "True" else "none"
 
                 script_io = io.StringIO()
                 script_parser.write(script_io)
