@@ -30,7 +30,7 @@ class KeyringAttribute:
     """
     Descriptor for attributes that need to be stored in the keyring. With Fallback behaviour to the preference cfg file
     """
-    def __get__(self, instance: Type["BaseModel"], owner: type) -> str:
+    def __get__(self, instance: BaseModel, owner: type) -> str:
         if self._store_secure:
             try:
                 value = keyring.get_password("cura", self._keyring_name)
@@ -42,7 +42,7 @@ class KeyringAttribute:
         else:
             return getattr(instance, self._name)
 
-    def __set__(self, instance: Type["BaseModel"], value: str):
+    def __set__(self, instance: BaseModel, value: str):
         if self._store_secure:
             setattr(instance, self._name, None)
             try:
