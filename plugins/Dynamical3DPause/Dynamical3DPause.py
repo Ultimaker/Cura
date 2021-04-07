@@ -90,6 +90,9 @@ class Dynamical3DPause(QObject,Extension): #The Tool class extends from PluginOb
     def points(self):
         return self._points
 
+    @pyqtProperty("int", notify = pausesChanged)
+    def numeroPausas(self):
+        return len(self._points)
 
     @pyqtProperty("QString")
     def Cadena(self):

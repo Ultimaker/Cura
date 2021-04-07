@@ -68,8 +68,9 @@ class CuraActions(QObject):
 
         :param altura: La altura a la que tiene que hacerse la pausa.
         """
-        exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
-        pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        # exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
+        # pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        pausa = cura.CuraApplication.CuraApplication.getPause(self)
         if pausa is not None:
             pausa.addPoint(altura)
 
@@ -77,8 +78,9 @@ class CuraActions(QObject):
     def showPauses(self) -> None:
         """Muestra la pantalla de pausas
         """
-        exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
-        pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        # exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
+        # pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        pausa = cura.CuraApplication.CuraApplication.getPause(self)
         if pausa is not None:
             pausa.showWindow()
 

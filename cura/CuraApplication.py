@@ -1008,6 +1008,13 @@ class CuraApplication(QtApplication):
         return self._object_manager
 
     @pyqtSlot(result = QObject)
+    def getPause(self) -> None:
+        exts = cura.CuraApplication.CuraApplication.getInstance().getExtensions()
+        pausa = next((x for x in exts if x._plugin_id=="Dynamical3DPause"), None)
+        if pausa is not None:
+            return pausa
+
+    @pyqtSlot(result = QObject)
     def getExtrudersModel(self, *args) -> "ExtrudersModel":
         if self._extruders_model is None:
             self._extruders_model = ExtrudersModel(self)

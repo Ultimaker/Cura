@@ -7,13 +7,14 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Item
-{
+Item {
     id: base
 
     width: buttons.width
     height: buttons.height
     property int activeY
+
+    property var pause: CuraApplication.getPause()
 
     Item
     {
@@ -132,21 +133,23 @@ Item
             onClicked: {
                 CuraActions.showPauses();                                     
             } 
-            toolItem: UM.RecolorImage
-                    {
-                        source: UM.Theme.getIcon("pausa") 
-                        color: UM.Theme.getColor("icon")
-
-                        sourceSize: UM.Theme.getSize("button_icon")
-                    }
+            toolItem: UM.RecolorImage {
+                source: UM.Theme.getIcon("pausa") 
+                color: UM.Theme.getColor("icon")
+                sourceSize: UM.Theme.getSize("button_icon")
+            }
+            Label {
+                text: pause.numeroPausas
+                color: UM.Theme.getColor("icon")
+                visible: pause.numeroPausas > 0
+                anchors.right: parent.right
+            }
 
         }
 
         // Used to create a rounded rectangle behind the extruderButtons
-        Rectangle
-        {
-            anchors
-            {
+        Rectangle {
+            anchors {
                 fill: extruderButtons
                 leftMargin: -radius - border.width
                 rightMargin: -border.width
