@@ -162,7 +162,7 @@ class CuraApplication(QtApplication):
                          tray_icon_name = "dynamical-icon-32.png",
                          **kwargs)
 
-        self.default_theme = "Dynamical3D Dark"
+        self.default_theme = "Dynamical3D-dark"
 
         self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
 
