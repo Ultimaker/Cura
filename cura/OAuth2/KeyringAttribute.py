@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Type, TYPE_CHECKING
+from typing import Type, TYPE_CHECKING, Optional, List
 
 import keyring
 from keyring.backend import KeyringBackend
@@ -20,18 +20,15 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     keyring.set_keyring(WinVaultKeyring())
 
 # Even if errors happen, we don't want this stored locally:
-DONT_EVER_STORE_LOCALLY = ["refresh_token"]
+DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
 
 
 class KeyringAttribute:
-    def __init__(self) -> None:
-        self._store_secure = True
-
     """
     Descriptor for attributes that need to be stored in the keyring. With Fallback behaviour to the preference cfg file
     """
-    def __get__(self, instance: "BaseModel", owner: type) -> str:
-        if self._store_secure:
+    def __get__(self, instance: "BaseModel", owner: type) -> Optional[str]:
+        if self._store_secure:  # type: ignore
             try:
                 value = keyring.get_password("cura", self._keyring_name)
                 return value if value != "" else None
@@ -42,7 +39,7 @@ class KeyringAttribute:
         else:
             return getattr(instance, self._name)
 
-    def __set__(self, instance: "BaseModel", value: str):
+    def __set__(self, instance: "BaseModel", value: Optional[str]):
         if self._store_secure:
             setattr(instance, self._name, None)
             try:
