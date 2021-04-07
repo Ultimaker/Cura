@@ -52,18 +52,9 @@ Item {
         }
     }
 
-    // BackupListItemDetails
-    // {
-    //     id: backupDetails
-    //     backupDetailsData: modelData
-    //     width: parent.width
-    //     visible: parent.showDetails
-    //     anchors.top: dataRow.bottom
-    // }
-
     MessageDialog {
         id: confirmDeleteDialog
-        title: catalog.i18nc("@dialog:title", "Eliminar punto de pausa")
+        title: catalog.i18nc("@dialog:title", "Eliminar")
         text: catalog.i18nc("@dialog:info", "¿Estás seguro de eliminar la pausa?")
         standardButtons: StandardButton.Yes | StandardButton.No
         onYes: Dynamical3DPause.removePoint(modelData)

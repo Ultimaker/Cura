@@ -58,11 +58,11 @@ Item {
 
         
 
-        PausesListFooter {
-            id: pausesListFooter
-            width: parent.width
+        // PausesListFooter {
+        //     id: pausesListFooter
+        //     width: parent.width
             
-        }
+        // }
         function cerrar() {
             parent.cerrar()
         }

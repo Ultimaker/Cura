@@ -4,6 +4,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
+import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.3
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -14,30 +16,14 @@ UM.Dialog  {
 
     color: UM.Theme.getColor("main_background")
 
-    flags: Qt.Dialog |  Qt.WindowCloseButtonHint;
-    minimumWidth: 500 * screenScaleFactor
-    minimumHeight: 650 * screenScaleFactor
+    flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowCloseButtonHint | Qt.FramelessWindowHint;
+    minimumWidth: 400 * screenScaleFactor
+    minimumHeight: 450 * screenScaleFactor
     width: minimumWidth
     height: minimumHeight
 
-    // background: Rectangle {
-        
-    // }
+    backgroundColor: UM.Theme.getColor("main_background")
     
-    Rectangle{
-        id: header
-        width: parent.width + 2 * margin // margin from Dialog.qml
-        height: childrenRect.height + topPadding
-
-        anchors.top: parent.top
-        anchors.topMargin: -margin
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        property real topPadding: UM.Theme.getSize("wide_margin").height
-
-        color: UM.Theme.getColor("main_background")
- 
-    }
 
     PausesPage {
         id: pausesPage
@@ -47,15 +33,32 @@ UM.Dialog  {
             Window.window.close()
         }
     }
-    rightButtons: Cura.PrimaryButton
-    {
-        //: Close about dialog button
+
+
+
+    rightButtons: Cura.PrimaryButton {
         id: closeButton
         UM.I18nCatalog{id: catalog; name: "cura"}
         text: catalog.i18nc("@action:button","Aceptar");
 
         onClicked: dynamical3DPauseDialog.visible = false;
     }
+
+
+
+
+    leftButtons: Cura.PrimaryButton {
+        id: addPauseButton
+        text: "Añadir Pausa"
+        iconSource: UM.Theme.getIcon("plus")
+        onClicked: alturaDialog.open()
+ 
+    }
+
+    AlturaDialog {
+        id: alturaDialog
+    }
+
 
 
 }
