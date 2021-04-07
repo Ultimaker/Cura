@@ -47,8 +47,9 @@ class Dynamical3DPause(QObject,Extension): #The Tool class extends from PluginOb
     #añadir punto de pausa
     @pyqtSlot(int, name = "addPoint")
     def addPoint(self, p):
-        self._points.append(p)
-        self.pausesChanged.emit()
+        if (not p in self._points):
+            self._points.append(p)
+            self.pausesChanged.emit()
 
     #eliminar punto de pausa
     @pyqtSlot(int, name = "removePoint")
