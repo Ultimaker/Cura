@@ -110,7 +110,7 @@ class ShapeArray:
         :return: numpy array with dimensions defined by shape
         """
 
-        base_array = numpy.zeros(shape, dtype = numpy.int32)  # Initialize your array of zeros
+        base_array = numpy.zeros(shape, dtype = numpy.int32)  # type: ignore # Initialize your array of zeros
 
         fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
 
