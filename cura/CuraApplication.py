@@ -13,6 +13,9 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 from PyQt5.QtWidgets import QMessageBox
 
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication
+
 import UM.Util
 import cura.Settings.cura_empty_instance_containers
 from UM.Application import Application
@@ -596,6 +599,15 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str, str)
     def writeToLog(self, severity: str, message: str) -> None:
         Logger.log(severity, message)
+
+
+    @pyqtSlot()
+    def setWaitCursor() -> None:
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+
+    @pyqtSlot()
+    def setDefaultCursor() -> None:
+        QApplication.restoreOverrideCursor()
 
     # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
     # pre-exit checks such as checking for in-progress USB printing, etc.

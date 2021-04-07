@@ -228,10 +228,11 @@ class CuraEngineBackend(QObject, Backend):
     @pyqtSlot()
     def stopSlicing(self) -> None:
         self.setState(BackendState.NotStarted)
+        CuraApplication.setDefaultCursor()
         if self._slicing:  # We were already slicing. Stop the old job.
             self._terminate()
             self._createSocket()
-
+         
         if self._process_layers_job is not None:  # We were processing layers. Stop that, the layers are going to change soon.
             Logger.log("i", "Aborting process layers job...")
             self._process_layers_job.abort()
@@ -240,10 +241,11 @@ class CuraEngineBackend(QObject, Backend):
         if self._error_message:
             self._error_message.hide()
 
+
     @pyqtSlot()
     def forceSlice(self) -> None:
         """Manually triggers a reslice"""
-
+        CuraApplication.setWaitCursor()
         self.markSliceAll()
         self.slice()
 
