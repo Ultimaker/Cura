@@ -22,7 +22,11 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY = ["refresh_token"]
 
+
 class KeyringAttribute:
+    def __init__(self) -> None:
+        self._store_secure = True
+
     """
     Descriptor for attributes that need to be stored in the keyring. With Fallback behaviour to the preference cfg file
     """
