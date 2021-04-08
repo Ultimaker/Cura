@@ -466,49 +466,126 @@ class BuildVolume(SceneNode):
             mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             return mb.build().getTransformed(scale_matrix)
+
         elif self._shape == "tripod":
             # calculating pod side length (pod is an equilateral triangle)
-            pod =  machine_depth - machine_width
+            pod =  self._depth - self._width
             hpod = 0.5 * pod
-            h = pod + machine_depth
+            h = pod + self._depth
             r = h / 3
-            hw = 0.5 * machine_width
+            hw = 0.5 * self._width
             spod = pod * math.sin(60)
             h1 = -r + spod
             h2 = h - r - spod
 
-            # Build plate grid mesh
-            result[extruder_id].append(Polygon(numpy.array([
-                [-hw - hpod, h1], # lpl,
-                [-hw, -r], # lpr
-                [hw, -r], # rpl
-                [hw + hpod, h1], # rpr
-                [hpod, h2], # bpr
-                [-hpod, h2], # bpl
-                [-hw - hpod, h1] # lpl
-            ], numpy.float32)))
+            lpr = Vector(-hw, -r)
+            lpl = Vector(-hw - hpod, h1)
+            rpl = Vector(hw, -r)
+            rpr = Vector(hw + hpod, h1)
+            bpl = Vector(-hpod, h2)
+            bpr = Vector(hpod, h2)
 
-            if border_size > 0:
-                result[extruder_id].append(Polygon(numpy.array([
-                    [-half_machine_width, -half_machine_depth],
-                    [-half_machine_width, half_machine_depth],
-                    [-half_machine_width + border_size, 0]
-                ], numpy.float32)))
-                result[extruder_id].append(Polygon(numpy.array([
-                    [-half_machine_width, half_machine_depth],
-                    [ half_machine_width, half_machine_depth],
-                    [ 0, half_machine_depth - border_size]
-                ], numpy.float32)))
-                result[extruder_id].append(Polygon(numpy.array([
-                    [ half_machine_width, half_machine_depth],
-                    [ half_machine_width, -half_machine_depth],
-                    [ half_machine_width - border_size, 0]
-                ], numpy.float32)))
-                result[extruder_id].append(Polygon(numpy.array([
-                    [ half_machine_width, -half_machine_depth],
-                    [-half_machine_width, -half_machine_depth],
-                    [ 0, -half_machine_depth + border_size]
-                ], numpy.float32)))
+            # Build plate volume mesh
+            # bottom
+            mb.addLine(
+                Vector(lpl[0], min_h, lpl[1]),
+                Vector(lpr[0], min_h, lpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(lpr[0], min_h, lpr[1]),
+                Vector(rpl[0], min_h, rpl[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(rpl[0], min_h, rpl[1]),
+                Vector(rpr[0], min_h, rpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(rpr[0], min_h, rpr[1]),
+                Vector(bpr[0], min_h, bpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(bpr[0], min_h, bpr[1]),
+                Vector(bpl[0], min_h, bpl[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(bpl[0], min_h, bpl[1]),
+                Vector(lpl[0], min_h, lpl[1]),
+                color = self._volume_outline_color
+            )
+
+            # top
+
+            mb.addLine(
+                Vector(lpl[0], max_h, lpl[1]),
+                Vector(lpr[0], max_h, lpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(lpr[0], max_h, lpr[1]),
+                Vector(rpl[0], max_h, rpl[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(rpl[0], max_h, rpl[1]),
+                Vector(rpr[0], max_h, rpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(rpr[0], max_h, rpr[1]),
+                Vector(bpr[0], max_h, bpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(bpr[0], max_h, bpr[1]),
+                Vector(bpl[0], max_h, bpl[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(bpl[0], max_h, bpl[1]),
+                Vector(lpl[0], max_h, lpl[1]),
+                color = self._volume_outline_color
+            )
+
+            # middle
+
+            mb.addLine(
+                Vector(lpl[0], min_h, lpl[1]),
+                Vector(lpl[0], max_h, lpl[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(lpr[0], min_h, lpr[1]),
+                Vector(lpr[0], max_h, lpr[1]),
+                color = self._volume_outline_color
+            )
+
+            mb.addLine(
+                Vector(rpl[0], min_h, rpl[1]),
+                Vector(rpl[0], max_h, rpl[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(rpr[0], min_h, rpr[1]),
+                Vector(rpr[0], max_h, rpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(bpr[0], min_h, bpr[1]),
+                Vector(bpr[0], max_h, bpr[1]),
+                color = self._volume_outline_color
+            )
+            mb.addLine(
+                Vector(bpl[0], min_h, bpl[1]),
+                Vector(bpl[0], max_h, bpl[1]),
+                color = self._volume_outline_color
+            )
+
+            return mb.build()
 
         else:
             # Outline 'cube' of the build volume
@@ -1068,8 +1145,11 @@ class BuildVolume(SceneNode):
                     right_unreachable_border = max(right_unreachable_border, other_offset_x - offset_x)
                     top_unreachable_border = min(top_unreachable_border, other_offset_y - offset_y)
                     bottom_unreachable_border = max(bottom_unreachable_border, other_offset_y - offset_y)
-            half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
-            half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
+
+            machine_width = self._global_container_stack.getProperty("machine_width", "value")
+            machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
+            half_machine_width = 0.5 * machine_width
+            half_machine_depth = 0.5 * machine_depth
 
             if self._shape == "elliptic":
                 sections = 32
