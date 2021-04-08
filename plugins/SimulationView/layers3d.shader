@@ -221,20 +221,20 @@ geometry41core =
             vec4 vb_up = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert);
 
             // Travels: flat plane with pointy ends
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_down);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_down);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_down);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_up);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_head);
             //And reverse so that the line is also visible from the back side.
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_up);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_down);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_down);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_down);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
 
             EndPrimitive();
         } else {
@@ -250,31 +250,31 @@ geometry41core =
             vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head); //Line end, tip.
 
             // All normal lines are rendered as 3d tubes.
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
 
             EndPrimitive();
 
             // left side
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
 
             EndPrimitive();
 
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
 
             EndPrimitive();
 

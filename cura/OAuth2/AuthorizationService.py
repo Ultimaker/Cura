@@ -255,10 +255,9 @@ class AuthorizationService:
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()
-            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
+            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
 
         self.accessTokenChanged.emit()
-

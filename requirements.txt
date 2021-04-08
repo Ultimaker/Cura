@@ -32,3 +32,5 @@ urllib3==1.25.6
 PyYAML==5.1.2
 zeroconf==0.24.1
 comtypes==1.1.7
+pywin32==300
+keyring==23.0.1

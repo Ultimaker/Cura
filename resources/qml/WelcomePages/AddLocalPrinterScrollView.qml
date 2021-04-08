@@ -208,8 +208,8 @@ Item
 
             Label
             {
-                width: parent.width
-                wrapMode: Text.WordWrap
+                width: parent.width - (2 * UM.Theme.getSize("default_margin").width)
+                wrapMode: Text.Wrap
                 text: base.getMachineName()
                 color: UM.Theme.getColor("primary_button")
                 font: UM.Theme.getFont("huge")
@@ -273,6 +273,7 @@ Item
                     id: printerNameTextField
                     placeholderText: catalog.i18nc("@text", "Please name your printer")
                     maximumLength: 40
+                    width: parent.width - (printerNameLabel.width + (3 * UM.Theme.getSize("default_margin").width))
                     validator: RegExpValidator
                     {
                         regExp: printerNameTextField.machineNameValidator.machineNameRegex
