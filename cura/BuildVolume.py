@@ -485,6 +485,8 @@ class BuildVolume(SceneNode):
             bpl = Vector(-hpod, h2)
             bpr = Vector(hpod, h2)
 
+            mb = MeshBuilder()
+
             # Build plate volume mesh
             # bottom
             mb.addLine(
