@@ -357,20 +357,7 @@ class BuildVolume(SceneNode):
 
     def _buildGridMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d:float, z_fight_distance: float) -> MeshData:
         mb = MeshBuilder()
-        if self._shape != "elliptic":
-            # Build plate grid mesh
-            mb.addQuad(
-                Vector(min_w, min_h - z_fight_distance, min_d),
-                Vector(max_w, min_h - z_fight_distance, min_d),
-                Vector(max_w, min_h - z_fight_distance, max_d),
-                Vector(min_w, min_h - z_fight_distance, max_d)
-            )
-
-            for n in range(0, 6):
-                v = mb.getVertex(n)
-                mb.setVertexUVCoordinates(n, v[0], v[2])
-            return mb.build()
-        else:
+        if self._shape == "elliptic":
             aspect = 1.0
             scale_matrix = Matrix()
             if self._width != 0:
@@ -390,9 +377,140 @@ class BuildVolume(SceneNode):
                 v = mb.getVertex(n)
                 mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
             return mb.build().getTransformed(scale_matrix)
+        elif self._shape == "elliptic":
+            # calculating pod side length (pod is an equilateral triangle)
+            pod =  self._depth - self._width
+            hpod = 0.5 * pod
+            h = pod + self._depth
+            r = h / 3
+            hw = 0.5 * self._width
+            spod = pod * math.sin(60)
+            h1 = -r + spod
+            h2 = h - r - spod
+
+            lpr = Vector(-hw, -r)
+            lpl = Vector(-hw - hpod, h1)
+            rpl = Vector(hw, -r)
+            rpr = Vector(hw + hpod, h1)
+            bpl = Vector(-hpod, h2)
+            bpr = Vector(hpod, h2)
+
+            z = min_h - z_fight_distance
+
+            # Build plate grid mesh
+            # center - left pilar right - right pilar left
+            mb.addTri(
+                Vector(0, 0, 0),
+                Vector(lpr[0], z, lpr[1]),
+                Vector(rpl[0], z, rpl[1])
+            )
+            # center - right pilar left - right pilar right
+            mb.addTri(
+                Vector(0, 0, 0),
+                Vector(rpl[0], z, rpl[1]),
+                Vector(rpr[0], z, rpr[1])
+            )
+            # center - right pilar right - back pilar right
+            mb.addTri(
+                Vector(0, 0, 0),
+                Vector(rpr[0], z, rpr[1]),
+                Vector(bpr[0], z, bpr[1])
+            )
+            # center - back pilar right - back pilar left
+            mb.addTri(
+                Vector(0, 0, 0),
+                Vector(bpr[0], z, bpr[1]),
+                Vector(bpl[0], z, bpl[1])
+            )
+            # center - back pilar left - left pilar left
+            mb.addTri(
+                Vector(0, 0, 0),
+                Vector(bpl[0], z, bpl[1]),
+                Vector(lpl[0], z, lpl[1])
+            )
+            # center - left pilar left - left pilar right
+            mb.addTri(
+                Vector(0, 0, 0),
+                Vector(lpl[0], z, lpl[1]),
+                Vector(lpr[0], z, lpr[1])
+            )
+
+            for n in range(0, 6):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+
+            return mb.build()
+        else:
+            # Build plate grid mesh
+            mb.addQuad(
+                Vector(min_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, max_d),
+                Vector(min_w, min_h - z_fight_distance, max_d)
+            )
+
+            for n in range(0, 6):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+            return mb.build()
 
     def _buildMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d:float, z_fight_distance: float) -> MeshData:
-        if self._shape != "elliptic":
+        if self._shape == "elliptic":
+            # Bottom and top 'ellipse' of the build volume
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._depth / self._width
+                scale_matrix.compose(scale = Vector(1, 1, aspect))
+            mb = MeshBuilder()
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
+            return mb.build().getTransformed(scale_matrix)
+        elif self._shape == "tripod":
+            # calculating pod side length (pod is an equilateral triangle)
+            pod =  machine_depth - machine_width
+            hpod = 0.5 * pod
+            h = pod + machine_depth
+            r = h / 3
+            hw = 0.5 * machine_width
+            spod = pod * math.sin(60)
+            h1 = -r + spod
+            h2 = h - r - spod
+
+            # Build plate grid mesh
+            result[extruder_id].append(Polygon(numpy.array([
+                [-hw - hpod, h1], # lpl,
+                [-hw, -r], # lpr
+                [hw, -r], # rpl
+                [hw + hpod, h1], # rpr
+                [hpod, h2], # bpr
+                [-hpod, h2], # bpl
+                [-hw - hpod, h1] # lpl
+            ], numpy.float32)))
+
+            if border_size > 0:
+                result[extruder_id].append(Polygon(numpy.array([
+                    [-half_machine_width, -half_machine_depth],
+                    [-half_machine_width, half_machine_depth],
+                    [-half_machine_width + border_size, 0]
+                ], numpy.float32)))
+                result[extruder_id].append(Polygon(numpy.array([
+                    [-half_machine_width, half_machine_depth],
+                    [ half_machine_width, half_machine_depth],
+                    [ 0, half_machine_depth - border_size]
+                ], numpy.float32)))
+                result[extruder_id].append(Polygon(numpy.array([
+                    [ half_machine_width, half_machine_depth],
+                    [ half_machine_width, -half_machine_depth],
+                    [ half_machine_width - border_size, 0]
+                ], numpy.float32)))
+                result[extruder_id].append(Polygon(numpy.array([
+                    [ half_machine_width, -half_machine_depth],
+                    [-half_machine_width, -half_machine_depth],
+                    [ 0, -half_machine_depth + border_size]
+                ], numpy.float32)))
+
+        else:
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
             mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
@@ -411,18 +529,6 @@ class BuildVolume(SceneNode):
             mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
 
             return mb.build()
-
-        else:
-            # Bottom and top 'ellipse' of the build volume
-            scale_matrix = Matrix()
-            if self._width != 0:
-                # Scale circular meshes by aspect ratio if width != height
-                aspect = self._depth / self._width
-                scale_matrix.compose(scale = Vector(1, 1, aspect))
-            mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
-            return mb.build().getTransformed(scale_matrix)
 
     def _buildOriginMesh(self, origin: Vector) -> MeshData:
         mb = MeshBuilder()
@@ -965,36 +1071,7 @@ class BuildVolume(SceneNode):
             half_machine_width = self._global_container_stack.getProperty("machine_width", "value") / 2
             half_machine_depth = self._global_container_stack.getProperty("machine_depth", "value") / 2
 
-            if self._shape != "elliptic":
-                if border_size - left_unreachable_border > 0:
-                    result[extruder_id].append(Polygon(numpy.array([
-                        [-half_machine_width, -half_machine_depth],
-                        [-half_machine_width, half_machine_depth],
-                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
-                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
-                    ], numpy.float32)))
-                if border_size + right_unreachable_border > 0:
-                    result[extruder_id].append(Polygon(numpy.array([
-                        [half_machine_width, half_machine_depth],
-                        [half_machine_width, -half_machine_depth],
-                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
-                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
-                    ], numpy.float32)))
-                if border_size + bottom_unreachable_border > 0:
-                    result[extruder_id].append(Polygon(numpy.array([
-                        [-half_machine_width, half_machine_depth],
-                        [half_machine_width, half_machine_depth],
-                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
-                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
-                    ], numpy.float32)))
-                if border_size - top_unreachable_border > 0:
-                    result[extruder_id].append(Polygon(numpy.array([
-                        [half_machine_width, -half_machine_depth],
-                        [-half_machine_width, -half_machine_depth],
-                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
-                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
-                    ], numpy.float32)))
-            else:
+            if self._shape == "elliptic":
                 sections = 32
                 arc_vertex = [0, half_machine_depth - border_size]
                 for i in range(0, sections):
@@ -1036,6 +1113,79 @@ class BuildVolume(SceneNode):
                         [ half_machine_width, -half_machine_depth],
                         [-half_machine_width, -half_machine_depth],
                         [ 0, -half_machine_depth + border_size]
+                    ], numpy.float32)))
+
+            elif self._shape == "tripod"
+                # calculating pod side length (pod is an equilateral triangle)
+                pod =  machine_depth - machine_width
+                hpod = 0.5 * pod
+                h = pod + machine_depth
+                r = h / 3
+                hw = 0.5 * machine_width
+                spod = pod * math.sin(60)
+                h1 = -r + spod
+                h2 = h - r - spod
+
+                # Build plate grid mesh
+                result[extruder_id].append(Polygon(numpy.array([
+                    [-hw - hpod, h1], # lpl,
+                    [-hw, -r], # lpr
+                    [hw, -r], # rpl
+                    [hw + hpod, h1], # rpr
+                    [hpod, h2], # bpr
+                    [-hpod, h2], # bpl
+                    [-hw - hpod, h1] # lpl
+                ], numpy.float32)))
+
+                if border_size > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width, half_machine_depth],
+                        [-half_machine_width + border_size, 0]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, half_machine_depth],
+                        [ half_machine_width, half_machine_depth],
+                        [ 0, half_machine_depth - border_size]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [ half_machine_width, half_machine_depth],
+                        [ half_machine_width, -half_machine_depth],
+                        [ half_machine_width - border_size, 0]
+                    ], numpy.float32)))
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [ half_machine_width, -half_machine_depth],
+                        [-half_machine_width, -half_machine_depth],
+                        [ 0, -half_machine_depth + border_size]
+                    ], numpy.float32)))
+            else:
+                if border_size - left_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width, half_machine_depth],
+                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
+                    ], numpy.float32)))
+                if border_size + right_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [half_machine_width, half_machine_depth],
+                        [half_machine_width, -half_machine_depth],
+                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
+                    ], numpy.float32)))
+                if border_size + bottom_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [-half_machine_width, half_machine_depth],
+                        [half_machine_width, half_machine_depth],
+                        [half_machine_width - border_size - right_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border],
+                        [-half_machine_width + border_size - left_unreachable_border, half_machine_depth - border_size - bottom_unreachable_border]
+                    ], numpy.float32)))
+                if border_size - top_unreachable_border > 0:
+                    result[extruder_id].append(Polygon(numpy.array([
+                        [half_machine_width, -half_machine_depth],
+                        [-half_machine_width, -half_machine_depth],
+                        [-half_machine_width + border_size - left_unreachable_border, -half_machine_depth + border_size - top_unreachable_border],
+                        [half_machine_width - border_size - right_unreachable_border, -half_machine_depth + border_size - top_unreachable_border]
                     ], numpy.float32)))
 
         return result
