@@ -34,6 +34,8 @@ class VersionUpgrade48to49(VersionUpgrade):
         if "categories_expanded" in parser["cura"] and any([setting in parser["cura"]["categories_expanded"] for setting in self._moved_visibility_settings]):
             parser["cura"]["categories_expanded"] += ";top_bottom"
 
+        # If the account scope in 4.8 is outdated, delete it so that the user is enforced to log in again and get the
+        # correct permissions.
         if "ultimaker_auth_data" in parser["general"]:
             ultimaker_auth_data = json.loads(parser["general"]["ultimaker_auth_data"])
             if set(Account.CLIENT_SCOPES.split(" ")) - set(ultimaker_auth_data["scope"].split(" ")):
