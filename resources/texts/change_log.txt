@@ -22,8 +22,8 @@ The ability to have thumbnails embedded. Contributed by Gravedigger7789.
 * Add checkbox for Extruder Offsets.
 Ability to enable or disable  the extruder offsets to gcode. This will be enabled by default, unless it is in the printer's def.json file. Contributed by RFBomb. 
 
-* Various Mac OSX (and other) fixes afforded by upgrades to Python (to 3.8) and Qt (to 5.15).
-If you had (UX, visual, graphics card) problems, specifically on (newer) Mac OSX versions, please try this new version.
+* Cura should work properly on MacOS 'Big Sur' now, afforded by upgrades to Python (to 3.8) and Qt (to 5.15).
+If you had (UX, visual, graphics card) problems, specifically on (newer) MacOS versions, like Big Sur, you should be able to use this new version.
 
 * Known UX issues that will be fixed before final in our current plan
 - Custom menu Materials and Nozzle menu now open at cursor position instead of under the menu button.
@@ -31,6 +31,7 @@ If you had (UX, visual, graphics card) problems, specifically on (newer) Mac OSX
 - Drop downs in Preference screen don't react to mouse-scroll.
 - Default language not selected in Preference screen.
 - Changelog takes long too load.
+- Setting Visibility submenu items in the Preference screen are greyed-out and can't be selected on Mac OSX.
 
 * Bug Fixes
 - Fixed a security vulnerability on windows permitting the openssl library used to launch other programs. Thanks to Xavier Danest for raising this bug.

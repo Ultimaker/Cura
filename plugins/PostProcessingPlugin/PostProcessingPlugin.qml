@@ -3,7 +3,9 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.15 as QQC2
 import QtQuick.Controls.Styles 1.1
+import QtQml.Models 2.15 as Models
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
@@ -235,7 +237,7 @@ UM.Dialog
                 anchors.leftMargin: base.textMargin
                 anchors.top: activeScriptsList.bottom
                 anchors.topMargin: base.textMargin
-                menu: scriptsMenu
+                onClicked: scriptsMenu.open()
                 style: ButtonStyle
                 {
                     label: Label
@@ -244,15 +246,16 @@ UM.Dialog
                     }
                 }
             }
-            Menu
+            QQC2.Menu
             {
                 id: scriptsMenu
+                width: parent.width
 
-                Instantiator
+                Models.Instantiator
                 {
                     model: manager.loadedScriptList
 
-                    MenuItem
+                    QQC2.MenuItem
                     {
                         text: manager.getScriptLabelByKey(modelData.toString())
                         onTriggered: manager.addScriptToList(modelData.toString())
@@ -422,7 +425,7 @@ UM.Dialog
                                 tooltip.target.x = position.x + 1
                             }
 
-                            onHideTooltip: tooltip.hide()
+                            function onHideTooltip() { tooltip.hide() }
                         }
                     }
                 }
