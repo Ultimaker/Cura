@@ -46,12 +46,13 @@ Rectangle {
 
             itemDelegate: Rectangle {
                 implicitWidth: lab.contentWidth + 20   
-                implicitHeight: lab.contentHeight      
+                implicitHeight: lab.contentHeight +5     
                 color: styleData.selected || styleData.open ? menuForeColor : menuBackgroundColor
+                radius: styleData.selected ? 3 : 0
                 Label {
                     id: lab
                     text: formatMnemonic(styleData.text, true) 
-                    font: UM.Theme.getFont("large")
+                    font: UM.Theme.getFont("medium")
                     color: menuTextColor
                     leftPadding: 10
                 }
@@ -60,7 +61,7 @@ Rectangle {
             menuStyle: MenuStyle {
                 id: menuStyle
                 frame: Rectangle {
-                    color: menuBackgroundColor
+                    color: menuBackgroundColor 
                 }
                 itemDelegate {
                     background: Rectangle {
@@ -68,8 +69,9 @@ Rectangle {
                         radius: styleData.selected ? 3 : 0
                     }
                     label: Label {
+                        id: lbl
                         text: formatMnemonic(styleData.text, true) 
-                        font: UM.Theme.getFont("large")
+                        font: UM.Theme.getFont("medium")
                         color: menuTextColor
                     }
                     shortcut: Label {
