@@ -1115,7 +1115,7 @@ class BuildVolume(SceneNode):
                         [ 0, -half_machine_depth + border_size]
                     ], numpy.float32)))
 
-            elif self._shape == "tripod"
+            elif self._shape == "tripod":
                 # calculating pod side length (pod is an equilateral triangle)
                 pod =  machine_depth - machine_width
                 hpod = 0.5 * pod
