@@ -414,9 +414,11 @@ Item
     UM.SimpleButton {
         id: aumentaLimiteSuperiorButton
         iconSource: UM.Theme.getIcon("plus")
-        anchors.right: track.left
+        //anchors.right: track.left
+        anchors.left: track.right
         anchors.verticalCenter: track.top
-        anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        anchors.leftMargin: UM.Theme.getSize("default_margin").height
+        //anchors.rightMargin: UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("small_button_text_hover")
@@ -434,7 +436,8 @@ Item
     UM.SimpleButton {
         id: disminuyeLimiteSuperiorButton
         iconSource: UM.Theme.getIcon("minus")
-        anchors.right: aumentaLimiteInferiorButton.left
+        // anchors.right: aumentaLimiteInferiorButton.left
+        anchors.left: aumentaLimiteInferiorButton.right
         anchors.verticalCenter: track.top
         width: UM.Theme.getSize("small_button").width * 0.66
         height: UM.Theme.getSize("small_button").height
@@ -453,9 +456,11 @@ Item
     UM.SimpleButton {
         id: aumentaLimiteInferiorButton
         iconSource: UM.Theme.getIcon("plus")
-        anchors.right: track.left
+        // anchors.right: track.left
+        anchors.left: track.right
         anchors.verticalCenter: track.bottom
-        anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        // anchors.rightMargin: UM.Theme.getSize("default_margin").height
+        anchors.leftMargin: UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("small_button_text_hover")
@@ -474,7 +479,8 @@ Item
     UM.SimpleButton {
         id: disminuyeLimiteInferiorButton
         iconSource: UM.Theme.getIcon("minus")
-        anchors.right: aumentaLimiteInferiorButton.left
+        // anchors.right: aumentaLimiteInferiorButton.left
+        anchors.left: aumentaLimiteInferiorButton.right
         anchors.verticalCenter: track.bottom
         width: UM.Theme.getSize("small_button").width * 0.66
         height: UM.Theme.getSize("small_button").height

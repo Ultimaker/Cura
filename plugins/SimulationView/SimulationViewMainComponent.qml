@@ -204,10 +204,12 @@ Item
 
         anchors
         {
-            right: parent.right
+            // right: parent.right  
+            left: parent.left
             verticalCenter: parent.verticalCenter
             verticalCenterOffset: -(parent.height - layerSliderSafeYMax - layerSliderSafeYMin) / 2 // center between parent top and layerSliderSafeYMax
-            rightMargin: UM.Theme.getSize("default_margin").width
+            // rightMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("default_margin").width
             bottomMargin: heightMargin
             topMargin: heightMargin
         }
