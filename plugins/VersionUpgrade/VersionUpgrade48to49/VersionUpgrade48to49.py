@@ -102,7 +102,7 @@ class VersionUpgrade48to49(VersionUpgrade):
         if "shell" in parser:
             for setting in parser["shell"]:
                 if setting in self._moved_visibility_settings:
-                    parser["top_bottom"][setting] = None
+                    parser["top_bottom"][setting] = None  # type: ignore
                     del parser["shell"][setting]
 
         result = io.StringIO()
