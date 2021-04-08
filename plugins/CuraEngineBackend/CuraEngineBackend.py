@@ -240,6 +240,8 @@ class CuraEngineBackend(QObject, Backend):
 
         if self._error_message:
             self._error_message.hide()
+       
+
 
 
     @pyqtSlot()
@@ -758,6 +760,9 @@ class CuraEngineBackend(QObject, Backend):
         if self._build_plates_to_be_sliced:
             self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
             self._invokeSlice()
+        else:
+            # Pasamos directamente a PreviewStage
+            CuraApplication.getInstance().getController().setActiveStage("PreviewStage")
 
     def _onGCodeLayerMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a g-code message is received from the engine.
