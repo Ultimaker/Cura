@@ -266,7 +266,7 @@ UM.MainWindow
                 anchors
                 {
                     bottom: jobSpecs.top
-                    left: toolbar.right
+                    left: parent.left
                     leftMargin: UM.Theme.getSize("default_margin").width
                     rightMargin: UM.Theme.getSize("default_margin").width
                     bottomMargin: UM.Theme.getSize("narrow_margin").height
@@ -278,7 +278,7 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity
                 anchors
                 {
-                    left: toolbar.right
+                    left: parent.left
                     bottom: viewOrientationControls.top
                     leftMargin: UM.Theme.getSize("default_margin").width
                     rightMargin: UM.Theme.getSize("default_margin").width
@@ -291,7 +291,7 @@ UM.MainWindow
                 id: viewOrientationControls
 
                 anchors {
-                    left: toolbar.right
+                    left: parent.left
                     bottom: parent.bottom
                     margins: UM.Theme.getSize("default_margin").width
                 }
@@ -343,10 +343,9 @@ UM.MainWindow
                 property int mouseX: base.mouseX
                 property int mouseY: base.mouseY
 
-                anchors
-                {
+                anchors {
                     verticalCenter: parent.verticalCenter
-                    left: parent.left
+                    right: parent.right
                 }
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }

@@ -192,8 +192,10 @@ Item {
     {
         id: panelBorder
 
-        anchors.left: parent.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        // anchors.left: parent.right
+        // anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.right: parent.left
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: base.top
         anchors.topMargin: base.activeY
         z: buttons.z - 1

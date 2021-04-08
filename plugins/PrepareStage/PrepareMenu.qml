@@ -91,53 +91,53 @@ Item
             }
         }
 
-        Button
-        {
-            id: openFileButton
-            height: UM.Theme.getSize("stage_menu").height
-            width: UM.Theme.getSize("stage_menu").height
-            onClicked: Cura.Actions.open.trigger()
-            hoverEnabled: true
+        // Button
+        // {
+        //     id: openFileButton
+        //     height: UM.Theme.getSize("stage_menu").height
+        //     width: UM.Theme.getSize("stage_menu").height
+        //     onClicked: Cura.Actions.open.trigger()
+        //     hoverEnabled: true
 
-            contentItem: Item
-            {
-                anchors.fill: parent
-                UM.RecolorImage
-                {
-                    id: buttonIcon
-                    anchors.centerIn: parent
-                    source: UM.Theme.getIcon("load")
-                    width: UM.Theme.getSize("button_icon").width
-                    height: UM.Theme.getSize("button_icon").height
-                    color: UM.Theme.getColor("icon")
+        //     contentItem: Item
+        //     {
+        //         anchors.fill: parent
+        //         UM.RecolorImage
+        //         {
+        //             id: buttonIcon
+        //             anchors.centerIn: parent
+        //             source: UM.Theme.getIcon("load")
+        //             width: UM.Theme.getSize("button_icon").width
+        //             height: UM.Theme.getSize("button_icon").height
+        //             color: UM.Theme.getColor("icon")
 
-                    sourceSize.height: height
-                }
-            }
+        //             sourceSize.height: height
+        //         }
+        //     }
 
-            background: Rectangle
-            {
-                id: background
-                height: UM.Theme.getSize("stage_menu").height
-                width: UM.Theme.getSize("stage_menu").height
+        //     background: Rectangle
+        //     {
+        //         id: background
+        //         height: UM.Theme.getSize("stage_menu").height
+        //         width: UM.Theme.getSize("stage_menu").height
 
-                radius: UM.Theme.getSize("default_radius").width
-                color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-            }
+        //         radius: UM.Theme.getSize("default_radius").width
+        //         color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+        //     }
 
-            DropShadow
-            {
-                id: shadow
-                // Don't blur the shadow
-                radius: 0
-                anchors.fill: background
-                source: background
-                verticalOffset: 2
-                visible: true
-                color: UM.Theme.getColor("action_button_shadow")
-                // Should always be drawn behind the background.
-                z: background.z - 1
-            }
-        }
+        //     DropShadow
+        //     {
+        //         id: shadow
+        //         // Don't blur the shadow
+        //         radius: 0
+        //         anchors.fill: background
+        //         source: background
+        //         verticalOffset: 2
+        //         visible: true
+        //         color: UM.Theme.getColor("action_button_shadow")
+        //         // Should always be drawn behind the background.
+        //         z: background.z - 1
+        //     }
+        // }
     }
 }

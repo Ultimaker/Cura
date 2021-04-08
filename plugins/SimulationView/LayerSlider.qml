@@ -491,16 +491,16 @@ Item
     } 
 
 
-    Button {
-        id: pausaButton
-        height: UM.Theme.getSize("button").height
+    // Button {
+    //     id: pausaButton
+    //     height: UM.Theme.getSize("button").height
         
-        anchors.horizontalCenter: track.horizontalCenter
-        anchors.top: track.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        text: "Pausa"
-        onClicked: {
-            CuraActions.addPause(activeHandle.getValue());                                     
-        } 
-    }
+    //     anchors.horizontalCenter: track.horizontalCenter
+    //     anchors.top: track.bottom
+    //     anchors.topMargin: UM.Theme.getSize("default_margin").height
+    //     text: "Pausa"
+    //     onClicked: {
+    //         CuraActions.addPause(activeHandle.getValue());                                     
+    //     } 
+    // }
 }

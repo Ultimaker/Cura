@@ -7,8 +7,7 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Button
-{
+Button {
     id: base
 
     property alias toolItem: contentItemLoader.sourceComponent
@@ -21,12 +20,10 @@ Button
 
     hoverEnabled: true
 
-    background: Rectangle
-    {
+    background: Rectangle {
         implicitWidth: UM.Theme.getSize("button").width
         implicitHeight: UM.Theme.getSize("button").height
-        color:
-        {
+        color: {
             if (base.checked && base.hovered)
             {
                 return UM.Theme.getColor("toolbar_button_active_hover")
@@ -35,7 +32,7 @@ Button
             {
                 return UM.Theme.getColor("toolbar_button_active")
             }
-            else if(base.hovered)
+            else if (base.hovered)
             {
                 return UM.Theme.getColor("toolbar_button_hover")
             }
@@ -43,8 +40,7 @@ Button
         }
         radius: UM.Theme.getSize("default_radius").width
 
-        Rectangle
-        {
+        Rectangle {
             id: topSquare
             anchors
             {
@@ -57,8 +53,7 @@ Button
             visible: !base.isTopElement
         }
 
-        Rectangle
-        {
+        Rectangle {
             id: bottomSquare
             anchors
             {
@@ -71,8 +66,7 @@ Button
             visible: !base.isBottomElement
         }
 
-        Rectangle
-        {
+        Rectangle {
             id: leftSquare
             anchors
             {
@@ -85,8 +79,7 @@ Button
         }
     }
 
-    contentItem: Item
-    {
+    contentItem: Item {
         opacity: parent.enabled ? 1.0 : 0.2
         Loader
         {
@@ -97,10 +90,10 @@ Button
         }
     }
 
-    Cura.ToolTip
-    {
+    Cura.ToolTip {
         id: tooltip
         tooltipText: base.text
         visible: base.hovered
+        contentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
     }
 }
