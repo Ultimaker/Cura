@@ -2,9 +2,11 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
+#import QtQuick.Controls 1.4
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
+import QtQuick.Controls 2.3 as NewControls
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -281,7 +283,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Don't show project summary on save again")
                 checked: dontShowAgain
             }
-            Button
+            NewControls.Button
             {
                 id: cancel_button
                 anchors
@@ -293,7 +295,7 @@ UM.Dialog
                 enabled: true
                 onClicked: close()
             }
-            Button
+            NewControls.Button
             {
                 id: ok_button
                 anchors.right: parent.right
