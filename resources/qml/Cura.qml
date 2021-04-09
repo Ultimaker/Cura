@@ -863,6 +863,8 @@ UM.MainWindow
     {
         id: whatsNewDialog
         title: catalog.i18nc("@title:window", "What's New")
+        minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
+        minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
         visible: false
