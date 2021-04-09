@@ -5,6 +5,8 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
+import QtQuick.Controls 2.3 as NewControls
+
 import UM 1.2 as UM
 
 import Cura 1.0 as Cura
@@ -96,7 +98,7 @@ UM.PreferencesPage
             onTextChanged: definitionsModel.filter = {"i18n_label": "*" + text}
         }
 
-        ComboBox
+        NewControls.ComboBox
         {
             id: visibilityPreset
             width: 150 * screenScaleFactor
@@ -104,6 +106,7 @@ UM.PreferencesPage
             {
                 top: parent.top
                 right: parent.right
+                bottom: scrollView.top
             }
 
             model: settingVisibilityPresetsModel.items
