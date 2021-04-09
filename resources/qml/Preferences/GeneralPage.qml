@@ -197,20 +197,6 @@ UM.PreferencesPage
                         }
                     }
                     onActivated: UM.Preferences.setValue("general/language", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < languageList.count; ++i)
-                        {
-                            languageList.setProperty(i, "text", catalog.i18n(languageList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
                 }
 
                 Label
@@ -265,21 +251,6 @@ UM.PreferencesPage
                         return 0;
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < themeList.count; ++i)
-                        {
-                            themeList.setProperty(i, "text", catalog.i18n(themeList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
-
                 }
             }
 
