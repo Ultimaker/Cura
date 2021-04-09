@@ -115,6 +115,8 @@ Item
                         textArea.readOnly: true
                         textArea.font: UM.Theme.getFont("medium")
                         textArea.onLinkActivated: Qt.openUrlExternally(link)
+                        textArea.leftPadding: 0
+                        textArea.rightPadding: 0
                     }
                 }
             }
