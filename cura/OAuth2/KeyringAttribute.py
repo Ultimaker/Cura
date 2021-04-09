@@ -19,7 +19,7 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
 if Platform.isOSX() and hasattr(sys, "frozen"):
-    from keyring.backends.OS_X import Keyring
+    from keyring.backends.macOS import Keyring
     keyring.set_keyring(Keyring())
 
 # Even if errors happen, we don't want this stored locally:
