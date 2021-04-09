@@ -2,9 +2,11 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 2.3
+import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
+
+import QtQuick.Controls 2.3 as NewControls
 
 import UM 1.1 as UM
 import Cura 1.1 as Cura
@@ -139,6 +141,7 @@ UM.PreferencesPage
             {
                 id: interfaceGrid
                 columns: 4
+                width: parent.width
 
                 Label
                 {
@@ -178,12 +181,13 @@ UM.PreferencesPage
                     }
                 }
 
-                ComboBox
+                NewControls.ComboBox
                 {
                     id: languageComboBox
 
                     textRole: "text"
                     model: languageList
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -231,12 +235,13 @@ UM.PreferencesPage
                     }
                 }
 
-                ComboBox
+                NewControls.ComboBox
                 {
                     id: themeComboBox
 
                     model: themeList
                     textRole: "text"
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -506,7 +511,7 @@ UM.PreferencesPage
                         }
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: cameraComboBox
 
@@ -647,7 +652,7 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
                         width: 200 * screenScaleFactor
@@ -714,7 +719,7 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
                         width: 200 * screenScaleFactor
