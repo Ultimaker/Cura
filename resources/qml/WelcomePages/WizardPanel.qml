@@ -53,7 +53,7 @@ Item
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: UM.Theme.getSize("progressbar").height
+            height: visible ? UM.Theme.getSize("progressbar").height : 0
 
             value: base.progressValue
         }
