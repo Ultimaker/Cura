@@ -655,7 +655,7 @@ UM.PreferencesPage
                     NewControls.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: Math.round(250 * screenScaleFactor)
 
                         model: ListModel
                         {
@@ -722,8 +722,8 @@ UM.PreferencesPage
                     NewControls.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 200 * screenScaleFactor
-
+                        width: Math.round(250 * screenScaleFactor)
+                        popup.width: Math.round(350 * screenScaleFactor)
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
