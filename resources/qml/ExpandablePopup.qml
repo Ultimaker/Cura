@@ -58,6 +58,8 @@ Item
     // The icon size (it's always drawn as a square)
     property alias iconSize: collapseButton.height
 
+    property alias collapseButtonVisible: collapseButton.visible
+
     // Is the "drawer" open?
     readonly property alias expanded: content.visible
 

@@ -38,6 +38,7 @@ ListView
         {
             toggleContent()
             Cura.MachineManager.setActiveMachine(model.id)
+            machineSelector.visible=false
         }
     }
 }

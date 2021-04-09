@@ -350,6 +350,8 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
+
+
             // A hint for the loaded content view. Overlay items / controls can safely be placed in this area
             Item {
                 id: mainSafeArea
@@ -382,6 +384,22 @@ UM.MainWindow
                 }
             }
 
+            Configbar {
+                // Barra de acceso a la configuración de impresoras, extruders, settings de impresión, etc. En el lateral izquierdo
+                id: configbar
+
+                property int mouseX: base.mouseX
+                property int mouseY: base.mouseY
+
+                anchors {
+                    //verticalCenter: parent.verticalCenter
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("stage_menu").height
+                    left: parent.left
+                }
+                visible: true
+            }
+
             Loader
             {
                 // The stage menu is, as the name implies, a menu that is defined by the active stage.
@@ -409,7 +427,7 @@ UM.MainWindow
 
                 // The printSetupSelector is defined here so that the setting list doesn't need to get re-instantiated
                 // Every time the stage is changed.
-                property var printSetupSelector: Cura.PrintSetupSelector
+                property var printSetupSelector: Cura.Dynamical3DPrintSetupSelector
                 {
                    width: UM.Theme.getSize("print_setup_widget").width
                    height: UM.Theme.getSize("stage_menu").height
@@ -426,6 +444,8 @@ UM.MainWindow
                    }
                 }
             }
+
+
             UM.MessageStack
             {
                 anchors

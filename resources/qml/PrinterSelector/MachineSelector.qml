@@ -15,7 +15,8 @@ Cura.ExpandablePopup
     property bool isConnectedCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
     property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
-
+ 
+    
     readonly property string connectionStatus: {
         if (isNetworkPrinter)
         {
@@ -66,6 +67,8 @@ Cura.ExpandablePopup
         }
     }
 
+
+
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
@@ -75,6 +78,22 @@ Cura.ExpandablePopup
         name: "cura"
     }
 
+    // MouseArea // Connection status tooltip hover area
+    // {
+    //        // id: connectionStatusTooltipHoverArea
+    //         anchors.fill: parent
+    //         hoverEnabled: true
+    //         acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+    //         // onEntered:
+    //         // {
+    //         //     machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+    //         //     tooltip.tooltipText = getConnectionStatusMessage()
+    //         //     tooltip.show()
+    //         // }
+    //         onExited: { machineSelector.visible=false }
+    // }
+    
     headerItem: Cura.IconWithText
     {
         text:
@@ -108,71 +127,71 @@ Cura.ExpandablePopup
         iconColor: UM.Theme.getColor("machine_selector_printer_icon")
         iconSize: source != "" ? UM.Theme.getSize("machine_selector_icon").width: 0
 
-        UM.RecolorImage
-        {
-            id: connectionStatusImage
-            anchors
-            {
-                bottom: parent.bottom
-                left: parent.left
-                leftMargin: UM.Theme.getSize("thick_margin").width
-            }
+        // UM.RecolorImage
+        // {
+        //     id: connectionStatusImage
+        //     anchors
+        //     {
+        //         bottom: parent.bottom
+        //         left: parent.left
+        //         leftMargin: UM.Theme.getSize("thick_margin").width
+        //     }
 
-            source: UM.Theme.getIcon(connectionStatus)
+        //     source: UM.Theme.getIcon(connectionStatus)
 
-            width: UM.Theme.getSize("printer_status_icon").width
-            height: UM.Theme.getSize("printer_status_icon").height
+        //     width: UM.Theme.getSize("printer_status_icon").width
+        //     height: UM.Theme.getSize("printer_status_icon").height
 
-            color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+        //     color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
 
-            visible: isNetworkPrinter || isCloudRegistered
+        //     visible: isNetworkPrinter || isCloudRegistered
 
-            // Make a themable circle in the background so we can change it in other themes
-            Rectangle
-            {
-                id: iconBackground
-                anchors.centerIn: parent
-                // Make it a bit bigger so there is an outline
-                width: parent.width + 2 * UM.Theme.getSize("default_lining").width
-                height: parent.height + 2 * UM.Theme.getSize("default_lining").height
-                radius: Math.round(width / 2)
-                color: UM.Theme.getColor("main_background")
-                z: parent.z - 1
-            }
+        //     // Make a themable circle in the background so we can change it in other themes
+        //     Rectangle
+        //     {
+        //         id: iconBackground
+        //         anchors.centerIn: parent
+        //         // Make it a bit bigger so there is an outline
+        //         width: parent.width + 2 * UM.Theme.getSize("default_lining").width
+        //         height: parent.height + 2 * UM.Theme.getSize("default_lining").height
+        //         radius: Math.round(width / 2)
+        //         color: UM.Theme.getColor("main_background")
+        //         z: parent.z - 1
+        //     }
 
-        }
+        // }
 
-        MouseArea // Connection status tooltip hover area
-        {
-            id: connectionStatusTooltipHoverArea
-            anchors.fill: parent
-            hoverEnabled: getConnectionStatusMessage() !== ""
-            acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+        // MouseArea // Connection status tooltip hover area
+        // {
+        //     id: connectionStatusTooltipHoverArea
+        //     anchors.fill: parent
+        //     hoverEnabled: getConnectionStatusMessage() !== ""
+        //     acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
-            onEntered:
-            {
-                machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
-                tooltip.tooltipText = getConnectionStatusMessage()
-                tooltip.show()
-            }
-            onExited: { tooltip.hide() }
-        }
+        //     onEntered:
+        //     {
+        //         machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+        //         tooltip.tooltipText = getConnectionStatusMessage()
+        //         tooltip.show()
+        //     }
+        //     onExited: { tooltip.hide() }
+        // }
 
-        Cura.ToolTip
-        {
-            id: tooltip
+        // Cura.ToolTip
+        // {
+        //     id: tooltip
 
-            width: 250 * screenScaleFactor
-            tooltipText: getConnectionStatusMessage()
-            arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
-            x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
-            y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
-            z: popup.z + 1
-            targetPoint: Qt.point(
-                connectionStatusImage.x + Math.round(connectionStatusImage.width / 2),
-                connectionStatusImage.y
-            )
-        }
+        //     width: 250 * screenScaleFactor
+        //     tooltipText: getConnectionStatusMessage()
+        //     arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
+        //     x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
+        //     y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
+        //     z: popup.z + 1
+        //     targetPoint: Qt.point(
+        //         connectionStatusImage.x + Math.round(connectionStatusImage.width / 2),
+        //         connectionStatusImage.y
+        //     )
+        // }
     }
 
     contentItem: Item
@@ -230,39 +249,39 @@ Cura.ExpandablePopup
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
 
-            Cura.SecondaryButton
-            {
-                id: addPrinterButton
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
-                text: catalog.i18nc("@button", "Add printer")
-                // The maximum width of the button is half of the total space, minus the padding of the parent, the left
-                // padding of the component and half the spacing because of the space between buttons.
-                fixedWidthMode: true
-                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
-                onClicked:
-                {
-                    toggleContent()
-                    Cura.Actions.addMachine.trigger()
-                }
-            }
+            // Cura.SecondaryButton
+            // {
+            //     id: addPrinterButton
+            //     leftPadding: UM.Theme.getSize("default_margin").width
+            //     rightPadding: UM.Theme.getSize("default_margin").width
+            //     text: catalog.i18nc("@button", "Add printer")
+            //     // The maximum width of the button is half of the total space, minus the padding of the parent, the left
+            //     // padding of the component and half the spacing because of the space between buttons.
+            //     fixedWidthMode: true
+            //     width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
+            //     onClicked:
+            //     {
+            //         toggleContent()
+            //         Cura.Actions.addMachine.trigger()
+            //     }
+            // }
 
-            Cura.SecondaryButton
-            {
-                id: managePrinterButton
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
-                text: catalog.i18nc("@button", "Manage printers")
-                fixedWidthMode: true
-                // The maximum width of the button is half of the total space, minus the padding of the parent, the right
-                // padding of the component and half the spacing because of the space between buttons.
-                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
-                onClicked:
-                {
-                    toggleContent()
-                    Cura.Actions.configureMachines.trigger()
-                }
-            }
+            // Cura.SecondaryButton
+            // {
+            //     id: managePrinterButton
+            //     leftPadding: UM.Theme.getSize("default_margin").width
+            //     rightPadding: UM.Theme.getSize("default_margin").width
+            //     text: catalog.i18nc("@button", "Manage printers")
+            //     fixedWidthMode: true
+            //     // The maximum width of the button is half of the total space, minus the padding of the parent, the right
+            //     // padding of the component and half the spacing because of the space between buttons.
+            //     width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
+            //     onClicked:
+            //     {
+            //         toggleContent()
+            //         Cura.Actions.configureMachines.trigger()
+            //     }
+            // }
         }
     }
 }

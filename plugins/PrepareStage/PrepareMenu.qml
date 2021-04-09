@@ -46,15 +46,15 @@ Item
             height: parent.height
             spacing: 0
 
-            Cura.MachineSelector
-            {
-                id: machineSelection
-                headerCornerSide: Cura.RoundedRectangle.Direction.Left
-                Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
-                Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
+            // Cura.MachineSelector
+            // {
+            //     id: machineSelection
+            //     headerCornerSide: Cura.RoundedRectangle.Direction.Left
+            //     Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
+            //     Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
+            //     Layout.fillWidth: true
+            //     Layout.fillHeight: true
+            // }
 
             // Separator line
             Rectangle
@@ -80,15 +80,15 @@ Item
                 color: UM.Theme.getColor("lining")
             }
 
-            Item
-            {
-                id: printSetupSelectorItem
-                // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-                // a stage switch is done.
-                children: [printSetupSelector]
-                height: childrenRect.height
-                width: childrenRect.width
-            }
+            // Item
+            // {
+            //     id: printSetupSelectorItem
+            //     // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+            //     // a stage switch is done.
+            //     children: [printSetupSelector]
+            //     height: childrenRect.height
+            //     width: childrenRect.width
+            // }
         }
 
         // Button

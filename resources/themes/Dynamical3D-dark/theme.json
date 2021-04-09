@@ -354,5 +354,13 @@
 
         "monitor_carousel_dot": [119, 119, 119, 255],
         "monitor_carousel_dot_current": [216, 216, 216, 255]
-    }
+    },
+	
+	"sizes": {
+
+        "machine_selector_widget": [12.0, 4.0],
+        "machine_selector_widget_content": [10.0, 32.0],
+        "machine_selector_icon": [2.66, 2.66]
+	}
+    
 }
