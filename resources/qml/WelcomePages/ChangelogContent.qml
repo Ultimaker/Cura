@@ -44,7 +44,7 @@ Item
         textArea.textFormat: Text.RichText
         textArea.wrapMode: Text.WordWrap
         textArea.readOnly: true
-        textArea.font: UM.Theme.getFont("medium")
+        textArea.font: UM.Theme.getFont("default")
         textArea.onLinkActivated: Qt.openUrlExternally(link)
     }
 
