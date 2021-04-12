@@ -125,7 +125,7 @@ Item
         Menu{
             id: dynamicalMenu
             title: "&Test"
-            MenuItem { action: Cura.Actions.dynamical }
+            MenuItem { action: Cura.Actions.openModeloEjemplo }
 
         }
         

@@ -44,6 +44,10 @@ class CuraActions(QObject):
         event = CallFunctionEvent(self._openUrl, [QUrl("https://www.dynamical3d.com/")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
+    @pyqtSlot()
+    def openEjemplo1(self) -> None:
+        cura.CuraApplication.CuraApplication.getInstance()._openFile("C:/Users/vfrisach/Downloads/45-delorean/DeLorean.STL")
+
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:

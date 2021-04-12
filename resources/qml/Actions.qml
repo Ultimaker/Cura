@@ -66,6 +66,7 @@ Item
     property alias about: aboutAction;
 
     property alias dynamical: dynamicalAction;
+    property alias openModeloEjemplo: openModeloEjemploAction;
     // property alias addPause: addPauseAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
@@ -254,6 +255,12 @@ Item
         text: "Soporte";
         iconName: "help-contents";
         onTriggered: CuraActions.openDynamical();
+    }
+
+    Action {
+        id: openModeloEjemploAction;
+        text: "Ejemplo 1";
+        onTriggered: CuraActions.openEjemplo1();
     }
    
     // Action {
