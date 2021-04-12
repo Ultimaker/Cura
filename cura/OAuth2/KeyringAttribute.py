@@ -18,6 +18,9 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     import win32timezone
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
+if Platform.isOSX() and hasattr(sys, "frozen"):
+    from keyring.backends.macOS import Keyring
+    keyring.set_keyring(Keyring())
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
