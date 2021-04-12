@@ -2,9 +2,11 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 2.3
+import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
+
+import QtQuick.Controls 2.3 as NewControls
 
 import UM 1.1 as UM
 import Cura 1.1 as Cura
@@ -139,6 +141,7 @@ UM.PreferencesPage
             {
                 id: interfaceGrid
                 columns: 4
+                width: parent.width
 
                 Label
                 {
@@ -178,12 +181,13 @@ UM.PreferencesPage
                     }
                 }
 
-                ComboBox
+                NewControls.ComboBox
                 {
                     id: languageComboBox
 
                     textRole: "text"
                     model: languageList
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -197,20 +201,6 @@ UM.PreferencesPage
                         }
                     }
                     onActivated: UM.Preferences.setValue("general/language", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < languageList.count; ++i)
-                        {
-                            languageList.setProperty(i, "text", catalog.i18n(languageList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
                 }
 
                 Label
@@ -245,12 +235,13 @@ UM.PreferencesPage
                     }
                 }
 
-                ComboBox
+                NewControls.ComboBox
                 {
                     id: themeComboBox
 
                     model: themeList
                     textRole: "text"
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -265,21 +256,6 @@ UM.PreferencesPage
                         return 0;
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < themeList.count; ++i)
-                        {
-                            themeList.setProperty(i, "text", catalog.i18n(themeList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
-
                 }
             }
 
@@ -535,7 +511,7 @@ UM.PreferencesPage
                         }
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: cameraComboBox
 
@@ -676,10 +652,10 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: Math.round(250 * screenScaleFactor)
 
                         model: ListModel
                         {
@@ -743,11 +719,11 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 200 * screenScaleFactor
-
+                        width: Math.round(250 * screenScaleFactor)
+                        popup.width: Math.round(350 * screenScaleFactor)
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel

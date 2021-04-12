@@ -383,7 +383,7 @@ Item
                         animateContentY.to = contents.contentY;
                         animateContentY.running = true;
                     }
-                    function onSetActiveFocusToNextSetting()
+                    function onSetActiveFocusToNextSetting(forward)
                     {
                         if (forward == undefined || forward)
                         {
