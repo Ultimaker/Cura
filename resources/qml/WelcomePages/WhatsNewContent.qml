@@ -98,6 +98,7 @@ Item
                         anchors
                         {
                             top: subpageImage.bottom
+                            topMargin: UM.Theme.getSize("default_margin").height
                             bottom: parent.bottom
                             bottomMargin: UM.Theme.getSize("thick_margin").height
                             left: subpageImage.left
@@ -113,7 +114,7 @@ Item
                         textArea.text: manager.getSubpageText(index)
                         textArea.textFormat: Text.RichText
                         textArea.readOnly: true
-                        textArea.font: UM.Theme.getFont("medium")
+                        textArea.font: UM.Theme.getFont("default")
                         textArea.onLinkActivated: Qt.openUrlExternally(link)
                         textArea.leftPadding: 0
                         textArea.rightPadding: 0
