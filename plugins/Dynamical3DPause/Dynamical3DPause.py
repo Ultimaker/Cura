@@ -1,5 +1,3 @@
-# Copyright (c) 2017 Ultimaker B.V.
-# This example is released under the terms of the AGPLv3 or higher.
 
 import os.path
 import re
