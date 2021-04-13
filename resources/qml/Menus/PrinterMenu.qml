@@ -20,22 +20,22 @@ Menu
 //        }
 //    }
 
-    MenuItem
-    {
-        text: catalog.i18nc("@label:category menu label", "Network enabled printers")
-        enabled: false
-        visible: networkPrinterMenu.count > 0
-    }
+    // MenuItem
+    // {
+    //     text: catalog.i18nc("@label:category menu label", "Network enabled printers")
+    //     enabled: false
+    //     visible: networkPrinterMenu.count > 0
+    // }
 
-    NetworkPrinterMenu
-    {
-        id: networkPrinterMenu
-    }
+    // NetworkPrinterMenu
+    // {
+    //     id: networkPrinterMenu
+    // }
 
-    MenuSeparator
-    {
-        visible: networkPrinterMenu.count > 0
-    }
+    // MenuSeparator
+    // {
+    //     visible: networkPrinterMenu.count > 0
+    // }
 
     MenuItem
     {
