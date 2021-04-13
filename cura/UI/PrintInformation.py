@@ -296,6 +296,14 @@ class PrintInformation(QObject):
     def jobName(self):
         return self._job_name
 
+    @pyqtProperty(str)
+    def abbrMachine(self):
+        global_container_stack = self._application.getGlobalContainerStack()
+        if not global_container_stack:
+            return ""
+        return global_container_stack.definition.getName()
+
+
     def _updateJobName(self) -> None:
         if self._base_name == "":
             self._job_name = self.UNTITLED_JOB_NAME

@@ -26,9 +26,11 @@ UM.MainWindow
         let result = "";
         if(PrintInformation !== null && PrintInformation.jobName != "")
         {
+            result += PrintInformation.abbrMachine + " - ";
             result += PrintInformation.jobName + " - ";
         }
         result += CuraApplication.applicationDisplayName;
+       
         return result;
     }
 
