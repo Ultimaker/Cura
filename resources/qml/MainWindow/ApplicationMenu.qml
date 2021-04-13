@@ -109,6 +109,15 @@ Item
             MenuItem { action: Cura.Actions.preferences }
         }
 
+        Menu{
+            id: dynamicalMenu
+            title: "&Test"
+            MenuItem { action: Cura.Actions.openModeloEjemplo1 }
+            MenuItem { action: Cura.Actions.openModeloEjemplo2 }
+            MenuItem { action: Cura.Actions.openModeloEjemplo3 }
+
+        }
+
         Menu {
             id: helpMenu
             title: catalog.i18nc("@title:menu menubar:toplevel", "&Help")
@@ -122,12 +131,7 @@ Item
             MenuItem { action: Cura.Actions.whatsNew }
             MenuItem { action: Cura.Actions.about }
         }
-        Menu{
-            id: dynamicalMenu
-            title: "&Test"
-            MenuItem { action: Cura.Actions.openModeloEjemplo }
 
-        }
         
     }
 

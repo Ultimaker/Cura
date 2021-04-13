@@ -14,6 +14,7 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
+from UM.Resources import Resources
 
 import cura.CuraApplication
 from cura.Operations.SetParentOperation import SetParentOperation
@@ -26,6 +27,7 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 
+import os
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -45,9 +47,16 @@ class CuraActions(QObject):
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
-    def openEjemplo1(self) -> None:
-        cura.CuraApplication.CuraApplication.getInstance()._openFile("C:/Users/vfrisach/Downloads/45-delorean/DeLorean.STL")
+    def openEjemplo1(self) -> None: 
+        cura.CuraApplication.CuraApplication.getInstance()._openFile(Resources.getPath(Resources.Images, os.path.join("models","ejemplo1.stl")))
 
+    @pyqtSlot()
+    def openEjemplo2(self) -> None: 
+        cura.CuraApplication.CuraApplication.getInstance()._openFile(Resources.getPath(Resources.Images, os.path.join("models","ejemplo2.stl")))
+
+    @pyqtSlot()
+    def openEjemplo3(self) -> None: 
+        cura.CuraApplication.CuraApplication.getInstance()._openFile(Resources.getPath(Resources.Images, os.path.join("models","ejemplo3.stl")))
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:

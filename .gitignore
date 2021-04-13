@@ -80,3 +80,6 @@ CuraEngine
 plugins/__init__.py
 
 /venv
+resources/images/models/ejemplo3.stl
+resources/images/models/ejemplo1.stl
+resources/images/models/ejemplo2.stl
