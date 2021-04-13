@@ -89,19 +89,16 @@ Item
 
         title: catalog.i18nc("@label", "Add a non-networked printer")
         contentShown: true 
-        onClicked:
-        {
+        onClicked:  {
             addNetworkPrinterDropDown.contentShown = !contentShown
         }
 
         contentComponent: localPrinterListComponent
 
-        Component
-        {
+        Component {
             id: localPrinterListComponent
 
-            AddLocalPrinterScrollView
-            {
+            AddLocalPrinterScrollView{
                 id: localPrinterView
                 property int childrenHeight: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
 
