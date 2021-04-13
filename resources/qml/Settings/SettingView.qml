@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -154,6 +154,20 @@ Item
         }
     }
 
+    SettingVisibilityPresetsMenu
+    {
+        id: settingVisibilityPresetsMenu
+        x: settingVisibilityMenu.x
+        y: settingVisibilityMenu.y
+        onCollapseAllCategories:
+        {
+            settingsSearchTimer.stop()
+            filter.text = "" // clear search field
+            filter.editingFinished()
+            definitionsModel.collapseAllCategories()
+        }
+    }
+
     ToolButton
     {
         id: settingVisibilityMenu
@@ -185,16 +199,7 @@ Item
             label: Label {}
         }
 
-        menu: SettingVisibilityPresetsMenu
-        {
-            onCollapseAllCategories:
-            {
-                settingsSearchTimer.stop()
-                filter.text = "" // clear search field
-                filter.editingFinished()
-                definitionsModel.collapseAllCategories()
-            }
-        }
+        onClicked: settingVisibilityPresetsMenu.open()
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.
