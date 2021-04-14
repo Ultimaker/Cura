@@ -269,6 +269,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         else:
             PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send", "Unknown error code when uploading print job: {0}", error_code)).show()
 
+        Logger.log("w", "Upload of print job failed specifically with error code {}".format(error_code))
+
         self._progress.hide()
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
@@ -279,6 +281,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         Displays the given message if uploading the mesh has failed due to a generic error (i.e. lost connection).
         :param message: The message to display.
         """
+        Logger.log("w", "Upload error with message {}".format(message))
+
         self._progress.hide()
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
