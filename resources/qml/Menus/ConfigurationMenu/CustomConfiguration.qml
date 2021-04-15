@@ -289,10 +289,15 @@ Item
 
                     style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true
-                    menu: Cura.MaterialMenu
+                    Cura.MaterialMenu
                     {
+                        id: materialsMenu
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                         updateModels: materialSelection.visible
+                    }
+                    onClicked:
+                    {
+                        materialsMenu.popup();
                     }
                 }
                 Item
@@ -345,7 +350,15 @@ Item
                     activeFocusOnPress: true
                     enabled: enabledCheckbox.checked
 
-                    menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
+                    Cura.NozzleMenu
+                    {
+                        id: nozzlesMenu
+                        extruderIndex: Cura.ExtruderManager.activeExtruderIndex
+                    }
+                    onClicked:
+                    {
+                        nozzlesMenu.popup();
+                    }
                 }
             }
 

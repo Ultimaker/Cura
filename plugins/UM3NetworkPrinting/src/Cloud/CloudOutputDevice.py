@@ -287,7 +287,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         firmware_version = Version([version_number[0], version_number[1], version_number[2]])
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool, constant = True)
     def supportsPrintJobQueue(self) -> bool:
         """Gets whether the printer supports a queue"""
 

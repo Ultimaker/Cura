@@ -25,8 +25,8 @@ class Snapshot:
         pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
         # Find indices of non zero pixels
         nonzero_pixels = numpy.nonzero(pixels)
-        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)
-        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)
+        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)  # type: ignore
+        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)  # type: ignore
 
         return min_x, max_x, min_y, max_y
 

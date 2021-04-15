@@ -164,5 +164,16 @@ Rectangle
                 onExited: manageQueueText.font.underline = false
             }
         }
+        Label
+        {
+            id: noConnectionLabel
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: !isNetworkConfigurable
+            text: catalog.i18nc("@info", "In order to monitor your print from Cura, please connect the printer.")
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
+            wrapMode: Text.WordWrap
+            width: contentWidth
+        }
     }
 }
