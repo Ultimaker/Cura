@@ -330,14 +330,14 @@ class SimulationView(CuraView):
         # If more than 16 extruders are called for, this should be converted to a sampler1d.
         return Matrix(self._extruder_opacity)
 
-    def setShowTravelMoves(self, show):
+    def setShowTravelMoves(self, show: bool) -> None:
         if show == self._show_travel_moves:
             return
         self._show_travel_moves = show
         self.currentLayerNumChanged.emit()
         self.visibleStructuresChanged.emit()
 
-    def getShowTravelMoves(self):
+    def getShowTravelMoves(self) -> bool:
         return self._show_travel_moves
 
     def setShowHelpers(self, show: bool) -> None:
