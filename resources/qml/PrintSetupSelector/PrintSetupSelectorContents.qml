@@ -155,7 +155,7 @@ Item
             anchors.margins: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@button", "Custom")
+            text: catalog.i18nc("@button", "Modo Experto")
             iconSource: UM.Theme.getIcon("arrow_right")
             isIconOnRightSide: true
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended

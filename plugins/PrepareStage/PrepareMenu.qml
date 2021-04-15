@@ -39,7 +39,7 @@ Item
         {
             id: itemRow
 
-            anchors.left: openFileButton.right
+            // anchors.left: openFileButton.right
             anchors.right: parent.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
@@ -57,28 +57,28 @@ Item
             // }
 
             // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
-            }
+            // Rectangle
+            // {
+            //     height: parent.height
+            //     width: UM.Theme.getSize("default_lining").width
+            //     color: UM.Theme.getColor("lining")
+            // }
 
-            Cura.ConfigurationMenu
-            {
-                id: printerSetup
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
-            }
+            // Cura.ConfigurationMenu
+            // {
+            //     id: printerSetup
+            //     Layout.fillHeight: true
+            //     Layout.fillWidth: true
+            //     Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
+            // }
 
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
-            }
+            // // Separator line
+            // Rectangle
+            // {
+            //     height: parent.height
+            //     width: UM.Theme.getSize("default_lining").width
+            //     color: UM.Theme.getColor("lining")
+            // }
 
             // Item
             // {

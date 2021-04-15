@@ -12,6 +12,17 @@ Item {
     height: buttons.height
     property int activeY
 
+    function showTooltip(item, position, text)
+    {
+        tooltip.text = text;
+        position = item.mapToItem(base, position.x - UM.Theme.getSize("default_arrow").width, position.y);
+        tooltip.show(position);
+    }
+
+    function hideTooltip()
+    {
+        tooltip.hide();
+    }
 
     Item
     {
@@ -23,18 +34,18 @@ Item {
 
 
         // Used to create a rounded rectangle behind the extruderButtons
-        Rectangle {
-            anchors {
-                fill: extruderButtons
-                leftMargin: -radius - border.width
-                rightMargin: -border.width
-                topMargin: -border.width
-                bottomMargin: -border.width
-            }
-            radius: UM.Theme.getSize("default_radius").width
-            color: UM.Theme.getColor("lining")
-            visible: extrudersModel.items.length > 1
-        }
+        // Rectangle {
+        //     anchors {
+        //         fill: extruderButtons
+        //         leftMargin: -radius - border.width
+        //         rightMargin: -border.width
+        //         topMargin: -border.width
+        //         bottomMargin: -border.width
+        //     }
+        //     radius: UM.Theme.getSize("default_radius").width
+        //     color: UM.Theme.getColor("lining")
+        //     visible: extrudersModel.items.length > 1
+        // }
 
         Column
         {
@@ -44,13 +55,12 @@ Item {
             //anchors.top: pausaButton.bottom
             anchors.right: parent.right
             spacing: UM.Theme.getSize("default_lining").height
-
             ToolbarButton {
                 id: impresorasButton
                 //text: catalog.i18nc("@button", "Manage printers")
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
-                anchors.top: toolButtons.bottom
-                anchors.right: parent.right
+                // anchors.topMargin: UM.Theme.getSize("default_margin").height
+                // anchors.top: columnButtons.bottom
+                // anchors.right: parent.right
                 spacing: UM.Theme.getSize("default_lining").height
                 enabled: true
                 onClicked: {
@@ -64,25 +74,33 @@ Item {
                     color: UM.Theme.getColor("icon")
                     sourceSize: UM.Theme.getSize("button_icon")
                 }
-                Label {
-                    text: pause.numeroPausas
-                    color: UM.Theme.getColor("icon")
-                    visible: pause.numeroPausas > 0
-                    anchors.right: parent.right
-                }
+                //Seleccion de impresora
+                Cura.MachineSelector {
+                    id: machineSelection
+                    visible: false
+                    z: 1
+                    anchors.left: parent.right
+                    anchors.top: parent.top
+                    height: 0
+                    width: 0
+                    collapseButtonVisible: false
+                    // Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
+                    Layout.maximumWidth: 0
+                    // Layout.fillWidth: true
+                }                
 
             }
             ToolbarButton {
                 id: settingsButton
-                text: catalog.i18nc("@label", "Print settings")
-                anchors.topMargin: UM.Theme.getSize("default_margin").height
-                anchors.top: toolButtons.bottom
-                anchors.right: parent.right
+                //text: catalog.i18nc("@label", "Print settings")
+                // anchors.topMargin: UM.Theme.getSize("default_margin").height
+                // anchors.top: columnButtons.bottom
+                // anchors.right: parent.right
                 spacing: UM.Theme.getSize("default_lining").height
                 enabled: true
                 onClicked: {
                     printSetup.visible = !printSetup.visible;
-                    if (printSetup.visible) {
+                    if (!printSetup.expanded) {
                         printSetup.toggleContent(); 
                     }                                   
                 } 
@@ -91,48 +109,55 @@ Item {
                     color: UM.Theme.getColor("icon")
                     sourceSize: UM.Theme.getSize("button_icon")
                 }
-                Label {
-                    text: pause.numeroPausas
-                    color: UM.Theme.getColor("icon")
-                    visible: pause.numeroPausas > 0
-                    anchors.right: parent.right
-                }
+                //Menú de parámetros de impresión
+                Cura.PrintSetupSelector {
+                    id: printSetup
+                    visible: false
+                    z: 0
+                    anchors.left: parent.right
+                    
+                    width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
+                    implicitWidth: 400 * screenScaleFactor
+                    height: parent.height
+                    // height: 0
+                    // width: 0
+                    //collapseButtonVisible: false
+                    // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
+                    // a stage switch is done.
+                    // children: [printSetupSelector]
+                    // height: childrenRect.height
+                    // width: childrenRect.width
+                }               
 
             }
+            ToolbarButton {
+                id: extrudersButton
+                text: catalog.i18nc("@label", "Configuration Panel")
 
-        }
-
-
-        Cura.MachineSelector {
-            id: machineSelection
-            visible: false
-            z: 1
-            anchors.left: parent.right
-            anchors.top: parent.top
-            height: 0
-            width: 0
-            collapseButtonVisible: false
-            // Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
-            Layout.maximumWidth: 0
-            // Layout.fillWidth: true
-        }
-
-        Cura.PrintSetupSelector {
-            id: printSetup
-            visible: false
-            z: 1
-            anchors.left: parent.right
-            anchors.top: parent.top
-            // height: 0
-            // width: 0
-            //collapseButtonVisible: false
-            // This is a work around to prevent the printSetupSelector from having to be re-loaded every time
-            // a stage switch is done.
-            // children: [printSetupSelector]
-            // height: childrenRect.height
-            // width: childrenRect.width
-        }
-       
+                spacing: UM.Theme.getSize("default_lining").height
+                enabled: true
+                onClicked: {
+                    configurationMenu.visible = !configurationMenu.visible;   
+                    if (configurationMenu.visible) {
+                        configurationMenu.toggleContent(); 
+                    }                                 
+                } 
+                toolItem: UM.RecolorImage {
+                    source: UM.Theme.getIcon("extruder_button") 
+                    color: UM.Theme.getColor("icon")
+                    sourceSize: UM.Theme.getSize("button_icon")
+                }
+                       //Menú extruders
+                Cura.ConfigurationMenu {
+                    visible: false
+                    id: configurationMenu
+                    z: 0
+                    anchors.left: parent.right
+                    width: UM.Theme.getSize("configuration_selector").width
+                    height: parent.height
+                } 
+            }
+        } 
     }
 
 

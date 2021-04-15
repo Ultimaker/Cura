@@ -30,6 +30,8 @@ Item
 
     Row
     {
+        //ÑAPA: OCULTO EL PANEL COMPLETO PROVISIONALMENTE
+        visible: false
         id: stageMenuRow
 
         anchors.horizontalCenter: parent.horizontalCenter

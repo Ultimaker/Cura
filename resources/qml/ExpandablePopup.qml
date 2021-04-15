@@ -241,6 +241,10 @@ Item
             content.width = contentItem.width + 2 * content.padding
             content.height = contentItem.height + 2 * content.padding
         }
+        onClosed:
+        {
+            parent.visible=false
+        }
     }
 
     // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.

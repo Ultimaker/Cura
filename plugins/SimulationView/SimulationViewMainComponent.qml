@@ -18,7 +18,7 @@ Item
 
 
     property bool isSimulationPlaying: false
-    readonly property real layerSliderSafeYMin: safeArea.y + 150 //ÑAPA: ajustar esto dinamicamente desde fuera
+    readonly property real layerSliderSafeYMin: safeArea.y + 200 //ÑAPA: ajustar esto dinamicamente desde fuera
     readonly property real layerSliderSafeYMax: safeArea.y + safeArea.height
     readonly property real pathSliderSafeXMin: safeArea.x + playButton.width
     readonly property real pathSliderSafeXMax: safeArea.x + safeArea.width
