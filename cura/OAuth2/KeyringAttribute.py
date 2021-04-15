@@ -45,25 +45,26 @@ class KeyringAttribute:
     def __set__(self, instance: "BaseModel", value: Optional[str]):
         if self._store_secure:
             setattr(instance, self._name, None)
-            try:
-                keyring.set_password("cura", self._keyring_name, value if value is not None else "")
-            except PasswordSetError:
-                self._store_secure = False
-                if self._name not in DONT_EVER_STORE_LOCALLY:
-                    setattr(instance, self._name, value)
-                Logger.logException("w", "Keyring access denied")
-            except NoKeyringError:
-                self._store_secure = False
-                if self._name not in DONT_EVER_STORE_LOCALLY:
-                    setattr(instance, self._name, value)
-                Logger.logException("w", "No keyring backend present")
-            except BaseException as e:
-                # A BaseException can occur in Windows when the keyring attempts to write a token longer than 1024
-                # characters in the Windows Credentials Manager.
-                self._store_secure = False
-                if self._name not in DONT_EVER_STORE_LOCALLY:
-                    setattr(instance, self._name, value)
-                Logger.log("w", "Keyring failed: {}".format(e))
+            if value is not None:
+                try:
+                    keyring.set_password("cura", self._keyring_name, value)
+                except PasswordSetError:
+                    self._store_secure = False
+                    if self._name not in DONT_EVER_STORE_LOCALLY:
+                        setattr(instance, self._name, value)
+                    Logger.logException("w", "Keyring access denied")
+                except NoKeyringError:
+                    self._store_secure = False
+                    if self._name not in DONT_EVER_STORE_LOCALLY:
+                        setattr(instance, self._name, value)
+                    Logger.logException("w", "No keyring backend present")
+                except BaseException as e:
+                    # A BaseException can occur in Windows when the keyring attempts to write a token longer than 1024
+                    # characters in the Windows Credentials Manager.
+                    self._store_secure = False
+                    if self._name not in DONT_EVER_STORE_LOCALLY:
+                        setattr(instance, self._name, value)
+                    Logger.log("w", "Keyring failed: {}".format(e))
         else:
             setattr(instance, self._name, value)
 
