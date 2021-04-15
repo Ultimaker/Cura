@@ -191,6 +191,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if self._progress.visible:
             PrintJobUploadBlockedMessage().show()
             return
+        self._progress.show()
 
         # Indicate we have started sending a job.
         self.writeStarted.emit(self)
@@ -229,7 +230,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         if not self._tool_path:
             return self._onUploadError()
-        self._progress.show()
         self._pre_upload_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
         self._api.uploadToolPath(job_response, self._tool_path, self._onPrintJobUploaded, self._progress.update,
                                  self._onUploadError)
