@@ -498,7 +498,7 @@ msgstr "Profilde eksik bir kalite tipi var."
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:446
 msgctxt "@info:status"
 msgid "There is no active printer yet."
-msgstr ""
+msgstr "Henüz etkin bir yazıcı yok."
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:452
 msgctxt "@info:status"
@@ -562,7 +562,7 @@ msgstr "Grup #{group_nr}"
 #: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
 msgctxt "@action:button"
 msgid "Skip"
-msgstr ""
+msgstr "Atla"
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60
 #: /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
@@ -1314,7 +1314,7 @@ msgstr "Proje Dosyası Açılamıyor"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
-msgstr ""
+msgstr "Proje dosyası <filename>{0}</filename> bozuk: <message>{1}</message>."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:693
 #, python-brace-format
@@ -1547,17 +1547,17 @@ msgstr "Gerçek görünüm"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
-msgstr ""
+msgstr "Vurgulanan alanlar, eksik ya da ikincil yüzeyleri gösterir. Modelinizi düzeltin ve Cura'da tekrar açın."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:73
 msgctxt "@info:title"
 msgid "Model Errors"
-msgstr ""
+msgstr "Model hataları"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:79
 msgctxt "@action:button"
 msgid "Learn more"
-msgstr ""
+msgstr "Daha fazla bilgi edinin"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/UFPWriter.py:134
 msgctxt "@info:error"
@@ -2764,12 +2764,12 @@ msgstr "Hız"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:121
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
-msgstr ""
+msgstr "Katman kalınlığı"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:125
 msgctxt "@label:listbox"
 msgid "Line Width"
-msgstr ""
+msgstr "Hat Genişliği"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:163
 msgctxt "@label"
@@ -2800,7 +2800,7 @@ msgstr "Dolgu"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
 msgctxt "@label"
 msgid "Starts"
-msgstr ""
+msgstr "Başlangıçlar"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:314
 msgctxt "@label"
@@ -2976,7 +2976,7 @@ msgstr "Ekstrüder Sayısı"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:345
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr ""
+msgstr "Ekstrüder ofsetlerini GCode'a uygula"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:393
 msgctxt "@title:label"
@@ -3370,7 +3370,7 @@ msgstr "Ekstruderi Devre Dışı Bırak"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SaveProjectMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
-msgstr ""
+msgstr "Projeyi Kaydet..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3394,7 +3394,7 @@ msgstr "Kopya Sayısı"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/OpenFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
-msgstr ""
+msgstr "Dosya Aç..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
@@ -3510,7 +3510,7 @@ msgstr[1] "%2 ekstrüderindeki yapılandırmalar için %1 profili yok. Bunun yer
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Widgets/ComboBox.qml:24
 msgctxt "@label"
 msgid "No items to select from"
-msgstr ""
+msgstr "Seçilecek öğe yok"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintMonitor.qml:140
 msgctxt "@label"
@@ -3732,12 +3732,12 @@ msgstr "libnest2d için Python bağlamaları"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Support library for system keyring access"
-msgstr ""
+msgstr "Sistem anahtarlık erişimi için destek kitaplığı"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Python extensions for Microsoft Windows"
-msgstr ""
+msgstr "Microsoft Windows için Python uzantıları"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -3838,7 +3838,7 @@ msgstr "Ultimaker Cura'ya hoş geldiniz"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:68
 msgctxt "@text"
 msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
-msgstr ""
+msgstr "Ultimaker Cura'yı kurmak\n için lütfen aşağıdaki adımları izleyin. Bu sadece birkaç saniye sürecektir."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:86
 msgctxt "@button"
@@ -3954,7 +3954,7 @@ msgstr "Ağ dışı bir yazıcı ekleyin"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
-msgstr ""
+msgstr "Yenilikler"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:47
 msgctxt "@label"
@@ -3985,27 +3985,27 @@ msgstr "Yazıcıyı manuel olarak ekle"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
-msgstr ""
+msgstr "Ultimaker platformuna giriş yapın"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:124
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr ""
+msgstr "Marketplace'den malzeme ayarlarını ve eklentileri ekleyin"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:154
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr ""
+msgstr "Malzeme ayarlarınızı ve eklentilerinizi yedekleyin ve senkronize edin"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:184
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr ""
+msgstr "Ultimaker Topluluğunda fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:217
 msgctxt "@text"
 msgid "Create a free Ultimaker Account"
-msgstr ""
+msgstr "Ücretsiz Ultimaker Hesabı oluşturun"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:230
 msgctxt "@button"
@@ -4025,7 +4025,7 @@ msgstr "Reddet ve kapat"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
 msgid "Release Notes"
-msgstr ""
+msgstr "Sürüm notları"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:43
 msgctxt "@label"
@@ -4093,12 +4093,13 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr ""
+msgstr "- Marketplace'den malzeme profilleri ve eklentiler ekleyin\n- Malzeme profillerinizi ve eklentilerinizi yedekleyin ve senkronize edin\n- Ultimaker topluluğunda"
+" fikirlerinizi paylaşın ve 48.000'den fazla kullanıcıdan yardım alın"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:62
 msgctxt "@button"
 msgid "Create a free Ultimaker account"
-msgstr ""
+msgstr "Ücretsiz Ultimaker hesabı oluşturun"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4258,17 +4259,17 @@ msgstr "Hakkında..."
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:265
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
-msgstr ""
+msgstr "Seçileni Sil"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
-msgstr ""
+msgstr "Seçileni Ortala"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:284
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
-msgstr ""
+msgstr "Seçileni Çoğalt"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:293
 msgctxt "@action:inmenu"

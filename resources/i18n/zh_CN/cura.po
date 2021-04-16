@@ -498,7 +498,7 @@ msgstr "配置文件缺少打印质量类型定义。"
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:446
 msgctxt "@info:status"
 msgid "There is no active printer yet."
-msgstr ""
+msgstr "尚无处于活动状态的打印机。"
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:452
 msgctxt "@info:status"
@@ -562,7 +562,7 @@ msgstr "组 ＃{group_nr}"
 #: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
 msgctxt "@action:button"
 msgid "Skip"
-msgstr ""
+msgstr "跳过"
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60
 #: /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
@@ -1307,7 +1307,7 @@ msgstr "无法打开项目文件"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
-msgstr ""
+msgstr "项目文件 <filename>{0}</filename> 损坏: <message>{1}</message>。"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:693
 #, python-brace-format
@@ -1540,17 +1540,17 @@ msgstr "实体视图"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
-msgstr ""
+msgstr "突出显示的区域指示缺少或多余的表面。修复模型，并再次在 Cura 中打开。"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:73
 msgctxt "@info:title"
 msgid "Model Errors"
-msgstr ""
+msgstr "模型错误"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:79
 msgctxt "@action:button"
 msgid "Learn more"
-msgstr ""
+msgstr "详细了解"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/UFPWriter.py:134
 msgctxt "@info:error"
@@ -2753,12 +2753,12 @@ msgstr "速度"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:121
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
-msgstr ""
+msgstr "层厚度"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:125
 msgctxt "@label:listbox"
 msgid "Line Width"
-msgstr ""
+msgstr "走线宽度"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:163
 msgctxt "@label"
@@ -2789,7 +2789,7 @@ msgstr "填充"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
 msgctxt "@label"
 msgid "Starts"
-msgstr ""
+msgstr "开始"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:314
 msgctxt "@label"
@@ -2965,7 +2965,7 @@ msgstr "挤出机数目"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:345
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr ""
+msgstr "将挤出器偏移量应用于 GCode"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:393
 msgctxt "@title:label"
@@ -3359,7 +3359,7 @@ msgstr "禁用挤出机"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SaveProjectMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
-msgstr ""
+msgstr "保存项目..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3381,7 +3381,7 @@ msgstr "复制个数"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/OpenFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
-msgstr ""
+msgstr "打开文件..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
@@ -3496,7 +3496,7 @@ msgstr[0] "没有 %1 配置文件可用于挤出器 %2 中的配置。将改为�
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Widgets/ComboBox.qml:24
 msgctxt "@label"
 msgid "No items to select from"
-msgstr ""
+msgstr "没有可供选择的项目"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintMonitor.qml:140
 msgctxt "@label"
@@ -3718,12 +3718,12 @@ msgstr "libnest2d 的 Python 绑定"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Support library for system keyring access"
-msgstr ""
+msgstr "支持系统密钥环访问库"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Python extensions for Microsoft Windows"
-msgstr ""
+msgstr "适用于 Microsoft Windows 的 Python 扩展"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -3824,7 +3824,7 @@ msgstr "欢迎使用 Ultimaker Cura"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:68
 msgctxt "@text"
 msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
-msgstr ""
+msgstr "请按照以下步骤设置\nUltimaker Cura。此操作只需要几分钟时间。"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:86
 msgctxt "@button"
@@ -3940,7 +3940,7 @@ msgstr "添加未联网打印机"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
-msgstr ""
+msgstr "新增功能"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:47
 msgctxt "@label"
@@ -3971,27 +3971,27 @@ msgstr "手动添加打印机"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
-msgstr ""
+msgstr "登录 Ultimaker 平台"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:124
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr ""
+msgstr "从 Marketplace 添加材料设置和插件"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:154
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr ""
+msgstr "备份和同步材料设置和插件"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:184
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr ""
+msgstr "在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:217
 msgctxt "@text"
 msgid "Create a free Ultimaker Account"
-msgstr ""
+msgstr "创建免费的 Ultimaker 帐户"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:230
 msgctxt "@button"
@@ -4011,7 +4011,7 @@ msgstr "拒绝并关闭"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
 msgid "Release Notes"
-msgstr ""
+msgstr "版本说明"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:43
 msgctxt "@label"
@@ -4079,12 +4079,12 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr ""
+msgstr "- 从 Marketplace 添加材料配置文件和插件\n- 备份和同步材料配置文件和插件\n- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:62
 msgctxt "@button"
 msgid "Create a free Ultimaker account"
-msgstr ""
+msgstr "创建免费的 Ultimaker 帐户"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4244,17 +4244,17 @@ msgstr "关于..."
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:265
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
-msgstr ""
+msgstr "删除所选项"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
-msgstr ""
+msgstr "居中所选项"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:284
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
-msgstr ""
+msgstr "复制所选项"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:293
 msgctxt "@action:inmenu"

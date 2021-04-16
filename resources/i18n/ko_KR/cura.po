@@ -498,7 +498,7 @@ msgstr "프로파일에 품질 타입이 누락되었습니다."
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:446
 msgctxt "@info:status"
 msgid "There is no active printer yet."
-msgstr ""
+msgstr "아직 활성화된 프린터가 없습니다."
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:452
 msgctxt "@info:status"
@@ -562,7 +562,7 @@ msgstr "그룹 #{group_nr}"
 #: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
 msgctxt "@action:button"
 msgid "Skip"
-msgstr ""
+msgstr "건너뛰기"
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60
 #: /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
@@ -1307,7 +1307,7 @@ msgstr "프로젝트 파일 열 수 없음"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
-msgstr ""
+msgstr "프로젝트 파일 <filename>{0}</filename>이 손상됨: <message>{1}</message>."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:693
 #, python-brace-format
@@ -1540,17 +1540,17 @@ msgstr "솔리드 뷰"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
-msgstr ""
+msgstr "강조 표시된 영역은 누락되거나 관련 없는 표면을 표시합니다. 모델을 수정하고 Cura에서 다시 엽니다."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:73
 msgctxt "@info:title"
 msgid "Model Errors"
-msgstr ""
+msgstr "모델 에러"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:79
 msgctxt "@action:button"
 msgid "Learn more"
-msgstr ""
+msgstr "자세히 알아보기"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/UFPWriter.py:134
 msgctxt "@info:error"
@@ -2751,12 +2751,12 @@ msgstr "속도"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:121
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
-msgstr ""
+msgstr "레이어 두께"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:125
 msgctxt "@label:listbox"
 msgid "Line Width"
-msgstr ""
+msgstr "선 두께"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:163
 msgctxt "@label"
@@ -2787,7 +2787,7 @@ msgstr "내부채움"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
 msgctxt "@label"
 msgid "Starts"
-msgstr ""
+msgstr "시작"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:314
 msgctxt "@label"
@@ -2963,7 +2963,7 @@ msgstr "익스트루더의 수"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:345
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr ""
+msgstr "익스트루더 오프셋을 GCode에 적용"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:393
 msgctxt "@title:label"
@@ -3357,7 +3357,7 @@ msgstr "익스트루더 사용하지 않음"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SaveProjectMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
-msgstr ""
+msgstr "프로젝트 저장 중..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3379,7 +3379,7 @@ msgstr "복제할 수"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/OpenFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
-msgstr ""
+msgstr "파일 여는 중..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
@@ -3494,7 +3494,7 @@ msgstr[0] "압출기 %2의 구성에 대한 %1 프로파일이 없습니다. 대
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Widgets/ComboBox.qml:24
 msgctxt "@label"
 msgid "No items to select from"
-msgstr ""
+msgstr "선택할 항목 없음"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintMonitor.qml:140
 msgctxt "@label"
@@ -3716,12 +3716,12 @@ msgstr "libnest2d용 Python 바인딩"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Support library for system keyring access"
-msgstr ""
+msgstr "시스템 키링 액세스를 위한 서포트 라이브러리"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Python extensions for Microsoft Windows"
-msgstr ""
+msgstr "Microsoft Windows용 Python 확장"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -3822,7 +3822,7 @@ msgstr "Ultimaker Cura에 오신 것을 환영합니다"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:68
 msgctxt "@text"
 msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
-msgstr ""
+msgstr "Ultimaker Cura를 설정하려면 다음 단계로 이동하세요. 오래 걸리지 않습니다."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:86
 msgctxt "@button"
@@ -3938,7 +3938,7 @@ msgstr "비 네트워크 프린터 추가"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
-msgstr ""
+msgstr "새로운 기능"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:47
 msgctxt "@label"
@@ -3969,27 +3969,27 @@ msgstr "수동으로 프린터 추가"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
-msgstr ""
+msgstr "Ultimaker 플랫폼에 로그인"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:124
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr ""
+msgstr "재료 설정 및 Marketplace 플러그인 추가"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:154
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr ""
+msgstr "재료 설정과 플러그인 백업 및 동기화"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:184
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr ""
+msgstr "Ultimaker 커뮤니티에서 48,000명 이상의 사용자와 아이디어를 공유하고 도움 받기"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:217
 msgctxt "@text"
 msgid "Create a free Ultimaker Account"
-msgstr ""
+msgstr "Ultimaker 계정 무료 생성"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:230
 msgctxt "@button"
@@ -4009,7 +4009,7 @@ msgstr "거절 및 닫기"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
 msgid "Release Notes"
-msgstr ""
+msgstr "릴리즈 노트"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:43
 msgctxt "@label"
@@ -4077,12 +4077,12 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr ""
+msgstr "- 재료 설정 및 Marketplace 플러그인 추가\n- 재료 설정과 플러그인 백업 및 동기화\n- Ultimaker 커뮤니티에서 48,000명 이상의 사용자와 아이디어를 공유하고 도움 받기"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:62
 msgctxt "@button"
 msgid "Create a free Ultimaker account"
-msgstr ""
+msgstr "Ultimaker 계정 무료 생성"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4242,17 +4242,17 @@ msgstr "소개..."
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:265
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
-msgstr ""
+msgstr "선택 항목 삭제"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
-msgstr ""
+msgstr "선택 항목 가운데 정렬"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:284
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
-msgstr ""
+msgstr "선택 항목 복제"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:293
 msgctxt "@action:inmenu"
