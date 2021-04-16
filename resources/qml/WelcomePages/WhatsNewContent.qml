@@ -31,23 +31,16 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Item
-    {
-        id: topSpacer
-        anchors.top: titleLabel.bottom
-        height: UM.Theme.getSize("default_margin").height
-        width: UM.Theme.getSize("default_margin").width
-    }
-
     Rectangle
     {
         anchors
         {
-            top: topSpacer.bottom
+            top: titleLabel.bottom
+            topMargin: UM.Theme.getSize("default_margin").width
             bottom: whatsNewDots.top
+            bottomMargin: UM.Theme.getSize("narrow_margin").width
             left: parent.left
             right: parent.right
-            margins: UM.Theme.getSize("default_margin").width * 2
         }
 
         color: UM.Theme.getColor("viewport_overlay")
@@ -59,7 +52,6 @@ Item
             anchors
             {
                 top: parent.top
-                topMargin: UM.Theme.getSize("default_margin").width
                 horizontalCenter: parent.horizontalCenter
             }
             height: parent.height
@@ -69,12 +61,6 @@ Item
 
             Repeater
             {
-                anchors
-                {
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_margin").width / 2
-                    horizontalCenter: parent.horizontalCenter
-                }
 
                 model: manager.subpageCount
 
@@ -82,6 +68,8 @@ Item
                 {
                     Layout.alignment: Qt.AlignHCenter
                     color: UM.Theme.getColor("viewport_overlay")
+                    width: whatsNewViewport.width
+                    height: whatsNewViewport.height
 
                     Image
                     {
@@ -89,12 +77,15 @@ Item
 
                         anchors
                         {
-                            horizontalCenter: parent.horizontalCenter
                             top: parent.top
-                            topMargin: UM.Theme.getSize("default_margin").width
+                            topMargin: UM.Theme.getSize("thick_margin").width
+                            left: parent.left
+                            leftMargin: UM.Theme.getSize("thick_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("thick_margin").width
                         }
-                        width: Math.round(parent.width - (UM.Theme.getSize("default_margin").width * 2))
-                        height: Math.round((parent.height - UM.Theme.getSize("default_margin").height) * 0.75)
+                        width: sourceSize.width
+                        sourceSize.width: Math.round(parent.width - (UM.Theme.getSize("thick_margin").height * 2))
                         fillMode: Image.PreserveAspectFit
 
                         source: manager.getSubpageImageSource(index)
@@ -107,10 +98,12 @@ Item
                         anchors
                         {
                             top: subpageImage.bottom
+                            topMargin: UM.Theme.getSize("default_margin").height
                             bottom: parent.bottom
-                            horizontalCenter: parent.horizontalCenter
+                            bottomMargin: UM.Theme.getSize("thick_margin").height
+                            left: subpageImage.left
+                            right: subpageImage.right
                         }
-                        width: Math.round(parent.width - (UM.Theme.getSize("default_margin").width * 2))
 
                         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
@@ -121,8 +114,10 @@ Item
                         textArea.text: manager.getSubpageText(index)
                         textArea.textFormat: Text.RichText
                         textArea.readOnly: true
-                        textArea.font: UM.Theme.getFont("medium")
+                        textArea.font: UM.Theme.getFont("default")
                         textArea.onLinkActivated: Qt.openUrlExternally(link)
+                        textArea.leftPadding: 0
+                        textArea.rightPadding: 0
                     }
                 }
             }
@@ -139,7 +134,8 @@ Item
 
         anchors
         {
-            bottom: bottomSpacer.top
+            bottom: whatsNewNextButton.top
+            bottomMargin: UM.Theme.getSize("narrow_margin").height
             horizontalCenter: parent.horizontalCenter
         }
 
