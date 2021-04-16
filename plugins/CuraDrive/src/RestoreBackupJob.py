@@ -1,3 +1,6 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import base64
 import hashlib
 import threading
@@ -56,14 +59,20 @@ class RestoreBackupJob(Job):
             return
 
         # We store the file in a temporary path fist to ensure integrity.
-        temporary_backup_file = NamedTemporaryFile(delete = False)
-        with open(temporary_backup_file.name, "wb") as write_backup:
-            app = CuraApplication.getInstance()
-            bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
-            while bytes_read:
-                write_backup.write(bytes_read)
+        try:
+            temporary_backup_file = NamedTemporaryFile(delete = False)
+            with open(temporary_backup_file.name, "wb") as write_backup:
+                app = CuraApplication.getInstance()
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
-                app.processEvents()
+                while bytes_read:
+                    write_backup.write(bytes_read)
+                    bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                    app.processEvents()
+        except EnvironmentError as e:
+            Logger.log("e", f"Unable to save backed up files due to computer limitations: {str(e)}")
+            self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
+            self._job_done.set()
+            return
 
         if not self._verifyMd5Hash(temporary_backup_file.name, self._backup.get("md5_hash", "")):
             # Don't restore the backup if the MD5 hashes do not match.
