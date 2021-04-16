@@ -14,7 +14,7 @@
 		"preferred_variant_name": "PrintHead 0.4 mm",
 		"variants_name": "PrintHead type",
         "has_materials": false,
-        "has_machine_quality": true,
+        "has_machine_quality": false,
                 "machine_extruder_trains":
         {
             "0": "farm2_extruder_1"
