@@ -608,7 +608,7 @@ class Toolbox(QObject, Extension):
         # Check for errors:
         if "errors" in json_data:
             for error in json_data["errors"]:
-                Logger.log("e", "Request type [%s] got response showing error: %s", error["title"])
+                Logger.log("e", "Request type [%s] got response showing error: %s", error.get("title", "No error title found"))
             self.setViewPage("errored")
             return
 
