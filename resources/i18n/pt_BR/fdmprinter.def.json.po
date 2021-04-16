@@ -1,5 +1,5 @@
 # Cura
-# Copyright (C) 2021 Ultimaker B.V.
+# Copyright (C) 2020 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:09+0000\n"
-"PO-Revision-Date: 2020-10-25 10:20+0100\n"
+"PO-Revision-Date: 2021-04-11 17:33+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -45,7 +45,7 @@ msgstr "Exibir Variantes de Máquina"
 #: fdmprinter.def.json
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
-msgstr "Opção que diz se se deseja exibir as variantes desta máquina, que são descrita em arquivos .json separados."
+msgstr "Decide se deseja exibir as variantes desta máquina, que são descrita em arquivos .json separados."
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
@@ -103,7 +103,7 @@ msgstr "Aguardar o Aquecimento da Mesa"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait description"
 msgid "Whether to insert a command to wait until the build plate temperature is reached at the start."
-msgstr "Opção que diz se se deve inserir comando para aguardar que a temperatura-alvo da mesa de impressão estabilize no início."
+msgstr "Decide se haverá inserção do comando para aguardar que a temperatura-alvo da mesa de impressão estabilize no início."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait label"
@@ -113,7 +113,7 @@ msgstr "Aguardar Aquecimento do Bico"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait description"
 msgid "Whether to wait until the nozzle temperature is reached at the start."
-msgstr "Opção que diz se se deve inserir comando para aguardar que a temperatura-alvo do bico estabilize no início."
+msgstr "Decide se haverá a inserção do comando para aguardar que a temperatura-alvo do bico estabilize no início."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend label"
@@ -123,7 +123,7 @@ msgstr "Incluir Temperaturas de Material"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend description"
 msgid "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting."
-msgstr "Opção que diz se se deve incluir comandos de temperatura do bico no início do G-Code. Quando o G-Code Inicial já contiver comandos de temperatura do bico, a interface do Cura automaticamente desabilitará este ajuste."
+msgstr "Decide se haverá a inclusão de comandos de temperatura do bico no início do G-Code. Quando o G-Code Inicial já contiver comandos de temperatura do bico, a interface do Cura automaticamente desabilitará este ajuste."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend label"
@@ -133,7 +133,7 @@ msgstr "Incluir Temperatura da Mesa"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
 msgid "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting."
-msgstr "Opção que diz se se deve incluir comandos de temperatura da mesa de impressão no início do G-Code. Quando o G-Code Inicial já contiver comandos de temperatura da mesa, a interface do Cura automaticamente desabilitará este ajuste."
+msgstr "Decide se haverá a inclusão de comandos de temperatura da mesa de impressão no início do G-Code. Quando o G-Code Inicial já contiver comandos de temperatura da mesa, a interface do Cura automaticamente desabilitará este ajuste."
 
 #: fdmprinter.def.json
 msgctxt "machine_width label"
@@ -213,7 +213,7 @@ msgstr "Tem Mesa Aquecida"
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed description"
 msgid "Whether the machine has a heated build plate present."
-msgstr "Indica se a plataforma de impressão pode ser aquecida."
+msgstr "Decide se a plataforma de impressão pode ser aquecida."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume label"
@@ -223,7 +223,7 @@ msgstr "Tem Estabilização de Temperatura do Volume de Impressão"
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
-msgstr "Indica se a máquina consegue estabilizar a temperatura do volume de construção."
+msgstr "Decide se a máquina consegue estabilizar a temperatura do volume de construção."
 
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool label"
@@ -243,7 +243,7 @@ msgstr "Origem é no Centro"
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero description"
 msgid "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area."
-msgstr "Indica se as coordenadas X/Y da posição zero da impressão estão no centro da área imprimível (senão, estarão no canto inferior esquerdo)."
+msgstr "Decide se as coordenadas X/Y da posição zero da impressão estão no centro da área imprimível (senão, estarão no canto inferior esquerdo)."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruder_count label"
@@ -313,7 +313,7 @@ msgstr "Habilitar Controle de Temperatura do Bico"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
-msgstr "Opção que diz se a temperatura deve ser controlada pelo Cura. Desligue para controlar a temperatura do bico fora do Cura."
+msgstr "Decide se a temperatura deve ser controlada pelo Cura. Desligue para controlar a temperatura do bico fora do Cura."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
@@ -408,7 +408,7 @@ msgstr "Retração de Firmware"
 #: fdmprinter.def.json
 msgctxt "machine_firmware_retract description"
 msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
-msgstr "Opção que diz se se deve usar comandos de retração de firmware (G10/G11) ao invés da propriedade E dos comandos G1 para retrair o material."
+msgstr "Decide se serão usados comandos de retração de firmware (G10/G11) ao invés da propriedade E dos comandos G1 para retrair o material."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater label"
@@ -418,27 +418,27 @@ msgstr "Extrusores Compartilham Aquecedor"
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr "Opção que diz se os extrusores usam um único aquecedor combinado ou cada um tem o seu respectivo aquecedor."
+msgstr "Decide se os extrusores usam um único aquecedor combinado ou cada um tem o seu respectivo aquecedor."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle label"
 msgid "Extruders Share Nozzle"
-msgstr ""
+msgstr "Extrusores Compartilham o Bico"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
-msgstr ""
+msgstr "Decide se os extrusores compartilham um único bico ao invés de cada extrusor ter seu próprio. Quando colocado em verdadeiro, é esperado que o script g-code de início da impressora configure todos os extrusores em um estado inicial de retração que seja conhecido e mutuamente compatível (ou zero ou filamento não retraído); neste caso, o status de retração inicial é descrito, por extrusor, pelo parâmetro 'machine_extruders_shared_nozzle_initial_retraction'."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
 msgid "Shared Nozzle Initial Retraction"
-msgstr ""
+msgstr "Retração Inicial do Bico Compartilhado"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
-msgstr ""
+msgstr "Quanto é assumido que o filamento de cada extrusor  tenha retraído da ponta do bico ao completar o script g-code de início da impressora; o valor deve ser igual ou superior ao comprimento da parte comum dos dutos do bico."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -488,7 +488,7 @@ msgstr "ID do Bico"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "O identificador do bico para o carro extrusor, tais como \"AA 0.4\" ou \"BB 0.8.\""
+msgstr "O identificador do bico para o carro extrusor, tais como \"AA 0.4\" ou \"BB 0.8\"."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_size label"
@@ -508,7 +508,7 @@ msgstr "Deslocamento com o Extrusor"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
-msgstr ""
+msgstr "Aplicar o deslocamento de extrusor ao sistema de coordenadas. Afeta todos os extrusores."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -698,7 +698,7 @@ msgstr "Endstop X na Direção Positiva"
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x description"
 msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
-msgstr "Opção que diz se o endstop do eixo X está na direção positiva (coordenada X alta) ou negativa (coordenada X baixa)."
+msgstr "Decide se o endstop do eixo X está na direção positiva (coordenada X alta) ou negativa (coordenada X baixa)."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y label"
@@ -708,7 +708,7 @@ msgstr "Endstop Y na Direção Positiva"
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_y description"
 msgid "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate)."
-msgstr "Opção que diz se o endstop do eixo Y está na direção positiva (coordenada Y alta) ou negativa (coordenada Y baixa)."
+msgstr "Decide se o endstop do eixo Y está na direção positiva (coordenada Y alta) ou negativa (coordenada Y baixa)."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z label"
@@ -718,7 +718,7 @@ msgstr "Endstop Z na Direção Positiva"
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_z description"
 msgid "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate)."
-msgstr "Opção que diz se o endstop do eixo Z está na direção positiva (coordenada Z alta) ou negativa (coordenada Z baixa)."
+msgstr "Decide se o endstop do eixo Z está na direção positiva (coordenada Z alta) ou negativa (coordenada Z baixa)."
 
 #: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
@@ -903,7 +903,7 @@ msgstr "Multiplicador da largura de extrusão da primeira camada. Aumentar este 
 #: fdmprinter.def.json
 msgctxt "shell label"
 msgid "Walls"
-msgstr ""
+msgstr "Paredes"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -1278,12 +1278,12 @@ msgstr "Quando habilitado, as coordenadas da costura Z são relativas ao centro 
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Superior/Inferior"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Superior/Inferior"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1653,7 +1653,7 @@ msgstr "Ângulo Máximo do Contorno para Expansão"
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr ""
+msgstr "Superfícies superiores e/ou inferiores de seu objeto com um ângulo maior que este ajuste não terão seu contorno expandido. Isto permite evitar a expansão de áreas estreitas de contorno que são criadas quando a superfície do modelo tem uma inclinação quase vertical. Um ângulo de 0° é horizontal e não causará expansão no contorno, enquanto que um ângulo de 90° é vertical e causará expansão em todo o contorno."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
@@ -2592,7 +2592,7 @@ msgstr "Velocidade da Camada Inicial"
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
 msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
-msgstr ""
+msgstr "A velocidade para a camada inicial. Um valor menor é sugerido para melhorar aderência à mesa de impressão. Não afeta as estruturas de aderência à mesa de impressão como o brim e o raft."
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3807,7 +3807,7 @@ msgstr "Prioridade das Distâncias de Suporte"
 #: fdmprinter.def.json
 msgctxt "support_xy_overrides_z description"
 msgid "Whether the Support X/Y Distance overrides the Support Z Distance or vice versa. When X/Y overrides Z the X/Y distance can push away the support from the model, influencing the actual Z distance to the overhang. We can disable this by not applying the X/Y distance around overhangs."
-msgstr "Opção que diz se a distância XY substitui a distância Z de suporte ou vice-versa. Quando XY substitui Z a distância XY pode afastar o suporte do modelo, influenciando a distância Z real até a seção pendente. Podemos desabilitar isso não aplicando a distância XY em volta das seções pendentes."
+msgstr "Decide se a distância XY substitui a distância Z de suporte ou vice-versa. Quando XY substitui Z a distância XY pode afastar o suporte do modelo, influenciando a distância Z real até a seção pendente. Podemos desabilitar isso não aplicando a distância XY em volta das seções pendentes."
 
 #: fdmprinter.def.json
 msgctxt "support_xy_overrides_z option xy_overrides_z"
@@ -4332,7 +4332,7 @@ msgstr "Habilitar Massa de Purga"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
-msgstr "Indica se é preciso descarregar o filamento com uma massa de purga antes de imprimir. Ligar este ajuste assegurará que o extrusor tenha material pronto no bico antes de imprimir. Imprimir um Brim ou Skirt pode funcionar como purga também, em cujo caso desligar esse ajuste faz ganhar algum tempo."
+msgstr "Decide se é preciso descarregar o filamento com uma massa de purga antes de imprimir. Ligar este ajuste assegurará que o extrusor tenha material pronto no bico antes de imprimir. Imprimir um Brim ou Skirt pode funcionar como purga também, em cujo caso desligar esse ajuste faz ganhar algum tempo."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_x label"
@@ -5076,7 +5076,7 @@ msgstr "Sequência de Impressão"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "Ajuste para decidir se os modelos devem ser impressos todos de uma vez só, uma camada por vez, ou se se deve esperar a cada modelo terminar antes de prosseguir para o próximo. O modo um de cada vez só é possível se a) somente um extrusor estiver habilitado e b) todos os modelos estiverem separados de modo que a cabeça de impressão pode se mover entre todos e todos os modelos estiverem em altura mais baixa que a distância entre o bico e os eixos X e Y."
+msgstr "Decide se os modelos devem ser impressos todos de uma vez só, uma camada por vez, ou se se deve esperar a cada modelo terminar antes de prosseguir para o próximo. O modo um de cada vez só é possível se a) somente um extrusor estiver habilitado e b) todos os modelos estiverem separados de modo que a cabeça de impressão pode se mover entre todos e todos os modelos estiverem em altura mais baixa que a distância entre o bico e os eixos X e Y."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5106,7 +5106,7 @@ msgstr "Hierarquia do Processamento de Malha"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
-msgstr ""
+msgstr "Determina a prioridade desta malha ao considerar múltiplas malhas de preenchimento sobrepostas. Áreas onde múltiplas malhas de preenchimento se sobrepõem terão os ajustes da malha com a maior prioridade. Uma malha de preenchimento com prioridade maior modificará o preenchimento tanto das malhas de preenchimento com prioridade menor quanto das malhas normais."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5456,12 +5456,12 @@ msgstr "O ângulo máximo de seçọes pendentes depois de se tornarem imprimív
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size label"
 msgid "Maximum Overhang Hole Area"
-msgstr ""
+msgstr "Área Máxima de Furo de Seções Pendentes"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
-msgstr ""
+msgstr "A área máxima de um furo na base do modelo antes que seja removido por \"Torna Seções Pendentes Imprimíveis\". Furos com área menor que esta serão retidos. O valor de 0 mm² preenche todos os furos na base do modelo."
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
@@ -6160,7 +6160,7 @@ msgstr "Limpar o Bico Entre Camadas"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "Opção que diz se se deve incluir G-Code de limpeza de bico entre camadas (no máximo 1 por camada). Habilitar este ajuste pode influenciar o comportamento de retração na mudança de camada. Por favor use ajustes de Retração de Limpeza para controlar retração nas camadas onde o script de limpeza estará atuando."
+msgstr "Decide se haverá inclusão de G-Code de limpeza de bico entre camadas (no máximo 1 por camada). Habilitar este ajuste pode influenciar o comportamento de retração na mudança de camada. Por favor use ajustes de Retração de Limpeza para controlar retração nas camadas onde o script de limpeza estará atuando."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6360,7 +6360,7 @@ msgstr "Centralizar Objeto"
 #: fdmprinter.def.json
 msgctxt "center_object description"
 msgid "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved."
-msgstr "Opção que diz se o objeto deve ser centralizado no meio da plataforma de impressão, ao invés de usar o sistema de coordenadas em que o objeto foi salvo."
+msgstr "Decide se o objeto deve ser centralizado no meio da plataforma de impressão, ao invés de usar o sistema de coordenadas em que o objeto foi salvo."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
