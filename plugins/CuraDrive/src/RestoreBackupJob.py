@@ -61,7 +61,11 @@ class RestoreBackupJob(Job):
             app = CuraApplication.getInstance()
             bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
             while bytes_read:
-                write_backup.write(bytes_read)
+                try:
+                    write_backup.write(bytes_read)
+                except Exception as e:
+                    Logger.logException("e", "An error occurred while writing the backup to a temporary file: {}. The restoration of the backup is aborted.".format(e))
+                    return
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 app.processEvents()
 
