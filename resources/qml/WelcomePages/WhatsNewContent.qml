@@ -71,7 +71,7 @@ Item
                     width: whatsNewViewport.width
                     height: whatsNewViewport.height
 
-                    Image
+                    AnimatedImage
                     {
                         id: subpageImage
 
@@ -84,9 +84,9 @@ Item
                             right: parent.right
                             rightMargin: UM.Theme.getSize("thick_margin").width
                         }
-                        width: sourceSize.width
-                        sourceSize.width: Math.round(parent.width - (UM.Theme.getSize("thick_margin").height * 2))
+                        width: Math.round(parent.width - (UM.Theme.getSize("thick_margin").height * 2))
                         fillMode: Image.PreserveAspectFit
+                        onStatusChanged: playing = (status == AnimatedImage.Ready)
 
                         source: manager.getSubpageImageSource(index)
                     }
