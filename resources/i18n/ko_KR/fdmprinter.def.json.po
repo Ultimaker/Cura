@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:09+0000\n"
-"PO-Revision-Date: 2020-08-21 13:40+0200\n"
+"PO-Revision-Date: 2021-04-16 15:02+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -428,8 +428,7 @@ msgstr "익스트루더의 노즐 공유"
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
-msgstr "익스트루더가 자체 노즐을 가지고 있지 않고 단일 노즐을 공유하는지에 대한 여부. True로 설정하면 프린터 시동 gcode 스크립트가 알려진 상호 호환 가능한 초기 수축 상태(0 또는 1개의 필라멘트가 수축되지 않음)에서 모든 익스트루더를 적절하게 설정해야 합니다. 이"
-" 경우 초기 수축 상태는 'machine_extruders_shared_nozzle_initial_retraction' 매개 변수에 의해 익스트루더마다 표시됩니다."
+msgstr "익스트루더가 자체 노즐을 가지고 있지 않고 단일 노즐을 공유하는지에 대한 여부. True로 설정하면 프린터 시동 gcode 스크립트가 알려진 상호 호환 가능한 초기 수축 상태(0 또는 1개의 필라멘트가 수축되지 않음)에서 모든 익스트루더를 적절하게 설정해야 합니다. 이 경우 초기 수축 상태는 'machine_extruders_shared_nozzle_initial_retraction' 매개 변수에 의해 익스트루더마다 표시됩니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
@@ -1654,8 +1653,7 @@ msgstr "확장을 위한 최대 스킨 각"
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr "이 설정보다 큰 각도로 객체의 상단 및 또는 하단 표면은 위쪽/아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. 0도의 각도는 수평이며 스킨의 확장을 유발하지 않고, 90도의 각도는 수직이며"
-" 모든 스킨의 확장을 유발합니다."
+msgstr "이 설정보다 큰 각도로 객체의 상단 및 또는 하단 표면은 위쪽/아래쪽 스킨이 확장되지 않습니다. 이렇게하면 모델 표면이 수직 경사가 거의 없을 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다. 0도의 각도는 수평이며 스킨의 확장을 유발하지 않고, 90도의 각도는 수직이며 모든 스킨의 확장을 유발합니다."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
