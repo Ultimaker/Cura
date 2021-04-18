@@ -66,7 +66,7 @@
                 {
                     "label": "Machine Height",
                     "description": "The height (Z-direction) of the printable area.",
-                    "default_value": 530,
+                    "default_value": 500,
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -110,7 +110,7 @@
                 {
                     "label": "End G-code",
                     "description": "G-code commands to be executed at the very end - separated by \\n.",
-                    "default_value": "M104 S0\n;Turn off Extruder\nM140 S0\n;Turn off Bed\n;Turn off Fan\nM106 S0\n;Move nozzle away while extracting\nG91\nG1 X-2 Y-2 E-3 F300\n;Lower Bed 10mm\nG1 Z10 F3000\n; Move print head out of the way and bed down\nG90\nG0 X480 Y480\nG0 Z475",
+                    "default_value": "M104 S0\n;Turn off Extruder\nM140 S0\n;Turn off Bed\n;Turn off Fan\nM106 S0\n;Move nozzle away while extracting\nG91\nG1 X-2 Y-2 E-3 F300\n;Lower Bed 10mm\nG1 Z10 F3000\n; Move print head out of the way and bed down\nG90\nG0 X480 Y480\nG0 Z450",
                     "type": "str",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,

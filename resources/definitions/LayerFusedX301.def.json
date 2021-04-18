@@ -36,7 +36,7 @@
                 {
                     "label": "Machine Width",
                     "description": "The width (X-direction) of the printable area.",
-                    "default_value": 300,
+                    "default_value": 330,
                     "type": "float",
                     "minimum_value": "0.001",
                     "maximum_value": "2000000",
@@ -48,7 +48,7 @@
                 {
                     "label": "Machine Depth",
                     "description": "The depth (Y-direction) of the printable area.",
-                    "default_value": 300,
+                    "default_value": 330,
                     "type": "float",
                     "minimum_value": "0.001",
                     "maximum_value": "2000000",
