@@ -82,7 +82,7 @@ Cura.ExpandableComponent
         property bool show_helpers: UM.Preferences.getValue("layerview/show_helpers")
         property bool show_skin: UM.Preferences.getValue("layerview/show_skin")
         property bool show_infill: UM.Preferences.getValue("layerview/show_infill")
-        property bool show_starts: UM.Preferences.getValue("layerview/show_starts")
+        property bool show_seam: UM.Preferences.getValue("layerview/show_seam")
 
         // If we are in compatibility mode, we only show the "line type"
         property bool show_legend: UM.SimulationView.compatibilityMode ? true : UM.Preferences.getValue("layerview/layer_view_type") == 1
@@ -260,10 +260,10 @@ Cura.ExpandableComponent
                     if (! UM.SimulationView.compatibilityMode)
                     {
                         typesLegendModel.append({
-                            label: catalog.i18nc("@label", "Starts"),
-                            initialValue: viewSettings.show_starts,
-                            preference: "layerview/show_starts",
-                            colorId:  "layerview_starts"
+                            label: catalog.i18nc("@label", "Seam"),
+                            initialValue: viewSettings.show_seam,
+                            preference: "layerview/show_seam",
+                            colorId:  "layerview_seam"
                         });
                     }
                 }

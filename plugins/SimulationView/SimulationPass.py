@@ -64,7 +64,7 @@ class SimulationPass(RenderPass):
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
         if not self._compatibility_mode:
-            self._layer_shader.setUniformValue("u_starts_color", Color(*Application.getInstance().getTheme().getColor("layerview_starts").getRgb()))
+            self._layer_shader.setUniformValue("u_seam_color", Color(*Application.getInstance().getTheme().getColor("layerview_seam").getRgb()))
             
         if self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
@@ -79,7 +79,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
-            self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
+            self._layer_shader.setUniformValue("u_show_seam", self._layer_view.getShowSeam())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
@@ -94,7 +94,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
-            self._layer_shader.setUniformValue("u_show_starts", 1)
+            self._layer_shader.setUniformValue("u_show_seam", 1)
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
@@ -173,8 +173,8 @@ class SimulationPass(RenderPass):
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
 
-                    # The first line does not have a previous line: add a MoveCombingType in front for start detection
-                    # this way the first start of the layer can also be drawn 
+                    # The first line does not have a previous line: add a MoveCombingType in front for seam detection
+                    # this way the first seam of the layer can also be drawn 
                     prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
                     # Remove the last element 
                     prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
