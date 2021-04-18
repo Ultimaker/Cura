@@ -1,0 +1,123 @@
+{
+    "version": 2,
+    "name": "LayerFusedX501",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Dano",
+        "platform": "Logo_X501.stl",
+        "manufacturer": "LayerFused",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "lfextruder"  
+        },
+        "supports_usb_connection": true,
+        "supports_network_connection": false
+    },
+    "settings":
+    {
+        "machine_settings":
+        {
+            "label": "Machine",
+            "type": "category",
+            "description": "Machine specific settings",
+            "icon": "category_machine",
+            "children":
+            {
+                "machine_name":
+                {
+                    "label": "Machine Type",
+                    "description": "X501",
+                    "default_value": "X501"
+                },
+                "machine_width":
+                {
+                    "label": "Machine Width",
+                    "description": "The width (X-direction) of the printable area.",
+                    "default_value": 500,
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_depth":
+                {
+                    "label": "Machine Depth",
+                    "description": "The depth (Y-direction) of the printable area.",
+                    "default_value": 500,
+                    "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_shape":
+                {
+                    "label": "Build Plate Shape",
+                    "description": "The shape of the build plate without taking unprintable areas into account.",
+                    "default_value": "rectangular"
+                },
+                "machine_height":
+                {
+                    "label": "Machine Height",
+                    "description": "The height (Z-direction) of the printable area.",
+                    "default_value": 530,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_heated_bed":
+                {
+                    "label": "Has Heated Build Plate",
+                    "description": "Whether the machine has a heated build plate present.",
+                    "default_value": true,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "material_diameter":
+                {
+                    "label": "Diameter",
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.75,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "0.4",
+                    "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "machine_start_gcode":
+                {
+                    "label": "Start G-code",
+                    "description": "G-code commands to be executed at the very start - separated by \\n.",
+                    "default_value": "G28 ;Home\nG92 E0 ;Reset Extruder\nG1 X10.1 Y20 Z0.28 F5000 ;Move to start\nG1 X10.1 Y200 Z0.28 F1500 E15 ;Draw first line\nG1 X10.4 Y200 Z0.28 F5000.0 ;Move over a bit\nG1 X10.4 Y20 Z20.28 F1500.0 E30 ;Draw second line\nG92 E0 ;Reset Extruder\nG1 Z15 ;Lower Z 15mm\nG1 X255 Y255 ;Move to center to start print",
+                    "type": "str",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_end_gcode":
+                {
+                    "label": "End G-code",
+                    "description": "G-code commands to be executed at the very end - separated by \\n.",
+                    "default_value": "M104 S0\n;Turn off Extruder\nM140 S0\n;Turn off Bed\n;Turn off Fan\nM106 S0\n;Move nozzle away while extracting\nG91\nG1 X-2 Y-2 E-3 F300\n;Lower Bed 10mm\nG1 Z10 F3000\n; Move print head out of the way and bed down\nG90\nG0 X480 Y480\nG0 Z475",
+                    "type": "str",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                }
+
+            }
+        }    
+    }
+}
