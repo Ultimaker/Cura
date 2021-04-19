@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:09+0000\n"
-"PO-Revision-Date: 2020-08-21 13:40+0200\n"
+"PO-Revision-Date: 2021-04-16 14:58+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Italian <info@lionbridge.com>, Italian <info@bothof.nl>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -422,22 +422,22 @@ msgstr "Indica se gli estrusori condividono un singolo riscaldatore piuttosto ch
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle label"
 msgid "Extruders Share Nozzle"
-msgstr ""
+msgstr "Estrusori condividono ugello"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
-msgstr ""
+msgstr "Indica se gli estrusori condividono un singolo ugello piuttosto che avere ognuno il proprio. Se impostato su true, si prevede che lo script gcode di avvio della stampante imposti tutti gli estrusori su uno stato di retrazione iniziale noto e mutuamente compatibile (nessuno o un solo filamento non retratto); in questo caso lo stato di retrazione iniziale è descritto, per estrusore, dal parametro 'machine_extruders_shared_nozzle_initial_retraction'."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
 msgid "Shared Nozzle Initial Retraction"
-msgstr ""
+msgstr "Retrazione iniziale ugello condivisa"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
-msgstr ""
+msgstr "La quantità di filamento di ogni estrusore che si presume sia stata retratta dalla punta dell'ugello condiviso al termine dello script gcode di avvio stampante; il valore deve essere uguale o maggiore della lunghezza della parte comune dei condotti dell'ugello."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -507,7 +507,7 @@ msgstr "Offset con estrusore"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
-msgstr ""
+msgstr "Applica l’offset estrusore al sistema coordinate. Influisce su tutti gli estrusori."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -902,7 +902,7 @@ msgstr "Moltiplicatore della larghezza della linea del primo strato Il suo aumen
 #: fdmprinter.def.json
 msgctxt "shell label"
 msgid "Walls"
-msgstr ""
+msgstr "Pareti"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -1277,12 +1277,12 @@ msgstr "Se abilitato, le coordinate della giunzione Z sono riferite al centro di
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Superiore / Inferiore"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Superiore / Inferiore"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1652,7 +1652,7 @@ msgstr "Angolo massimo rivestimento esterno per prolunga"
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr ""
+msgstr "Nelle superfici superiore e/o inferiore dell'oggetto con un angolo più grande di questa impostazione, il rivestimento esterno non sarà prolungato. Questo evita il prolungamento delle aree del rivestimento esterno strette che vengono create quando la pendenza della superficie del modello è quasi verticale. Un angolo di 0° è orizzontale e non causa il prolungamento di alcun rivestimento esterno, mentre un angolo di 90° è verticale e causa il prolungamento di tutto il rivestimento esterno."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
@@ -2591,7 +2591,7 @@ msgstr "Velocità di stampa dello strato iniziale"
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
 msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
-msgstr ""
+msgstr "La velocità dello strato iniziale. È consigliabile un valore inferiore per migliorare l'adesione al piano di stampa. Non influisce sulle strutture di adesione del piano di stampa stesse, come brim e raft."
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -5105,7 +5105,7 @@ msgstr "Classificazione dell'elaborazione delle maglie"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
-msgstr ""
+msgstr "Determina la priorità di questa mesh quando si considera la sovrapposizione multipla delle mesh di riempimento. Per le aree con la sovrapposizione di più mesh di riempimento verranno utilizzate le impostazioni della mesh con la classificazione più alta. Una mesh di riempimento con una classificazione più alta modificherà il riempimento delle mesh di riempimento con una classificazione inferiore e delle mesh normali."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5455,12 +5455,12 @@ msgstr "L’angolo massimo degli sbalzi dopo essere stati resi stampabili. A un 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size label"
 msgid "Maximum Overhang Hole Area"
-msgstr ""
+msgstr "Area foro di sbalzo massima"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
-msgstr ""
+msgstr "L'area massima di un foro nella base del modello prima che venga rimossa da Rendi stampabile lo sbalzo.  I fori più piccoli di questo verranno mantenuti.  Un valore di 0 mm² riempirà i fori nella base del modello."
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"

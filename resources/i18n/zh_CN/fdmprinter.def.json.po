@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:09+0000\n"
-"PO-Revision-Date: 2020-08-21 13:40+0200\n"
+"PO-Revision-Date: 2021-04-16 15:04+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: fdmprinter.def.json
@@ -423,22 +423,22 @@ msgstr "挤出器是否共用一个加热器，而不是每个挤出器都有自
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle label"
 msgid "Extruders Share Nozzle"
-msgstr ""
+msgstr "挤出器共用喷嘴"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
-msgstr ""
+msgstr "挤出器是否共用一个喷嘴，而不是每个挤出器都有自己的喷嘴。当设置为 true 时，预计打印机启动 gcode 脚本会将所有挤出器正确设置为已知且相互兼容的初始缩回状态 (零根或一根细丝未缩回)；在这种情况下，会通过“machine_extruders_shared_nozzle_initial_retraction”参数描述每个挤出器的初始缩回状态。"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
 msgid "Shared Nozzle Initial Retraction"
-msgstr ""
+msgstr "共用喷嘴初始缩回"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
-msgstr ""
+msgstr "假定在打印机启动 gcode 脚本完成后，每个挤出器的细丝从共用喷嘴头缩回多少；该值应等于或大于喷嘴导管公共部分的长度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -508,7 +508,7 @@ msgstr "挤出机偏移量"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
-msgstr ""
+msgstr "将挤出器偏移量应用到坐标轴系统。影响所有挤出器。"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -903,7 +903,7 @@ msgstr "第一层走线宽度乘数。 增大此乘数可改善热床粘着。"
 #: fdmprinter.def.json
 msgctxt "shell label"
 msgid "Walls"
-msgstr ""
+msgstr "墙"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -1278,12 +1278,12 @@ msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "顶 / 底层"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "顶 / 底层"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1653,7 +1653,7 @@ msgstr "最大扩展皮肤角度"
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr ""
+msgstr "如果对象的顶部和/或底部表面的角度大于此设置，则不要扩展其顶部/底部皮肤。这会避免扩展在模型表面有接近垂直的坡度时所形成的狭窄皮肤区域。0° 的角为水平，将导致不扩展任何皮肤，而 90° 的角为垂直，将导致扩展所有皮肤。"
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
@@ -2592,7 +2592,7 @@ msgstr "起始层速度"
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
 msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
-msgstr ""
+msgstr "起始层的速度。建议采用较低的值以便改善与构建板的粘着。不会影响构建板自身的粘着结构，如边沿和筏。"
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -5106,7 +5106,7 @@ msgstr "网格处理等级"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
-msgstr ""
+msgstr "在考虑多个重叠的填充网格时确定此网格的优先级。其中有多个填充网格重叠的区域将采用等级最高的网格的设置。具有较高等级的填充网格将修改具有较低等级的填充网格和普通网格的填充。"
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5456,12 +5456,12 @@ msgstr "在悬垂变得可打印后悬垂的最大角度。 当该值为 0° 时
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size label"
 msgid "Maximum Overhang Hole Area"
-msgstr ""
+msgstr "最大悬垂孔面积"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
-msgstr ""
+msgstr "在“使悬垂对象可打印”将其删除之前，模型底部的孔的最大面积。小于此面积的孔将会保留。值 0 mm² 将填充模型底部的所有孔。"
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
