@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:10+0200\n"
-"PO-Revision-Date: 2020-11-09 14:08+0100\n"
+"PO-Revision-Date: 2021-04-16 15:01+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -69,11 +69,8 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "한 번에 하나의 G-코드 파일만 로드 할 수 있습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1800
-#: /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:188
-#: /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:242
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:165
+#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1800 /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:188 /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:242
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153 /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:165
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "경고"
@@ -84,9 +81,7 @@ msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-코드가 로드되어 있으면 다른 파일을 열 수 없습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1810
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:146
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:153
+#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1810 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:146 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:153
 #: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:139
 msgctxt "@info:title"
 msgid "Error"
@@ -103,25 +98,18 @@ msgctxt "@label"
 msgid "Custom Material"
 msgstr "사용자 정의 소재"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/MaterialManagementModel.py:227
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:205
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/MaterialManagementModel.py:227 /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:205
 msgctxt "@label"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:338
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:11
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:42
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:338 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:11 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:42
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:361
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:110
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:1612
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:361 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:110 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:1612 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
 msgctxt "@label"
 msgid "Unknown"
 msgstr "알 수 없는"
@@ -142,38 +130,32 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "모든 파일 (*)"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:14
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:45
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:14 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:45
 msgctxt "@label"
 msgid "Visual"
 msgstr "뛰어난 외관"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:15
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:46
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:15 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:46
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "시각적 프로파일은 높은 시각적 및 표면 품질의 의도를 지니고 시각적 프로토타입과 모델을 인쇄하기 위해 설계되었습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:18
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:49
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:18 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:49
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engineering"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:19
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:50
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:19 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:50
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "엔지니어링 프로파일은 정확도를 개선하고 허용 오차를 좁히려는 의도로 기능 프로토타입 및 최종 사용 부품을 인쇄하도록 설계되었습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:22
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:53
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:22 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:53
 msgctxt "@label"
 msgid "Draft"
 msgstr "초안"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:23
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:54
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:23 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:54
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "초안 프로파일은 인쇄 시간을 상당히 줄이려는 의도로 초기 프로토타입과 컨셉트 확인을 인쇄하도록 설계되었습니다."
@@ -367,27 +349,23 @@ msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "로그인을 시도할 때 예기치 못한 문제가 발생했습니다. 다시 시도하십시오."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:205
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:132
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:205 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:132
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "파일이 이미 있습니다"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:206
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:133
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:206 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:133
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "파일 <filename>{0}</filename>이 이미 있습니다. 덮어 쓰시겠습니까?"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:456
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:459
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:456 /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:459
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "유효하지 않은 파일 URL:"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:713
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:216
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:713 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:216
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "노즐"
@@ -454,8 +432,7 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename>에서 프로파일을 가져오지 못했습니다:"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:235
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:245
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:235 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:245
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
@@ -498,7 +475,7 @@ msgstr "프로파일에 품질 타입이 누락되었습니다."
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:446
 msgctxt "@info:status"
 msgid "There is no active printer yet."
-msgstr ""
+msgstr "아직 활성화된 프린터가 없습니다."
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:452
 msgctxt "@info:status"
@@ -527,27 +504,22 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:24
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:24
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "객체의 새 위치 찾기"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:28
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:28
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "위치 찾기"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:41
-#: /mnt/projects/ultimaker/cura/Cura/cura/MultiplyObjectsJob.py:76
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:41 /mnt/projects/ultimaker/cura/Cura/cura/MultiplyObjectsJob.py:76
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "모든 개체가 출력할 수 있는 최대 사이즈 내에 위치할 수 없습니다"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:42
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:42
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "위치를 찾을 수 없음"
@@ -558,30 +530,23 @@ msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "그룹 #{group_nr}"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:55
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:55 /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
 msgctxt "@action:button"
 msgid "Skip"
-msgstr ""
+msgstr "건너뛰기"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60
-#: /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
-#: /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
-#: /mnt/projects/ultimaker/cura/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:127
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60 /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185 /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
+#: /mnt/projects/ultimaker/cura/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:174 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:127
 msgctxt "@action:button"
 msgid "Close"
 msgstr "닫기"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:56
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:259
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:56 /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:259
 msgctxt "@action:button"
 msgid "Next"
 msgstr "다음"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:272
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:26
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:272 /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:26
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "종료"
@@ -646,24 +611,15 @@ msgctxt "@tooltip"
 msgid "Other"
 msgstr "다른"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:17
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:48
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:17 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:48
 msgctxt "@action:button"
 msgid "Add"
 msgstr "추가"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:42
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:445
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:234
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:292
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:33 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:42
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:445 /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150 /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:234
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:292
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "취소"
@@ -683,9 +639,7 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "사용자 데이터 디렉터리에서 압축 파일을 만들 수 없습니다: {}"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Backups/Backup.py:119
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:107
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:113
+#: /mnt/projects/ultimaker/cura/Cura/cura/Backups/Backup.py:119 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:107 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:113
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "백업"
@@ -726,8 +680,7 @@ msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "이동식 드라이브  {0}에 저장"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "쓸 수있는 파일 형식이 없습니다!"
@@ -743,8 +696,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "저장"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:106
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:109
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:106 /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:109
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
@@ -756,8 +708,7 @@ msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "{device} 장치에 쓸 때 파일 이름을 찾을 수 없습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:138
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:138 /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
@@ -812,9 +763,7 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF 파일"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeProfileReader/__init__.py:14
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/__init__.py:14
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/__init__.py:16
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeProfileReader/__init__.py:14 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/__init__.py:14 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/__init__.py:16
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code 파일"
@@ -834,8 +783,7 @@ msgctxt "@button"
 msgid "Decline"
 msgstr "거절"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
 msgctxt "@button"
 msgid "Agree"
 msgstr "동의"
@@ -860,8 +808,7 @@ msgctxt "@info:generic"
 msgid "Syncing..."
 msgstr "동기화 중..."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:93
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:93 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
 msgstr "Ultimaker 계정에서 변경 사항이 감지되었습니다"
@@ -906,12 +853,8 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "선택한 소재 또는 구성과 호환되지 않기 때문에 현재 소재로 슬라이스 할 수 없습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:382
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:437
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:446
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:455
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:467
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:382 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:437
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:446 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:455 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:467
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "슬라이스 할 수 없습니다"
@@ -952,8 +895,7 @@ msgstr ""
 "- 활성화된 익스트루더로 할당됨\n"
 "- 수정자 메쉬로 전체 설정되지 않음"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "레이어 처리 중"
@@ -998,8 +940,7 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "프린트 진행 중"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileWriter/__init__.py:14
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileReader/__init__.py:14
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileWriter/__init__.py:14 /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura 프로파일"
@@ -1045,8 +986,7 @@ msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "다음 프린터는 Digital Factory에 연결되어 있지 않습니다:"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
@@ -1297,8 +1237,7 @@ msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 갑자기 접근할 수 없습니다: <message>{1}</message>."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:642
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "프로젝트 파일 열 수 없음"
@@ -1307,7 +1246,7 @@ msgstr "프로젝트 파일 열 수 없음"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
-msgstr ""
+msgstr "프로젝트 파일 <filename>{0}</filename>이 손상됨: <message>{1}</message>."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:693
 #, python-brace-format
@@ -1315,14 +1254,12 @@ msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
 msgstr "프로젝트 파일 <filename>{0}</filename>이(가) 이 버전의 Ultimaker Cura에서 확인할 수 없는 프로파일을 사용하였습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:27
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:33
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:27 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:33
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 파일"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzWriter/__init__.py:17
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzReader/__init__.py:17
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzWriter/__init__.py:17 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzReader/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "압축된 G-code 파일"
@@ -1383,8 +1320,7 @@ msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G 코드 파싱"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:349
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:503
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:349 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:503
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-코드 세부 정보"
@@ -1434,8 +1370,7 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Compressed COLLADA Digital Asset Exchange"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UFPReader/__init__.py:22
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/__init__.py:28
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UFPReader/__init__.py:22 /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimaker 포맷 패키지"
@@ -1480,8 +1415,7 @@ msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "3MF 기록기 플러그인이 손상되었습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59 /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "여기서 작업 환경을 작성할 권한이 없습니다."
@@ -1521,8 +1455,7 @@ msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "표시할 레이어 없음"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationView.py:127
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:74
+#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationView.py:127 /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "다시 메시지 표시 안 함"
@@ -1540,17 +1473,17 @@ msgstr "솔리드 뷰"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
-msgstr ""
+msgstr "강조 표시된 영역은 누락되거나 관련 없는 표면을 표시합니다. 모델을 수정하고 Cura에서 다시 엽니다."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:73
 msgctxt "@info:title"
 msgid "Model Errors"
-msgstr ""
+msgstr "모델 에러"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:79
 msgctxt "@action:button"
 msgid "Learn more"
-msgstr ""
+msgstr "자세히 알아보기"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/UFPWriter.py:134
 msgctxt "@info:error"
@@ -1562,8 +1495,7 @@ msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "GCodeWriter는 텍스트가 아닌 모드는 지원하지 않습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:80
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:96
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:80 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:96
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "내보내기 전에 G-code를 준비하십시오."
@@ -1593,8 +1525,7 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF 이미지"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DriveApiService.py:86
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DriveApiService.py:86 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "백업 복원 시도 중 오류가 있었습니다."
@@ -1734,9 +1665,7 @@ msgctxt "@button"
 msgid "Dismiss"
 msgstr "취소"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:182
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:182
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
 msgctxt "@button"
 msgid "Next"
@@ -1807,8 +1736,7 @@ msgctxt "@label"
 msgid "Last updated"
 msgstr "마지막으로 업데이트한 날짜"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
 msgctxt "@label"
 msgid "Brand"
 msgstr "상표"
@@ -1863,9 +1791,7 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
 msgstr "Ultimaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:199
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:199
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:53
 msgctxt "@button"
 msgid "Sign in"
@@ -1926,9 +1852,7 @@ msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "플러그인"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:457
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:457
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "재료"
@@ -1938,8 +1862,7 @@ msgctxt "@title:tab"
 msgid "Installed"
 msgstr "설치됨"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
 msgstr "웹 마켓플레이스로 이동"
@@ -1949,20 +1872,17 @@ msgctxt "@label"
 msgid "Will install upon restarting"
 msgstr "다시 시작 시 설치 예정"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96
 msgctxt "@action:button"
 msgid "Update"
 msgstr "업데이트"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "업데이트 중"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "업데이트됨"
@@ -1982,8 +1902,7 @@ msgctxt "@action:button"
 msgid "Uninstall"
 msgstr "설치 제거"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "설치됨"
@@ -2073,8 +1992,7 @@ msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "이 모델에 맞게 사용자 정의 설정을 선택하십시오"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:94
+#: /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:94
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "필터..."
@@ -2191,8 +2109,7 @@ msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
 msgstr "무시하기는 기존 프린터 구성과 함께 지정된 설정을 사용하게 됩니다. 이는 인쇄 실패로 이어질 수 있습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191
 msgctxt "@label"
 msgid "Glass"
@@ -2213,8 +2130,7 @@ msgctxt "@label"
 msgid "First available"
 msgstr "첫 번째로 사용 가능"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:523
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
@@ -2240,9 +2156,7 @@ msgctxt "@action:button"
 msgid "Edit"
 msgstr "편집"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:55
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:55
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:138
 msgctxt "@action:button"
 msgid "Remove"
@@ -2258,20 +2172,17 @@ msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "프린터가 목록에 없으면 네트워크 프린팅 문제 해결 가이드를 읽어보십시오"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
 msgctxt "@label"
 msgid "Type"
 msgstr "유형"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "펌웨어 버전"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
 msgctxt "@label"
 msgid "Address"
 msgstr "주소"
@@ -2301,8 +2212,7 @@ msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "잘못된 IP 주소"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "유효한 IP 주소를 입력하십시오."
@@ -2312,15 +2222,12 @@ msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "프린터 주소"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "네트워크에 있는 프린터의 IP 주소를 입력하십시오."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:227
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361 /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139 /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:227
 msgctxt "@action:button"
 msgid "OK"
 msgstr "확인"
@@ -2350,8 +2257,7 @@ msgctxt "@label"
 msgid "Delete"
 msgstr "삭제"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:290
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:290
 msgctxt "@label"
 msgid "Resume"
 msgstr "재개"
@@ -2366,9 +2272,7 @@ msgctxt "@label"
 msgid "Resuming..."
 msgstr "다시 시작..."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:285
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:294
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:285 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:294
 msgctxt "@label"
 msgid "Pause"
 msgstr "중지"
@@ -2408,26 +2312,22 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "%1(을)를 정말로 중지하시겠습니까?"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:336
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:336
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "프린팅 중단"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "중단됨"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "끝마친"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:364
 msgctxt "@label:status"
 msgid "Preparing..."
@@ -2563,14 +2463,12 @@ msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "새로 만들기"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:75
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:75 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "요약 - Cura 프로젝트"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:97
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:97 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "프린터 설정"
@@ -2580,20 +2478,17 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "기기의 충돌을 어떻게 해결해야합니까?"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:167 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
 msgctxt "@action:label"
 msgid "Type"
 msgstr "유형"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:183 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "프린터 그룹"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:205
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:205 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "프로파일 설정"
@@ -2603,28 +2498,23 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "프로파일의 충돌을 어떻게 해결해야합니까?"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:242
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:353
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:242 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:353 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:242
 msgctxt "@action:label"
 msgid "Name"
 msgstr "이름"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:258
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:258 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:274
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:274 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "프로파일에 없음"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:279
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:279 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2727,8 +2617,7 @@ msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "익명 데이터 전송 허용"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
+#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20 /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "색 구성표"
@@ -2751,12 +2640,12 @@ msgstr "속도"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:121
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
-msgstr ""
+msgstr "레이어 두께"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:125
 msgctxt "@label:listbox"
 msgid "Line Width"
-msgstr ""
+msgstr "선 두께"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:163
 msgctxt "@label"
@@ -2778,8 +2667,7 @@ msgctxt "@label"
 msgid "Shell"
 msgstr "외곽"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:255
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
+#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:255 /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
 msgctxt "@label"
 msgid "Infill"
 msgstr "내부채움"
@@ -2787,7 +2675,7 @@ msgstr "내부채움"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
 msgctxt "@label"
 msgid "Starts"
-msgstr ""
+msgstr "시작"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:314
 msgctxt "@label"
@@ -2829,18 +2717,10 @@ msgctxt "@label"
 msgid "Nozzle size"
 msgstr "노즐 크기"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
@@ -2963,7 +2843,7 @@ msgstr "익스트루더의 수"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:345
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr ""
+msgstr "익스트루더 오프셋을 GCode에 적용"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:393
 msgctxt "@title:label"
@@ -3045,8 +2925,7 @@ msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "직선 모양"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:161
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:172
+#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:161 /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
 msgstr "반투명성"
@@ -3181,8 +3060,7 @@ msgctxt "@label:category menu label"
 msgid "Generic"
 msgstr "일반"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/FileMenu.qml:13
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/FileMenu.qml:13 /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "파일"
@@ -3267,8 +3145,7 @@ msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
 msgstr "프린터가 연결되어 있지 않기 때문에 구성을 사용할 수 없습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ViewMenu.qml:12
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ViewMenu.qml:12 /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "보기(&V)"
@@ -3323,8 +3200,7 @@ msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
 msgstr "보기 설정 관리..."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SettingsMenu.qml:13
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:51
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SettingsMenu.qml:13 /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:51
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "설정"
@@ -3357,7 +3233,7 @@ msgstr "익스트루더 사용하지 않음"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SaveProjectMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
-msgstr ""
+msgstr "프로젝트 저장 중..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3379,15 +3255,14 @@ msgstr "복제할 수"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/OpenFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
-msgstr ""
+msgstr "파일 여는 중..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "사용자 정의 프로파일"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:564
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:564
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "현재 변경 사항 삭제"
@@ -3433,8 +3308,7 @@ msgctxt "@button"
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
 msgctxt "@label"
 msgid "Print settings"
 msgstr "프린팅 설정"
@@ -3454,8 +3328,7 @@ msgctxt "@label"
 msgid "Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "점차적인 내부채움은 점차적으로 빈 공간 채우기의 양을 증가시킵니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:728
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:728
 msgctxt "@label"
 msgid "Profiles"
 msgstr "프로파일"
@@ -3494,7 +3367,7 @@ msgstr[0] "압출기 %2의 구성에 대한 %1 프로파일이 없습니다. 대
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Widgets/ComboBox.qml:24
 msgctxt "@label"
 msgid "No items to select from"
-msgstr ""
+msgstr "선택할 항목 없음"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintMonitor.qml:140
 msgctxt "@label"
@@ -3542,8 +3415,7 @@ msgctxt "@title:column"
 msgid "Current changes"
 msgstr "현재 변경 사항"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:747
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:747
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "항상 묻기"
@@ -3692,8 +3564,7 @@ msgctxt "@Label"
 msgid "Static type checker for Python"
 msgstr "Python용 정적 유형 검사기"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:157
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:156 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@Label"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "SSL 신뢰성 검증용 루트 인증서"
@@ -3716,12 +3587,12 @@ msgstr "libnest2d용 Python 바인딩"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Support library for system keyring access"
-msgstr ""
+msgstr "시스템 키링 액세스를 위한 서포트 라이브러리"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Python extensions for Microsoft Windows"
-msgstr ""
+msgstr "Microsoft Windows용 Python 확장"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -3738,8 +3609,7 @@ msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux 교차 배포 응용 프로그램 배포"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:627
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:627
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "파일 열기"
@@ -3822,7 +3692,7 @@ msgstr "Ultimaker Cura에 오신 것을 환영합니다"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:68
 msgctxt "@text"
 msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
-msgstr ""
+msgstr "Ultimaker Cura를 설정하려면 다음 단계로 이동하세요. 오래 걸리지 않습니다."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:86
 msgctxt "@button"
@@ -3894,8 +3764,7 @@ msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "장치에 연결할 수 없습니다."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
 msgstr "Ultimaker 프린터로 연결할 수 없습니까?"
@@ -3938,7 +3807,7 @@ msgstr "비 네트워크 프린터 추가"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
-msgstr ""
+msgstr "새로운 기능"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:47
 msgctxt "@label"
@@ -3965,31 +3834,30 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "수동으로 프린터 추가"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:64
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:64 /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
-msgstr ""
+msgstr "Ultimaker 플랫폼에 로그인"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:124
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr ""
+msgstr "재료 설정 및 Marketplace 플러그인 추가"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:154
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr ""
+msgstr "재료 설정과 플러그인 백업 및 동기화"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:184
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr ""
+msgstr "Ultimaker 커뮤니티에서 48,000명 이상의 사용자와 아이디어를 공유하고 도움 받기"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:217
 msgctxt "@text"
 msgid "Create a free Ultimaker Account"
-msgstr ""
+msgstr "Ultimaker 계정 무료 생성"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:230
 msgctxt "@button"
@@ -4009,7 +3877,7 @@ msgstr "거절 및 닫기"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
 msgid "Release Notes"
-msgstr ""
+msgstr "릴리즈 노트"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:43
 msgctxt "@label"
@@ -4078,11 +3946,14 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
 msgstr ""
+"- 재료 설정 및 Marketplace 플러그인 추가\n"
+"- 재료 설정과 플러그인 백업 및 동기화\n"
+"- Ultimaker 커뮤니티에서 48,000명 이상의 사용자와 아이디어를 공유하고 도움 받기"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:62
 msgctxt "@button"
 msgid "Create a free Ultimaker account"
-msgstr ""
+msgstr "Ultimaker 계정 무료 생성"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4242,17 +4113,17 @@ msgstr "소개..."
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:265
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
-msgstr ""
+msgstr "선택 항목 삭제"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
-msgstr ""
+msgstr "선택 항목 가운데 정렬"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:284
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
-msgstr ""
+msgstr "선택 항목 복제"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:293
 msgctxt "@action:inmenu"
@@ -4339,8 +4210,7 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "설정 폴더 표시"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:445
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Settings/SettingView.qml:538
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:445 /mnt/projects/ultimaker/cura/Cura/resources/qml/Settings/SettingView.qml:538
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "설정 보기..."
@@ -4460,9 +4330,7 @@ msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "접착 정보"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:40
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:84
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:40 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:84
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "활성화"
@@ -4477,14 +4345,12 @@ msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "복제"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:167
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:167
 msgctxt "@action:button"
 msgid "Import"
 msgstr "가져오기"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:179
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:179
 msgctxt "@action:button"
 msgid "Export"
 msgstr "내보내기"
@@ -4494,20 +4360,17 @@ msgctxt "@action:label"
 msgid "Printer"
 msgstr "프린터"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:298
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:277
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:298 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:277
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "제거 확인"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:301
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:278
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:301 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:278
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "%1을 제거 하시겠습니까? 이것은 취소 할 수 없습니다!"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:323
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:323
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "재료 가져 오기"
@@ -4522,8 +4385,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "재료를 성공적으로 가져왔습니다"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:346
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:354
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:346 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:354
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "재료 내보내기"
@@ -4538,20 +4400,17 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "재료를 성공적으로 내보냈습니다"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:455
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:16 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:455
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "프린터"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:63
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:152
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:63 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:152
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "이름 바꾸기"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:34
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:459
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:34 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:459
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "프로파일"
@@ -4631,8 +4490,7 @@ msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "모두 확인"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:15
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:450
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:15 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:450
 msgctxt "@title:tab"
 msgid "General"
 msgstr "일반"
@@ -5123,14 +4981,12 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "노즐을 예열하기 위한 온도."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341 /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "취소"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344 /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "예열"
@@ -5296,8 +5152,7 @@ msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "%1 닫기"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:577
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:589
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:577 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:589
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "%1을(를) 정말로 종료하시겠습니까?"
