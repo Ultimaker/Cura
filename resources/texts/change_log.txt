@@ -1,4 +1,8 @@
-[4.9.0 Beta]
+[4.9.0]
+<i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video</a>.</i>
+
+* Digital factory integration.
+Now you can open files directly from Digital Library projects. Then, after preparation, quickly and easily export them back. This feature is available for all users with an Ultimaker Essentials, Professional, or Excellence subscription. <a href="https://ultimaker.com/software/enterprise-software"> Learn more</a>
 
 * "Line type" is now the default color scheme.
 When entering the Preview mode, you don't have to switch manually to line type. 
@@ -20,18 +24,10 @@ The shell category was a mix of settings about walls and settings about top/bott
 The ability to have thumbnails embedded. Contributed by Gravedigger7789.
 
 * Add checkbox for Extruder Offsets.
-Ability to enable or disable  the extruder offsets to gcode. This will be enabled by default, unless it is in the printer's def.json file. Contributed by RFBomb. 
+Ability to enable or disable the extruder offsets to gcode. This will be enabled by default, unless it is in the printer's def.json file. Contributed by RFBomb. 
 
 * Cura should work properly on MacOS 'Big Sur' now, afforded by upgrades to Python (to 3.8) and Qt (to 5.15).
 If you had (UX, visual, graphics card) problems, specifically on (newer) MacOS versions, like Big Sur, you should be able to use this new version.
-
-* Known UX issues that will be fixed before final in our current plan
-- Custom menu Materials and Nozzle menu now open at cursor position instead of under the menu button.
-- Visuals of Preference screen are large.
-- Drop downs in Preference screen don't react to mouse-scroll.
-- Default language not selected in Preference screen.
-- Changelog takes long too load.
-- Setting Visibility submenu items in the Preference screen are greyed-out and can't be selected on Mac OSX.
 
 * Bug Fixes
 - Fixed a security vulnerability on windows permitting the openssl library used to launch other programs. Thanks to Xavier Danest for raising this bug.
@@ -63,7 +59,8 @@ If you had (UX, visual, graphics card) problems, specifically on (newer) MacOS v
 - Fixed message for non manifold models. 
 - Fixed setting category arrows. Contributed by fieldOfView.
 - Fixed metadate tags for 3MF files. 
-- Fixed engine crash when using low-density Cross Infill
+- Fixed engine crash when using low-density Cross Infill.
+- Improved performance of loading .def.json files. 
 
 * Printer definitions, profiles and materials
 - 3DFuel Pro PLA and SnapSupport materials, contributed by grk3010.
@@ -87,6 +84,7 @@ If you had (UX, visual, graphics card) problems, specifically on (newer) MacOS v
 - TwoTrees Bluer, contributed by WashingtonJunior.
 - Update Hellbot Magna 1 and Hellbot Magna dual, contributed by DevelopmentHellbot.
 - Update Rigid3D and added Rigid3D Mucit2, contributed by mehmetsutas.
+- Update TPU profiles for 0.6mm nozzle of UM2+C.
 - ZAV series, contributed by kimer2002.
 
 [4.8.0]
