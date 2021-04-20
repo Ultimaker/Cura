@@ -1,5 +1,5 @@
 [4.9.0]
-<i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video/a>.</i>
+<i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video</a>.</i>
 
 * Digital factory integration.
 Now you can open files directly from Digital Library projects. Then, after preparation, quickly and easily export them back. This feature is available for all users with an Ultimaker Essentials, Professional, or Excellence subscription. <a href="https://ultimaker.com/software/enterprise-software"> Learn more</a>
