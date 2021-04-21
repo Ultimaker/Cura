@@ -65,3 +65,6 @@ body:
         * A **log file**, see [here](https://github.com/Ultimaker/Cura#logging-issues) how to find the log file. 
       
       You can add these files and additional information that is relevant to the issue in the comments below. 
+- type: textarea
+  attributes:
+    label: Additional information
