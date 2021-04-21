@@ -2,16 +2,13 @@
   "name": "Atom 2",
   "version": 2,
   "inherits": "fdmprinter",
-  "metadata": 
-  {
+  "metadata": {
     "visible": true,
     "author": "Victor (Yu Chieh) Lin",
     "manufacturer": "Layer One",
     "file_formats": "text/x-gcode",
-    "platform_offset": [ 0, 0, 0 ],
-    "machine_extruder_trains": 
-    {
-      "0": "atom2_extruder_0"
+    "platform_offset": [0,0,0],
+    "machine_extruder_trains":  { "0": "atom2_extruder_0"
     }
   },
 
@@ -26,15 +23,47 @@
     "machine_center_is_zero": { "default_value": true },
     "machine_gcode_flavor":   { "default_value": "RepRap (Marlin/Sprinter)" },
 
-    "machine_start_gcode": {
-      "default_value": "G21\nG90 \nM107\nG28\nG92 E0\nG1 F200 E3\nG92 E0"
-    },
-    "machine_end_gcode": {
-      "default_value": "M104 S0\nG28\nG91\nG1 E-6 F300\nM84\nG90"
-    },
+    "machine_start_gcode":    { "default_value": "G21\nG90 \nM107\nG28\nG92 E0\nG1 F200 E3\nG92 E0" },
+    "machine_end_gcode":      { "default_value": "M104 S0\nG28\nG91\nG1 E-6 F300\nM84\nG90" },
 
     "layer_height": { "default_value": 0.2 },
     "default_material_print_temperature": { "default_value": 200 },
-    "speed_print": { "default_value": 30 }
+    "speed_print": { "default_value": 32 },
+    "infill_before_walls": { "value": false },
+    "optimize_wall_printing_order": { "value": "True" },
+    "infill_sparse_density": { "default_value": 10 },
+    "brim_width":
+    {
+      "label": "Brim Width",
+      "description": "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area.",
+      "type": "float",
+      "unit": "mm",
+      "default_value": 4,
+      "minimum_value": "0.0",
+      "maximum_value_warning": "50.0",
+      "maximum_value": "0.5 * min(machine_width, machine_depth)",
+      "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+      "settable_per_mesh": false,
+      "settable_per_extruder": true,
+      "limit_to_extruder": "atom2_extruder_0",
+      "children":
+      {
+        "brim_line_count":
+        {
+          "label": "Brim Line Count",
+          "description": "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area.",
+          "type": "int",
+          "default_value": 10,
+          "minimum_value": "0",
+          "maximum_value_warning": "50 / skirt_brim_line_width",
+          "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
+          "value": 10,
+          "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+          "settable_per_mesh": false,
+          "settable_per_extruder": true,
+          "limit_to_extruder": "atom2_extruder_0"
+        }
+      }
+    }
   }
 }
