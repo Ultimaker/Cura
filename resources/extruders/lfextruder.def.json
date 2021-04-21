@@ -1,5 +1,6 @@
 {
-    "name": "Extruder",
+    "name": "LayerFuser",
+    "inherits": "fdmextruder",
     "version": 2,
     "metadata":
     {
