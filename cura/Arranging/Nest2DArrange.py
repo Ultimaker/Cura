@@ -36,6 +36,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
         node_items: A list of the nodes return by libnest2d, which contain the new positions on the buildplate
     """
+    spacing = int(1.5 * factor)  # 1.5mm spacing.
 
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
@@ -99,7 +100,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     config = NfpConfig()
     config.accuracy = 1.0
 
-    num_bins = nest(node_items, build_plate_bounding_box, 10000, config)
+    num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 
     # Strip the fixed items (previously placed) and the disallowed areas from the results again.
     node_items = list(filter(lambda item: not item.isFixed(), node_items))
