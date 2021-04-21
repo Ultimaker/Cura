@@ -1,7 +1,6 @@
 name: Bug Report
 description: Create a report to help us fix issues.
 labels: "Type: Bug"
-issue_body: true
 body:
 - type: markdown
   attributes:
