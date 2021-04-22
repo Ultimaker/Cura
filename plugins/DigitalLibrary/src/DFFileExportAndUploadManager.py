@@ -123,7 +123,7 @@ class DFFileExportAndUploadManager:
         if isinstance(file_upload_response, DFLibraryFileUploadResponse):
             file_name = file_upload_response.file_name
         elif isinstance(file_upload_response, DFPrintJobUploadResponse):
-            file_name = file_upload_response.job_name
+            file_name = file_upload_response.job_name if file_upload_response.job_name is not None else ""
         else:
             Logger.log("e", "Wrong response type received. Aborting uploading file to the Digital Library")
             return
@@ -273,7 +273,7 @@ class DFFileExportAndUploadManager:
         if reply_body:
             reply_dict = json.loads(reply_body)
             if "errors" in reply_dict and len(reply_dict["errors"]) >= 1 and "title" in reply_dict["errors"][0]:
-                error_title = reply_dict["errors"][0]["title"]  # type: str
+                error_title = reply_dict["errors"][0]["title"]
         return error_title
 
     def _onUploadError(self, filename: str, reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:

@@ -47,7 +47,7 @@ class DigitalFactoryProjectModel(ListModel):
         self._update(df_projects)
 
     def sortProjectsBy(self, sort_by: Optional[str]):
-        if sort_by:
+        if sort_by is not None:
             try:
                 self._projects.sort(key = lambda p: getattr(p, sort_by))
             except AttributeError:
