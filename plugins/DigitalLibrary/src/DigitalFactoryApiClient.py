@@ -294,7 +294,7 @@ class DigitalFactoryApiClient:
         self._file_uploader = DFFileUploader(self._http, df_file_upload_response, mesh, on_finished, on_success, on_progress, on_error)
         self._file_uploader.start()
 
-    def createNewProject(self, project_name: str, on_finished: Callable[[CloudApiClientModel], Any], on_error: Callable) -> None:
+    def createNewProject(self, project_name: str, on_finished: Callable[[DigitalFactoryProjectResponse], Any], on_error: Callable) -> None:
         """ Create a new project in the Digital Factory.
 
         :param project_name: Name of the new to be created project.
