@@ -31,9 +31,14 @@ class DigitalFactoryFileProvider(FileProvider):
         Function called every time the 'From Digital Factory' option of the 'Open File(s)' submenu is triggered
         """
         self.loadWindow()
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa")
 
         if self._account.isLoggedIn and self._controller.userAccountHasLibraryAccess():
             self._controller.initialize()
+
+            if not self._dialog:
+                Logger.log("e", "Unable to create the Digital Library Open dialog.")
+                return
             self._dialog.show()
 
     def loadWindow(self) -> None:
