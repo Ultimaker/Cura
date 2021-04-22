@@ -339,7 +339,6 @@ class DigitalFactoryController(QObject):
         self.setCreatingNewProjectStatus(RetrievalStatus.Failed)
         Logger.log("e", "Something went wrong while trying to create a new a project. Error: {}".format(reply_string))
 
-    # The new_status type is actually "RetrievalStatus" but since the RetrievalStatus cannot be an enum, we leave it as int
     def setRetrievingProjectsStatus(self, new_status: RetrievalStatus) -> None:
         """
         Sets the status of the "retrieving library projects" http call.
@@ -353,7 +352,6 @@ class DigitalFactoryController(QObject):
     def retrievingProjectsStatus(self) -> int:
         return int(self.retrieving_projects_status)
 
-    # The new_status type is actually "RetrievalStatus" but since the RetrievalStatus cannot be an enum, we leave it as int
     def setRetrievingFilesStatus(self, new_status: RetrievalStatus) -> None:
         """
         Sets the status of the "retrieving files list in the selected library project" http call.
@@ -367,7 +365,6 @@ class DigitalFactoryController(QObject):
     def retrievingFilesStatus(self) -> int:
         return int(self.retrieving_files_status)
 
-    # The new_status type is actually "RetrievalStatus" but since the RetrievalStatus cannot be an enum, we leave it as int
     def setCreatingNewProjectStatus(self, new_status: RetrievalStatus) -> None:
         """
         Sets the status of the "creating new library project" http call.
@@ -387,16 +384,6 @@ class DigitalFactoryController(QObject):
 
     def _applicationInitializationFinished(self) -> None:
         self._supported_file_types = self._application.getInstance().getMeshFileHandler().getSupportedFileTypesRead()
-
-    # @pyqtSlot("QList<int>")
-    # def setSelectedFileIndices(self, file_indices: List[int]) -> None:
-    #     """
-    #     Sets the index of the file which is currently selected in the list of files.
-    #
-    #     :param file_indices: A list of the indices of the currently selected files
-    #     """
-    #     self._selected_file_indices = file_indices
-    #     self.selectedFileIndicesChanged.emit(file_indices)
 
     @pyqtSlot()
     def openSelectedFiles(self) -> None:
