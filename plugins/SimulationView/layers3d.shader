@@ -296,8 +296,8 @@ geometry41core =
 
 
         if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
-            float w = v_line_dim[0].x / 2;
-            float h = v_line_dim[0].y / 2;
+            float w = size_x;
+            float h = size_y;
 
             myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
             myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
