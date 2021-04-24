@@ -13,7 +13,8 @@
 		"has_variants": true,
 		"preferred_variant_name": "PrintHead 0.4 mm",
 		"variants_name": "PrintHead type",
-        "has_materials": false,
+        "has_materials": true,
+	"preferred_material": "generic_pla",
         "has_machine_quality": false,
                 "machine_extruder_trains":
         {
