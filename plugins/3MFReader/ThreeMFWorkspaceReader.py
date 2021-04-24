@@ -1157,7 +1157,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 return
             machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
-            self._quality_type_to_apply = self._quality_type_to_apply.lower()
+            self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
             quality_group_dict = container_tree.getCurrentQualityGroups()
             if self._quality_type_to_apply in quality_group_dict:
                 quality_group = quality_group_dict[self._quality_type_to_apply]

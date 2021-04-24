@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:09+0000\n"
-"PO-Revision-Date: 2020-11-25 22:09+0100\n"
+"PO-Revision-Date: 2021-04-04 19:37+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -421,22 +421,22 @@ msgstr "Zda extrudéry sdílejí jeden ohřívač spíše než každý extrudér
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle label"
 msgid "Extruders Share Nozzle"
-msgstr ""
+msgstr "Extrudery sdílí trysku"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
-msgstr ""
+msgstr "Určuje, zda extrudery sdílí jednu trysku namísto, aby měl každý extruder svou vlastní trysku. Pokud je zvoleno, předpokládá se, že počáteční G kód tiskárny správně nastaví všechny extrudery do známého stavu, který je vzájemně kompatibilní (všechny filamenty jsou zatažené nebo jen jeden je nezatažený). V tomto případě je počáteční stav zatažení určen pro každý extruder parametrem 'machine_extruders_shared_nozzle_initial_retraction'."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
 msgid "Shared Nozzle Initial Retraction"
-msgstr ""
+msgstr "Počáteční retrakce sdílené trysky"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
-msgstr ""
+msgstr "Jak daleko je zatažen filament každého extruderu sdílené trysky po dokončení počátečního G kódu tiskárny. Tato hodnota by se měla rovnat nebo být vyšší než je délka společné části vedení trysky."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -506,7 +506,7 @@ msgstr "Offset s extrudérem"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
-msgstr ""
+msgstr "Použít offset extruderu v souřadnicovém systému. Ovlivňuje všechny extrudery."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -901,7 +901,7 @@ msgstr "Násobitel šířky čáry v první vrstvě. Jejich zvýšení by mohlo 
 #: fdmprinter.def.json
 msgctxt "shell label"
 msgid "Walls"
-msgstr ""
+msgstr "Stěny"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -1276,12 +1276,12 @@ msgstr "Pokud je tato možnost povolena, jsou souřadnice z švu vztaženy ke st
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Vrch/spodek"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Vrch/spodek"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1651,7 +1651,7 @@ msgstr "Maximální úhel pro rozšíření povrchu"
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr ""
+msgstr "Horní a/nebo dolní povrchy objektu s větším úhlem, než je toto nastavení, nebudou mít své horní/spodní povrchy rozšířeny. Tím se zabrání rozšíření úzkých oblastí, které jsou vytvořeny, když má povrch modelu téměř svislý sklon. Úhel 0° je vodorovný a způsobí, že žádný povrch nebude rozšířen, zatímco úhel 90° je svislý a způsobí, že všechny povrchy budou rozšířeny."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
@@ -2590,7 +2590,7 @@ msgstr "Rychlost prvotní vrstvy"
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
 msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
-msgstr ""
+msgstr "Rychlost počáteční vrstvy. Doporučuje se nižší hodnota pro zlepšení přilnavosti k montážní desce. Nemá vliv na samotné struktury pro přilnavost k podložce (např. límec a raft)."
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -5104,7 +5104,7 @@ msgstr "Pořadí zpracování sítě"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
-msgstr ""
+msgstr "Určuje prioritu této sítě, když se překrývá více sítí výplně. U oblastí, kde se překrývá více sítí výplně, se nastavení přebírá ze sítě s nejvyšším pořadím. Síť výplně s vyšším pořadím bude modifikovat výplň sítě výplně s nižším pořadím a běžné sítě."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5234,7 +5234,7 @@ msgstr "Použijte spíše relativní extruzi než absolutní extruzi. Použití 
 #: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr "Experimentálí"
+msgstr "Experimentální"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
@@ -5454,12 +5454,12 @@ msgstr "Maximální úhel přesahů po jejich tisku. Při hodnotě 0 ° jsou vš
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size label"
 msgid "Maximum Overhang Hole Area"
-msgstr ""
+msgstr "Maximální plocha díry pod převisem"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
-msgstr ""
+msgstr "Maximální plocha díry v základně modelu, která nebude odstraněna funkcí „Udělat převis tisknutelný“. Menší díry budou zachovány. Hodnota 0 mm² způsobí vyplnění všech děr v základně modelu."
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"

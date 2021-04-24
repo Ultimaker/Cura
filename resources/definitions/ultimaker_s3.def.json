@@ -61,7 +61,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "value": "60" },
+        "gantry_height": { "value": "55" },
         "machine_extruder_count": { "default_value": 2 },
         "extruder_prime_pos_abs": { "default_value": true },
         "machine_start_gcode": { "default_value": "" },

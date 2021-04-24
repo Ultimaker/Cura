@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.9\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-04-02 16:10+0200\n"
-"PO-Revision-Date: 2020-11-09 14:27+0100\n"
+"PO-Revision-Date: 2021-04-16 15:15+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: German <info@lionbridge.com>, German <info@bothof.nl>\n"
 "Language: de_DE\n"
@@ -69,11 +69,8 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Es kann nur jeweils ein G-Code gleichzeitig geladen werden. Wichtige {0} werden übersprungen."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1800
-#: /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:188
-#: /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:242
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:165
+#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1800 /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:188 /mnt/projects/ultimaker/cura/Cura/cura/OAuth2/AuthorizationService.py:242
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153 /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:165
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Warnhinweis"
@@ -84,9 +81,7 @@ msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Wenn G-Code geladen wird, kann keine weitere Datei geöffnet werden. Wichtige {0} werden übersprungen."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1810
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:146
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:153
+#: /mnt/projects/ultimaker/cura/Cura/cura/CuraApplication.py:1810 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:146 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:153
 #: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:139
 msgctxt "@info:title"
 msgid "Error"
@@ -103,25 +98,18 @@ msgctxt "@label"
 msgid "Custom Material"
 msgstr "Benutzerdefiniertes Material"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/MaterialManagementModel.py:227
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:205
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/MaterialManagementModel.py:227 /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:205
 msgctxt "@label"
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:338
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:11
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:42
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:338 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:11 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:42
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:361
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:110
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:1612
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/QualityManagementModel.py:361 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:110 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:1612 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -142,38 +130,32 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Alle Dateien (*)"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:14
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:45
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:14 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:45
 msgctxt "@label"
 msgid "Visual"
 msgstr "Visuell"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:15
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:46
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:15 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:46
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "Das visuelle Profil wurde für den Druck visueller Prototypen und Modellen entwickelt, bei denen das Ziel eine hohe visuelle Qualität und eine hohe Oberflächenqualität ist."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:18
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:49
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:18 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:49
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engineering"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:19
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:50
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:19 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:50
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "Das Engineering-Profil ist für den Druck von Funktionsprototypen und Endnutzungsteilen gedacht, bei denen Präzision gefragt ist und engere Toleranzen gelten."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:22
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:53
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:22 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:53
 msgctxt "@label"
 msgid "Draft"
 msgstr "Entwurf"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:23
-#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:54
+#: /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentTranslations.py:23 /mnt/projects/ultimaker/cura/Cura/cura/Machines/Models/IntentCategoryModel.py:54
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "Das Entwurfsprofil wurde für erste Prototypen und die Konzeptvalidierung entwickelt, um einen deutlich schnelleren Druck zu ermöglichen."
@@ -367,27 +349,23 @@ msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Bei dem Versuch, sich anzumelden, trat ein unerwarteter Fehler auf. Bitte erneut versuchen."
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:205
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:132
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:205 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:132
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Datei bereits vorhanden"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:206
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:133
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:206 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:133
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "Die Datei <filename>{0}</filename> ist bereits vorhanden. Soll die Datei wirklich überschrieben werden?"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:456
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:459
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:456 /mnt/projects/ultimaker/cura/Cura/cura/Settings/ContainerManager.py:459
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "Ungültige Datei-URL:"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:713
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:216
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/MachineManager.py:713 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:216
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Düse"
@@ -454,8 +432,7 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Import des Profils aus Datei <filename>{0}</filename> fehlgeschlagen:"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:235
-#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:245
+#: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:235 /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:245
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
@@ -498,7 +475,7 @@ msgstr "Für das Profil fehlt eine Qualitätsangabe."
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:446
 msgctxt "@info:status"
 msgid "There is no active printer yet."
-msgstr ""
+msgstr "Es ist noch kein Drucker aktiv."
 
 #: /mnt/projects/ultimaker/cura/Cura/cura/Settings/CuraContainerRegistry.py:452
 msgctxt "@info:status"
@@ -527,27 +504,22 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:24
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:24
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "Neue Position für Objekte finden"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:28
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:28
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "Position finden"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:41
-#: /mnt/projects/ultimaker/cura/Cura/cura/MultiplyObjectsJob.py:76
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:41 /mnt/projects/ultimaker/cura/Cura/cura/MultiplyObjectsJob.py:76
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Innerhalb der Druckabmessung für alle Objekte konnte keine Position gefunden werden"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
-#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:42
+#: /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151 /mnt/projects/ultimaker/cura/Cura/cura/Arranging/ArrangeObjectsJob.py:42
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "Kann Position nicht finden"
@@ -558,30 +530,23 @@ msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Gruppe #{group_nr}"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:55
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:55 /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:268
 msgctxt "@action:button"
 msgid "Skip"
-msgstr ""
+msgstr "Überspringen"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60
-#: /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
-#: /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
-#: /mnt/projects/ultimaker/cura/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:127
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WhatsNewPagesModel.py:60 /mnt/projects/ultimaker/cura/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185 /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
+#: /mnt/projects/ultimaker/cura/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:174 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:127
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Schließen"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:56
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:259
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:56 /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:259
 msgctxt "@action:button"
 msgid "Next"
 msgstr "Weiter"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:272
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:26
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/WelcomePagesModel.py:272 /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:26
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "Beenden"
@@ -646,24 +611,15 @@ msgctxt "@tooltip"
 msgid "Other"
 msgstr "Sonstige"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:17
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:48
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:17 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:48
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:42
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:445
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:234
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:292
+#: /mnt/projects/ultimaker/cura/Cura/cura/UI/AddPrinterPagesModel.py:33 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:42
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:445 /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150 /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:234
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:292
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -683,9 +639,7 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Konnte kein Archiv von Benutzer-Datenverzeichnis {} erstellen"
 
-#: /mnt/projects/ultimaker/cura/Cura/cura/Backups/Backup.py:119
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:107
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:113
+#: /mnt/projects/ultimaker/cura/Cura/cura/Backups/Backup.py:119 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:107 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:113
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "Backup"
@@ -726,8 +680,7 @@ msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Auf Wechseldatenträger speichern {0}"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Es sind keine Dateiformate zum Schreiben vorhanden!"
@@ -743,8 +696,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Wird gespeichert"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:106
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:109
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:106 /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:109
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
@@ -756,8 +708,7 @@ msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Bei dem Versuch, auf {device} zu schreiben, wurde ein Dateiname nicht gefunden."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:138
-#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
+#: /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:138 /mnt/projects/ultimaker/cura/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
@@ -812,9 +763,7 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF-Datei"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeProfileReader/__init__.py:14
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/__init__.py:14
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/__init__.py:16
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeProfileReader/__init__.py:14 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/__init__.py:14 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/__init__.py:16
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-Code-Datei"
@@ -834,8 +783,7 @@ msgctxt "@button"
 msgid "Decline"
 msgstr "Ablehnen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
 msgctxt "@button"
 msgid "Agree"
 msgstr "Stimme zu"
@@ -860,8 +808,7 @@ msgctxt "@info:generic"
 msgid "Syncing..."
 msgstr "Synchronisierung läuft ..."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:93
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:93 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
 msgstr "Von Ihrem Ultimaker-Konto erkannte Änderungen"
@@ -906,12 +853,8 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Slicing mit dem aktuellen Material nicht möglich, da es mit der gewählten Maschine oder Konfiguration nicht kompatibel ist."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:382
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:437
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:446
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:455
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:467
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:382 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:437
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:446 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:455 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:467
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Slicing nicht möglich"
@@ -952,8 +895,7 @@ msgstr ""
 "- Einem aktiven Extruder zugewiesen sind\n"
 "- Nicht alle als Modifier Meshes eingerichtet sind"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52 /mnt/projects/ultimaker/cura/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "Schichten werden verarbeitet"
@@ -998,8 +940,7 @@ msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Druck in Bearbeitung"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileWriter/__init__.py:14
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileReader/__init__.py:14
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileWriter/__init__.py:14 /mnt/projects/ultimaker/cura/Cura/plugins/CuraProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura-Profil"
@@ -1014,7 +955,7 @@ msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "Ihr Ultimaker-Konto hat einen neuen Drucker erkannt"
-msgstr[1] "Ihr Ultimaker-Konto hat neue Drucker erkannt."
+msgstr[1] "Ihr Ultimaker-Konto hat neue Drucker erkannt"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
 #, python-brace-format
@@ -1049,8 +990,7 @@ msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "Dieser Drucker ist nicht mit der Digital Factory verbunden:"
 msgstr[1] "Diese Drucker sind nicht mit der Digital Factory verbunden:"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
@@ -1108,7 +1048,7 @@ msgstr[0] ""
 "Möchten Sie wirklich fortfahren?"
 msgstr[1] ""
 "Es werden gleich {0} Drucker aus Cura entfernt. Der Vorgang kann nicht rückgängig gemacht werden. \n"
-"Möchten Sie wirklich fortfahren."
+"Möchten Sie wirklich fortfahren?"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
 msgctxt "@label"
@@ -1302,8 +1242,7 @@ msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Auf Projektdatei <filename>{0}</filename> kann plötzlich nicht mehr zugegriffen werden: <message>{1}</message>."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:642
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:635 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:642
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Projektdatei kann nicht geöffnet werden"
@@ -1312,7 +1251,7 @@ msgstr "Projektdatei kann nicht geöffnet werden"
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
-msgstr ""
+msgstr "Projektdatei <filename>{0}</filename> ist beschädigt: <message>{1}</message>."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:693
 #, python-brace-format
@@ -1320,14 +1259,12 @@ msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
 msgstr "Projektdatei <filename>{0}</filename> verwendet Profile, die nicht mit dieser Ultimaker Cura-Version kompatibel sind."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:27
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:33
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:27 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/__init__.py:33
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF-Datei"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzWriter/__init__.py:17
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzReader/__init__.py:17
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzWriter/__init__.py:17 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeGzReader/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Komprimierte G-Code-Datei"
@@ -1388,8 +1325,7 @@ msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-Code parsen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:349
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:503
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:349 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeReader/FlavorParser.py:503
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-Code-Details"
@@ -1439,8 +1375,7 @@ msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "Compressed COLLADA Digital Asset Exchange"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UFPReader/__init__.py:22
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/__init__.py:28
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UFPReader/__init__.py:22 /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimaker Format Package"
@@ -1485,8 +1420,7 @@ msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "Das 3MF-Writer-Plugin ist beschädigt."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59 /mnt/projects/ultimaker/cura/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "Keine Erlaubnis zum Beschreiben dieses Arbeitsbereichs."
@@ -1526,8 +1460,7 @@ msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Keine anzeigbaren Schichten vorhanden"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationView.py:127
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:74
+#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationView.py:127 /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "Diese Meldung nicht mehr anzeigen"
@@ -1545,17 +1478,17 @@ msgstr "Solide Ansicht"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
-msgstr ""
+msgstr "Die hervorgehobenen Bereiche kennzeichnen fehlende oder überschüssige Oberflächen. Beheben Sie die Fehler am Modell und öffnen Sie es erneut in Cura."
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:73
 msgctxt "@info:title"
 msgid "Model Errors"
-msgstr ""
+msgstr "Modellfehler"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SolidView/SolidView.py:79
 msgctxt "@action:button"
 msgid "Learn more"
-msgstr ""
+msgstr "Mehr erfahren"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UFPWriter/UFPWriter.py:134
 msgctxt "@info:error"
@@ -1567,8 +1500,7 @@ msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "GCodeWriter unterstützt keinen Nicht-Textmodus."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:80
-#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:96
+#: /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:80 /mnt/projects/ultimaker/cura/Cura/plugins/GCodeWriter/GCodeWriter.py:96
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Vor dem Exportieren bitte G-Code vorbereiten."
@@ -1598,8 +1530,7 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF-Bilddatei"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DriveApiService.py:86
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
+#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/DriveApiService.py:86 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "Beim Versuch, Ihr Backup wiederherzustellen, trat ein Fehler auf."
@@ -1739,9 +1670,7 @@ msgctxt "@button"
 msgid "Dismiss"
 msgstr "Verwerfen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:182
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:182
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
 msgctxt "@button"
 msgid "Next"
@@ -1812,8 +1741,7 @@ msgctxt "@label"
 msgid "Last updated"
 msgstr "Zuletzt aktualisiert"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
 msgctxt "@label"
 msgid "Brand"
 msgstr "Marke"
@@ -1868,9 +1796,7 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
 msgstr "Bitte melden Sie sich an, um verifizierte Plugins und Materialien für Ultimaker Cura Enterprise zu erhalten"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39
-#: /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:199
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39 /mnt/projects/ultimaker/cura/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:199
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:53
 msgctxt "@button"
 msgid "Sign in"
@@ -1931,9 +1857,7 @@ msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:457
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:457
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Materialien"
@@ -1943,8 +1867,7 @@ msgctxt "@title:tab"
 msgid "Installed"
 msgstr "Installiert"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
 msgstr "Zum Web Marketplace gehen"
@@ -1954,20 +1877,17 @@ msgctxt "@label"
 msgid "Will install upon restarting"
 msgstr "Installiert nach Neustart"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96
 msgctxt "@action:button"
 msgid "Update"
 msgstr "Aktualisierung"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "Aktualisierung wird durchgeführt"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "Aktualisiert"
@@ -1987,8 +1907,7 @@ msgctxt "@action:button"
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
-#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
+#: /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46 /mnt/projects/ultimaker/cura/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "Installiert"
@@ -2078,8 +1997,7 @@ msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Einstellungen für die benutzerdefinierte Anpassung dieses Modells wählen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:94
+#: /mnt/projects/ultimaker/cura/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:94
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Filtern..."
@@ -2198,8 +2116,7 @@ msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
 msgstr "Überschreiben verwendet die definierten Einstellungen mit der vorhandenen Druckerkonfiguration. Dies kann zu einem fehlgeschlagenen Druck führen."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191
 msgctxt "@label"
 msgid "Glass"
@@ -2220,8 +2137,7 @@ msgctxt "@label"
 msgid "First available"
 msgstr "Zuerst verfügbar"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:523
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
@@ -2247,9 +2163,7 @@ msgctxt "@action:button"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:55
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:55
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:138
 msgctxt "@action:button"
 msgid "Remove"
@@ -2265,20 +2179,17 @@ msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Wenn Ihr Drucker nicht aufgeführt ist, lesen Sie die <a href='%1'>Anleitung für Fehlerbehebung für Netzwerkdruck</a>"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
 msgctxt "@label"
 msgid "Type"
 msgstr "Typ"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Firmware-Version"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
 msgctxt "@label"
 msgid "Address"
 msgstr "Adresse"
@@ -2308,8 +2219,7 @@ msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Ungültige IP-Adresse"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "Bitte eine gültige IP-Adresse eingeben."
@@ -2319,15 +2229,12 @@ msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Druckeradresse"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "Geben Sie die IP-Adresse Ihres Druckers in das Netzwerk ein."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:227
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361 /mnt/projects/ultimaker/cura/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139 /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:227
 msgctxt "@action:button"
 msgid "OK"
 msgstr "OK"
@@ -2357,8 +2264,7 @@ msgctxt "@label"
 msgid "Delete"
 msgstr "Löschen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:290
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:290
 msgctxt "@label"
 msgid "Resume"
 msgstr "Zurückkehren"
@@ -2373,9 +2279,7 @@ msgctxt "@label"
 msgid "Resuming..."
 msgstr "Wird fortgesetzt..."
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:285
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:294
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:285 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:294
 msgctxt "@label"
 msgid "Pause"
 msgstr "Pausieren"
@@ -2415,26 +2319,22 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "Möchten Sie %1 wirklich abbrechen?"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:336
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164 /mnt/projects/ultimaker/cura/Cura/resources/qml/MonitorButton.qml:336
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "Drucken abbrechen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "Abgebrochen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "Beendet"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84
-#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
+#: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84 /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
 #: /mnt/projects/ultimaker/cura/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:364
 msgctxt "@label:status"
 msgid "Preparing..."
@@ -2570,14 +2470,12 @@ msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "Neu erstellen"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:75
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:75 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Zusammenfassung – Cura-Projekt"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:97
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:97 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "Druckereinstellungen"
@@ -2587,20 +2485,17 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "Wie soll der Konflikt im Gerät gelöst werden?"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:167 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
 msgctxt "@action:label"
 msgid "Type"
 msgstr "Typ"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:183 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "Druckergruppe"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:205
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:205 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Profileinstellungen"
@@ -2610,28 +2505,23 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "Wie soll der Konflikt im Profil gelöst werden?"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:242
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:353
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:242 /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:353 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:242
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Name"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:258
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:258 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:274
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:274 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Nicht im Profil"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:279
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
+#: /mnt/projects/ultimaker/cura/Cura/plugins/3MFReader/WorkspaceDialog.qml:279 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2737,8 +2627,7 @@ msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "Senden von anonymen Daten erlauben"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
+#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20 /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "Farbschema"
@@ -2761,12 +2650,12 @@ msgstr "Geschwindigkeit"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:121
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
-msgstr ""
+msgstr "Schichtdicke"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:125
 msgctxt "@label:listbox"
 msgid "Line Width"
-msgstr ""
+msgstr "Linienbreite"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:163
 msgctxt "@label"
@@ -2788,8 +2677,7 @@ msgctxt "@label"
 msgid "Shell"
 msgstr "Gehäuse"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:255
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
+#: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:255 /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
 msgctxt "@label"
 msgid "Infill"
 msgstr "Füllung"
@@ -2797,7 +2685,7 @@ msgstr "Füllung"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
 msgctxt "@label"
 msgid "Starts"
-msgstr ""
+msgstr "Startet"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:314
 msgctxt "@label"
@@ -2839,18 +2727,10 @@ msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Düsengröße"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
-#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
+#: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265 /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
@@ -2973,7 +2853,7 @@ msgstr "Anzahl Extruder"
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:345
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr ""
+msgstr "Extruder-Versatzwerte auf GCode anwenden"
 
 #: /mnt/projects/ultimaker/cura/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:393
 msgctxt "@title:label"
@@ -3055,8 +2935,7 @@ msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "Linear"
 
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:161
-#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:172
+#: /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:161 /mnt/projects/ultimaker/cura/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
 msgstr "Transparenz"
@@ -3191,8 +3070,7 @@ msgctxt "@label:category menu label"
 msgid "Generic"
 msgstr "Generisch"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/FileMenu.qml:13
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/FileMenu.qml:13 /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Datei"
@@ -3277,8 +3155,7 @@ msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
 msgstr "Die Konfigurationen sind nicht verfügbar, da der Drucker getrennt ist."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ViewMenu.qml:12
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ViewMenu.qml:12 /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Ansicht"
@@ -3333,8 +3210,7 @@ msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
 msgstr "Sichtbarkeit einstellen verwalten..."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SettingsMenu.qml:13
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:51
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SettingsMenu.qml:13 /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:51
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Einstellungen"
@@ -3367,7 +3243,7 @@ msgstr "Extruder deaktivieren"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/SaveProjectMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
-msgstr ""
+msgstr "Projekt speichern..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/ContextMenu.qml:27
 msgctxt "@label"
@@ -3391,15 +3267,14 @@ msgstr "Anzahl Kopien"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Menus/OpenFilesMenu.qml:15
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
-msgstr ""
+msgstr "Datei(en) öffnen..."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:146
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Benutzerdefinierte Profile"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:564
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:564
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Aktuelle Änderungen verwerfen"
@@ -3445,8 +3320,7 @@ msgctxt "@button"
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
 msgctxt "@label"
 msgid "Print settings"
 msgstr "Druckeinstellungen"
@@ -3466,8 +3340,7 @@ msgctxt "@label"
 msgid "Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "Die graduelle Füllung steigert die Menge der Füllung nach oben hin schrittweise."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:728
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:728
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profile"
@@ -3507,7 +3380,7 @@ msgstr[1] "Es gibt kein %1-Profil für die Konfigurationen in den Extrudern %2. 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Widgets/ComboBox.qml:24
 msgctxt "@label"
 msgid "No items to select from"
-msgstr ""
+msgstr "Keine auswählbaren Einträge"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrintMonitor.qml:140
 msgctxt "@label"
@@ -3555,8 +3428,7 @@ msgctxt "@title:column"
 msgid "Current changes"
 msgstr "Aktuelle Änderungen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:747
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:747
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Stets nachfragen"
@@ -3705,8 +3577,7 @@ msgctxt "@Label"
 msgid "Static type checker for Python"
 msgstr "Statischer Prüfer für Python"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:157
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:156 /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@Label"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "Root-Zertifikate zur Validierung der SSL-Vertrauenswürdigkeit"
@@ -3729,12 +3600,12 @@ msgstr "Python-Bindungen für libnest2d"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:161
 msgctxt "@label"
 msgid "Support library for system keyring access"
-msgstr ""
+msgstr "Unterstützungsbibliothek für den Zugriff auf den Systemschlüsselbund"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:162
 msgctxt "@label"
 msgid "Python extensions for Microsoft Windows"
-msgstr ""
+msgstr "Python-Erweiterungen für Microsoft Windows"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/AboutDialog.qml:163
 msgctxt "@label"
@@ -3751,8 +3622,7 @@ msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Distributionsunabhängiges Format für Linux-Anwendungen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:627
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:627
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Datei(en) öffnen"
@@ -3836,6 +3706,8 @@ msgstr "Willkommen bei Ultimaker Cura"
 msgctxt "@text"
 msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
 msgstr ""
+"Befolgen Sie bitte diese Schritte für das Einrichten von\n"
+"Ultimaker Cura. Dies dauert nur wenige Sekunden."
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WelcomeContent.qml:86
 msgctxt "@button"
@@ -3907,8 +3779,7 @@ msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "Verbindung mit Drucker nicht möglich."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207 /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
 msgstr "Sie können keine Verbindung zu Ihrem Ultimaker-Drucker herstellen?"
@@ -3951,7 +3822,7 @@ msgstr "Einen unvernetzten Drucker hinzufügen"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:28
 msgctxt "@label"
 msgid "What's New"
-msgstr ""
+msgstr "Neuheiten"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:47
 msgctxt "@label"
@@ -3978,31 +3849,30 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Drucker manuell hinzufügen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:64
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:64 /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
-msgstr ""
+msgstr "Bei der Ultimaker-Plattform anmelden"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:124
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
-msgstr ""
+msgstr "Materialeinstellungen und Plug-ins aus dem Marketplace hinzufügen"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:154
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
-msgstr ""
+msgstr "Materialeinstellungen und Plug-ins sichern und synchronisieren"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:184
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the Ultimaker Community"
-msgstr ""
+msgstr "Ideenaustausch mit und Hilfe von mehr als 48.000 Benutzern in der Ultimaker Community"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:217
 msgctxt "@text"
 msgid "Create a free Ultimaker Account"
-msgstr ""
+msgstr "Kostenloses Ultimaker-Konto erstellen"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/CloudContent.qml:230
 msgctxt "@button"
@@ -4022,7 +3892,7 @@ msgstr "Ablehnen und schließen"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/ChangelogContent.qml:24
 msgctxt "@label"
 msgid "Release Notes"
-msgstr ""
+msgstr "Versionshinweise"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:43
 msgctxt "@label"
@@ -4091,11 +3961,14 @@ msgid ""
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
 msgstr ""
+"- Materialprofile und Plug-ins aus dem Marketplace hinzufügen\n"
+"- Materialprofile und Plug-ins sichern und synchronisieren\n"
+"- Ideenaustausch mit und Hilfe von mehr als 48.000 Benutzern in der Ultimaker Community"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/GeneralOperations.qml:62
 msgctxt "@button"
 msgid "Create a free Ultimaker account"
-msgstr ""
+msgstr "Kostenloses Ultimaker-Konto erstellen"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Account/AccountWidget.qml:24
 msgctxt "@action:button"
@@ -4255,17 +4128,17 @@ msgstr "Über..."
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:265
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
-msgstr ""
+msgstr "Ausgewählte löschen"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
-msgstr ""
+msgstr "Ausgewählte zentrieren"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:284
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
-msgstr ""
+msgstr "Ausgewählte vervielfachen"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:293
 msgctxt "@action:inmenu"
@@ -4352,8 +4225,7 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Konfigurationsordner anzeigen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:445
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Settings/SettingView.qml:538
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Actions.qml:445 /mnt/projects/ultimaker/cura/Cura/resources/qml/Settings/SettingView.qml:538
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Sichtbarkeit einstellen wird konfiguriert..."
@@ -4473,9 +4345,7 @@ msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "Haftungsinformationen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:40
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:84
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:40 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:84
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "Aktivieren"
@@ -4490,14 +4360,12 @@ msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Duplizieren"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:167
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:167
 msgctxt "@action:button"
 msgid "Import"
 msgstr "Import"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:179
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:179
 msgctxt "@action:button"
 msgid "Export"
 msgstr "Export"
@@ -4507,20 +4375,17 @@ msgctxt "@action:label"
 msgid "Printer"
 msgstr "Drucker"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:298
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:277
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:298 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:277
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Entfernen bestätigen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:301
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:278
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:301 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:278
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Möchten Sie %1 wirklich entfernen? Dies kann nicht rückgängig gemacht werden!"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:323
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:323
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Material importieren"
@@ -4535,8 +4400,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Material wurde erfolgreich importiert <filename>%1</filename>"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:346
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:354
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:346 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:354
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Material exportieren"
@@ -4551,20 +4415,17 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Material erfolgreich nach <filename>%1</filename> exportiert"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:455
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:16 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:455
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Drucker"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:63
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:152
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/MachinesPage.qml:63 /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:152
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:34
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:459
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/ProfilesPage.qml:34 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:459
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Profile"
@@ -4644,8 +4505,7 @@ msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "Alle prüfen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:15
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:450
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Preferences/GeneralPage.qml:15 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:450
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Allgemein"
@@ -5136,14 +4996,12 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "Die Temperatur, auf die das Hotend vorgeheizt wird."
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341 /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344 /mnt/projects/ultimaker/cura/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Vorheizen"
@@ -5310,8 +5168,7 @@ msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "%1 wird geschlossen"
 
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:577
-#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:589
+#: /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:577 /mnt/projects/ultimaker/cura/Cura/resources/qml/Cura.qml:589
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "Möchten Sie %1 wirklich beenden?"
@@ -6870,7 +6727,8 @@ msgstr "Cura-Backups"
 #~ "\n"
 #~ "Select your printer from the list below:"
 #~ msgstr ""
-#~ "Um über das Netzwerk direkt auf Ihrem Drucker zu drucken, stellen Sie bitte sicher, dass der Drucker mit dem Netzwerkkabel verbunden ist oder verbinden Sie Ihren Drucker mit Ihrem WLAN-Netzwerk. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie dennoch ein USB-Laufwerk für die Übertragung von G-Code-Dateien auf Ihren Drucker verwenden.\n"
+#~ "Um über das Netzwerk direkt auf Ihrem Drucker zu drucken, stellen Sie bitte sicher, dass der Drucker mit dem Netzwerkkabel verbunden ist oder verbinden Sie Ihren Drucker mit Ihrem WLAN-Netzwerk. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie dennoch ein USB-Laufwerk für die Übertragung "
+#~ "von G-Code-Dateien auf Ihren Drucker verwenden.\n"
 #~ "\n"
 #~ "Wählen Sie Ihren Drucker aus der folgenden Liste:"
 

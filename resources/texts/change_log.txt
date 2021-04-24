@@ -20,7 +20,7 @@ A new color scheme has been added that shows the line width of individual lines 
 The outer wall will no longer adjust its width or position if there are any inner walls adjacent to it with the (inward) distributed line width strategy. This reduces ringing effects in thin shapes.
 
 * Bug fixes
-- The Randomize Infill Start setting is now working on Arachne. 
+- The Randomize Infill Start setting is now working on Arachne.
 - The Infill Travel Optimization setting is now working on Arachne.
 - The Infill Layer Thickness and Support Layer Thickness is now working on Arachne.
 - Fix crash on MacOS when printing parts with a single wall.
@@ -151,7 +151,11 @@ Overlapping skin and alternating wall. The extra wall at each alternating step w
 
 Assertion failure in SkeletalTrapezoidation. Can cause the engine to crash on certain models.
 
-[4.9.0 Beta]
+[4.9.0]
+<i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video</a>.</i>
+
+* Digital factory integration.
+Now you can open files directly from Digital Library projects. Then, after preparation, quickly and easily export them back. This feature is available for all users with an Ultimaker Essentials, Professional, or Excellence subscription. <a href="https://ultimaker.com/software/enterprise-software"> Learn more</a>
 
 * "Line type" is now the default color scheme.
 When entering the Preview mode, you don't have to switch manually to line type. 

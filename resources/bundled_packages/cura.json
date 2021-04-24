@@ -118,6 +118,23 @@
             }
         }
     },
+    "DigitalLibrary": {
+        "package_info": {
+            "package_id": "DigitalLibrary",
+            "package_type": "plugin",
+            "display_name": "Ultimaker Digital Library",
+            "description": "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library.",
+            "package_version": "1.0.0",
+            "sdk_version": "7.5.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "FirmwareUpdateChecker": {
         "package_info": {
             "package_id": "FirmwareUpdateChecker",

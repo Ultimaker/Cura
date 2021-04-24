@@ -1,7 +1,6 @@
 name: Bug Report
 description: Create a report to help us fix issues.
 labels: "Type: Bug"
-issue_body: true
 body:
 - type: markdown
   attributes:
@@ -66,3 +65,6 @@ body:
         * A **log file**, see [here](https://github.com/Ultimaker/Cura#logging-issues) how to find the log file. 
       
       You can add these files and additional information that is relevant to the issue in the comments below. 
+- type: textarea
+  attributes:
+    label: Additional information

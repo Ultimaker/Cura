@@ -147,7 +147,12 @@ class Backup:
         secrets = self._obfuscate()
 
         version_data_dir = Resources.getDataStoragePath()
-        archive = ZipFile(io.BytesIO(self.zip_file), "r")
+        try:
+            archive = ZipFile(io.BytesIO(self.zip_file), "r")
+        except LookupError as e:
+            Logger.log("d", f"The following error occurred while trying to restore a Cura backup: {str(e)}")
+            self._showMessage(self.catalog.i18nc("@info:backup_failed", "The following error occurred while trying to restore a Cura backup:") + str(e))
+            return False
         extracted = self._extractArchive(archive, version_data_dir)
 
         # Under Linux, preferences are stored elsewhere, so we copy the file to there.

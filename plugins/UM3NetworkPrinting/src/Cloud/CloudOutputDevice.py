@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from time import time
@@ -104,6 +104,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # Reference to the uploaded print job / mesh
         # We do this to prevent re-uploading the same file multiple times.
         self._tool_path = None  # type: Optional[bytes]
+        self._pre_upload_print_job = None  # type: Optional[CloudPrintJobResponse]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
     def connect(self) -> None:
@@ -130,6 +131,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices."""
 
         self._tool_path = None
+        self._pre_upload_print_job = None
         self._uploaded_print_job = None
 
     def matchesNetworkKey(self, network_key: str) -> bool:
@@ -189,6 +191,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if self._progress.visible:
             PrintJobUploadBlockedMessage().show()
             return
+        self._progress.show()
 
         # Indicate we have started sending a job.
         self.writeStarted.emit(self)
@@ -196,6 +199,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # The mesh didn't change, let's not upload it to the cloud again.
         # Note that self.writeFinished is called in _onPrintUploadCompleted as well.
         if self._uploaded_print_job:
+            Logger.log("i", "Current mesh is already attached to a print-job, immediately request reprint.")
             self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
             return
 
@@ -226,8 +230,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         if not self._tool_path:
             return self._onUploadError()
-        self._progress.show()
-        self._uploaded_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
+        self._pre_upload_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
         self._api.uploadToolPath(job_response, self._tool_path, self._onPrintJobUploaded, self._progress.update,
                                  self._onUploadError)
 
@@ -238,9 +241,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
 
         self._progress.update(100)
-        print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
-        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._uploaded_print_job to `None`.
-            # TODO: Maybe _onUploadError shouldn't set the _uploaded_print_job to None or we need to prevent such asynchronous cases.
+        print_job = cast(CloudPrintJobResponse, self._pre_upload_print_job)
+        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._pre_uploaded_print_job to `None`.
+            self._pre_upload_print_job = None
+            self._uploaded_print_job = None
+            Logger.log("w", "Interference from another job uploaded at roughly the same time, not uploading print!")
             return  # Prevent a crash.
         self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
 
@@ -249,6 +254,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         :param response: The response from the cloud API.
         """
+        self._uploaded_print_job = self._pre_upload_print_job
         self._progress.hide()
         PrintJobUploadSuccessMessage().show()
         self.writeFinished.emit()
@@ -263,7 +269,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         else:
             PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send", "Unknown error code when uploading print job: {0}", error_code)).show()
 
+        Logger.log("w", "Upload of print job failed specifically with error code {}".format(error_code))
+
         self._progress.hide()
+        self._pre_upload_print_job = None
         self._uploaded_print_job = None
         self.writeError.emit()
 
@@ -272,7 +281,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         Displays the given message if uploading the mesh has failed due to a generic error (i.e. lost connection).
         :param message: The message to display.
         """
+        Logger.log("w", "Upload error with message {}".format(message))
+
         self._progress.hide()
+        self._pre_upload_print_job = None
         self._uploaded_print_job = None
         PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
