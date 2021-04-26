@@ -38,7 +38,7 @@ Item
             height: UM.Theme.getSize("section_icon").height
             color: UM.Theme.getColor("small_button_text")
             hoverColor: UM.Theme.getColor("small_button_text_hover")
-            iconSource: UM.Theme.getIcon("info")
+            iconSource: UM.Theme.getIcon("Information")
             onClicked: backupListItem.showDetails = !backupListItem.showDetails
         }
 
@@ -79,7 +79,7 @@ Item
             height: UM.Theme.getSize("message_close").height
             color: UM.Theme.getColor("small_button_text")
             hoverColor: UM.Theme.getColor("small_button_text_hover")
-            iconSource: UM.Theme.getIcon("cross1")
+            iconSource: UM.Theme.getIcon("Cancel")
             onClicked: confirmDeleteDialog.visible = true
         }
     }

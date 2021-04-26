@@ -41,7 +41,7 @@ Item
                 height: height
             }
             color: button.enabled ? (button.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")) : UM.Theme.getColor("text_inactive")
-            source: UM.Theme.getIcon("arrow_left")
+            source: UM.Theme.getIcon("ChevronSingleLeft")
         }
         width: UM.Theme.getSize("toolbox_back_button").width
         height: UM.Theme.getSize("toolbox_back_button").height

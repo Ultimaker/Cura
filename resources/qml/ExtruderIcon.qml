@@ -22,7 +22,7 @@ Item
         id: mainIcon
         anchors.fill: parent
 
-        source: UM.Theme.getIcon("extruder_button")
+        source: UM.Theme.getIcon("Extruder", "30")
         color: extruderEnabled ? materialColor: UM.Theme.getColor("disabled")
     }
 
@@ -64,7 +64,7 @@ Item
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("thick_lining").width
             sourceSize.height: width
-            source: UM.Theme.getIcon("cross1")
+            source: UM.Theme.getIcon("Cancel")
             visible: !extruderEnabled
             color: UM.Theme.getColor("text")
         }

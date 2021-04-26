@@ -80,7 +80,7 @@ Item
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                iconSource: UM.Theme.getIcon("pos_normal");
+                iconSource: UM.Theme.getIcon("Infill0");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
@@ -92,7 +92,7 @@ Item
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                iconSource: UM.Theme.getIcon("pos_print_as_support");
+                iconSource: UM.Theme.getIcon("MeshTypeSupport");
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
@@ -104,7 +104,7 @@ Item
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                iconSource: UM.Theme.getIcon("pos_modify_overlaps");
+                iconSource: UM.Theme.getIcon("MeshTypeIntersect");
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
@@ -116,7 +116,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                iconSource: UM.Theme.getIcon("MeshTypeExclude");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
@@ -304,7 +304,7 @@ Item
                                         height: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                        source: UM.Theme.getIcon("minus")
+                                        source: UM.Theme.getIcon("Minus")
                                     }
                                 }
                             }
