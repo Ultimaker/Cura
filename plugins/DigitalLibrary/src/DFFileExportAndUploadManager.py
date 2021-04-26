@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import threading
+from json import JSONDecodeError
 from typing import List, Dict, Any, Callable, Union, Optional
 
 from PyQt5.QtCore import QUrl
@@ -271,7 +272,11 @@ class DFFileExportAndUploadManager:
     def extractErrorTitle(reply_body: Optional[str]) -> str:
         error_title = ""
         if reply_body:
-            reply_dict = json.loads(reply_body)
+            try:
+                reply_dict = json.loads(reply_body)
+            except JSONDecodeError:
+                Logger.logException("w", "Unable to extract title from reply body")
+                return error_title
             if "errors" in reply_dict and len(reply_dict["errors"]) >= 1 and "title" in reply_dict["errors"][0]:
                 error_title = reply_dict["errors"][0]["title"]
         return error_title

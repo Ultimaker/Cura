@@ -18,6 +18,7 @@ def pagination_manager():
     manager = MagicMock(name = "Mocked Pagination Manager")
     return manager
 
+
 @pytest.fixture
 def api_client(application, pagination_manager):
     api_client = DigitalFactoryApiClient(application, MagicMock())
