@@ -38,8 +38,7 @@ body:
     placeholder: It will affect...
   validations:
     required: true
-- type: markdown
+- type: textarea
   attributes:
-    value: |
-      ## Additional information & file uploads
-      You can add pictures or files to visualize your feature request in the comments below.
+    label: Additional information & file uploads
+    description: You can add pictures or files to visualize your feature request in the comments below.
