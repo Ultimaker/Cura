@@ -203,7 +203,7 @@ Cura.ExpandableComponent
                     anchors.right: extrudersModelCheckBox.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    source: UM.Theme.getIcon("Extruder", "30")
+                    source: UM.Theme.getIcon("Extruder", "large")
                     color: model.color
                 }
 
