@@ -32,15 +32,14 @@ Item
 
         width: height
         height: Math.round(parent.height / 2)
-        radius: Math.round(width / 2)
+        radius: Math.round(width)
         color: UM.Theme.getColor("toolbar_background")
 
         anchors
         {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
-            // The circle needs to be slightly off center (so it sits in the middle of the square bit of the icon)
-            topMargin: (parent.height - height) / 2 - 0.1 * parent.height
+            topMargin: (parent.height - height) / 2
         }
 
         Label
