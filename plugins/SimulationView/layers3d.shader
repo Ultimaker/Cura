@@ -143,7 +143,7 @@ geometry41core =
     in vec4 v_color[];
     in vec3 v_vertex[];
     in vec3 v_normal[];
-    in vec2 v_line_dim[];
+    in lowp vec2 v_line_dim[];
     in int v_extruder[];
     in mat4 v_extruder_opacity[];
     in float v_prev_line_type[];
