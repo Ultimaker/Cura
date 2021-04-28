@@ -53,7 +53,7 @@ Button
             anchors.left: parent.left
             width: height
             height: parent.height - UM.Theme.getSize("narrow_margin").height
-            source: UM.Theme.getIcon("Extruder", "large")
+            source: UM.Theme.getIcon("Extruder", "medium")
             color: extruderColor
             visible: showExtruderSwatches && extruderColor != ""
         }

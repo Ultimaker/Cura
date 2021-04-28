@@ -22,7 +22,7 @@ Item
         id: mainIcon
         anchors.fill: parent
 
-        source: UM.Theme.getIcon("Extruder", "large")
+        source: UM.Theme.getIcon("Extruder", "medium")
         color: extruderEnabled ? materialColor: UM.Theme.getColor("disabled")
     }
 

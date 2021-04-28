@@ -422,7 +422,7 @@ QtObject
                     height: Math.round(parent.height / 2.5)
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
-                    source: control.exclusiveGroup ? Theme.getIcon("Dot", "small") : Theme.getIcon("Check")
+                    source: control.exclusiveGroup ? Theme.getIcon("Dot", "low") : Theme.getIcon("Check")
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
@@ -472,7 +472,7 @@ QtObject
                         }
                         else
                         {
-                            return control.exclusiveGroup ? Theme.getIcon("Dot", "small") : Theme.getIcon("Check");
+                            return control.exclusiveGroup ? Theme.getIcon("Dot", "low") : Theme.getIcon("Check");
                         }
                     }
                     opacity: control.checked
