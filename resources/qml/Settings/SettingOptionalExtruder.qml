@@ -172,7 +172,7 @@ SettingItem
 
                 sourceSize.width: width
                 sourceSize.height: height
-                source: UM.Theme.getIcon("Extruder", "30")
+                source: UM.Theme.getIcon("Extruder", "large")
                 color: control.color
             }
         }
@@ -237,7 +237,7 @@ SettingItem
 
                     sourceSize.width: width
                     sourceSize.height: height
-                    source: UM.Theme.getIcon("Extruder", "30")
+                    source: UM.Theme.getIcon("Extruder", "large")
                     color: control.model.getItem(index).color
                 }
             }

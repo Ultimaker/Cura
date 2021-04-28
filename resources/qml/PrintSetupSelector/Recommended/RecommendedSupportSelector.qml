@@ -229,7 +229,7 @@ Item
 
                     sourceSize.width: width
                     sourceSize.height: height
-                    source: UM.Theme.getIcon("Extruder", "30")
+                    source: UM.Theme.getIcon("Extruder", "large")
                     color: supportExtruderCombobox.color
                 }
             }
@@ -299,7 +299,7 @@ Item
 
                         sourceSize.width: width
                         sourceSize.height: height
-                        source: UM.Theme.getIcon("Extruder", "30")
+                        source: UM.Theme.getIcon("Extruder", "large")
                         color: supportExtruderCombobox.model.getItem(index).color
                     }
                 }

@@ -122,15 +122,15 @@ Cura.ExpandablePopup
             {
                 if (connectionStatus == "printer_connected")
                 {
-                    return UM.Theme.getIcon("CheckBlueBG", "12")
+                    return UM.Theme.getIcon("CheckBlueBG", "small")
                 }
                 else if (connectionStatus == "printer_cloud_connected")
                 {
-                    return UM.Theme.getIcon("CloudBlueBG", "12")
+                    return UM.Theme.getIcon("CloudBlueBG", "small")
                 }
                 else if (connectionStatus == "printer_cloud_not_available")
                 {
-                    return UM.Theme.getIcon("CloudGreyBG", "12")
+                    return UM.Theme.getIcon("CloudGreyBG", "small")
                 }
                 else
                 {
