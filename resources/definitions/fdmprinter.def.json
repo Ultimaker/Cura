@@ -1346,7 +1346,7 @@
         "top_bottom":
         {
             "label": "Top/Bottom",
-            "icon": "category_topbottom",
+            "icon": "PrintTopBottom",
             "description": "Top/Bottom",
             "type": "category",
             "children":
