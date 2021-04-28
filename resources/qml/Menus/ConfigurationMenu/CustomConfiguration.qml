@@ -314,7 +314,7 @@ Item
                         anchors.centerIn: parent
                         background: UM.RecolorImage
                         {
-                            source: UM.Theme.getIcon("printing_guideline")
+                            source: UM.Theme.getIcon("Guide")
                             color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
                         }
                         visible: selectors.instructionLink != ""
@@ -388,7 +388,7 @@ Item
                     {
                         id: warningImage
                         anchors.left: parent.left
-                        source: UM.Theme.getIcon("warning")
+                        source: UM.Theme.getIcon("Warning")
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
                         sourceSize.width: width

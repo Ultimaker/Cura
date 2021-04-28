@@ -95,7 +95,7 @@ Item
         UM.RecolorImage
         {
             id: cloudMarketplaceButton
-            source: "../../images/shop.svg"
+            source: "../../images/Shop.svg"
             color: UM.Theme.getColor(webMarketplaceButtonTooltipArea.containsMouse ? "primary" : "text")
             height: parent.height / 2
             width: height

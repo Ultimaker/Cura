@@ -76,7 +76,7 @@ QtObject
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.height: width
                     color: control.enabled ? Theme.getColor("setting_control_button") : Theme.getColor("setting_category_disabled_text")
-                    source: Theme.getIcon("arrow_bottom")
+                    source: Theme.getIcon("ChevronSingleDown")
                 }
                 Label
                 {
@@ -384,7 +384,7 @@ QtObject
                     anchors.rightMargin: Theme.getSize("default_lining").width * 2
                     anchors.verticalCenter: parent.verticalCenter
 
-                    source: Theme.getIcon("arrow_bottom")
+                    source: Theme.getIcon("ChevronSingleDown")
                     width: Theme.getSize("standard_arrow").width
                     height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width + 5 * screenScaleFactor
@@ -422,7 +422,7 @@ QtObject
                     height: Math.round(parent.height / 2.5)
                     sourceSize.height: width
                     color: Theme.getColor("checkbox_mark")
-                    source: control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check")
+                    source: control.exclusiveGroup ? Theme.getIcon("Dot", "low") : Theme.getIcon("Check")
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
@@ -468,11 +468,11 @@ QtObject
                     {
                         if (control.checkbox_state == 2)
                         {
-                            return Theme.getIcon("solid");
+                            return Theme.getIcon("Solid");
                         }
                         else
                         {
-                            return control.exclusiveGroup ? Theme.getIcon("dot") : Theme.getIcon("check");
+                            return control.exclusiveGroup ? Theme.getIcon("Dot", "low") : Theme.getIcon("Check");
                         }
                     }
                     opacity: control.checked

@@ -53,7 +53,7 @@ Button
             anchors.left: parent.left
             width: height
             height: parent.height - UM.Theme.getSize("narrow_margin").height
-            source: UM.Theme.getIcon("extruder_button")
+            source: UM.Theme.getIcon("Extruder", "medium")
             color: extruderColor
             visible: showExtruderSwatches && extruderColor != ""
         }
@@ -168,12 +168,12 @@ Button
                     {
                         switch (meshType) {
                             case "support_mesh":
-                                return UM.Theme.getIcon("pos_print_as_support");
+                                return UM.Theme.getIcon("MeshTypeSupport");
                             case "cutting_mesh":
                             case "infill_mesh":
-                                return UM.Theme.getIcon("pos_modify_overlaps");
+                                return UM.Theme.getIcon("MeshTypeIntersect");
                             case "anti_overhang_mesh":
-                                return UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                                return UM.Theme.getIcon("MeshTypeExclude");
                         }
                         return "";
                     }

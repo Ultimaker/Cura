@@ -106,7 +106,7 @@ Item
                 {
                     id: buttonIcon
                     anchors.centerIn: parent
-                    source: UM.Theme.getIcon("load")
+                    source: UM.Theme.getIcon("Folder")
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("icon")
