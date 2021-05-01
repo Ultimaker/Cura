@@ -68,7 +68,11 @@
         "travel_avoid_distance":             { "value": "1" },
         "retraction_hop_only_when_collides": { "value": "1" },
 
+<<<<<<< HEAD
         "switch_extruder_retraction_amount": { "default_value": 5, "value": "5" },
+=======
+        "switch_extruder_retraction_amount": { "default_value": 5 },
+>>>>>>> 825e9932b... - Deltacomb : Full supporto for dual extruders
         "switch_extruder_retraction_speeds": { "default_value": 70 },
 
         "top_bottom_thickness":            { "default_value": 0.8 },
