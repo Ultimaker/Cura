@@ -72,6 +72,10 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
 
             df_workspace_information = self._current_workspace_information.getPluginMetadata("digital_factory")
             self._controller.initialize(preselected_project_id = df_workspace_information.get("library_project_id"))
+
+            if not self._dialog:
+                Logger.log("e", "Unable to create the Digital Library Save dialog.")
+                return
             self._dialog.show()
 
     def loadWindow(self) -> None:

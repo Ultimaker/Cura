@@ -24,6 +24,7 @@ from .DFLibraryFileUploadResponse import DFLibraryFileUploadResponse
 from .DFPrintJobUploadRequest import DFPrintJobUploadRequest
 from .DigitalFactoryFileResponse import DigitalFactoryFileResponse
 from .DigitalFactoryProjectResponse import DigitalFactoryProjectResponse
+from .PaginationLinks import PaginationLinks
 from .PaginationManager import PaginationManager
 
 CloudApiClientModel = TypeVar("CloudApiClientModel", bound=BaseModel)
@@ -104,7 +105,7 @@ class DigitalFactoryApiClient:
         """
 
         if self.hasMoreProjectsToLoad():
-            url = self._projects_pagination_mgr.links.next_page
+            url = cast(PaginationLinks, cast(PaginationManager, self._projects_pagination_mgr).links).next_page
             self._http.get(url,
                            scope = self._scope,
                            callback = self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed, pagination_manager = self._projects_pagination_mgr),
@@ -119,7 +120,7 @@ class DigitalFactoryApiClient:
 
         :return: Whether there are more pages in the projects list available to be retrieved from the API.
         """
-        return self._projects_pagination_mgr and self._projects_pagination_mgr.links and self._projects_pagination_mgr.links.next_page is not None
+        return self._projects_pagination_mgr is not None and self._projects_pagination_mgr.links is not None and self._projects_pagination_mgr.links.next_page is not None
 
     def getListOfFilesInProject(self, library_project_id: str, on_finished: Callable[[List[DigitalFactoryFileResponse]], Any], failed: Callable) -> None:
         """Retrieves the list of files contained in the project with library_project_id from the Digital Factory Library.
@@ -293,7 +294,7 @@ class DigitalFactoryApiClient:
         self._file_uploader = DFFileUploader(self._http, df_file_upload_response, mesh, on_finished, on_success, on_progress, on_error)
         self._file_uploader.start()
 
-    def createNewProject(self, project_name: str, on_finished: Callable[[CloudApiClientModel], Any], on_error: Callable) -> None:
+    def createNewProject(self, project_name: str, on_finished: Callable[[DigitalFactoryProjectResponse], Any], on_error: Callable) -> None:
         """ Create a new project in the Digital Factory.
 
         :param project_name: Name of the new to be created project.
@@ -314,4 +315,5 @@ class DigitalFactoryApiClient:
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
     def clear(self) -> None:
-        self._projects_pagination_mgr.reset()
+        if self._projects_pagination_mgr is not None:
+            self._projects_pagination_mgr.reset()

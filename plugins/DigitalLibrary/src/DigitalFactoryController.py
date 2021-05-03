@@ -6,7 +6,7 @@ import tempfile
 import threading
 from enum import IntEnum
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, cast
 
 from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QUrl
 from PyQt5.QtNetwork import QNetworkReply
@@ -97,7 +97,7 @@ class DigitalFactoryController(QObject):
 
         self.file_handlers = {}  # type: Dict[str, FileHandler]
         self.nodes = None  # type: Optional[List[SceneNode]]
-        self.file_upload_manager = None
+        self.file_upload_manager = None  # type: Optional[DFFileExportAndUploadManager]
         self._has_preselected_project = False  # type: bool
 
         self._api = DigitalFactoryApiClient(self._application, on_error = lambda error: Logger.log("e", str(error)), projects_limit_per_page = 20)
@@ -149,7 +149,7 @@ class DigitalFactoryController(QObject):
 
         :return: True if the user account has Digital Library access, else False
         """
-        subscriptions = []  # type: Optional[List[Dict[str, Any]]]
+        subscriptions = []  # type: List[Dict[str, Any]]
         if self._account.userProfile:
             subscriptions = self._account.userProfile.get("subscriptions", [])
         return len(subscriptions) > 0
@@ -339,47 +339,44 @@ class DigitalFactoryController(QObject):
         self.setCreatingNewProjectStatus(RetrievalStatus.Failed)
         Logger.log("e", "Something went wrong while trying to create a new a project. Error: {}".format(reply_string))
 
-    # The new_status type is actually "RetrievalStatus" but since the RetrievalStatus cannot be an enum, we leave it as int
-    def setRetrievingProjectsStatus(self, new_status: int) -> None:
+    def setRetrievingProjectsStatus(self, new_status: RetrievalStatus) -> None:
         """
         Sets the status of the "retrieving library projects" http call.
 
         :param new_status: The new status
         """
         self.retrieving_projects_status = new_status
-        self.retrievingProjectsStatusChanged.emit(new_status)
+        self.retrievingProjectsStatusChanged.emit(int(new_status))
 
     @pyqtProperty(int, fset = setRetrievingProjectsStatus, notify = retrievingProjectsStatusChanged)
     def retrievingProjectsStatus(self) -> int:
-        return self.retrieving_projects_status
+        return int(self.retrieving_projects_status)
 
-    # The new_status type is actually "RetrievalStatus" but since the RetrievalStatus cannot be an enum, we leave it as int
-    def setRetrievingFilesStatus(self, new_status: int) -> None:
+    def setRetrievingFilesStatus(self, new_status: RetrievalStatus) -> None:
         """
         Sets the status of the "retrieving files list in the selected library project" http call.
 
         :param new_status: The new status
         """
         self.retrieving_files_status = new_status
-        self.retrievingFilesStatusChanged.emit(new_status)
+        self.retrievingFilesStatusChanged.emit(int(new_status))
 
     @pyqtProperty(int, fset = setRetrievingFilesStatus, notify = retrievingFilesStatusChanged)
     def retrievingFilesStatus(self) -> int:
-        return self.retrieving_files_status
+        return int(self.retrieving_files_status)
 
-    # The new_status type is actually "RetrievalStatus" but since the RetrievalStatus cannot be an enum, we leave it as int
-    def setCreatingNewProjectStatus(self, new_status: int) -> None:
+    def setCreatingNewProjectStatus(self, new_status: RetrievalStatus) -> None:
         """
         Sets the status of the "creating new library project" http call.
 
         :param new_status: The new status
         """
         self.creating_new_project_status = new_status
-        self.creatingNewProjectStatusChanged.emit(new_status)
+        self.creatingNewProjectStatusChanged.emit(int(new_status))
 
     @pyqtProperty(int, fset = setCreatingNewProjectStatus, notify = creatingNewProjectStatusChanged)
     def creatingNewProjectStatus(self) -> int:
-        return self.creating_new_project_status
+        return int(self.creating_new_project_status)
 
     @staticmethod
     def _onEngineCreated() -> None:
@@ -387,16 +384,6 @@ class DigitalFactoryController(QObject):
 
     def _applicationInitializationFinished(self) -> None:
         self._supported_file_types = self._application.getInstance().getMeshFileHandler().getSupportedFileTypesRead()
-
-    @pyqtSlot("QList<int>")
-    def setSelectedFileIndices(self, file_indices: List[int]) -> None:
-        """
-        Sets the index of the file which is currently selected in the list of files.
-
-        :param file_indices: A list of the indices of the currently selected files
-        """
-        self._selected_file_indices = file_indices
-        self.selectedFileIndicesChanged.emit(file_indices)
 
     @pyqtSlot()
     def openSelectedFiles(self) -> None:
@@ -546,7 +533,7 @@ class DigitalFactoryController(QObject):
         library_project_name = self._project_model.items[self._selected_project_idx]["displayName"]
 
         # Use the file upload manager to export and upload the 3mf and/or ufp files to the DF Library project
-        self.file_upload_manager = DFFileExportAndUploadManager(file_handlers = self.file_handlers, nodes = self.nodes,
+        self.file_upload_manager = DFFileExportAndUploadManager(file_handlers = self.file_handlers, nodes = cast(List[SceneNode], self.nodes),
                                                                 library_project_id = library_project_id,
                                                                 library_project_name = library_project_name,
                                                                 file_name = filename, formats = formats,

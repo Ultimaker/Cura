@@ -46,13 +46,6 @@ class DigitalFactoryProjectModel(ListModel):
         # self.sortProjectsBy("display_name")
         self._update(df_projects)
 
-    def sortProjectsBy(self, sort_by: Optional[str]):
-        if sort_by:
-            try:
-                self._projects.sort(key = lambda p: getattr(p, sort_by))
-            except AttributeError:
-                Logger.log("e", "The projects cannot be sorted by '{}'. No such attribute exists.".format(sort_by))
-
     def clearProjects(self) -> None:
         self.clear()
         self._projects.clear()
