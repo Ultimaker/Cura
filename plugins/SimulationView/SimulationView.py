@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -248,58 +248,59 @@ class SimulationView(CuraView):
                     renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
     def setLayer(self, value: int) -> None:
+        """
+        Set the upper end of the range of visible layers.
+
+        If setting it below the lower end of the range, the lower end is lowered so that 1 layer stays visible.
+        :param value: The new layer number to show, 0-indexed.
+        """
         if self._current_layer_num != value:
-            self._current_layer_num = value
-            if self._current_layer_num < 0:
-                self._current_layer_num = 0
-            if self._current_layer_num > self._max_layers:
-                self._current_layer_num = self._max_layers
-            if self._current_layer_num < self._minimum_layer_num:
-                self._minimum_layer_num = self._current_layer_num
+            self._current_layer_num = min(max(value, 0), self._max_layers)
+            self._minimum_layer_num = min(self._current_layer_num, self._minimum_layer_num)
 
             self._startUpdateTopLayers()
-
             self.currentLayerNumChanged.emit()
 
     def setMinimumLayer(self, value: int) -> None:
+        """
+        Set the lower end of the range of visible layers.
+
+        If setting it above the upper end of the range, the upper end is increased so that 1 layer stays visible.
+        :param value: The new lower end of the range of visible layers, 0-indexed.
+        """
         if self._minimum_layer_num != value:
-            self._minimum_layer_num = value
-            if self._minimum_layer_num < 0:
-                self._minimum_layer_num = 0
-            if self._minimum_layer_num > self._max_layers:
-                self._minimum_layer_num = self._max_layers
-            if self._minimum_layer_num > self._current_layer_num:
-                self._current_layer_num = self._minimum_layer_num
+            self._minimum_layer_num = min(max(value, 0), self._max_layers)
+            self._current_layer_num = max(self._current_layer_num, self._minimum_layer_num)
 
             self._startUpdateTopLayers()
-
             self.currentLayerNumChanged.emit()
 
     def setPath(self, value: int) -> None:
+        """
+        Set the upper end of the range of visible paths on the current layer.
+
+        If setting it below the lower end of the range, the lower end is lowered so that 1 path stays visible.
+        :param value: The new path index to show, 0-indexed.
+        """
         if self._current_path_num != value:
-            self._current_path_num = value
-            if self._current_path_num < 0:
-                self._current_path_num = 0
-            if self._current_path_num > self._max_paths:
-                self._current_path_num = self._max_paths
-            if self._current_path_num < self._minimum_path_num:
-                self._minimum_path_num = self._current_path_num
+            self._current_path_num = min(max(value, 0), self._max_paths)
+            self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
 
     def setMinimumPath(self, value: int) -> None:
+        """
+        Set the lower end of the range of visible paths on the current layer.
+
+        If setting it above the upper end of the range, the upper end is increased so that 1 path stays visible.
+        :param value: The new lower end of the range of visible paths, 0-indexed.
+        """
         if self._minimum_path_num != value:
-            self._minimum_path_num = value
-            if self._minimum_path_num < 0:
-                self._minimum_path_num = 0
-            if self._minimum_path_num > self._max_layers:
-                self._minimum_path_num = self._max_layers
-            if self._minimum_path_num > self._current_path_num:
-                self._current_path_num = self._minimum_path_num
+            self._minimum_path_num = min(max(value, 0), self._max_paths)
+            self._current_path_num = max(self._current_path_num, self._minimum_path_num)
 
             self._startUpdateTopLayers()
-
             self.currentPathNumChanged.emit()
 
     def setSimulationViewType(self, layer_view_type: int) -> None:
