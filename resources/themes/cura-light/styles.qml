@@ -75,13 +75,8 @@ QtObject
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.height: width
-<<<<<<< HEAD
-                    color: control.enabled ? Theme.getColor("setting_control_button") : Theme.getColor("setting_category_disabled_text")
-                    source: Theme.getIcon("ChevronSingleDown")
-=======
                     color: control.enabled ? UM.Theme.getColor("setting_control_button") : UM.Theme.getColor("setting_category_disabled_text")
-                    source: UM.Theme.getIcon("arrow_bottom")
->>>>>>> 4.9
+                    source: UM.Theme.getIcon("ChevronSingleDown")
                 }
                 Label
                 {
