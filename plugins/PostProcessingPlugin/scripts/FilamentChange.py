@@ -35,7 +35,7 @@ class FilamentChange(Script):
                     "label": "Use Firmware Configuration",
                     "description": "Use the settings in your firmware, or customise the parameters of the filament change here.",
                     "type": "bool",
-                    "default_value": true
+                    "default_value": false
                 },
                 "initial_retract":
                 {
