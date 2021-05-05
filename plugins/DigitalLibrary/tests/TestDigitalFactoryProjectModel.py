@@ -13,11 +13,6 @@ project_2 = DigitalFactoryProjectResponse(library_project_id = "omg2",
                                               username = "nope",
                                               organization_shared = False)
 
-project_3 = DigitalFactoryProjectResponse(library_project_id = "_omg3",
-                                              display_name = "zomg3",
-                                              username = "nope",
-                                              organization_shared = False)
-
 
 def test_setProjects():
     model = DigitalFactoryProjectModel()
