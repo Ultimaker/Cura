@@ -3,7 +3,8 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Magician X",
+        "machine": "mingda_magician_x",
+
         "position": "0"
     },
 
