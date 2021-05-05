@@ -324,7 +324,7 @@ Item
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("Formula")
+                iconSource: UM.Theme.getIcon("Function")
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.createTooltipText())
