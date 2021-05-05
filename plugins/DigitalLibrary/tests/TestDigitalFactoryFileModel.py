@@ -4,7 +4,7 @@ from src.DigitalFactoryFileModel import DigitalFactoryFileModel
 from src.DigitalFactoryFileResponse import DigitalFactoryFileResponse
 
 
-file_1 = DigitalFactoryFileResponse(client_id ="client_id_1",
+file_1 = DigitalFactoryFileResponse(client_id = "client_id_1",
                                     content_type = "zomg",
                                     file_name = "file_1.3mf",
                                     file_id = "file_id_1",

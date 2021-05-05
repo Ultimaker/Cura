@@ -45,16 +45,16 @@ def test_getProjectsFirstPage(api_client):
     args = http_manager.get.call_args_list[0]
 
     # Ensure that it's called with the right limit
-    assert args[0][0] == 'https://api.ultimaker.com/cura/v1/projects?limit=20'
+    assert args[0][0] == "https://api.ultimaker.com/cura/v1/projects?limit=20"
 
     # Change the limit & try again
     http_manager.get.reset_mock()
     pagination_manager.limit = 80
-    api_client.getProjectsFirstPage(on_finished=finished_callback, failed=failed_callback)
+    api_client.getProjectsFirstPage(on_finished = finished_callback, failed = failed_callback)
     args = http_manager.get.call_args_list[0]
 
     # Ensure that it's called with the right limit
-    assert args[0][0] == 'https://api.ultimaker.com/cura/v1/projects?limit=80'
+    assert args[0][0] == "https://api.ultimaker.com/cura/v1/projects?limit=80"
 
 
 def test_getMoreProjects_noNewProjects(api_client):
@@ -70,7 +70,7 @@ def test_getMoreProjects_noNewProjects(api_client):
 
 
 def test_getMoreProjects_hasNewProjects(api_client):
-    api_client.hasMoreProjectsToLoad = MagicMock(return_value=True)
+    api_client.hasMoreProjectsToLoad = MagicMock(return_value = True)
     http_manager = MagicMock()
     api_client._http = http_manager
 
@@ -84,4 +84,3 @@ def test_getMoreProjects_hasNewProjects(api_client):
 def test_clear(api_client):
     api_client.clear()
     api_client._projects_pagination_mgr.reset.assert_called_once()
-

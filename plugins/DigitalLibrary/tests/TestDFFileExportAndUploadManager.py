@@ -17,7 +17,7 @@ def upload_manager():
                 }])
     node = MagicMock(name = "SceneNode")
     application = MagicMock(name = "CuraApplication")
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
         return DFFileExportAndUploadManager(file_handlers = {"3mf": file_handler},
                                             nodes = [node],
                                             library_project_id = "test_library_project_id",
@@ -41,7 +41,7 @@ def test_extractErrorTitle(upload_manager, input, expected_result):
 
 def test_exportJobError(upload_manager):
     mocked_application = MagicMock()
-    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value = mocked_application)):
         upload_manager._onJobExportError("file_name.3mf")
 
     # Ensure that message was displayed
