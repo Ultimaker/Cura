@@ -1,1792 +1,1775 @@
 {
-    "3MFReader": {
+    "CuraProfileWriter": {
         "package_info": {
-            "package_id": "3MFReader",
-            "package_type": "plugin",
-            "display_name": "3MF Reader",
-            "description": "Provides support for reading 3MF files.",
-            "package_version": "1.0.1",
+            "description": "Provides support for exporting Cura profiles.",
             "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
+            "package_id": "CuraProfileWriter",
+            "package_type": "plugin",
+            "display_name": "Cura Profile Writer",
+            "package_version": "1.0.1",
             "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
                 "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     },
     "3MFWriter": {
         "package_info": {
+            "description": "Provides support for writing 3MF files.",
+            "sdk_version": "7.3.0",
             "package_id": "3MFWriter",
             "package_type": "plugin",
             "display_name": "3MF Writer",
-            "description": "Provides support for writing 3MF files.",
             "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
             "author": {
-                "author_id": "UltimakerPackages",
+                "email": "plugins@ultimaker.com",
                 "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "AMFReader": {
-        "package_info": {
-            "package_id": "AMFReader",
-            "package_type": "plugin",
-            "display_name": "AMF Reader",
-            "description": "Provides support for reading AMF files.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "fieldOfView",
-                "display_name": "fieldOfView",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "CuraDrive": {
-        "package_info": {
-            "package_id": "CuraDrive",
-            "package_type": "plugin",
-            "display_name": "Cura Backups",
-            "description": "Backup and restore your configuration.",
-            "package_version": "1.2.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "CuraEngineBackend": {
-        "package_info": {
-            "package_id": "CuraEngineBackend",
-            "package_type": "plugin",
-            "display_name": "CuraEngine Backend",
-            "description": "Provides the link to the CuraEngine slicing backend.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "CuraProfileReader": {
-        "package_info": {
-            "package_id": "CuraProfileReader",
-            "package_type": "plugin",
-            "display_name": "Cura Profile Reader",
-            "description": "Provides support for importing Cura profiles.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "CuraProfileWriter": {
-        "package_info": {
-            "package_id": "CuraProfileWriter",
-            "package_type": "plugin",
-            "display_name": "Cura Profile Writer",
-            "description": "Provides support for exporting Cura profiles.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "FirmwareUpdateChecker": {
-        "package_info": {
-            "package_id": "FirmwareUpdateChecker",
-            "package_type": "plugin",
-            "display_name": "Firmware Update Checker",
-            "description": "Checks for firmware updates.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "FirmwareUpdater": {
-        "package_info": {
-            "package_id": "FirmwareUpdater",
-            "package_type": "plugin",
-            "display_name": "Firmware Updater",
-            "description": "Provides a machine actions for updating firmware.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "GCodeGzReader": {
-        "package_info": {
-            "package_id": "GCodeGzReader",
-            "package_type": "plugin",
-            "display_name": "Compressed G-code Reader",
-            "description": "Reads g-code from a compressed archive.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "GCodeGzWriter": {
-        "package_info": {
-            "package_id": "GCodeGzWriter",
-            "package_type": "plugin",
-            "display_name": "Compressed G-code Writer",
-            "description": "Writes g-code to a compressed archive.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "GCodeProfileReader": {
-        "package_info": {
-            "package_id": "GCodeProfileReader",
-            "package_type": "plugin",
-            "display_name": "G-Code Profile Reader",
-            "description": "Provides support for importing profiles from g-code files.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "GCodeReader": {
-        "package_info": {
-            "package_id": "GCodeReader",
-            "package_type": "plugin",
-            "display_name": "G-Code Reader",
-            "description": "Allows loading and displaying G-code files.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "VictorLarchenko",
-                "display_name": "Victor Larchenko",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "GCodeWriter": {
-        "package_info": {
-            "package_id": "GCodeWriter",
-            "package_type": "plugin",
-            "display_name": "G-Code Writer",
-            "description": "Writes g-code to a file.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "ImageReader": {
-        "package_info": {
-            "package_id": "ImageReader",
-            "package_type": "plugin",
-            "display_name": "Image Reader",
-            "description": "Enables ability to generate printable geometry from 2D image files.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "LegacyProfileReader": {
-        "package_info": {
-            "package_id": "LegacyProfileReader",
-            "package_type": "plugin",
-            "display_name": "Legacy Cura Profile Reader",
-            "description": "Provides support for importing profiles from legacy Cura versions.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "MachineSettingsAction": {
-        "package_info": {
-            "package_id": "MachineSettingsAction",
-            "package_type": "plugin",
-            "display_name": "Machine Settings Action",
-            "description": "Provides a way to change machine settings (such as build volume, nozzle size, etc.).",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "fieldOfView",
-                "display_name": "fieldOfView",
-                "email": null,
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "ModelChecker": {
-        "package_info": {
-            "package_id": "ModelChecker",
-            "package_type": "plugin",
-            "display_name": "Model Checker",
-            "description": "Checks models and print configuration for possible printing issues and give suggestions.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "MonitorStage": {
-        "package_info": {
-            "package_id": "MonitorStage",
-            "package_type": "plugin",
-            "display_name": "Monitor Stage",
-            "description": "Provides a monitor stage in Cura.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "PerObjectSettingsTool": {
-        "package_info": {
-            "package_id": "PerObjectSettingsTool",
-            "package_type": "plugin",
-            "display_name": "Per-Object Settings Tool",
-            "description": "Provides the per-model settings.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "PostProcessingPlugin": {
-        "package_info": {
-            "package_id": "PostProcessingPlugin",
-            "package_type": "plugin",
-            "display_name": "Post Processing",
-            "description": "Extension that allows for user created scripts for post processing.",
-            "package_version": "2.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "PrepareStage": {
-        "package_info": {
-            "package_id": "PrepareStage",
-            "package_type": "plugin",
-            "display_name": "Prepare Stage",
-            "description": "Provides a prepare stage in Cura.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "PreviewStage": {
-        "package_info": {
-            "package_id": "PreviewStage",
-            "package_type": "plugin",
-            "display_name": "Preview Stage",
-            "description": "Provides a preview stage in Cura.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "RemovableDriveOutputDevice": {
-        "package_info": {
-            "package_id": "RemovableDriveOutputDevice",
-            "package_type": "plugin",
-            "display_name": "Removable Drive Output Device",
-            "description": "Provides removable drive hotplugging and writing support.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SentryLogger": {
-        "package_info": {
-            "package_id": "SentryLogger",
-            "package_type": "plugin",
-            "display_name": "Sentry Logger",
-            "description": "Logs certain events so that they can be used by the crash reporter",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SimulationView": {
-        "package_info": {
-            "package_id": "SimulationView",
-            "package_type": "plugin",
-            "display_name": "Simulation View",
-            "description": "Provides the Simulation view.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SliceInfoPlugin": {
-        "package_info": {
-            "package_id": "SliceInfoPlugin",
-            "package_type": "plugin",
-            "display_name": "Slice Info",
-            "description": "Submits anonymous slice info. Can be disabled through preferences.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SolidView": {
-        "package_info": {
-            "package_id": "SolidView",
-            "package_type": "plugin",
-            "display_name": "Solid View",
-            "description": "Provides a normal solid mesh view.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SupportEraser": {
-        "package_info": {
-            "package_id": "SupportEraser",
-            "package_type": "plugin",
-            "display_name": "Support Eraser Tool",
-            "description": "Creates an eraser mesh to block the printing of support in certain places.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "TrimeshReader": {
-        "package_info": {
-            "package_id": "TrimeshReader",
-            "package_type": "plugin",
-            "display_name": "Trimesh Reader",
-            "description": "Provides support for reading model files.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "Toolbox": {
-        "package_info": {
-            "package_id": "Toolbox",
-            "package_type": "plugin",
-            "display_name": "Toolbox",
-            "description": "Find, manage and install new Cura packages.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "UFPReader": {
-        "package_info": {
-            "package_id": "UFPReader",
-            "package_type": "plugin",
-            "display_name": "UFP Reader",
-            "description": "Provides support for reading Ultimaker Format Packages.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "UFPWriter": {
-        "package_info": {
-            "package_id": "UFPWriter",
-            "package_type": "plugin",
-            "display_name": "UFP Writer",
-            "description": "Provides support for writing Ultimaker Format Packages.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "UltimakerMachineActions": {
-        "package_info": {
-            "package_id": "UltimakerMachineActions",
-            "package_type": "plugin",
-            "display_name": "Ultimaker Machine Actions",
-            "description": "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.).",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "UM3NetworkPrinting": {
-        "package_info": {
-            "package_id": "UM3NetworkPrinting",
-            "package_type": "plugin",
-            "display_name": "UM3 Network Printing",
-            "description": "Manages network connections to Ultimaker 3 printers.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "USBPrinting": {
-        "package_info": {
-            "package_id": "USBPrinting",
-            "package_type": "plugin",
-            "display_name": "USB Printing",
-            "description": "Accepts G-Code and sends them to a printer. Plugin can also update firmware.",
-            "package_version": "1.0.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade21to22": {
-        "package_info": {
-            "package_id": "VersionUpgrade21to22",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 2.1 to 2.2",
-            "description": "Upgrades configurations from Cura 2.1 to Cura 2.2.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade22to24": {
-        "package_info": {
-            "package_id": "VersionUpgrade22to24",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 2.2 to 2.4",
-            "description": "Upgrades configurations from Cura 2.2 to Cura 2.4.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade25to26": {
-        "package_info": {
-            "package_id": "VersionUpgrade25to26",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 2.5 to 2.6",
-            "description": "Upgrades configurations from Cura 2.5 to Cura 2.6.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade26to27": {
-        "package_info": {
-            "package_id": "VersionUpgrade26to27",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 2.6 to 2.7",
-            "description": "Upgrades configurations from Cura 2.6 to Cura 2.7.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade27to30": {
-        "package_info": {
-            "package_id": "VersionUpgrade27to30",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 2.7 to 3.0",
-            "description": "Upgrades configurations from Cura 2.7 to Cura 3.0.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade30to31": {
-        "package_info": {
-            "package_id": "VersionUpgrade30to31",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 3.0 to 3.1",
-            "description": "Upgrades configurations from Cura 3.0 to Cura 3.1.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade32to33": {
-        "package_info": {
-            "package_id": "VersionUpgrade32to33",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 3.2 to 3.3",
-            "description": "Upgrades configurations from Cura 3.2 to Cura 3.3.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade33to34": {
-        "package_info": {
-            "package_id": "VersionUpgrade33to34",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 3.3 to 3.4",
-            "description": "Upgrades configurations from Cura 3.3 to Cura 3.4.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade34to35": {
-        "package_info": {
-            "package_id": "VersionUpgrade34to35",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 3.4 to 3.5",
-            "description": "Upgrades configurations from Cura 3.4 to Cura 3.5.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade35to40": {
-        "package_info": {
-            "package_id": "VersionUpgrade35to40",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 3.5 to 4.0",
-            "description": "Upgrades configurations from Cura 3.5 to Cura 4.0.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade40to41": {
-        "package_info": {
-            "package_id": "VersionUpgrade40to41",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.0 to 4.1",
-            "description": "Upgrades configurations from Cura 4.0 to Cura 4.1.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade41to42": {
-        "package_info": {
-            "package_id": "VersionUpgrade41to42",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.1 to 4.2",
-            "description": "Upgrades configurations from Cura 4.1 to Cura 4.2.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade42to43": {
-        "package_info": {
-            "package_id": "VersionUpgrade42to43",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.2 to 4.3",
-            "description": "Upgrades configurations from Cura 4.2 to Cura 4.3.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade43to44": {
-        "package_info": {
-            "package_id": "VersionUpgrade43to44",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.3 to 4.4",
-            "description": "Upgrades configurations from Cura 4.3 to Cura 4.4.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade44to45": {
-        "package_info": {
-            "package_id": "VersionUpgrade44to45",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.4 to 4.5",
-            "description": "Upgrades configurations from Cura 4.4 to Cura 4.5.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade45to46": {
-        "package_info": {
-            "package_id": "VersionUpgrade45to46",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.5 to 4.6",
-            "description": "Upgrades configurations from Cura 4.5 to Cura 4.6.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade460to462": {
-        "package_info": {
-            "package_id": "VersionUpgrade460to462",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.6.0 to 4.6.2",
-            "description": "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "VersionUpgrade462to47": {
-        "package_info": {
-            "package_id": "VersionUpgrade462to47",
-            "package_type": "plugin",
-            "display_name": "Version Upgrade 4.6.2 to 4.7",
-            "description": "Upgrades configurations from Cura 4.6.2 to Cura 4.7.",
-            "package_version": "1.0.0",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "X3DReader": {
-        "package_info": {
-            "package_id": "X3DReader",
-            "package_type": "plugin",
-            "display_name": "X3D Reader",
-            "description": "Provides support for reading X3D files.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "SevaAlekseyev",
-                "display_name": "Seva Alekseyev",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "XmlMaterialProfile": {
-        "package_info": {
-            "package_id": "XMLMaterialProfile",
-            "package_type": "plugin",
-            "display_name": "XML Material Profiles",
-            "description": "Provides capabilities to read and write XML-based material profiles.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "XRayView": {
-        "package_info": {
-            "package_id": "XRayView",
-            "package_type": "plugin",
-            "display_name": "X-Ray View",
-            "description": "Provides the X-Ray view.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "GenericABS": {
-        "package_info": {
-            "package_id": "GenericABS",
-            "package_type": "material",
-            "display_name": "Generic ABS",
-            "description": "The generic ABS profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericBAM": {
-        "package_info": {
-            "package_id": "GenericBAM",
-            "package_type": "material",
-            "display_name": "Generic BAM",
-            "description": "The generic BAM profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericCFFCPE": {
-        "package_info": {
-            "package_id": "GenericCFFCPE",
-            "package_type": "material",
-            "display_name": "Generic CFF CPE",
-            "description": "The generic CFF CPE profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     },
     "GenericCFFPA": {
         "package_info": {
+            "description": "The generic CFF PA profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
             "package_id": "GenericCFFPA",
             "package_type": "material",
             "display_name": "Generic CFF PA",
-            "description": "The generic CFF PA profile which other profiles can be based upon.",
             "package_version": "1.1.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
                 "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericCPE": {
-        "package_info": {
-            "package_id": "GenericCPE",
-            "package_type": "material",
-            "display_name": "Generic CPE",
-            "description": "The generic CPE profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
                 "display_name": "Generic",
-                "email": "materials@ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
                 "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericCPEPlus": {
-        "package_info": {
-            "package_id": "GenericCPEPlus",
-            "package_type": "material",
-            "display_name": "Generic CPE+",
-            "description": "The generic CPE+ profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericGFFCPE": {
-        "package_info": {
-            "package_id": "GenericGFFCPE",
-            "package_type": "material",
-            "display_name": "Generic GFF CPE",
-            "description": "The generic GFF CPE profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericGFFPA": {
-        "package_info": {
-            "package_id": "GenericGFFPA",
-            "package_type": "material",
-            "display_name": "Generic GFF PA",
-            "description": "The generic GFF PA profile which other profiles can be based upon.",
-            "package_version": "1.1.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericHIPS": {
-        "package_info": {
-            "package_id": "GenericHIPS",
-            "package_type": "material",
-            "display_name": "Generic HIPS",
-            "description": "The generic HIPS profile which other profiles can be based upon.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericNylon": {
-        "package_info": {
-            "package_id": "GenericNylon",
-            "package_type": "material",
-            "display_name": "Generic Nylon",
-            "description": "The generic Nylon profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericPC": {
-        "package_info": {
-            "package_id": "GenericPC",
-            "package_type": "material",
-            "display_name": "Generic PC",
-            "description": "The generic PC profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericPETG": {
-        "package_info": {
-            "package_id": "GenericPETG",
-            "package_type": "material",
-            "display_name": "Generic PETG",
-            "description": "The generic PETG profile which other profiles can be based upon.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
         }
     },
     "GenericPLA": {
         "package_info": {
+            "description": "The generic PLA profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
             "package_id": "GenericPLA",
             "package_type": "material",
             "display_name": "Generic PLA",
-            "description": "The generic PLA profile which other profiles can be based upon.",
             "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
             "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
                 "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericPP": {
-        "package_info": {
-            "package_id": "GenericPP",
-            "package_type": "material",
-            "display_name": "Generic PP",
-            "description": "The generic PP profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
                 "display_name": "Generic",
-                "email": "materials@ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
                 "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericPVA": {
-        "package_info": {
-            "package_id": "GenericPVA",
-            "package_type": "material",
-            "display_name": "Generic PVA",
-            "description": "The generic PVA profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericToughPLA": {
-        "package_info": {
-            "package_id": "GenericToughPLA",
-            "package_type": "material",
-            "display_name": "Generic Tough PLA",
-            "description": "The generic Tough PLA profile which other profiles can be based upon.",
-            "package_version": "1.0.2",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
-        }
-    },
-    "GenericTPU": {
-        "package_info": {
-            "package_id": "GenericTPU",
-            "package_type": "material",
-            "display_name": "Generic TPU",
-            "description": "The generic TPU profile which other profiles can be based upon.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://github.com/Ultimaker/fdm_materials",
-            "author": {
-                "author_id": "Generic",
-                "display_name": "Generic",
-                "email": "materials@ultimaker.com",
-                "website": "https://github.com/Ultimaker/fdm_materials",
-                "description": "Professional 3D printing made accessible."
-            }
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
         }
     },
     "DagomaChromatikPLA": {
         "package_info": {
+            "description": "Filament test\u00e9 et approuv\u00e9 pour les imprimantes 3D Dagoma. Chromatik est l'id\u00e9al pour d\u00e9buter et suivre les tutoriels premiers pas. Il vous offre qualit\u00e9 et r\u00e9sistance pour chacune de vos impressions.",
+            "sdk_version": "7.3.0",
             "package_id": "DagomaChromatikPLA",
             "package_type": "material",
             "display_name": "Dagoma Chromatik PLA",
-            "description": "Filament testé et approuvé pour les imprimantes 3D Dagoma. Chromatik est l'idéal pour débuter et suivre les tutoriels premiers pas. Il vous offre qualité et résistance pour chacune de vos impressions.",
             "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://dagoma.fr/boutique/filaments.html",
             "author": {
-                "author_id": "Dagoma",
-                "display_name": "Dagoma",
                 "email": null,
-                "website": "https://dagoma.fr"
-            }
-        }
-    },
-    "FABtotumABS": {
-        "package_info": {
-            "package_id": "FABtotumABS",
-            "package_type": "material",
-            "display_name": "FABtotum ABS",
-            "description": "This material is easy to be extruded but it is not the simplest to use. It is one of the most used in 3D printing to get very well finished objects. It is not sustainable and its smoke can be dangerous if inhaled. The reason to prefer this filament to PLA is mainly because of its precision and mechanical specs. ABS (for plastic) stands for Acrylonitrile Butadiene Styrene and it is a thermoplastic which is widely used in everyday objects. It can be printed with any FFF 3D printer which can get to high temperatures as it must be extruded in a range between 220° and 245°, so it’s compatible with all versions of the FABtotum Personal fabricator.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=40",
-            "author": {
-                "author_id": "FABtotum",
-                "display_name": "FABtotum S.R.L.",
-                "email": "info@fabtotum.com",
-                "website": "https://www.fabtotum.com"
-            }
-        }
-    },
-    "FABtotumNylon": {
-        "package_info": {
-            "package_id": "FABtotumNylon",
-            "package_type": "material",
-            "display_name": "FABtotum Nylon",
-            "description": "When 3D printing started this material was not listed among the extrudable filaments. It is flexible as well as resistant to tractions. It is well known for its uses in textile but also in industries which require a strong and flexible material. There are different kinds of Nylon: 3D printing mostly uses Nylon 6 and Nylon 6.6, which are the most common. It requires higher temperatures to be printed, so a 3D printer must be able to reach them (around 240°C): the FABtotum, of course, can.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=53",
-            "author": {
-                "author_id": "FABtotum",
-                "display_name": "FABtotum S.R.L.",
-                "email": "info@fabtotum.com",
-                "website": "https://www.fabtotum.com"
-            }
-        }
-    },
-    "FABtotumPLA": {
-        "package_info": {
-            "package_id": "FABtotumPLA",
-            "package_type": "material",
-            "display_name": "FABtotum PLA",
-            "description": "It is the most common filament used for 3D printing. It is studied to be bio-degradable as it comes from corn starch’s sugar mainly. It is completely made of renewable sources and has no footprint on polluting. PLA stands for PolyLactic Acid and it is a thermoplastic that today is still considered the easiest material to be 3D printed. It can be extruded at lower temperatures: the standard range of FABtotum’s one is between 185° and 195°.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=39",
-            "author": {
-                "author_id": "FABtotum",
-                "display_name": "FABtotum S.R.L.",
-                "email": "info@fabtotum.com",
-                "website": "https://www.fabtotum.com"
-            }
-        }
-    },
-    "FABtotumTPU": {
-        "package_info": {
-            "package_id": "FABtotumTPU",
-            "package_type": "material",
-            "display_name": "FABtotum TPU Shore 98A",
-            "description": "",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=66",
-            "author": {
-                "author_id": "FABtotum",
-                "display_name": "FABtotum S.R.L.",
-                "email": "info@fabtotum.com",
-                "website": "https://www.fabtotum.com"
-            }
-        }
-    },
-    "FiberlogyHDPLA": {
-        "package_info": {
-            "package_id": "FiberlogyHDPLA",
-            "package_type": "material",
-            "display_name": "Fiberlogy HD PLA",
-            "description": "With our HD PLA you have many more options. You can use this material in two ways. Choose the one you like best. You can use it as a normal PLA and get prints characterized by a very good adhesion between the layers and high precision. You can also make your prints acquire similar properties to that of ABS – better impact resistance and high temperature resistance. All you need is an oven. Yes, an oven! By annealing our HD PLA in an oven, in accordance with the manual, you will avoid all the inconveniences of printing with ABS, such as unpleasant odour or hazardous fumes.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "http://fiberlogy.com/en/fiberlogy-filaments/filament-hd-pla/",
-            "author": {
-                "author_id": "Fiberlogy",
-                "display_name": "Fiberlogy S.A.",
-                "email": "grzegorz.h@fiberlogy.com",
-                "website": "http://fiberlogy.com"
-            }
-        }
-    },
-    "Filo3DPLA": {
-        "package_info": {
-            "package_id": "Filo3DPLA",
-            "package_type": "material",
-            "display_name": "Filo3D PLA",
-            "description": "Fast, safe and reliable printing. PLA is ideal for the fast and reliable printing of parts and prototypes with a great surface quality.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://dagoma.fr",
-            "author": {
-                "author_id": "Dagoma",
                 "display_name": "Dagoma",
-                "email": null,
-                "website": "https://dagoma.fr"
-            }
+                "website": "https://dagoma.fr",
+                "author_id": "Dagoma"
+            },
+            "website": "https://dagoma.fr/boutique/filaments.html"
         }
     },
-    "IMADE3DJellyBOXPETG": {
+    "GenericCPEPlus": {
         "package_info": {
-            "package_id": "IMADE3DJellyBOXPETG",
-            "package_type": "material",
-            "display_name": "IMADE3D JellyBOX PETG",
-            "description": "",
-            "package_version": "1.0.1",
+            "description": "The generic CPE+ profile which other profiles can be based upon.",
             "sdk_version": "7.3.0",
-            "website": "http://shop.imade3d.com/filament.html",
+            "package_id": "GenericCPEPlus",
+            "package_type": "material",
+            "display_name": "Generic CPE+",
+            "package_version": "1.2.1",
             "author": {
-                "author_id": "IMADE3D",
-                "display_name": "IMADE3D",
-                "email": "info@imade3d.com",
-                "website": "https://www.imade3d.com"
-            }
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
         }
     },
-    "IMADE3DJellyBOXPLA": {
+    "GCodeReader": {
         "package_info": {
-            "package_id": "IMADE3DJellyBOXPLA",
-            "package_type": "material",
-            "display_name": "IMADE3D JellyBOX PLA",
-            "description": "",
-            "package_version": "1.0.1",
+            "description": "Allows loading and displaying G-code files.",
             "sdk_version": "7.3.0",
-            "website": "http://shop.imade3d.com/filament.html",
+            "package_id": "GCodeReader",
+            "package_type": "plugin",
+            "display_name": "G-Code Reader",
+            "package_version": "1.0.1",
             "author": {
-                "author_id": "IMADE3D",
-                "display_name": "IMADE3D",
-                "email": "info@imade3d.com",
-                "website": "https://www.imade3d.com"
-            }
+                "email": "plugins@ultimaker.com",
+                "display_name": "Victor Larchenko",
+                "website": "https://ultimaker.com",
+                "author_id": "VictorLarchenko"
+            },
+            "website": "https://ultimaker.com"
         }
     },
-    "OctofiberPLA": {
+    "PerObjectSettingsTool": {
         "package_info": {
-            "package_id": "OctofiberPLA",
-            "package_type": "material",
-            "display_name": "Octofiber PLA",
-            "description": "PLA material from Octofiber.",
-            "package_version": "1.0.1",
+            "description": "Provides the per-model settings.",
             "sdk_version": "7.3.0",
-            "website": "https://nl.octofiber.com/3d-printing-filament/pla.html",
+            "package_id": "PerObjectSettingsTool",
+            "package_type": "plugin",
+            "display_name": "Per-Object Settings Tool",
+            "package_version": "1.0.1",
             "author": {
-                "author_id": "Octofiber",
-                "display_name": "Octofiber",
-                "email": "info@octofiber.com",
-                "website": "https://nl.octofiber.com"
-            }
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     },
-    "PolyFlexPLA": {
+    "VersionUpgrade44to45": {
         "package_info": {
-            "package_id": "PolyFlexPLA",
-            "package_type": "material",
-            "display_name": "PolyFlex™ PLA",
-            "description": "PolyFlex™ is a highly flexible yet easy to print 3D printing material. Featuring good elasticity and a large strain-to- failure, PolyFlex™ opens up a completely new realm of applications.",
-            "package_version": "1.0.1",
+            "description": "Upgrades configurations from Cura 4.4 to Cura 4.5.",
             "sdk_version": "7.3.0",
-            "website": "http://www.polymaker.com/shop/polyflex/",
+            "package_id": "VersionUpgrade44to45",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.4 to 4.5",
+            "package_version": "1.0.0",
             "author": {
-                "author_id": "Polymaker",
-                "display_name": "Polymaker L.L.C.",
-                "email": "inquiry@polymaker.com",
-                "website": "https://www.polymaker.com"
-            }
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "CuraEngineBackend": {
+        "package_info": {
+            "description": "Provides the link to the CuraEngine slicing backend.",
+            "sdk_version": "7.3.0",
+            "package_id": "CuraEngineBackend",
+            "package_type": "plugin",
+            "display_name": "CuraEngine Backend",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     },
     "PolyMaxPLA": {
         "package_info": {
+            "description": "PolyMax\u2122 PLA is a 3D printing material with excellent mechanical properties and printing quality. PolyMax\u2122 PLA has an impact resistance of up to nine times that of regular PLA, and better overall mechanical properties than ABS.",
+            "sdk_version": "7.3.0",
             "package_id": "PolyMaxPLA",
             "package_type": "material",
-            "display_name": "PolyMax™ PLA",
-            "description": "PolyMax™ PLA is a 3D printing material with excellent mechanical properties and printing quality. PolyMax™ PLA has an impact resistance of up to nine times that of regular PLA, and better overall mechanical properties than ABS.",
+            "display_name": "PolyMax\u2122 PLA",
             "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "http://www.polymaker.com/shop/polymax/",
             "author": {
-                "author_id": "Polymaker",
-                "display_name": "Polymaker L.L.C.",
                 "email": "inquiry@polymaker.com",
-                "website": "https://www.polymaker.com"
-            }
-        }
-    },
-    "PolyPlusPLA": {
-        "package_info": {
-            "package_id": "PolyPlusPLA",
-            "package_type": "material",
-            "display_name": "PolyPlus™ PLA True Colour",
-            "description": "PolyPlus™ PLA is a premium PLA designed for all desktop FDM/FFF 3D printers. It is produced with our patented Jam-Free™ technology that ensures consistent extrusion and prevents jams.",
-            "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "http://www.polymaker.com/shop/polyplus-true-colour/",
-            "author": {
-                "author_id": "Polymaker",
                 "display_name": "Polymaker L.L.C.",
-                "email": "inquiry@polymaker.com",
-                "website": "https://www.polymaker.com"
-            }
+                "website": "https://www.polymaker.com",
+                "author_id": "Polymaker"
+            },
+            "website": "http://www.polymaker.com/shop/polymax/"
         }
     },
-    "PolyWoodPLA": {
+    "GenericPVA": {
         "package_info": {
-            "package_id": "PolyWoodPLA",
-            "package_type": "material",
-            "display_name": "PolyWood™ PLA",
-            "description": "PolyWood™ is a wood mimic printing material that contains no actual wood ensuring a clean Jam-Free™ printing experience.",
-            "package_version": "1.0.1",
+            "description": "The generic PVA profile which other profiles can be based upon.",
             "sdk_version": "7.3.0",
-            "website": "http://www.polymaker.com/shop/polywood/",
-            "author": {
-                "author_id": "Polymaker",
-                "display_name": "Polymaker L.L.C.",
-                "email": "inquiry@polymaker.com",
-                "website": "https://www.polymaker.com"
-            }
-        }
-    },
-    "UltimakerABS": {
-        "package_info": {
-            "package_id": "UltimakerABS",
+            "package_id": "GenericPVA",
             "package_type": "material",
-            "display_name": "Ultimaker ABS",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/abs",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerBAM": {
-        "package_info": {
-            "package_id": "UltimakerBAM",
-            "package_type": "material",
-            "display_name": "Ultimaker Breakaway",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "display_name": "Generic PVA",
             "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/breakaway",
             "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
                 "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
+                "display_name": "Generic",
                 "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
         }
     },
-    "UltimakerCPE": {
+    "3MFReader": {
         "package_info": {
-            "package_id": "UltimakerCPE",
-            "package_type": "material",
-            "display_name": "Ultimaker CPE",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
+            "description": "Provides support for reading 3MF files.",
             "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/abs",
+            "package_id": "3MFReader",
+            "package_type": "plugin",
+            "display_name": "3MF Reader",
+            "package_version": "1.0.1",
             "author": {
-                "author_id": "UltimakerPackages",
+                "email": "plugins@ultimaker.com",
                 "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
                 "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerCPEP": {
-        "package_info": {
-            "package_id": "UltimakerCPEP",
-            "package_type": "material",
-            "display_name": "Ultimaker CPE+",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/cpe",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerNylon": {
-        "package_info": {
-            "package_id": "UltimakerNylon",
-            "package_type": "material",
-            "display_name": "Ultimaker Nylon",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/abs",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerPC": {
-        "package_info": {
-            "package_id": "UltimakerPC",
-            "package_type": "material",
-            "display_name": "Ultimaker PC",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/pc",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerPLA": {
-        "package_info": {
-            "package_id": "UltimakerPLA",
-            "package_type": "material",
-            "display_name": "Ultimaker PLA",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/abs",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerPP": {
-        "package_info": {
-            "package_id": "UltimakerPP",
-            "package_type": "material",
-            "display_name": "Ultimaker PP",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/pp",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
-        }
-    },
-    "UltimakerPVA": {
-        "package_info": {
-            "package_id": "UltimakerPVA",
-            "package_type": "material",
-            "display_name": "Ultimaker PVA",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.2.1",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/abs",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
-                "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     },
     "UltimakerTPU": {
         "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
             "package_id": "UltimakerTPU",
             "package_type": "material",
             "display_name": "Ultimaker TPU 95A",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "1.2.2",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/tpu-95a",
             "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
                 "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
                 "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/tpu-95a"
+        }
+    },
+    "MonitorStage": {
+        "package_info": {
+            "description": "Provides a monitor stage in Cura.",
+            "sdk_version": "7.3.0",
+            "package_id": "MonitorStage",
+            "package_type": "plugin",
+            "display_name": "Monitor Stage",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "MachineSettingsAction": {
+        "package_info": {
+            "description": "Provides a way to change machine settings (such as build volume, nozzle size, etc.).",
+            "sdk_version": "7.3.0",
+            "package_id": "MachineSettingsAction",
+            "package_type": "plugin",
+            "display_name": "Machine Settings Action",
+            "package_version": "1.0.1",
+            "author": {
+                "email": null,
+                "display_name": "fieldOfView",
+                "website": "https://ultimaker.com",
+                "author_id": "fieldOfView"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GenericTPU": {
+        "package_info": {
+            "description": "The generic TPU profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericTPU",
+            "package_type": "material",
+            "display_name": "Generic TPU",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "GenericToughPLA": {
+        "package_info": {
+            "description": "The generic Tough PLA profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericToughPLA",
+            "package_type": "material",
+            "display_name": "Generic Tough PLA",
+            "package_version": "1.0.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
         }
     },
     "UltimakerTPLA": {
         "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
             "package_id": "UltimakerTPLA",
             "package_type": "material",
             "display_name": "Ultimaker Tough PLA",
-            "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "1.0.3",
-            "sdk_version": "7.3.0",
-            "website": "https://ultimaker.com/products/materials/tough-pla",
             "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
                 "email": "materials@ultimaker.com",
-                "website": "https://ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
                 "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
-            }
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/tough-pla"
         }
     },
-    "VertexDeltaABS": {
+    "UltimakerPP": {
         "package_info": {
-            "package_id": "VertexDeltaABS",
-            "package_type": "material",
-            "display_name": "Vertex Delta ABS",
-            "description": "ABS material and quality files for the Delta Vertex K8800.",
-            "package_version": "1.0.1",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
             "sdk_version": "7.3.0",
-            "website": "https://vertex3dprinter.eu",
+            "package_id": "UltimakerPP",
+            "package_type": "material",
+            "display_name": "Ultimaker PP",
+            "package_version": "1.2.2",
             "author": {
-                "author_id": "Velleman",
-                "display_name": "Velleman N.V.",
-                "email": "info@velleman.eu",
-                "website": "https://www.vellemanprojects.eu"
-            }
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/pp"
+        }
+    },
+    "GCodeWriter": {
+        "package_info": {
+            "description": "Writes g-code to a file.",
+            "sdk_version": "7.3.0",
+            "package_id": "GCodeWriter",
+            "package_type": "plugin",
+            "display_name": "G-Code Writer",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade462to47": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.6.2 to Cura 4.7.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade462to47",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.6.2 to 4.7",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "Filo3DPLA": {
+        "package_info": {
+            "description": "Fast, safe and reliable printing. PLA is ideal for the fast and reliable printing of parts and prototypes with a great surface quality.",
+            "sdk_version": "7.3.0",
+            "package_id": "Filo3DPLA",
+            "package_type": "material",
+            "display_name": "Filo3D PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": null,
+                "display_name": "Dagoma",
+                "website": "https://dagoma.fr",
+                "author_id": "Dagoma"
+            },
+            "website": "https://dagoma.fr"
+        }
+    },
+    "UltimakerNylon": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerNylon",
+            "package_type": "material",
+            "display_name": "Ultimaker Nylon",
+            "package_version": "1.2.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/abs"
         }
     },
     "VertexDeltaPET": {
         "package_info": {
+            "description": "ABS material and quality files for the Delta Vertex K8800.",
+            "sdk_version": "7.3.0",
             "package_id": "VertexDeltaPET",
             "package_type": "material",
             "display_name": "Vertex Delta PET",
-            "description": "ABS material and quality files for the Delta Vertex K8800.",
             "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://vertex3dprinter.eu",
             "author": {
-                "author_id": "Velleman",
-                "display_name": "Velleman N.V.",
                 "email": "info@velleman.eu",
-                "website": "https://www.vellemanprojects.eu"
-            }
+                "display_name": "Velleman N.V.",
+                "website": "https://www.vellemanprojects.eu",
+                "author_id": "Velleman"
+            },
+            "website": "https://vertex3dprinter.eu"
         }
     },
-    "VertexDeltaPLA": {
+    "PostProcessingPlugin": {
         "package_info": {
-            "package_id": "VertexDeltaPLA",
-            "package_type": "material",
-            "display_name": "Vertex Delta PLA",
-            "description": "ABS material and quality files for the Delta Vertex K8800.",
-            "package_version": "1.0.1",
+            "description": "Extension that allows for user created scripts for post processing.",
             "sdk_version": "7.3.0",
-            "website": "https://vertex3dprinter.eu",
+            "package_id": "PostProcessingPlugin",
+            "package_type": "plugin",
+            "display_name": "Post Processing",
+            "package_version": "2.2.1",
             "author": {
-                "author_id": "Velleman",
-                "display_name": "Velleman N.V.",
-                "email": "info@velleman.eu",
-                "website": "https://www.vellemanprojects.eu"
-            }
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade460to462": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade460to462",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.6.0 to 4.6.2",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FABtotumNylon": {
+        "package_info": {
+            "description": "When 3D printing started this material was not listed among the extrudable filaments. It is flexible as well as resistant to tractions. It is well known for its uses in textile but also in industries which require a strong and flexible material. There are different kinds of Nylon: 3D printing mostly uses Nylon 6 and Nylon 6.6, which are the most common. It requires higher temperatures to be printed, so a 3D printer must be able to reach them (around 240\u00b0C): the FABtotum, of course, can.",
+            "sdk_version": "7.3.0",
+            "package_id": "FABtotumNylon",
+            "package_type": "material",
+            "display_name": "FABtotum Nylon",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@fabtotum.com",
+                "display_name": "FABtotum S.R.L.",
+                "website": "https://www.fabtotum.com",
+                "author_id": "FABtotum"
+            },
+            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=53"
+        }
+    },
+    "GenericCFFCPE": {
+        "package_info": {
+            "description": "The generic CFF CPE profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericCFFCPE",
+            "package_type": "material",
+            "display_name": "Generic CFF CPE",
+            "package_version": "1.1.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "GCodeProfileReader": {
+        "package_info": {
+            "description": "Provides support for importing profiles from g-code files.",
+            "sdk_version": "7.3.0",
+            "package_id": "GCodeProfileReader",
+            "package_type": "plugin",
+            "display_name": "G-Code Profile Reader",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UM3NetworkPrinting": {
+        "package_info": {
+            "description": "Manages network connections to Ultimaker 3 printers.",
+            "sdk_version": "7.3.0",
+            "package_id": "UM3NetworkPrinting",
+            "package_type": "plugin",
+            "display_name": "UM3 Network Printing",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "RemovableDriveOutputDevice": {
+        "package_info": {
+            "description": "Provides removable drive hotplugging and writing support.",
+            "sdk_version": "7.3.0",
+            "package_id": "RemovableDriveOutputDevice",
+            "package_type": "plugin",
+            "display_name": "Removable Drive Output Device",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UltimakerCPE": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerCPE",
+            "package_type": "material",
+            "display_name": "Ultimaker CPE",
+            "package_version": "1.2.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/abs"
+        }
+    },
+    "UltimakerBAM": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerBAM",
+            "package_type": "material",
+            "display_name": "Ultimaker Breakaway",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/breakaway"
+        }
+    },
+    "VersionUpgrade45to46": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.5 to Cura 4.6.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade45to46",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.5 to 4.6",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FABtotumABS": {
+        "package_info": {
+            "description": "This material is easy to be extruded but it is not the simplest to use. It is one of the most used in 3D printing to get very well finished objects. It is not sustainable and its smoke can be dangerous if inhaled. The reason to prefer this filament to PLA is mainly because of its precision and mechanical specs. ABS (for plastic) stands for Acrylonitrile Butadiene Styrene and it is a thermoplastic which is widely used in everyday objects. It can be printed with any FFF 3D printer which can get to high temperatures as it must be extruded in a range between 220\u00b0 and 245\u00b0, so it\u2019s compatible with all versions of the FABtotum Personal fabricator.",
+            "sdk_version": "7.3.0",
+            "package_id": "FABtotumABS",
+            "package_type": "material",
+            "display_name": "FABtotum ABS",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@fabtotum.com",
+                "display_name": "FABtotum S.R.L.",
+                "website": "https://www.fabtotum.com",
+                "author_id": "FABtotum"
+            },
+            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=40"
+        }
+    },
+    "GenericNylon": {
+        "package_info": {
+            "description": "The generic Nylon profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericNylon",
+            "package_type": "material",
+            "display_name": "Generic Nylon",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "OctofiberPLA": {
+        "package_info": {
+            "description": "PLA material from Octofiber.",
+            "sdk_version": "7.3.0",
+            "package_id": "OctofiberPLA",
+            "package_type": "material",
+            "display_name": "Octofiber PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@octofiber.com",
+                "display_name": "Octofiber",
+                "website": "https://nl.octofiber.com",
+                "author_id": "Octofiber"
+            },
+            "website": "https://nl.octofiber.com/3d-printing-filament/pla.html"
+        }
+    },
+    "GenericPC": {
+        "package_info": {
+            "description": "The generic PC profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericPC",
+            "package_type": "material",
+            "display_name": "Generic PC",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "VersionUpgrade32to33": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 3.2 to Cura 3.3.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade32to33",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.2 to 3.3",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "XRayView": {
+        "package_info": {
+            "description": "Provides the X-Ray view.",
+            "sdk_version": "7.3.0",
+            "package_id": "XRayView",
+            "package_type": "plugin",
+            "display_name": "X-Ray View",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UltimakerPLA": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerPLA",
+            "package_type": "material",
+            "display_name": "Ultimaker PLA",
+            "package_version": "1.2.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/abs"
+        }
+    },
+    "UltimakerMachineActions": {
+        "package_info": {
+            "description": "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.).",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerMachineActions",
+            "package_type": "plugin",
+            "display_name": "Ultimaker Machine Actions",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UFPReader": {
+        "package_info": {
+            "description": "Provides support for reading Ultimaker Format Packages.",
+            "sdk_version": "7.3.0",
+            "package_id": "UFPReader",
+            "package_type": "plugin",
+            "display_name": "UFP Reader",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GenericHIPS": {
+        "package_info": {
+            "description": "The generic HIPS profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericHIPS",
+            "package_type": "material",
+            "display_name": "Generic HIPS",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "GenericGFFPA": {
+        "package_info": {
+            "description": "The generic GFF PA profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericGFFPA",
+            "package_type": "material",
+            "display_name": "Generic GFF PA",
+            "package_version": "1.1.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "SolidView": {
+        "package_info": {
+            "description": "Provides a normal solid mesh view.",
+            "sdk_version": "7.3.0",
+            "package_id": "SolidView",
+            "package_type": "plugin",
+            "display_name": "Solid View",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "AMFReader": {
+        "package_info": {
+            "description": "Provides support for reading AMF files.",
+            "sdk_version": "7.3.0",
+            "package_id": "AMFReader",
+            "package_type": "plugin",
+            "display_name": "AMF Reader",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "fieldOfView",
+                "website": "https://ultimaker.com",
+                "author_id": "fieldOfView"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade26to27": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 2.6 to Cura 2.7.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade26to27",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 2.6 to 2.7",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "PreviewStage": {
+        "package_info": {
+            "description": "Provides a preview stage in Cura.",
+            "sdk_version": "7.3.0",
+            "package_id": "PreviewStage",
+            "package_type": "plugin",
+            "display_name": "Preview Stage",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FABtotumTPU": {
+        "package_info": {
+            "description": "",
+            "sdk_version": "7.3.0",
+            "package_id": "FABtotumTPU",
+            "package_type": "material",
+            "display_name": "FABtotum TPU Shore 98A",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@fabtotum.com",
+                "display_name": "FABtotum S.R.L.",
+                "website": "https://www.fabtotum.com",
+                "author_id": "FABtotum"
+            },
+            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=66"
+        }
+    },
+    "VersionUpgrade27to30": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 2.7 to Cura 3.0.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade27to30",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 2.7 to 3.0",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GenericGFFCPE": {
+        "package_info": {
+            "description": "The generic GFF CPE profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericGFFCPE",
+            "package_type": "material",
+            "display_name": "Generic GFF CPE",
+            "package_version": "1.1.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "Toolbox": {
+        "package_info": {
+            "description": "Find, manage and install new Cura packages.",
+            "sdk_version": "7.3.0",
+            "package_id": "Toolbox",
+            "package_type": "plugin",
+            "display_name": "Toolbox",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "PolyPlusPLA": {
+        "package_info": {
+            "description": "PolyPlus\u2122 PLA is a premium PLA designed for all desktop FDM/FFF 3D printers. It is produced with our patented Jam-Free\u2122 technology that ensures consistent extrusion and prevents jams.",
+            "sdk_version": "7.3.0",
+            "package_id": "PolyPlusPLA",
+            "package_type": "material",
+            "display_name": "PolyPlus\u2122 PLA True Colour",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "inquiry@polymaker.com",
+                "display_name": "Polymaker L.L.C.",
+                "website": "https://www.polymaker.com",
+                "author_id": "Polymaker"
+            },
+            "website": "http://www.polymaker.com/shop/polyplus-true-colour/"
+        }
+    },
+    "X3DReader": {
+        "package_info": {
+            "description": "Provides support for reading X3D files.",
+            "sdk_version": "7.3.0",
+            "package_id": "X3DReader",
+            "package_type": "plugin",
+            "display_name": "X3D Reader",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Seva Alekseyev",
+                "website": "https://ultimaker.com",
+                "author_id": "SevaAlekseyev"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UFPWriter": {
+        "package_info": {
+            "description": "Provides support for writing Ultimaker Format Packages.",
+            "sdk_version": "7.3.0",
+            "package_id": "UFPWriter",
+            "package_type": "plugin",
+            "display_name": "UFP Writer",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UltimakerPC": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerPC",
+            "package_type": "material",
+            "display_name": "Ultimaker PC",
+            "package_version": "1.2.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/pc"
+        }
+    },
+    "USBPrinting": {
+        "package_info": {
+            "description": "Accepts G-Code and sends them to a printer. Plugin can also update firmware.",
+            "sdk_version": "7.3.0",
+            "package_id": "USBPrinting",
+            "package_type": "plugin",
+            "display_name": "USB Printing",
+            "package_version": "1.0.2",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GenericCPE": {
+        "package_info": {
+            "description": "The generic CPE profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericCPE",
+            "package_type": "material",
+            "display_name": "Generic CPE",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "VersionUpgrade35to40": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 3.5 to Cura 4.0.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade35to40",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.5 to 4.0",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FirmwareUpdater": {
+        "package_info": {
+            "description": "Provides a machine actions for updating firmware.",
+            "sdk_version": "7.3.0",
+            "package_id": "FirmwareUpdater",
+            "package_type": "plugin",
+            "display_name": "Firmware Updater",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "PolyWoodPLA": {
+        "package_info": {
+            "description": "PolyWood\u2122 is a wood mimic printing material that contains no actual wood ensuring a clean Jam-Free\u2122 printing experience.",
+            "sdk_version": "7.3.0",
+            "package_id": "PolyWoodPLA",
+            "package_type": "material",
+            "display_name": "PolyWood\u2122 PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "inquiry@polymaker.com",
+                "display_name": "Polymaker L.L.C.",
+                "website": "https://www.polymaker.com",
+                "author_id": "Polymaker"
+            },
+            "website": "http://www.polymaker.com/shop/polywood/"
+        }
+    },
+    "SupportEraser": {
+        "package_info": {
+            "description": "Creates an eraser mesh to block the printing of support in certain places.",
+            "sdk_version": "7.3.0",
+            "package_id": "SupportEraser",
+            "package_type": "plugin",
+            "display_name": "Support Eraser Tool",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FABtotumPLA": {
+        "package_info": {
+            "description": "It is the most common filament used for 3D printing. It is studied to be bio-degradable as it comes from corn starch\u2019s sugar mainly. It is completely made of renewable sources and has no footprint on polluting. PLA stands for PolyLactic Acid and it is a thermoplastic that today is still considered the easiest material to be 3D printed. It can be extruded at lower temperatures: the standard range of FABtotum\u2019s one is between 185\u00b0 and 195\u00b0.",
+            "sdk_version": "7.3.0",
+            "package_id": "FABtotumPLA",
+            "package_type": "material",
+            "display_name": "FABtotum PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@fabtotum.com",
+                "display_name": "FABtotum S.R.L.",
+                "website": "https://www.fabtotum.com",
+                "author_id": "FABtotum"
+            },
+            "website": "https://store.fabtotum.com/eu/products/filaments.html?filament_type=39"
+        }
+    },
+    "VersionUpgrade42to43": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.2 to Cura 4.3.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade42to43",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.2 to 4.3",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UltimakerPVA": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerPVA",
+            "package_type": "material",
+            "display_name": "Ultimaker PVA",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/abs"
+        }
+    },
+    "VersionUpgrade40to41": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.0 to Cura 4.1.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade40to41",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.0 to 4.1",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GenericPP": {
+        "package_info": {
+            "description": "The generic PP profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericPP",
+            "package_type": "material",
+            "display_name": "Generic PP",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "VersionUpgrade41to42": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.1 to Cura 4.2.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade41to42",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.1 to 4.2",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "XmlMaterialProfile": {
+        "package_info": {
+            "description": "Provides capabilities to read and write XML-based material profiles.",
+            "sdk_version": "7.3.0",
+            "package_id": "XMLMaterialProfile",
+            "package_type": "plugin",
+            "display_name": "XML Material Profiles",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "SimulationView": {
+        "package_info": {
+            "description": "Provides the Simulation view.",
+            "sdk_version": "7.3.0",
+            "package_id": "SimulationView",
+            "package_type": "plugin",
+            "display_name": "Simulation View",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     },
     "VertexDeltaTPU": {
         "package_info": {
+            "description": "ABS material and quality files for the Delta Vertex K8800.",
+            "sdk_version": "7.3.0",
             "package_id": "VertexDeltaTPU",
             "package_type": "material",
             "display_name": "Vertex Delta TPU",
-            "description": "ABS material and quality files for the Delta Vertex K8800.",
             "package_version": "1.0.1",
-            "sdk_version": "7.3.0",
-            "website": "https://vertex3dprinter.eu",
             "author": {
-                "author_id": "Velleman",
-                "display_name": "Velleman N.V.",
                 "email": "info@velleman.eu",
-                "website": "https://www.vellemanprojects.eu"
-            }
+                "display_name": "Velleman N.V.",
+                "website": "https://www.vellemanprojects.eu",
+                "author_id": "Velleman"
+            },
+            "website": "https://vertex3dprinter.eu"
+        }
+    },
+    "GenericPETG": {
+        "package_info": {
+            "description": "The generic PETG profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericPETG",
+            "package_type": "material",
+            "display_name": "Generic PETG",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "GCodeGzReader": {
+        "package_info": {
+            "description": "Reads g-code from a compressed archive.",
+            "sdk_version": "7.3.0",
+            "package_id": "GCodeGzReader",
+            "package_type": "plugin",
+            "display_name": "Compressed G-code Reader",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GCodeGzWriter": {
+        "package_info": {
+            "description": "Writes g-code to a compressed archive.",
+            "sdk_version": "7.3.0",
+            "package_id": "GCodeGzWriter",
+            "package_type": "plugin",
+            "display_name": "Compressed G-code Writer",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FirmwareUpdateChecker": {
+        "package_info": {
+            "description": "Checks for firmware updates.",
+            "sdk_version": "7.3.0",
+            "package_id": "FirmwareUpdateChecker",
+            "package_type": "plugin",
+            "display_name": "Firmware Update Checker",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "UltimakerCPEP": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerCPEP",
+            "package_type": "material",
+            "display_name": "Ultimaker CPE+",
+            "package_version": "1.2.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/cpe"
+        }
+    },
+    "GenericABS": {
+        "package_info": {
+            "description": "The generic ABS profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericABS",
+            "package_type": "material",
+            "display_name": "Generic ABS",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "VersionUpgrade22to24": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 2.2 to Cura 2.4.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade22to24",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 2.2 to 2.4",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "PolyFlexPLA": {
+        "package_info": {
+            "description": "PolyFlex\u2122 is a highly flexible yet easy to print 3D printing material. Featuring good elasticity and a large strain-to- failure, PolyFlex\u2122 opens up a completely new realm of applications.",
+            "sdk_version": "7.3.0",
+            "package_id": "PolyFlexPLA",
+            "package_type": "material",
+            "display_name": "PolyFlex\u2122 PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "inquiry@polymaker.com",
+                "display_name": "Polymaker L.L.C.",
+                "website": "https://www.polymaker.com",
+                "author_id": "Polymaker"
+            },
+            "website": "http://www.polymaker.com/shop/polyflex/"
+        }
+    },
+    "ImageReader": {
+        "package_info": {
+            "description": "Enables ability to generate printable geometry from 2D image files.",
+            "sdk_version": "7.3.0",
+            "package_id": "ImageReader",
+            "package_type": "plugin",
+            "display_name": "Image Reader",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "IMADE3DJellyBOXPETG": {
+        "package_info": {
+            "description": "",
+            "sdk_version": "7.3.0",
+            "package_id": "IMADE3DJellyBOXPETG",
+            "package_type": "material",
+            "display_name": "IMADE3D JellyBOX PETG",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@imade3d.com",
+                "display_name": "IMADE3D",
+                "website": "https://www.imade3d.com",
+                "author_id": "IMADE3D"
+            },
+            "website": "http://shop.imade3d.com/filament.html"
+        }
+    },
+    "VersionUpgrade34to35": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 3.4 to Cura 3.5.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade34to35",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.4 to 3.5",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade33to34": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 3.3 to Cura 3.4.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade33to34",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.3 to 3.4",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "SliceInfoPlugin": {
+        "package_info": {
+            "description": "Submits anonymous slice info. Can be disabled through preferences.",
+            "sdk_version": "7.3.0",
+            "package_id": "SliceInfoPlugin",
+            "package_type": "plugin",
+            "display_name": "Slice Info",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "GenericBAM": {
+        "package_info": {
+            "description": "The generic BAM profile which other profiles can be based upon.",
+            "sdk_version": "7.3.0",
+            "package_id": "GenericBAM",
+            "package_type": "material",
+            "display_name": "Generic BAM",
+            "package_version": "1.2.1",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Generic",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://github.com/Ultimaker/fdm_materials",
+                "author_id": "Generic"
+            },
+            "website": "https://github.com/Ultimaker/fdm_materials"
+        }
+    },
+    "ModelChecker": {
+        "package_info": {
+            "description": "Checks models and print configuration for possible printing issues and give suggestions.",
+            "sdk_version": "7.3.0",
+            "package_id": "ModelChecker",
+            "package_type": "plugin",
+            "display_name": "Model Checker",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "FiberlogyHDPLA": {
+        "package_info": {
+            "description": "With our HD PLA you have many more options. You can use this material in two ways. Choose the one you like best. You can use it as a normal PLA and get prints characterized by a very good adhesion between the layers and high precision. You can also make your prints acquire similar properties to that of ABS \u2013 better impact resistance and high temperature resistance. All you need is an oven. Yes, an oven! By annealing our HD PLA in an oven, in accordance with the manual, you will avoid all the inconveniences of printing with ABS, such as unpleasant odour or hazardous fumes.",
+            "sdk_version": "7.3.0",
+            "package_id": "FiberlogyHDPLA",
+            "package_type": "material",
+            "display_name": "Fiberlogy HD PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "grzegorz.h@fiberlogy.com",
+                "display_name": "Fiberlogy S.A.",
+                "website": "http://fiberlogy.com",
+                "author_id": "Fiberlogy"
+            },
+            "website": "http://fiberlogy.com/en/fiberlogy-filaments/filament-hd-pla/"
+        }
+    },
+    "UltimakerABS": {
+        "package_info": {
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "sdk_version": "7.3.0",
+            "package_id": "UltimakerABS",
+            "package_type": "material",
+            "display_name": "Ultimaker ABS",
+            "package_version": "1.2.2",
+            "author": {
+                "email": "materials@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "author_id": "UltimakerPackages",
+                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials",
+                "description": "Professional 3D printing made accessible.",
+                "website": "https://ultimaker.com"
+            },
+            "website": "https://ultimaker.com/products/materials/abs"
+        }
+    },
+    "VertexDeltaPLA": {
+        "package_info": {
+            "description": "ABS material and quality files for the Delta Vertex K8800.",
+            "sdk_version": "7.3.0",
+            "package_id": "VertexDeltaPLA",
+            "package_type": "material",
+            "display_name": "Vertex Delta PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@velleman.eu",
+                "display_name": "Velleman N.V.",
+                "website": "https://www.vellemanprojects.eu",
+                "author_id": "Velleman"
+            },
+            "website": "https://vertex3dprinter.eu"
+        }
+    },
+    "IMADE3DJellyBOXPLA": {
+        "package_info": {
+            "description": "",
+            "sdk_version": "7.3.0",
+            "package_id": "IMADE3DJellyBOXPLA",
+            "package_type": "material",
+            "display_name": "IMADE3D JellyBOX PLA",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@imade3d.com",
+                "display_name": "IMADE3D",
+                "website": "https://www.imade3d.com",
+                "author_id": "IMADE3D"
+            },
+            "website": "http://shop.imade3d.com/filament.html"
+        }
+    },
+    "VersionUpgrade25to26": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 2.5 to Cura 2.6.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade25to26",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 2.5 to 2.6",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VertexDeltaABS": {
+        "package_info": {
+            "description": "ABS material and quality files for the Delta Vertex K8800.",
+            "sdk_version": "7.3.0",
+            "package_id": "VertexDeltaABS",
+            "package_type": "material",
+            "display_name": "Vertex Delta ABS",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "info@velleman.eu",
+                "display_name": "Velleman N.V.",
+                "website": "https://www.vellemanprojects.eu",
+                "author_id": "Velleman"
+            },
+            "website": "https://vertex3dprinter.eu"
+        }
+    },
+    "CuraProfileReader": {
+        "package_info": {
+            "description": "Provides support for importing Cura profiles.",
+            "sdk_version": "7.3.0",
+            "package_id": "CuraProfileReader",
+            "package_type": "plugin",
+            "display_name": "Cura Profile Reader",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade30to31": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 3.0 to Cura 3.1.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade30to31",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 3.0 to 3.1",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "TrimeshReader": {
+        "package_info": {
+            "description": "Provides support for reading model files.",
+            "sdk_version": "7.3.0",
+            "package_id": "TrimeshReader",
+            "package_type": "plugin",
+            "display_name": "Trimesh Reader",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "SentryLogger": {
+        "package_info": {
+            "description": "Logs certain events so that they can be used by the crash reporter",
+            "sdk_version": "7.3.0",
+            "package_id": "SentryLogger",
+            "package_type": "plugin",
+            "display_name": "Sentry Logger",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "LegacyProfileReader": {
+        "package_info": {
+            "description": "Provides support for importing profiles from legacy Cura versions.",
+            "sdk_version": "7.3.0",
+            "package_id": "LegacyProfileReader",
+            "package_type": "plugin",
+            "display_name": "Legacy Cura Profile Reader",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade21to22": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 2.1 to Cura 2.2.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade21to22",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 2.1 to 2.2",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "VersionUpgrade43to44": {
+        "package_info": {
+            "description": "Upgrades configurations from Cura 4.3 to Cura 4.4.",
+            "sdk_version": "7.3.0",
+            "package_id": "VersionUpgrade43to44",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.3 to 4.4",
+            "package_version": "1.0.0",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
+        }
+    },
+    "PrepareStage": {
+        "package_info": {
+            "description": "Provides a prepare stage in Cura.",
+            "sdk_version": "7.3.0",
+            "package_id": "PrepareStage",
+            "package_type": "plugin",
+            "display_name": "Prepare Stage",
+            "package_version": "1.0.1",
+            "author": {
+                "email": "plugins@ultimaker.com",
+                "display_name": "Ultimaker B.V.",
+                "website": "https://ultimaker.com",
+                "author_id": "UltimakerPackages"
+            },
+            "website": "https://ultimaker.com"
         }
     }
 }
