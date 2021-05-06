@@ -1,3 +1,13 @@
+[4.9.1]
+* PETG Profile update.
+Ultimaker PETG profiles have been added. The Generic PETG profile for 2.85mm filaments has been updated as well.
+
+* Bug Fixes
+- The second extruder should now prime properly again when using a prime blob.
+- Reduced the flood of QML errors in the log file. Contributed by fieldOfView.
+- Fixed a crash when entering layer view on MacOS 10.13.6. Contributed by jwrw.
+- Fixed a crash when there was an inaccessible X: drive in Windows. Cura should no longer try to access the X: drive now.
+
 [4.9.0]
 <i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video</a>.</i>
 
@@ -8,7 +18,7 @@ Now you can open files directly from Digital Library projects. Then, after prepa
 When entering the Preview mode, you don't have to switch manually to line type. 
 
 * Z-seam is now clearly shown in preview mode.
-This ensures that you will know whether the seam will be sufficiently hidden in the end product. This will also indicate the starting point of the print.  
+This ensures that you will know whether the seam will be sufficiently hidden in the end product. This will also indicate the starting point of the print.
 <i> Thanks to BasF0 for contributing to this feature </i>
 
 * New 'line width' color-scheme available in preview mode.
