@@ -389,17 +389,17 @@ Cura.ExpandableComponent
                         // Feedrate selected
                         if (UM.Preferences.getValue("layerview/layer_view_type") == 2)
                         {
-                            return parseFloat(UM.SimulationView.getMinFeedrate()).toFixed(2)
+                            return parseFloat(UM.SimulationView.minFeedrate).toFixed(2)
                         }
                         // Layer thickness selected
                         if (UM.Preferences.getValue("layerview/layer_view_type") == 3)
                         {
-                            return parseFloat(UM.SimulationView.getMinThickness()).toFixed(2)
+                            return parseFloat(UM.SimulationView.minThickness).toFixed(2)
                         }
                         //Line width selected
                         if(UM.Preferences.getValue("layerview/layer_view_type") == 4)
                         {
-                            return parseFloat(UM.SimulationView.getMinLineWidth()).toFixed(2);
+                            return parseFloat(UM.SimulationView.minLineWidth).toFixed(2);
                         }
                     }
                     return catalog.i18nc("@label","min")
@@ -448,17 +448,17 @@ Cura.ExpandableComponent
                         // Feedrate selected
                         if (UM.Preferences.getValue("layerview/layer_view_type") == 2)
                         {
-                            return parseFloat(UM.SimulationView.getMaxFeedrate()).toFixed(2)
+                            return parseFloat(UM.SimulationView.maxFeedrate).toFixed(2)
                         }
                         // Layer thickness selected
                         if (UM.Preferences.getValue("layerview/layer_view_type") == 3)
                         {
-                            return parseFloat(UM.SimulationView.getMaxThickness()).toFixed(2)
+                            return parseFloat(UM.SimulationView.maxThickness).toFixed(2)
                         }
                         //Line width selected
                         if(UM.Preferences.getValue("layerview/layer_view_type") == 4)
                         {
-                            return parseFloat(UM.SimulationView.getMaxLineWidth()).toFixed(2);
+                            return parseFloat(UM.SimulationView.maxLineWidth).toFixed(2);
                         }
                     }
                     return catalog.i18nc("@label","max")

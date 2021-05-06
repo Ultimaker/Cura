@@ -30,6 +30,7 @@ from UM.View.GL.ShaderProgram import ShaderProgram
 
 from UM.i18n import i18nCatalog
 from cura.CuraView import CuraView
+from cura.LayerPolygon import LayerPolygon  # To distinguish line types.
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
 
@@ -115,6 +116,7 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_starts", True)
 
+        self.visibleStructuresChanged.connect(self.calculateColorSchemeLimits)
         self._updateWithPreferences()
 
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
@@ -198,6 +200,7 @@ class SimulationView(CuraView):
         if node.getMeshData() is None:
             return
         self.setActivity(False)
+        self.calculateColorSchemeLimits()
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
 
@@ -218,12 +221,6 @@ class SimulationView(CuraView):
     def resetLayerData(self) -> None:
         self._current_layer_mesh = None
         self._current_layer_jumps = None
-        self._max_feedrate = sys.float_info.min
-        self._min_feedrate = sys.float_info.max
-        self._max_thickness = sys.float_info.min
-        self._min_thickness = sys.float_info.max
-        self._max_line_width = sys.float_info.min
-        self._min_line_width = sys.float_info.max
 
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
@@ -334,37 +331,52 @@ class SimulationView(CuraView):
         # If more than 16 extruders are called for, this should be converted to a sampler1d.
         return Matrix(self._extruder_opacity)
 
-    def setShowTravelMoves(self, show):
+    def setShowTravelMoves(self, show: bool) -> None:
+        if show == self._show_travel_moves:
+            return
         self._show_travel_moves = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
-    def getShowTravelMoves(self):
+    def getShowTravelMoves(self) -> bool:
         return self._show_travel_moves
 
     def setShowHelpers(self, show: bool) -> None:
+        if show == self._show_helpers:
+            return
         self._show_helpers = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowHelpers(self) -> bool:
         return self._show_helpers
 
     def setShowSkin(self, show: bool) -> None:
+        if show == self._show_skin:
+            return
         self._show_skin = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowSkin(self) -> bool:
         return self._show_skin
 
     def setShowInfill(self, show: bool) -> None:
+        if show == self._show_infill:
+            return
         self._show_infill = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowInfill(self) -> bool:
         return self._show_infill
 
     def setShowStarts(self, show: bool) -> None:
+        if show == self._show_starts:
+            return
         self._show_starts = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowStarts(self) -> bool:
         return self._show_starts
@@ -400,11 +412,14 @@ class SimulationView(CuraView):
         return self._min_line_width
 
     def calculateMaxLayers(self) -> None:
+        """
+        Calculates number of layers, triggers signals if the number of layers changed and makes sure the top layers are
+        recalculated for legacy layer view.
+        """
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
         new_max_layers = -1
-        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -419,19 +434,6 @@ class SimulationView(CuraView):
                 if len(layer_data.getLayer(layer_id).polygons) < 1:
                     continue
 
-                # Store the max and min feedrates and thicknesses for display purposes
-                for p in layer_data.getLayer(layer_id).polygons:
-                    self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
-                    self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
-                    self._max_line_width = max(float(p.lineWidths.max()), self._max_line_width)
-                    self._min_line_width = min(float(p.lineWidths.min()), self._min_line_width)
-                    self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
-                    try:
-                        self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
-                    except ValueError:
-                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
-                        # the zero) can't be calculated
-                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
@@ -454,6 +456,73 @@ class SimulationView(CuraView):
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
         self._startUpdateTopLayers()
+
+    def calculateColorSchemeLimits(self) -> None:
+        """
+        Calculates the limits of the colour schemes, depending on the layer view data that is visible to the user.
+        """
+        # Before we start, save the old values so that we can tell if any of the spectrums need to change.
+        old_min_feedrate = self._min_feedrate
+        old_max_feedrate = self._max_feedrate
+        old_min_linewidth = self._min_line_width
+        old_max_linewidth = self._max_line_width
+        old_min_thickness = self._min_thickness
+        old_max_thickness = self._max_thickness
+
+        self._min_feedrate = sys.float_info.max
+        self._max_feedrate = sys.float_info.min
+        self._min_line_width = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_thickness = sys.float_info.max
+        self._max_thickness = sys.float_info.min
+
+        # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
+        visible_line_types = []
+        if self.getShowSkin():  # Actually "shell".
+            visible_line_types.append(LayerPolygon.SkinType)
+            visible_line_types.append(LayerPolygon.Inset0Type)
+            visible_line_types.append(LayerPolygon.InsetXType)
+        if self.getShowInfill():
+            visible_line_types.append(LayerPolygon.InfillType)
+        if self.getShowHelpers():
+            visible_line_types.append(LayerPolygon.PrimeTowerType)
+            visible_line_types.append(LayerPolygon.SkirtType)
+            visible_line_types.append(LayerPolygon.SupportType)
+            visible_line_types.append(LayerPolygon.SupportInfillType)
+            visible_line_types.append(LayerPolygon.SupportInterfaceType)
+        if self.getShowTravelMoves():
+            visible_line_types.append(LayerPolygon.MoveCombingType)
+            visible_line_types.append(LayerPolygon.MoveRetractionType)
+
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+
+            for layer_index in layer_data.getLayers():
+                for polyline in layer_data.getLayer(layer_index).polygons:
+                    is_visible = numpy.isin(polyline.types, visible_line_types)
+                    visible_indices = numpy.where(is_visible)[0]
+                    if visible_indices.size == 0:  # No items to take maximum or minimum of.
+                        continue
+                    visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
+                    visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
+                    visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
+                    self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
+                    self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
+                    self._max_thickness = max(float(visible_thicknesses.max()), self._max_thickness)
+                    try:
+                        self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
+                    except ValueError:
+                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
+                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
+
+        if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
+                or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness:
+            self.colorSchemeLimitsChanged.emit()
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
@@ -481,6 +550,8 @@ class SimulationView(CuraView):
     preferencesChanged = Signal()
     busyChanged = Signal()
     activityChanged = Signal()
+    visibleStructuresChanged = Signal()
+    colorSchemeLimitsChanged = Signal()
 
     def getProxy(self, engine, script_engine):
         """Hackish way to ensure the proxy is already created
@@ -512,6 +583,7 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+            self.calculateColorSchemeLimits()
             self.calculateMaxLayers()
             self.calculateMaxPathsOnLayer(self._current_layer_num)
 
