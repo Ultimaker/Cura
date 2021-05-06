@@ -30,7 +30,7 @@ class SendMaterialJob(Job):
         super().__init__()
         self.device = device  # type: LocalClusterOutputDevice
 
-        self._send_material_thread = threading.Thread(target=self._sendMissingMaterials)
+        self._send_material_thread = threading.Thread(target = self._sendMissingMaterials)
         self._send_material_thread.setDaemon(True)
 
         self._remote_materials = {}  # type: Dict[str, ClusterMaterial]
