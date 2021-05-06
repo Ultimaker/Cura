@@ -93,7 +93,7 @@
         "retraction_hop": { "value": 0.075 },
 		"retraction_hop_only_when_collides": { "value": true },
 
-        "retraction_combing": { "value": "off" },
+        "retraction_combing": { "value": "'off'" },
         "retraction_combing_max_distance": { "value": 30 },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
