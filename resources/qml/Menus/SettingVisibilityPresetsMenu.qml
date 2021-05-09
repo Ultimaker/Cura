@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 2.11
+import QtQuick.Controls 2.4
 import QtQml.Models 2.14 as Models
 
 import UM 1.2 as UM
