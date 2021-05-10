@@ -15,9 +15,9 @@
             "preferred_material": "emotiontech_pla",
             "preferred_quality_type": "c",
             "variants_name": "Print Head",
-            "machine_extruder_trains": 
-                { 
-                    "0": "strateo3d_right_extruder", 
+            "machine_extruder_trains":
+                {
+                    "0": "strateo3d_right_extruder",
                     "1": "strateo3d_left_extruder"
                 }
         },
@@ -35,7 +35,7 @@
 			}
 		}
 	},
-    "overrides": 
+    "overrides":
         {
             "machine_name": { "default_value": "Strateo3D" },
             "machine_width": { "default_value": 600 },
@@ -56,8 +56,9 @@
             "default_material_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
             "material_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
             "material_print_temperature_layer_0": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
-			"material_initial_print_temperature": { "maximum_value": "_material_print_temperature_maximum_value" },
-			"material_final_print_temperature": { "maximum_value": "_material_print_temperature_maximum_value" },
+			"material_initial_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
+			"material_final_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
+            "material_standby_temperature": { "maximum_value_warning": "material_print_temperature - 40", "maximum_value": "material_print_temperature" },
             "material_bed_temperature": { "maximum_value_warning": "140", "maximum_value": "140" },
             "material_bed_temperature_layer_0": { "maximum_value_warning": "140", "maximum_value": "140" },
             "extruder_prime_pos_abs": { "default_value": true },
@@ -83,7 +84,7 @@
 			"acceleration_print_layer_0": { "maximum_value_warning": "1500" },
 			"acceleration_travel_layer_0": { "maximum_value_warning": "1500" },
 			"acceleration_skirt_brim": { "maximum_value_warning": "1500" },
-			
+
             "adaptive_layer_height_variation": { "default_value": 0.1 },
             "adaptive_layer_height_variation_step": { "default_value": 0.05 },
             "adhesion_type": { "default_value": "skirt" },
@@ -93,7 +94,7 @@
             "infill_before_walls": { "default_value": false },
             "infill_overlap": { "value": "0" },
             "infill_wipe_dist": { "value": "0" },
-			
+
 			"jerk_enabled": { "value": "False", "maximum_value_warning": "0.01" },
 			"jerk_print": { "value": "0.01", "maximum_value_warning": "0.01" },
 			"jerk_infill": { "value": "0.01", "maximum_value_warning": "0.01" },
@@ -112,16 +113,14 @@
             "jerk_wall_0": { "value": "jerk_wall * 5 / 10", "maximum_value_warning": "0.01" },
 			"jerk_wall_x": { "maximum_value_warning": "0.01" },
 			"jerk_travel": { "value": "machine_max_jerk_xy", "maximum_value_warning": "0.01" },
-			
+
             "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
             "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
             "machine_min_cool_heat_time_window": { "value": "15" },
             "machine_nozzle_cool_down_speed": { "default_value": 0.50 },
             "machine_nozzle_heat_up_speed": { "default_value": 2.25 },
-            "material_final_print_temperature": { "value": "material_print_temperature - 10" },
             "material_flow": { "default_value": 93 },
             "material_flow_layer_0": { "value": "math.ceil(material_flow*1)" },
-            "material_initial_print_temperature": { "value": "material_print_temperature - 5" },
             "meshfix_maximum_resolution": { "value": "0.5" },
             "meshfix_maximum_deviation": { "default_value": 0.04 },
             "optimize_wall_printing_order": { "value": "True" },
