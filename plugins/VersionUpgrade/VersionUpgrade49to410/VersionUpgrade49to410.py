@@ -46,7 +46,7 @@ class VersionUpgrade49to410(VersionUpgrade):
     }
 
     _two_trees_quality_per_material = {
-        # Since legacy Creality printers didn't have different variants, we always pick the 0.4mm variant.
+        # Since legacy TwoTrees printers didn't have different variants, we always pick the 0.4mm variant.
         "generic_abs_175" : {
             "high"        : "two_trees_0.4_ABS_super",
             "normal"      : "two_trees_0.4_ABS_super",
