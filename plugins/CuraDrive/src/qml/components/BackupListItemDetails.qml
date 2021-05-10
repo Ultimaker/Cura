@@ -17,7 +17,7 @@ ColumnLayout
     // Cura version
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("UltimakeCura")
+        iconSource: UM.Theme.getIcon("UltimakerCura")
         label: catalog.i18nc("@backuplist:label", "Cura Version")
         value: backupDetailsData.metadata.cura_release
     }
