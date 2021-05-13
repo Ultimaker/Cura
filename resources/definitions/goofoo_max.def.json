@@ -1,9 +1,9 @@
 {
-    "name": "goofoo_Max",
+    "name": "Goofoo Max",
     "version": 2,
     "inherits": "goofoo_near",
     "overrides": {
-        "machine_name": { "default_value": "max" },
+        "machine_name": { "default_value": "Goofoo Max" },
         "machine_width": { "default_value": 600 },
         "machine_depth": { "default_value": 580 },
         "machine_height": { "default_value": 700 },

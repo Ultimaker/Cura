@@ -1,10 +1,8 @@
 {
-    "注释":"用于tiny,tiny+",
-    "name": "goofoo_small",
+    "name": "Goofoo Small",
     "version": 2,
     "inherits": "goofoo_base",
     "metadata": {
-        "author": "goofoo",
         "quality_definition": "goofoo_small",
         "visible": false,
         "exclude_materials": [

@@ -1,9 +1,8 @@
 {
-    "name": "goofoo_near",
+    "name": "Goofoo Near",
     "version": 2,
     "inherits": "goofoo_base",
     "metadata": {
-        "author": "goofoo",
         "quality_definition": "goofoo_near",
         "visible": false
     }

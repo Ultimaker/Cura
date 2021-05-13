@@ -1,9 +1,9 @@
 {
-    "name": "goofoo_Tiny+",
+    "name": "Goofoo Tiny+",
     "version": 2,
     "inherits": "goofoo_small",
     "overrides": {
-        "machine_name": { "default_value": "tinyadd" },
+        "machine_name": { "default_value": "Goofoo Tiny+" },
         "machine_width": { "default_value": 120 },
         "machine_depth": { "default_value": 120 },
         "machine_height": { "default_value": 180 },
@@ -11,7 +11,6 @@
         "machine_heated_bed": { "default_value": false }
     },
     "metadata": {
-        "author": "goofoo",
         "visible": true
     }
 }

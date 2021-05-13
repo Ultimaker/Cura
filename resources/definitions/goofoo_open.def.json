@@ -1,9 +1,8 @@
 {
-    "name": "goofoo_open",
+    "name": "Goofoo Open",
     "version": 2,
     "inherits": "goofoo_base",
     "metadata": {
-        "author": "goofoo",
         "quality_definition": "goofoo_open",
         "visible": false,
         "exclude_materials": [

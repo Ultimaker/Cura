@@ -1,9 +1,8 @@
 {
-    "name": "goofoo_far",
+    "name": "Goofoo Far",
     "version": 2,
     "inherits": "goofoo_base",
     "metadata": {
-        "author": "goofoo",
         "quality_definition": "goofoo_far",
         "visible": false,
         "exclude_materials": [
