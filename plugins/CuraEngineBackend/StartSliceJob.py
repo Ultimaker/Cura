@@ -307,6 +307,13 @@ class StartSliceJob(Job):
                     continue
                 rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
                 translate = object.getWorldTransformation().getData()[:3, 3]
+                if global_stack.getProperty("adhesion_type", "value") == "raft":
+                    # Add at least support interface thickness so that
+                    # the part does not fuse into the raft
+                    # 5.0 is just a magical number that seems to be
+                    # added to the translation anyhoo
+                    raft_support_interface_offset = 5.0 + global_stack.getProperty("support_roof_height", "value")
+                    translate[1] = max(translate[1], raft_support_interface_offset)
 
                 # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                 verts = mesh_data.getVertices()
