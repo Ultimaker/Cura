@@ -239,6 +239,10 @@
 		"new_icon": "View3D",
 		"size": "default"
 	},
+	"view_layer": {
+		"new_icon": "Layers",
+		"size": "default"
+	},
 	"view_front": {
 		"new_icon": "ViewFront",
 		"size": "default"
