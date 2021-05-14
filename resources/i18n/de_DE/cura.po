@@ -5136,7 +5136,7 @@ msgstr "Er&weiterungen"
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:94
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
-msgstr "E&instellungen"
+msgstr "&Konfiguration"
 
 #: /mnt/projects/ultimaker/cura/Cura/resources/qml/MainWindow/ApplicationMenu.qml:102
 msgctxt "@title:menu menubar:toplevel"

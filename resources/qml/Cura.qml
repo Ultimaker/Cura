@@ -525,7 +525,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.configureSettingVisibility
-        function onTriggered()
+        function onTriggered(source)
         {
             preferences.visible = true;
             preferences.setPage(1);

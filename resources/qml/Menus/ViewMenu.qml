@@ -20,6 +20,7 @@ Menu
         MenuItem { action: Cura.Actions.view3DCamera; }
         MenuItem { action: Cura.Actions.viewFrontCamera; }
         MenuItem { action: Cura.Actions.viewTopCamera; }
+        MenuItem { action: Cura.Actions.viewBottomCamera; }
         MenuItem { action: Cura.Actions.viewLeftSideCamera; }
         MenuItem { action: Cura.Actions.viewRightSideCamera; }
     }

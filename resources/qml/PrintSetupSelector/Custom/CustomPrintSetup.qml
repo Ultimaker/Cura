@@ -158,7 +158,7 @@ Item
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-                iconSource: UM.Theme.getIcon("star")
+                iconSource: UM.Theme.getIcon("StarFilled")
 
                 onClicked:
                 {
@@ -176,7 +176,7 @@ Item
             {
                 id: downArrow
 
-                source: UM.Theme.getIcon("arrow_bottom")
+                source: UM.Theme.getIcon("ChevronSingleDown")
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
 

@@ -541,6 +541,7 @@ class DigitalFactoryController(QObject):
                                                                 on_upload_success = self.uploadFileSuccess.emit,
                                                                 on_upload_finished = self.uploadFileFinished.emit,
                                                                 on_upload_progress = self.uploadFileProgress.emit)
+        self.file_upload_manager.start()
 
         # Save the project id to make sure it will be preselected the next time the user opens the save dialog
         self._current_workspace_information.setEntryToStore("digital_factory", "library_project_id", library_project_id)

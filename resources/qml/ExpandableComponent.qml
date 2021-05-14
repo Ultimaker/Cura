@@ -165,7 +165,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: UM.Theme.getIcon("pencil")
+                source: UM.Theme.getIcon("Pen")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height

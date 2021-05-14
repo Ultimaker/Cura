@@ -21,7 +21,7 @@ class DigitalFactoryProjectModel(ListModel):
 
     dfProjectModelChanged = pyqtSignal()
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
         self.addRoleName(self.DisplayNameRole, "displayName")
         self.addRoleName(self.LibraryProjectIdRole, "libraryProjectId")
