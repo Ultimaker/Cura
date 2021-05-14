@@ -64,7 +64,7 @@
 		"size": "default"
 	},
 	"pos_modify_dont_support_overlap": {
-		"new_icon": "MeshTypeExclude",
+		"new_icon": "BlockSupportOverlaps",
 		"size": "default"
 	},
 	"minus": {
