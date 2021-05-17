@@ -116,7 +116,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("MeshTypeExclude");
+                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)

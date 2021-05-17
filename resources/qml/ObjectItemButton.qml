@@ -173,7 +173,7 @@ Button
                             case "infill_mesh":
                                 return UM.Theme.getIcon("MeshTypeIntersect");
                             case "anti_overhang_mesh":
-                                return UM.Theme.getIcon("MeshTypeExclude");
+                                return UM.Theme.getIcon("BlockSupportOverlaps");
                         }
                         return "";
                     }
