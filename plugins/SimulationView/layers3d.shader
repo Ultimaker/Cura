@@ -109,18 +109,26 @@ vertex41core =
 
     float clamp(float v)
     {
-      float t = v < 0 ? 0 : v;
-      return t > 1.0 ? 1.0 : t;
+        float t = v < 0 ? 0 : v;
+        return t > 1.0 ? 1.0 : t;
     }
 
     // Inspired by https://stackoverflow.com/a/46628410
     vec4 flowRateGradientColor(float abs_value, float min_value, float max_value)
     {
-      float t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1;
-      float red = clamp(1.5 - abs(2.0 * t - 1.0));
-      float green = clamp(1.5 - abs(2.0 * t));
-      float blue = clamp(1.5 - abs(2.0 * t + 1.0));
-      return vec4(red, green, blue, 1.0);
+        float t;
+        if(abs(min_value - max_value) < 0.0001)
+        {
+          t = 0;
+        }
+        else
+        {
+          t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1;
+        }
+        float red = clamp(1.5 - abs(2.0 * t - 1.0));
+        float green = clamp(1.5 - abs(2.0 * t));
+        float blue = clamp(1.5 - abs(2.0 * t + 1.0));
+        return vec4(red, green, blue, 1.0);
     }
 
     void main()
