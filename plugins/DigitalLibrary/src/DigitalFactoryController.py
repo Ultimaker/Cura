@@ -385,6 +385,20 @@ class DigitalFactoryController(QObject):
     def _applicationInitializationFinished(self) -> None:
         self._supported_file_types = self._application.getInstance().getMeshFileHandler().getSupportedFileTypesRead()
 
+        # Although cura supports these, it's super confusing in this context to show them.
+        if "jpg" in self._supported_file_types:
+            del self._supported_file_types["jpg"]
+        if "jpeg" in self._supported_file_types:
+            del self._supported_file_types["jpeg"]
+        if "png" in self._supported_file_types:
+            del self._supported_file_types["png"]
+        if "bmp" in self._supported_file_types:
+            del self._supported_file_types["bmp"]
+        if "gif" in self._supported_file_types:
+            del self._supported_file_types["gif"]
+
+        print("***", self._supported_file_types)
+
     @pyqtSlot()
     def openSelectedFiles(self) -> None:
         """ Downloads, then opens all files selected in the Qt frontend open dialog.
