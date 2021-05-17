@@ -397,7 +397,6 @@ class DigitalFactoryController(QObject):
         if "gif" in self._supported_file_types:
             del self._supported_file_types["gif"]
 
-        print("***", self._supported_file_types)
 
     @pyqtSlot()
     def openSelectedFiles(self) -> None:
