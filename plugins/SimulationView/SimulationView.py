@@ -411,6 +411,15 @@ class SimulationView(CuraView):
             return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
         return self._min_line_width
 
+    def getMaxFlowRate(self) -> float:
+        return self._max_line_width * self._max_thickness * self._max_feedrate
+
+    def getMinFlowRate(self) -> float:
+        min_flow_rate = self._min_line_width * self._min_thickness * self._min_feedrate
+        if abs(min_flow_rate - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
+        return min_flow_rate
+
     def calculateMaxLayers(self) -> None:
         """
         Calculates number of layers, triggers signals if the number of layers changed and makes sure the top layers are
