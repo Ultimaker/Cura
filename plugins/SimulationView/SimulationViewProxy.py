@@ -126,14 +126,13 @@ class SimulationViewProxy(QObject):
     def minLineWidth(self):
         return self._simulation_view.getMinLineWidth()
 
-    @pyqtSlot(result=float)
-    def getMaxFlowRate(self):
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
+    def maxFlowRate(self):
         return self._simulation_view.getMaxFlowRate()
 
-    @pyqtSlot(result=float)
-    def getMinFlowRate(self):
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
+    def minFlowRate(self):
         return self._simulation_view.getMinFlowRate()
-
 
     # Opacity 0..1
     @pyqtSlot(int, float)

@@ -412,7 +412,7 @@ Cura.ExpandableComponent
                         // Flow Rate selected
                         if(UM.Preferences.getValue("layerview/layer_view_type") == 5)
                         {
-                            return parseFloat(UM.SimulationView.getMinFlowRate()).toFixed(2);
+                            return parseFloat(UM.SimulationView.minFlowRate).toFixed(2);
                         }
 
                     }
@@ -482,7 +482,7 @@ Cura.ExpandableComponent
                         // Flow rate selected
                         if(UM.Preferences.getValue("layerview/layer_view_type") == 5)
                         {
-                            return parseFloat(UM.SimulationView.getMaxFlowRate()).toFixed(2);
+                            return parseFloat(UM.SimulationView.maxFlowRate).toFixed(2);
                         }
                     }
                     return catalog.i18nc("@label","max")
