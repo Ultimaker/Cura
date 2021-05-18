@@ -232,7 +232,7 @@ class SliceInfo(QObject, Extension):
                     if node.source_mime_type is None:
                         model["mime_type"] = ""
                     else:
-                        model["mime_type"] = node.source_mime_type
+                        model["mime_type"] = node.source_mime_type.name
 
                     data["models"].append(model)
 
