@@ -20,45 +20,45 @@ def getValue(line: str, key: str, default = None):
             return default
 
 def analyse(gcode, distance_to_report, print_layers = False):
-	lines_found = 0
-	previous_x = 0
-	previous_y = 0
-	dist_squared = distance_to_report * distance_to_report
-	current_layer = 0
-	for line in gcode.split("\n"):
-		if not line.startswith("G1"):
-			if line.startswith(";LAYER:"):
-				previous_x = 0
-				previous_y = 0
-				current_layer += 1
-			continue
-		current_x = getValue(line, "X")
-		current_y = getValue(line, "Y")
-		if current_x is None or current_y is None:
-			continue
-		diff_x = current_x - previous_x
-		diff_y = current_y - previous_y
-		if diff_x * diff_x + diff_y * diff_y < dist_squared:
-			lines_found += 1
-			if print_layers:
-				print("[!] ", distance_to_report, " layer ", current_layer, " ", previous_x, previous_y)
-		previous_y = current_y
-		previous_x = current_x
-	return lines_found
-	
+    lines_found = 0
+    previous_x = 0
+    previous_y = 0
+    dist_squared = distance_to_report * distance_to_report
+    current_layer = 0
+    for line in gcode.split("\n"):
+        if not line.startswith("G1"):
+            if line.startswith(";LAYER:"):
+                previous_x = 0
+                previous_y = 0
+                current_layer += 1
+            continue
+        current_x = getValue(line, "X")
+        current_y = getValue(line, "Y")
+        if current_x is None or current_y is None:
+            continue
+        diff_x = current_x - previous_x
+        diff_y = current_y - previous_y
+        if diff_x * diff_x + diff_y * diff_y < dist_squared:
+            lines_found += 1
+            if print_layers:
+                print("[!] ", distance_to_report, " layer ", current_layer, " ", previous_x, previous_y)
+        previous_y = current_y
+        previous_x = current_x
+    return lines_found
+    
 def loadAndPrettyPrint(file_name):
-	print(file_name.replace(".gcode",""))
-	with open(file_name) as f:
-		data = f.read()
-	print("| Line length | Num segments |")
-	print("| ------------- | ------------- |")
-	print("| 1 |", analyse(data, 1), "|")
-	print("| 0.5 |", analyse(data, 0.5), "|")
-	print("| 0.1 |", analyse(data, 0.1), "|")
-	print("| 0.05 |", analyse(data, 0.05), "|")
-	print("| 0.01 |", analyse(data, 0.01), "|")
-	print("| 0.005 |", analyse(data, 0.005), "|")
-	print("| 0.001 |", analyse(data, 0.001), "|")
+    print(file_name.replace(".gcode",""))
+    with open(file_name) as f:
+        data = f.read()
+    print("| Line length | Num segments |")
+    print("| ------------- | ------------- |")
+    print("| 1 |", analyse(data, 1), "|")
+    print("| 0.5 |", analyse(data, 0.5), "|")
+    print("| 0.1 |", analyse(data, 0.1), "|")
+    print("| 0.05 |", analyse(data, 0.05), "|")
+    print("| 0.01 |", analyse(data, 0.01), "|")
+    print("| 0.005 |", analyse(data, 0.005), "|")
+    print("| 0.001 |", analyse(data, 0.001), "|")
 
 
 if __name__ == "__main__":
