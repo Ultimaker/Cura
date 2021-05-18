@@ -140,23 +140,23 @@ class VersionUpgrade49to410(VersionUpgrade):
 
         # Change renamed profiles.
         if "containers" in parser:
-            # For legacy TwoTrees printers, change the variant to 0.4.
             definition_id = parser["containers"]["7"]
-            material_id = parser["containers"]["4"]
-            old_quality_id = parser["containers"]["3"]
-            if parser["metadata"].get("type", "machine") == "extruder_train":
-                if parser["containers"]["5"] == "empty_variant":
-                    if definition_id in self._default_variants:
-                        parser["containers"]["5"] = self._default_variants[definition_id]
+            if definition_id in self._quality_changes_to_two_trees_base:
+                material_id = parser["containers"]["4"]
+                old_quality_id = parser["containers"]["3"]
+                if parser["metadata"].get("type", "machine") == "extruder_train":
+                    if parser["containers"]["5"] == "empty_variant":
+                        if definition_id in self._default_variants:
+                            parser["containers"]["5"] = self._default_variants[definition_id]  # For legacy TwoTrees printers, change the variant to 0.4.
 
-            # Also change the quality to go along with it.
-            if material_id in self._two_trees_quality_per_material and old_quality_id in self._two_trees_quality_per_material[material_id]:
-                parser["containers"]["3"] = self._two_trees_quality_per_material[material_id][old_quality_id]
-            stack_copy = {}  # type: Dict[str, str]  # Make a copy so that we don't modify the dict we're iterating over.
-            stack_copy.update(parser["containers"])
-            for position, profile_id in stack_copy.items():
-                if profile_id in self._renamed_profiles:
-                    parser["containers"][position] = self._renamed_profiles[profile_id]
+                # Also change the quality to go along with it.
+                if material_id in self._two_trees_quality_per_material and old_quality_id in self._two_trees_quality_per_material[material_id]:
+                    parser["containers"]["3"] = self._two_trees_quality_per_material[material_id][old_quality_id]
+                stack_copy = {}  # type: Dict[str, str]  # Make a copy so that we don't modify the dict we're iterating over.
+                stack_copy.update(parser["containers"])
+                for position, profile_id in stack_copy.items():
+                    if profile_id in self._renamed_profiles:
+                        parser["containers"][position] = self._renamed_profiles[profile_id]
 
         result = io.StringIO()
         parser.write(result)
