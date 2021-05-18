@@ -101,7 +101,6 @@ class VersionUpgrade49to410(VersionUpgrade):
         """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
-        print(filename)
 
         # Update setting version number.
         parser["metadata"]["setting_version"] = "17"
