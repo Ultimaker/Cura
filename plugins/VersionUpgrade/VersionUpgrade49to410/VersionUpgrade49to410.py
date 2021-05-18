@@ -103,20 +103,24 @@ class VersionUpgrade49to410(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update setting version number.
+        if "metadata" not in parser:
+            parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "17"
 
+        if "general" not in parser:
+            parser["general"] = {}
         # Certain instance containers (such as definition changes) reference to a certain definition container
         # Since a number of those changed name, we also need to update those.
-        old_definition = parser["general"]["definition"]
+        old_definition = parser.get("general", "definition", fallback = "")
         if old_definition in self._renamed_profiles:
             parser["general"]["definition"] = self._renamed_profiles[old_definition]
 
         # For quality-changes profiles made for TwoTrees Bluer printers, change the definition to the two_trees_base and make sure that the quality is something we have a profile for.
-        if parser["metadata"].get("type", "") == "quality_changes":
+        if parser.get("metadata", "type", fallback = "") == "quality_changes":
             for possible_printer in self._quality_changes_to_two_trees_base:
                 if os.path.basename(filename).startswith(possible_printer + "_"):
                     parser["general"]["definition"] = "two_trees_base"
-                    parser["metadata"]["quality_type"] = self._two_trees_bluer_quality_type_conversion.get(parser["metadata"]["quality_type"], "standard")
+                    parser["metadata"]["quality_type"] = self._two_trees_bluer_quality_type_conversion.get(parser.get("metadata", "quality_type", fallback = "fast"), "standard")
                     break
 
         result = io.StringIO()
@@ -130,6 +134,8 @@ class VersionUpgrade49to410(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update setting version number.
+        if "metadata" not in parser:
+            parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "17"
 
         # Change renamed profiles.
