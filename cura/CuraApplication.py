@@ -1867,6 +1867,7 @@ class CuraApplication(QtApplication):
             else:
                 node = CuraSceneNode()
                 node.setMeshData(original_node.getMeshData())
+                node.source_mime_type = original_node.source_mime_type
 
                 # Setting meshdata does not apply scaling.
                 if original_node.getScale() != Vector(1.0, 1.0, 1.0):
