@@ -66,7 +66,8 @@ class FilamentChange(Script):
                     "description": "Extruder relative Z position. Move the print head up for filament change.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0
+                    "default_value": 0,
+                    "minimum_value": 0
                 }
             }
         }"""
