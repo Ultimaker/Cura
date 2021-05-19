@@ -489,7 +489,6 @@ class SimulationView(CuraView):
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
-        visible_line_types_with_extrusion = []
         if self.getShowSkin():  # Actually "shell".
             visible_line_types.append(LayerPolygon.SkinType)
             visible_line_types.append(LayerPolygon.Inset0Type)
