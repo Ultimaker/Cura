@@ -474,6 +474,7 @@ class SimulationView(CuraView):
         # Before we start, save the old values so that we can tell if any of the spectrums need to change.
         old_min_feedrate = self._min_feedrate
         old_max_feedrate = self._max_feedrate
+        old_max_feedrate_with_extrusion = self._max_feedrate_with_extrusion
         old_min_linewidth = self._min_line_width
         old_max_linewidth = self._max_line_width
         old_min_thickness = self._min_thickness
@@ -537,7 +538,8 @@ class SimulationView(CuraView):
 
         if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
                 or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
-                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness:
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness \
+                or old_max_feedrate_with_extrusion != self._max_feedrate_with_extrusion:
             self.colorSchemeLimitsChanged.emit()
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
