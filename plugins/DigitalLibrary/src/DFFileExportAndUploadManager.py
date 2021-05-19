@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import threading
+from json import JSONDecodeError
 from typing import List, Dict, Any, Callable, Union, Optional
 
 from PyQt5.QtCore import QUrl
@@ -43,7 +44,7 @@ class DFFileExportAndUploadManager:
         self._library_project_id = library_project_id  # type: str
         self._library_project_name = library_project_name  # type: str
         self._file_name = file_name  # type: str
-
+        self._upload_jobs = []  # type: List[ExportFileJob]
         self._formats = formats  # type: List[str]
         self._api = DigitalFactoryApiClient(application = CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
 
@@ -79,6 +80,8 @@ class DFFileExportAndUploadManager:
                 "open-folder", "Open the project containing the file in Digital Library"
         )
         self._generic_success_message.actionTriggered.connect(self._onMessageActionTriggered)
+
+
 
     def _onCuraProjectFileExported(self, job: ExportFileJob) -> None:
         """Handler for when the DF Library workspace file (3MF) has been created locally.
@@ -271,7 +274,11 @@ class DFFileExportAndUploadManager:
     def extractErrorTitle(reply_body: Optional[str]) -> str:
         error_title = ""
         if reply_body:
-            reply_dict = json.loads(reply_body)
+            try:
+                reply_dict = json.loads(reply_body)
+            except JSONDecodeError:
+                Logger.logException("w", "Unable to extract title from reply body")
+                return error_title
             if "errors" in reply_dict and len(reply_dict["errors"]) >= 1 and "title" in reply_dict["errors"][0]:
                 error_title = reply_dict["errors"][0]["title"]
         return error_title
@@ -313,8 +320,13 @@ class DFFileExportAndUploadManager:
             QDesktopServices.openUrl(QUrl(project_url))
             message.hide()
 
+    def start(self) -> None:
+        for job in self._upload_jobs:
+            job.start()
+
     def initializeFileUploadJobMetadata(self) -> Dict[str, Any]:
         metadata = {}
+        self._upload_jobs = []
         if "3mf" in self._formats and "3mf" in self._file_handlers and self._file_handlers["3mf"]:
             filename_3mf = self._file_name + ".3mf"
             metadata[filename_3mf] = {
@@ -335,7 +347,7 @@ class DFFileExportAndUploadManager:
             }
             job_3mf = ExportFileJob(self._file_handlers["3mf"], self._nodes, self._file_name, "3mf")
             job_3mf.finished.connect(self._onCuraProjectFileExported)
-            job_3mf.start()
+            self._upload_jobs.append(job_3mf)
 
         if "ufp" in self._formats and "ufp" in self._file_handlers and self._file_handlers["ufp"]:
             filename_ufp = self._file_name + ".ufp"
@@ -357,5 +369,5 @@ class DFFileExportAndUploadManager:
             }
             job_ufp = ExportFileJob(self._file_handlers["ufp"], self._nodes, self._file_name, "ufp")
             job_ufp.finished.connect(self._onPrintFileExported)
-            job_ufp.start()
+            self._upload_jobs.append(job_ufp)
         return metadata

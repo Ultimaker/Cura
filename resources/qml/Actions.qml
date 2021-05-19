@@ -21,6 +21,7 @@ Item
     property alias view3DCamera: view3DCameraAction;
     property alias viewFrontCamera: viewFrontCameraAction;
     property alias viewTopCamera: viewTopCameraAction;
+    property alias viewBottomCamera: viewBottomCameraAction;
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
 
@@ -145,6 +146,13 @@ Item
         id: viewTopCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "Top View")
         onTriggered: UM.Controller.setCameraRotation("y", 90)
+    }
+
+    Action
+    {
+        id: viewBottomCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Bottom View")
+        onTriggered: UM.Controller.setCameraRotation("y", -90)
     }
 
     Action

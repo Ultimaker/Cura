@@ -14,6 +14,8 @@
 
     "overrides": {
         "machine_name": { "default_value": "Dreamer NX" },
+        "retraction_amount": { "default_value": 1.3 },
+        "retraction_speed": { "default_value": 40 },
         "machine_width": {"default_value": 230},
         "machine_height": {"default_value": 140},
         "machine_depth": {"default_value": 150},

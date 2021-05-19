@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+<g id="Layer_1">
+	<g>
+		<path d="M24,25h-4.414l-2-2h-5.172l-2,2H6V5h18V25z M20.414,23H22V7H8v16h1.586l2-2h6.828L20.414,23z"/>
+		<rect x="11" y="17" width="8" height="2"/>
+		<polygon points="5,22 2,22 2,8 5,8 5,10 4,10 4,20 5,20 		"/>
+		<polygon points="28,22 25,22 25,20 26,20 26,10 25,10 25,8 28,8 		"/>
+	</g>
+</g>
+<g id="Comments">
+</g>
+</svg>
