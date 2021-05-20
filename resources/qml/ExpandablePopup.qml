@@ -78,6 +78,14 @@ Item
 
     property int shadowOffset: 2
 
+    onEnabledChanged:
+    {
+        if (!base.enabled && expanded)
+        {
+            toggleContent()
+        }
+    }
+
     function toggleContent()
     {
         if (content.visible)
@@ -96,19 +104,6 @@ Item
         target: background
         property: "color"
         value: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
-    }
-
-    // The panel needs to close when it becomes disabled
-    Connections
-    {
-        target: base
-        onEnabledChanged:
-        {
-            if (!base.enabled && expanded)
-            {
-                toggleContent()
-            }
-        }
     }
 
     implicitHeight: 100 * screenScaleFactor
@@ -183,7 +178,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                source: expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
@@ -247,7 +242,7 @@ Item
     {
         // Since it could be that the content is dynamically populated, we should also take these changes into account.
         target: content.contentItem
-        onWidthChanged: content.width = content.contentItem.width + 2 * content.padding
-        onHeightChanged: content.height = content.contentItem.height + 2 * content.padding
+        function onWidthChanged() { content.width = content.contentItem.width + 2 * content.padding }
+        function onHeightChanged() { content.height = content.contentItem.height + 2 * content.padding }
     }
 }

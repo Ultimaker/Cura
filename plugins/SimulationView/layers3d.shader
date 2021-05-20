@@ -12,6 +12,8 @@ vertex41core =
     uniform lowp float u_min_thickness;
     uniform lowp float u_max_line_width;
     uniform lowp float u_min_line_width;
+    uniform lowp float u_max_flow_rate;
+    uniform lowp float u_min_flow_rate;
     uniform lowp int u_layer_view_type;
     uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
@@ -44,7 +46,15 @@ vertex41core =
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value)/(max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = value;
         float green = 1-abs(1-4*value);
         if (value > 0.375)
@@ -57,7 +67,15 @@ vertex41core =
 
     vec4 layerThicknessGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value)/(max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = min(max(4*value-2, 0), 1);
         float green = min(1.5*value, 0.75);
         if (value > 0.75)
@@ -70,7 +88,15 @@ vertex41core =
 
     vec4 lineWidthGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value) / (max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = value;
         float green = 1 - abs(1 - 4 * value);
         if(value > 0.375)
@@ -78,6 +104,30 @@ vertex41core =
             green = 0.5;
         }
         float blue = max(1 - 4 * value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
+
+    float clamp(float v)
+    {
+        float t = v < 0 ? 0 : v;
+        return t > 1.0 ? 1.0 : t;
+    }
+
+    // Inspired by https://stackoverflow.com/a/46628410
+    vec4 flowRateGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float t;
+        if(abs(min_value - max_value) < 0.0001)
+        {
+          t = 0;
+        }
+        else
+        {
+          t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1;
+        }
+        float red = clamp(1.5 - abs(2.0 * t - 1.0));
+        float green = clamp(1.5 - abs(2.0 * t));
+        float blue = clamp(1.5 - abs(2.0 * t + 1.0));
         return vec4(red, green, blue, 1.0);
     }
 
@@ -105,6 +155,10 @@ vertex41core =
                 break;
             case 4:  // "Line width"
                 v_color = lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
+                break;
+            case 5:  // "Flow"
+                float flow_rate =  a_line_dim.x * a_line_dim.y * a_feedrate;
+                v_color = flowRateGradientColor(flow_rate, u_min_flow_rate, u_max_flow_rate);
                 break;
         }
 
@@ -143,7 +197,7 @@ geometry41core =
     in vec4 v_color[];
     in vec3 v_vertex[];
     in vec3 v_normal[];
-    in vec2 v_line_dim[];
+    in lowp vec2 v_line_dim[];
     in int v_extruder[];
     in mat4 v_extruder_opacity[];
     in float v_prev_line_type[];
@@ -202,17 +256,17 @@ geometry41core =
         }
         size_y = v_line_dim[1].y / 2 + 0.01;
 
-        g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-        g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z));
-        g_vertex_offset_horz_head = vec4(g_vertex_normal_horz_head * size_x, 0.0);
+        g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position; //Actual movement exhibited by the line.
+        g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z)); //Lengthwise normal vector pointing backwards.
+        g_vertex_offset_horz_head = vec4(g_vertex_normal_horz_head * size_x, 0.0); //Lengthwise offset vector pointing backwards.
 
-        g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x));
+        g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x)); //Normal vector pointing right.
+        g_vertex_offset_horz = vec4(g_vertex_normal_horz * size_x, 0.0); //Offset vector pointing right.
 
-        g_vertex_offset_horz = vec4(g_vertex_normal_horz * size_x, 0.0); //size * g_vertex_normal_horz;
-        g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
-        g_vertex_offset_vert = vec4(g_vertex_normal_vert * size_y, 0.0);
+        g_vertex_normal_vert = vec3(0.0, 1.0, 0.0); //Upwards normal vector.
+        g_vertex_offset_vert = vec4(g_vertex_normal_vert * size_y, 0.0); //Upwards offset vector. Goes up by half the layer thickness.
 
-        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
+        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) { //Travel or retraction moves.
             vec4 va_head = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert);
             vec4 va_up =  viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert);
             vec4 va_down = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert);
@@ -221,60 +275,60 @@ geometry41core =
             vec4 vb_up = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert);
 
             // Travels: flat plane with pointy ends
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_down);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_down);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_down);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_up);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_head);
             //And reverse so that the line is also visible from the back side.
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_up);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_down);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_down);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_down);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
 
             EndPrimitive();
         } else {
-            vec4 va_m_horz = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
-            vec4 vb_m_horz = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
-            vec4 va_p_vert = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
-            vec4 vb_p_vert = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
-            vec4 va_p_horz = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
-            vec4 vb_p_horz = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
-            vec4 va_m_vert = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
-            vec4 vb_m_vert = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
-            vec4 va_head   = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head);
-            vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head);
+            vec4 va_m_horz = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz); //Line start, left vertex.
+            vec4 vb_m_horz = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz); //Line end, left vertex.
+            vec4 va_p_vert = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert); //Line start, top vertex.
+            vec4 vb_p_vert = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert); //Line end, top vertex.
+            vec4 va_p_horz = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz); //Line start, right vertex.
+            vec4 vb_p_horz = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz); //Line end, right vertex.
+            vec4 va_m_vert = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert); //Line start, bottom vertex.
+            vec4 vb_m_vert = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert); //Line end, bottom vertex.
+            vec4 va_head   = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head); //Line start, tip.
+            vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head); //Line end, tip.
 
             // All normal lines are rendered as 3d tubes.
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
             myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
             myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
 
             EndPrimitive();
 
             // left side
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
 
             EndPrimitive();
 
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
+            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
+            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
 
             EndPrimitive();
 
@@ -294,10 +348,9 @@ geometry41core =
             EndPrimitive();
         }
 
-
         if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
-            float w = v_line_dim[0].x / 2;
-            float h = v_line_dim[0].y / 2;
+            float w = size_x;
+            float h = size_y;
 
             myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
             myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
@@ -313,7 +366,7 @@ geometry41core =
             myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), u_starts_color, normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
             myEmitVertex(v_vertex[0] + vec3( w,  h, -w), u_starts_color, normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
             myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), u_starts_color, normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
-            
+
             EndPrimitive();
         }
     }

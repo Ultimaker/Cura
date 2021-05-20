@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -65,7 +65,7 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
+            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("Magnifier") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
 
             style: TextFieldStyle
             {
@@ -133,7 +133,7 @@ Item
         UM.SimpleButton
         {
             id: clearFilterButton
-            iconSource: UM.Theme.getIcon("cross1")
+            iconSource: UM.Theme.getIcon("Cancel")
             visible: findingSettings
 
             height: Math.round(parent.height * 0.4)
@@ -151,6 +151,20 @@ Item
                 filter.text = ""
                 filter.forceActiveFocus()
             }
+        }
+    }
+
+    SettingVisibilityPresetsMenu
+    {
+        id: settingVisibilityPresetsMenu
+        x: settingVisibilityMenu.x
+        y: settingVisibilityMenu.y
+        onCollapseAllCategories:
+        {
+            settingsSearchTimer.stop()
+            filter.text = "" // clear search field
+            filter.editingFinished()
+            definitionsModel.collapseAllCategories()
         }
     }
 
@@ -179,22 +193,13 @@ Item
                     sourceSize.width: width
                     sourceSize.height: height
                     color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                    source: UM.Theme.getIcon("menu")
+                    source: UM.Theme.getIcon("Hamburger")
                 }
             }
             label: Label {}
         }
 
-        menu: SettingVisibilityPresetsMenu
-        {
-            onCollapseAllCategories:
-            {
-                settingsSearchTimer.stop()
-                filter.text = "" // clear search field
-                filter.editingFinished()
-                definitionsModel.collapseAllCategories()
-            }
-        }
+        onClicked: settingVisibilityPresetsMenu.open()
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.
@@ -357,16 +362,16 @@ Item
                 Connections
                 {
                     target: item
-                    onContextMenuRequested:
+                    function onContextMenuRequested()
                     {
                         contextMenu.key = model.key;
                         contextMenu.settingVisible = model.visible;
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
-                    onHideTooltip: base.hideTooltip()
-                    onShowAllHiddenInheritedSettings:
+                    function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
+                    function onHideTooltip() { base.hideTooltip() }
+                    function onShowAllHiddenInheritedSettings()
                     {
                         var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
                         for(var i = 0; i < children_with_override.length; i++)
@@ -375,7 +380,7 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
-                    onFocusReceived:
+                    function onFocusReceived()
                     {
                         contents.indexWithFocus = index;
                         animateContentY.from = contents.contentY;
@@ -383,7 +388,7 @@ Item
                         animateContentY.to = contents.contentY;
                         animateContentY.running = true;
                     }
-                    onSetActiveFocusToNextSetting:
+                    function onSetActiveFocusToNextSetting(forward)
                     {
                         if (forward == undefined || forward)
                         {

@@ -206,7 +206,7 @@ Cura.ExpandablePopup
 
                 anchors.right: parent.right
 
-                iconSource: UM.Theme.getIcon("arrow_right")
+                iconSource: UM.Theme.getIcon("ChevronSingleRight")
                 isIconOnRightSide: true
 
                 onClicked:
@@ -222,7 +222,7 @@ Cura.ExpandablePopup
                 visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
                 text: catalog.i18nc("@label", "Configurations")
 
-                iconSource: UM.Theme.getIcon("arrow_left")
+                iconSource: UM.Theme.getIcon("ChevronSingleLeft")
 
                 onClicked:
                 {
@@ -236,6 +236,6 @@ Cura.ExpandablePopup
     Connections
     {
         target: Cura.MachineManager
-        onGlobalContainerChanged: popupItem.manual_selected_method = -1  // When switching printers, reset the value of the manual selected method
+        function onGlobalContainerChanged() { popupItem.manual_selected_method = -1 }  // When switching printers, reset the value of the manual selected method
     }
 }

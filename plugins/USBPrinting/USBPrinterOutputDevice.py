@@ -211,6 +211,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _onGlobalContainerStackChanged(self):
         container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if container_stack is None:
+            return
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
         controller = GenericOutputController(self)

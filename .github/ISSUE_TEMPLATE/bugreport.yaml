@@ -1,7 +1,6 @@
 name: Bug Report
 description: Create a report to help us fix issues.
 labels: "Type: Bug"
-issue_body: true
 body:
 - type: markdown
   attributes:
@@ -15,7 +14,7 @@ body:
   attributes:
     label: Application Version
     description: The version of Cura this issue occurs with.
-    placeholder: 4.8.0
+    placeholder: 4.9.0
   validations:
     required: true
 - type: input
@@ -56,13 +55,28 @@ body:
 - type: markdown
   attributes:
     value: |
-      ## Additional information & file uploads
-      
       Please be sure to add the following files:
         * For slicing issues, upload a **project file** that clearly shows the bug. 
           To save a project file go to `File -> Save project`. Please make sure to .zip your project file. For big files you may need to use WeTransfer or similar file sharing sites. 
           G-code files are not project files!
         * **Screenshots** of showing the problem, perhaps before/after images.
-        * A **log file**, see [here](https://github.com/Ultimaker/Cura#logging-issues) how to find the log file. 
-      
-      You can add these files and additional information that is relevant to the issue in the comments below. 
+        * A **log file** for crashes and similar issues.
+          You can find your log file here:
+          Windows: `%APPDATA%\cura\<Cura version>\cura.log` or usually `C:\Users\\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
+          MacOS: `$USER/Library/Application Support/cura/<Cura version>/cura.log`
+          Ubuntu/Linus: `$USER/.local/share/cura/<Cura version>/cura.log` 
+          
+          If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder 
+- type: checkboxes
+  attributes:
+    label: Checklist of files to include
+    options:
+      - label: Log file
+      - label: Project file
+- type: textarea
+  attributes:
+    label: Additional information & file uploads  
+    description: You can add these files and additional information that is relevant to the issue in the comments below.
+  validations:
+    required: true
+

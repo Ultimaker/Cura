@@ -18,7 +18,7 @@ OldControls.TableView
         Label
         {
             id: tableCellLabel
-            color: UM.Theme.getColor("text")
+            color: styleData.selected ? UM.Theme.getColor("primary_button_text") : UM.Theme.getColor("text")
             elide: Text.ElideRight
             text: styleData.value
             anchors.fill: parent
@@ -29,7 +29,7 @@ OldControls.TableView
 
     rowDelegate: Rectangle
     {
-        color: styleData.selected ? UM.Theme.getColor("secondary") : UM.Theme.getColor("main_background")
+        color: styleData.selected ? UM.Theme.getColor("primary_button") : UM.Theme.getColor("main_background")
         height: UM.Theme.getSize("table_row").height
     }
 
