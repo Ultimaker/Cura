@@ -8,7 +8,7 @@ import QtQml.Models 2.14 as Models
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     ActionGroup { id: group }
 
@@ -23,7 +23,7 @@ Menu
     {
         model: settingVisibilityPresetsModel.items
 
-        MenuItem
+        Cura.MenuItem
         {
             text: modelData.name
             checkable: true
@@ -39,8 +39,8 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    MenuSeparator {}
-    MenuItem
+    Cura.MenuSeparator {}
+    Cura.MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Collapse All Categories")
         onTriggered:
@@ -48,8 +48,8 @@ Menu
             collapseAllCategories();
         }
     }
-    MenuSeparator {}
-    MenuItem
+    Cura.MenuSeparator {}
+    Cura.MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Manage Setting Visibility...")
         icon.name: "configure"
