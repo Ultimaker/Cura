@@ -1526,12 +1526,8 @@ class CuraApplication(QtApplication):
 
         # Compute the center of the objects
         object_centers = []
-        # Forget about the translation that the original objects have
-        zero_translation = Matrix(data=numpy.zeros(3))
         for mesh, node in zip(meshes, group_node.getChildren()):
-            transformation = node.getLocalTransformation()
-            transformation.setTranslation(zero_translation)
-            transformed_mesh = mesh.getTransformed(transformation)
+            transformed_mesh = mesh.getTransformed(Matrix())  # Forget about the transformations that the original object had.
             center = transformed_mesh.getCenterPosition()
             if center is not None:
                 object_centers.append(center)
@@ -1546,7 +1542,7 @@ class CuraApplication(QtApplication):
 
         # Move each node to the same position.
         for mesh, node in zip(meshes, group_node.getChildren()):
-            node.setTransformation(Matrix())
+            node.setTransformation(Matrix())  # Removes any changes in position and rotation.
             # Align the object around its zero position
             # and also apply the offset to center it inside the group.
             node.setPosition(-mesh.getZeroPosition() - offset)
