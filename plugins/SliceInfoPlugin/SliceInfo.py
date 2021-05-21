@@ -229,6 +229,11 @@ class SliceInfo(QObject, Extension):
 
                     model["model_settings"] = model_settings
 
+                    if node.source_mime_type is None:
+                        model["mime_type"] = ""
+                    else:
+                        model["mime_type"] = node.source_mime_type.name
+
                     data["models"].append(model)
 
             print_times = print_information.printTimes()
