@@ -119,21 +119,22 @@ class CuraSceneNode(SceneNode):
         self._aabb = None
         if self._mesh_data:
             self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy = False))
-        else:  # If there is no mesh_data, use a bounding box that encompasses the local (0,0,0)
-            position = self.getWorldPosition()
-            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
 
         for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
                 # Non-printing-meshes inside a group should not affect push apart or drop to build plate
                 continue
-            if not child.getMeshData():
-                # Nodes without mesh data should not affect bounding boxes of their parents.
+            if child.getBoundingBox().minimum == child.getBoundingBox().maximum:
+                # Child had a degenerate bounding box, such as an empty group. Don't count it along.
                 continue
             if self._aabb is None:
                 self._aabb = child.getBoundingBox()
             else:
                 self._aabb = self._aabb + child.getBoundingBox()
+
+        if self._aabb is None:  # No children that should be included? Just use your own position then, but it's an invalid AABB.
+            position = self.getWorldPosition()
+            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
 
     def __deepcopy__(self, memo: Dict[int, object]) -> "CuraSceneNode":
         """Taken from SceneNode, but replaced SceneNode with CuraSceneNode"""
