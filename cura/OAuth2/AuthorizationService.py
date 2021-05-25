@@ -113,8 +113,10 @@ class AuthorizationService:
             # The token could not be refreshed using the refresh token. We should login again.
             return None
         # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
-        # from the server already.
-        self._storeAuthData(self._auth_data)
+        # from the server already. Do not store the auth_data if we could not get new auth_data (eg due to a
+        # network error), since this would cause an infinite loop trying to get new auth-data
+        if self._auth_data.success:
+            self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     def getAccessToken(self) -> Optional[str]:
