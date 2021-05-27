@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Hands2 Pro",
+    "inherits": "tenlog_printer",
+    "metadata": {
+	"visible": true,
+        "manufacturer": "Tenlog",
+        "platform": "Hands2Pro.stl",
+        "platform_offset": [-117,0,117]
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Tenlog Hands 2" },
+        "machine_width": {
+            "default_value": 235
+        },
+        "machine_height": {
+            "default_value": 250
+        },
+        "machine_depth": {
+            "default_value": 235
+        },
+        "prime_tower_position_x": {
+            "value": "120"
+        },
+    	"prime_tower_position_y": {
+            "value": "80"
+        }
+    }
+}

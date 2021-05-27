@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "name": "TL-D6Pro",
+    "inherits": "tenlog_printer",
+    "metadata": {
+	"visible": true,
+        "manufacturer": "Tenlog",
+        "platform": "TL-D6Pro.stl",
+        "platform_offset": [-700,5,-100]
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "TL-D6P" },
+        "machine_width": {
+            "default_value": 600
+        },
+        "machine_depth": {
+            "default_value": 600
+        },
+        "machine_height": {
+            "default_value": 600
+        },
+        "prime_tower_position_x": {
+            "value": "305"
+        },
+    	"prime_tower_position_y": {
+            "value": "305"
+        }
+    }
+}

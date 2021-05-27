@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "name": "TL-D5Pro",
+    "inherits": "tenlog_printer",
+    "metadata": {
+	"visible": true,
+        "manufacturer": "Tenlog",
+        "platform": "TL-D5Pro.stl",
+        "platform_offset": [-700,8,-100]
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "TL-D5P" },
+        "machine_width": {
+            "default_value": 500
+        },
+        "machine_depth": {
+            "default_value": 500
+        },
+        "machine_height": {
+            "default_value": 500
+        },
+        "prime_tower_position_x": {
+            "value": "255"
+        },
+    	"prime_tower_position_y": {
+            "value": "255"
+        }
+    }
+}
