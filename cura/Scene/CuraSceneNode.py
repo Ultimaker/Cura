@@ -143,6 +143,7 @@ class CuraSceneNode(SceneNode):
         copy.setTransformation(self.getLocalTransformation(copy= False))
         copy.setMeshData(self._mesh_data)
         copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
+        copy.source_mime_type = cast(str, deepcopy(self.source_mime_type, memo))
         copy._selectable = cast(bool, deepcopy(self._selectable, memo))
         copy._name = cast(str, deepcopy(self._name, memo))
         for decorator in self._decorators:
