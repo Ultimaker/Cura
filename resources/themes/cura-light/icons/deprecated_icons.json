@@ -64,7 +64,7 @@
 		"size": "default"
 	},
 	"pos_modify_dont_support_overlap": {
-		"new_icon": "BlockSupportOverlaps",
+		"new_icon": "MeshTypeExclude",
 		"size": "default"
 	},
 	"minus": {
@@ -237,10 +237,6 @@
 	},
 	"view_3d": {
 		"new_icon": "View3D",
-		"size": "default"
-	},
-	"view_layer": {
-		"new_icon": "Layers",
 		"size": "default"
 	},
 	"view_front": {
