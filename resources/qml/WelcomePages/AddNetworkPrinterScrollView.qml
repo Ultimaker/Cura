@@ -229,7 +229,7 @@ Item
                 width: height
                 sourceSize.height: width
                 color: UM.Theme.getColor("text_link")
-                source: UM.Theme.getIcon("LinkExternal")
+                source: UM.Theme.getIcon("external_link")
             }
 
             Label

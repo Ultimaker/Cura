@@ -49,7 +49,7 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
         height: UM.Theme.getSize("expandable_component_content_header").height
-        rightIconSource: contentShown ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
+        rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         contentShown: base.contentShown
     }
 

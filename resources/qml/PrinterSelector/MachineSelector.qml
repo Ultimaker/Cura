@@ -93,11 +93,11 @@ Cura.ExpandablePopup
         {
             if (isGroup)
             {
-                return UM.Theme.getIcon("PrinterTriple")
+                return UM.Theme.getIcon("printer_group")
             }
             else if (isNetworkPrinter || isCloudRegistered)
             {
-                return UM.Theme.getIcon("Printer")
+                return UM.Theme.getIcon("printer_single")
             }
             else
             {
@@ -118,25 +118,7 @@ Cura.ExpandablePopup
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source:
-            {
-                if (connectionStatus == "printer_connected")
-                {
-                    return UM.Theme.getIcon("CheckBlueBG", "low")
-                }
-                else if (connectionStatus == "printer_cloud_connected")
-                {
-                    return UM.Theme.getIcon("CloudBlueBG", "low")
-                }
-                else if (connectionStatus == "printer_cloud_not_available")
-                {
-                    return UM.Theme.getIcon("CloudGreyBG", "low")
-                }
-                else
-                {
-                    return ""
-                }
-            }
+            source: UM.Theme.getIcon(connectionStatus)
 
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height

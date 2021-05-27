@@ -48,7 +48,7 @@ Item
             Cura.IconWithText
             {
                 id: profileLabel
-                source: UM.Theme.getIcon("PrintQuality")
+                source: UM.Theme.getIcon("category_layer_height")
                 text: catalog.i18nc("@label", "Profiles")
                 font: UM.Theme.getFont("medium")
                 width: labelColumnWidth
@@ -69,7 +69,7 @@ Item
                 }
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                iconSource: UM.Theme.getIcon("ArrowReset")
+                iconSource: UM.Theme.getIcon("reset")
 
                 onClicked:
                 {

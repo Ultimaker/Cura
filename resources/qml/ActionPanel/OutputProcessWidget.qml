@@ -57,7 +57,7 @@ Column
                 width: parent.width
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
-                source: UM.Theme.getIcon("Clock")
+                source: UM.Theme.getIcon("clock")
                 font: UM.Theme.getFont("medium_bold")
             }
 
@@ -99,7 +99,7 @@ Column
                     }
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
-                source: UM.Theme.getIcon("Spool")
+                source: UM.Theme.getIcon("spool")
                 font: UM.Theme.getFont("default")
             }
         }

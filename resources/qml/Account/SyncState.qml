@@ -18,27 +18,27 @@ Row // Sync state icon + message
         {
             name: "idle"
             when: syncState == Cura.AccountSyncState.IDLE
-            PropertyChanges { target: icon; source: UM.Theme.getIcon("ArrowDoubleCircleRight")}
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("update")}
         },
         State
         {
             name: "syncing"
             when: syncState == Cura.AccountSyncState.SYNCING
-            PropertyChanges { target: icon; source: UM.Theme.getIcon("ArrowDoubleCircleRight") }
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("update") }
             PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Checking...")}
         },
         State
         {
             name: "up_to_date"
             when: syncState == Cura.AccountSyncState.SUCCESS
-            PropertyChanges { target: icon; source: UM.Theme.getIcon("CheckCircle") }
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("checked") }
             PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Account synced")}
         },
         State
         {
             name: "error"
             when: syncState == Cura.AccountSyncState.ERROR
-            PropertyChanges { target: icon; source: UM.Theme.getIcon("Warning") }
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("warning_light") }
             PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Something went wrong...")}
         }
     ]

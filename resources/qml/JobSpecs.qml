@@ -66,7 +66,7 @@ Item
                         sourceSize.width: width
                         sourceSize.height: width
                         color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                        source: UM.Theme.getIcon("Pen")
+                        source: UM.Theme.getIcon("pencil")
                     }
                 }
             }
