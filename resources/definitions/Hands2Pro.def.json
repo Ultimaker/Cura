@@ -5,8 +5,8 @@
     "metadata": {
 	"visible": true,
         "manufacturer": "Tenlog",
-        "platform": "Hands2Pro.stl",
-        "platform_offset": [-117,0,117]
+        "platform": "Hands2Pro.3mf",
+        "platform_offset": [-117,-65,-240]
     },
     "overrides": {
         "machine_name": { "default_value": "Tenlog Hands 2" },

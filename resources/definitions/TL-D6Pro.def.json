@@ -5,8 +5,8 @@
     "metadata": {
 	"visible": true,
         "manufacturer": "Tenlog",
-        "platform": "TL-D6Pro.stl",
-        "platform_offset": [-700,5,-100]
+        "platform": "TL-D6Pro.3mf",
+        "platform_offset": [-700,235,-455]
     },
 
     "overrides": {
