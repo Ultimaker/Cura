@@ -10,6 +10,7 @@
         "platform": "mixware_hyper_s_platform.stl",
         "has_machine_quality": true,
         "has_materials": true,
+        "preferred_quality_type": "coarse",
         "machine_extruder_trains": {
             "0": "mixware_hyper_s_extruder_0"
         }
