@@ -154,7 +154,7 @@ UM.Dialog
                                     height: Math.round(control.height / 2.7)
                                     sourceSize.height: width
                                     color: palette.text
-                                    source: UM.Theme.getIcon("Cancel")
+                                    source: UM.Theme.getIcon("cross1")
                                 }
                             }
                         }
@@ -188,7 +188,7 @@ UM.Dialog
                                     height: Math.round(control.height / 2.5)
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
-                                    source: UM.Theme.getIcon("ChevronSingleDown")
+                                    source: UM.Theme.getIcon("arrow_bottom")
                                 }
                             }
                         }
@@ -222,7 +222,7 @@ UM.Dialog
                                     height: Math.round(control.height / 2.5)
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
-                                    source: UM.Theme.getIcon("ChevronSingleUp")
+                                    source: UM.Theme.getIcon("arrow_top")
                                 }
                             }
                         }
@@ -517,7 +517,7 @@ UM.Dialog
             }
             toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-            iconSource: "Script.svg"
+            iconSource: "postprocessing.svg"
             fixedWidthMode: false
         }
 

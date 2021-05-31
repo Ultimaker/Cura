@@ -143,7 +143,7 @@ Item
                             sourceSize.width: width
                             sourceSize.height: height
                             color: UM.Theme.getColor("text")
-                            source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
+                            source: base.currentSection == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
                         }
 
                         Label

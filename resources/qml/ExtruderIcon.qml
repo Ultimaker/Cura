@@ -22,7 +22,7 @@ Item
         id: mainIcon
         anchors.fill: parent
 
-        source: UM.Theme.getIcon("Extruder", "medium")
+        source: UM.Theme.getIcon("extruder_button")
         color: extruderEnabled ? materialColor: UM.Theme.getColor("disabled")
     }
 
@@ -32,14 +32,15 @@ Item
 
         width: height
         height: Math.round(parent.height / 2)
-        radius: Math.round(width)
+        radius: Math.round(width / 2)
         color: UM.Theme.getColor("toolbar_background")
 
         anchors
         {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
-            topMargin: (parent.height - height) / 2
+            // The circle needs to be slightly off center (so it sits in the middle of the square bit of the icon)
+            topMargin: (parent.height - height) / 2 - 0.1 * parent.height
         }
 
         Label
@@ -63,7 +64,7 @@ Item
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("thick_lining").width
             sourceSize.height: width
-            source: UM.Theme.getIcon("Cancel")
+            source: UM.Theme.getIcon("cross1")
             visible: !extruderEnabled
             color: UM.Theme.getColor("text")
         }

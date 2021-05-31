@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>select face lay flat</title>
+    <desc>Created with Sketch.</desc>
+    <g id="select-face-lay-flat" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="rotate_layflat" fill="#000000" fill-rule="nonzero">
+            <path d="M14.251,13.493 L12.557,17.823 L0,25.231 L18.333,27.733 L21.256,19.618 L28,15.37 L14.251,13.493 Z M20.275,19.274 L17.587,26.758 L2.571,24.758 L13.56,18.242 L14.93,14.57 L25.586,15.976 L20.275,19.274 Z M11.01,1.283 C15.878525,1.02618706 20.376659,3.87743916 22.222,8.39 L19.768,9.018 L23.95,13.295 L25.565,7.534 L23.204,8.138 C21.2324413,3.16323798 16.3058511,0.00172080637 10.962,0.282 C7.204,0.472 3.923,2.317 1.765,5.064 L2.557,5.676 C4.542,3.15 7.558,1.456 11.01,1.283 L11.01,1.283 Z" id="Shape"></path>
+        </g>
+        <polygon id="Path-6" stroke="#000000" fill="#000000" points="18 18 10 23 16 24"></polygon>
+    </g>
+</svg>

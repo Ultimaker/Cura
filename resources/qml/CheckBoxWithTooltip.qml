@@ -32,7 +32,7 @@ CheckBox
             height: Math.round(parent.height / 2.5)
             sourceSize.height: width
             color: UM.Theme.getColor("checkbox_mark")
-            source: UM.Theme.getIcon("Check")
+            source: UM.Theme.getIcon("check")
             opacity: checkbox.checked
             Behavior on opacity { NumberAnimation { duration: 100; } }
         }

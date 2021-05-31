@@ -98,7 +98,7 @@ Item
                 sourceSize.width: width // TODO: Theme!
                 sourceSize.height: width // TODO: Theme!
                 color: UM.Theme.getColor("text")
-                source: UM.Theme.getIcon("ChevronSingleLeft")
+                source: UM.Theme.getIcon("arrow_left")
             }
         }
     }
@@ -177,7 +177,7 @@ Item
                 sourceSize.width: width // TODO: Theme!
                 sourceSize.height: width // TODO: Theme!
                 color: UM.Theme.getColor("text")
-                source: UM.Theme.getIcon("ChevronSingleRight")
+                source: UM.Theme.getIcon("arrow_right")
             }
         }
     }
