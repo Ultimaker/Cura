@@ -384,7 +384,7 @@ QtObject
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
                     anchors.verticalCenter: parent.verticalCenter
 
-                    source: UM.Theme.getIcon("ChevronSingleDown")
+                    source: UM.Theme.getIcon("arrow_bottom")
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width + 5 * screenScaleFactor
@@ -422,7 +422,7 @@ QtObject
                     height: Math.round(parent.height / 2.5)
                     sourceSize.height: width
                     color: UM.Theme.getColor("checkbox_mark")
-                    source: control.exclusiveGroup ? UM.Theme.getIcon("Dot") : UM.Theme.getIcon("Check")
+                    source: control.exclusiveGroup ? UM.Theme.getIcon("dot") : UM.Theme.getIcon("check")
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
