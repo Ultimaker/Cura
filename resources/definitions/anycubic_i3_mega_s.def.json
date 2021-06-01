@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Anycubic i3 Mega (S, X, Pro) w. Knutwurst Firmware",
+    "name": "Anycubic i3 Mega (S, Pro)",
     "inherits": "fdmprinter",
     "metadata":
     {
