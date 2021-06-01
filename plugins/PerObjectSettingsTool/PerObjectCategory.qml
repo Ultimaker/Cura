@@ -24,7 +24,7 @@ Button {
                 anchors.verticalCenter: parent.verticalCenter
                 height: (label.height / 2) | 0
                 width: height
-                source: control.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight");
+                source: control.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right");
                 color: control.hovered ? palette.highlight : palette.buttonText
             }
             UM.RecolorImage

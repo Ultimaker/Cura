@@ -15,7 +15,7 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("PrintQuality")
+        source: UM.Theme.getIcon("category_layer_height")
         text:
         {
             if (Cura.MachineManager.activeStack)
@@ -50,7 +50,7 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("Infill1")
+        source: UM.Theme.getIcon("category_infill")
         text: Cura.MachineManager.activeStack ? parseInt(infillDensity.properties.value) + "%" : "0%"
         font: UM.Theme.getFont("medium")
 
@@ -65,7 +65,7 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("Support")
+        source: UM.Theme.getIcon("category_support")
         text: supportEnabled.properties.value == "True" ? enabledText : disabledText
         font: UM.Theme.getFont("medium")
 
@@ -80,7 +80,7 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("Adhesion")
+        source: UM.Theme.getIcon("category_adhesion")
         text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
         font: UM.Theme.getFont("medium")
 

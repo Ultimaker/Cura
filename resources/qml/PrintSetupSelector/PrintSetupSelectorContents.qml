@@ -142,7 +142,7 @@ Item
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Recommended")
-            iconSource: UM.Theme.getIcon("ChevronSingleLeft")
+            iconSource: UM.Theme.getIcon("arrow_left")
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
             onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Recommended
         }
@@ -156,7 +156,7 @@ Item
             leftPadding: UM.Theme.getSize("default_margin").width
             rightPadding: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@button", "Custom")
-            iconSource: UM.Theme.getIcon("ChevronSingleRight")
+            iconSource: UM.Theme.getIcon("arrow_right")
             isIconOnRightSide: true
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
             onClicked:
@@ -233,7 +233,7 @@ Item
                     height: UM.Theme.getSize("drag_icon").height
                     anchors.centerIn: parent
 
-                    source: UM.Theme.getIcon("ThreeDots")
+                    source: UM.Theme.getIcon("resize")
                     color: UM.Theme.getColor("small_button_text")
                 }
             }

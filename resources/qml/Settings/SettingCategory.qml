@@ -93,7 +93,7 @@ Button
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.height: width
             color: UM.Theme.getColor("setting_control_button")
-            source: definition.expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
+            source: definition.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         }
     }
 
@@ -154,7 +154,7 @@ Button
 
         color: UM.Theme.getColor("setting_control_button")
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("Sliders")
+        iconSource: UM.Theme.getIcon("settings")
 
         onClicked: Cura.Actions.configureSettingVisibility.trigger(definition)
     }
@@ -195,7 +195,7 @@ Button
 
         color: UM.Theme.getColor("setting_control_button")
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("Information")
+        iconSource: UM.Theme.getIcon("notice")
 
         onEntered: base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
 

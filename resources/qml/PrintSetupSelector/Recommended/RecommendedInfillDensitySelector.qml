@@ -29,21 +29,21 @@ Item
             var density = parseInt(infillDensity.properties.value)
             if (parseInt(infillSteps.properties.value) != 0)
             {
-                return UM.Theme.getIcon("InfillGradual")
+                return UM.Theme.getIcon("gradual")
             }
             if (density <= 0)
             {
-                return UM.Theme.getIcon("Infill0")
+                return UM.Theme.getIcon("hollow")
             }
             if (density < 40)
             {
-                return UM.Theme.getIcon("Infill3")
+                return UM.Theme.getIcon("sparse")
             }
             if (density < 90)
             {
-                return UM.Theme.getIcon("Infill2")
+                return UM.Theme.getIcon("dense")
             }
-            return UM.Theme.getIcon("Solid")
+            return UM.Theme.getIcon("solid")
         }
     }
 
@@ -61,7 +61,7 @@ Item
         id: infillRowTitle
         anchors.top: parent.top
         anchors.left: parent.left
-        source: UM.Theme.getIcon("Infill1")
+        source: UM.Theme.getIcon("category_infill")
         text: catalog.i18nc("@label", "Infill") + " (%)"
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth

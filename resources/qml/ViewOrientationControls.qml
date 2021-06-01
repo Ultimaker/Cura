@@ -18,7 +18,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("View3D")
+        iconSource: UM.Theme.getIcon("view_3d")
         onClicked: Cura.Actions.view3DCamera.trigger()
 
         UM.TooltipArea
@@ -31,7 +31,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("ViewFront")
+        iconSource: UM.Theme.getIcon("view_front")
         onClicked: Cura.Actions.viewFrontCamera.trigger()
 
         UM.TooltipArea
@@ -44,7 +44,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("ViewTop")
+        iconSource: UM.Theme.getIcon("view_top")
         onClicked: Cura.Actions.viewTopCamera.trigger()
 
         UM.TooltipArea
@@ -57,7 +57,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("ViewLeft")
+        iconSource: UM.Theme.getIcon("view_left")
         onClicked: Cura.Actions.viewLeftSideCamera.trigger()
 
         UM.TooltipArea
@@ -70,7 +70,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("ViewRight")
+        iconSource: UM.Theme.getIcon("view_right")
         onClicked: Cura.Actions.viewRightSideCamera.trigger()
 
         UM.TooltipArea

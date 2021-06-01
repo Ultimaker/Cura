@@ -28,7 +28,7 @@
             "label": "Machine",
             "type": "category",
             "description": "Machine specific settings",
-            "icon": "Printer",
+            "icon": "category_machine",
             "children":
             {
                 "machine_name":
@@ -765,7 +765,7 @@
         {
             "label": "Quality",
             "type": "category",
-            "icon": "PrintQuality",
+            "icon": "category_layer_height",
             "description": "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)",
             "children":
             {
@@ -1001,7 +1001,7 @@
         "shell":
         {
             "label": "Walls",
-            "icon": "PrintShell",
+            "icon": "category_shell",
             "description": "Shell",
             "type": "category",
             "children":
@@ -1346,7 +1346,7 @@
         "top_bottom":
         {
             "label": "Top/Bottom",
-            "icon": "PrintTopBottom",
+            "icon": "category_topbottom",
             "description": "Top/Bottom",
             "type": "category",
             "children":
@@ -1822,7 +1822,7 @@
         "infill":
         {
             "label": "Infill",
-            "icon": "Infill1",
+            "icon": "category_infill",
             "description": "Infill",
             "type": "category",
             "children":
@@ -2161,7 +2161,7 @@
         "material":
         {
             "label": "Material",
-            "icon": "Spool",
+            "icon": "category_material",
             "description": "Material",
             "type": "category",
             "children":
@@ -2766,7 +2766,7 @@
         "speed":
         {
             "label": "Speed",
-            "icon": "SpeedOMeter",
+            "icon": "category_speed",
             "description": "Speed",
             "type": "category",
             "children":
@@ -3672,7 +3672,7 @@
         "travel":
         {
             "label": "Travel",
-            "icon": "PrintTravel",
+            "icon": "category_travel",
             "description": "travel",
             "type": "category",
             "children":
@@ -3977,7 +3977,7 @@
         "cooling":
         {
             "label": "Cooling",
-            "icon": "Fan",
+            "icon": "category_cool",
             "description": "Cooling",
             "type": "category",
             "children":
@@ -4127,7 +4127,7 @@
         {
             "label": "Support",
             "type": "category",
-            "icon": "Support",
+            "icon": "category_support",
             "description": "Support",
             "children":
             {
@@ -5167,7 +5167,7 @@
         {
             "label": "Build Plate Adhesion",
             "type": "category",
-            "icon": "Adhesion",
+            "icon": "category_adhesion",
             "description": "Adhesion",
             "children":
             {
@@ -5821,7 +5821,7 @@
         {
             "label": "Dual Extrusion",
             "type": "category",
-            "icon": "DualExtrusion",
+            "icon": "category_dual",
             "description": "Settings used for printing with multiple extruders.",
             "children":
             {
@@ -6036,7 +6036,7 @@
         {
             "label": "Mesh Fixes",
             "type": "category",
-            "icon": "Bandage",
+            "icon": "category_fixes",
             "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
@@ -6162,7 +6162,7 @@
         {
             "label": "Special Modes",
             "type": "category",
-            "icon": "BlackMagic",
+            "icon": "category_blackmagic",
             "description": "Non-traditional ways to print your models.",
             "children":
             {
@@ -6335,7 +6335,7 @@
         {
             "label": "Experimental",
             "type": "category",
-            "icon": "Experiment",
+            "icon": "category_experimental",
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {

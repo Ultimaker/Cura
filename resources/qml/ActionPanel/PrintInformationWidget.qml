@@ -11,7 +11,7 @@ UM.RecolorImage
 {
     id: widget
 
-    source: UM.Theme.getIcon("Information")
+    source: UM.Theme.getIcon("info")
     width: visible ? UM.Theme.getSize("section_icon").width : 0
     height: UM.Theme.getSize("section_icon").height
 
