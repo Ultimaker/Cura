@@ -151,7 +151,6 @@
         "layer_height_0":{ "default_value": 0.2	},
         "initial_layer_line_width_factor":{"default_value": 130.0},
 
-	"skin_overlap_mm":{ "default_value": 0.1},
         "skin_overlap": { "value": 25 },
 	"zig_zaggify_infill":{ "value": true},
 	"infill_before_walls":{"value": true},

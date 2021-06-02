@@ -1,5 +1,4 @@
 {
-    "id": "tl_dual_0",
     "version": 2,
     "name": "Left Extruder",
     "inherits": "fdmextruder",
