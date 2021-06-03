@@ -14,6 +14,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.Resources import Resources
+from UM.Version import Version
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -134,8 +135,8 @@ class Backup:
                                    "Tried to restore a Cura backup without having proper data or meta data."))
             return False
 
-        current_version = self._application.getVersion()
-        version_to_restore = self.meta_data.get("cura_release", "master")
+        current_version = Version(self._application.getVersion())
+        version_to_restore = Version(self.meta_data.get("cura_release", "master"))
 
         if current_version < version_to_restore:
             # Cannot restore version newer than current because settings might have changed.
