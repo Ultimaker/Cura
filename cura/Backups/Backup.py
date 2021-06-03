@@ -14,6 +14,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.Resources import Resources
+from UM.Version import Version
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -27,6 +28,8 @@ class Backup:
 
     IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
     """These files should be ignored when making a backup."""
+
+    IGNORED_FOLDERS = [r"plugins"]
 
     SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
     """Secret preferences that need to obfuscated when making a backup of Cura"""
@@ -74,8 +77,9 @@ class Backup:
         machine_count = max(len([s for s in files if "machine_instances/" in s]) - 1, 0)  # If people delete their profiles but not their preferences, it can still make a backup, and report -1 profiles. Server crashes on this.
         material_count = max(len([s for s in files if "materials/" in s]) - 1, 0)
         profile_count = max(len([s for s in files if "quality_changes/" in s]) - 1, 0)
-        plugin_count = len([s for s in files if "plugin.json" in s])
-
+        # We don't store plugins anymore, since if you can make backups, you have an account (and the plugins are
+        # on the marketplace anyway)
+        plugin_count = 0
         # Store the archive and metadata so the BackupManager can fetch them when needed.
         self.zip_file = buffer.getvalue()
         self.meta_data = {
@@ -94,8 +98,7 @@ class Backup:
         :param root_path: The root directory to archive recursively.
         :return: The archive as bytes.
         """
-
-        ignore_string = re.compile("|".join(self.IGNORED_FILES))
+        ignore_string = re.compile("|".join(self.IGNORED_FILES + self.IGNORED_FOLDERS))
         try:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
             for root, folders, files in os.walk(root_path):
@@ -132,8 +135,8 @@ class Backup:
                                    "Tried to restore a Cura backup without having proper data or meta data."))
             return False
 
-        current_version = self._application.getVersion()
-        version_to_restore = self.meta_data.get("cura_release", "master")
+        current_version = Version(self._application.getVersion())
+        version_to_restore = Version(self.meta_data.get("cura_release", "master"))
 
         if current_version < version_to_restore:
             # Cannot restore version newer than current because settings might have changed.
