@@ -26,9 +26,15 @@ Dependencies
 * [PySerial](https://github.com/pyserial/pyserial) Only required for USB printing support.
 * [python-zeroconf](https://github.com/jstasiak/python-zeroconf) Only required to detect mDNS-enabled printers.
 
+For a list of required Python packages, with their recommended version, see `requirements.txt`.
+
+This list is not exhaustive at the moment, please check the links in the next section for more details.
+
 Build scripts
 -------------
 Please check out [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
+
+If you want to build the entire environment from scratch before building Cura as well, [cura-build-environment](https://github.com/Ultimaker/cura-build) might be a starting point before cura-build. (Again, see cura-build for more details.)
 
 Running from Source
 -------------
