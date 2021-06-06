@@ -417,10 +417,9 @@ class SimulationView(CuraView):
         return self._max_flow_rate
 
     def getMinFlowRate(self) -> float:
-        min_flow_rate = self._min_flow_rate
-        if abs(min_flow_rate - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+        if abs(self._min_flow_rate - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
             return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
-        return min_flow_rate
+        return self._min_flow_rate
 
     def calculateMaxLayers(self) -> None:
         """
