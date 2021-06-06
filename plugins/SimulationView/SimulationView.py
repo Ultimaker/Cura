@@ -478,6 +478,8 @@ class SimulationView(CuraView):
         old_max_linewidth = self._max_line_width
         old_min_thickness = self._min_thickness
         old_max_thickness = self._max_thickness
+        old_min_flow_rate = self._min_flow_rate
+        old_max_flow_rate = self._max_flow_rate
 
         self._min_feedrate = sys.float_info.max
         self._max_feedrate = sys.float_info.min
@@ -485,6 +487,8 @@ class SimulationView(CuraView):
         self._max_line_width = sys.float_info.min
         self._min_thickness = sys.float_info.max
         self._max_thickness = sys.float_info.min
+        self._min_flow_rate = sys.float_info.max
+        self._max_flow_rate = sys.float_info.min
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
@@ -539,7 +543,8 @@ class SimulationView(CuraView):
 
         if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
                 or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
-                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness:
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness \
+                or old_min_flow_rate != self._min_flow_rate or old_max_flow_rate != self._max_flow_rate:
             self.colorSchemeLimitsChanged.emit()
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
