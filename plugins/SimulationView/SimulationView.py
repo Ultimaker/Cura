@@ -90,11 +90,12 @@ class SimulationView(CuraView):
 
         self._max_feedrate = sys.float_info.min
         self._min_feedrate = sys.float_info.max
-        self._max_feedrate_with_extrusion = sys.float_info.min
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
         self._max_line_width = sys.float_info.min
         self._min_line_width = sys.float_info.max
+        self._min_flow_rate = sys.float_info.max
+        self._max_flow_rate = sys.float_info.min
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
@@ -413,10 +414,10 @@ class SimulationView(CuraView):
         return self._min_line_width
 
     def getMaxFlowRate(self) -> float:
-        return self._max_line_width * self._max_thickness * self._max_feedrate_with_extrusion
+        return self._max_flow_rate
 
     def getMinFlowRate(self) -> float:
-        min_flow_rate = self._min_line_width * self._min_thickness * self._min_feedrate
+        min_flow_rate = self._min_flow_rate
         if abs(min_flow_rate - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
             return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
         return min_flow_rate
@@ -474,7 +475,6 @@ class SimulationView(CuraView):
         # Before we start, save the old values so that we can tell if any of the spectrums need to change.
         old_min_feedrate = self._min_feedrate
         old_max_feedrate = self._max_feedrate
-        old_max_feedrate_with_extrusion = self._max_feedrate_with_extrusion
         old_min_linewidth = self._min_line_width
         old_max_linewidth = self._max_line_width
         old_min_thickness = self._min_thickness
@@ -482,7 +482,6 @@ class SimulationView(CuraView):
 
         self._min_feedrate = sys.float_info.max
         self._max_feedrate = sys.float_info.min
-        self._max_feedrate_with_extrusion = sys.float_info.min
         self._min_line_width = sys.float_info.max
         self._max_line_width = sys.float_info.min
         self._min_thickness = sys.float_info.max
@@ -522,10 +521,13 @@ class SimulationView(CuraView):
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
                     visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
+                    visible_linewidths_with_extrusion = numpy.take(polyline.lineWidths, visible_indicies_with_extrusion)
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
+                    visible_thicknesses_with_extrusion = numpy.take(polyline.lineThicknesses, visible_indicies_with_extrusion)
                     self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
-                    if visible_feedrates_with_extrusion.size != 0:
-                        self._max_feedrate_with_extrusion = max(float(visible_feedrates_with_extrusion.max()), self._max_feedrate_with_extrusion)
+                    flow_rates = visible_feedrates_with_extrusion * visible_linewidths_with_extrusion * visible_thicknesses_with_extrusion
+                    self._min_flow_rate = min(float(flow_rates.min()), self._min_flow_rate)
+                    self._max_flow_rate = max(float(flow_rates.max()), self._max_flow_rate)
                     self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
                     self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
                     self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
@@ -538,8 +540,7 @@ class SimulationView(CuraView):
 
         if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
                 or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
-                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness \
-                or old_max_feedrate_with_extrusion != self._max_feedrate_with_extrusion:
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness:
             self.colorSchemeLimitsChanged.emit()
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
