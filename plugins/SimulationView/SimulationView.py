@@ -528,9 +528,10 @@ class SimulationView(CuraView):
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
                     visible_thicknesses_with_extrusion = numpy.take(polyline.lineThicknesses, visible_indicies_with_extrusion)
                     self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
-                    flow_rates = visible_feedrates_with_extrusion * visible_linewidths_with_extrusion * visible_thicknesses_with_extrusion
-                    self._min_flow_rate = min(float(flow_rates.min()), self._min_flow_rate)
-                    self._max_flow_rate = max(float(flow_rates.max()), self._max_flow_rate)
+                    if visible_feedrates_with_extrusion.size != 0:
+                        flow_rates = visible_feedrates_with_extrusion * visible_linewidths_with_extrusion * visible_thicknesses_with_extrusion
+                        self._min_flow_rate = min(float(flow_rates.min()), self._min_flow_rate)
+                        self._max_flow_rate = max(float(flow_rates.max()), self._max_flow_rate)
                     self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
                     self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
                     self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
