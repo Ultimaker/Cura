@@ -4,6 +4,7 @@
 from typing import Dict, Optional, Tuple, TYPE_CHECKING
 
 from UM.Logger import Logger
+from UM.Version import Version
 from cura.Backups.Backup import Backup
 
 if TYPE_CHECKING:
@@ -52,6 +53,18 @@ class BackupsManager:
 
         backup = Backup(self._application, zip_file = zip_file, meta_data = meta_data)
         restored = backup.restore()
+
+        package_manager = self._application.getPackageManager()
+
+        # If the backup was made with Cura 4.10 (or higher), we no longer store plugins.
+        # Since the restored backup doesn't have those plugins anymore, we should remove it from the list
+        # of installed plugins.
+        if Version(meta_data.get("cura_release")) >= Version("4.10.0"):
+            for package_id in package_manager.getAllInstalledPackageIDs():
+                package_data = package_manager.getInstalledPackageInfo(package_id)
+                if package_data.get("package_type") == "plugin" and not package_data.get("is_bundled"):
+                    package_manager.removePackage(package_id)
+
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
             # We don't want to store the data at this point as that would override the just-restored backup.

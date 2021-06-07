@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -241,6 +241,7 @@ class ContainerManager(QObject):
             file_url = file_url_or_string.toLocalFile()
         else:
             file_url = file_url_or_string
+        Logger.info(f"Importing material from {file_url}")
 
         if not file_url or not os.path.exists(file_url):
             return {"status": "error", "message": "Invalid path"}

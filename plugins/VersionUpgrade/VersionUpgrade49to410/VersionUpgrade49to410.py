@@ -94,6 +94,16 @@ class VersionUpgrade49to410(VersionUpgrade):
         }
     }
 
+    _deltacomb_quality_type_conversion = {
+        "a" : "D005",
+        "b" : "D010",
+        "c" : "D015",
+        "d" : "D020",
+        "e" : "D030",
+        "f" : "D045",
+        "g" : "D060"
+    }
+
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades instance containers to have the new version number.
 
@@ -121,6 +131,11 @@ class VersionUpgrade49to410(VersionUpgrade):
                 if os.path.basename(filename).startswith(possible_printer + "_"):
                     parser["general"]["definition"] = "two_trees_base"
                     parser["metadata"]["quality_type"] = self._two_trees_bluer_quality_type_conversion.get(parser.get("metadata", "quality_type", fallback = "fast"), "standard")
+                    break
+
+                if os.path.basename(filename).startswith("deltacomb_"):
+                    parser["general"]["definition"] = "deltacomb_base"
+                    parser["metadata"]["quality_type"] = self._deltacomb_quality_type_conversion.get(parser.get("metadata", "quality_type", fallback = "c"), "D015")
                     break
 
         result = io.StringIO()
