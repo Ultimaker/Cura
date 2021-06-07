@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Extrudeur droit",
+    "name": "Right extruder",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "stream20dual_mk2",

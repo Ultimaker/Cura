@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Extrudeur STREAM20MK2",
+    "name": "STREAM20MK2 Extruder",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "stream20pro_mk2",
