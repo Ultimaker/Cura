@@ -5,6 +5,7 @@ from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
 from Charon.OpenMode import OpenMode  # To indicate that we want to write to UFP files.
+from Charon.filetypes.OpenPackagingConvention import OPCError
 from io import StringIO  # For converting g-code to bytes.
 
 from PyQt5.QtCore import QBuffer
@@ -90,7 +91,7 @@ class UFPWriter(MeshWriter):
 
         try:
             archive.addContentType(extension = material_extension, mime_type = material_mime_type)
-        except:
+        except OPCError:
             Logger.log("w", "The material extension: %s was already added", material_extension)
 
         added_materials = []
@@ -130,7 +131,7 @@ class UFPWriter(MeshWriter):
 
         try:
             archive.close()
-        except OSError as e:
+        except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
             Logger.error(error_msg)
