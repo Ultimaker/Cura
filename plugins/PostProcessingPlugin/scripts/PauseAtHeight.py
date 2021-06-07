@@ -510,8 +510,7 @@ class PauseAtHeight(Script):
                     extrusion_mode_string = "absolute"
                     extrusion_mode_numeric = 82
 
-                    extruders = list(Application.getInstance().getGlobalContainerStack().extruders.values())
-                    relative_extrusion = extruders[0].getProperty("relative_extrusion", "value")
+                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
                     if relative_extrusion:
                         extrusion_mode_string = "relative"
                         extrusion_mode_numeric = 83
