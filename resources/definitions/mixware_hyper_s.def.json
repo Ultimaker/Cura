@@ -44,10 +44,10 @@
             "default_value": 0.2
         },
         "top_bottom_thickness": {
-            "default_value": 0.8
+            "value": 0.8
         },
         "optimize_wall_printing_order": {
-            "default_value": true,
+            "value": true,
             "settable_per_mesh": false
         },
         "material_initial_print_temperature": {
@@ -69,22 +69,22 @@
             "value": false
         },
         "filter_out_tiny_gaps": {
-            "default_value": false
+            "value": false
         },
         "top_bottom_pattern": {
-            "default_value": "zigzag"
+            "value": "zigzag"
         },
         "ironing_line_spacing": {
-            "default_value": 0.4
+            "value": 0.4
         },
         "ironing_pattern": {
-            "default_value": "concentric"
+            "value": "concentric"
         },
         "z_seam_type": {
-            "default_value": "shortest"
+            "value": "shortest"
         },
         "retraction_enable": {
-            "default_value": true
+            "value": true
         },
         "retraction_count_max": {
             "value": 100
@@ -97,10 +97,10 @@
             "value": 1.5
         },
         "retraction_amount": {
-            "default_value": 2
+            "value": 2
         },
         "retraction_speed": {
-            "default_value": 40,
+            "value": 40,
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
             "maximum_value": 200
         },
@@ -164,10 +164,10 @@
             "value": "0.4"
         },
         "acceleration_enabled": {
-            "default_value": true
+            "value": true
         },
         "acceleration_print": {
-            "default_value": 1000
+            "value": 1000
         },
         "acceleration_travel": {
             "value": 1000
@@ -191,22 +191,22 @@
             "value": false
         },
         "skin_no_small_gaps_heuristic": {
-            "default_value": false
+            "value": false
         },
         "retraction_hop_enabled": {
-            "default_value": true
+            "value": true
         },
         "retraction_hop": {
             "value": 0.2
         },
         "retraction_combing": {
-            "default_value": "all"
+            "value": "all"
         },
         "retraction_combing_max_distance": {
             "value": 30
         },
         "travel_avoid_other_parts": {
-            "default_value": true
+            "value": true
         },
         "travel_avoid_supports": {
             "value": true
@@ -218,16 +218,16 @@
             "value": "layer_height_0 + 2 * layer_height"
         },
         "cool_fan_enabled": {
-            "default_value": true
+            "value": true
         },
         "cool_min_layer_time": {
             "value": 10
         },
         "support_enable": {
-            "default_value": true
+            "value": true
         },
         "support_type": {
-            "default_value": "buildplate"
+            "value": "buildplate"
         },
         "support_angle": {
             "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))"
@@ -236,7 +236,7 @@
             "value": "'grid'"
         },
         "support_infill_rate": {
-            "default_value": "15"
+            "value": "15"
         },
         "support_use_towers": {
             "value": false
@@ -290,11 +290,11 @@
             "value": false
         },
         "raft_margin": {
-            "default_value": 5,
+            "value": 5,
             "minimum_value_warning": "0.01"
         },
         "raft_airgap": {
-            "default_value": 0.24
+            "value": 0.24
         },
         "skirt_gap": {
             "value": 8.0
@@ -309,13 +309,13 @@
             "value": 0.04
         },
         "brim_width": {
-            "default_value": 3
+            "value": 3
         },
         "infill_sparse_density": {
             "value": "15"
         },
         "infill_before_walls": {
-            "default_value": false
+            "value": false
         },
         "infill_overlap": {
             "value": 30.0
