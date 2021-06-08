@@ -124,13 +124,14 @@ class CuraSceneNode(SceneNode):
             if child.callDecoration("isNonPrintingMesh"):
                 # Non-printing-meshes inside a group should not affect push apart or drop to build plate
                 continue
-            if child.getBoundingBox().minimum == child.getBoundingBox().maximum:
+            child_bb = child.getBoundingBox()
+            if child_bb is None or child_bb.minimum == child_bb.maximum:
                 # Child had a degenerate bounding box, such as an empty group. Don't count it along.
                 continue
             if self._aabb is None:
-                self._aabb = child.getBoundingBox()
+                self._aabb = child_bb
             else:
-                self._aabb = self._aabb + child.getBoundingBox()
+                self._aabb = self._aabb + child_bb
 
         if self._aabb is None:  # No children that should be included? Just use your own position then, but it's an invalid AABB.
             position = self.getWorldPosition()
