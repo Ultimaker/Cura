@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 
@@ -24,6 +24,11 @@ class MaterialManagementModel(QObject):
 
     This class handles the actions in that page, such as creating new materials, renaming them, etc.
     """
+    def __init__(self, parent: QObject) -> None:
+        super().__init__(parent)
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        self._preferred_export_all_path = None  # type: Optional[QUrl]  # Path to export all materials to. None if not yet initialised.
+        cura_application.getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
@@ -264,3 +269,26 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    def _onOutputDevicesChanged(self):
+        """
+        When the list of output devices changes, we may want to update the
+        preferred export path.
+        """
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        device_manager = cura_application.getOutputDeviceManager()
+        devices = device_manager.getOutputDevices()
+        for device in devices:
+            if device.__class__.__name__ == "RemovableDriveOutputDevice":
+                self._preferred_export_all_path = QUrl.fromLocalFile(device.getId())
+                break
+        else:  # No removable drives? Use local path.
+            self._preferred_export_all_path = cura_application.getDefaultPath("dialog_material_path")
+        self.outputDevicesChanged.emit()
+
+    outputDevicesChanged = pyqtSignal()  # Triggered when adding or removing removable drives.
+    @pyqtProperty(QUrl, notify = outputDevicesChanged)
+    def preferredExportAllPath(self):
+        if self._preferred_export_all_path is None:  # Not initialised yet. Can happen when output devices changed before class got created.
+            self._onOutputDevicesChanged()
+        return self._preferred_export_all_path

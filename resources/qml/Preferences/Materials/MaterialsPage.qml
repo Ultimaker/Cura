@@ -388,7 +388,7 @@ Item
         title: catalog.i18nc("@title:window", "Export All Materials")
         selectExisting: false
         nameFilters: ["Material archives (*.zip)", "All files (*)"]
-        folder: CuraApplication.getDefaultPath("dialog_material_path") //TODO: Implement preference for removable drives.
+        folder: base.materialManagementModel.preferredExportAllPath
         //TODO: Implement onAccepted event to save the profiles.
     }
 
