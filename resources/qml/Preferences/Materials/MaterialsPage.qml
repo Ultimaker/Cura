@@ -387,7 +387,7 @@ Item
         id: exportAllMaterialsDialog
         title: catalog.i18nc("@title:window", "Export All Materials")
         selectExisting: false
-        nameFilters: ["Material archives (*.zip)", "All files (*)"]
+        nameFilters: ["Material archives (*.umm)", "All files (*)"]
         folder: base.materialManagementModel.preferredExportAllPath
         onAccepted:
         {
