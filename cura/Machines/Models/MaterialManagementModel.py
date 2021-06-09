@@ -309,7 +309,7 @@ class MaterialManagementModel(QObject):
         """
         registry = CuraContainerRegistry.getInstance()
 
-        archive = zipfile.ZipFile(file_path.toLocalFile(), "w")
+        archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
         for metadata in registry.findInstanceContainersMetadata(type = "material"):
             if metadata["base_file"] != metadata["id"]:  # Only process base files.
                 continue
