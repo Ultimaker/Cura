@@ -298,14 +298,13 @@ class MaterialManagementModel(QObject):
     def exportAll(self, file_path: QUrl) -> None:
         registry = CuraContainerRegistry.getInstance()
 
-        with open(file_path.toLocalFile(), "w") as stream:
-            archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
-            for metadata in registry.findInstanceContainersMetadata(type = "material"):
-                if metadata["base_file"] != metadata["id"]:  # Only process base files.
-                    continue
-                if metadata["id"] == "empty_material":  # Don't export the empty material.
-                    continue
-                material = registry.findContainers(id = metadata["id"])[0]
-                suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
-                filename = metadata["id"] + "." + suffix
-                archive.writestr(filename, material.serialize())
+        archive = zipfile.ZipFile(file_path.toLocalFile(), "w")
+        for metadata in registry.findInstanceContainersMetadata(type = "material"):
+            if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                continue
+            if metadata["id"] == "empty_material":  # Don't export the empty material.
+                continue
+            material = registry.findContainers(id = metadata["id"])[0]
+            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+            filename = metadata["id"] + "." + suffix
+            archive.writestr(filename, material.serialize())
