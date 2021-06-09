@@ -290,12 +290,23 @@ class MaterialManagementModel(QObject):
     outputDevicesChanged = pyqtSignal()  # Triggered when adding or removing removable drives.
     @pyqtProperty(QUrl, notify = outputDevicesChanged)
     def preferredExportAllPath(self) -> QUrl:
+        """
+        Get the preferred path to export materials to.
+
+        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
+        file path.
+        :return: The preferred path to export all materials to.
+        """
         if self._preferred_export_all_path is None:  # Not initialised yet. Can happen when output devices changed before class got created.
             self._onOutputDevicesChanged()
         return self._preferred_export_all_path
 
     @pyqtSlot(QUrl)
     def exportAll(self, file_path: QUrl) -> None:
+        """
+        Export all materials to a certain file path.
+        :param file_path: The path to export the materials to.
+        """
         registry = CuraContainerRegistry.getInstance()
 
         archive = zipfile.ZipFile(file_path.toLocalFile(), "w")
