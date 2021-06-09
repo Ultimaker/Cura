@@ -21,20 +21,7 @@
                     "1": "strateo3d_left_extruder"
                 }
         },
-    "settings": {
-		"material": {
-			"children": {
-				"_material_print_temperature_maximum_value": {
-					"label": "Maximum Printing Temperature",
-					"description": "This is a private setting, please ignore",
-					"type": "float",
-					"default_value": 285,
-					"enabled": false,
-					"settable_per_extruder": true
-				}
-			}
-		}
-	},
+
     "overrides":
         {
             "machine_name": { "default_value": "Strateo3D" },
@@ -53,11 +40,11 @@
             "extruder_prime_pos_y": {"minimum_value": "0", "maximum_value": "machine_depth"},
             "extruder_prime_pos_x": {"minimum_value": "0", "maximum_value": "machine_width"},
             "machine_heat_zone_length": { "default_value": 7 },
-            "default_material_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
-            "material_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
-            "material_print_temperature_layer_0": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
-			"material_initial_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
-			"material_final_print_temperature": { "maximum_value_warning": "_material_print_temperature_maximum_value - 5", "maximum_value": "_material_print_temperature_maximum_value" },
+            "default_material_print_temperature": { "maximum_value_warning": "400", "maximum_value": "415" },
+            "material_print_temperature": { "maximum_value_warning": "400", "maximum_value": "415" },
+            "material_print_temperature_layer_0": { "maximum_value_warning": "400", "maximum_value": "415" },
+			"material_initial_print_temperature": { "maximum_value_warning": "400", "maximum_value": "415" },
+			"material_final_print_temperature": { "maximum_value_warning": "400", "maximum_value": "415" },
             "material_standby_temperature": { "maximum_value_warning": "material_print_temperature - 40", "maximum_value": "material_print_temperature" },
             "material_bed_temperature": { "maximum_value_warning": "140", "maximum_value": "140" },
             "material_bed_temperature_layer_0": { "maximum_value_warning": "140", "maximum_value": "140" },
