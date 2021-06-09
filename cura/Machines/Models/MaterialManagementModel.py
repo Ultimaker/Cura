@@ -5,6 +5,7 @@ import copy  # To duplicate materials.
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
+import zipfile  # To export all materials in a .zip archive.
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -270,7 +271,7 @@ class MaterialManagementModel(QObject):
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
 
-    def _onOutputDevicesChanged(self):
+    def _onOutputDevicesChanged(self) -> None:
         """
         When the list of output devices changes, we may want to update the
         preferred export path.
@@ -288,7 +289,23 @@ class MaterialManagementModel(QObject):
 
     outputDevicesChanged = pyqtSignal()  # Triggered when adding or removing removable drives.
     @pyqtProperty(QUrl, notify = outputDevicesChanged)
-    def preferredExportAllPath(self):
+    def preferredExportAllPath(self) -> QUrl:
         if self._preferred_export_all_path is None:  # Not initialised yet. Can happen when output devices changed before class got created.
             self._onOutputDevicesChanged()
         return self._preferred_export_all_path
+
+    @pyqtSlot(QUrl)
+    def exportAll(self, file_path: QUrl) -> None:
+        registry = CuraContainerRegistry.getInstance()
+
+        with open(file_path.toLocalFile(), "w") as stream:
+            archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
+            for metadata in registry.findInstanceContainersMetadata(type = "material"):
+                if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                    continue
+                if metadata["id"] == "empty_material":  # Don't export the empty material.
+                    continue
+                material = registry.findContainers(id = metadata["id"])[0]
+                suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+                filename = metadata["id"] + "." + suffix
+                archive.writestr(filename, material.serialize())

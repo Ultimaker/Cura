@@ -203,7 +203,7 @@ Item
                 forceActiveFocus();
                 exportAllMaterialsDialog.open();
             }
-            enabled: Cura.MachineManager.activeMachine.supportsMaterialExport()
+            enabled: Cura.MachineManager.activeMachine.supportsMaterialExport
         }
     }
 
@@ -389,7 +389,11 @@ Item
         selectExisting: false
         nameFilters: ["Material archives (*.zip)", "All files (*)"]
         folder: base.materialManagementModel.preferredExportAllPath
-        //TODO: Implement onAccepted event to save the profiles.
+        onAccepted:
+        {
+            base.materialManagementModel.exportAll(fileUrl);
+            CuraApplication.setDefaultPath("dialog_material_path", folder);
+        }
     }
 
     MessageDialog
