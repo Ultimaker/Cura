@@ -203,7 +203,7 @@ Item
                 forceActiveFocus();
                 exportAllMaterialsDialog.open();
             }
-            enabled: Cura.MachineManager.activeMachine.supportsMaterialExport
+            visible: Cura.MachineManager.activeMachine.supportsMaterialExport
         }
     }
 
