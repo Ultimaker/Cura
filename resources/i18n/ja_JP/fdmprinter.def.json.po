@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.9\n"
+"Project-Id-Version: Cura 4.10\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-04-02 16:09+0000\n"
+"POT-Creation-Date: 2021-06-10 17:35+0000\n"
 "PO-Revision-Date: 2021-04-16 15:00+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
@@ -3289,8 +3289,8 @@ msgstr "引き戻しのない最大コム距離"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "ゼロ以外の場合、この距離より移動量が多い場合は、引き戻しを使用します。"
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -6534,6 +6534,10 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "ゼロ以外の場合、この距離より移動量が多い場合は、引き戻しを使用します。"
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
 #~ msgid "Apply the extruder offset to the coordinate system."

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.9\n"
+"Project-Id-Version: Cura 4.10\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-04-02 16:09+0000\n"
+"POT-Creation-Date: 2021-06-10 17:35+0000\n"
 "PO-Revision-Date: 2021-04-16 15:02+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -3201,8 +3201,8 @@ msgstr "수축이 없을 때 최대 빗질 거리"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "0이 아닌 경우 이 거리보다 긴 빗질 이동은 후퇴를 사용합니다."
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -6399,6 +6399,10 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "0이 아닌 경우 이 거리보다 긴 빗질 이동은 후퇴를 사용합니다."
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
 #~ msgid "Apply the extruder offset to the coordinate system."
