@@ -100,7 +100,7 @@ Item
                             top: subpageImage.bottom
                             topMargin: UM.Theme.getSize("default_margin").height
                             bottom: parent.bottom
-                            bottomMargin: UM.Theme.getSize("thick_margin").height
+                            bottomMargin: UM.Theme.getSize("thin_margin").height
                             left: subpageImage.left
                             right: subpageImage.right
                         }
