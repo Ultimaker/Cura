@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Hellbot Magna DUAL",
+    "name": "Hellbot Magna Dual",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

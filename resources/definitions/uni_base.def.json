@@ -1,11 +1,11 @@
 {
-    "name": "UNI Base Printer",
+    "name": "Uni Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,
         "author": "Nail` Gimadeev (C)",
-        "manufacturer": "UNI 3D",
+        "manufacturer": "Uni 3D",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
         "machine_extruder_trains": {
