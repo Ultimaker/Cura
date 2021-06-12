@@ -127,15 +127,15 @@
         "machine_depth": { "default_value": 180 },
         "machine_height": { "default_value": 180 },
 
-        "machine_max_feedrate_x": { "default_value": 300 },
-        "machine_max_feedrate_y": { "default_value": 300 },
-        "machine_max_feedrate_z": { "default_value": 5 },
-        "machine_max_feedrate_e": { "default_value": 25 },
+        "machine_max_feedrate_x": { "default_value": 100 },
+        "machine_max_feedrate_y": { "default_value": 100 },
+        "machine_max_feedrate_z": { "default_value": 10 },
+        "machine_max_feedrate_e": { "default_value": 100 },
 
         "machine_max_acceleration_x": { "default_value": 500 },
         "machine_max_acceleration_y": { "default_value": 500 },
-        "machine_max_acceleration_z": { "default_value": 100 },
-        "machine_max_acceleration_e": { "default_value": 5000 },
+        "machine_max_acceleration_z": { "default_value": 50 },
+        "machine_max_acceleration_e": { "default_value": 500 },
         "machine_acceleration": { "default_value": 500 },
 
         "machine_max_jerk_xy": { "default_value": 10 },
