@@ -1,10 +1,10 @@
 {
-    "name": "INAT Base description",
+    "name": "Inat Base description",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
-        "author": "INAT s.r.o.",
-        "manufacturer": "INAT s.r.o.",
+        "author": "Inat s.r.o.",
+        "manufacturer": "Inat s.r.o.",
         "file_formats": "text/x-gcode",
         "visible": false,
         "has_materials": true,

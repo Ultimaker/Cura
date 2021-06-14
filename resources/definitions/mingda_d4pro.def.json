@@ -1,5 +1,5 @@
 {
-    "name": "MINGDA D4 Pro",
+    "name": "Mingda D4 Pro",
     "version": 2,
     "inherits": "mingda_base",
     "overrides": {

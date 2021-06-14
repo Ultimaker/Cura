@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "VOLUMIC STREAM20DUAL MK2",
+    "name": "Volumic Stream20Dual MK2",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "VOLUMIC",
-        "manufacturer": "VOLUMIC",
+        "author": "Volumic",
+        "manufacturer": "Volumic",
         "file_formats": "text/x-gcode",
         "icon": "volumic-icon",
         "platform": "STREAM20PRO_platform.STL",
