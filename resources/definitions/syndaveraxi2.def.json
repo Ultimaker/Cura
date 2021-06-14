@@ -1,6 +1,6 @@
 {
     "version": 2, 
-    "name": "SyndaverAXI2",
+    "name": "SyndaverAxi2",
     "inherits": "fdmprinter",
     "metadata": 
 {

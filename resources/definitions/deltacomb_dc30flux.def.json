@@ -1,6 +1,6 @@
 {
     "version":                 2,
-    "name":                    "Deltacomb DC-30 FLUX",    
+    "name":                    "Deltacomb DC-30 Flux",
     "inherits":                "deltacomb_base",
 
     "metadata": {

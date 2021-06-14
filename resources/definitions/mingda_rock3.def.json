@@ -1,5 +1,5 @@
 {
-    "name": "MINGDA Rock3/Pro",
+    "name": "Mingda Rock3/Pro",
     "version": 2,
     "inherits": "mingda_base",
     "overrides": {

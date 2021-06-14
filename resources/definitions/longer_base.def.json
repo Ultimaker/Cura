@@ -1,11 +1,11 @@
 {
-    "name": "LONGER Base Printer",
+    "name": "Longer Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,
-        "author": "LONGER",
-        "manufacturer": "LONGER",
+        "author": "Longer",
+        "manufacturer": "Longer",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
