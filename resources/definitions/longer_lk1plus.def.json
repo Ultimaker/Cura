@@ -22,6 +22,8 @@
             ]
         },
 
-        "gantry_height": { "value": 33 }
+        "gantry_height": { "value": 33 },
+
+        "speed_travel": { "value": 65 }
     }
 }
