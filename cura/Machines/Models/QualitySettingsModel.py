@@ -117,7 +117,9 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION and global_container:
                 quality_changes_metadata = global_container.getMetaData()
             else:
-                quality_changes_metadata = extruders_container.get(str(self._selected_position))
+                extruder = extruders_container.get(self._selected_position)
+                if extruder:
+                    quality_changes_metadata = extruder.getMetaData()
             if quality_changes_metadata is not None:  # It can be None if number of extruders are changed during runtime.
                 container = container_registry.findContainers(id = quality_changes_metadata["id"])
                 if container:
