@@ -1,8 +1,9 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.0 as Controls2
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
@@ -281,7 +282,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Don't show project summary on save again")
                 checked: dontShowAgain
             }
-            Button
+            Controls2.Button
             {
                 id: cancel_button
                 anchors
@@ -293,7 +294,7 @@ UM.Dialog
                 enabled: true
                 onClicked: close()
             }
-            Button
+            Controls2.Button
             {
                 id: ok_button
                 anchors.right: parent.right
