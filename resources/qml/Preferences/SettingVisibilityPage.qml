@@ -166,7 +166,7 @@ UM.PreferencesPage
                 {
                     id: loader
 
-                    width: parent.width
+                    width: settingsListView.width
                     height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
                     property var definition: model

@@ -1,10 +1,10 @@
 {
     "version": 2,
-    "name": "FLSUN QQ",
+    "name": "Flsun QQ",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "manufacturer": "FLSUN",
+        "manufacturer": "Flsun",
         "author": "Daniel Green",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains": {

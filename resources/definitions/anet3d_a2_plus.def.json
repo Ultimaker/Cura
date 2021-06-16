@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Anet A2 PLUS",
+    "name": "Anet A2 Plus",
     "inherits": "anet3d",
     "metadata": {
         "visible": true,
@@ -11,7 +11,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Anet A2 PLUS" },
+        "machine_name": { "default_value": "Anet A2 Plus" },
         "machine_width": {
             "default_value": 220
         },

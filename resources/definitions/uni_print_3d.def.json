@@ -1,5 +1,5 @@
 {
-    "name": "UNI-PRINT-3D",
+    "name": "Uni-Print-3D",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata":

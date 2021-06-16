@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.9\n"
+"Project-Id-Version: Cura 4.10\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-04-02 16:09+0000\n"
+"POT-Creation-Date: 2021-06-10 17:35+0000\n"
 "PO-Revision-Date: 2021-04-16 15:16+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: German <info@lionbridge.com>, German <info@bothof.nl>\n"
@@ -3200,8 +3200,8 @@ msgstr "Max. Kammentfernung ohne Einziehen"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "Bei Nicht-Null verwenden die Combing-Fahrbewegungen, die länger als die Distanz sind, die Einziehfunktion."
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -6400,6 +6400,10 @@ msgstr "Matrix Netzdrehung"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angewandt wird."
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "Bei Nicht-Null verwenden die Combing-Fahrbewegungen, die länger als die Distanz sind, die Einziehfunktion."
 
 #~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
 #~ msgid "Apply the extruder offset to the coordinate system."

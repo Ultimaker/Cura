@@ -12,6 +12,8 @@ vertex41core =
     uniform lowp float u_min_thickness;
     uniform lowp float u_max_line_width;
     uniform lowp float u_min_line_width;
+    uniform lowp float u_max_flow_rate;
+    uniform lowp float u_min_flow_rate;
     uniform lowp int u_layer_view_type;
     uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
@@ -44,7 +46,15 @@ vertex41core =
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value)/(max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = value;
         float green = 1-abs(1-4*value);
         if (value > 0.375)
@@ -57,7 +67,15 @@ vertex41core =
 
     vec4 layerThicknessGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value)/(max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = min(max(4*value-2, 0), 1);
         float green = min(1.5*value, 0.75);
         if (value > 0.75)
@@ -70,7 +88,15 @@ vertex41core =
 
     vec4 lineWidthGradientColor(float abs_value, float min_value, float max_value)
     {
-        float value = (abs_value - min_value) / (max_value - min_value);
+        float value;
+        if(abs(max_value - min_value) < 0.0001) //Max and min are equal (barring floating point rounding errors).
+        {
+            value = 0.5; //Pick a colour in exactly the middle of the range.
+        }
+        else
+        {
+            value = (abs_value - min_value) / (max_value - min_value);
+        }
         float red = value;
         float green = 1 - abs(1 - 4 * value);
         if(value > 0.375)
@@ -78,6 +104,30 @@ vertex41core =
             green = 0.5;
         }
         float blue = max(1 - 4 * value, 0);
+        return vec4(red, green, blue, 1.0);
+    }
+
+    float clamp(float v)
+    {
+        float t = v < 0 ? 0 : v;
+        return t > 1.0 ? 1.0 : t;
+    }
+
+    // Inspired by https://stackoverflow.com/a/46628410
+    vec4 flowRateGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float t;
+        if(abs(min_value - max_value) < 0.0001)
+        {
+          t = 0;
+        }
+        else
+        {
+          t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1;
+        }
+        float red = clamp(1.5 - abs(2.0 * t - 1.0));
+        float green = clamp(1.5 - abs(2.0 * t));
+        float blue = clamp(1.5 - abs(2.0 * t + 1.0));
         return vec4(red, green, blue, 1.0);
     }
 
@@ -105,6 +155,10 @@ vertex41core =
                 break;
             case 4:  // "Line width"
                 v_color = lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
+                break;
+            case 5:  // "Flow"
+                float flow_rate =  a_line_dim.x * a_line_dim.y * a_feedrate;
+                v_color = flowRateGradientColor(flow_rate, u_min_flow_rate, u_max_flow_rate);
                 break;
         }
 
@@ -294,7 +348,6 @@ geometry41core =
             EndPrimitive();
         }
 
-
         if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
             float w = size_x;
             float h = size_y;
@@ -313,7 +366,7 @@ geometry41core =
             myEmitVertex(v_vertex[0] + vec3(-w, -h, -w), u_starts_color, normalize(vec3(-1.0, -1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w, -h, -w, 0.0))); // Back-bottom-right
             myEmitVertex(v_vertex[0] + vec3( w,  h, -w), u_starts_color, normalize(vec3( 1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h, -w, 0.0))); // Back-top-left
             myEmitVertex(v_vertex[0] + vec3(-w,  h, -w), u_starts_color, normalize(vec3(-1.0,  1.0, -1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h, -w, 0.0))); // Back-top-right
-            
+
             EndPrimitive();
         }
     }

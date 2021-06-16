@@ -99,7 +99,7 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 quality_node = quality_group.node_for_global
             else:
-                quality_node = quality_group.nodes_for_extruders.get(str(self._selected_position))
+                quality_node = quality_group.nodes_for_extruders.get(self._selected_position)
             settings_keys = quality_group.getAllKeys()
         quality_containers = []
         if quality_node is not None and quality_node.container is not None:
@@ -117,7 +117,9 @@ class QualitySettingsModel(ListModel):
             if self._selected_position == self.GLOBAL_STACK_POSITION and global_container:
                 quality_changes_metadata = global_container.getMetaData()
             else:
-                quality_changes_metadata = extruders_container.get(str(self._selected_position))
+                extruder = extruders_container.get(self._selected_position)
+                if extruder:
+                    quality_changes_metadata = extruder.getMetaData()
             if quality_changes_metadata is not None:  # It can be None if number of extruders are changed during runtime.
                 container = container_registry.findContainers(id = quality_changes_metadata["id"])
                 if container:

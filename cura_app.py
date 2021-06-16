@@ -16,14 +16,6 @@ import argparse
 import faulthandler
 import os
 
-# Workaround for a race condition on certain systems where there
-# is a race condition between Arcus and PyQt. Importing Arcus
-# first seems to prevent Sip from going into a state where it
-# tries to create PyQt objects on a non-main thread.
-import Arcus  # @UnusedImport
-import Savitar  # @UnusedImport
-import pynest2d # @UnusedImport
-
 from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
 
 from UM.Platform import Platform

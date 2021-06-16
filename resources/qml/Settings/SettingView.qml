@@ -199,7 +199,14 @@ Item
             label: Label {}
         }
 
-        onClicked: settingVisibilityPresetsMenu.open()
+        onClicked:
+        {
+            settingVisibilityPresetsMenu.popup(
+                settingVisibilityMenu,
+                -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
+                settingVisibilityMenu.height
+            )
+        }
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.

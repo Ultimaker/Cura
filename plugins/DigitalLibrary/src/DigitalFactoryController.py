@@ -385,6 +385,11 @@ class DigitalFactoryController(QObject):
     def _applicationInitializationFinished(self) -> None:
         self._supported_file_types = self._application.getInstance().getMeshFileHandler().getSupportedFileTypesRead()
 
+        # Although Cura supports these, it's super confusing in this context to show them.
+        for extension in ["jpg", "jpeg", "png", "bmp", "gif"]:
+            if extension in self._supported_file_types:
+                del self._supported_file_types[extension]
+
     @pyqtSlot()
     def openSelectedFiles(self) -> None:
         """ Downloads, then opens all files selected in the Qt frontend open dialog.
@@ -541,6 +546,7 @@ class DigitalFactoryController(QObject):
                                                                 on_upload_success = self.uploadFileSuccess.emit,
                                                                 on_upload_finished = self.uploadFileFinished.emit,
                                                                 on_upload_progress = self.uploadFileProgress.emit)
+        self.file_upload_manager.start()
 
         # Save the project id to make sure it will be preselected the next time the user opens the save dialog
         self._current_workspace_information.setEntryToStore("digital_factory", "library_project_id", library_project_id)

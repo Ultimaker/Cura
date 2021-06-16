@@ -1,10 +1,11 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
+import zipfile  # To export all materials in a .zip archive.
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -24,6 +25,11 @@ class MaterialManagementModel(QObject):
 
     This class handles the actions in that page, such as creating new materials, renaming them, etc.
     """
+    def __init__(self, parent: QObject) -> None:
+        super().__init__(parent)
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        self._preferred_export_all_path = None  # type: Optional[QUrl]  # Path to export all materials to. None if not yet initialised.
+        cura_application.getOutputDeviceManager().outputDevicesChanged.connect(self._onOutputDevicesChanged)
 
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
@@ -79,6 +85,7 @@ class MaterialManagementModel(QObject):
 
         :param material_node: The material to remove.
         """
+        Logger.info(f"Removing material {material_node.container_id}")
 
         container_registry = CuraContainerRegistry.getInstance()
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
@@ -194,6 +201,7 @@ class MaterialManagementModel(QObject):
 
         :return: The root material ID of the duplicate material.
         """
+        Logger.info(f"Duplicating material {material_node.base_file} to {new_base_id}")
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
     @pyqtSlot(result = str)
@@ -262,3 +270,52 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    def _onOutputDevicesChanged(self) -> None:
+        """
+        When the list of output devices changes, we may want to update the
+        preferred export path.
+        """
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        device_manager = cura_application.getOutputDeviceManager()
+        devices = device_manager.getOutputDevices()
+        for device in devices:
+            if device.__class__.__name__ == "RemovableDriveOutputDevice":
+                self._preferred_export_all_path = QUrl.fromLocalFile(device.getId())
+                break
+        else:  # No removable drives? Use local path.
+            self._preferred_export_all_path = cura_application.getDefaultPath("dialog_material_path")
+        self.outputDevicesChanged.emit()
+
+    outputDevicesChanged = pyqtSignal()  # Triggered when adding or removing removable drives.
+    @pyqtProperty(QUrl, notify = outputDevicesChanged)
+    def preferredExportAllPath(self) -> QUrl:
+        """
+        Get the preferred path to export materials to.
+
+        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
+        file path.
+        :return: The preferred path to export all materials to.
+        """
+        if self._preferred_export_all_path is None:  # Not initialised yet. Can happen when output devices changed before class got created.
+            self._onOutputDevicesChanged()
+        return self._preferred_export_all_path
+
+    @pyqtSlot(QUrl)
+    def exportAll(self, file_path: QUrl) -> None:
+        """
+        Export all materials to a certain file path.
+        :param file_path: The path to export the materials to.
+        """
+        registry = CuraContainerRegistry.getInstance()
+
+        archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+        for metadata in registry.findInstanceContainersMetadata(type = "material"):
+            if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                continue
+            if metadata["id"] == "empty_material":  # Don't export the empty material.
+                continue
+            material = registry.findContainers(id = metadata["id"])[0]
+            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+            filename = metadata["id"] + "." + suffix
+            archive.writestr(filename, material.serialize())

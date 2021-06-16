@@ -40,6 +40,7 @@ class DigitalFactoryFileModel(ListModel):
     def setFiles(self, df_files_in_project: List[DigitalFactoryFileResponse]) -> None:
         if self._files == df_files_in_project:
             return
+        self.clear()
         self._files = df_files_in_project
         self._update()
 

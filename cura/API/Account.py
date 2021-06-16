@@ -40,7 +40,7 @@ class Account(QObject):
     """
 
     # The interval in which sync services are automatically triggered
-    SYNC_INTERVAL = 30.0  # seconds
+    SYNC_INTERVAL = 60.0  # seconds
     Q_ENUMS(SyncState)
 
     loginStateChanged = pyqtSignal(bool)

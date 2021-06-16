@@ -65,6 +65,11 @@ Item
             model: manager.digitalFactoryFileModel
             visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
             selectionMode: OldControls.SelectionMode.SingleSelection
+            onDoubleClicked:
+            {
+                manager.setSelectedFileIndices([row]);
+                openFilesButton.clicked();
+            }
 
             OldControls.TableViewColumn
             {

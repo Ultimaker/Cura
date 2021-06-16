@@ -1,5 +1,5 @@
 {
-    "name": "Creawsome Base Printer",
+    "name": "Creality Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
