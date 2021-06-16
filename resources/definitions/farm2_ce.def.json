@@ -8,7 +8,7 @@
         "manufacturer": "Farm3D LLC",
         "file_formats": "text/x-gcode",
         "platform": "farm2_platform.3mf",
-        "platform_texture": "farm2CEplate.png",
+        "platform_texture": "farm2ceplate.png",
         "platform_offset": [-7, 0, -4],
 		"has_variants": true,
 		"preferred_variant_name": "PrintHead 0.4 mm",
