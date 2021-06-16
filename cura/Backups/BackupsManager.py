@@ -55,14 +55,16 @@ class BackupsManager:
         restored = backup.restore()
 
         package_manager = self._application.getPackageManager()
+        # Load the new version of the package manager data.
+        package_manager.loadManagementData()
 
         # If the backup was made with Cura 4.10 (or higher), we no longer store plugins.
         # Since the restored backup doesn't have those plugins anymore, we should remove it from the list
         # of installed plugins.
         if Version(meta_data.get("cura_release")) >= Version("4.10.0"):
-            for package_id in package_manager.getAllInstalledPackageIDs():
+            for package_id in package_manager.getInstalledPackageIDs():
                 package_data = package_manager.getInstalledPackageInfo(package_id)
-                if package_data.get("package_type") == "plugin" and not package_data.get("is_bundled"):
+                if package_data.get("package_type") == "plugin":
                     package_manager.removePackage(package_id)
 
         if restored:
