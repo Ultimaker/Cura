@@ -7,7 +7,7 @@ import re
 import shutil
 from copy import deepcopy
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
-from typing import Dict, Optional, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING, List
 
 from UM import i18nCatalog
 from UM.Logger import Logger
@@ -29,7 +29,7 @@ class Backup:
     IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
     """These files should be ignored when making a backup."""
 
-    IGNORED_FOLDERS = [r"plugins"]
+    IGNORED_FOLDERS = []  # type: List[str]
 
     SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
     """Secret preferences that need to obfuscated when making a backup of Cura"""
