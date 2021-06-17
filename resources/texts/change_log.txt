@@ -1,3 +1,56 @@
+[4.10.0]
+BETA
+
+*Native CAD import plugin
+Ultimaker Professional and Excellence subscribers can now directly import native CAD files into Ultimaker Cura.
+Enable this feature by downloading the Native CAD import plugin from the Ultimaker marketplace. 
+
+*Flow visualization
+In preview mode you can now visualize the flow. Contributed by khani3s.
+
+*Show loading plugins on startup
+When starting Cura you will now see which plugins Cura is loading.
+
+*Add Z position parameter to FilamentChange
+With the FilamentChange script you can now control all 3 coordinates. 
+
+*Allow FilamentChange script to use Marlin M600 configuration
+Contributed by Sekisback.
+
+*Double click on file in Digital Factory
+When double clicking on a file in the open project dialog in Digital Factory it will now open in Cura. 
+
+* Bug Fixes
+- Fixed temperature exceptions for UM2+C material profiles.
+- Fixed a bug where pause at height stops all extrusion if relative extrusion is used.
+- Fixed authentication issues when logging into UM account. Contributed by fieldOfView.
+- Fixed the pause-at-height retract with Repetier-flavour.
+- Fixed erasing z-coordinate in the move tool to the value of 0. 
+- Fixed the limit range of layer view to only visible structures. 
+- Fixed a bug where Cura crashes when scaling a model on Linux. 
+- Fixed path minimum limit. 
+- Fixed a bug when using right to left language numbers were overlaying on text in the print settings.
+- Fixed edge case with disabling bridging.
+- Fixed a bug where some names with Unicode characters crashes Cura when trying to authorize. 
+- Fixed renaming groups. Contributed by fieldOfView. 
+- Fixed a bug when the seam was not placed in sharpest corner.
+- Fixed the gantry height for S-line printers. 
+- Fixed a bug where a model is partially below build plate if center selected model is used.
+
+* Printer definitions, profiles and materials.
+- Add CC0.4 core and materials for S3 and S5.
+- Updated Axi machine start gcodes, contributed by Synsuiter.
+- Volumic 3D printer definitions, contributed by VOLUMIC.
+- Anycubic Mega X and Anycubic Mega S, contributed by NilsRo.
+- Updated Deltacomb printer profiles, contributed by kaleidoscopeit.
+- eMotionTech Strateo3D materials and profiles, contributed by ChronosTech.
+- Sovol SV03, contributed by balacij.
+- Two Trees Bluer, Bluer Plus, Sapphire Pro and Sapphire Plus, contributed by Lester3DGadgets.
+- Update Skriware 2, contributed by Lukkoz.
+- Longer LK1, LK1 Pro, LK1 Plus, LK4, LK4 Pro, LK5, LK5 Plus and Cube 2, contributed by lowkeyjoe. 
+- Mingda D3, D4 and Rock3, contributed by cataclism. 
+- JGAurora A6, contributed by CrissR.
+
 [4.9.1]
 * PETG Profile update.
 Ultimaker PETG profiles have been added. The Generic PETG profile for 2.85mm filaments has been updated as well.
