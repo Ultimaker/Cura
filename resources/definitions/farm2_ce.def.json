@@ -18,7 +18,7 @@
         "has_machine_quality": false,
                 "machine_extruder_trains":
         {
-            "0": "farm2_extruder_1"
+            "0": "farm2_ce_extruder_1"
 			
         }
         
