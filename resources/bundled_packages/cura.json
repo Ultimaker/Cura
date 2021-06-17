@@ -968,6 +968,24 @@
             }
         }
     },
+    "VersionUpgrade49to410": {
+        "package_info": {
+            "package_id": "VersionUpgrade49to410",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.9 to 4.10",
+            "description": "Upgrades configurations from Cura 4.9 to Cura 4.10",
+            "package_version": "1.0.0",
+            "sdk_version": 7,
+            "sdk_version_semver": "7.6.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "X3DReader": {
         "package_info": {
             "package_id": "X3DReader",
