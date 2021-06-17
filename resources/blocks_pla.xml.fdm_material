@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>Blocks</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>0ff92885-617b-4144-a03c-9989872454bc</GUID>
+        <version>8</version>
+        <color_code>#ffc924</color_code>
+        <description>Fast, safe and reliable printing. PLA is ideal for the fast and reliable printing of parts and prototypes with a great surface quality.</description>
+        <adhesion_info>Print on bare glass. Use tape for cold build plates.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">200</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">175</setting>
+        <setting key="adhesion tendency">0</setting>
+        <setting key="surface energy">100</setting>
+        <setting key="build volume temperature">28</setting>
+	    <machine>           
+		    <machine_identifier manufacturer="Blocks" product="blocks_zero" />            
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">200</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">6.5</setting>
+            <setting key="print temperature">210</setting>
+        </machine>		
+	    <machine>           
+		    <machine_identifier manufacturer="Blocks" product="blocks_mk2" />            
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">200</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">6.5</setting>
+            <setting key="print temperature">210</setting>
+            <setting key="heated bed temperature">50</setting>
+        </machine>		
+	    <machine>            
+			<machine_identifier manufacturer="Blocks" product="blocks_pros30" />            
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">200</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">6.5</setting>
+            <setting key="print temperature">210</setting>
+            <setting key="heated bed temperature">50</setting>
+       	</machine>	
+	    <machine>            
+			<machine_identifier manufacturer="Blocks" product="blocks_pros100" />            
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">200</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">1.2</setting>
+            <setting key="print temperature">210</setting>
+            <setting key="heated bed temperature">50</setting>
+       	</machine>		   
+    </settings>	
+</fdmmaterial>
