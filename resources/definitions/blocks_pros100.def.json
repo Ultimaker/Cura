@@ -1,0 +1,24 @@
+{
+    "name": "Blocks PRO S100",
+    "version": 2,
+    "inherits": "blocks_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "blocks_pros100_platform.stl",
+        "quality_definition": "blocks_pros100"
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "Blocks PRO S100" },
+        "machine_width":    { "default_value": 1000 },
+        "machine_depth":    { "default_value": 1000 },
+        "machine_height":   { "default_value": 1000 },
+
+        "speed_travel":
+        {
+            "maximum_value": "120",
+            "value": "120"
+        }
+    }
+}
