@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -916,6 +916,8 @@ class BuildVolume(SceneNode):
             return {}
 
         for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
+            if len(area) == 0:
+                continue  # Numpy doesn't deal well with 0-length arrays, since it can't determine the dimensionality of them.
             polygon = Polygon(numpy.array(area, numpy.float32))
             polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
             machine_disallowed_polygons.append(polygon)
