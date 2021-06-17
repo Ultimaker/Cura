@@ -49,7 +49,7 @@
         "top_bottom_pattern_0": {"value": "'lines'" },
         "wall_0_inset": {"value": 0},
         "optimize_wall_printing_order": {"value": false },
-        "outer_inset_first": {"value": false },
+        "inset_direction": {"value": "'inside_out'" },
         "alternate_extra_perimeter": {"value": false },
         "wall_min_flow": {"value": 0},
         "filter_out_tiny_gaps": {"value": true },

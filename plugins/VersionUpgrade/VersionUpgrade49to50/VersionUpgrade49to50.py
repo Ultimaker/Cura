@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -38,6 +38,12 @@ class VersionUpgrade49to50(VersionUpgrade):
             for removed in _removed_settings:
                 if removed in visible_settings:
                     visible_settings.remove(removed)
+
+            # Replace Outer Before Inner Walls with equivalent.
+            if "outer_inset_first" in visible_settings:
+                visible_settings.remove("outer_inset_first")
+                visible_settings.add("inset_direction")
+
             parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
@@ -68,6 +74,13 @@ class VersionUpgrade49to50(VersionUpgrade):
             for removed in _removed_settings:
                 if removed in parser["values"]:
                     del parser["values"][removed]
+
+            # Replace Outer Before Inner Walls with equivalent setting.
+            if "outer_inset_first" in parser["values"]:
+                old_value = parser["values"]["outer_inset_first"]
+                if old_value.startswith("="):  # Was already a formula.
+                    old_value = old_value[1:]
+                parser["values"]["inset_direction"] = f"='outside_in' if ({old_value}) else 'inside_out'"  # Makes it work both with plain setting values and formulas.
 
             # Disable Fuzzy Skin as it doesn't work with with the libArachne walls
             if "magic_fuzzy_skin_enabled" in parser["values"]:
