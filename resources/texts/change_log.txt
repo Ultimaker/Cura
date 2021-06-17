@@ -1,13 +1,15 @@
-[4.10 beta]
+[4.10.0]
+BETA
+
 *Native CAD import plugin
-Ultimaker Professional and Excellence subscribers can now direclty import native CAD files into Ultimaker Cura. 
+Ultimaker Professional and Excellence subscribers can now directly import native CAD files into Ultimaker Cura.
 Enable this feature by downloading the Native CAD import plugin from the Ultimaker marketplace. 
 
 *Flow visualization
 In preview mode you can now visualize the flow. Contributed by khani3s.
 
-*Loading plugins on startup
-When starting Cura you will now see that Cura is loading plugins. 
+*Show loading plugins on startup
+When starting Cura you will now see which plugins Cura is loading.
 
 *Add Z position parameter to FilamentChange
 With the FilamentChange script you can now control all 3 coordinates. 
@@ -22,7 +24,7 @@ When double clicking on a file in the open project dialog in Digital Factory it 
 - Fixed temperature exceptions for UM2+C material profiles.
 - Fixed a bug where pause at height stops all extrusion if relative extrusion is used.
 - Fixed authentication issues when logging into UM account. Contributed by fieldOfView.
-- Fixed the pause-at-height retract with repetier-flavour.
+- Fixed the pause-at-height retract with Repetier-flavour.
 - Fixed erasing z-coordinate in the move tool to the value of 0. 
 - Fixed the limit range of layer view to only visible structures. 
 - Fixed a bug where Cura crashes when scaling a model on Linux. 
@@ -36,8 +38,8 @@ When double clicking on a file in the open project dialog in Digital Factory it 
 - Fixed a bug where a model is partially below build plate if center selected model is used.
 
 * Printer definitions, profiles and materials.
-- Updated Axi machine start gcodes, contributed by Synsuiter.
 - Add CC0.4 core and materials for S3 and S5.
+- Updated Axi machine start gcodes, contributed by Synsuiter.
 - Volumic 3D printer definitions, contributed by VOLUMIC.
 - Anycubic Mega X and Anycubic Mega S, contributed by NilsRo.
 - Updated Deltacomb printer profiles, contributed by kaleidoscopeit.
