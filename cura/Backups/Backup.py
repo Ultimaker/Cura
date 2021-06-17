@@ -29,7 +29,7 @@ class Backup:
     IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
     """These files should be ignored when making a backup."""
 
-    IGNORED_FOLDERS = [r"plugins"]
+    IGNORED_FOLDERS = []
 
     SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
     """Secret preferences that need to obfuscated when making a backup of Cura"""
