@@ -78,7 +78,6 @@
         "material_initial_print_temperature": { "value": "material_print_temperature + 10" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
         
         "infill_sparse_density": { "value": 25 },
         "infill_before_walls": { "value": false },
@@ -91,21 +90,21 @@
         
         "retraction_hop_enabled": { "value": true },
         "retraction_hop": { "value": 0.075 },
-		"retraction_hop_only_when_collides": { "value": true },
+        "retraction_hop_only_when_collides": { "value": true },
 
         "retraction_combing": { "value": "'off'" },
         "retraction_combing_max_distance": { "value": 30 },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
-        
-		"retraction_amount": { "value": 6 },
+
+        "retraction_amount": { "value": 6 },
         "retraction_enable": { "value": true },
         "retraction_min_travel": { "value": 1.5 },
 
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
-		"cool_fan_speed": { "value": 70 },
-		"cool_fan_speed_0": { "value": 30 },
+        "cool_fan_speed": { "value": 70 },
+        "cool_fan_speed_0": { "value": 30 },
 
         "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
@@ -115,7 +114,6 @@
         "skirt_gap": { "value": 5.0 },
         "skirt_line_count": { "value": 4 },
 
-       
         "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },
         "support_pattern": { "value": "'zigzag'" },
         "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 20" },
@@ -129,8 +127,8 @@
         "support_brim_width": { "value": 4 },
 
         "support_interface_enable": { "value": true },
-		"support_structure": { "value": "'tree'" },
-		"support_type": { "value": "'buildplate' if support_structure == 'tree' else 'everywhere'" },
+        "support_structure": { "value": "'tree'" },
+        "support_type": { "value": "'buildplate' if support_structure == 'tree' else 'everywhere'" },
         "support_interface_height": { "value": "layer_height * 4" },
         "support_interface_density": { "value": 33.333 },
         "support_interface_pattern": { "value": "'grid'" },
