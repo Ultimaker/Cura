@@ -31,8 +31,7 @@
         "machine_heated_bed": { "default_value": true },
 
         "material_diameter": { "default_value": 1.75 },
-		
-		
+
         "speed_print": { "value": 50.0 } ,
         "speed_infill": { "value": "speed_print" },
         "speed_wall": { "value": "speed_print / 2" },
@@ -64,10 +63,8 @@
         "infill_wipe_dist": { "value": 0.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
-
 
         "retraction_hop_enabled": { "value": "False" },
         "retraction_hop": { "value": 0.2 },
@@ -121,6 +118,5 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
-
     }
 }
