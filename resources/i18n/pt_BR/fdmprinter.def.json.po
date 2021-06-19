@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.10\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-06-10 17:35+0000\n"
-"PO-Revision-Date: 2021-04-11 17:33+0200\n"
+"PO-Revision-Date: 2021-06-19 06:31+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -3202,7 +3202,7 @@ msgstr "Máxima Distância de Combing Sem Retração"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr ""
+msgstr "Quando maior que zero, os movimentos de percurso de combing que forem maiores que essa distância usarão retração. Se deixado em zero, não haverá máximo e os movimentos de combing não usarão retração."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
