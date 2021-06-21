@@ -7,7 +7,7 @@
         "author": "Farm3D",
         "manufacturer": "Farm3D LLC",
         "file_formats": "text/x-gcode",
-        "platform": "farm2_platform.3mf",
+        "platform": "farm2_platform.obj",
         "platform_texture": "farm2plate.png",
         "platform_offset": [-7, 0, -4],
 		"has_variants": true,
