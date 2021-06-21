@@ -4,6 +4,7 @@ from typing import Type, TYPE_CHECKING, Optional, List
 
 import keyring
 from keyring.backend import KeyringBackend
+from keyring.backends.macOS.api import KeychainDenied
 from keyring.errors import NoKeyringError, PasswordSetError
 
 from UM.Logger import Logger
@@ -38,6 +39,14 @@ class KeyringAttribute:
             except NoKeyringError:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
+                return getattr(instance, self._name)
+            except KeychainDenied:
+                self._store_secure = False
+                Logger.logException("w", "Access to the keyring was denied.")
+                return getattr(instance, self._name)
+            except Exception as e:
+                self._store_secure = False
+                Logger.logException("w", f"Something went wrong while trying to retrieve the password from the Keyring. Exception: {e}")
                 return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)
