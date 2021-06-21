@@ -40,13 +40,12 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
-            except KeychainDenied:
-                self._store_secure = False
-                Logger.logException("w", "Access to the keyring was denied.")
-                return getattr(instance, self._name)
             except Exception as e:
                 self._store_secure = False
-                Logger.logException("w", f"Something went wrong while trying to retrieve the password from the Keyring. Exception: {e}")
+                exception_message = f"Something went wrong while trying to retrieve the password from the Keyring. Exception: {e}"
+                if Platform.isOSX() and hasattr(sys, "frozen") and type(e) == KeychainDenied:
+                    exception_message = "Access to the keyring was denied."
+                Logger.logException("w", exception_message)
                 return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)
