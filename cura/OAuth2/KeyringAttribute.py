@@ -4,7 +4,6 @@ from typing import Type, TYPE_CHECKING, Optional, List
 
 import keyring
 from keyring.backend import KeyringBackend
-from keyring.backends.macOS.api import KeychainDenied
 from keyring.errors import NoKeyringError, PasswordSetError
 
 from UM.Logger import Logger
@@ -21,6 +20,7 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     keyring.set_keyring(WinVaultKeyring())
 if Platform.isOSX() and hasattr(sys, "frozen"):
     from keyring.backends.macOS import Keyring
+    from keyring.backends.macOS.api import KeychainDenied
     keyring.set_keyring(Keyring())
 
 # Even if errors happen, we don't want this stored locally:
