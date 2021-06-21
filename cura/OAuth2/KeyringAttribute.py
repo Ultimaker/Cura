@@ -14,17 +14,24 @@ if TYPE_CHECKING:
 # Need to do some extra workarounds on windows:
 import sys
 from UM.Platform import Platform
+
+
+class _KeychainDenied(Exception):
+    pass
+
+
 if Platform.isWindows() and hasattr(sys, "frozen"):
     import win32timezone
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
 if Platform.isOSX() and hasattr(sys, "frozen"):
     from keyring.backends.macOS import Keyring
-    from keyring.backends.macOS.api import KeychainDenied
+    from keyring.backends.macOS.api import KeychainDenied as _KeychainDeniedMacOS
+    KeychainDenied = _KeychainDeniedMacOS
     keyring.set_keyring(Keyring())
 else:
-    class KeychainDenied(Exception):
-        pass
+    KeychainDenied = _KeychainDenied
+
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
