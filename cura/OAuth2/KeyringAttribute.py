@@ -4,7 +4,7 @@ from typing import Type, TYPE_CHECKING, Optional, List
 
 import keyring
 from keyring.backend import KeyringBackend
-from keyring.errors import NoKeyringError, PasswordSetError
+from keyring.errors import NoKeyringError, PasswordSetError, KeyringError
 
 from UM.Logger import Logger
 
@@ -22,6 +22,9 @@ if Platform.isOSX() and hasattr(sys, "frozen"):
     from keyring.backends.macOS import Keyring
     from keyring.backends.macOS.api import KeychainDenied
     keyring.set_keyring(Keyring())
+else:
+    class KeychainDenied(Exception):
+        pass
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
@@ -40,12 +43,9 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
-            except Exception as e:
+            except KeychainDenied:
                 self._store_secure = False
-                if Platform.isOSX() and hasattr(sys, "frozen") and type(e) == KeychainDenied:
-                    Logger.log("i", "Access to the keyring was denied.")
-                else:
-                    Logger.logException("w", f"Something went wrong while trying to retrieve the password from the Keyring. Exception: {e}")
+                Logger.log("i", "Access to the keyring was denied.")
                 return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)
