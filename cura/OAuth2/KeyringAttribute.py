@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Type, TYPE_CHECKING, Optional, List
+from typing import Type, TYPE_CHECKING, Optional, List, Union
 
 import keyring
 from keyring.backend import KeyringBackend
@@ -27,7 +27,7 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
 if Platform.isOSX() and hasattr(sys, "frozen"):
     from keyring.backends.macOS import Keyring
     from keyring.backends.macOS.api import KeychainDenied as _KeychainDeniedMacOS
-    KeychainDenied = _KeychainDeniedMacOS
+    KeychainDenied: Union[Type[_KeychainDenied], Type[_KeychainDeniedMacOS]] = _KeychainDeniedMacOS
     keyring.set_keyring(Keyring())
 else:
     KeychainDenied = _KeychainDenied
