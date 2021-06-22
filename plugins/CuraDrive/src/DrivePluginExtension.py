@@ -52,6 +52,7 @@ class DrivePluginExtension(QObject, Extension):
 
         # Attach signals.
         CuraApplication.getInstance().getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
+        CuraApplication.getInstance().applicationShuttingDown.connect(self._onApplicationShuttingDown)
         self._drive_api_service.restoringStateChanged.connect(self._onRestoringStateChanged)
         self._drive_api_service.creatingStateChanged.connect(self._onCreatingStateChanged)
 
@@ -74,6 +75,9 @@ class DrivePluginExtension(QObject, Extension):
         self.refreshBackups()
         if self._drive_window:
             self._drive_window.show()
+
+    def _onApplicationShuttingDown(self):
+        self._drive_window.hide()
 
     def _autoBackup(self) -> None:
         preferences = CuraApplication.getInstance().getPreferences()
