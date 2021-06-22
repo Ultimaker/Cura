@@ -166,6 +166,9 @@ class Backup:
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
             shutil.move(backup_preferences_file, preferences_file)
 
+        # Read the preferences from the newly restored configuration (or else the cached Preferences will override the restored ones)
+        self._application.readPreferencesFromConfiguration()
+
         # Restore the obfuscated settings
         self._illuminate(**secrets)
 
