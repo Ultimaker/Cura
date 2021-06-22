@@ -71,6 +71,7 @@ Item
             text: catalog.i18nc("@button", "Restore")
             enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
             onClicked: confirmRestoreDialog.visible = true
+            busy: CuraDrive.backupIdBeingRestored == modelData.backup_id && CuraDrive.isRestoringBackup
         }
 
         UM.SimpleButton

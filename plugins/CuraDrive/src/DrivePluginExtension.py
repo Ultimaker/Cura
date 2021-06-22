@@ -34,6 +34,9 @@ class DrivePluginExtension(QObject, Extension):
     # Signal emitted when preferences changed (like auto-backup).
     preferencesChanged = pyqtSignal()
 
+    # Signal emitted when the id of the backup-to-be-restored is changed
+    backupIdBeingRestoredChanged = pyqtSignal(arguments = ["backup_id_being_restored"])
+
     DATE_FORMAT = "%d/%m/%Y %H:%M:%S"
 
     def __init__(self) -> None:
@@ -45,6 +48,7 @@ class DrivePluginExtension(QObject, Extension):
         self._backups = []  # type: List[Dict[str, Any]]
         self._is_restoring_backup = False
         self._is_creating_backup = False
+        self._backup_id_being_restored = ""
 
         # Initialize services.
         preferences = CuraApplication.getInstance().getPreferences()
@@ -104,10 +108,11 @@ class DrivePluginExtension(QObject, Extension):
         if logged_in:
             self.refreshBackups()
 
-    def _onRestoringStateChanged(self, is_restoring: bool = False, error_message: str = None) -> None:
+    def _onRestoringStateChanged(self, is_restoring: bool = False, error_message: Optional[str] = None) -> None:
         self._is_restoring_backup = is_restoring
         self.restoringStateChanged.emit()
         if error_message:
+            self.backupIdBeingRestored = ""
             Message(error_message, title = catalog.i18nc("@info:title", "Backup")).show()
 
     def _onCreatingStateChanged(self, is_creating: bool = False, error_message: str = None) -> None:
@@ -156,6 +161,7 @@ class DrivePluginExtension(QObject, Extension):
         for backup in self._backups:
             if backup.get("backup_id") == backup_id:
                 self._drive_api_service.restoreBackup(backup)
+                self.setBackupIdBeingRestored(backup_id)
                 return
         Logger.log("w", "Unable to find backup with the ID %s", backup_id)
 
@@ -170,3 +176,12 @@ class DrivePluginExtension(QObject, Extension):
     def _backupDeletedCallback(self, success: bool):
         if success:
             self.refreshBackups()
+
+    def setBackupIdBeingRestored(self, backup_id_being_restored: str) -> None:
+        if backup_id_being_restored != self._backup_id_being_restored:
+            self._backup_id_being_restored = backup_id_being_restored
+            self.backupIdBeingRestoredChanged.emit()
+
+    @pyqtProperty(str, fset = setBackupIdBeingRestored, notify = backupIdBeingRestoredChanged)
+    def backupIdBeingRestored(self) -> str:
+        return self._backup_id_being_restored
