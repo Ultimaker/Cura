@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
@@ -517,8 +517,13 @@ class PauseAtHeight(Script):
 
                     prepend_gcode += self.putValue(M = extrusion_mode_numeric) + " ; switch back to " + extrusion_mode_string + " E values\n"
 
-                # reset extrude value to pre pause value
-                prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+
+                elif redo_layer:
+                    # All other options reset the E value to what it was before the pause because E things were added.
+                    # If it's not yet reset, it still needs to be reset if there were any redo layers.
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 layer = prepend_gcode + layer
 
