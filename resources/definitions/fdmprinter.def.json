@@ -831,7 +831,7 @@
                                     "description": "Width of the outermost wall line. By lowering this value, higher levels of detail can be printed.",
                                     "unit": "mm",
                                     "minimum_value": "0.001",
-                                    "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if outer_inset_first else 0.1 * machine_nozzle_size",
+                                    "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "default_value": 0.4,
                                     "value": "wall_line_width",
@@ -1159,7 +1159,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "value": "(machine_nozzle_size - wall_line_width_0) / 2 if (wall_line_width_0 < machine_nozzle_size and not outer_inset_first) else 0",
+                    "value": "(machine_nozzle_size - wall_line_width_0) / 2 if (wall_line_width_0 < machine_nozzle_size and inset_direction != \"outside_in\") else 0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -1173,13 +1173,17 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
-                "outer_inset_first":
+                "inset_direction":
                 {
-                    "label": "Outer Before Inner Walls",
-                    "description": "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "wall_0_extruder_nr == wall_x_extruder_nr",
+                    "label": "Wall Ordering",
+                    "description": "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed.",
+                    "type": "enum",
+                    "options": {
+                        "inside_out": "Inside To Outside",
+                        "outside_in": "Outside To Inside",
+                        "center_last": "Center Last"
+                    },
+                    "default_value": "inside_out",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
