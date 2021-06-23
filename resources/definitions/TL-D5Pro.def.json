@@ -3,7 +3,7 @@
     "name": "TL-D5Pro",
     "inherits": "tenlog_printer",
     "metadata": {
-	"visible": true,
+        "visible": true,
         "manufacturer": "Tenlog",
         "platform": "TL-D5Pro.3mf",
         "platform_offset": [-700,295,-430]
