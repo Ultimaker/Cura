@@ -1,10 +1,10 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Type, TYPE_CHECKING, Optional, List, Union
+from typing import Type, TYPE_CHECKING, Optional, List
 
 import keyring
 from keyring.backend import KeyringBackend
-from keyring.errors import NoKeyringError, PasswordSetError, KeyringError
+from keyring.errors import NoKeyringError, PasswordSetError, KeyringLocked
 
 from UM.Logger import Logger
 
@@ -14,24 +14,13 @@ if TYPE_CHECKING:
 # Need to do some extra workarounds on windows:
 import sys
 from UM.Platform import Platform
-
-
-class _KeychainDenied(Exception):
-    pass
-
-
 if Platform.isWindows() and hasattr(sys, "frozen"):
     import win32timezone
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
 if Platform.isOSX() and hasattr(sys, "frozen"):
     from keyring.backends.macOS import Keyring
-    from keyring.backends.macOS.api import KeychainDenied as _KeychainDeniedMacOS
-    KeychainDenied: Union[Type[_KeychainDenied], Type[_KeychainDeniedMacOS]] = _KeychainDeniedMacOS
     keyring.set_keyring(Keyring())
-else:
-    KeychainDenied = _KeychainDenied
-
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
@@ -50,7 +39,7 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
-            except KeychainDenied:
+            except KeyringLocked:
                 self._store_secure = False
                 Logger.log("i", "Access to the keyring was denied.")
                 return getattr(instance, self._name)
