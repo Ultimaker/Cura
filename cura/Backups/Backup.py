@@ -166,6 +166,9 @@ class Backup:
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
             shutil.move(backup_preferences_file, preferences_file)
 
+        # Read the preferences from the newly restored configuration (or else the cached Preferences will override the restored ones)
+        self._application.readPreferencesFromConfiguration()
+
         # Restore the obfuscated settings
         self._illuminate(**secrets)
 
@@ -191,7 +194,10 @@ class Backup:
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
         try:
-            archive.extractall(target_path)
+            name_list = archive.namelist()
+            for archive_filename in name_list:
+                archive.extract(archive_filename, target_path)
+                CuraApplication.getInstance().processEvents()
         except (PermissionError, EnvironmentError):
             Logger.logException("e", "Unable to extract the backup due to permission or file system errors.")
             return False

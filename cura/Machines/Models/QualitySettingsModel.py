@@ -114,6 +114,7 @@ class QualitySettingsModel(ListModel):
             global_container = None if len(global_containers) == 0 else global_containers[0]
             extruders_containers = {pos: container_registry.findContainers(id = quality_changes_group.metadata_per_extruder[pos]["id"]) for pos in quality_changes_group.metadata_per_extruder}
             extruders_container = {pos: None if not containers else containers[0] for pos, containers in extruders_containers.items()}
+            quality_changes_metadata = None
             if self._selected_position == self.GLOBAL_STACK_POSITION and global_container:
                 quality_changes_metadata = global_container.getMetaData()
             else:
