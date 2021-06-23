@@ -18,7 +18,7 @@
         "preferred_quality_type": "draft",
         "preferred_material": "tlgreen_pla",
 
-	"machine_extruder_trains": {
+        "machine_extruder_trains": {
             "0": "tl_dual_0",
             "1": "tl_dual_1"
         },
