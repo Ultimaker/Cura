@@ -10,7 +10,7 @@
 
         "has_variants": false,
 
-	"file_formats": "text/x-gcode",
+        "file_formats": "text/x-gcode",
         "has_materials": true,
 	"first_start_actions": ["MachineSettingsAction"],
 
