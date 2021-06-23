@@ -52,7 +52,7 @@ class KeyringAttribute:
             if value is not None:
                 try:
                     keyring.set_password("cura", self._keyring_name, value)
-                except PasswordSetError:
+                except (PasswordSetError, KeyringLocked):
                     self._store_secure = False
                     if self._name not in DONT_EVER_STORE_LOCALLY:
                         setattr(instance, self._name, value)
