@@ -3,7 +3,7 @@
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": { 
-	"visible": false,
+        "visible": false,
         "author": "Tenlog",
         "manufacturer": "Tenlog",
         "weight": 4,
