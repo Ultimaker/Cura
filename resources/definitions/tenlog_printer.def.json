@@ -250,13 +250,13 @@
         "brim_replaces_support": { "value": true },
         "skirt_gap": { "value": 3.0 },
         "skirt_line_count": { "value": 2 },
-	"raft_margin":{"default_value": 2 },
-	"raft_airgap":	{ "default_value": 0.2 },
+        "raft_margin":{"default_value": 2 },
+        "raft_airgap":	{ "default_value": 0.2 },
 
-	"switch_extruder_retraction_amount":	{ "value": 8.0 },
-	"switch_extruder_retraction_speeds":	{ "default_value": 60.0 },
-	"prime_tower_wipe_enabled":	{ "default_value": false },
-	"prime_tower_brim_enable":	{ "default_value": true },
+        "switch_extruder_retraction_amount":	{ "value": 8.0 },
+        "switch_extruder_retraction_speeds":	{ "default_value": 60.0 },
+        "prime_tower_wipe_enabled":	{ "default_value": false },
+        "prime_tower_brim_enable":	{ "default_value": true },
 
 
         "adaptive_layer_height_variation": { "value": 0.04 },
