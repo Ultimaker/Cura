@@ -150,10 +150,10 @@
         "initial_layer_line_width_factor":{"default_value": 130.0},
 
         "skin_overlap": { "value": 25 },
-	"zig_zaggify_infill":{ "value": true},
-	"infill_before_walls":{"value": true},
+        "zig_zaggify_infill":{ "value": true},
+        "infill_before_walls":{"value": true},
 
-	"machine_max_jerk_xy": { "value": 10 },
+        "machine_max_jerk_xy": { "value": 10 },
         "machine_max_jerk_z": { "value": 0.4 },
         "machine_max_jerk_e": { "value": 5 },
 
