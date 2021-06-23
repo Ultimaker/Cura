@@ -9,8 +9,6 @@
         "weight": 4,
 
         "has_variants": false,
-        "variants_name": "Nozzle Size",
-        "preferred_variant_name": "0.4mm Nozzle",
 
 	"file_formats": "text/x-gcode",
         "has_materials": true,
