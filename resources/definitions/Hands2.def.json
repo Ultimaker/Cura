@@ -3,7 +3,7 @@
     "name": "Hands 2",
     "inherits": "tenlog_printer",
     "metadata": {
-	"visible": true,
+        "visible": true,
         "manufacturer": "Tenlog",
         "platform": "Hands2.3mf",
         "platform_offset": [-1400,140,-220]
