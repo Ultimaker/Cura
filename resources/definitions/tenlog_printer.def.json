@@ -12,7 +12,7 @@
 
         "file_formats": "text/x-gcode",
         "has_materials": true,
-	"first_start_actions": ["MachineSettingsAction"],
+        "first_start_actions": ["MachineSettingsAction"],
 
         "has_machine_quality": false,
         "preferred_quality_type": "draft",
