@@ -3,7 +3,7 @@
     "name": "TL-D3S",
     "inherits": "tenlog_printer",
     "metadata": {
-	"visible": true,
+        "visible": true,
         "manufacturer": "Tenlog"
     },
 
