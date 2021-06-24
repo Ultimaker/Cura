@@ -22,8 +22,7 @@
             "0": "ultimaker2_plus_connect_extruder_0"
         },
         "supports_usb_connection": false,
-        "supports_network_connection": true,
-        "supports_material_export": true
+        "supports_network_connection": true
     },
 
     "overrides": {
