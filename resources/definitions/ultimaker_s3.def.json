@@ -27,7 +27,6 @@
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
-        "supports_material_export": true,
         "weight": -1,
         "firmware_update_info": {
             "id": 213482,
