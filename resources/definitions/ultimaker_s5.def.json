@@ -28,7 +28,6 @@
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
         "supports_network_connection": true,
-        "supports_material_export": true,
         "weight": -2,
         "firmware_update_info": {
             "id": 9051,
