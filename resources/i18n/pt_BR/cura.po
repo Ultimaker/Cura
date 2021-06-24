@@ -5424,12 +5424,12 @@ msgstr "Gravador de Perfis do Cura"
 #: DigitalLibrary/plugin.json
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Conecta-se à Biblioteca Digital, permitindo ao Cura abrir arquivos dela e gravar arquivos nela."
+msgstr "Conecta-se à Digital Library, permitindo ao Cura abrir arquivos dela e gravar arquivos nela."
 
 #: DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr "Biblioteca Digital da Ultimaker"
+msgstr "Digital Library da Ultimaker"
 
 #: FirmwareUpdateChecker/plugin.json
 msgctxt "description"
