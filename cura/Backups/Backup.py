@@ -7,7 +7,7 @@ import re
 import shutil
 from copy import deepcopy
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
-from typing import Dict, Optional, TYPE_CHECKING, List
+from typing import Dict, Optional, TYPE_CHECKING, List, Tuple
 
 from UM import i18nCatalog
 from UM.Logger import Logger
@@ -156,7 +156,10 @@ class Backup:
             Logger.log("d", f"The following error occurred while trying to restore a Cura backup: {str(e)}")
             self._showMessage(self.catalog.i18nc("@info:backup_failed", "The following error occurred while trying to restore a Cura backup:") + str(e))
             return False
-        extracted = self._extractArchive(archive, version_data_dir)
+        extracted, failed_files = self._extractArchive(archive, version_data_dir)
+        self._showMessage(
+            self.catalog.i18nc("@info:backup_failed",
+                               "The following error occurred while trying to restore a Cura backup:" + "\n{}".format("\n".join(failed_files))))
 
         # Under Linux, preferences are stored elsewhere, so we copy the file to there.
         if Platform.isLinux():
@@ -175,7 +178,7 @@ class Backup:
         return extracted
 
     @staticmethod
-    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+    def _extractArchive(archive: "ZipFile", target_path: str) -> Tuple[bool, List[str]]:
         """Extract the whole archive to the given target path.
 
         :param archive: The archive as ZipFile.
@@ -188,19 +191,23 @@ class Backup:
         config_filename = CuraApplication.getInstance().getApplicationName() + ".cfg"  # Should be there if valid.
         if config_filename not in [file.filename for file in archive.filelist]:
             Logger.logException("e", "Unable to extract the backup due to corruption of compressed file(s).")
-            return False
+            return False, []
 
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
         name_list = archive.namelist()
+        failed_files = []
+        full_restore = True
         for archive_filename in name_list:
             try:
                 archive.extract(archive_filename, target_path)
             except (PermissionError, EnvironmentError):
                 Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+                failed_files.append(archive_filename)
+                full_restore = False
             CuraApplication.getInstance().processEvents()
-        return True
+        return full_restore, failed_files
 
     def _obfuscate(self) -> Dict[str, str]:
         """
