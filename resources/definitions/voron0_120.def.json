@@ -1,5 +1,5 @@
 {
-    "name": "VORON V0",
+    "name": "Voron V0",
     "version": 2,
     "inherits": "voron2_base",
     "metadata":
