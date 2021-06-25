@@ -173,7 +173,7 @@ msgstr "尝试恢复的 Cura 备份版本高于当前版本。"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:157
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr ""
+msgstr "尝试恢复 Cura 备份时出现以下错误："
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/BuildVolume.py:98
 msgctxt "@info:status"
@@ -2249,7 +2249,7 @@ msgstr "查看联机用户手册"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:172
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr ""
+msgstr "为了从 Cura 监控您的打印，请连接打印机。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
 msgctxt "@label"
@@ -2372,7 +2372,7 @@ msgstr "走线宽度"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:130
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr ""
+msgstr "流量"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:171
 msgctxt "@label"
@@ -3367,7 +3367,7 @@ msgstr "顶视图"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:154
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
-msgstr ""
+msgstr "仰视图"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:161
 msgctxt "@action:inmenu menubar:view"
@@ -4596,7 +4596,7 @@ msgstr "导出"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:199
 msgctxt "@action:button Sending materials to printers"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "与打印机同步"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:248
 msgctxt "@action:label"
@@ -4650,7 +4650,7 @@ msgstr "成功导出材料至： <filename>%1</filename>"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:388
 msgctxt "@title:window"
 msgid "Export All Materials"
-msgstr ""
+msgstr "导出所有材料"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:72
 msgctxt "@title"
@@ -5562,12 +5562,12 @@ msgstr "Cura 配置文件写入器"
 #: DigitalLibrary/plugin.json
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr ""
+msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文件并将文件保存到其中。"
 
 #: DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr ""
+msgstr "Ultimaker Digital Library"
 
 #: FirmwareUpdateChecker/plugin.json
 msgctxt "description"
@@ -6042,22 +6042,22 @@ msgstr "将版本从 4.7 升级到 4.8"
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr ""
+msgstr "将配置从 Cura 4.8 升级到 Cura 4.9。"
 
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
-msgstr ""
+msgstr "版本从 4.8 升级到 4.9"
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr ""
+msgstr "将配置从 Cura 4.9 升级到 Cura 4.10。"
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
-msgstr ""
+msgstr "版本从 4.9 升级到 4.10"
 
 #: X3DReader/plugin.json
 msgctxt "description"
