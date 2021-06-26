@@ -106,7 +106,7 @@ class FilamentChange(Script):
                 color_change = color_change + (" E%.2f" % initial_retract)
 
             if later_retract is not None and later_retract > 0.:
-                color_change = color_change + (" L%.2f" % later_retract)
+                color_change = color_change + (" U%.2f" % later_retract)
 
             if x_pos is not None:
                 color_change = color_change + (" X%.2f" % x_pos)
