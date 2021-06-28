@@ -68,7 +68,7 @@ Item
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
 
-                        sourceSize: UM.Theme.getSize("button_icon")
+                        sourceSize: Math.round(UM.Theme.getSize("button") / 2)
                     }
 
                     onCheckedChanged:
