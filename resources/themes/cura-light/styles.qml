@@ -76,7 +76,7 @@ QtObject
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.height: width
                     color: control.enabled ? UM.Theme.getColor("setting_control_button") : UM.Theme.getColor("setting_category_disabled_text")
-                    source: UM.Theme.getIcon("arrow_bottom")
+                    source: UM.Theme.getIcon("ChevronSingleDown")
                 }
                 Label
                 {
@@ -384,7 +384,7 @@ QtObject
                     anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
                     anchors.verticalCenter: parent.verticalCenter
 
-                    source: UM.Theme.getIcon("arrow_bottom")
+                    source: UM.Theme.getIcon("ChevronSingleDown")
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width + 5 * screenScaleFactor
@@ -422,7 +422,7 @@ QtObject
                     height: Math.round(parent.height / 2.5)
                     sourceSize.height: width
                     color: UM.Theme.getColor("checkbox_mark")
-                    source: control.exclusiveGroup ? UM.Theme.getIcon("dot") : UM.Theme.getIcon("check")
+                    source: control.exclusiveGroup ? UM.Theme.getIcon("Dot") : UM.Theme.getIcon("Check")
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }

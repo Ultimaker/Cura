@@ -27,7 +27,7 @@ Cura.RoundedRectangle
     cornerSide: contentShown ? Cura.RoundedRectangle.Direction.Up : Cura.RoundedRectangle.Direction.All
 
     property string title: ""
-    property url rightIconSource: UM.Theme.getIcon("arrow_bottom")
+    property url rightIconSource: UM.Theme.getIcon("ChevronSingleDown")
 
     // If the tab is under hovering state
     property bool hovered: false

@@ -26,7 +26,7 @@ Item
         anchors.top: parent.top
         anchors.left: parent.left
         visible: enableSupportCheckBox.visible
-        source: UM.Theme.getIcon("category_support")
+        source: UM.Theme.getIcon("Support")
         text: catalog.i18nc("@label", "Support")
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
@@ -162,7 +162,7 @@ Item
                 x: supportExtruderCombobox.width - width - supportExtruderCombobox.rightPadding
                 y: supportExtruderCombobox.topPadding + Math.round((supportExtruderCombobox.availableHeight - height) / 2)
 
-                source: UM.Theme.getIcon("arrow_bottom")
+                source: UM.Theme.getIcon("ChevronSingleDown")
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
                 sourceSize.width: width + 5 * screenScaleFactor
@@ -229,7 +229,7 @@ Item
 
                     sourceSize.width: width
                     sourceSize.height: height
-                    source: UM.Theme.getIcon("extruder_button")
+                    source: UM.Theme.getIcon("Extruder", "medium")
                     color: supportExtruderCombobox.color
                 }
             }
@@ -299,7 +299,7 @@ Item
 
                         sourceSize.width: width
                         sourceSize.height: height
-                        source: UM.Theme.getIcon("extruder_button")
+                        source: UM.Theme.getIcon("Extruder", "medium")
                         color: supportExtruderCombobox.model.getItem(index).color
                     }
                 }

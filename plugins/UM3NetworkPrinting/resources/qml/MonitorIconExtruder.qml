@@ -22,7 +22,7 @@ Item
     property int size: 32 * screenScaleFactor // TODO: Theme!
 
     // THe extruder icon source; NOTE: This shouldn't need to be changed
-    property string iconSource: "../svg/icons/extruder.svg"
+    property string iconSource: "../svg/icons/Extruder.svg"
 
     height: size
     width: size
