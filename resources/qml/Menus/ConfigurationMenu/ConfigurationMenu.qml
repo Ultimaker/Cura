@@ -63,9 +63,9 @@ Cura.ExpandablePopup
                     // Label for the brand of the material
                     Label
                     {
-                        id: typeAndBrandNameLabel
+                        id: materialBrandColorTypeLabel
 
-                        text: model.material_brand + " " + model.material
+                        text: model.material_brand == model.color_name ? model.color_name + " " + model.material_type : model.material_brand + " " + model.color_name + " " + model.material_type
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
@@ -79,6 +79,50 @@ Cura.ExpandablePopup
                             right: parent.right
                             rightMargin: UM.Theme.getSize("default_margin").width
                         }
+                        visible: !truncated
+                    }
+
+                    Label
+                    {
+                        id: materialColorTypeLabel
+
+                        text: model.color_name + " " + model.material_type
+                        elide: Text.ElideRight
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                        renderType: Text.NativeRendering
+
+                        anchors
+                        {
+                            top: extruderIcon.top
+                            left: extruderIcon.right
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("default_margin").width
+                        }
+
+                        visible: !materialBrandColorTypeLabel.visible && !truncated
+                    }
+
+                    Label
+                    {
+                        id: materialTypeLabel
+
+                        text: model.material_type
+                        elide: Text.ElideRight
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                        renderType: Text.NativeRendering
+
+                        anchors
+                        {
+                            top: extruderIcon.top
+                            left: extruderIcon.right
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("default_margin").width
+                        }
+                        visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
                     }
                     // Label that shows the name of the variant
                     Label
@@ -97,7 +141,7 @@ Cura.ExpandablePopup
                         {
                             left: extruderIcon.right
                             leftMargin: UM.Theme.getSize("default_margin").width
-                            top: typeAndBrandNameLabel.bottom
+                            top: materialBrandColorTypeLabel.bottom
                             right: parent.right
                             rightMargin:  UM.Theme.getSize("default_margin").width
                         }
