@@ -50,8 +50,7 @@ Item
             {
                 id: machineSelection
                 headerCornerSide: Cura.RoundedRectangle.Direction.Left
-                Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
-                Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
+                Layout.preferredWidth: Math.round((itemRow.width - printSetupSelectorItem.width - UM.Theme.getSize("default_lining").width) * 1 / 3 - UM.Theme.getSize("default_lining").width)
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
@@ -69,7 +68,7 @@ Item
                 id: printerSetup
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
+                Layout.preferredWidth: Math.round((itemRow.width - printSetupSelectorItem.width - UM.Theme.getSize("default_lining").width) * 2 / 3 - UM.Theme.getSize("default_lining").width)
             }
 
             // Separator line
