@@ -44,39 +44,31 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             height: parent.height
-            spacing: 0
+            // This is a trick to make sure that the borders of the two adjacent buttons' borders overlap. Otherwise
+            // there will be double border (one from each button)
+            spacing: -UM.Theme.getSize("default_lining").width
 
             Cura.MachineSelector
             {
                 id: machineSelection
                 headerCornerSide: Cura.RoundedRectangle.Direction.Left
+                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
+                headerBackgroundBorder.color: UM.Theme.getColor("lining")
+                enableHeaderShadow: false
                 Layout.preferredWidth: Math.round((itemRow.width - printSetupSelectorItem.width - UM.Theme.getSize("default_lining").width) * 1 / 3 - UM.Theme.getSize("default_lining").width)
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
 
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
-            }
-
             Cura.ConfigurationMenu
             {
                 id: printerSetup
+                enableHeaderShadow: false
+                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
+                headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.preferredWidth: Math.round((itemRow.width - printSetupSelectorItem.width - UM.Theme.getSize("default_lining").width) * 2 / 3 - UM.Theme.getSize("default_lining").width)
-            }
-
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
             }
 
             Item
@@ -119,23 +111,11 @@ Item
                 id: background
                 height: UM.Theme.getSize("stage_menu").height
                 width: UM.Theme.getSize("stage_menu").height
+                border.color: UM.Theme.getColor("lining")
+                border.width: UM.Theme.getSize("default_lining").width
 
                 radius: UM.Theme.getSize("default_radius").width
                 color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-            }
-
-            DropShadow
-            {
-                id: shadow
-                // Don't blur the shadow
-                radius: 0
-                anchors.fill: background
-                source: background
-                verticalOffset: 2
-                visible: true
-                color: UM.Theme.getColor("action_button_shadow")
-                // Should always be drawn behind the background.
-                z: background.z - 1
             }
         }
     }
