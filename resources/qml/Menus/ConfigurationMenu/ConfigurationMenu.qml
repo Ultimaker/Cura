@@ -70,7 +70,7 @@ Cura.ExpandablePopup
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         renderType: Text.NativeRendering
-
+                        opacity: model.enabled ? 1 : 0.4
                         anchors
                         {
                             top: extruderIcon.top
@@ -92,7 +92,7 @@ Cura.ExpandablePopup
                         font: UM.Theme.getFont("default_bold")
                         color: UM.Theme.getColor("text")
                         renderType: Text.NativeRendering
-
+                        opacity: model.enabled ? 1 : 0.4
                         anchors
                         {
                             left: extruderIcon.right
