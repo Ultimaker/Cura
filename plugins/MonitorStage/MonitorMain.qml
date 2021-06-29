@@ -137,7 +137,7 @@ Rectangle
                 id: externalLinkIcon
                 anchors.verticalCenter: parent.verticalCenter
                 color: UM.Theme.getColor("text_link")
-                source: UM.Theme.getIcon("external_link")
+                source: UM.Theme.getIcon("LinkExternal")
                 width: UM.Theme.getSize("monitor_external_link_icon").width
                 height: UM.Theme.getSize("monitor_external_link_icon").height
             }

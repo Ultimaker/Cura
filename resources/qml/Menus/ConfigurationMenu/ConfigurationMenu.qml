@@ -250,7 +250,7 @@ Cura.ExpandablePopup
 
                 anchors.right: parent.right
 
-                iconSource: UM.Theme.getIcon("arrow_right")
+                iconSource: UM.Theme.getIcon("ChevronSingleRight")
                 isIconOnRightSide: true
 
                 onClicked:
@@ -266,7 +266,7 @@ Cura.ExpandablePopup
                 visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
                 text: catalog.i18nc("@label", "Configurations")
 
-                iconSource: UM.Theme.getIcon("arrow_left")
+                iconSource: UM.Theme.getIcon("ChevronSingleLeft")
 
                 onClicked:
                 {
