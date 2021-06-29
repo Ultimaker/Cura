@@ -8,7 +8,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import QtGraphicalEffects 1.0 // For the dropshadow
 
 Item
 {
