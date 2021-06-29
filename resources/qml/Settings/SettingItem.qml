@@ -179,7 +179,7 @@ Item
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button")
 
-                iconSource: UM.Theme.getIcon("link")
+                iconSource: UM.Theme.getIcon("Link")
 
                 onEntered:
                 {
@@ -208,7 +208,7 @@ Item
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("reset")
+                iconSource: UM.Theme.getIcon("ArrowReset")
 
                 onClicked:
                 {
@@ -324,7 +324,7 @@ Item
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("formula")
+                iconSource: UM.Theme.getIcon("Function")
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.createTooltipText())
