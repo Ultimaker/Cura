@@ -42,6 +42,7 @@ Item
             anchors.left: openFileButton.right
             anchors.right: parent.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            property int machineSelectorWidth: Math.round((width - printSetupSelectorItem.width) / 3)
 
             height: parent.height
             // This is a trick to make sure that the borders of the two adjacent buttons' borders overlap. Otherwise
@@ -55,7 +56,7 @@ Item
                 headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
                 headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 enableHeaderShadow: false
-                Layout.preferredWidth: Math.round((itemRow.width - printSetupSelectorItem.width - UM.Theme.getSize("default_lining").width) * 1 / 3 - UM.Theme.getSize("default_lining").width)
+                Layout.preferredWidth: parent.machineSelectorWidth
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
@@ -68,7 +69,7 @@ Item
                 headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.preferredWidth: Math.round((itemRow.width - printSetupSelectorItem.width - UM.Theme.getSize("default_lining").width) * 2 / 3 - UM.Theme.getSize("default_lining").width)
+                Layout.preferredWidth: parent.machineSelectorWidth * 2
             }
 
             Item
