@@ -1,7 +1,7 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.11
 import QtQuick.Controls 1.1
 import UM 1.2 as UM
 
@@ -17,29 +17,26 @@ Item
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
 
-    UM.RecolorImage
+    Item
     {
-        id: mainIcon
+        opacity: extruderEnabled ? 1 : 0.4
         anchors.fill: parent
 
-        source: UM.Theme.getIcon("Extruder", "medium")
-        color: extruderEnabled ? materialColor: UM.Theme.getColor("disabled")
-    }
-
-    Rectangle
-    {
-        id: extruderNumberCircle
-
-        width: height
-        height: Math.round(parent.height / 2)
-        radius: Math.round(width)
-        color: UM.Theme.getColor("toolbar_background")
-
-        anchors
+        UM.RecolorImage
         {
-            horizontalCenter: parent.horizontalCenter
-            top: parent.top
-            topMargin: (parent.height - height) / 2
+            id: blorp
+            anchors.fill: parent
+
+            source: UM.Theme.getIcon("ExtruderColor", "medium")
+            color: materialColor
+        }
+        UM.RecolorImage
+        {
+            id: mainIcon
+            anchors.fill: parent
+
+            source: UM.Theme.getIcon("Extruder", "medium")
+            color: UM.Theme.getColor("text")
         }
 
         Label
@@ -51,21 +48,9 @@ Item
             color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
-            visible: extruderEnabled
             renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-        }
-
-        UM.RecolorImage
-        {
-            id: disabledIcon
-            anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("thick_lining").width
-            sourceSize.height: width
-            source: UM.Theme.getIcon("Cancel")
-            visible: !extruderEnabled
-            color: UM.Theme.getColor("text")
         }
     }
 }
