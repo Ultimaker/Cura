@@ -18,7 +18,7 @@ Column
     {
         id: accountInfo
         width: childrenRect.width
-        height: childrenRect.height
+        height: accountSyncDetailsColumn.height
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         AvatarImage
@@ -56,6 +56,7 @@ Column
 
         Column
         {
+            id: accountSyncDetailsColumn
             anchors.left: avatar.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("narrow_margin").height
