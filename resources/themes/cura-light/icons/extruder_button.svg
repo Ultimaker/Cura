@@ -1,9 +1,0 @@
-<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Configuration-panel" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="extruder_icn" fill="#000000">
-            <g id="Icon/-Extruder/-color/-grey">
-                <path d="M20,22 L14,28 L8,22 L2,22 C0.8954305,22 1.3527075e-16,21.1045695 0,20 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 L26,0 C27.1045695,-2.02906125e-16 28,0.8954305 28,2 L28,20 C28,21.1045695 27.1045695,22 26,22 L20,22 Z" id="Combined-Shape"></path>
-            </g>
-        </g>
-    </g>
-</svg>

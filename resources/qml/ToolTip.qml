@@ -59,6 +59,7 @@ ToolTip
         color: UM.Theme.getColor("tooltip")
         target: Qt.point(targetPoint.x - tooltip.x, targetPoint.y - tooltip.y)
         arrowSize: UM.Theme.getSize("default_arrow").width
+        visible: tooltip.height != 0
     }
 
     contentItem: Label

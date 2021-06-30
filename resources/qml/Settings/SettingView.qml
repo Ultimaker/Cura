@@ -65,7 +65,7 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
+            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("Magnifier") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
 
             style: TextFieldStyle
             {
@@ -133,7 +133,7 @@ Item
         UM.SimpleButton
         {
             id: clearFilterButton
-            iconSource: UM.Theme.getIcon("cross1")
+            iconSource: UM.Theme.getIcon("Cancel")
             visible: findingSettings
 
             height: Math.round(parent.height * 0.4)
@@ -193,7 +193,7 @@ Item
                     sourceSize.width: width
                     sourceSize.height: height
                     color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                    source: UM.Theme.getIcon("menu")
+                    source: UM.Theme.getIcon("Hamburger")
                 }
             }
             label: Label {}

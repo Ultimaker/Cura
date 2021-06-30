@@ -56,6 +56,8 @@ Item
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
 
+    property alias headerBackgroundBorder: background.border
+
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
@@ -165,7 +167,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: UM.Theme.getIcon("pencil")
+                source: UM.Theme.getIcon("Pen")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -87,8 +87,12 @@ class SliceInfo(QObject, Extension):
                 return None
             file_path = os.path.join(plugin_path, "example_data.html")
             if file_path:
-                with open(file_path, "r", encoding = "utf-8") as f:
-                    self._example_data_content = f.read()
+                try:
+                    with open(file_path, "r", encoding = "utf-8") as f:
+                        self._example_data_content = f.read()
+                except EnvironmentError as e:
+                    Logger.error(f"Unable to read example slice info data to show to the user: {e}")
+                    self._example_data_content = "<i>" + catalog.i18nc("@text", "Unable to read example data file.") + "</i>"
         return self._example_data_content
 
     @pyqtSlot(bool)

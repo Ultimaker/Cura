@@ -7,7 +7,7 @@ import re
 import shutil
 from copy import deepcopy
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
-from typing import Dict, Optional, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING, List
 
 from UM import i18nCatalog
 from UM.Logger import Logger
@@ -29,7 +29,7 @@ class Backup:
     IGNORED_FILES = [r"cura\.log", r"plugins\.json", r"cache", r"__pycache__", r"\.qmlc", r"\.pyc"]
     """These files should be ignored when making a backup."""
 
-    IGNORED_FOLDERS = [r"plugins"]
+    IGNORED_FOLDERS = []  # type: List[str]
 
     SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
     """Secret preferences that need to obfuscated when making a backup of Cura"""
@@ -166,6 +166,9 @@ class Backup:
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
             shutil.move(backup_preferences_file, preferences_file)
 
+        # Read the preferences from the newly restored configuration (or else the cached Preferences will override the restored ones)
+        self._application.readPreferencesFromConfiguration()
+
         # Restore the obfuscated settings
         self._illuminate(**secrets)
 
@@ -190,11 +193,13 @@ class Backup:
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
-        try:
-            archive.extractall(target_path)
-        except (PermissionError, EnvironmentError):
-            Logger.logException("e", "Unable to extract the backup due to permission or file system errors.")
-            return False
+        name_list = archive.namelist()
+        for archive_filename in name_list:
+            try:
+                archive.extract(archive_filename, target_path)
+            except (PermissionError, EnvironmentError):
+                Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+            CuraApplication.getInstance().processEvents()
         return True
 
     def _obfuscate(self) -> Dict[str, str]:

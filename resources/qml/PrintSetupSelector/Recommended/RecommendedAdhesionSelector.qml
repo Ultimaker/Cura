@@ -25,7 +25,7 @@ Item
         id: enableAdhesionRowTitle
         anchors.top: parent.top
         anchors.left: parent.left
-        source: UM.Theme.getIcon("category_adhesion")
+        source: UM.Theme.getIcon("Adhesion")
         text: catalog.i18nc("@label", "Adhesion")
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth

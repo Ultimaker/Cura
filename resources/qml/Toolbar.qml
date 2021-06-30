@@ -44,7 +44,6 @@ Item
 
             anchors.top: parent.top
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
@@ -69,7 +68,7 @@ Item
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
 
-                        sourceSize: UM.Theme.getSize("button_icon")
+                        sourceSize: Math.round(UM.Theme.getSize("button") / 2)
                     }
 
                     onCheckedChanged:
@@ -131,7 +130,6 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {

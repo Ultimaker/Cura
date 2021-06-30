@@ -28,7 +28,7 @@
             "label": "Machine",
             "type": "category",
             "description": "Machine specific settings",
-            "icon": "category_machine",
+            "icon": "Printer",
             "children":
             {
                 "machine_name":
@@ -704,7 +704,7 @@
                 "machine_steps_per_mm_e":
                 {
                     "label": "Steps per Millimeter (E)",
-                    "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
+                    "description": "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference.",
                     "type": "float",
                     "default_value": 1600,
                     "minimum_value": "0.0000001",
@@ -765,7 +765,7 @@
         {
             "label": "Quality",
             "type": "category",
-            "icon": "category_layer_height",
+            "icon": "PrintQuality",
             "description": "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)",
             "children":
             {
@@ -1001,7 +1001,7 @@
         "shell":
         {
             "label": "Walls",
-            "icon": "category_shell",
+            "icon": "PrintShell",
             "description": "Shell",
             "type": "category",
             "children":
@@ -1392,7 +1392,7 @@
         "top_bottom":
         {
             "label": "Top/Bottom",
-            "icon": "category_topbottom",
+            "icon": "PrintTopBottom",
             "description": "Top/Bottom",
             "type": "category",
             "children":
@@ -1868,7 +1868,7 @@
         "infill":
         {
             "label": "Infill",
-            "icon": "category_infill",
+            "icon": "Infill1",
             "description": "Infill",
             "type": "category",
             "children":
@@ -2207,7 +2207,7 @@
         "material":
         {
             "label": "Material",
-            "icon": "category_material",
+            "icon": "Spool",
             "description": "Material",
             "type": "category",
             "children":
@@ -2812,7 +2812,7 @@
         "speed":
         {
             "label": "Speed",
-            "icon": "category_speed",
+            "icon": "SpeedOMeter",
             "description": "Speed",
             "type": "category",
             "children":
@@ -3718,7 +3718,7 @@
         "travel":
         {
             "label": "Travel",
-            "icon": "category_travel",
+            "icon": "PrintTravel",
             "description": "travel",
             "type": "category",
             "children":
@@ -4023,7 +4023,7 @@
         "cooling":
         {
             "label": "Cooling",
-            "icon": "category_cool",
+            "icon": "Fan",
             "description": "Cooling",
             "type": "category",
             "children":
@@ -4173,7 +4173,7 @@
         {
             "label": "Support",
             "type": "category",
-            "icon": "category_support",
+            "icon": "Support",
             "description": "Support",
             "children":
             {
@@ -4742,7 +4742,7 @@
                     "default_value": 0.0,
                     "minimum_value": "0",
                     "maximum_value_warning": "5",
-                    "enabled": "support_enable and support_structure == 'normal'",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -5213,7 +5213,7 @@
         {
             "label": "Build Plate Adhesion",
             "type": "category",
-            "icon": "category_adhesion",
+            "icon": "Adhesion",
             "description": "Adhesion",
             "children":
             {
@@ -5867,7 +5867,7 @@
         {
             "label": "Dual Extrusion",
             "type": "category",
-            "icon": "category_dual",
+            "icon": "DualExtrusion",
             "description": "Settings used for printing with multiple extruders.",
             "children":
             {
@@ -6082,7 +6082,7 @@
         {
             "label": "Mesh Fixes",
             "type": "category",
-            "icon": "category_fixes",
+            "icon": "Bandage",
             "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
@@ -6220,7 +6220,7 @@
         {
             "label": "Special Modes",
             "type": "category",
-            "icon": "category_blackmagic",
+            "icon": "BlackMagic",
             "description": "Non-traditional ways to print your models.",
             "children":
             {
@@ -6393,7 +6393,7 @@
         {
             "label": "Experimental",
             "type": "category",
-            "icon": "category_experimental",
+            "icon": "Experiment",
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {

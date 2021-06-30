@@ -197,7 +197,7 @@
         {
             "label": "Build Plate Adhesion",
             "type": "category",
-            "icon": "category_adhesion",
+            "icon": "Adhesion",
             "description": "Adhesion",
             "children":
             {
@@ -232,7 +232,7 @@
         "material":
         {
             "label": "Material",
-            "icon": "category_material",
+            "icon": "Spool",
             "description": "Material",
             "type": "category",
             "children":
