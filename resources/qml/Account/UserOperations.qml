@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 Column
 {
-    spacing: UM.Theme.getSize("narrow_margin").height
+    spacing: UM.Theme.getSize("default_margin").height
     topPadding: UM.Theme.getSize("default_margin").height
     bottomPadding: UM.Theme.getSize("default_margin").height
     width: childrenRect.width
