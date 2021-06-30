@@ -56,94 +56,98 @@ Cura.ExpandablePopup
                         id: extruderIcon
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        height: parent.height
-                        width: height
+                        width: UM.Theme.getSize("button_icon").width
+                        anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    // Label for the brand of the material
-                    Label
+                    Item
                     {
-                        id: materialBrandColorTypeLabel
-
-                        text: model.material_brand == model.color_name ? model.color_name + " " + model.material_type : model.material_brand + " " + model.color_name + " " + model.material_type
-                        elide: Text.ElideRight
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
-
-                        anchors
-                        {
-                            top: extruderIcon.top
-                            left: extruderIcon.right
-                            leftMargin: UM.Theme.getSize("default_margin").width
-                            right: parent.right
-                            rightMargin: UM.Theme.getSize("default_margin").width
-                        }
-                        visible: !truncated
-                    }
-
-                    Label
-                    {
-                        id: materialColorTypeLabel
-
-                        text: model.color_name + " " + model.material_type
-                        elide: Text.ElideRight
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
-
-                        anchors
-                        {
-                            top: extruderIcon.top
-                            left: extruderIcon.right
-                            leftMargin: UM.Theme.getSize("default_margin").width
-                            right: parent.right
-                            rightMargin: UM.Theme.getSize("default_margin").width
-                        }
-
-                        visible: !materialBrandColorTypeLabel.visible && !truncated
-                    }
-
-                    Label
-                    {
-                        id: materialTypeLabel
-
-                        text: model.material_type
-                        elide: Text.ElideRight
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
-
-                        anchors
-                        {
-                            top: extruderIcon.top
-                            left: extruderIcon.right
-                            leftMargin: UM.Theme.getSize("default_margin").width
-                            right: parent.right
-                            rightMargin: UM.Theme.getSize("default_margin").width
-                        }
-                        visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
-                    }
-                    // Label that shows the name of the variant
-                    Label
-                    {
-                        id: variantLabel
-
-                        visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
-
-                        text: model.variant
-                        elide: Text.ElideRight
-                        font: UM.Theme.getFont("default_bold")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
-
+                        height: childrenRect.height
                         anchors
                         {
                             left: extruderIcon.right
                             leftMargin: UM.Theme.getSize("default_margin").width
-                            top: materialBrandColorTypeLabel.bottom
+                            verticalCenter: parent.verticalCenter
                             right: parent.right
                             rightMargin:  UM.Theme.getSize("default_margin").width
+                        }
+                        // Label for the brand of the material
+                        Label
+                        {
+                            id: materialBrandColorTypeLabel
+
+                            text: model.material_brand == model.color_name ? model.color_name + " " + model.material_type : model.material_brand + " " + model.color_name + " " + model.material_type
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+
+                            anchors
+                            {
+                                top: parent.top
+                                left: parent.left
+                                right: parent.right
+                            }
+                            visible: !truncated
+                        }
+
+                        Label
+                        {
+                            id: materialColorTypeLabel
+
+                            text: model.color_name + " " + model.material_type
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+
+                            anchors
+                            {
+                                top: parent.top
+                                left: parent.left
+                                right: parent.right
+                            }
+
+                            visible: !materialBrandColorTypeLabel.visible && !truncated
+                        }
+
+                        Label
+                        {
+                            id: materialTypeLabel
+
+                            text: model.material_type
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+
+                            anchors
+                            {
+                                top: parent.top
+                                left: parent.left
+                                right: parent.right
+                            }
+                            visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
+                        }
+                        // Label that shows the name of the variant
+                        Label
+                        {
+                            id: variantLabel
+
+                            visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
+
+                            text: model.variant
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default_bold")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+
+                            anchors
+                            {
+                                left: parent.left
+                                top: materialBrandColorTypeLabel.bottom
+                                right: parent.right
+                            }
                         }
                     }
                 }
