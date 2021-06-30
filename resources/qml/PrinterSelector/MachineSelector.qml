@@ -93,11 +93,11 @@ Cura.ExpandablePopup
         {
             if (isGroup)
             {
-                return UM.Theme.getIcon("PrinterTriple")
+                return UM.Theme.getIcon("PrinterTriple", "medium")
             }
             else if (isNetworkPrinter || isCloudRegistered)
             {
-                return UM.Theme.getIcon("Printer")
+                return UM.Theme.getIcon("Printer", "medium")
             }
             else
             {
