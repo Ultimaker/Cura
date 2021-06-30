@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -23,7 +23,6 @@ Item
         id: saveToButton
         height: parent.height
         fixedWidthMode: true
-        cornerSide: deviceSelectionMenu.visible ? Cura.RoundedRectangle.Direction.Left : Cura.RoundedRectangle.Direction.All
 
         anchors
         {
@@ -47,10 +46,6 @@ Item
     {
         id: deviceSelectionMenu
         height: parent.height
-
-        shadowEnabled: true
-        shadowColor: UM.Theme.getColor("primary_shadow")
-        cornerSide: Cura.RoundedRectangle.Direction.Right
 
         anchors
         {
