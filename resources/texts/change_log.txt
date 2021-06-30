@@ -1,5 +1,5 @@
 [4.10.0]
-BETA
+<i>For an overview of the new features in Cura 4.10, please watch <a href="https://www.youtube.com/watch?v=9PCVeJ_yytk">our video</a>.</i>
 
 *Native CAD import plugin
 Ultimaker Professional and Excellence subscribers can now directly import native CAD files into Ultimaker Cura.
@@ -36,6 +36,8 @@ When double clicking on a file in the open project dialog in Digital Factory it 
 - Fixed a bug when the seam was not placed in sharpest corner.
 - Fixed the gantry height for S-line printers. 
 - Fixed a bug where a model is partially below build plate if center selected model is used.
+- Fixed a bug where a tootip arrow appeared when the "Manage printers" button is hovered.
+- Fixed a bug where assemblies were not arranged in the center of the build plate. 
 
 * Printer definitions, profiles and materials.
 - Add CC0.4 core and materials for S3 and S5.
@@ -50,6 +52,8 @@ When double clicking on a file in the open project dialog in Digital Factory it 
 - Longer LK1, LK1 Pro, LK1 Plus, LK4, LK4 Pro, LK5, LK5 Plus and Cube 2, contributed by lowkeyjoe. 
 - Mingda D3, D4 and Rock3, contributed by cataclism. 
 - JGAurora A6, contributed by CrissR.
+
+Please, be aware that after version 4.10 Ultimaker Cura will only be supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.
 
 [4.9.1]
 * PETG Profile update.
