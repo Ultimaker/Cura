@@ -30,6 +30,7 @@ Item
         text: catalog.i18nc("@label", "Support")
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
+        iconSize: UM.Theme.getSize("toolbar_button_icon").width
     }
 
     Item
