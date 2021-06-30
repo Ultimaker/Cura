@@ -50,6 +50,8 @@ Item
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
 
+    property alias headerBackgroundBorder: background.border
+
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
