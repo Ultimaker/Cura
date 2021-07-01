@@ -15,8 +15,6 @@ Item
     Cura.MachineSelector
     {
         id: machineSelection
-        headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-        headerBackgroundBorder.color: UM.Theme.getColor("lining")
         headerCornerSide: Cura.RoundedRectangle.Direction.All
         width: UM.Theme.getSize("machine_selector_widget").width
         height: parent.height

@@ -50,6 +50,9 @@ Item
 
     property alias headerBackgroundBorder: background.border
 
+    // Whether or not to show the background border
+    property bool enableHeaderBackgroundBorder: true
+
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
@@ -109,6 +112,9 @@ Item
     {
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
+
+        border.width: base.enableHeaderBackgroundBorder ? UM.Theme.getSize("default_lining").width : 0
+        border.color: UM.Theme.getColor("lining")
 
         color: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
         anchors.fill: parent

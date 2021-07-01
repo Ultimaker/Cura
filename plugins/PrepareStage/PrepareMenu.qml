@@ -52,8 +52,6 @@ Item
             {
                 id: machineSelection
                 headerCornerSide: Cura.RoundedRectangle.Direction.Left
-                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-                headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 Layout.preferredWidth: parent.machineSelectorWidth
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -62,8 +60,6 @@ Item
             Cura.ConfigurationMenu
             {
                 id: printerSetup
-                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-                headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.preferredWidth: parent.machineSelectorWidth * 2

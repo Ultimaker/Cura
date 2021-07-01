@@ -17,8 +17,6 @@ Cura.ExpandableComponent
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentHeaderTitle: catalog.i18nc("@label", "Print settings")
-    headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-    headerBackgroundBorder.color: UM.Theme.getColor("lining")
     enabled: !preSlicedData
     disabledText: catalog.i18nc("@label shown when we load a Gcode file", "Print setup disabled. G-code file can not be modified.")
 

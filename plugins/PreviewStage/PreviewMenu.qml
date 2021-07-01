@@ -44,8 +44,6 @@ Item
             id: viewsSelector
             height: parent.height
             width: UM.Theme.getSize("views_selector").width
-            headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-            headerBackgroundBorder.color: UM.Theme.getColor("lining")
             headerCornerSide: Cura.RoundedRectangle.Direction.Left
         }
 
