@@ -194,8 +194,8 @@ Item
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
+                    width: UM.Theme.getSize("medium_button_icon").width
+                    height: UM.Theme.getSize("medium_button_icon").height
                     sourceSize.width: width
                     sourceSize.height: height
                     color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
