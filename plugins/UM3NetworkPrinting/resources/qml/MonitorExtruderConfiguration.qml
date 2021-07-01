@@ -37,6 +37,7 @@ Item
     {
         id: extruderIcon
         color: UM.Theme.getColor("monitor_skeleton_loading")
+        size: UM.Theme.getSize("button_icon").width
         position: 0
     }
 
@@ -46,16 +47,18 @@ Item
         anchors
         {
             left: extruderIcon.right
-            leftMargin: 12 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: extruderIcon.verticalCenter
         }
         color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: childrenRect.height
         width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
 
         Label
         {
             id: materialLabel
+            anchors.top: parent.top
 
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
@@ -63,29 +66,13 @@ Item
             text: ""
             visible: text !== ""
 
-            // FIXED-LINE-HEIGHT:
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
         }
-    }
-
-    Rectangle
-    {
-        id: printCoreLabelWrapper
-        anchors
-        {
-            left: materialLabelWrapper.left
-            bottom: parent.bottom
-        }
-        color: printCoreLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
-        height: 18 * screenScaleFactor // TODO: Theme!
-        width: Math.max(printCoreLabel.contentWidth, 36 * screenScaleFactor) // TODO: Theme!
-        radius: 2 * screenScaleFactor // TODO: Theme!
 
         Label
         {
             id: printCoreLabel
+            anchors.top: materialLabel.bottom
 
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
@@ -93,9 +80,6 @@ Item
             text: ""
             visible: text !== ""
 
-            // FIXED-LINE-HEIGHT:
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
         }
     }
