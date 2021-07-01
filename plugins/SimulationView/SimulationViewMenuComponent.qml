@@ -16,6 +16,9 @@ Cura.ExpandableComponent
     id: base
 
     dragPreferencesNamePrefix: "view/colorscheme"
+    headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
+    headerBackgroundBorder.color: UM.Theme.getColor("lining")
+    enableHeaderShadow: false
 
     contentHeaderTitle: catalog.i18nc("@label", "Color scheme")
 
