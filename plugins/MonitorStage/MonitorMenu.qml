@@ -17,7 +17,6 @@ Item
         id: machineSelection
         headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
         headerBackgroundBorder.color: UM.Theme.getColor("lining")
-        enableHeaderShadow: false
         headerCornerSide: Cura.RoundedRectangle.Direction.All
         width: UM.Theme.getSize("machine_selector_widget").width
         height: parent.height

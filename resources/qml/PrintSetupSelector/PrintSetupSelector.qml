@@ -17,7 +17,6 @@ Cura.ExpandableComponent
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentHeaderTitle: catalog.i18nc("@label", "Print settings")
-    enableHeaderShadow: false
     headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
     headerBackgroundBorder.color: UM.Theme.getColor("lining")
     enabled: !preSlicedData
