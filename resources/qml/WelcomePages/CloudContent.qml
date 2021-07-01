@@ -112,7 +112,7 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("package")
+                        source: UM.Theme.getIcon("Plugin")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -142,7 +142,7 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("material_spool")
+                        source: UM.Theme.getIcon("Spool")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -172,7 +172,7 @@ Item
                         anchors.horizontalCenter: communityColumn.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("group")
+                        source: UM.Theme.getIcon("PrinterTriple", "medium")
                         sourceSize.width: width
                         sourceSize.height: height
                     }

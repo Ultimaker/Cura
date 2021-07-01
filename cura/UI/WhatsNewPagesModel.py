@@ -29,7 +29,7 @@ class WhatsNewPagesModel(WelcomePagesModel):
                 for filename in files:
                     basename = os.path.basename(filename)
                     base, ext = os.path.splitext(basename)
-                    if ext not in include or not base.isdigit():
+                    if ext.lower() not in include or not base.isdigit():
                         continue
                     page_no = int(base)
                     highest = max(highest, page_no)
