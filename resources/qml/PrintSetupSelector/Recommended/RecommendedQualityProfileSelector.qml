@@ -92,6 +92,7 @@ Item
                 {
                     left: profileLabel.right
                     right: parent.right
+                    verticalCenter: profileLabel.verticalCenter
                 }
 
                 model: Cura.QualityProfilesDropDownMenuModel
