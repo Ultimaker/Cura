@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "creasee",
+        "machine": "creasee_cs20",
         "position": "0"
     },
 
