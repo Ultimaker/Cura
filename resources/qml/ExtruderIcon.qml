@@ -24,7 +24,6 @@ Item
 
         UM.RecolorImage
         {
-            id: blorp
             anchors.fill: parent
 
             source: UM.Theme.getIcon("ExtruderColor", "medium")
