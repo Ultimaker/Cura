@@ -52,7 +52,7 @@ Item
                 text: catalog.i18nc("@label", "Profiles")
                 font: UM.Theme.getFont("medium")
                 width: labelColumnWidth
-                iconSize: UM.Theme.getSize("toolbar_button_icon").width
+                iconSize: UM.Theme.getSize("medium_button_icon").width
             }
             UM.SimpleButton
             {

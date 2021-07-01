@@ -175,8 +175,8 @@ QtObject
         {
             background: Item
             {
-                implicitWidth: UM.Theme.getSize("toolbar_button").width
-                implicitHeight: UM.Theme.getSize("toolbar_button").height
+                implicitWidth: UM.Theme.getSize("button").width
+                implicitHeight: UM.Theme.getSize("button").height
 
                 UM.PointingRectangle
                 {
@@ -252,11 +252,11 @@ QtObject
                     anchors.centerIn: parent
                     opacity: control.enabled ? 1.0 : 0.2
                     source: control.iconSource
-                    width: UM.Theme.getSize("toolbar_button_icon").width
-                    height: UM.Theme.getSize("toolbar_button_icon").height
+                    width: UM.Theme.getSize("medium_button_icon").width
+                    height: UM.Theme.getSize("medium_button_icon").height
                     color: UM.Theme.getColor("icon")
 
-                    sourceSize: UM.Theme.getSize("toolbar_button_icon")
+                    sourceSize: UM.Theme.getSize("medium_button_icon")
                 }
             }
         }

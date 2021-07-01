@@ -527,9 +527,6 @@
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
-        "toolbar_button": [4, 4],
-        "toolbar_button_icon": [2, 2],
-
         "action_button": [15.0, 2.5],
         "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
