@@ -219,18 +219,16 @@ Item
                 elide: Text.ElideLeft
                 verticalAlignment: Text.AlignVCenter
 
-                background: UM.RecolorImage
+                background: Rectangle
                 {
                     id: swatch
                     height: Math.round(parent.height / 2)
                     width: height
+                    radius: Math.round(width / 2)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                    sourceSize.width: width
-                    sourceSize.height: height
-                    source: UM.Theme.getIcon("Extruder", "medium")
                     color: supportExtruderCombobox.color
                 }
             }
@@ -289,18 +287,16 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
-                    background: UM.RecolorImage
+                    background: Rectangle
                     {
                         id: swatch
                         height: Math.round(parent.height / 2)
                         width: height
+                        radius: Math.round(width / 2)
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                        sourceSize.width: width
-                        sourceSize.height: height
-                        source: UM.Theme.getIcon("Extruder", "medium")
                         color: supportExtruderCombobox.model.getItem(index).color
                     }
                 }

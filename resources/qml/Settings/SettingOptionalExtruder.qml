@@ -88,7 +88,7 @@ SettingItem
             when: control.model.items.length > 0
         }
 
-        property string color: "#fff"
+        property string color: "transparent"
 
         Binding
         {
@@ -96,7 +96,7 @@ SettingItem
             // explicit binding here otherwise we do not handle value changes after the model changes.
             target: control
             property: "color"
-            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
+            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : "transparent"
         }
 
         indicator: UM.RecolorImage
@@ -161,18 +161,16 @@ SettingItem
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
 
-            background: UM.RecolorImage
+            background: Rectangle
             {
                 id: swatch
                 height: Math.round(parent.height / 2)
                 width: height
+                radius: Math.round(width / 2)
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                sourceSize.width: width
-                sourceSize.height: height
-                source: UM.Theme.getIcon("Extruder", "medium")
                 color: control.color
             }
         }
@@ -226,18 +224,16 @@ SettingItem
                 verticalAlignment: Text.AlignVCenter
                 rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
-                background: UM.RecolorImage
+                background: Rectangle
                 {
                     id: swatch
                     height: Math.round(parent.height / 2)
                     width: height
+                    radius: Math.round(width / 2)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                    sourceSize.width: width
-                    sourceSize.height: height
-                    source: UM.Theme.getIcon("Extruder", "medium")
                     color: control.model.getItem(index).color
                 }
             }
