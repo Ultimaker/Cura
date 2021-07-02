@@ -120,6 +120,8 @@ Item
                     implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
                     implicitHeight: implicitWidth
                     radius: Math.round(implicitWidth / 2)
+                    border.color: defaultItemColor
+                    border.width: UM.Theme.getSize("default_lining").height
                 }
 
                 tickmarks: Repeater
