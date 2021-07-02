@@ -16,6 +16,8 @@ Item
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
+    property alias iconSize: mainIcon.sourceSize
+    property string iconVariant: "medium"
 
     Item
     {
@@ -25,16 +27,18 @@ Item
         UM.RecolorImage
         {
             anchors.fill: parent
+            sourceSize: mainIcon.sourceSize
 
-            source: UM.Theme.getIcon("ExtruderColor", "medium")
+            source: UM.Theme.getIcon("ExtruderColor", iconVariant)
             color: materialColor
         }
         UM.RecolorImage
         {
             id: mainIcon
             anchors.fill: parent
+            sourceSize: UM.Theme.getSize("extruder_icon")
 
-            source: UM.Theme.getIcon("Extruder", "medium")
+            source: UM.Theme.getIcon("Extruder", iconVariant)
             color: UM.Theme.getColor("text")
         }
 
@@ -43,7 +47,7 @@ Item
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("small_black")
             color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
