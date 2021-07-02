@@ -9,11 +9,11 @@ import Cura 1.1 as Cura
 
 Cura.ActionButton
 {
-    color: "transparent"
-    textColor: UM.Theme.getColor("text_link")
+    color: UM.Theme.getColor("secondary_button")
+    textColor: UM.Theme.getColor("secondary_button_text")
     outlineColor: "transparent"
+    outlineDisabledColor: "transparent"
     disabledColor: UM.Theme.getColor("action_button_disabled")
     textDisabledColor: UM.Theme.getColor("action_button_disabled_text")
-    hoverColor: "transparent"
-    underlineTextOnHover: true
+    hoverColor: UM.Theme.getColor("secondary_button_hover")
 }

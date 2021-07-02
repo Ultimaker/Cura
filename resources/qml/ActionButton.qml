@@ -24,10 +24,10 @@ Button
     property color disabledColor: color
     property color textColor: UM.Theme.getColor("button_text")
     property color textHoverColor: textColor
-    property color textDisabledColor: textColor
+    property color textDisabledColor: disabledColor
     property color outlineColor: color
-    property color outlineHoverColor: hoverColor
-    property color outlineDisabledColor: outlineColor
+    property color outlineHoverColor: outlineColor
+    property color outlineDisabledColor: disabledColor
     property alias busy: busyIndicator.visible
 
     property bool underlineTextOnHover: false
