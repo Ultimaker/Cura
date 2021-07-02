@@ -56,7 +56,6 @@ Cura.ExpandablePopup
                         id: extruderIcon
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        width: UM.Theme.getSize("button_icon").width
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
