@@ -36,6 +36,9 @@ Scrollable          1.0 Scrollable.qml
 TabButton           1.0 TabButton.qml
 TextField           1.0 TextField.qml
 ScrollView          1.0 ScrollView.qml
+Menu                1.0 Menu.qml
+MenuItem            1.0 MenuItem.qml
+MenuSeparator       1.0 MenuSeparator.qml
 
 
 # Cura/MachineSettings

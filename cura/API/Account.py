@@ -40,7 +40,7 @@ class Account(QObject):
     """
 
     # The interval in which sync services are automatically triggered
-    SYNC_INTERVAL = 30.0  # seconds
+    SYNC_INTERVAL = 60.0  # seconds
     Q_ENUMS(SyncState)
 
     loginStateChanged = pyqtSignal(bool)
@@ -57,6 +57,11 @@ class Account(QObject):
     syncStateChanged = pyqtSignal(int)  # because SyncState is an int Enum
     manualSyncEnabledChanged = pyqtSignal(bool)
     updatePackagesEnabledChanged = pyqtSignal(bool)
+
+    CLIENT_SCOPES = "account.user.read drive.backup.read drive.backup.write packages.download " \
+                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write " \
+                    "library.project.read library.project.write cura.printjob.read cura.printjob.write " \
+                    "cura.mesh.read cura.mesh.write"
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -79,10 +84,7 @@ class Account(QObject):
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
             CLIENT_ID="um----------------------------ultimaker_cura",
-            CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download "
-                          "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write "
-                          "library.project.read library.project.write cura.printjob.read cura.printjob.write "
-                          "cura.mesh.read cura.mesh.write",
+            CLIENT_SCOPES=self.CLIENT_SCOPES,
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)

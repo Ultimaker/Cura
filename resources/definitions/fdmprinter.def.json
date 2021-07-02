@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 16,
+        "setting_version": 17,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -28,7 +28,7 @@
             "label": "Machine",
             "type": "category",
             "description": "Machine specific settings",
-            "icon": "category_machine",
+            "icon": "Printer",
             "children":
             {
                 "machine_name":
@@ -398,6 +398,29 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_extruders_share_nozzle":
+                {
+                    "label": "Extruders Share Nozzle",
+                    "description": "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_extruders_shared_nozzle_initial_retraction":
+                {
+                    "label": "Shared Nozzle Initial Retraction",
+                    "description": "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts.",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "type": "float",
+                    "enabled": "machine_extruders_share_nozzle",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
                 "machine_disallowed_areas":
                 {
                     "label": "Disallowed Areas",
@@ -681,7 +704,7 @@
                 "machine_steps_per_mm_e":
                 {
                     "label": "Steps per Millimeter (E)",
-                    "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
+                    "description": "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference.",
                     "type": "float",
                     "default_value": 1600,
                     "minimum_value": "0.0000001",
@@ -742,7 +765,7 @@
         {
             "label": "Quality",
             "type": "category",
-            "icon": "category_layer_height",
+            "icon": "PrintQuality",
             "description": "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)",
             "children":
             {
@@ -978,7 +1001,7 @@
         "shell":
         {
             "label": "Walls",
-            "icon": "category_shell",
+            "icon": "PrintShell",
             "description": "Shell",
             "type": "category",
             "children":
@@ -1323,7 +1346,7 @@
         "top_bottom":
         {
             "label": "Top/Bottom",
-            "icon": "category_topbottom",
+            "icon": "PrintTopBottom",
             "description": "Top/Bottom",
             "type": "category",
             "children":
@@ -1799,7 +1822,7 @@
         "infill":
         {
             "label": "Infill",
-            "icon": "category_infill",
+            "icon": "Infill1",
             "description": "Infill",
             "type": "category",
             "children":
@@ -2138,7 +2161,7 @@
         "material":
         {
             "label": "Material",
-            "icon": "category_material",
+            "icon": "Spool",
             "description": "Material",
             "type": "category",
             "children":
@@ -2743,7 +2766,7 @@
         "speed":
         {
             "label": "Speed",
-            "icon": "category_speed",
+            "icon": "SpeedOMeter",
             "description": "Speed",
             "type": "category",
             "children":
@@ -2973,6 +2996,7 @@
                     "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft.",
                     "unit": "mm/s",
                     "type": "float",
+                    "enabled": "speed_slowdown_layers > 0",
                     "default_value": 30,
                     "value": "speed_print * 30 / 60",
                     "minimum_value": "0.1",
@@ -2987,6 +3011,7 @@
                             "description": "The speed of printing for the initial layer. A lower value is advised to improve adhesion to the build plate.",
                             "unit": "mm/s",
                             "type": "float",
+                            "enabled": "speed_slowdown_layers > 0",
                             "default_value": 30,
                             "value": "speed_layer_0",
                             "minimum_value": "0.1",
@@ -3000,6 +3025,7 @@
                             "description": "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed.",
                             "unit": "mm/s",
                             "type": "float",
+                            "enabled": "speed_slowdown_layers > 0",
                             "default_value": 60,
                             "value": "speed_layer_0 * speed_travel / speed_print",
                             "minimum_value": "0.1",
@@ -3035,7 +3061,6 @@
                     "default_value": 10,
                     "minimum_value": "0",
                     "maximum_value": "machine_max_feedrate_z",
-                    "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3647,7 +3672,7 @@
         "travel":
         {
             "label": "Travel",
-            "icon": "category_travel",
+            "icon": "PrintTravel",
             "description": "travel",
             "type": "category",
             "children":
@@ -3816,7 +3841,7 @@
                 "retraction_combing_max_distance":
                 {
                     "label": "Max Comb Distance With No Retract",
-                    "description": "When non-zero, combing travel moves that are longer than this distance will use retraction.",
+                    "description": "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -3952,7 +3977,7 @@
         "cooling":
         {
             "label": "Cooling",
-            "icon": "category_cool",
+            "icon": "Fan",
             "description": "Cooling",
             "type": "category",
             "children":
@@ -4102,7 +4127,7 @@
         {
             "label": "Support",
             "type": "category",
-            "icon": "category_support",
+            "icon": "Support",
             "description": "Support",
             "children":
             {
@@ -4671,7 +4696,7 @@
                     "default_value": 0.0,
                     "minimum_value": "0",
                     "maximum_value_warning": "5",
-                    "enabled": "support_enable and support_structure == 'normal'",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -5142,7 +5167,7 @@
         {
             "label": "Build Plate Adhesion",
             "type": "category",
-            "icon": "category_adhesion",
+            "icon": "Adhesion",
             "description": "Adhesion",
             "children":
             {
@@ -5796,7 +5821,7 @@
         {
             "label": "Dual Extrusion",
             "type": "category",
-            "icon": "category_dual",
+            "icon": "DualExtrusion",
             "description": "Settings used for printing with multiple extruders.",
             "children":
             {
@@ -6011,7 +6036,7 @@
         {
             "label": "Mesh Fixes",
             "type": "category",
-            "icon": "category_fixes",
+            "icon": "Bandage",
             "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
@@ -6137,7 +6162,7 @@
         {
             "label": "Special Modes",
             "type": "category",
-            "icon": "category_blackmagic",
+            "icon": "BlackMagic",
             "description": "Non-traditional ways to print your models.",
             "children":
             {
@@ -6310,7 +6335,7 @@
         {
             "label": "Experimental",
             "type": "category",
-            "icon": "category_experimental",
+            "icon": "Experiment",
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {

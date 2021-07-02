@@ -19,6 +19,8 @@ class SettingVisibilityPresetsModel(QObject):
     onItemsChanged = pyqtSignal()
     activePresetChanged = pyqtSignal()
 
+    Version = 2
+
     def __init__(self, preferences: Preferences, parent = None) -> None:
         super().__init__(parent)
 

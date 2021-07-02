@@ -1,12 +1,12 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime
 import json
 import random
 from hashlib import sha512
 from base64 import b64encode
-from typing import Optional, Any, Dict, Tuple
-
+from typing import Optional
 import requests
 
 from UM.i18n import i18nCatalog
@@ -115,7 +115,7 @@ class AuthorizationHelpers:
             token_request = requests.get(check_token_url, headers = {
                 "Authorization": "Bearer {}".format(access_token)
             })
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             # Connection was suddenly dropped. Nothing we can do about that.
             Logger.logException("w", "Something failed while attempting to parse the JWT token")
             return None

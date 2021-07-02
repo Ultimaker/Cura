@@ -39,7 +39,7 @@ Item
             anchors.left: parent.left
             anchors.verticalCenter: label.verticalCenter
 
-            source: UM.Theme.getIcon("warning")
+            source: UM.Theme.getIcon("Warning")
             color: UM.Theme.getColor("warning")
             width: UM.Theme.getSize("section_icon").width
             height: width
@@ -126,7 +126,7 @@ Item
     Connections
     {
         target: outputDevice
-        onUniqueConfigurationsChanged:
+        function onUniqueConfigurationsChanged()
         {
             forceModelUpdate()
         }
@@ -135,7 +135,7 @@ Item
     Connections
     {
         target: Cura.MachineManager
-        onOutputDevicesChanged:
+        function onOutputDevicesChanged()
         {
             forceModelUpdate()
         }

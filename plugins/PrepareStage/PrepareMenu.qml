@@ -8,7 +8,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import QtGraphicalEffects 1.0 // For the dropshadow
 
 Item
 {
@@ -42,42 +41,34 @@ Item
             anchors.left: openFileButton.right
             anchors.right: parent.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            property int machineSelectorWidth: Math.round((width - printSetupSelectorItem.width) / 3)
 
             height: parent.height
-            spacing: 0
+            // This is a trick to make sure that the borders of the two adjacent buttons' borders overlap. Otherwise
+            // there will be double border (one from each button)
+            spacing: -UM.Theme.getSize("default_lining").width
 
             Cura.MachineSelector
             {
                 id: machineSelection
                 headerCornerSide: Cura.RoundedRectangle.Direction.Left
-                Layout.minimumWidth: UM.Theme.getSize("machine_selector_widget").width
-                Layout.maximumWidth: UM.Theme.getSize("machine_selector_widget").width
+                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
+                headerBackgroundBorder.color: UM.Theme.getColor("lining")
+                enableHeaderShadow: false
+                Layout.preferredWidth: parent.machineSelectorWidth
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-            }
-
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
             }
 
             Cura.ConfigurationMenu
             {
                 id: printerSetup
+                enableHeaderShadow: false
+                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
+                headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Layout.preferredWidth: itemRow.width - machineSelection.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width
-            }
-
-            // Separator line
-            Rectangle
-            {
-                height: parent.height
-                width: UM.Theme.getSize("default_lining").width
-                color: UM.Theme.getColor("lining")
+                Layout.preferredWidth: parent.machineSelectorWidth * 2
             }
 
             Item
@@ -106,7 +97,7 @@ Item
                 {
                     id: buttonIcon
                     anchors.centerIn: parent
-                    source: UM.Theme.getIcon("load")
+                    source: UM.Theme.getIcon("Folder")
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("icon")
@@ -120,23 +111,11 @@ Item
                 id: background
                 height: UM.Theme.getSize("stage_menu").height
                 width: UM.Theme.getSize("stage_menu").height
+                border.color: UM.Theme.getColor("lining")
+                border.width: UM.Theme.getSize("default_lining").width
 
                 radius: UM.Theme.getSize("default_radius").width
                 color: openFileButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-            }
-
-            DropShadow
-            {
-                id: shadow
-                // Don't blur the shadow
-                radius: 0
-                anchors.fill: background
-                source: background
-                verticalOffset: 2
-                visible: true
-                color: UM.Theme.getColor("action_button_shadow")
-                // Should always be drawn behind the background.
-                z: background.z - 1
             }
         }
     }

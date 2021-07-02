@@ -46,7 +46,7 @@ NO_REFRESH_AUTH_RESPONSE = AuthenticationResponse(
     success = True
 )
 
-MALFORMED_AUTH_RESPONSE = AuthenticationResponse()
+MALFORMED_AUTH_RESPONSE = AuthenticationResponse(success=False)
 
 
 def test_cleanAuthService() -> None:

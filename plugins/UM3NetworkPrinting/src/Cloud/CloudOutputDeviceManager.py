@@ -399,7 +399,7 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
-        for device in self._remote_clusters.values():
+        for device in list(self._remote_clusters.values()):  # Make a copy of the remote devices list, to prevent modifying the list while iterating, if a device gets added asynchronously.
             if device.key == stored_cluster_id:
                 # Connect to it if the stored ID matches.
                 self._connectToOutputDevice(device, active_machine)

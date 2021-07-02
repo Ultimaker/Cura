@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
@@ -79,6 +79,7 @@ class MaterialManagementModel(QObject):
 
         :param material_node: The material to remove.
         """
+        Logger.info(f"Removing material {material_node.container_id}")
 
         container_registry = CuraContainerRegistry.getInstance()
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
@@ -194,6 +195,7 @@ class MaterialManagementModel(QObject):
 
         :return: The root material ID of the duplicate material.
         """
+        Logger.info(f"Duplicating material {material_node.base_file} to {new_base_id}")
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
     @pyqtSlot(result = str)

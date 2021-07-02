@@ -40,6 +40,7 @@ Menu
         shortcut: visible ? StandardKey.Save : ""
         text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
         visible: saveProjectMenu.model.count == 1
+        enabled: UM.WorkspaceFileHandler.enabled
         onTriggered:
         {
             var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };
@@ -62,6 +63,7 @@ Menu
         id: saveProjectMenu
         model: projectOutputDevicesModel
         visible: model.count > 1
+        enabled: UM.WorkspaceFileHandler.enabled
     }
 
     MenuSeparator { }
