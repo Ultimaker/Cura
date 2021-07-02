@@ -156,7 +156,7 @@ Item
         {
             id: settingControls
 
-            height: UM.Theme.getSize("section_control").height
+            height: UM.Theme.getSize("small_button_icon").height
             spacing: Math.round(UM.Theme.getSize("thick_margin").height / 2)
 
             anchors
@@ -174,6 +174,7 @@ Item
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
                 color: UM.Theme.getColor("setting_control_button")
@@ -203,6 +204,7 @@ Item
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
                 color: UM.Theme.getColor("setting_control_button")
@@ -286,6 +288,7 @@ Item
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
                 onClicked:

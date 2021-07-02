@@ -62,7 +62,7 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
                 style: UM.Theme.styles.main_window_header_tab
-                height: UM.Theme.getSize("main_window_header_button").height
+                height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
                 iconSource: model.stage.iconSource
 
                 property color overlayColor: "transparent"

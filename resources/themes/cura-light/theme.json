@@ -482,7 +482,7 @@
 
         "machine_selector_widget": [20.0, 4.0],
         "machine_selector_widget_content": [25.0, 32.0],
-        "machine_selector_icon": [2.66, 2.66],
+        "machine_selector_icon": [2.5, 2.5],
 
         "views_selector": [23.0, 4.0],
 
@@ -507,8 +507,8 @@
 
         "section": [0.0, 2],
         "section_control": [0, 1],
-        "section_icon": [1.6, 1.6],
-        "section_icon_column": [2.8, 0.0],
+        "section_icon": [2, 2],
+        "section_icon_column": [2.5, 2.5],
         "rating_star": [1.0, 1.0],
 
         "setting": [25.0, 1.8],
@@ -536,6 +536,9 @@
 
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
+
+        "medium_button": [2.5, 2.5],
+        "medium_button_icon": [2, 2],
 
         "favorites_row": [2, 2],
         "favorites_button": [2, 2],
