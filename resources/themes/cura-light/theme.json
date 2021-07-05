@@ -148,22 +148,22 @@
             "weight": 50,
             "family": "Noto Sans"
         },
-        "small_black": {
+        "small_emphasis": {
             "size": 0.9,
             "weight": 100,
             "family": "Noto Sans"
         },
-        "small_black_ja_JP": {
+        "small_emphasis_ja_JP": {
             "size": 0.9,
             "weight": 100,
             "family": "Noto Sans"
         },
-        "small_black_zh_CN": {
+        "small_emphasis_zh_CN": {
             "size": 0.9,
             "weight": 100,
             "family": "Noto Sans"
         },
-        "small_black_zh_TW": {
+        "small_emphasis_zh_TW": {
             "size": 0.9,
             "weight": 100,
             "family": "Noto Sans"
