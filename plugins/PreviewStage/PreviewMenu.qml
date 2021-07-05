@@ -35,24 +35,16 @@ Item
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
         height: parent.height
+        // This is a trick to make sure that the borders of the two adjacent buttons' borders overlap. Otherwise
+        // there will be double border (one from each button)
+        spacing: -UM.Theme.getSize("default_lining").width
 
         Cura.ViewsSelector
         {
             id: viewsSelector
             height: parent.height
-            width: UM.Theme.getSize("views_selector").width
+            width: Math.max(Math.round((parent.width - printSetupSelectorItem.width) / 3), UM.Theme.getSize("views_selector").width)
             headerCornerSide: Cura.RoundedRectangle.Direction.Left
-        }
-
-        // Separator line
-        Rectangle
-        {
-            height: parent.height
-            // If there is no viewPanel, we only need a single spacer, so hide this one.
-            visible: viewPanel.source != ""
-            width: visible ? UM.Theme.getSize("default_lining").width : 0
-
-            color: UM.Theme.getColor("lining")
         }
 
         // This component will grow freely up to complete the width of the row.
@@ -60,16 +52,8 @@ Item
         {
             id: viewPanel
             height: parent.height
-            width: source != "" ? (previewMenu.width - viewsSelector.width - printSetupSelectorItem.width - 2 * (UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("default_lining").width)) : 0
+            width: source != "" ? (previewMenu.width - viewsSelector.width - printSetupSelectorItem.width) : 0
             source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
-        }
-
-        // Separator line
-        Rectangle
-        {
-            height: parent.height
-            width: UM.Theme.getSize("default_lining").width
-            color: UM.Theme.getColor("lining")
         }
 
         Item

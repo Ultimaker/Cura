@@ -56,13 +56,13 @@ Cura.ExpandablePopup
                         id: extruderIcon
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        width: UM.Theme.getSize("button_icon").width
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
                     Item
                     {
                         height: childrenRect.height
+                        opacity: model.enabled ? 1 : UM.Theme.getColor("extruder_disabled").a
                         anchors
                         {
                             left: extruderIcon.right

@@ -54,9 +54,10 @@ Item
         id: accountWidget
 
         anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: signInButton.horizontalCenter
 
-        implicitHeight: UM.Theme.getSize("main_window_header").height
-        implicitWidth: UM.Theme.getSize("main_window_header").height
+        implicitHeight: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+        implicitWidth: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
 
         hoverEnabled: true
 
@@ -68,8 +69,8 @@ Item
         {
             id: avatar
 
-            width: Math.round(0.8 * accountWidget.width)
-            height: Math.round(0.8 * accountWidget.height)
+            width: accountWidget.width
+            height: accountWidget.height
             anchors.verticalCenter: accountWidget.verticalCenter
             anchors.horizontalCenter: accountWidget.horizontalCenter
 
@@ -86,7 +87,7 @@ Item
             {
                 id: initialCircle
                 anchors.centerIn: parent
-                width: Math.min(parent.width, parent.height)
+                width: Math.min(accountWidget.width, accountWidget.height)
                 height: width
                 radius: width
                 color: accountWidget.hovered ? UM.Theme.getColor("primary_text") : "transparent"
@@ -141,7 +142,7 @@ Item
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
 
-            target: Qt.point(width - (accountWidget.width / 2), -10)
+            target: Qt.point(width - (signInButton.width / 2), -10)
 
             arrowSize: UM.Theme.getSize("default_arrow").width
         }

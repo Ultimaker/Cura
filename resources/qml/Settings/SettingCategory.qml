@@ -16,10 +16,13 @@ Button
     anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
     hoverEnabled: true
 
+    height: UM.Theme.getSize("section_icon_column").height
+
     background: Rectangle
     {
         id: backgroundRectangle
         height: UM.Theme.getSize("section").height
+        anchors.verticalCenter: parent.verticalCenter
         color:
         {
             if (!base.enabled)
@@ -107,8 +110,8 @@ Button
         source: UM.Theme.getIcon(definition.icon)
         width: UM.Theme.getSize("section_icon").width
         height: UM.Theme.getSize("section_icon").height
-        sourceSize.width: width + 15 * screenScaleFactor
-        sourceSize.height: width + 15 * screenScaleFactor
+        sourceSize.width: width
+        sourceSize.height: width
     }
 
     onClicked:
@@ -141,8 +144,8 @@ Button
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
-        height: Math.round(base.height * 0.6)
-        width: Math.round(base.height * 0.6)
+        height: UM.Theme.getSize("small_button_icon").height
+        width: height
 
         anchors
         {
@@ -184,7 +187,7 @@ Button
             return false
         }
 
-        height: Math.round(parent.height / 2)
+        height: UM.Theme.getSize("small_button_icon").height
         width: height
 
         onClicked:

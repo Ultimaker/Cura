@@ -252,11 +252,11 @@ QtObject
                     anchors.centerIn: parent
                     opacity: control.enabled ? 1.0 : 0.2
                     source: control.iconSource
-                    width: UM.Theme.getSize("button_icon").width
-                    height: UM.Theme.getSize("button_icon").height
+                    width: UM.Theme.getSize("medium_button_icon").width
+                    height: UM.Theme.getSize("medium_button_icon").height
                     color: UM.Theme.getColor("icon")
 
-                    sourceSize: UM.Theme.getSize("button_icon")
+                    sourceSize: UM.Theme.getSize("medium_button_icon")
                 }
             }
         }

@@ -65,7 +65,13 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("Magnifier") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
+            placeholderText:
+            {
+                var imageSize = "width='" + UM.Theme.getSize("small_button_icon").width + "' height='" + UM.Theme.getSize("small_button_icon").height
+                var imageSource = "' src='"+ UM.Theme.getIcon("Magnifier")
+                var searchPlaceholder = catalog.i18nc("@label:textbox", "Search settings")
+                return "<img align='middle' " + imageSize + imageSource +"'>" +  "<div vertical-align=bottom>" + searchPlaceholder
+            }
 
             style: TextFieldStyle
             {
@@ -188,8 +194,8 @@ Item
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
+                    width: UM.Theme.getSize("medium_button_icon").width
+                    height: UM.Theme.getSize("medium_button_icon").height
                     sourceSize.width: width
                     sourceSize.height: height
                     color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
