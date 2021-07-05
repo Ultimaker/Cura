@@ -5,6 +5,8 @@ import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
 
+import Cura 1.6 as Cura
+
 /**
  * This component comprises a colored extruder icon, the material name, and the
  * print core name. It is used by the MonitorPrinterConfiguration component with
@@ -18,10 +20,10 @@ import UM 1.3 as UM
 Item
 {
     // The material color
-    property alias color: extruderIcon.color
+    property alias color: extruderIcon.materialColor
 
-    // The extruder position; NOTE: Decent human beings count from 0
-    property alias position: extruderIcon.position
+    // The extruder position
+    property int position
 
     // The material name
     property alias material: materialLabel.text
@@ -32,13 +34,13 @@ Item
     // Height is 2 x 18px labels, plus 4px spacing between them
     height: 40 * screenScaleFactor // TODO: Theme!
     width: childrenRect.width
+    opacity: material != "" && material != "Empty" && position >= 0 ? 1 : 0.4
 
-    MonitorIconExtruder
+    Cura.ExtruderIcon
     {
         id: extruderIcon
-        color: UM.Theme.getColor("monitor_skeleton_loading")
-        size: UM.Theme.getSize("button_icon").width
-        position: 0
+        materialColor: UM.Theme.getColor("monitor_skeleton_loading")
+        anchors.verticalCenter: parent.verticalCenter
     }
 
     Rectangle
