@@ -504,7 +504,7 @@
         "machine_selector_widget_content": [25.0, 32.0],
         "machine_selector_icon": [2.5, 2.5],
 
-        "views_selector": [23.0, 4.0],
+        "views_selector": [16.0, 4.0],
 
         "printer_type_label": [3.5, 1.5],
 

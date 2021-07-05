@@ -43,7 +43,7 @@ Item
         {
             id: viewsSelector
             height: parent.height
-            width: UM.Theme.getSize("views_selector").width
+            width: Math.max(Math.round((parent.width - printSetupSelectorItem.width) / 3), UM.Theme.getSize("views_selector").width)
             headerCornerSide: Cura.RoundedRectangle.Direction.Left
         }
 
@@ -52,7 +52,7 @@ Item
         {
             id: viewPanel
             height: parent.height
-            width: source != "" ? (previewMenu.width - viewsSelector.width - printSetupSelectorItem.width - 2 * (UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("default_lining").width)) : 0
+            width: source != "" ? (previewMenu.width - viewsSelector.width - printSetupSelectorItem.width) : 0
             source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
         }
 
