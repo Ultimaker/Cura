@@ -39,7 +39,7 @@ Item
             sourceSize: UM.Theme.getSize("extruder_icon")
 
             source: UM.Theme.getIcon("Extruder", iconVariant)
-            color: UM.Theme.getColor("text")
+            color: extruderNumberText.color
         }
 
         Label
