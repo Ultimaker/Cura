@@ -147,10 +147,9 @@ Cura.ExpandablePopup
             {
                 id: iconBackground
                 anchors.centerIn: parent
-                // Make it a bit bigger so there is an outline
-                width: parent.width + 2 * UM.Theme.getSize("default_lining").width
-                height: parent.height + 2 * UM.Theme.getSize("default_lining").height
-                radius: Math.round(width / 2)
+                width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                height: parent.height - 1.5
+                radius: width / 2
                 color: UM.Theme.getColor("connection_badge_background")
                 z: parent.z - 1
             }
