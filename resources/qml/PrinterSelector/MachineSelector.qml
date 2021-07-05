@@ -150,7 +150,7 @@ Cura.ExpandablePopup
                 width: parent.width + 2 * UM.Theme.getSize("default_lining").width
                 height: parent.height + 2 * UM.Theme.getSize("default_lining").height
                 radius: Math.round(width / 2)
-                color: UM.Theme.getColor("main_background")
+                color: UM.Theme.getColor("connection_badge_background")
                 z: parent.z - 1
             }
 

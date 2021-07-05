@@ -445,7 +445,8 @@
         "monitor_carousel_dot": [216, 216, 216, 255],
         "monitor_carousel_dot_current": [119, 119, 119, 255],
 
-        "cloud_unavailable": [153, 153, 153, 255]
+        "cloud_unavailable": [153, 153, 153, 255],
+        "connection_badge_background": [255, 255, 255, 255]
     },
 
     "sizes": {
