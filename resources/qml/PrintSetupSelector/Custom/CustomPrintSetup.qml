@@ -229,6 +229,9 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         materialColor: model.color
                         extruderEnabled: model.enabled
+                        iconVariant: "default"
+                        width: UM.Theme.getSize("medium_button_icon").width
+                        height: UM.Theme.getSize("medium_button_icon").height
                     }
                 }
                 onClicked:
