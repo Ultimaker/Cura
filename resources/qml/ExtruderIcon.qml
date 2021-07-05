@@ -21,7 +21,7 @@ Item
 
     Item
     {
-        opacity: extruderEnabled ? 1 : 0.4
+        opacity: extruderEnabled ? 1 : UM.Theme.getColor("extruder_disabled").a
         anchors.fill: parent
 
         UM.RecolorImage

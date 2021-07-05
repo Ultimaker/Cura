@@ -62,7 +62,7 @@ Cura.ExpandablePopup
                     Item
                     {
                         height: childrenRect.height
-                        opacity: model.enabled ? 1 : 0.4
+                        opacity: model.enabled ? 1 : UM.Theme.getColor("extruder_disabled").a
                         anchors
                         {
                             left: extruderIcon.right
