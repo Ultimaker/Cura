@@ -6,7 +6,7 @@
         "quality_definition": "biqu_base",
         "visible": true,
         "has_machine_materials": true,
-        "platform": "BIQU BX PLATE.stl",
+        "platform": "BIQU_BX_PLATE.stl",
         "platform_offset": [
             7,
             -7.4,
