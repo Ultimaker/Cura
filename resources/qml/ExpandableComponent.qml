@@ -216,7 +216,7 @@ Item
             var maxPt = base.mapFromItem(null,
                 CuraApplication.appWidth() - (contentContainer.width + margin.width),
                 CuraApplication.appHeight() - (contentContainer.height + margin.height));
-            var initialY = background.height + base.shadowOffset + margin.height;
+            var initialY = background.height + base.popupOffset + margin.height;
 
             contentContainer.x = Math.max(minPt.x, Math.min(maxPt.x, posNewX));
             contentContainer.y = Math.max(initialY, Math.min(maxPt.y, posNewY));
