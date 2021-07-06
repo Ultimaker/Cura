@@ -1,5 +1,5 @@
 {
-    "name": "LONGER Cube2",
+    "name": "Longer Cube2",
     "version": 2,
     "inherits": "longer_base",
     "metadata": {
@@ -27,6 +27,8 @@
             ]
         },
 
-        "gantry_height": { "value": 18 }
+        "gantry_height": { "value": 18 },
+
+        "speed_travel": { "value": 65 }
     }
 }

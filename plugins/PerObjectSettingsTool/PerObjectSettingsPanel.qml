@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -116,7 +116,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("MeshTypeExclude");
+                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
@@ -136,10 +136,12 @@ Item
         }
 
 
-        ComboBox
+        Cura.ComboBox
         {
             id: infillOnlyComboBox
             width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("setting_control").height
+            textRole: "text"
 
             model: ListModel
             {

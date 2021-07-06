@@ -1,12 +1,12 @@
 {
     "version": 2,
-    "name": "ideagen3D Sapphire Plus",
+    "name": "Ideagen3D Sapphire Plus",
     "inherits": "fdmprinter",
     "metadata":
     {
         "visible": true,
-        "author": "ideagen3D",
-        "manufacturer": "ideagen3D",
+        "author": "Ideagen3D",
+        "manufacturer": "Ideagen3D",
         "file_formats": "text/x-gcode",
         "platform": "ideagen3D_sapphire_plus.3mf",
         "has_materials": true,

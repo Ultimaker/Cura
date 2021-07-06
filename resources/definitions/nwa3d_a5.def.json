@@ -1,11 +1,11 @@
 {
-    "name": "NWA3D A5",
+    "name": "Nwa3D A5",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "DragonJe",
-        "manufacturer": "NWA 3D LLC",
+        "manufacturer": "Nwa 3D LLC",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0],
         "has_materials": true,

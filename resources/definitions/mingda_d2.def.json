@@ -1,5 +1,5 @@
 {
-    "name": "MINGDA D2",
+    "name": "Mingda D2",
     "version": 2,
     "inherits": "mingda_base",
     "overrides": {

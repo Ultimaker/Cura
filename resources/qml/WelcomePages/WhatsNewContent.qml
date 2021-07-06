@@ -100,7 +100,7 @@ Item
                             top: subpageImage.bottom
                             topMargin: UM.Theme.getSize("default_margin").height
                             bottom: parent.bottom
-                            bottomMargin: UM.Theme.getSize("thick_margin").height
+                            bottomMargin: UM.Theme.getSize("thin_margin").height
                             left: subpageImage.left
                             right: subpageImage.right
                         }
@@ -135,7 +135,7 @@ Item
         anchors
         {
             bottom: whatsNewNextButton.top
-            bottomMargin: UM.Theme.getSize("narrow_margin").height
+            bottomMargin: UM.Theme.getSize("wide_margin").height
             horizontalCenter: parent.horizontalCenter
         }
 

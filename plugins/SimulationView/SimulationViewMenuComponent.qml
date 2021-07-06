@@ -90,6 +90,7 @@ Cura.ExpandableComponent
         property bool show_feedrate_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 2
         property bool show_thickness_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 3
         property bool show_line_width_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 4
+        property bool show_flow_rate_gradient: show_gradient && UM.Preferences.getValue("layerview/layer_view_type") == 5
         property bool only_show_top_layers: UM.Preferences.getValue("view/only_show_top_layers")
         property int top_layer_count: UM.Preferences.getValue("view/top_layer_count")
 
@@ -125,6 +126,10 @@ Cura.ExpandableComponent
                 text: catalog.i18nc("@label:listbox", "Line Width"),
                 type_id: 4
             })
+            layerViewTypes.append({
+                text: catalog.i18nc("@label:listbox", "Flow"),
+                type_id: 5
+            })
         }
 
         ComboBox
@@ -150,10 +155,13 @@ Cura.ExpandableComponent
             {
                 // Update the visibility of the legends.
                 viewSettings.show_legend = UM.SimulationView.compatibilityMode || (type_id == 1);
-                viewSettings.show_gradient = !UM.SimulationView.compatibilityMode && (type_id == 2 || type_id == 3 || type_id == 4);
+                viewSettings.show_gradient = !UM.SimulationView.compatibilityMode &&
+                  (type_id == 2 || type_id == 3 || type_id == 4 || type_id == 5) ;
+
                 viewSettings.show_feedrate_gradient = viewSettings.show_gradient && (type_id == 2);
                 viewSettings.show_thickness_gradient = viewSettings.show_gradient && (type_id == 3);
                 viewSettings.show_line_width_gradient = viewSettings.show_gradient && (type_id == 4);
+                viewSettings.show_flow_rate_gradient = viewSettings.show_gradient && (type_id == 5);
             }
         }
 
@@ -396,11 +404,17 @@ Cura.ExpandableComponent
                         {
                             return parseFloat(UM.SimulationView.minThickness).toFixed(2)
                         }
-                        //Line width selected
+                        // Line width selected
                         if(UM.Preferences.getValue("layerview/layer_view_type") == 4)
                         {
                             return parseFloat(UM.SimulationView.minLineWidth).toFixed(2);
                         }
+                        // Flow Rate selected
+                        if(UM.Preferences.getValue("layerview/layer_view_type") == 5)
+                        {
+                            return parseFloat(UM.SimulationView.minFlowRate).toFixed(2);
+                        }
+
                     }
                     return catalog.i18nc("@label","min")
                 }
@@ -431,6 +445,11 @@ Cura.ExpandableComponent
                         {
                             return "mm"
                         }
+                        // Flow Rate selected
+                        if (UM.Preferences.getValue("layerview/layer_view_type") == 5)
+                        {
+                            return "mm³/s"
+                        }
                     }
                     return ""
                 }
@@ -460,6 +479,11 @@ Cura.ExpandableComponent
                         {
                             return parseFloat(UM.SimulationView.maxLineWidth).toFixed(2);
                         }
+                        // Flow rate selected
+                        if(UM.Preferences.getValue("layerview/layer_view_type") == 5)
+                        {
+                            return parseFloat(UM.SimulationView.maxFlowRate).toFixed(2);
+                        }
                     }
                     return catalog.i18nc("@label","max")
                 }
@@ -474,7 +498,10 @@ Cura.ExpandableComponent
         Rectangle
         {
             id: feedrateGradient
-            visible: viewSettings.show_feedrate_gradient || viewSettings.show_line_width_gradient
+            visible: (
+              viewSettings.show_feedrate_gradient ||
+              viewSettings.show_line_width_gradient
+            )
             anchors.left: parent.left
             anchors.right: parent.right
             height: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
@@ -526,7 +553,9 @@ Cura.ExpandableComponent
         Rectangle
         {
             id: thicknessGradient
-            visible: viewSettings.show_thickness_gradient
+            visible: (
+              viewSettings.show_thickness_gradient
+            )
             anchors.left: parent.left
             anchors.right: parent.right
             height: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
@@ -574,6 +603,85 @@ Cura.ExpandableComponent
                     {
                         position: 1.0
                         color: Qt.rgba(1, 1, 0, 1)
+                    }
+                }
+            }
+        }
+
+        // Gradient colors for flow (similar to jet colormap)
+        Rectangle
+        {
+            id: jetGradient
+            visible: (
+              viewSettings.show_flow_rate_gradient
+            )
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Math.round(UM.Theme.getSize("layerview_row").height * 1.5)
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("lining")
+
+            LinearGradient
+            {
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_lining").width
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_lining").width
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("default_lining").width
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("default_lining").width
+                }
+                start: Qt.point(0, 0)
+                end: Qt.point(parent.width, 0)
+                gradient: Gradient
+                {
+                    GradientStop
+                    {
+                        position: 0.0
+                        color: Qt.rgba(0, 0, 0.5, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.125
+                        color: Qt.rgba(0, 0.0, 1.0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.25
+                        color: Qt.rgba(0, 0.5, 1.0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.375
+                        color: Qt.rgba(0.0, 1.0, 1.0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.5
+                        color: Qt.rgba(0.5, 1.0, 0.5, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.625
+                        color: Qt.rgba(1.0, 1.0, 0.0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.75
+                        color: Qt.rgba(1.0, 0.5, 0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 0.875
+                        color: Qt.rgba(1.0, 0.0, 0, 1)
+                    }
+                    GradientStop
+                    {
+                        position: 1.0
+                        color: Qt.rgba(0.5, 0, 0, 1)
                     }
                 }
             }

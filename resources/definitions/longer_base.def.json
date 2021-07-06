@@ -1,11 +1,11 @@
 {
-    "name": "LONGER Base Printer",
+    "name": "Longer Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,
-        "author": "LONGER",
-        "manufacturer": "LONGER",
+        "author": "Longer",
+        "manufacturer": "Longer",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
@@ -133,7 +133,7 @@
         "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 10 },
 
-        "adhesion_type": { "value": "'skirt'" },
+        "adhesion_type": { "value": "'raft'" },
         "brim_replaces_support": { "value": false },
         "skirt_gap": { "value": 10.0 },
         "skirt_line_count": { "value": 3 },
