@@ -167,12 +167,16 @@ Button
         }
     }
 
-    background: Rectangle
+    background: Cura.RoundedRectangle
     {
         id: backgroundRect
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
+
+        // Disable the rounded-ness of this rectangle. We can't use a normal Rectangle here yet, as the API/SDK has only just been deprecated.
+        radius: 0
+        cornerSide: Cura.RoundedRectangle.Direction.None
     }
 
     Cura.ToolTip
