@@ -429,6 +429,14 @@ UM.MainWindow
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
+                link: Component
+                {
+                    Cura.TertiaryButton
+                    {
+                        text: model.name
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+                }
             }
         }
 
