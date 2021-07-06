@@ -12,8 +12,8 @@ Cura.ActionButton
     color: "transparent"
     textColor: UM.Theme.getColor("text_link")
     outlineColor: "transparent"
-    outlineDisabledColor: "transparent"
-    disabledColor: "transparent"
+    disabledColor: UM.Theme.getColor("action_button_disabled")
     textDisabledColor: UM.Theme.getColor("action_button_disabled_text")
-    hoverColor: UM.Theme.getColor("tertiary_button_hover")
+    hoverColor: "transparent"
+    underlineTextOnHover: true
 }

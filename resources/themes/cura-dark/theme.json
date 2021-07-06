@@ -20,8 +20,6 @@
         "secondary_button_hover": [85, 85, 87, 255],
         "secondary_button_text": [255, 255, 255, 255],
 
-        "tertiary_button_hover": [85, 85, 87, 255],
-
         "icon": [255, 255, 255, 255],
         "toolbar_background": [39, 44, 48, 255],
         "toolbar_button_active": [57, 57, 58, 255],
