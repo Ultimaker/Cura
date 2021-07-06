@@ -146,7 +146,8 @@
         "adaptive_layer_height_variation_step": { "value": 0.04 },
 
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
-        "wall_thickness": {"value": "line_width * 2" }
+        "wall_thickness": {"value": "line_width * 2" },
+        "speed_z_hop": {"default_value": 8}
 
     }
 }
