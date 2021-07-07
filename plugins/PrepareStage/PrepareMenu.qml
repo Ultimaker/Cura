@@ -23,16 +23,14 @@ Item
     {
         left: parent.left
         right: parent.right
-        leftMargin: UM.Theme.getSize("wide_margin").width
-        rightMargin: UM.Theme.getSize("wide_margin").width
+        leftMargin: UM.Theme.getSize("wide_margin").width * 2
+        rightMargin: UM.Theme.getSize("wide_margin").width * 2
     }
 
     // Item to ensure that all of the buttons are nicely centered.
     Item
     {
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
-        height: parent.height
+        anchors.fill: parent
 
         RowLayout
         {
@@ -52,9 +50,6 @@ Item
             {
                 id: machineSelection
                 headerCornerSide: Cura.RoundedRectangle.Direction.Left
-                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-                headerBackgroundBorder.color: UM.Theme.getColor("lining")
-                enableHeaderShadow: false
                 Layout.preferredWidth: parent.machineSelectorWidth
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -63,9 +58,6 @@ Item
             Cura.ConfigurationMenu
             {
                 id: printerSetup
-                enableHeaderShadow: false
-                headerBackgroundBorder.width: UM.Theme.getSize("default_lining").width
-                headerBackgroundBorder.color: UM.Theme.getColor("lining")
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.preferredWidth: parent.machineSelectorWidth * 2
@@ -97,7 +89,7 @@ Item
                 {
                     id: buttonIcon
                     anchors.centerIn: parent
-                    source: UM.Theme.getIcon("Folder")
+                    source: UM.Theme.getIcon("Folder", "medium")
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("icon")

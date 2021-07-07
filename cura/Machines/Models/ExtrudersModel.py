@@ -215,7 +215,7 @@ class ExtrudersModel(ListModel):
                     "id": "",
                     "name": catalog.i18nc("@menuitem", "Not overridden"),
                     "enabled": True,
-                    "color": "#ffffff",
+                    "color": "transparent",
                     "index": -1,
                     "definition": "",
                     "material": "",

@@ -13,8 +13,6 @@ Button
 
     width: parent.width
     height: UM.Theme.getSize("action_button").height
-    leftPadding: UM.Theme.getSize("thin_margin").width
-    rightPadding: perObjectSettingsInfo.visible ? UM.Theme.getSize("default_lining").width : UM.Theme.getSize("thin_margin").width
     checkable: true
     hoverEnabled: true
 
@@ -46,14 +44,14 @@ Button
         width: objectItemButton.width - objectItemButton.leftPadding
         height: UM.Theme.getSize("action_button").height
 
-        UM.RecolorImage
+        Rectangle
         {
             id: swatch
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            width: height
-            height: parent.height - UM.Theme.getSize("narrow_margin").height
-            source: UM.Theme.getIcon("Extruder", "medium")
+            width: UM.Theme.getSize("standard_arrow").height
+            height: UM.Theme.getSize("standard_arrow").height
+            radius: Math.round(width / 2)
             color: extruderColor
             visible: showExtruderSwatches && extruderColor != ""
         }

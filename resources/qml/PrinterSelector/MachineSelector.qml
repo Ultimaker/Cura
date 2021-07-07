@@ -93,11 +93,11 @@ Cura.ExpandablePopup
         {
             if (isGroup)
             {
-                return UM.Theme.getIcon("PrinterTriple")
+                return UM.Theme.getIcon("PrinterTriple", "medium")
             }
             else if (isNetworkPrinter || isCloudRegistered)
             {
-                return UM.Theme.getIcon("Printer")
+                return UM.Theme.getIcon("Printer", "medium")
             }
             else
             {
@@ -114,8 +114,9 @@ Cura.ExpandablePopup
             anchors
             {
                 bottom: parent.bottom
+                bottomMargin: - height * 1 / 6
                 left: parent.left
-                leftMargin: UM.Theme.getSize("thick_margin").width
+                leftMargin: iconSize - width * 5 / 6
             }
 
             source:

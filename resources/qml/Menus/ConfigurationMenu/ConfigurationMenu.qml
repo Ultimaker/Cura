@@ -56,13 +56,13 @@ Cura.ExpandablePopup
                         id: extruderIcon
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        width: UM.Theme.getSize("button_icon").width
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    Item
+                    ColumnLayout
                     {
-                        height: childrenRect.height
+                        opacity: model.enabled ? 1 : UM.Theme.getColor("extruder_disabled").a
+                        spacing: 0
                         anchors
                         {
                             left: extruderIcon.right
@@ -81,13 +81,8 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
+                            width: parent.width
 
-                            anchors
-                            {
-                                top: parent.top
-                                left: parent.left
-                                right: parent.right
-                            }
                             visible: !truncated
                         }
 
@@ -100,13 +95,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-
-                            anchors
-                            {
-                                top: parent.top
-                                left: parent.left
-                                right: parent.right
-                            }
+                            width: parent.width
 
                             visible: !materialBrandColorTypeLabel.visible && !truncated
                         }
@@ -120,13 +109,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-
-                            anchors
-                            {
-                                top: parent.top
-                                left: parent.left
-                                right: parent.right
-                            }
+                            width: parent.width
                             visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
                         }
                         // Label that shows the name of the variant
@@ -141,13 +124,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default_bold")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-
-                            anchors
-                            {
-                                left: parent.left
-                                top: materialBrandColorTypeLabel.bottom
-                                right: parent.right
-                            }
+                            width: parent.width
                         }
                     }
                 }

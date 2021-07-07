@@ -7,8 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import QtGraphicalEffects 1.0 // For the dropshadow
-
 // The expandable component has 2 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
 //      * The contentItem; The content that needs to be shown if the component is expanded.
@@ -58,6 +56,9 @@ Item
 
     property alias headerBackgroundBorder: background.border
 
+    // Whether or not to show the background border
+    property bool enableHeaderBackgroundBorder: true
+
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
@@ -75,11 +76,7 @@ Item
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
 
-    property alias headerShadowColor: shadow.color
-
-    property alias enableHeaderShadow: shadow.visible
-
-    property int shadowOffset: 2
+    property int popupOffset: 2
 
     // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
     property string dragPreferencesNamePrefix: ""
@@ -121,6 +118,9 @@ Item
     {
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
+
+        border.width: base.enableHeaderBackgroundBorder ? UM.Theme.getSize("default_lining").width : 0
+        border.color: UM.Theme.getColor("lining")
 
         color: base.enabled ? (base.expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
         anchors.fill: parent
@@ -167,7 +167,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: UM.Theme.getIcon("Pen")
+                source: expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
@@ -186,20 +186,6 @@ Item
         }
     }
 
-    DropShadow
-    {
-        id: shadow
-        // Don't blur the shadow
-        radius: 0
-        anchors.fill: background
-        source: background
-        verticalOffset: base.shadowOffset
-        visible: true
-        color: UM.Theme.getColor("action_button_shadow")
-        // Should always be drawn behind the background.
-        z: background.z - 1
-    }
-
     Cura.RoundedRectangle
     {
         id: contentContainer
@@ -211,7 +197,7 @@ Item
         height: childrenRect.height
 
         // Ensure that the content is located directly below the headerItem
-        y: dragPreferencesNamePrefix === "" ? (background.height + base.shadowOffset + base.contentSpacingY) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameY)
+        y: dragPreferencesNamePrefix === "" ? (background.height + base.popupOffset + base.contentSpacingY) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameY)
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
@@ -230,7 +216,7 @@ Item
             var maxPt = base.mapFromItem(null,
                 CuraApplication.appWidth() - (contentContainer.width + margin.width),
                 CuraApplication.appHeight() - (contentContainer.height + margin.height));
-            var initialY = background.height + base.shadowOffset + margin.height;
+            var initialY = background.height + base.popupOffset + margin.height;
 
             contentContainer.x = Math.max(minPt.x, Math.min(maxPt.x, posNewX));
             contentContainer.y = Math.max(initialY, Math.min(maxPt.y, posNewY));

@@ -146,6 +146,7 @@ Item
                     }
                     radius: Math.round(width / 2)
                     color: activeColor
+                    border.color: defaultItemColor
                     visible: checkbox.checked
                 }
             }
