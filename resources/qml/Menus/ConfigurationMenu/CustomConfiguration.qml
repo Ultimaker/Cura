@@ -302,15 +302,15 @@ Item
                 }
                 Item
                 {
-                    width: instructionButton.width + 2 * UM.Theme.getSize("default_margin").width
+                    width: instructionButton.width + 2 * UM.Theme.getSize("narrow_margin").width
                     height: instructionButton.visible ? materialSelection.height: 0
                     Button
                     {
                         id: instructionButton
                         hoverEnabled: true
                         contentItem: Item {}
-                        height: 0.5 * materialSelection.height
-                        width: height
+                        height: UM.Theme.getSize("small_button").height
+                        width: UM.Theme.getSize("small_button").width
                         anchors.centerIn: parent
                         background: UM.RecolorImage
                         {
