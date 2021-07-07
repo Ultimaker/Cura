@@ -43,7 +43,7 @@ Item
             {
                 return UM.Theme.getIcon("Infill2")
             }
-            return UM.Theme.getIcon("Solid")
+            return UM.Theme.getIcon("Infill100")
         }
     }
 

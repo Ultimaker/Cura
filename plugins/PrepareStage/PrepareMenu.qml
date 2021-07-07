@@ -23,16 +23,14 @@ Item
     {
         left: parent.left
         right: parent.right
-        leftMargin: UM.Theme.getSize("wide_margin").width
-        rightMargin: UM.Theme.getSize("wide_margin").width
+        leftMargin: UM.Theme.getSize("wide_margin").width * 2
+        rightMargin: UM.Theme.getSize("wide_margin").width * 2
     }
 
     // Item to ensure that all of the buttons are nicely centered.
     Item
     {
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
-        height: parent.height
+        anchors.fill: parent
 
         RowLayout
         {
