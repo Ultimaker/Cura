@@ -77,24 +77,36 @@ Item
         Button
         {
             id: openFileButton
+
+            //Make the button square if the contents are.
+            leftPadding: topPadding
+            rightPadding: topPadding
+            bottomPadding: topPadding
+
             height: UM.Theme.getSize("stage_menu").height
-            width: UM.Theme.getSize("stage_menu").height
+            width: openFileIconContainer.width + leftPadding + rightPadding
             onClicked: Cura.Actions.open.trigger()
             hoverEnabled: true
 
-            contentItem: Item
+            contentItem: Row
             {
-                anchors.fill: parent
-                UM.RecolorImage
+                Item
                 {
-                    id: buttonIcon
-                    anchors.centerIn: parent
-                    source: UM.Theme.getIcon("Folder", "medium")
-                    width: UM.Theme.getSize("button_icon").width
-                    height: UM.Theme.getSize("button_icon").height
-                    color: UM.Theme.getColor("icon")
+                    id: openFileIconContainer
+                    height: parent.height
+                    width: height //Square button.
 
-                    sourceSize.height: height
+                    UM.RecolorImage
+                    {
+                        id: buttonIcon
+                        anchors.centerIn: parent
+                        source: UM.Theme.getIcon("Folder", "medium")
+                        width: UM.Theme.getSize("button_icon").width
+                        height: UM.Theme.getSize("button_icon").height
+                        color: UM.Theme.getColor("icon")
+
+                        sourceSize.height: height
+                    }
                 }
             }
 
