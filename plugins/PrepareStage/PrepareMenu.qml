@@ -84,7 +84,7 @@ Item
             bottomPadding: topPadding
 
             height: UM.Theme.getSize("stage_menu").height
-            width: openFileIconContainer.width + leftPadding + rightPadding
+            width: leftPadding + openFileIconContainer.width + openFileChevronContainer.width + rightPadding
             onClicked: Cura.Actions.open.trigger()
             hoverEnabled: true
 
@@ -108,13 +108,30 @@ Item
                         sourceSize.height: height
                     }
                 }
+                Item
+                {
+                    id: openFileChevronContainer
+                    height: parent.height
+                    width: UM.Theme.getSize("small_button_icon").width
+
+                    UM.RecolorImage
+                    {
+                        anchors.centerIn: parent
+                        source: UM.Theme.getIcon("ChevronSingleDown")
+                        width: UM.Theme.getSize("small_button_icon").width
+                        height: UM.Theme.getSize("small_button_icon").height
+                        color: UM.Theme.getColor("icon")
+
+                        sourceSize.height: height
+                    }
+                }
             }
 
             background: Rectangle
             {
                 id: background
-                height: UM.Theme.getSize("stage_menu").height
-                width: UM.Theme.getSize("stage_menu").height
+                height: parent.height
+                width: parent.width
                 border.color: UM.Theme.getColor("lining")
                 border.width: UM.Theme.getSize("default_lining").width
 
