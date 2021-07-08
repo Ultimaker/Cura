@@ -256,7 +256,16 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         self._uploaded_print_job = self._pre_upload_print_job
         self._progress.hide()
-        PrintJobUploadSuccessMessage().show()
+        message = PrintJobUploadSuccessMessage()
+        message.addAction("monitor print",
+                          name=I18N_CATALOG.i18nc("@action:button", "Monitor Print"),
+                          icon="",
+                          description="Remove the plugin",
+                          button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
+        df_url = "https://digitalfactory.ultimaker.com/app/jobs/%s?utm_source=cura&utm_medium=software&utm_campaign=monitor-button" % self._cluster.cluster_id
+        message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))
+
+        message.show()
         self.writeFinished.emit()
 
     def _onPrintUploadSpecificError(self, reply: "QNetworkReply", _: "QNetworkReply.NetworkError"):
