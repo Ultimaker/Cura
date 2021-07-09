@@ -85,6 +85,7 @@ Item
             contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
             headerCornerSide: Cura.RoundedRectangle.Direction.All
             headerPadding: Math.round((parent.height - UM.Theme.getSize("button_icon").height) / 2)
+            contentPadding: UM.Theme.getSize("default_lining").width
             enabled: visible
 
             height: parent.height
@@ -102,8 +103,6 @@ Item
             contentItem: Item
             {
                 id: popup
-                width: openProviderColumn.width
-                height: openProviderColumn.height
 
                 Column
                 {
@@ -127,9 +126,11 @@ Item
                         color: UM.Theme.getColor("text_medium")
                         font: UM.Theme.getFont("medium")
                         renderType: Text.NativeRendering
+                        verticalAlignment: Text.AlignVCenter
 
                         width: contentWidth
-                        height: contentHeight
+                        height: UM.Theme.getSize("action_button").height
+                        leftPadding: UM.Theme.getSize("default_margin").width
                     }
 
                     Repeater
@@ -152,7 +153,7 @@ Item
                                 verticalAlignment: Text.AlignVCenter
 
                                 width: contentWidth
-                                height: contentHeight
+                                height: parent.height
                             }
 
                             onClicked:
@@ -171,6 +172,7 @@ Item
                             {
                                 color: parent.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
                                 radius: UM.Theme.getSize("action_button_radius").width
+                                width: popup.width
                             }
                         }
                     }
