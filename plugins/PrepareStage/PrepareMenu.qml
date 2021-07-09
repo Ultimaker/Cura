@@ -110,10 +110,10 @@ Item
                     UM.RecolorImage
                     {
                         anchors.centerIn: parent
-                        source: UM.Theme.getIcon("ChevronSingleDown")
-                        width: UM.Theme.getSize("small_button_icon").width
-                        height: UM.Theme.getSize("small_button_icon").height
-                        color: UM.Theme.getColor("icon")
+                        source: UM.Theme.getIcon("ChevronSingleLeft")
+                        width: UM.Theme.getSize("standard_arrow").width
+                        height: UM.Theme.getSize("standard_arrow").height
+                        color: UM.Theme.getColor("small_button_text")
 
                         sourceSize.height: height
                     }
