@@ -1,7 +1,7 @@
 // Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
@@ -99,11 +99,39 @@ Item
                 sourceSize.height: height
             }
 
-            contentItem: Rectangle
+            contentItem: Item
             {
-                width: 100
-                height: 100
-                color: "red"
+                id: popup
+                width: openProviderColumn.width
+                height: openProviderColumn.height
+
+                Column
+                {
+                    id: openProviderColumn
+
+                    //The column doesn't automatically listen to its children rect if the children change internally, so we need to explicitly update the size.
+                    onChildrenRectChanged:
+                    {
+                        popup.height = childrenRect.height
+                        popup.width = childrenRect.width
+                    }
+                    onPositioningComplete:
+                    {
+                        popup.height = childrenRect.height
+                        popup.width = childrenRect.width
+                    }
+
+                    Label
+                    {
+                        text: catalog.i18nc("@menu:header", "Open file")
+                        color: UM.Theme.getColor("text_medium")
+                        font: UM.Theme.getFont("medium")
+                        renderType: Text.NativeRendering
+
+                        width: contentWidth
+                        height: contentHeight
+                    }
+                }
             }
         }
 
