@@ -131,6 +131,49 @@ Item
                         width: contentWidth
                         height: contentHeight
                     }
+
+                    Repeater
+                    {
+                        model: prepareMenu.fileProviderModel
+                        delegate: Button
+                        {
+                            leftPadding: UM.Theme.getSize("thick_margin").width
+                            rightPadding: UM.Theme.getSize("thick_margin").width
+                            width: contentItem.width + leftPadding + rightPadding
+                            height: UM.Theme.getSize("action_button").height
+                            hoverEnabled: true
+
+                            contentItem: Label
+                            {
+                                text: model.displayText
+                                color: UM.Theme.getColor("text")
+                                font: UM.Theme.getFont("medium")
+                                renderType: Text.NativeRendering
+                                verticalAlignment: Text.AlignVCenter
+
+                                width: contentWidth
+                                height: contentHeight
+                            }
+
+                            onClicked:
+                            {
+                                if(model.index == 0) //The 0th element is the "From Disk" option, which should activate the open local file dialog.
+                                {
+                                    Cura.Actions.open.trigger();
+                                }
+                                else
+                                {
+                                    prepareMenu.fileProviderModel.trigger(model.name);
+                                }
+                            }
+
+                            background: Rectangle
+                            {
+                                color: parent.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+                                radius: UM.Theme.getSize("action_button_radius").width
+                            }
+                        }
+                    }
                 }
             }
         }
