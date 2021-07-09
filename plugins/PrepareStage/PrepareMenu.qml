@@ -78,35 +78,28 @@ Item
         {
             id: openFileButton
 
-            //Make the button square if the contents are.
+            //Make the padding such that the main icon is centred, even if something else is placed besides it.
+            topPadding: Math.round((parent.height - buttonIcon.height) / 2)
             leftPadding: topPadding
             rightPadding: topPadding
             bottomPadding: topPadding
 
             height: UM.Theme.getSize("stage_menu").height
-            width: leftPadding + openFileIconContainer.width + openFileChevronContainer.width + rightPadding
+            width: leftPadding + buttonIcon.width + openFileChevronContainer.width + rightPadding
             onClicked: Cura.Actions.open.trigger()
             hoverEnabled: true
 
             contentItem: Row
             {
-                Item
+                UM.RecolorImage
                 {
-                    id: openFileIconContainer
-                    height: parent.height
-                    width: height //Square button.
+                    id: buttonIcon
+                    source: UM.Theme.getIcon("Folder", "medium")
+                    width: UM.Theme.getSize("button_icon").width
+                    height: UM.Theme.getSize("button_icon").height
+                    color: UM.Theme.getColor("icon")
 
-                    UM.RecolorImage
-                    {
-                        id: buttonIcon
-                        anchors.centerIn: parent
-                        source: UM.Theme.getIcon("Folder", "medium")
-                        width: UM.Theme.getSize("button_icon").width
-                        height: UM.Theme.getSize("button_icon").height
-                        color: UM.Theme.getColor("icon")
-
-                        sourceSize.height: height
-                    }
+                    sourceSize.height: height
                 }
                 Item
                 {
