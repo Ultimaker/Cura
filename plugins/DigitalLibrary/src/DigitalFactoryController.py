@@ -89,6 +89,9 @@ class DigitalFactoryController(QObject):
     uploadFileError = Signal()
     uploadFileFinished = Signal()
 
+    """Signal to inform about the state of user access."""
+    userAccessStateChanged = pyqtSignal(bool)
+
     def __init__(self, application: CuraApplication) -> None:
         super().__init__(parent = None)
 
@@ -106,6 +109,7 @@ class DigitalFactoryController(QObject):
         self._has_more_projects_to_load = False
 
         self._account = self._application.getInstance().getCuraAPI().account  # type: Account
+        self._account.loginStateChanged.connect(self._onLoginStateChanged)
         self._current_workspace_information = CuraApplication.getInstance().getCurrentWorkspaceInformation()
 
         # Initialize the project model
@@ -131,6 +135,8 @@ class DigitalFactoryController(QObject):
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
         self._application.initializationFinished.connect(self._applicationInitializationFinished)
 
+        self._user_has_access = False
+
     def clear(self) -> None:
         self._project_model.clearProjects()
         self._api.clear()
@@ -143,16 +149,24 @@ class DigitalFactoryController(QObject):
 
         self.setSelectedProjectIndex(-1)
 
+    def _onLoginStateChanged(self, logged_in: bool) -> None:
+        def callback(has_access, **kwargs):
+            self._user_has_access = has_access
+            self.userAccessStateChanged.emit(logged_in)
+
+        self._api.checkUserHasAccess(callback)
+
     def userAccountHasLibraryAccess(self) -> bool:
         """
         Checks whether the currently logged in user account has access to the Digital Library
 
         :return: True if the user account has Digital Library access, else False
         """
-        subscriptions = []  # type: List[Dict[str, Any]]
         if self._account.userProfile:
             subscriptions = self._account.userProfile.get("subscriptions", [])
-        return len(subscriptions) > 0
+            if len(subscriptions) > 0:
+                return True
+        return self._user_has_access
 
     def initialize(self, preselected_project_id: Optional[str] = None) -> None:
         self.clear()
