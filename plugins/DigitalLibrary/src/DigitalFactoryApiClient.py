@@ -58,7 +58,7 @@ class DigitalFactoryApiClient:
 
         self._projects_pagination_mgr = PaginationManager(limit = projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
 
-    def checkUserHasAccess(self, callback: Callable) -> bool:
+    def checkUserHasAccess(self, callback: Callable) -> None:
         """Checks if the user has any sort of access to the digital library.
            A user is considered to have access if the max-# of private projects is greater then 0 (or -1 for unlimited).
         """
@@ -66,6 +66,7 @@ class DigitalFactoryApiClient:
         def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
             if response and isinstance(response, DigitalFactoryFeatureBudgetResponse):
                 callback(
+                    response.library_max_private_projects is not None and
                     response.library_max_private_projects == -1 or  # Note: -1 is unlimited
                     response.library_max_private_projects > 0)
             else:
