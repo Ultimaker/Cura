@@ -13,6 +13,8 @@ Item
 {
     id: prepareMenu
 
+    property var fileProviderModel: CuraApplication.getFileProviderModel()
+
     UM.I18nCatalog
     {
         id: catalog
@@ -78,6 +80,8 @@ Item
         Cura.ExpandablePopup
         {
             id: openFileMenu
+            visible: prepareMenu.fileProviderModel.count > 1
+
             contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
             headerCornerSide: Cura.RoundedRectangle.Direction.All
             headerPadding: Math.round((parent.height - UM.Theme.getSize("button_icon").height) / 2)
@@ -107,11 +111,12 @@ Item
         Button
         {
             id: openFileButton
+            visible: prepareMenu.fileProviderModel.count <= 1
 
             height: parent.height
-            width: height //Square button.
+            width: visible ? height : 0 //Square button (and don't take up space if invisible).
             onClicked: Cura.Actions.open.trigger()
-            enabled: visible
+            enabled: visible && prepareMenu.fileProviderModel.count > 0
             hoverEnabled: true
 
             contentItem: Item
