@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -36,9 +36,9 @@ Item
         {
             id: itemRow
 
-            anchors.left: openFileButton.right
+            anchors.left: parent.left
             anchors.right: parent.right
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width + openFileButton.width + openFileMenu.width
             property int machineSelectorWidth: Math.round((width - printSetupSelectorItem.width) / 3)
 
             height: parent.height
@@ -74,49 +74,58 @@ Item
             }
         }
 
+        //Pop-up shown when there are multiple items to select from.
+        Cura.ExpandablePopup
+        {
+            id: openFileMenu
+            contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
+            headerCornerSide: Cura.RoundedRectangle.Direction.All
+            headerPadding: Math.round((parent.height - UM.Theme.getSize("button_icon").height) / 2)
+            enabled: visible
+
+            height: parent.height
+            width: visible ? (headerPadding * 3 + UM.Theme.getSize("button_icon").height + iconSize) : 0
+
+            headerItem: UM.RecolorImage
+            {
+                id: menuIcon
+                source: UM.Theme.getIcon("Folder", "medium")
+                color: UM.Theme.getColor("icon")
+
+                sourceSize.height: height
+            }
+
+            contentItem: Rectangle
+            {
+                width: 100
+                height: 100
+                color: "red"
+            }
+        }
+
+        //If there is just a single item, show a button instead that directly chooses the one option.
         Button
         {
             id: openFileButton
 
-            //Make the padding such that the main icon is centred, even if something else is placed besides it.
-            topPadding: Math.round((parent.height - buttonIcon.height) / 2)
-            leftPadding: topPadding
-            rightPadding: topPadding
-            bottomPadding: topPadding
-
-            height: UM.Theme.getSize("stage_menu").height
-            width: leftPadding + buttonIcon.width + openFileChevronContainer.width + rightPadding
+            height: parent.height
+            width: height //Square button.
             onClicked: Cura.Actions.open.trigger()
+            enabled: visible
             hoverEnabled: true
 
-            contentItem: Row
+            contentItem: Item
             {
                 UM.RecolorImage
                 {
                     id: buttonIcon
                     source: UM.Theme.getIcon("Folder", "medium")
+                    anchors.centerIn: parent
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("icon")
 
                     sourceSize.height: height
-                }
-                Item
-                {
-                    id: openFileChevronContainer
-                    height: parent.height
-                    width: UM.Theme.getSize("small_button_icon").width
-
-                    UM.RecolorImage
-                    {
-                        anchors.centerIn: parent
-                        source: UM.Theme.getIcon("ChevronSingleLeft")
-                        width: UM.Theme.getSize("standard_arrow").width
-                        height: UM.Theme.getSize("standard_arrow").height
-                        color: UM.Theme.getColor("small_button_text")
-
-                        sourceSize.height: height
-                    }
                 }
             }
 
