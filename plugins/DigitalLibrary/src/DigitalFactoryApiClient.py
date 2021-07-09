@@ -64,9 +64,9 @@ class DigitalFactoryApiClient:
         """
 
         def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
-            if response and isinstance(response, DigitalFactoryFeatureBudgetResponse):
+            if (response is not None and isinstance(response, DigitalFactoryFeatureBudgetResponse) and
+                    response.library_max_private_projects is not None):
                 callback(
-                    response.library_max_private_projects is not None and
                     response.library_max_private_projects == -1 or  # Note: -1 is unlimited
                     response.library_max_private_projects > 0)
             else:
