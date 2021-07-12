@@ -1,10 +1,12 @@
 // Copyright (C) 2021 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
@@ -29,31 +31,37 @@ Item
         margins: UM.Theme.getSize("default_margin").width
     }
 
-    Label
+    RowLayout
     {
-        id: selectProjectLabel
+        id: headerRow
 
-        text: "Select Project"
-        font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("small_button_text")
-        anchors.top: parent.top
-        anchors.left: parent.left
-        visible: projectListContainer.visible
-    }
-
-    Cura.SecondaryButton
-    {
-        id: createNewProjectButton
-
-        anchors.verticalCenter: selectProjectLabel.verticalCenter
-        anchors.right: parent.right
-        text: "New Library project"
-
-        onClicked:
+        anchors
         {
-            createNewProjectPopup.open()
+            top: parent.top
+            left: parent.left
+            right: parent.right
         }
-        busy: manager.creatingNewProjectStatus == DF.RetrievalStatus.InProgress
+        height: childrenRect.height
+
+        TextField
+        {
+            id: searchBar
+            Layout.fillWidth: true
+            height: createNewProjectButton.height
+        }
+
+        Cura.SecondaryButton
+        {
+            id: createNewProjectButton
+
+            text: "New Library project"
+
+            onClicked:
+            {
+                createNewProjectPopup.open()
+            }
+            busy: manager.creatingNewProjectStatus == DF.RetrievalStatus.InProgress
+        }
     }
 
     Item
@@ -106,7 +114,7 @@ Item
         id: projectListContainer
         anchors
         {
-            top: selectProjectLabel.bottom
+            top: headerRow.bottom
             topMargin: UM.Theme.getSize("default_margin").height
             bottom: parent.bottom
             left: parent.left
