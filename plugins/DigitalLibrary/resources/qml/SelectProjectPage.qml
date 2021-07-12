@@ -48,6 +48,8 @@ Item
             id: searchBar
             Layout.fillWidth: true
             height: createNewProjectButton.height
+
+            onTextEdited: manager.projectFilter = text
         }
 
         Cura.SecondaryButton
