@@ -138,8 +138,8 @@ Item
                         model: prepareMenu.fileProviderModel
                         delegate: Button
                         {
-                            leftPadding: UM.Theme.getSize("thick_margin").width
-                            rightPadding: UM.Theme.getSize("thick_margin").width
+                            leftPadding: UM.Theme.getSize("default_margin").width
+                            rightPadding: UM.Theme.getSize("default_margin").width
                             width: contentItem.width + leftPadding + rightPadding
                             height: UM.Theme.getSize("action_button").height
                             hoverEnabled: true
