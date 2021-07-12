@@ -120,7 +120,7 @@ class DigitalFactoryController(QObject):
         self._project_creation_error_text = "Something went wrong while creating a new project. Please try again."
         self._project_filter = ""
         self._project_filter_change_timer = QTimer()
-        self._project_filter_change_timer.setInterval(1000)
+        self._project_filter_change_timer.setInterval(200)
         self._project_filter_change_timer.setSingleShot(True)
         self._project_filter_change_timer.timeout.connect(self._applyProjectFilter)
 
