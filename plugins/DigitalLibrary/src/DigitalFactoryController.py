@@ -211,6 +211,7 @@ class DigitalFactoryController(QObject):
 
         :param df_projects: A list of all the Digital Factory Library projects linked to the user's account
         """
+        self.clear()
         self.setHasMoreProjectsToLoad(self._api.hasMoreProjectsToLoad())
         self._project_model.setProjects(df_projects)
         self.setRetrievingProjectsStatus(RetrievalStatus.Success)
