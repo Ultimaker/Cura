@@ -183,7 +183,7 @@ class DigitalFactoryController(QObject):
             if preselected_project_id:
                 self._api.getProject(preselected_project_id, on_finished = self.setProjectAsPreselected, failed = self._onGetProjectFailed)
             else:
-                self._api.getProjectsFirstPage(on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+                self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
     def setProjectAsPreselected(self, df_project: DigitalFactoryProjectResponse) -> None:
         """
@@ -338,6 +338,7 @@ class DigitalFactoryController(QObject):
         :return:
         """
         self.projectFilterChanged.emit()
+        self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
     @pyqtProperty(QObject, constant = True)
     def digitalFactoryProjectModel(self) -> "DigitalFactoryProjectModel":
