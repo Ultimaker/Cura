@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -24,7 +24,7 @@ TextField
     font: UM.Theme.getFont("default")
     color: UM.Theme.getColor("text")
     renderType: Text.NativeRendering
-    leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin")
+    leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
 
     states: [
         State
@@ -55,7 +55,6 @@ TextField
 
         color: UM.Theme.getColor("main_background")
 
-        anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
         radius: UM.Theme.getSize("setting_control_radius").width
 
         border.color:
