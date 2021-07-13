@@ -67,6 +67,7 @@ Item
         text: "Upgrade plan"
         visible: createNewProjectButtonVisible && !manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
         tooltip: "You have reached the maximum number of projects allowed by your subscription. Please upgrade to the Professional subscription to create more projects."
+        tooltipWidth: parent.width * 3 / 4
 
         onClicked: Qt.openUrlExternally("https://ultimaker.com/software/enterprise-software")
     }
