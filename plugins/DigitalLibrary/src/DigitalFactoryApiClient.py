@@ -91,7 +91,7 @@ class DigitalFactoryApiClient:
             if response is not None:
                 if self._library_max_private_projects == -1 or isinstance(response, DigitalFactoryProjectResponse):
                     callback(True)
-                elif isinstance(response, list) and all(isinstance(r, DigitalFactoryProjectResponse) for r in response):
+                elif isinstance(response, list) and all(isinstance(r, DigitalFactoryProjectResponse) for r in response) and self._library_max_private_projects is not None:
                     callback(len(response) < self._library_max_private_projects)
                 else:
                     Logger.warning(f"Digital Factory: Incorrect response type received when requesting private projects: {str(response)}")
