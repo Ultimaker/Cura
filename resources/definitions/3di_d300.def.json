@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "platform": "3di_d300_platform.stl",
-        "platform_offset": [-200, -5, 173.205],
+        "platform_offset": [-200, -5, 173.205]
     },
 
     "overrides": {
@@ -20,7 +20,7 @@
         },
         "machine_depth": {
             "default_value": 300
-        },
+        }
     }
 }
 
