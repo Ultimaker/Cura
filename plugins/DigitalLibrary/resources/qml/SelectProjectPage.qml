@@ -93,7 +93,7 @@ Item
             {
                 id: digitalFactoryImage
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: "../images/digital_factory.svg"
+                source: searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg"
                 fillMode: Image.PreserveAspectFit
                 width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
                 sourceSize.width: width
@@ -104,7 +104,7 @@ Item
             {
                 id: noLibraryProjectsLabel
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "It appears that you don't have any projects in the Library yet."
+                text: searchBar.text === "" ? "It appears that you don't have any projects in the Library yet." : "No projects found that match the search query."
                 font: UM.Theme.getFont("medium")
             }
 
@@ -114,6 +114,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Visit Digital Library"
                 onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library")
+                visible: searchBar.text === "" //Show the link to Digital Library when there are no projects in the user's Library.
             }
         }
     }
