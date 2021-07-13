@@ -310,7 +310,7 @@ class DigitalFactoryController(QObject):
             self._selected_file_indices = file_indices
             self.selectedFileIndicesChanged.emit(file_indices)
 
-    def setProjectFilter(self, new_filter) -> None:
+    def setProjectFilter(self, new_filter: str) -> None:
         """
         Called when the user wants to change the search filter for projects.
 
@@ -333,7 +333,7 @@ class DigitalFactoryController(QObject):
         """
         return self._project_filter
 
-    def _applyProjectFilter(self):
+    def _applyProjectFilter(self) -> None:
         """
         Actually apply the current filter to search for projects with the user-defined search string.
         :return:
