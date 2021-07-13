@@ -42,6 +42,7 @@ Item
             right: parent.right
         }
         height: childrenRect.height
+        spacing: UM.Theme.getSize("default_margin").width
 
         Cura.TextField
         {
