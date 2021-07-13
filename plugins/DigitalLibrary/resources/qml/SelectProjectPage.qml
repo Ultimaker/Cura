@@ -43,13 +43,20 @@ Item
         }
         height: childrenRect.height
 
-        TextField
+        Cura.TextField
         {
             id: searchBar
             Layout.fillWidth: true
             height: createNewProjectButton.height
 
-            onTextEdited: manager.projectFilter = text
+            onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
+
+            placeholderText:
+            {
+                var image_size = "width=\"" + UM.Theme.getSize("small_button_icon").width + "\" height=\"" + UM.Theme.getSize("small_button_icon").height + "\" ";
+                var image_source = "src=\"" + UM.Theme.getIcon("Magnifier") + "\"";
+                return "<img align=\"middle\" " + image_size + image_source + "> &nbsp; Search";
+            }
         }
 
         Cura.SecondaryButton
