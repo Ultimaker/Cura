@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "platform": "3di_d220_platform.stl",
-        "platform_offset": [0, -5, 0],
+        "platform_offset": [0, -5, 0]
     },
 
     "overrides": {
@@ -20,7 +20,7 @@
         },
         "machine_depth": {
             "default_value": 250
-        },
+        }
     }
 }
 
