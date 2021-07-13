@@ -55,6 +55,7 @@ class DigitalFactoryApiClient:
         self._http = HttpRequestManager.getInstance()
         self._on_error = on_error
         self._file_uploader = None  # type: Optional[DFFileUploader]
+        self._library_max_private_projects: Optional[int] = None
 
         self._projects_pagination_mgr = PaginationManager(limit = projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
 
@@ -69,6 +70,7 @@ class DigitalFactoryApiClient:
                 callback(
                     response.library_max_private_projects == -1 or  # Note: -1 is unlimited
                     response.library_max_private_projects > 0)
+                self._library_max_private_projects = response.library_max_private_projects
             else:
                 Logger.warning(f"Digital Factory: Response is not a feature budget, likely an error: {str(response)}")
                 callback(False)
@@ -78,6 +80,27 @@ class DigitalFactoryApiClient:
                        callback = self._parseCallback(callbackWrap, DigitalFactoryFeatureBudgetResponse, callbackWrap),
                        error_callback = callbackWrap,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
+
+    def checkUserCanCreateNewLibraryProject(self, callback: Callable) -> None:
+        """
+        Checks if the user is allowed to create new library projects.
+        A user is allowed to create new library projects if the haven't reached their maximum allowed private projects.
+        """
+
+        def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
+            if response is not None:
+                if self._library_max_private_projects == -1 or isinstance(response, DigitalFactoryProjectResponse):
+                    callback(True)
+                elif isinstance(response, list) and all(isinstance(r, DigitalFactoryProjectResponse) for r in response):
+                    callback(len(response) < self._library_max_private_projects)
+                else:
+                    Logger.warning(f"Digital Factory: Incorrect response type received when requesting private projects: {str(response)}")
+                    callback(False)
+            else:
+                Logger.warning(f"Digital Factory: Response is empty, likely an error: {str(response)}")
+                callback(False)
+
+        self.getProjectsFirstPage(on_finished = callbackWrap, failed = callbackWrap)
 
     def getProject(self, library_project_id: str, on_finished: Callable[[DigitalFactoryProjectResponse], Any], failed: Callable) -> None:
         """
