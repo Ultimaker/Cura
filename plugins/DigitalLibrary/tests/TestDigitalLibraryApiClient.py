@@ -1,3 +1,6 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import MagicMock
 
 import pytest
@@ -37,7 +40,7 @@ def test_getProjectsFirstPage(api_client):
     failed_callback = MagicMock()
 
     # Call
-    api_client.getProjectsFirstPage(on_finished = finished_callback, failed = failed_callback)
+    api_client.getProjectsFirstPage(search_filter = "filter", on_finished = finished_callback, failed = failed_callback)
 
     # Asserts
     pagination_manager.reset.assert_called_once()  # Should be called since we asked for new set of projects
@@ -45,16 +48,16 @@ def test_getProjectsFirstPage(api_client):
     args = http_manager.get.call_args_list[0]
 
     # Ensure that it's called with the right limit
-    assert args[0][0] == "https://api.ultimaker.com/cura/v1/projects?limit=20"
+    assert args[0][0] == "https://api.ultimaker.com/cura/v1/projects?limit=20&search=filter"
 
     # Change the limit & try again
     http_manager.get.reset_mock()
     pagination_manager.limit = 80
-    api_client.getProjectsFirstPage(on_finished = finished_callback, failed = failed_callback)
+    api_client.getProjectsFirstPage(search_filter = "filter", on_finished = finished_callback, failed = failed_callback)
     args = http_manager.get.call_args_list[0]
 
     # Ensure that it's called with the right limit
-    assert args[0][0] == "https://api.ultimaker.com/cura/v1/projects?limit=80"
+    assert args[0][0] == "https://api.ultimaker.com/cura/v1/projects?limit=80&search=filter"
 
 
 def test_getMoreProjects_noNewProjects(api_client):
