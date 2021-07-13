@@ -258,7 +258,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.hide()
         message = PrintJobUploadSuccessMessage()
         message.addAction("monitor print",
-                          name=I18N_CATALOG.i18nc("@action:button", "Monitor Print"),
+                          name=I18N_CATALOG.i18nc("@action:button", "Monitor print"),
                           icon="",
                           description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in Ultimaker Digital Factory"),
                           button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
