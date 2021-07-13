@@ -47,7 +47,7 @@ Item
         {
             id: searchBar
             Layout.fillWidth: true
-            height: createNewProjectButton.height
+            implicitHeight: createNewProjectButton.height
 
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
 
