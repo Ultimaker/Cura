@@ -262,7 +262,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
                           icon="",
                           description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in Ultimaker Digital Factory"),
                           button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
-        df_url = "https://digitalfactory.ultimaker.com/app/jobs/%s?utm_source=cura&utm_medium=software&utm_campaign=monitor-button" % self._cluster.cluster_id
+        df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=monitor-button"
         message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))
 
         message.show()
