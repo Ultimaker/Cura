@@ -16,9 +16,9 @@ class DigitalFactoryFeatureBudgetResponse(BaseModel):
                  library_can_use_status: Optional[bool] = False,
                  library_can_use_tags: Optional[bool] = False,
                  library_can_use_technical_requirements: Optional[bool] = False,
-                 library_max_organization_shared_projects: Optional[int] = False,  # -1 means unlimited
-                 library_max_private_projects: Optional[int] = False,  # -1 means unlimited
-                 library_max_team_shared_projects: Optional[int] = False,  # -1 means unlimited
+                 library_max_organization_shared_projects: Optional[int] = None,  # -1 means unlimited
+                 library_max_private_projects: Optional[int] = None,  # -1 means unlimited
+                 library_max_team_shared_projects: Optional[int] = None,  # -1 means unlimited
                  **kwargs) -> None:
 
         self.library_can_use_business_value = library_can_use_business_value
