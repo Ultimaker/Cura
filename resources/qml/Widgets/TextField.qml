@@ -15,6 +15,8 @@ TextField
 {
     id: textField
 
+    property alias leftIcon: iconLeft.source
+
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     hoverEnabled: true
@@ -22,6 +24,7 @@ TextField
     font: UM.Theme.getFont("default")
     color: UM.Theme.getColor("text")
     renderType: Text.NativeRendering
+    leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin")
 
     states: [
         State
@@ -66,6 +69,24 @@ TextField
                 return UM.Theme.getColor("setting_control_border_highlight")
             }
             return UM.Theme.getColor("setting_control_border")
+        }
+
+        //Optional icon added on the left hand side.
+        UM.RecolorImage
+        {
+            id: iconLeft
+
+            anchors
+            {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_margin").width
+            }
+
+            visible: source != ""
+            height: UM.Theme.getSize("small_button_icon").height
+            width: visible ? height : 0
+            color: textField.color
         }
     }
 }

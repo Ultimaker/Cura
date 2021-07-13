@@ -51,12 +51,8 @@ Item
 
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
 
-            placeholderText:
-            {
-                var image_size = "width=\"" + UM.Theme.getSize("small_button_icon").width + "\" height=\"" + UM.Theme.getSize("small_button_icon").height + "\" ";
-                var image_source = "src=\"" + UM.Theme.getIcon("Magnifier") + "\"";
-                return "<img align=\"middle\" " + image_size + image_source + "> &nbsp; Search";
-            }
+            leftIcon: UM.Theme.getIcon("Magnifier")
+            placeholderText: "Search"
         }
 
         Cura.SecondaryButton
@@ -106,6 +102,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: searchBar.text === "" ? "It appears that you don't have any projects in the Library yet." : "No projects found that match the search query."
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
             }
 
             Cura.TertiaryButton
