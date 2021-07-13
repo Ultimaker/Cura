@@ -555,7 +555,7 @@ class DigitalFactoryController(QObject):
             # false, we also need to clean it from the projects model
             self._project_model.clearProjects()
             self.setSelectedProjectIndex(-1)
-            self._api.getProjectsFirstPage(on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+            self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
             self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
         self._has_preselected_project = new_has_preselected_project
         self.preselectedProjectChanged.emit()
