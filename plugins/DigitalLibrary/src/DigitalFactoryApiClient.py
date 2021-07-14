@@ -92,7 +92,7 @@ class DigitalFactoryApiClient:
                 if isinstance(response, DigitalFactoryProjectResponse):  # The user has only one private project
                     callback(True)
                 elif isinstance(response, list) and all(isinstance(r, DigitalFactoryProjectResponse) for r in response):
-                    callback(len(response) < self._library_max_private_projects)
+                    callback(len(response) < cast(int, self._library_max_private_projects))
                 else:
                     Logger.warning(f"Digital Factory: Incorrect response type received when requesting private projects: {str(response)}")
                     callback(False)
