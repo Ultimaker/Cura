@@ -211,7 +211,6 @@ class DigitalFactoryController(QObject):
 
         :param df_projects: A list of all the Digital Factory Library projects linked to the user's account
         """
-        self.clear()
         self.setHasMoreProjectsToLoad(self._api.hasMoreProjectsToLoad())
         self._project_model.setProjects(df_projects)
         self.setRetrievingProjectsStatus(RetrievalStatus.Success)
@@ -338,6 +337,7 @@ class DigitalFactoryController(QObject):
         Actually apply the current filter to search for projects with the user-defined search string.
         :return:
         """
+        self.clear()
         self.projectFilterChanged.emit()
         self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
