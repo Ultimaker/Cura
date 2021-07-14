@@ -166,14 +166,7 @@ class DigitalFactoryController(QObject):
 
         :return: True if the user account has Digital Library access, else False
         """
-        if self._account.userProfile:
-            subscriptions = self._account.userProfile.get("subscriptions", [])
-            if len(subscriptions) > 0:
-                return True
         if self._user_has_access:
-            # The user has access even though they have no subscriptions. This means they are an Essential user and they
-            # have limited personal private projects available. In this case, we need to check whether they have already
-            # reached their limit.
             self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
         return self._user_has_access
 
