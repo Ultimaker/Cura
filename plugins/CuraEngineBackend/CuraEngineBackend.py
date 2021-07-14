@@ -937,6 +937,7 @@ class CuraEngineBackend(QObject, Backend):
                     )
                     message.actionTriggered.connect(self._reportBackendError)
                     message.show()
+                    self.stopSlicing()
                 else:
                     Logger.log("d", "Backend finished slicing. Resetting process and socket.")
                 self._process = None # type: ignore
