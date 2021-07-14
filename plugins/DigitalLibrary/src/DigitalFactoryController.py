@@ -1,4 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import math
 import os
@@ -8,7 +10,7 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional, List, Dict, Any, cast
 
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QUrl
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
 from PyQt5.QtNetwork import QNetworkReply
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType
 
@@ -116,6 +118,11 @@ class DigitalFactoryController(QObject):
         self._project_model = DigitalFactoryProjectModel()
         self._selected_project_idx = -1
         self._project_creation_error_text = "Something went wrong while creating a new project. Please try again."
+        self._project_filter = ""
+        self._project_filter_change_timer = QTimer()
+        self._project_filter_change_timer.setInterval(200)
+        self._project_filter_change_timer.setSingleShot(True)
+        self._project_filter_change_timer.timeout.connect(self._applyProjectFilter)
 
         # Initialize the file model
         self._file_model = DigitalFactoryFileModel()
@@ -176,7 +183,7 @@ class DigitalFactoryController(QObject):
             if preselected_project_id:
                 self._api.getProject(preselected_project_id, on_finished = self.setProjectAsPreselected, failed = self._onGetProjectFailed)
             else:
-                self._api.getProjectsFirstPage(on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+                self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
     def setProjectAsPreselected(self, df_project: DigitalFactoryProjectResponse) -> None:
         """
@@ -301,6 +308,38 @@ class DigitalFactoryController(QObject):
         if file_indices != self._selected_file_indices:
             self._selected_file_indices = file_indices
             self.selectedFileIndicesChanged.emit(file_indices)
+
+    def setProjectFilter(self, new_filter: str) -> None:
+        """
+        Called when the user wants to change the search filter for projects.
+
+        The filter is not immediately applied. There is some delay to allow the user to finish typing.
+        :param new_filter: The new filter that the user wants to apply.
+        """
+        self._project_filter = new_filter
+        self._project_filter_change_timer.start()
+
+    """
+    Signal to notify Qt that the applied filter has changed.
+    """
+    projectFilterChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = projectFilterChanged, fset = setProjectFilter)
+    def projectFilter(self) -> str:
+        """
+        The current search filter being applied to the project list.
+        :return: The current search filter being applied to the project list.
+        """
+        return self._project_filter
+
+    def _applyProjectFilter(self) -> None:
+        """
+        Actually apply the current filter to search for projects with the user-defined search string.
+        :return:
+        """
+        self.clear()
+        self.projectFilterChanged.emit()
+        self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
     @pyqtProperty(QObject, constant = True)
     def digitalFactoryProjectModel(self) -> "DigitalFactoryProjectModel":
@@ -516,7 +555,7 @@ class DigitalFactoryController(QObject):
             # false, we also need to clean it from the projects model
             self._project_model.clearProjects()
             self.setSelectedProjectIndex(-1)
-            self._api.getProjectsFirstPage(on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+            self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
             self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
         self._has_preselected_project = new_has_preselected_project
         self.preselectedProjectChanged.emit()

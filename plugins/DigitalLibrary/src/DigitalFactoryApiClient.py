@@ -95,7 +95,7 @@ class DigitalFactoryApiClient:
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
-    def getProjectsFirstPage(self, on_finished: Callable[[List[DigitalFactoryProjectResponse]], Any], failed: Callable) -> None:
+    def getProjectsFirstPage(self, search_filter: str, on_finished: Callable[[List[DigitalFactoryProjectResponse]], Any], failed: Callable) -> None:
         """
         Retrieves digital factory projects for the user that is currently logged in.
 
@@ -103,13 +103,18 @@ class DigitalFactoryApiClient:
         according to the limit set in the pagination manager. If there is no projects pagination manager, this function
         leaves the project limit to the default set on the server side (999999).
 
+        :param search_filter: Text to filter the search results. If given an empty string, results are not filtered.
         :param on_finished: The function to be called after the result is parsed.
         :param failed: The function to be called if the request fails.
         """
-        url = "{}/projects".format(self.CURA_API_ROOT)
+        url = f"{self.CURA_API_ROOT}/projects"
+        query_character = "?"
         if self._projects_pagination_mgr:
             self._projects_pagination_mgr.reset()  # reset to clear all the links and response metadata
-            url += "?limit={}".format(self._projects_pagination_mgr.limit)
+            url += f"{query_character}limit={self._projects_pagination_mgr.limit}"
+            query_character = "&"
+        if search_filter != "":
+            url += f"{query_character}search={search_filter}"
 
         self._http.get(url,
                        scope = self._scope,
