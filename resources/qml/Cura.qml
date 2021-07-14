@@ -438,7 +438,9 @@ UM.MainWindow
                         text: model.name
                         iconSource: {
                             if (model.icon == null || model.icon == "")
+                            {
                                 return UM.Theme.getIcon("LinkExternal")
+                            }
                             return UM.Theme.getIcon(model.icon)
                         }
                         height: UM.Theme.getSize("message_action_button").height
