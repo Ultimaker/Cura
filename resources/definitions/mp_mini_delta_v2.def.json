@@ -31,12 +31,7 @@
           "default_value": ";(**** end.gcode for MP Mini Delta V2****)\nG28;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)"
         },
         "material_print_temp_prepend":{"default_value":false},
-        "default_material_bed_temperature":{
-          "default_value": 40
-		},
-		"material_bed_temperature":{
-          "default_value": 40
-		},
+        "material_bed_temperature": { "value": 40 },
         "machine_width": { "default_value": 110 },
         "machine_depth": { "default_value": 110 },
         "machine_height": { "default_value": 120 },
