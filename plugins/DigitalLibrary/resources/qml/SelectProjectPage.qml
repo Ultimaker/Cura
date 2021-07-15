@@ -81,7 +81,7 @@ Item
             tooltip: "You have reached the maximum number of projects allowed by your subscription. Please upgrade to the Professional subscription to create more projects."
             tooltipWidth: parent.width * 0.5
 
-            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/enterprise-software")
+            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-essentials/sign-up-cura?utm_source=cura&utm_medium=software&utm_campaign=lib-max")
         }
     }
 
