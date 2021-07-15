@@ -610,10 +610,15 @@ class CuraEngineBackend(QObject, Backend):
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
+        elif error.getErrorCode() == Arcus.ErrorCode.ConnectionResetError:
+            Logger.error("CuraEngine crashed abnormally! The socket connection was reset unexpectedly.")
+            self._slicing_error_message.show()
+            self.setState(BackendState.Error)
+            self.stopSlicing()
 
         # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
         # needs to be updated. Otherwise backendState is "Unable To Slice"
-        if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
+        elif error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
             self._start_slice_job.setIsCancelled(False)
 
     # Check if there's any slicable object in the scene.
