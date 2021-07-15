@@ -157,6 +157,18 @@ class CuraEngineBackend(QObject, Backend):
         self.determineAutoSlicing()
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
+        self._slicing_error_message = Message(
+            text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
+            title = catalog.i18nc("@message:title", "Slicing failed")
+        )
+        self._slicing_error_message.addAction(
+            action_id = "report_bug",
+            name = catalog.i18nc("@message:button", "Report a bug"),
+            description = catalog.i18nc("@message:description", "Report a bug on Ultimaker Cura's issue tracker."),
+            icon = "[no_icon]"
+        )
+        self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
+
         self._snapshot = None #type: Optional[QImage]
 
         application.initializationFinished.connect(self.initialize)
@@ -925,18 +937,7 @@ class CuraEngineBackend(QObject, Backend):
                 return_code = self._process.wait()
                 if return_code != 0:
                     Logger.log("e", f"Backend exited abnormally with return code {return_code}!")
-                    message = Message(
-                        text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
-                        title = catalog.i18nc("@message:title", "Slicing failed")
-                    )
-                    message.addAction(
-                        action_id = "report_bug",
-                        name = catalog.i18nc("@message:button", "Report a bug"),
-                        description = catalog.i18nc("@message:description", "Report a bug on Ultimaker Cura's issue tracker."),
-                        icon = "[no_icon]"
-                    )
-                    message.actionTriggered.connect(self._reportBackendError)
-                    message.show()
+                    self._slicing_error_message.show()
                     self.stopSlicing()
                 else:
                     Logger.log("d", "Backend finished slicing. Resetting process and socket.")
