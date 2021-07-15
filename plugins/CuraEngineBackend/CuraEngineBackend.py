@@ -938,6 +938,7 @@ class CuraEngineBackend(QObject, Backend):
                 if return_code != 0:
                     Logger.log("e", f"Backend exited abnormally with return code {return_code}!")
                     self._slicing_error_message.show()
+                    self.setState(BackendState.Error)
                     self.stopSlicing()
                 else:
                     Logger.log("d", "Backend finished slicing. Resetting process and socket.")
