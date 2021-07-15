@@ -436,7 +436,8 @@ UM.MainWindow
                     Cura.TertiaryButton
                     {
                         text: model.name
-                        iconSource: {
+                        iconSource:
+                        {
                             if (model.icon == null || model.icon == "")
                             {
                                 return UM.Theme.getIcon("LinkExternal")
