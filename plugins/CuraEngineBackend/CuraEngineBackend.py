@@ -4,12 +4,12 @@
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
-from PyQt5.QtCore import QObject, QTimer, pyqtSlot
+from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
 from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 
-from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QDesktopServices, QImage
 
 from UM.Backend.Backend import Backend, BackendState
 from UM.Scene.SceneNode import SceneNode
@@ -156,6 +156,18 @@ class CuraEngineBackend(QObject, Backend):
         self._change_timer.setInterval(500)
         self.determineAutoSlicing()
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
+
+        self._slicing_error_message = Message(
+            text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
+            title = catalog.i18nc("@message:title", "Slicing failed")
+        )
+        self._slicing_error_message.addAction(
+            action_id = "report_bug",
+            name = catalog.i18nc("@message:button", "Report a bug"),
+            description = catalog.i18nc("@message:description", "Report a bug on Ultimaker Cura's issue tracker."),
+            icon = "[no_icon]"
+        )
+        self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
 
         self._snapshot = None #type: Optional[QImage]
 
@@ -598,10 +610,15 @@ class CuraEngineBackend(QObject, Backend):
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
+        elif error.getErrorCode() == Arcus.ErrorCode.ConnectionResetError:
+            Logger.error("CuraEngine crashed abnormally! The socket connection was reset unexpectedly.")
+            self._slicing_error_message.show()
+            self.setState(BackendState.Error)
+            self.stopSlicing()
 
         # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
         # needs to be updated. Otherwise backendState is "Unable To Slice"
-        if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
+        elif error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
             self._start_slice_job.setIsCancelled(False)
 
     # Check if there's any slicable object in the scene.
@@ -922,8 +939,21 @@ class CuraEngineBackend(QObject, Backend):
 
         if not self._restart:
             if self._process: # type: ignore
-                Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait()) # type: ignore
+                return_code = self._process.wait()
+                if return_code != 0:
+                    Logger.log("e", f"Backend exited abnormally with return code {return_code}!")
+                    self._slicing_error_message.show()
+                    self.setState(BackendState.Error)
+                    self.stopSlicing()
+                else:
+                    Logger.log("d", "Backend finished slicing. Resetting process and socket.")
                 self._process = None # type: ignore
+
+    def _reportBackendError(self, _message_id: str, _action_id: str) -> None:
+        """
+        Triggered when the user wants to report an error in the back-end.
+        """
+        QDesktopServices.openUrl(QUrl("https://github.com/Ultimaker/Cura/issues/new/choose"))
 
     def _onGlobalStackChanged(self) -> None:
         """Called when the global container stack changes"""

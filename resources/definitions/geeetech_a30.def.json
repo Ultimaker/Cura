@@ -4,7 +4,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "author": "William & Cataldo URSO",
-        "manufacturer": "Shenzhen Geeetech Technology",
+        "manufacturer": "Geeetech",
         "file_formats": "text/x-gcode",
         "visible": true,
         "has_materials": true,

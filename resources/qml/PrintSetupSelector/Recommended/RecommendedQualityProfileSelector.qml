@@ -52,6 +52,7 @@ Item
                 text: catalog.i18nc("@label", "Profiles")
                 font: UM.Theme.getFont("medium")
                 width: labelColumnWidth
+                iconSize: UM.Theme.getSize("medium_button_icon").width
             }
             UM.SimpleButton
             {
@@ -91,6 +92,7 @@ Item
                 {
                     left: profileLabel.right
                     right: parent.right
+                    verticalCenter: profileLabel.verticalCenter
                 }
 
                 model: Cura.QualityProfilesDropDownMenuModel

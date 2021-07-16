@@ -226,9 +226,12 @@ Item
                 {
                     Cura.ExtruderIcon
                     {
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.centerIn: parent
                         materialColor: model.color
                         extruderEnabled: model.enabled
+                        iconVariant: "default"
+                        height: parent.height
+                        width: height
                     }
                 }
                 onClicked:

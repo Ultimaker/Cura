@@ -15,7 +15,8 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("PrintQuality")
+        source: UM.Theme.getIcon("Sliders", "medium")
+        iconSize: UM.Theme.getSize("button_icon").width
         text:
         {
             if (Cura.MachineManager.activeStack)
@@ -53,6 +54,7 @@ RowLayout
         source: UM.Theme.getIcon("Infill1")
         text: Cura.MachineManager.activeStack ? parseInt(infillDensity.properties.value) + "%" : "0%"
         font: UM.Theme.getFont("medium")
+        iconSize: UM.Theme.getSize("medium_button_icon").width
 
         UM.SettingPropertyProvider
         {
@@ -68,6 +70,7 @@ RowLayout
         source: UM.Theme.getIcon("Support")
         text: supportEnabled.properties.value == "True" ? enabledText : disabledText
         font: UM.Theme.getFont("medium")
+        iconSize: UM.Theme.getSize("medium_button_icon").width
 
         UM.SettingPropertyProvider
         {
@@ -83,6 +86,7 @@ RowLayout
         source: UM.Theme.getIcon("Adhesion")
         text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
         font: UM.Theme.getFont("medium")
+        iconSize: UM.Theme.getSize("medium_button_icon").width
 
         UM.SettingPropertyProvider
         {

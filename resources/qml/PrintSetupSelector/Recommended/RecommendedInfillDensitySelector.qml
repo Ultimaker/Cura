@@ -43,7 +43,7 @@ Item
             {
                 return UM.Theme.getIcon("Infill2")
             }
-            return UM.Theme.getIcon("Solid")
+            return UM.Theme.getIcon("Infill100")
         }
     }
 
@@ -65,6 +65,7 @@ Item
         text: catalog.i18nc("@label", "Infill") + " (%)"
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
+        iconSize: UM.Theme.getSize("medium_button_icon").width
     }
 
     Item
@@ -119,6 +120,8 @@ Item
                     implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
                     implicitHeight: implicitWidth
                     radius: Math.round(implicitWidth / 2)
+                    border.color: UM.Theme.getColor("slider_groove_fill")
+                    border.width: UM.Theme.getSize("default_lining").height
                 }
 
                 tickmarks: Repeater

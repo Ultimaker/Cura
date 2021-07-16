@@ -93,11 +93,11 @@ Cura.ExpandablePopup
         {
             if (isGroup)
             {
-                return UM.Theme.getIcon("PrinterTriple")
+                return UM.Theme.getIcon("PrinterTriple", "medium")
             }
             else if (isNetworkPrinter || isCloudRegistered)
             {
-                return UM.Theme.getIcon("Printer")
+                return UM.Theme.getIcon("Printer", "medium")
             }
             else
             {
@@ -114,8 +114,9 @@ Cura.ExpandablePopup
             anchors
             {
                 bottom: parent.bottom
+                bottomMargin: - height * 1 / 6
                 left: parent.left
-                leftMargin: UM.Theme.getSize("thick_margin").width
+                leftMargin: iconSize - width * 5 / 6
             }
 
             source:
@@ -124,13 +125,9 @@ Cura.ExpandablePopup
                 {
                     return UM.Theme.getIcon("CheckBlueBG", "low")
                 }
-                else if (connectionStatus == "printer_cloud_connected")
+                else if (connectionStatus == "printer_cloud_connected" || connectionStatus == "printer_cloud_not_available")
                 {
-                    return UM.Theme.getIcon("CloudBlueBG", "low")
-                }
-                else if (connectionStatus == "printer_cloud_not_available")
-                {
-                    return UM.Theme.getIcon("CloudGreyBG", "low")
+                    return UM.Theme.getIcon("CloudBadge", "low")
                 }
                 else
                 {
@@ -150,11 +147,10 @@ Cura.ExpandablePopup
             {
                 id: iconBackground
                 anchors.centerIn: parent
-                // Make it a bit bigger so there is an outline
-                width: parent.width + 2 * UM.Theme.getSize("default_lining").width
-                height: parent.height + 2 * UM.Theme.getSize("default_lining").height
-                radius: Math.round(width / 2)
-                color: UM.Theme.getColor("main_background")
+                width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                height: parent.height - 1.5
+                radius: width / 2
+                color: UM.Theme.getColor("connection_badge_background")
                 z: parent.z - 1
             }
 
