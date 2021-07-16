@@ -366,7 +366,7 @@ class DigitalFactoryApiClient:
         :param on_error: The function to be called if anything goes wrong.
         """
 
-        display_name = re.sub(r"[^a-zA-Z0-9- ./™®ö+']", " ", project_name)
+        display_name = re.sub(r"^[\\w\\-\\. ()]+\\.[a-zA-Z0-9]+$", " ", project_name)
         Logger.log("i", "Attempt to create new DF project '{}'.".format(display_name))
 
         url = "{}/projects".format(self.CURA_API_ROOT)
