@@ -94,6 +94,9 @@ class DigitalFactoryController(QObject):
     """Signal to inform about the state of user access."""
     userAccessStateChanged = pyqtSignal(bool)
 
+    """Signal to inform whether the user is allowed to create more Library projects."""
+    userCanCreateNewLibraryProjectChanged = pyqtSignal(bool)
+
     def __init__(self, application: CuraApplication) -> None:
         super().__init__(parent = None)
 
@@ -143,6 +146,7 @@ class DigitalFactoryController(QObject):
         self._application.initializationFinished.connect(self._applicationInitializationFinished)
 
         self._user_has_access = False
+        self._user_account_can_create_new_project = False
 
     def clear(self) -> None:
         self._project_model.clearProjects()
@@ -169,10 +173,8 @@ class DigitalFactoryController(QObject):
 
         :return: True if the user account has Digital Library access, else False
         """
-        if self._account.userProfile:
-            subscriptions = self._account.userProfile.get("subscriptions", [])
-            if len(subscriptions) > 0:
-                return True
+        if self._user_has_access:
+            self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
         return self._user_has_access
 
     def initialize(self, preselected_project_id: Optional[str] = None) -> None:
@@ -556,6 +558,7 @@ class DigitalFactoryController(QObject):
             self._project_model.clearProjects()
             self.setSelectedProjectIndex(-1)
             self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+            self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
             self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
         self._has_preselected_project = new_has_preselected_project
         self.preselectedProjectChanged.emit()
@@ -563,6 +566,14 @@ class DigitalFactoryController(QObject):
     @pyqtProperty(bool, fset = setHasPreselectedProject, notify = preselectedProjectChanged)
     def hasPreselectedProject(self) -> bool:
         return self._has_preselected_project
+
+    def setCanCreateNewLibraryProject(self, can_create_new_library_project: bool) -> None:
+        self._user_account_can_create_new_project = can_create_new_library_project
+        self.userCanCreateNewLibraryProjectChanged.emit(self._user_account_can_create_new_project)
+
+    @pyqtProperty(bool, fset = setCanCreateNewLibraryProject, notify = userCanCreateNewLibraryProjectChanged)
+    def userAccountCanCreateNewLibraryProject(self) -> bool:
+        return self._user_account_can_create_new_project
 
     @pyqtSlot(str, "QStringList")
     def saveFileToSelectedProject(self, filename: str, formats: List[str]) -> None:
