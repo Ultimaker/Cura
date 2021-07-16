@@ -46,7 +46,7 @@
             ]
         },
         "z_seam_type": {
-            "default_value": "'back'"
+            "value": "'back'"
         },
         "gantry_height": {
             "value": "0"
