@@ -9,7 +9,7 @@
         "platform": "flsun_sr.3mf",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-		"has_machine_quality": false,
+        "has_machine_quality": false,
         "preferred_quality_type": "fast",
         "machine_extruder_trains": {
             "0": "flsun_sr_extruder_0"
