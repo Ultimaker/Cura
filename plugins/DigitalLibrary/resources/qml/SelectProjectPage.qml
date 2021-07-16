@@ -20,7 +20,7 @@ Item
 
     width: parent.width
     height: parent.height
-    property alias createNewProjectButtonVisible: createNewProjectButton.visible
+    property bool createNewProjectButtonVisible: true
 
     anchors
     {
@@ -61,12 +61,27 @@ Item
             id: createNewProjectButton
 
             text: "New Library project"
+            visible: createNewProjectButtonVisible && manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
 
             onClicked:
             {
                 createNewProjectPopup.open()
             }
             busy: manager.creatingNewProjectStatus == DF.RetrievalStatus.InProgress
+        }
+
+
+        Cura.SecondaryButton
+        {
+            id: upgradePlanButton
+
+            text: "Upgrade plan"
+            iconSource: UM.Theme.getIcon("LinkExternal")
+            visible: createNewProjectButtonVisible && !manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
+            tooltip: "You have reached the maximum number of projects allowed by your subscription. Please upgrade to the Professional subscription to create more projects."
+            tooltipWidth: parent.width * 0.5
+
+            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-essentials/sign-up-cura?utm_source=cura&utm_medium=software&utm_campaign=lib-max")
         }
     }
 

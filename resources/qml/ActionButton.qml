@@ -18,6 +18,7 @@ Button
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.tooltipText
+    property alias tooltipWidth: tooltip.width
 
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
