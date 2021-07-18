@@ -1,0 +1,17 @@
+{
+    "name": "Z-Bolt S600",
+    "version": 2,
+    "inherits": "z-bolt_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "z-bolt_base"
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "Z-Bolt S600" },
+        "machine_width":    { "default_value": 600 },
+        "machine_depth":    { "default_value": 600 },
+        "machine_height":   { "default_value": 900 }
+    }
+}
