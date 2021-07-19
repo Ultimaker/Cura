@@ -95,7 +95,7 @@ UM.PreferencesPage
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
-            onTextChanged: definitionsModel.filter = {"i18n_label": "*" + text}
+            onTextChanged: definitionsModel.filter = {"i18n_label|i18n_description": "*" + text}
         }
 
         NewControls.ComboBox
