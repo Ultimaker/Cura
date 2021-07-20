@@ -365,12 +365,10 @@ class DigitalFactoryApiClient:
         :param on_finished: The function to be called after the result is parsed.
         :param on_error: The function to be called if anything goes wrong.
         """
-
-        display_name = re.sub(r"^[\\w\\-\\. ()]+\\.[a-zA-Z0-9]+$", " ", project_name)
-        Logger.log("i", "Attempt to create new DF project '{}'.".format(display_name))
+        Logger.log("i", "Attempt to create new DF project '{}'.".format(project_name))
 
         url = "{}/projects".format(self.CURA_API_ROOT)
-        data = json.dumps({"data": {"display_name": display_name}}).encode()
+        data = json.dumps({"data": {"display_name": project_name}}).encode()
         self._http.put(url,
                        scope = self._scope,
                        data = data,
