@@ -109,7 +109,7 @@ Item
             //For more information, see:
             //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
             //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
-            title: (Qt.platform.os == "osx") ? "P&references" : catalog.i18nc("@title:menu menubar:toplevel", "P&references")
+            title: (Qt.platform.os == "osx") ? "&Preferences" : catalog.i18nc("@title:menu menubar:toplevel", "P&references")
 
             MenuItem { action: Cura.Actions.preferences }
         }
