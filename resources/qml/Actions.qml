@@ -180,7 +180,14 @@ Item
     Action
     {
         id: preferencesAction
-        text: catalog.i18nc("@action:inmenu", "Configure Cura...")
+        //On MacOS, don't translate the "Configure" word.
+        //Qt moves the "configure" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
         iconName: "configure"
     }
 
