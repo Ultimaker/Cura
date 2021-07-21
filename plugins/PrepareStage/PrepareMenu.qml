@@ -120,19 +120,6 @@ Item
                         popup.width = childrenRect.width
                     }
 
-                    Label
-                    {
-                        text: catalog.i18nc("@menu:header", "Open file")
-                        color: UM.Theme.getColor("text_medium")
-                        font: UM.Theme.getFont("medium")
-                        renderType: Text.NativeRendering
-                        verticalAlignment: Text.AlignVCenter
-
-                        width: contentWidth
-                        height: UM.Theme.getSize("action_button").height
-                        leftPadding: UM.Theme.getSize("default_margin").width
-                    }
-
                     Repeater
                     {
                         model: prepareMenu.fileProviderModel
