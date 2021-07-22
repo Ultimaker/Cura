@@ -6,7 +6,6 @@
     "visible": true,
     "author": "AtomStack",
     "manufacturer": "AtomStack",
-    "category": "AtomStack",
     "file_formats": "text/x-gcode",
     "icon": "wanhao-icon.png",
     "has_materials": true,
