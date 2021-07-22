@@ -16,7 +16,7 @@
         "primary_text": [255, 255, 255, 204],
         "secondary": [95, 95, 95, 255],
 
-        "secondary_button": [0, 0, 0, 0],
+        "secondary_button": [39, 44, 48, 255],
         "secondary_button_hover": [85, 85, 87, 255],
         "secondary_button_text": [255, 255, 255, 255],
 

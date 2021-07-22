@@ -1177,7 +1177,7 @@ msgstr "Hinten links"
 #: fdmprinter.def.json
 msgctxt "z_seam_position option back"
 msgid "Back"
-msgstr "Zurück"
+msgstr "Hinten"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option backright"

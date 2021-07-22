@@ -203,16 +203,16 @@ Cura.ExpandableComponent
 
                 style: UM.Theme.styles.checkbox
 
-
-                UM.RecolorImage
+                Rectangle
                 {
                     id: swatch
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: extrudersModelCheckBox.right
                     width: UM.Theme.getSize("layerview_legend_size").width
                     height: UM.Theme.getSize("layerview_legend_size").height
-                    source: UM.Theme.getIcon("Extruder", "medium")
                     color: model.color
+                    border.width: UM.Theme.getSize("default_lining").width
+                    border.color: UM.Theme.getColor("lining")
                 }
 
                 Label

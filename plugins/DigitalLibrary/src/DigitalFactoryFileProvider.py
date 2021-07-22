@@ -22,7 +22,7 @@ class DigitalFactoryFileProvider(FileProvider):
         self._dialog = None
 
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
-        self._account.loginStateChanged.connect(self._onLoginStateChanged)
+        self._controller.userAccessStateChanged.connect(self._onUserAccessStateChanged)
         self.enabled = self._account.isLoggedIn and self._controller.userAccountHasLibraryAccess()
         self.priority = 10
 
@@ -53,7 +53,7 @@ class DigitalFactoryFileProvider(FileProvider):
         if not self._dialog:
             Logger.log("e", "Unable to create the Digital Library Open dialog.")
 
-    def _onLoginStateChanged(self, logged_in: bool) -> None:
+    def _onUserAccessStateChanged(self, logged_in: bool) -> None:
         """
         Sets the enabled status of the DigitalFactoryFileProvider according to the account's login status
         :param logged_in: The new login status
