@@ -10,7 +10,7 @@
     "icon": "wanhao-icon.png",
     "has_materials": true,
     "machine_extruder_trains": {
-      "0": "atomstack_cambrianproe175_extruder"
+      "0": "atomstack_cambrianproe175_extruder_0"
     },
     "platform_offset": [
       0,
