@@ -109,7 +109,6 @@ class Account(QObject):
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
 
-
     @pyqtProperty(int, notify=syncStateChanged)
     def syncState(self):
         return self._sync_state
@@ -178,6 +177,7 @@ class Account(QObject):
         if error_message:
             if self._error_message:
                 self._error_message.hide()
+            Logger.log("w", "Failed to login: %s", error_message)
             self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
             self._error_message.show()
             self._logged_in = False
