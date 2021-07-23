@@ -3201,7 +3201,8 @@ msgstr "Distance de détour max. sans rétraction"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr ""
+msgstr "Lorsque cette distance est supérieure à zéro, les déplacements de détour qui sont plus longs que cette distance utiliseront la rétraction. Si elle est"
+" définie sur zéro, il n'y a pas de maximum et les mouvements de détour n'utiliseront pas la rétraction."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"

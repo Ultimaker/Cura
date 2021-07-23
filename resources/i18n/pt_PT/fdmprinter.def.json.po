@@ -3305,7 +3305,8 @@ msgstr "Distância Max. de Combing sem Retração"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr ""
+msgstr "Os movimentos de deslocação de Combing com uma distância maior que este valor, quando este é superior a zero, utilizam retrações. Se o valor for definido"
+" como zero, não existirá qualquer valor máximo e os movimentos Combing não utilizarão retrações."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"

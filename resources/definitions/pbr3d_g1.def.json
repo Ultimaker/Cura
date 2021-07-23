@@ -1,0 +1,45 @@
+{
+    "version": 2,
+    "name": "PBR 3D Gen-I",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Kapil H. Sonone, Prof. Bahubali P. Fuladi",
+        "manufacturer": "PBR Research",
+        "file_formats": "text/x-gcode",
+        "platform": "pbr3d_g1_buildplate.stl",
+        "platform_offset": [0, -5, 0],
+        "machine_extruder_trains":
+        {
+            "0": "pbr3d_g1_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "PBR 3D Gen-I" },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 200
+        },
+        "machine_height": {
+            "default_value": 200
+        },
+        "machine_depth": {
+            "default_value": 200
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "value": "200"
+        },
+        "machine_start_gcode": {
+            "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the Platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\n;Retract the Filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
+        }
+    }
+}

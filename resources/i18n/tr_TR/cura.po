@@ -173,7 +173,7 @@ msgstr "Geçerli sürümünüzden yüksek bir sürüme sahip bir Cura yedeği ge
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:157
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr ""
+msgstr "Cura yedeklemesi geri yüklenmeye çalışılırken aşağıdaki hata oluştu:"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/BuildVolume.py:98
 msgctxt "@info:status"
@@ -2258,7 +2258,7 @@ msgstr "Kullanım kılavuzlarını çevrimiçi olarak görüntüle"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:172
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr ""
+msgstr "Baskınızı Cura üzerinden izlemek için lütfen yazıcıyı bağlayın."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
 msgctxt "@label"
@@ -2382,7 +2382,7 @@ msgstr "Hat Genişliği"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:130
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr ""
+msgstr "Akış"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:171
 msgctxt "@label"
@@ -3378,7 +3378,7 @@ msgstr "Yukarıdan Görünüm"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:154
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
-msgstr ""
+msgstr "Alttan Görünüm"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:161
 msgctxt "@action:inmenu menubar:view"
@@ -4611,7 +4611,7 @@ msgstr "Dışa Aktar"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:199
 msgctxt "@action:button Sending materials to printers"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "Yazıcılarla Senkronize Et"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:248
 msgctxt "@action:label"
@@ -4665,7 +4665,7 @@ msgstr "Malzeme <filename>%1</filename> dosyasına başarıyla dışa aktarıld�
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:388
 msgctxt "@title:window"
 msgid "Export All Materials"
-msgstr ""
+msgstr "Tüm Malzemeleri Dışa Aktar"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:72
 msgctxt "@title"
@@ -5578,12 +5578,12 @@ msgstr "Cura Profili Yazıcı"
 #: DigitalLibrary/plugin.json
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr ""
+msgstr "Digital Library'ye bağlanarak Cura'nın Digital Library'deki dosyaları açmasına ve kaydetmesine olanak tanır."
 
 #: DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr ""
+msgstr "Ultimaker Digital Library"
 
 #: FirmwareUpdateChecker/plugin.json
 msgctxt "description"
@@ -6058,22 +6058,22 @@ msgstr "4.7'den 4.8'e Sürüm Yükseltme"
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr ""
+msgstr "Yapılandırmaları Cura 4.8'den Cura 4.9'a yükseltir."
 
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
-msgstr ""
+msgstr "4.8'den 4.9'a Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr ""
+msgstr "Yapılandırmaları Cura 4.9'dan Cura 4.10'a yükseltir."
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
-msgstr ""
+msgstr "4.9'dan 4.10'a Sürüm Yükseltme"
 
 #: X3DReader/plugin.json
 msgctxt "description"

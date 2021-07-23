@@ -173,7 +173,7 @@ msgstr "현재 버전보다 높은 Cura 백업을 복원하려고 시도했습�
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:157
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr ""
+msgstr "다음의 오류는 Cura 백업을 복원하려고 시도하는 동안 발생했습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/BuildVolume.py:98
 msgctxt "@info:status"
@@ -2247,7 +2247,7 @@ msgstr "사용자 매뉴얼 온라인 보기"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:172
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr ""
+msgstr "Cura에서 프린트를 모니터링하려면 프린터를 연결하십시오."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
 msgctxt "@label"
@@ -2370,7 +2370,7 @@ msgstr "선 두께"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:130
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr ""
+msgstr "유량"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:171
 msgctxt "@label"
@@ -3365,7 +3365,7 @@ msgstr "위에서 보기"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:154
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
-msgstr ""
+msgstr "하단 뷰"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:161
 msgctxt "@action:inmenu menubar:view"
@@ -4594,7 +4594,7 @@ msgstr "내보내기"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:199
 msgctxt "@action:button Sending materials to printers"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "프린터와 동기화"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:248
 msgctxt "@action:label"
@@ -4648,7 +4648,7 @@ msgstr "재료를 성공적으로 내보냈습니다"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:388
 msgctxt "@title:window"
 msgid "Export All Materials"
-msgstr ""
+msgstr "모든 재료 내보내기"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:72
 msgctxt "@title"
@@ -5558,12 +5558,12 @@ msgstr "Cura 프로파일 작성자"
 #: DigitalLibrary/plugin.json
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr ""
+msgstr "디지털 라이브러리와 연결하여 Cura에서 디지털 라이브러리를 통해 파일을 열고 저장할 수 있도록 합니다."
 
 #: DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr ""
+msgstr "Ultimaker 디지털 라이브러리"
 
 #: FirmwareUpdateChecker/plugin.json
 msgctxt "description"
@@ -6038,22 +6038,22 @@ msgstr "4.7에서 4.8로 버전 업그레이드"
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr ""
+msgstr "Cura 4.8에서 Cura 4.9로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
-msgstr ""
+msgstr "4.8에서 4.9로 버전 업그레이드"
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr ""
+msgstr "Cura 4.9에서 Cura 4.10으로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
-msgstr ""
+msgstr "4.9에서 4.10으로 버전 업그레이드"
 
 #: X3DReader/plugin.json
 msgctxt "description"

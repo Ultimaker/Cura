@@ -115,6 +115,7 @@
         "skirt_gap": { "value": 5.0 },
         "skirt_line_count": { "value": 4 },
 
+        "meshfix_maximum_deviation": { "value": 0.05 },
        
         "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },
         "support_pattern": { "value": "'zigzag'" },

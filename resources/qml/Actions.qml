@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -122,7 +122,15 @@ Item
     Action
     {
         id: quitAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Quit")
+
+        //On MacOS, don't translate the "Quit" word.
+        //Qt moves the "quit" entry to a different place, and if it got renamed can't find it again when it attempts to
+        //delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "&Quit" : catalog.i18nc("@action:inmenu menubar:file", "&Quit")
         iconName: "application-exit"
         shortcut: StandardKey.Quit
     }
@@ -172,7 +180,14 @@ Item
     Action
     {
         id: preferencesAction
-        text: catalog.i18nc("@action:inmenu", "Configure Cura...")
+        //On MacOS, don't translate the "Configure" word.
+        //Qt moves the "configure" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
         iconName: "configure"
     }
 
@@ -263,7 +278,15 @@ Item
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help", "About...");
+
+        //On MacOS, don't translate the "About" word.
+        //Qt moves the "about" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "About..." : catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
     }
 
