@@ -363,6 +363,12 @@
         "message_close_hover": [8, 7, 63, 255],
         "message_progressbar_background": [245, 245, 245, 255],
         "message_progressbar_control": [50, 130, 255, 255],
+        "message_success_icon_background": [36, 162, 73, 255],
+        "message_success_icon": [255, 255, 255, 255],
+        "message_warning_icon_background": [253, 209, 58, 255],
+        "message_warning_icon": [0, 0, 0, 255],
+        "message_error_icon_background": [218, 30, 40, 255],
+        "message_error_icon": [255, 255, 255, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 
@@ -467,15 +473,7 @@
         "monitor_carousel_dot_current": [119, 119, 119, 255],
 
         "cloud_unavailable": [153, 153, 153, 255],
-        "connection_badge_background": [255, 255, 255, 255],
-
-
-        "message_success_background": [36, 162, 73, 255],
-        "message_success_icon": [255, 255, 255, 255],
-        "message_warning_background": [253, 209, 58, 255],
-        "message_warning_icon": [0, 0, 0, 255],
-        "message_error_background": [218, 30, 40, 255],
-        "message_error_icon": [255, 255, 255, 255]
+        "connection_badge_background": [255, 255, 255, 255]
     },
 
     "sizes": {
