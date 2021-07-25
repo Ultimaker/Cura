@@ -43,14 +43,22 @@ class Layer:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshVertexCount()
-
         return result
 
     def lineMeshElementCount(self) -> int:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshElementCount()
+        return result
 
+    def lineMeshCumulativeTypeChangeCount(self, path: int) -> int:
+        result = 0
+        for polygon in self._polygons:
+            num_counts = len(polygon.cumulativeTypeChangeCounts)
+            if path < num_counts:
+                return result + polygon.cumulativeTypeChangeCounts[path]
+            path -= num_counts
+            result += polygon.cumulativeTypeChangeCounts[num_counts - 1]
         return result
 
     def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):

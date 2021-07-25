@@ -138,6 +138,7 @@ class SimulationPass(RenderPass):
                 if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
+                    current_polygon_offset = 0
                     element_counts = layer_data.getElementCounts()
                     for layer in sorted(element_counts.keys()):
                         # In the current layer, we show just the indicated paths
@@ -151,18 +152,20 @@ class SimulationPass(RenderPass):
                                 if index >= polygon.data.size // 3 - offset:
                                     index -= polygon.data.size // 3 - offset
                                     offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
+                                    current_polygon_offset += 1
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
                                 break
                             break
-                        if self._layer_view._minimum_layer_num > layer:
-                            start += element_counts[layer]
-                        end += element_counts[layer]
+                        end += layer_data.getLayer(layer).lineMeshVertexCount()
+                        if layer < self._layer_view._minimum_layer_num:
+                            start = end
 
                     # Calculate the range of paths in the last layer
+                    type_change_count = layer_data.getLayer(self._layer_view._current_layer_num).lineMeshCumulativeTypeChangeCount(max(self._layer_view._current_path_num - 1, 0))
                     current_layer_start = end
-                    current_layer_end = end + self._layer_view._current_path_num * 2 # Because each point is used twice
+                    current_layer_end = current_layer_start + self._layer_view._current_path_num + current_polygon_offset + type_change_count
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     # All the layers but the current selected layer are rendered first
