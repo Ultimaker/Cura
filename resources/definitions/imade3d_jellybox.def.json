@@ -1,10 +1,10 @@
 {
     "version": 2,
-    "name": "IMADE3D JellyBOX Original",
+    "name": "Imade3D JellyBOX Original",
     "inherits": "imade3d_jellybox_root",
     "metadata": {
         "visible": true,
-        "author": "IMADE3D",
+        "author": "Imade3D",
         "platform": "imade3d_jellybox_platform.3mf",
         "platform_offset": [ 0, -0.3, 0],
         "preferred_variant_name": "0.4 mm",

@@ -252,9 +252,10 @@ Item
             buttonsRow.updateAdditionalComponents("monitorButtons")
         }
 
-        Connections {
+        Connections
+        {
             target: CuraApplication
-            onAdditionalComponentsChanged: buttonsRow.updateAdditionalComponents("monitorButtons")
+            function onAdditionalComponentsChanged() { buttonsRow.updateAdditionalComponents("monitorButtons") }
         }
 
         function updateAdditionalComponents (areaId) {

@@ -8,7 +8,6 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
-import QtGraphicalEffects 1.0
 
 import "../Account"
 
@@ -63,7 +62,7 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
                 style: UM.Theme.styles.main_window_header_tab
-                height: UM.Theme.getSize("main_window_header_button").height
+                height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
                 iconSource: model.stage.iconSource
 
                 property color overlayColor: "transparent"

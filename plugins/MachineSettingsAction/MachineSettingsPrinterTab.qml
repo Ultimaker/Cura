@@ -326,7 +326,7 @@ Item
                 Connections
                 {
                     target: Cura.MachineManager
-                    onGlobalContainerChanged: extruderCountModel.update()
+                    function onGlobalContainerChanged() { extruderCountModel.update() }
                 }
             }
 

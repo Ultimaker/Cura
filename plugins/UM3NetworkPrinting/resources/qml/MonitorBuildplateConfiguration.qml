@@ -50,8 +50,8 @@ Item
                 id: buildplateIcon
                 anchors.centerIn: parent
                 color: UM.Theme.getColor("monitor_icon_primary")
-                height: parent.height
-                source: "../svg/icons/buildplate.svg"
+                height: UM.Theme.getSize("medium_button_icon").width
+                source: "../svg/icons/Buildplate.svg"
                 width: height
                 visible: buildplate
             }

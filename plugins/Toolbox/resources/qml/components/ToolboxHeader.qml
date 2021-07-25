@@ -90,11 +90,12 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
+        acceptedButtons: Qt.LeftButton
         onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins"))
         UM.RecolorImage
         {
             id: cloudMarketplaceButton
-            source: "../../images/shop.svg"
+            source: "../../images/Shop.svg"
             color: UM.Theme.getColor(webMarketplaceButtonTooltipArea.containsMouse ? "primary" : "text")
             height: parent.height / 2
             width: height

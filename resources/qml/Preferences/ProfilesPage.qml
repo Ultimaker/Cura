@@ -83,10 +83,10 @@ Item
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            enabled: !isCurrentItemActivated
+            enabled: !isCurrentItemActivated && base.currentItem
             onClicked:
             {
-                if (base.currentItem.is_read_only)
+                if(base.currentItem.is_read_only)
                 {
                     Cura.IntentManager.selectIntent(base.currentItem.intent_category, base.currentItem.quality_type);
                 }
@@ -217,7 +217,7 @@ Item
     Connections
     {
         target: base.qualityManagementModel
-        onItemsChanged:
+        function onItemsChanged()
         {
             var toSelectItemName = base.currentItem == null ? "" : base.currentItem.name;
             if (newQualityNameToSelect != "")
@@ -232,14 +232,17 @@ Item
                 for (var idx = 0; idx < base.qualityManagementModel.count; ++idx)
                 {
                     var item = base.qualityManagementModel.getItem(idx);
-                    if (item.name == toSelectItemName)
+                    if (item && item.name == toSelectItemName)
                     {
                         // Switch to the newly created profile if needed
                         newIdx = idx;
                         if (base.toActivateNewQuality)
                         {
                             // Activate this custom quality if required
-                            Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
+                            if(item.quality_changes_group)
+                            {
+                                Cura.MachineManager.setQualityChangesGroup(item.quality_changes_group);
+                            }
                         }
                         break;
                     }

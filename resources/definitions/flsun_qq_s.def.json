@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "FLSUN QQ-S",
+    "name": "Flsun QQ-S",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Cataldo URSO & Eddy Emck ",
-        "manufacturer": "FLSUN",
+        "manufacturer": "Flsun",
         "platform": "flsun_qq_s.3mf",
         "file_formats": "text/x-gcode",
         "has_materials": true,

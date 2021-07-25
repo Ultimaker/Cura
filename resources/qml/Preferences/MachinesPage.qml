@@ -166,7 +166,7 @@ UM.ManagementPage
         Connections
         {
             target: Cura.MachineManager
-            onGlobalContainerChanged:
+            function onGlobalContainerChanged()
             {
                 objectList.currentIndex = activeMachineIndex()
                 objectList.onCurrentIndexChanged()
