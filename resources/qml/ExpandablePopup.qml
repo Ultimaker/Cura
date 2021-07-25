@@ -180,7 +180,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
+                source: UM.Theme.getIcon("ChevronSingleDown")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height

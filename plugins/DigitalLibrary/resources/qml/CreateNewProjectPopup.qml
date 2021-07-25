@@ -93,7 +93,7 @@ Popup
         }
         validator: RegExpValidator
         {
-            regExp: /^[^\\\/\*\?\|\[\]]{0,96}$/
+            regExp: /^[^\\\/\*\?\|\[\]]{0,99}$/
         }
 
         text: PrintInformation.jobName
@@ -148,7 +148,7 @@ Popup
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Create"
-        enabled: newProjectNameTextField.text != "" && !busy
+        enabled: newProjectNameTextField.text.length >= 2 && !busy
 
         onClicked:
         {
