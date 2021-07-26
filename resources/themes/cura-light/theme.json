@@ -239,8 +239,9 @@
         "text_scene": [102, 102, 102, 255],
         "text_scene_hover": [123, 123, 113, 255],
 
-        "error": [255, 140, 0, 255],
-        "warning": [245, 166, 35, 255],
+        "error": [218, 30, 40, 255],
+        "warning": [253, 209, 58, 255],
+        "success": [36, 162, 73, 255],
         "disabled": [229, 229, 229, 255],
 
         "toolbar_button_hover": [232, 242, 252, 255],
@@ -363,6 +364,9 @@
         "message_close_hover": [8, 7, 63, 255],
         "message_progressbar_background": [245, 245, 245, 255],
         "message_progressbar_control": [50, 130, 255, 255],
+        "message_success_icon": [255, 255, 255, 255],
+        "message_warning_icon": [0, 0, 0, 255],
+        "message_error_icon": [255, 255, 255, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 
@@ -616,6 +620,7 @@
         "message_radius": [0.25, 0.25],
         "message_action_button": [0, 2.5],
         "message_image": [15.0, 5.0],
+        "message_type_icon": [2, 2],
 
         "infill_button_margin": [0.5, 0.5],
 
