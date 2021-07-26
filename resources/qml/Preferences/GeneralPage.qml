@@ -118,6 +118,8 @@ UM.PreferencesPage
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+
+        UM.Preferences.resetPreference("info/latest_update_source")
     }
 
     ScrollView
@@ -774,7 +776,7 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
+                text: catalog.i18nc("@info:tooltip", "Should Cura check for updates when the program is started?")
 
                 CheckBox
                 {
@@ -782,6 +784,40 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Check for updates on start")
                     checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
                     onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
+                }
+            }
+
+            ExclusiveGroup { id: curaUpdatesGroup }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                RadioButton
+                {
+                    text: catalog.i18nc("@option:radio", "Stable releases only")
+                    exclusiveGroup: curaUpdatesGroup
+                    enabled: checkUpdatesCheckbox.checked
+                    checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
+                    onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                RadioButton
+                {
+                    text: catalog.i18nc("@option:radio", "Stable and Beta releases")
+                    exclusiveGroup: curaUpdatesGroup
+                    enabled: checkUpdatesCheckbox.checked
+                    checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
+                    onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")
                 }
             }
 
