@@ -156,7 +156,7 @@ Item
         {
             id: settingControls
 
-            height: UM.Theme.getSize("section_control").height
+            height: UM.Theme.getSize("small_button_icon").height
             spacing: Math.round(UM.Theme.getSize("thick_margin").height / 2)
 
             anchors
@@ -174,12 +174,13 @@ Item
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button")
 
-                iconSource: UM.Theme.getIcon("link")
+                iconSource: UM.Theme.getIcon("Link")
 
                 onEntered:
                 {
@@ -203,12 +204,13 @@ Item
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("reset")
+                iconSource: UM.Theme.getIcon("ArrowReset")
 
                 onClicked:
                 {
@@ -286,6 +288,7 @@ Item
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                height: UM.Theme.getSize("small_button_icon").height
                 width: height
 
                 onClicked:
@@ -324,7 +327,7 @@ Item
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button_hover")
 
-                iconSource: UM.Theme.getIcon("formula")
+                iconSource: UM.Theme.getIcon("Function")
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(base.createTooltipText())

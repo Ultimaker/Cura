@@ -16,14 +16,6 @@ import argparse
 import faulthandler
 import os
 
-# Workaround for a race condition on certain systems where there
-# is a race condition between Arcus and PyQt. Importing Arcus
-# first seems to prevent Sip from going into a state where it
-# tries to create PyQt objects on a non-main thread.
-import Arcus  # @UnusedImport
-import Savitar  # @UnusedImport
-import pynest2d # @UnusedImport
-
 from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
 
 from UM.Platform import Platform
@@ -226,6 +218,12 @@ if Platform.isLinux() and getattr(sys, "frozen", False):
     import trimesh.exchange.load
     os.environ["LD_LIBRARY_PATH"] = old_env
 
+# WORKAROUND: Cura#5488
+# When using the KDE qqc2-desktop-style, the UI layout is completely broken, and
+# even worse, it crashes when switching to the "Preview" pane.
+if Platform.isLinux():
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "default"
+    
 if ApplicationMetadata.CuraDebugMode:
     ssl_conf = QSslConfiguration.defaultConfiguration()
     ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)

@@ -164,7 +164,7 @@ Item
                             verticalCenter: managePrinterText.verticalCenter
                         }
                         color: UM.Theme.getColor("text_link")
-                        source: UM.Theme.getIcon("external_link")
+                        source: UM.Theme.getIcon("LinkExternal")
                         width: 12 * screenScaleFactor
                         height: 12 * screenScaleFactor
                     }
@@ -265,7 +265,7 @@ Item
                 bottom: parent.bottom
                 bottomMargin: 20 * screenScaleFactor // TODO: Theme!
             }
-            iconSource: "../svg/icons/camera.svg"
+            iconSource: "../svg/icons/CameraPhoto.svg"
             enabled: !cloudConnection
             visible: printer
         }

@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 
 //
-// ComboBox with Cura styling.
+// Checkbox with Cura styling.
 //
 CheckBox
 {
@@ -58,7 +58,7 @@ CheckBox
             height: Math.round(parent.height / 2.5)
             sourceSize.height: width
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
-            source: UM.Theme.getIcon("check")
+            source: UM.Theme.getIcon("Check")
             opacity: control.checked ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100; } }
         }

@@ -215,7 +215,7 @@ Item
         id: finishButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Finish")
+        text: base.currentItem.next_page_button_text
         onClicked:
         {
             discoveredCloudPrintersModel.clear()

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -113,8 +113,10 @@ class AuthorizationService:
             # The token could not be refreshed using the refresh token. We should login again.
             return None
         # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
-        # from the server already.
-        self._storeAuthData(self._auth_data)
+        # from the server already. Do not store the auth_data if we could not get new auth_data (eg due to a
+        # network error), since this would cause an infinite loop trying to get new auth-data
+        if self._auth_data.success:
+            self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     def getAccessToken(self) -> Optional[str]:
@@ -241,13 +243,13 @@ class AuthorizationService:
 
                     self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
                     self._unable_to_get_data_message.show()
-        except ValueError:
+        except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
 
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
         """Store authentication data in preferences."""
 
-        Logger.log("d", "Attempting to store the auth data")
+        Logger.log("d", "Attempting to store the auth data for [%s]", self._settings.OAUTH_SERVER_URL)
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return
@@ -255,10 +257,9 @@ class AuthorizationService:
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()
-            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(vars(auth_data)))
+            self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
 
         self.accessTokenChanged.emit()
-

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
@@ -412,7 +412,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
-            quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+            if quality_container_id in instance_container_info_dict:
+                quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+            else:  # If a version upgrade changed the quality profile in the stack, we'll need to look for it in the built-in profiles instead of the workspace.
+                quality_matches = ContainerRegistry.getInstance().findContainersMetadata(id = quality_container_id)
+                if quality_matches:  # If there's no profile with this ID, leave it empty_quality.
+                    quality_type = quality_matches[0]["quality_type"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")
@@ -632,6 +637,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         except EnvironmentError as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>.", file_name, str(e)),
+                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"))
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
+        except zipfile.BadZipFile as e:
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.", file_name, str(e)),
                                                  title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"))
             message.show()
             self.setWorkspaceName("")
@@ -1150,7 +1162,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 return
             machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
-            self._quality_type_to_apply = self._quality_type_to_apply.lower()
+            self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
             quality_group_dict = container_tree.getCurrentQualityGroups()
             if self._quality_type_to_apply in quality_group_dict:
                 quality_group = quality_group_dict[self._quality_type_to_apply]

@@ -65,7 +65,7 @@ class LayerPolygon:
 
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
+        self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = bool)
 
         self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
         self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
@@ -73,18 +73,17 @@ class LayerPolygon:
     def buildCache(self) -> None:
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
         self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype = bool)
-        mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
-        self._index_end = mesh_line_count
+        self._index_end = cast(int, numpy.sum(self._build_cache_line_mesh_mask))
 
-        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype = numpy.bool)
+        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype = bool)
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
         numpy.logical_and(self._build_cache_needed_points, self._build_cache_line_mesh_mask, self._build_cache_needed_points )
 
         self._vertex_begin = 0
-        self._vertex_end = numpy.sum( self._build_cache_needed_points )
+        self._vertex_end = cast(int, numpy.sum(self._build_cache_needed_points))
 
     def build(self, vertex_offset: int, index_offset: int, vertices: numpy.ndarray, colors: numpy.ndarray, line_dimensions: numpy.ndarray, feedrates: numpy.ndarray, extruders: numpy.ndarray, line_types: numpy.ndarray, indices: numpy.ndarray) -> None:
         """Set all the arrays provided by the function caller, representing the LayerPolygon

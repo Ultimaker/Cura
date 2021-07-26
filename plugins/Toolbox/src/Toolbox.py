@@ -46,8 +46,6 @@ class Toolbox(QObject, Extension):
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
-
         # Network:
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
@@ -124,7 +122,7 @@ class Toolbox(QObject, Extension):
     onIsDownloadingChanged = pyqtSignal()
     restartRequiredChanged = pyqtSignal()
     installChanged = pyqtSignal()
-    enabledChanged = pyqtSignal()
+    toolboxEnabledChanged = pyqtSignal()
 
     # UI changes
     viewChanged = pyqtSignal()
@@ -210,7 +208,7 @@ class Toolbox(QObject, Extension):
 
         self._dialog.show()
         # Apply enabled/disabled state to installed plugins
-        self.enabledChanged.emit()
+        self.toolboxEnabledChanged.emit()
 
     def _createDialog(self, qml_name: str) -> Optional[QObject]:
         Logger.log("d", "Marketplace: Creating dialog [%s].", qml_name)
@@ -444,7 +442,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def enable(self, plugin_id: str) -> None:
         self._plugin_registry.enablePlugin(plugin_id)
-        self.enabledChanged.emit()
+        self.toolboxEnabledChanged.emit()
         Logger.log("i", "%s was set as 'active'.", plugin_id)
         self._restart_required = True
         self.restartRequiredChanged.emit()
@@ -452,7 +450,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def disable(self, plugin_id: str) -> None:
         self._plugin_registry.disablePlugin(plugin_id)
-        self.enabledChanged.emit()
+        self.toolboxEnabledChanged.emit()
         Logger.log("i", "%s was set as 'deactive'.", plugin_id)
         self._restart_required = True
         self.restartRequiredChanged.emit()
@@ -610,7 +608,7 @@ class Toolbox(QObject, Extension):
         # Check for errors:
         if "errors" in json_data:
             for error in json_data["errors"]:
-                Logger.log("e", "Request type [%s] got response showing error: %s", error["title"])
+                Logger.log("e", "Request type [%s] got response showing error: %s", error.get("title", "No error title found"))
             self.setViewPage("errored")
             return
 
