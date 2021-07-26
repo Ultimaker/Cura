@@ -74,7 +74,7 @@ Cura.ExpandablePopup
                         anchors.leftMargin: visible ? UM.Theme.getSize("thin_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter
 
-                        source: valueError ? UM.Theme.getIcon("cross2") : UM.Theme.getIcon("warning")
+                        source: valueError ? UM.Theme.getIcon("Cancel") : UM.Theme.getIcon("Warning")
                         color: valueError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_warning_background")
                         width: visible ? UM.Theme.getSize("section_icon").width : 0
                         height: width
