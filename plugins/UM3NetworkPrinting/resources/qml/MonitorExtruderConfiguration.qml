@@ -5,6 +5,8 @@ import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
 
+import Cura 1.6 as Cura
+
 /**
  * This component comprises a colored extruder icon, the material name, and the
  * print core name. It is used by the MonitorPrinterConfiguration component with
@@ -18,10 +20,10 @@ import UM 1.3 as UM
 Item
 {
     // The material color
-    property alias color: extruderIcon.color
+    property alias color: extruderIcon.materialColor
 
-    // The extruder position; NOTE: Decent human beings count from 0
-    property alias position: extruderIcon.position
+    // The extruder position
+    property int position
 
     // The material name
     property alias material: materialLabel.text
@@ -32,12 +34,13 @@ Item
     // Height is 2 x 18px labels, plus 4px spacing between them
     height: 40 * screenScaleFactor // TODO: Theme!
     width: childrenRect.width
+    opacity: material != "" && material != "Empty" && position >= 0 ? 1 : 0.4
 
-    MonitorIconExtruder
+    Cura.ExtruderIcon
     {
         id: extruderIcon
-        color: UM.Theme.getColor("monitor_skeleton_loading")
-        position: 0
+        materialColor: UM.Theme.getColor("monitor_skeleton_loading")
+        anchors.verticalCenter: parent.verticalCenter
     }
 
     Rectangle
@@ -46,16 +49,18 @@ Item
         anchors
         {
             left: extruderIcon.right
-            leftMargin: 12 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: extruderIcon.verticalCenter
         }
         color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: childrenRect.height
         width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
 
         Label
         {
             id: materialLabel
+            anchors.top: parent.top
 
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
@@ -63,29 +68,13 @@ Item
             text: ""
             visible: text !== ""
 
-            // FIXED-LINE-HEIGHT:
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
         }
-    }
-
-    Rectangle
-    {
-        id: printCoreLabelWrapper
-        anchors
-        {
-            left: materialLabelWrapper.left
-            bottom: parent.bottom
-        }
-        color: printCoreLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
-        height: 18 * screenScaleFactor // TODO: Theme!
-        width: Math.max(printCoreLabel.contentWidth, 36 * screenScaleFactor) // TODO: Theme!
-        radius: 2 * screenScaleFactor // TODO: Theme!
 
         Label
         {
             id: printCoreLabel
+            anchors.top: materialLabel.bottom
 
             color: UM.Theme.getColor("text")
             elide: Text.ElideRight
@@ -93,9 +82,6 @@ Item
             text: ""
             visible: text !== ""
 
-            // FIXED-LINE-HEIGHT:
-            height: parent.height
-            verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
         }
     }

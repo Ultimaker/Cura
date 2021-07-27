@@ -48,10 +48,11 @@ Item
             Cura.IconWithText
             {
                 id: profileLabel
-                source: UM.Theme.getIcon("category_layer_height")
+                source: UM.Theme.getIcon("PrintQuality")
                 text: catalog.i18nc("@label", "Profiles")
                 font: UM.Theme.getFont("medium")
                 width: labelColumnWidth
+                iconSize: UM.Theme.getSize("medium_button_icon").width
             }
             UM.SimpleButton
             {
@@ -69,7 +70,7 @@ Item
                 }
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                iconSource: UM.Theme.getIcon("reset")
+                iconSource: UM.Theme.getIcon("ArrowReset")
 
                 onClicked:
                 {
@@ -91,6 +92,7 @@ Item
                 {
                     left: profileLabel.right
                     right: parent.right
+                    verticalCenter: profileLabel.verticalCenter
                 }
 
                 model: Cura.QualityProfilesDropDownMenuModel

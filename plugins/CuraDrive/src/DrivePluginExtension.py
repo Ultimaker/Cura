@@ -81,7 +81,8 @@ class DrivePluginExtension(QObject, Extension):
             self._drive_window.show()
 
     def _onApplicationShuttingDown(self):
-        self._drive_window.hide()
+        if self._drive_window:
+            self._drive_window.hide()
 
     def _autoBackup(self) -> None:
         preferences = CuraApplication.getInstance().getPreferences()

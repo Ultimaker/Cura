@@ -63,7 +63,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("thin_margin").height
         validator: RegExpValidator
         {
-            regExp: /^[^\\\/\*\?\|\[\]]{0,96}$/
+            regExp: /^[\w\-\. ()]{0,255}$/
         }
 
         text: PrintInformation.jobName
@@ -200,7 +200,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Save"
-        enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text != ""
+        enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1
 
         onClicked:
         {

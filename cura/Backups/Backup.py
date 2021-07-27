@@ -193,14 +193,13 @@ class Backup:
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
-        try:
-            name_list = archive.namelist()
-            for archive_filename in name_list:
+        name_list = archive.namelist()
+        for archive_filename in name_list:
+            try:
                 archive.extract(archive_filename, target_path)
-                CuraApplication.getInstance().processEvents()
-        except (PermissionError, EnvironmentError):
-            Logger.logException("e", "Unable to extract the backup due to permission or file system errors.")
-            return False
+            except (PermissionError, EnvironmentError):
+                Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+            CuraApplication.getInstance().processEvents()
         return True
 
     def _obfuscate(self) -> Dict[str, str]:

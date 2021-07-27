@@ -176,7 +176,7 @@ msgstr "Tentativa de reposição de uma cópia de segurança do Cura que é supe
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:157
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr ""
+msgstr "O seguinte erro ocorreu ao tentar restaurar uma cópia de segurança do Cura:"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/BuildVolume.py:98
 msgctxt "@info:status"
@@ -2273,7 +2273,7 @@ msgstr "Ver manuais do utilizador online"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:172
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr ""
+msgstr "Para monitorizar a sua impressão a partir do Cura, ligue a impressora."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
 msgctxt "@label"
@@ -2397,7 +2397,7 @@ msgstr "Diâmetro da Linha"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:130
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr ""
+msgstr "Fluxo"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:171
 msgctxt "@label"
@@ -3398,7 +3398,7 @@ msgstr "Vista Cima"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:154
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
-msgstr ""
+msgstr "Vista Inferior"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:161
 msgctxt "@action:inmenu menubar:view"
@@ -4640,7 +4640,7 @@ msgstr "Exportar"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:199
 msgctxt "@action:button Sending materials to printers"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "Sincronizar com Impressoras"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:248
 msgctxt "@action:label"
@@ -4694,7 +4694,7 @@ msgstr "Material exportado com êxito para <filename>%1</filename>"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:388
 msgctxt "@title:window"
 msgid "Export All Materials"
-msgstr ""
+msgstr "Exportar Todos os Materiais"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:72
 msgctxt "@title"
@@ -5625,12 +5625,12 @@ msgstr "Gravador de perfis Cura"
 #: DigitalLibrary/plugin.json
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr ""
+msgstr "Liga à Biblioteca Digital, permitindo ao Cura abrir ficheiros da Biblioteca Digital e guardar ficheiros na mesma."
 
 #: DigitalLibrary/plugin.json
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr ""
+msgstr "Biblioteca Digital Ultimaker"
 
 #: FirmwareUpdateChecker/plugin.json
 msgctxt "description"
@@ -6106,22 +6106,22 @@ msgstr "Atualização da versão 4.7 para 4.8"
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr ""
+msgstr "Atualiza as configurações do Cura 4.8 para o Cura 4.9."
 
 #: VersionUpgrade/VersionUpgrade48to49/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
-msgstr ""
+msgstr "Atualização da versão 4.8 para 4.9"
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr ""
+msgstr "Atualiza as configurações do Cura 4.9 para o Cura 4.10."
 
 #: VersionUpgrade/VersionUpgrade49to410/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
-msgstr ""
+msgstr "Atualização da versão 4.9 para 4.10"
 
 #: X3DReader/plugin.json
 msgctxt "description"
