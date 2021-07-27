@@ -73,6 +73,7 @@ class DFFileExportAndUploadManager:
                 text = "Your {} uploaded to '{}'.".format("file was" if len(self._file_upload_job_metadata) <= 1 else "files were", self._library_project_name),
                 title = "Upload successful",
                 lifetime = 0,
+                message_type=Message.MessageType.POSITIVE
         )
         self._generic_success_message.addAction(
                 "open_df_project",
@@ -80,8 +81,6 @@ class DFFileExportAndUploadManager:
                 "open-folder", "Open the project containing the file in Digital Library"
         )
         self._generic_success_message.actionTriggered.connect(self._onMessageActionTriggered)
-
-
 
     def _onCuraProjectFileExported(self, job: ExportFileJob) -> None:
         """Handler for when the DF Library workspace file (3MF) has been created locally.

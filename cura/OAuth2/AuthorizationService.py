@@ -187,7 +187,8 @@ class AuthorizationService:
         except OSError:
             Logger.logException("w", "Unable to create authorization request server")
             Message(i18n_catalog.i18nc("@info", "Unable to start a new sign in process. Check if another sign in attempt is still active."),
-                    title=i18n_catalog.i18nc("@info:title", "Warning")).show()
+                    title=i18n_catalog.i18nc("@info:title", "Warning"),
+                    message_type = Message.MessageType.WARNING).show()
             return
 
         auth_url = self._generate_auth_url(query_parameters_dict, force_browser_logout)

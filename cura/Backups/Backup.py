@@ -119,7 +119,7 @@ class Backup:
     def _showMessage(self, message: str) -> None:
         """Show a UI message."""
 
-        Message(message, title=self.catalog.i18nc("@info:title", "Backup"), lifetime=30).show()
+        Message(message, title=self.catalog.i18nc("@info:title", "Backup")).show()
 
     def restore(self) -> bool:
         """Restore this back-up.
@@ -154,7 +154,10 @@ class Backup:
             archive = ZipFile(io.BytesIO(self.zip_file), "r")
         except LookupError as e:
             Logger.log("d", f"The following error occurred while trying to restore a Cura backup: {str(e)}")
-            self._showMessage(self.catalog.i18nc("@info:backup_failed", "The following error occurred while trying to restore a Cura backup:") + str(e))
+            Message(self.catalog.i18nc("@info:backup_failed", "The following error occurred while trying to restore a Cura backup:") + str(e),
+                    title = self.catalog.i18nc("@info:title", "Backup"),
+                    message_type = Message.MessageType.ERROR).show()
+
             return False
         extracted = self._extractArchive(archive, version_data_dir)
 

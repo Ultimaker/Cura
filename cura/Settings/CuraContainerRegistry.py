@@ -150,11 +150,13 @@ class CuraContainerRegistry(ContainerRegistry):
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
             m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name),
                         lifetime = 0,
-                        title = catalog.i18nc("@info:title", "Error"))
+                        title = catalog.i18nc("@info:title", "Error"),
+                        message_type = Message.MessageType.ERROR)
             m.show()
             return False
         m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
-                    title = catalog.i18nc("@info:title", "Export succeeded"))
+                    title = catalog.i18nc("@info:title", "Export succeeded"),
+                    message_type = Message.MessageType.POSITIVE)
         m.show()
         return True
 

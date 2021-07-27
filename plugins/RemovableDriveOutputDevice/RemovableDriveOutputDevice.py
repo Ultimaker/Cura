@@ -136,7 +136,8 @@ class RemovableDriveOutputDevice(OutputDevice):
             except:
                 Logger.logException("w", "An execption occured while trying to write to removable drive.")
                 message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),str(job.getError())),
-                                  title = catalog.i18nc("@info:title", "Error"))
+                                  title = catalog.i18nc("@info:title", "Error"),
+                                  message_type = Message.MessageType.ERROR)
                 message.show()
                 self.writeError.emit(self)
                 return
@@ -144,13 +145,17 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self.writeFinished.emit(self)
         if job.getResult():
-            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())), title = catalog.i18nc("@info:title", "File Saved"))
+            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())),
+                              title = catalog.i18nc("@info:title", "File Saved"),
+                              message_type = Message.MessageType.POSITIVE)
             message.addAction("eject", catalog.i18nc("@action:button", "Eject"), "eject", catalog.i18nc("@action", "Eject removable device {0}").format(self.getName()))
             message.actionTriggered.connect(self._onActionTriggered)
             message.show()
             self.writeSuccess.emit(self)
         else:
-            message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(), str(job.getError())), title = catalog.i18nc("@info:title", "Warning"))
+            message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(), str(job.getError())),
+                              title = catalog.i18nc("@info:title", "Error"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             self.writeError.emit(self)
         job.getStream().close()
