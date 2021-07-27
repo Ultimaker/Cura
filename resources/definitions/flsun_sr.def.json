@@ -6,14 +6,14 @@
         "visible": true,
         "author": "Thushan Fernando, Guislain Cyril",
         "manufacturer": "Flsun",
-        "platform": "flsun_SuperRacer.stl",
+        "platform": "flsun_sr.stl",
         "platform_offset": [0,-35,-40],
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "has_machine_quality": true,
         "preferred_quality_type": "fast",
         "machine_extruder_trains": {
-            "0": "flsun_SuperRacer_extruder_0"
+            "0": "flsun_sr_extruder_0"
         }
     },
     "overrides": {
