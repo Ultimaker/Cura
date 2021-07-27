@@ -209,7 +209,7 @@ class Account(QObject):
         if self._update_timer.isActive():
             self._update_timer.stop()
         elif self._sync_state == SyncState.SYNCING:
-            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+            Logger.debug("Starting a new sync while previous sync was not completed")
 
         self.syncRequested.emit()
 
