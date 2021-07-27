@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "SecKit SK-Go",
+        "machine": "seckit_skgo",
         "position": "0"
     },
 
