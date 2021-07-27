@@ -708,6 +708,8 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option: str) -> None:
         global_stack = self.getGlobalContainerStack()
+        if global_stack is None:
+            return
         if option == "discard":
             for extruder in global_stack.extruderList:
                 extruder.userChanges.clear()

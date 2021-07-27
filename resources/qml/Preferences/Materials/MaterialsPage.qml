@@ -201,6 +201,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
+                exportAllMaterialsDialog.folder = base.materialManagementModel.getPreferredExportAllPath();
                 exportAllMaterialsDialog.open();
             }
             visible: Cura.MachineManager.activeMachine.supportsMaterialExport
@@ -388,7 +389,6 @@ Item
         title: catalog.i18nc("@title:window", "Export All Materials")
         selectExisting: false
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
-        folder: base.materialManagementModel.preferredExportAllPath
         onAccepted:
         {
             base.materialManagementModel.exportAll(fileUrl);

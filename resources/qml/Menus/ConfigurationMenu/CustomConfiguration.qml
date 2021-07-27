@@ -302,19 +302,19 @@ Item
                 }
                 Item
                 {
-                    width: instructionButton.width + 2 * UM.Theme.getSize("default_margin").width
+                    width: instructionButton.width + 2 * UM.Theme.getSize("narrow_margin").width
                     height: instructionButton.visible ? materialSelection.height: 0
                     Button
                     {
                         id: instructionButton
                         hoverEnabled: true
                         contentItem: Item {}
-                        height: 0.5 * materialSelection.height
-                        width: height
+                        height: UM.Theme.getSize("small_button").height
+                        width: UM.Theme.getSize("small_button").width
                         anchors.centerIn: parent
                         background: UM.RecolorImage
                         {
-                            source: UM.Theme.getIcon("printing_guideline")
+                            source: UM.Theme.getIcon("Guide")
                             color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
                         }
                         visible: selectors.instructionLink != ""
@@ -388,7 +388,7 @@ Item
                     {
                         id: warningImage
                         anchors.left: parent.left
-                        source: UM.Theme.getIcon("warning")
+                        source: UM.Theme.getIcon("Warning")
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
                         sourceSize.width: width

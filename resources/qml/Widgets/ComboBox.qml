@@ -62,7 +62,7 @@ ComboBox
         x: control.width - width - control.rightPadding
         y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
-        source: UM.Theme.getIcon("arrow_bottom")
+        source: UM.Theme.getIcon("ChevronSingleDown")
         width: UM.Theme.getSize("standard_arrow").width
         height: UM.Theme.getSize("standard_arrow").height
         sourceSize.width: width + 5 * screenScaleFactor

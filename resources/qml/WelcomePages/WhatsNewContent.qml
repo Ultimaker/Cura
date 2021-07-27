@@ -135,7 +135,7 @@ Item
         anchors
         {
             bottom: whatsNewNextButton.top
-            bottomMargin: UM.Theme.getSize("narrow_margin").height
+            bottomMargin: UM.Theme.getSize("wide_margin").height
             horizontalCenter: parent.horizontalCenter
         }
 

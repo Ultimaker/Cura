@@ -4,7 +4,7 @@ from typing import Type, TYPE_CHECKING, Optional, List
 
 import keyring
 from keyring.backend import KeyringBackend
-from keyring.errors import NoKeyringError, PasswordSetError
+from keyring.errors import NoKeyringError, PasswordSetError, KeyringLocked
 
 from UM.Logger import Logger
 
@@ -39,6 +39,10 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
+            except KeyringLocked:
+                self._store_secure = False
+                Logger.log("i", "Access to the keyring was denied.")
+                return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)
 
@@ -48,7 +52,7 @@ class KeyringAttribute:
             if value is not None:
                 try:
                     keyring.set_password("cura", self._keyring_name, value)
-                except PasswordSetError:
+                except (PasswordSetError, KeyringLocked):
                     self._store_secure = False
                     if self._name not in DONT_EVER_STORE_LOCALLY:
                         setattr(instance, self._name, value)

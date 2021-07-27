@@ -3290,7 +3290,7 @@ msgstr "引き戻しのない最大コム距離"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr ""
+msgstr "ゼロを超える場合、この距離より長い移動量をコーミングすると、引き戻しが使用されます。ゼロに設定した場合、最大値はなく、コーミング移動では引き戻しを使用しません。"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"

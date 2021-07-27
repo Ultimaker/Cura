@@ -417,6 +417,7 @@ UM.MainWindow
                     Cura.PrimaryButton
                     {
                         text: model.name
+                        iconSource: UM.Theme.getIcon(model.icon)
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
@@ -426,6 +427,23 @@ UM.MainWindow
                     Cura.SecondaryButton
                     {
                         text: model.name
+                        iconSource: UM.Theme.getIcon(model.icon)
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+                }
+                link: Component
+                {
+                    Cura.TertiaryButton
+                    {
+                        text: model.name
+                        iconSource:
+                        {
+                            if (model.icon == null || model.icon == "")
+                            {
+                                return UM.Theme.getIcon("LinkExternal")
+                            }
+                            return UM.Theme.getIcon(model.icon)
+                        }
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
