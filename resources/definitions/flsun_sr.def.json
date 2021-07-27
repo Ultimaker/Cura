@@ -7,7 +7,7 @@
         "author": "Thushan Fernando, Guislain Cyril",
         "manufacturer": "Flsun",
         "platform": "flsun_sr.stl",
-        "platform_offset": [0,-35,-40],
+        "platform_offset": [0,-35,-41],
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "has_machine_quality": true,
