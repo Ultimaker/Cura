@@ -28,20 +28,32 @@ Item
     {
         width: parent.width
         visible: configurationList.model.length == 0
-        height: label.height + UM.Theme.getSize("wide_margin").height
+        height: icon.height
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-
-        Rectangle
+        Item
         {
             id: icon
-            color: UM.Theme.getColor("warning")
-            width: UM.Theme.getSize("section_icon").width
+            width: visible ? UM.Theme.getSize("section_icon").width : 0
             height: width
-            radius: width / 2
+            anchors.verticalCenter: parent.verticalCenter
             UM.RecolorImage
             {
-                anchors.fill:parent
+                id: warningIconBackground
+                height: parent.height
+                width: parent.width
+                sourceSize.width: width
+                sourceSize.height: height
+                source: UM.Theme.getIcon("CircleSolid", "low")
+                color: UM.Theme.getColor("warning")
+            }
+            UM.RecolorImage
+            {
+                id: warningIcon
+                height: parent.height
+                width: parent.width
+                sourceSize.width: width
+                sourceSize.height: height
                 source: UM.Theme.getIcon("Warning", "low")
                 color: UM.Theme.getColor("message_warning_icon")
             }
@@ -51,8 +63,9 @@ Item
             id: label
             anchors.left: icon.right
             anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            // There are two cases that we want to diferenciate, one is when Cura is loading the configurations and the
+            // There are two cases that we want to differenciate, one is when Cura is loading the configurations and the
             // other when the connection was lost
             text: Cura.MachineManager.printerConnected ?
                     catalog.i18nc("@label", "Loading available configurations from the printer...") :
