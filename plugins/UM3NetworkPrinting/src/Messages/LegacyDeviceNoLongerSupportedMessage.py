@@ -14,7 +14,7 @@ class LegacyDeviceNoLongerSupportedMessage(Message):
     """Singleton used to prevent duplicate messages of this type at the same time."""
 
     def __init__(self) -> None:
-        super().__init__(
+        super(LegacyDeviceNoLongerSupportedMessage, self).__init__(
             text = I18N_CATALOG.i18nc("@info:status", "You are attempting to connect to a printer that is not "
                                                       "running Ultimaker Connect. Please update the printer to the "
                                                       "latest firmware."),

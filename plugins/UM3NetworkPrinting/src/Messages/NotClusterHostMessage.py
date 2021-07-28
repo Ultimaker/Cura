@@ -23,7 +23,7 @@ class NotClusterHostMessage(Message):
     """Singleton used to prevent duplicate messages of this type at the same time."""
 
     def __init__(self, device: "UltimakerNetworkedPrinterOutputDevice") -> None:
-        super().__init__(
+        super(NotClusterHostMessage, self).__init__(
             text = I18N_CATALOG.i18nc("@info:status", "You are attempting to connect to {0} but it is not "
                                                       "the host of a group. You can visit the web page to configure "
                                                       "it as a group host.", device.name),

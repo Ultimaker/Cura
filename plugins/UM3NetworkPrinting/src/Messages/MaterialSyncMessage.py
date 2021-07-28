@@ -20,12 +20,13 @@ class MaterialSyncMessage(Message):
     """Singleton used to prevent duplicate messages of this type at the same time."""
 
     def __init__(self, device: "UltimakerNetworkedPrinterOutputDevice") -> None:
-        super().__init__(
+        super(MaterialSyncMessage, self).__init__(
             text = I18N_CATALOG.i18nc("@info:status", "Cura has detected material profiles that were not yet installed "
                                                       "on the host printer of group {0}.", device.name),
             title = I18N_CATALOG.i18nc("@info:title", "Sending materials to printer"),
             lifetime = 10,
-            dismissable = True
+            dismissable = True,
+            message_type = Message.MessageType.POSITIVE
         )
 
     def show(self) -> None:
