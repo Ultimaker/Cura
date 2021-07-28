@@ -18,7 +18,7 @@ Item
     property bool extruderEnabled: true
     property alias iconSize: mainIcon.sourceSize
     property string iconVariant: "medium"
-
+    layer.enabled: true // Prevent weird opacity effects.
     Item
     {
         opacity: extruderEnabled ? 1 : UM.Theme.getColor("extruder_disabled").a

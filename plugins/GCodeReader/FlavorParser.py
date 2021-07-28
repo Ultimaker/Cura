@@ -500,7 +500,8 @@ class FlavorParser:
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."),
                 lifetime=0,
-                title = catalog.i18nc("@info:title", "G-code Details"))
+                title = catalog.i18nc("@info:title", "G-code Details"),
+                message_type = Message.MessageType.WARNING)
             caution_message.show()
 
         # The "save/print" button's state is bound to the backend state.
