@@ -57,16 +57,53 @@ Column
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
-
-    Cura.IconWithText
+    Item
     {
         id: unableToSliceMessage
         width: parent.width
         visible: widget.backendState == UM.Backend.Error
 
-        text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
-        source: UM.Theme.getIcon("Warning")
-        iconColor: UM.Theme.getColor("warning")
+        height: icon.height
+        Item
+        {
+            id: icon
+            anchors.verticalCenter: parent.verticalCenter
+            width: visible ? UM.Theme.getSize("section_icon").width : 0
+            height: width
+            UM.RecolorImage
+            {
+                id: warningIconBackground
+                height: parent.height
+                width: parent.width
+                sourceSize.width: width
+                sourceSize.height: height
+                source: UM.Theme.getIcon("CircleSolid", "low")
+                color: UM.Theme.getColor("warning")
+            }
+            UM.RecolorImage
+            {
+                id: warningIcon
+                height: parent.height
+                width: parent.width
+                sourceSize.width: width
+                sourceSize.height: height
+                source: UM.Theme.getIcon("Warning", "low")
+                color: UM.Theme.getColor("message_warning_icon")
+            }
+        }
+        Label
+        {
+            id: label
+            anchors.left: icon.right
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
+            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            wrapMode: Text.WordWrap
+        }
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
