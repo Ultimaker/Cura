@@ -1,13 +1,15 @@
 // Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.10
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
+import QtQuick.Controls 2.3 as NewControls
+
 import UM 1.1 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 UM.PreferencesPage
 {
@@ -123,8 +125,6 @@ UM.PreferencesPage
         width: parent.width
         height: parent.height
 
-        flickableItem.flickableDirection: Flickable.VerticalFlick;
-
         Column
         {
 
@@ -141,6 +141,7 @@ UM.PreferencesPage
             {
                 id: interfaceGrid
                 columns: 4
+                width: parent.width
 
                 Label
                 {
@@ -148,39 +149,45 @@ UM.PreferencesPage
                     text: "Language:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
                 }
 
-                ComboBox
+                ListModel
                 {
-                    id: languageComboBox
-                    model: ListModel
+                    id: languageList
+
+                    Component.onCompleted:
                     {
-                        id: languageList
+                        append({ text: "English", code: "en_US" })
+                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "Deutsch", code: "de_DE" })
+                        append({ text: "Español", code: "es_ES" })
+                        //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
+                        append({ text: "Français", code: "fr_FR" })
+                        append({ text: "Italiano", code: "it_IT" })
+                        append({ text: "日本語", code: "ja_JP" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
+                        append({ text: "Português do Brasil", code: "pt_BR" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
+                        append({ text: "正體字", code: "zh_TW" })
 
-                        Component.onCompleted: {
-                            append({ text: "English", code: "en_US" })
-                            //Czech is disabled for being incomplete: append({ text: "Čeština", code: "cs_CZ" })
-                            append({ text: "Deutsch", code: "de_DE" })
-                            append({ text: "Español", code: "es_ES" })
-                            //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
-                            append({ text: "Français", code: "fr_FR" })
-                            append({ text: "Italiano", code: "it_IT" })
-                            append({ text: "日本語", code: "ja_JP" })
-                            append({ text: "한국어", code: "ko_KR" })
-                            append({ text: "Nederlands", code: "nl_NL" })
-                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
-                            append({ text: "Português do Brasil", code: "pt_BR" })
-                            append({ text: "Português", code: "pt_PT" })
-                            append({ text: "Русский", code: "ru_RU" })
-                            append({ text: "Türkçe", code: "tr_TR" })
-                            append({ text: "简体中文", code: "zh_CN" })
-                            append({ text: "正體字", code: "zh_TW" })
-
-                            var date_object = new Date();
-                            if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
-                            {
-                                append({ text: "Pirate", code: "en_7S" })
-                            }
+                        var date_object = new Date();
+                        if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
+                        {
+                            append({ text: "Pirate", code: "en_7S" })
                         }
                     }
+                }
+
+                NewControls.ComboBox
+                {
+                    id: languageComboBox
+
+                    textRole: "text"
+                    model: languageList
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -194,20 +201,6 @@ UM.PreferencesPage
                         }
                     }
                     onActivated: UM.Preferences.setValue("general/language", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < languageList.count; ++i)
-                        {
-                            languageList.setProperty(i, "text", catalog.i18n(languageList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
                 }
 
                 Label
@@ -229,22 +222,26 @@ UM.PreferencesPage
                     text: catalog.i18nc("@label","Theme:")
                 }
 
-                ComboBox
+                ListModel
+                {
+                    id: themeList
+
+                    Component.onCompleted: {
+                        var themes = UM.Theme.getThemes()
+                        for (var i = 0; i < themes.length; i++)
+                        {
+                            append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
+                        }
+                    }
+                }
+
+                NewControls.ComboBox
                 {
                     id: themeComboBox
 
-                    model: ListModel
-                    {
-                        id: themeList
-
-                        Component.onCompleted: {
-                            var themes = UM.Theme.getThemes()
-                            for (var i = 0; i < themes.length; i++)
-                            {
-                                append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
-                            }
-                        }
-                    }
+                    model: themeList
+                    textRole: "text"
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -259,21 +256,6 @@ UM.PreferencesPage
                         return 0;
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < themeList.count; ++i)
-                        {
-                            themeList.setProperty(i, "text", catalog.i18n(themeList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
-
                 }
             }
 
@@ -416,7 +398,7 @@ UM.PreferencesPage
                 Connections
                 {
                     target: UM.Preferences
-                    onPreferenceChanged:
+                    function onPreferenceChanged(preference)
                     {
                         if(preference != "general/camera_perspective_mode")
                         {
@@ -519,19 +501,22 @@ UM.PreferencesPage
                     {
                         text: catalog.i18nc("@window:text", "Camera rendering:")
                     }
-                    ComboBox
+                    ListModel
+                    {
+                        id: comboBoxList
+                        Component.onCompleted:
+                        {
+                            append({ text: catalog.i18n("Perspective"), code: "perspective" })
+                            append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
+                        }
+                    }
+
+                    NewControls.ComboBox
                     {
                         id: cameraComboBox
 
-                        model: ListModel
-                        {
-                            id: comboBoxList
-
-                            Component.onCompleted: {
-                                append({ text: catalog.i18n("Perspective"), code: "perspective" })
-                                append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
-                            }
-                        }
+                        model: comboBoxList
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -667,10 +652,10 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: Math.round(250 * screenScaleFactor)
 
                         model: ListModel
                         {
@@ -683,6 +668,7 @@ UM.PreferencesPage
                                 append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
                             }
                         }
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -733,11 +719,11 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 200 * screenScaleFactor
-
+                        width: Math.round(250 * screenScaleFactor)
+                        popup.width: Math.round(350 * screenScaleFactor)
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
@@ -749,6 +735,7 @@ UM.PreferencesPage
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Always transfer changed settings to new profile"), code: "always_keep" })
                             }
                         }
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -856,7 +843,7 @@ UM.PreferencesPage
             Connections
             {
                 target: UM.Preferences
-                onPreferenceChanged:
+                function onPreferenceChanged(preference)
                 {
                     if (preference !== "info/send_slice_info")
                     {

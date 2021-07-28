@@ -1,0 +1,159 @@
+{
+    "version": 2,
+    "name": "Atom 3",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Daniel Kurth",
+        "manufacturer": "Layer One",
+        "platform_offset": [0, 0, 0],
+        "has_machine_quality": false,
+        "has_materials": true,
+        "preferred_material": "layer_one_dark_gray_pla",
+        "has_variants": true,
+        "preferred_variant_name": "PTFE hotend + 0.4mm brass nozzle",
+        "preferred_quality_type": "normal",
+        "variants_name": "Tool:",
+        "platform": "Atom 3 bed.3mf",
+        "machine_extruder_trains":
+        {
+            "0": "atom3_extruder_0"
+        }
+    },
+
+
+
+
+    "overrides": {
+
+        "machine_name": { "default_value": "Atom 3" },
+        "machine_show_variants": { "default_value": true},
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_width": { "default_value": 270},
+        "machine_depth": { "default_value": 270},
+        "machine_height": { "default_value": 340},
+        "machine_center_is_zero": { "default_value": true},
+        "machine_nozzle_head_distance": { "default_value": 6},
+        "machine_head_with_fans_polygon":
+        {
+            "default_value":[
+                [-23.82, 51.25],
+                [23.82, 51.25],
+                [56.292 , -5.00],
+                [32.476, -46.250],
+                [-32.476, -46.25],
+                [-56.292, -5.00]
+            ]
+        },
+        "machine_gcode_flavor": { "RepRap (Marlin/Sprinter)": "Marlin" },
+        "machine_heated_bed": { "default_value": true },
+        "material_diameter": { "default_value": 1.75},
+        "machine_start_gcode": {
+            "default_value": ";MACHINE START CODE\nG21 ;metric values\nG90 ;absolute positioning\nG28 ;home\nG1 Z5 F9000\n;MACHINE START CODE"
+        },
+        "machine_end_gcode": {
+            "default_value": ";MACHINE END CODE\nG91 ;relative positioning\nG1 E-1 F300  ;retract  filament release pressure\nG1 Z+1.0 E-5 F9000 ;move up a and retract more\nG90 ;absolute positioning\nG28; home\nM84 ;steppers off\n;MACHINE END CODE"
+        },
+
+
+
+
+        "layer_height": {"default_value": 0.2 },
+        "layer_height_0": {
+            "default_value": 0.2,
+            "value": "layer_height"
+        },
+        "line_width": { "value": "machine_nozzle_size"},
+        "infill_line_width": { "value":"line_width"},
+        "initial_layer_line_width_factor": { "default_value": 100},
+
+
+
+
+        "top_bottom_thickness": { "default_value": 1.0},
+
+
+
+
+        "infill_sparse_density": { "default_value": 17},
+        "infill_before_walls": { "value": false},
+        "zig_zaggify_infill": { "value": true},
+
+
+
+
+        "default_material_print_temperature": { "default_value": 200 },
+        "material_print_temperature_layer_0": { "value": "material_print_temperature + 0"},
+        "material_initial_print_temperature": { "value": "material_print_temperature_layer_0"},
+        "material_final_print_temperature": { "value": "material_print_temperature"},
+        "default_material_bed_temperature": {
+            "default_value": 60,
+            "minimum_value": "0",
+            "minimum_value_warning": "build_volume_temperature",
+            "maximum_value_warning": "115",
+            "maximum_value": "120"
+        },
+        "material_bed_temperature":
+        {
+            "value": "round(default_material_bed_temperature-((-0.202*default_material_bed_temperature)+7.16)) if default_material_bed_temperature > 40 else default_material_bed_temperature",
+            "minimum_value": "0",
+            "minimum_value_warning": "build_volume_temperature",
+            "maximum_value_warning": "115",
+            "maximum_value": "120"
+        },
+
+
+
+
+        "speed_print": { "default_value": 40},
+        "speed_wall": { "value": "speed_print * 0.75"},
+        "speed_wall_0": { "value": "speed_print * 0.5"},
+        "speed_wall_x": { "value": "speed_print * 0.75"},
+        "speed_layer_0": { "value": "20"},
+        "speed_slowdown_layers": { "default_value": 1},
+
+
+
+
+        "retraction_amount": {
+            "default_value": 7,
+            "maximum_value_warning": 9 },
+        "retraction_speed": {
+            "default_value": 70,
+            "maximum_value_warning": 80
+        },
+        "retraction_hop_enabled": { "default_value": true},
+        "retraction_hop": { "default_value": 0.5},
+
+
+
+
+        "cool_min_layer_time": { "default_value": 5},
+        "cool_min_speed": { "default_value": 10},
+        "cool_lift_head": { "default_value": false},
+
+
+
+
+        "support_type": { "default_value": "everywhere"},
+        "support_angle": { "default_value": 60},
+        "support_z_distance": { "value": "layer_height"},
+        "support_xy_distance_overhang":{"value": "machine_nozzle_size"},
+
+
+
+
+        "adhesion_type": { "default_value": "skirt"},
+        "skirt_brim_minimal_length": {
+            "default_value": 750,
+            "value": "60/(layer_height_0*line_width)",
+            "minimum_value": "0",
+            "minimum_value_warning": "25",
+            "maximum_value_warning": "4000"
+        },
+        "skirt_gap": {
+            "default_value": "1`",
+            "value": "3*wall_line_width_0"
+        }
+    }
+}

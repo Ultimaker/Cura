@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Anet ET4 PRO",
+    "name": "Anet ET4 Pro",
     "inherits": "anet3d",
     "metadata": {
         "visible": true,
@@ -11,7 +11,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Anet ET4 PRO" },
+        "machine_name": { "default_value": "Anet ET4 Pro" },
         "machine_width": {
             "default_value": 220
         },

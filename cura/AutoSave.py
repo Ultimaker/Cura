@@ -1,10 +1,12 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
 from typing import Any, TYPE_CHECKING
 
 from UM.Logger import Logger
+
+import time
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -56,8 +58,8 @@ class AutoSave:
 
     def _onTimeout(self) -> None:
         self._saving = True # To prevent the save process from triggering another autosave.
-        Logger.log("d", "Autosaving preferences, instances and profiles")
 
+        save_start_time = time.time()
         self._application.saveSettings()
-
+        Logger.log("d", "Autosaving preferences, instances and profiles took %s seconds", time.time() - save_start_time)
         self._saving = False

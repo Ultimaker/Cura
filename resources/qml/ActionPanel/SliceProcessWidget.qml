@@ -65,7 +65,7 @@ Column
         visible: widget.backendState == UM.Backend.Error
 
         text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
-        source: UM.Theme.getIcon("warning")
+        source: UM.Theme.getIcon("Warning")
         iconColor: UM.Theme.getColor("warning")
     }
 
@@ -127,7 +127,7 @@ Column
     Connections
     {
         target: UM.Preferences
-        onPreferenceChanged:
+        function onPreferenceChanged(preference)
         {
             if (preference !== "general/auto_slice")
             {

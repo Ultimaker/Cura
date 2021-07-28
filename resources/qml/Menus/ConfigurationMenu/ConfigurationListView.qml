@@ -32,19 +32,20 @@ Item
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-        UM.RecolorImage
+        Rectangle
         {
             id: icon
-
-            anchors.left: parent.left
-            anchors.verticalCenter: label.verticalCenter
-
-            source: UM.Theme.getIcon("warning")
             color: UM.Theme.getColor("warning")
             width: UM.Theme.getSize("section_icon").width
             height: width
+            radius: width / 2
+            UM.RecolorImage
+            {
+                anchors.fill:parent
+                source: UM.Theme.getIcon("Warning", "low")
+                color: UM.Theme.getColor("message_warning_icon")
+            }
         }
-
         Label
         {
             id: label
@@ -126,7 +127,7 @@ Item
     Connections
     {
         target: outputDevice
-        onUniqueConfigurationsChanged:
+        function onUniqueConfigurationsChanged()
         {
             forceModelUpdate()
         }
@@ -135,7 +136,7 @@ Item
     Connections
     {
         target: Cura.MachineManager
-        onOutputDevicesChanged:
+        function onOutputDevicesChanged()
         {
             forceModelUpdate()
         }

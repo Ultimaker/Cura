@@ -1,0 +1,37 @@
+{
+    "name": "Two Trees Bluer",
+    "version": 2,
+    "inherits": "two_trees_base",
+    "overrides": {
+        "machine_start_gcode": { "default_value": "G28 ;Home\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move bed down\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X10.4 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Bed up" },
+        "machine_name": { "default_value": "Two Trees Bluer" },
+        "machine_width": { "default_value": 230 },
+        "machine_depth": { "default_value": 230 },
+        "machine_height": { "default_value": 280 },
+        "machine_head_with_fans_polygon": { "default_value": [
+        [-47, 37],
+        [-47, -23],
+        [47, -23],
+        [47, 37]
+        ]
+        },
+
+        "gantry_height": { "value": 28 },
+        "speed_print": { "value": 50.0 },
+        "speed_travel": { "value": 180 },
+        "speed_travel_layer_0": { "value": 100 },
+        "retraction_speed": { "default_value" : 50 },
+        "retraction_amount": { "default_value" : 8 },
+		
+        "material_flow": { "value": 90 },
+        "infill_material_flow": { "value": 100 },
+        
+        "infill_overlap": { "value": 30 },
+        "skin_overlap": { "value": 20 }
+    },
+    "metadata": {
+        "quality_definition": "two_trees_base",
+        "visible": true,
+        "platform": "twotrees235x235_generic.stl"
+    }
+}

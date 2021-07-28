@@ -80,6 +80,7 @@
         "retraction_amount" : { "default_value": 4.5},
         "retraction_speed" : { "default_value": 40},
         "coasting_enable": { "default_value": true },
-        "prime_tower_enable": { "default_value": false}
+        "prime_tower_enable": { "default_value": false},
+        "speed_z_hop": {"default_value": 1.5}
     }
 }

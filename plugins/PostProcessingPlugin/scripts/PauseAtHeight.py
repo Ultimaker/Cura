@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
@@ -182,8 +182,7 @@ class PauseAtHeight(Script):
                         "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
-                    "enabled": false,
-                    "default_value": ""
+                    "enabled": false
                 },
                 "custom_gcode_before_pause":
                 {
@@ -339,11 +338,6 @@ class PauseAtHeight(Script):
                     if current_layer < pause_layer - nbr_negative_layers:
                         continue
 
-                # Get X and Y from the next layer (better position for
-                # the nozzle)
-                next_layer = data[index + 1]
-                x, y = self.getNextXY(next_layer)
-
                 prev_layer = data[index - 1]
                 prev_lines = prev_layer.split("\n")
                 current_e = 0.
@@ -354,6 +348,13 @@ class PauseAtHeight(Script):
                     current_e = self.getValue(prevLine, "E", -1)
                     if current_e >= 0:
                         break
+                # and also find last X,Y
+                for prevLine in reversed(prev_lines):
+                    if prevLine.startswith(("G0", "G1", "G2", "G3")):
+                        if self.getValue(prevLine, "X") is not None and self.getValue(prevLine, "Y") is not None:
+                            x = self.getValue(prevLine, "X")
+                            y = self.getValue(prevLine, "Y")
+                            break
 
                 # Maybe redo the last layer.
                 if redo_layer:
@@ -386,7 +387,7 @@ class PauseAtHeight(Script):
                     #Retraction
                     prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
                     #Move the head away
                     prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
@@ -455,7 +456,7 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
                     #Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
@@ -506,10 +507,23 @@ class PauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
+                    extrusion_mode_string = "absolute"
+                    extrusion_mode_numeric = 82
 
-                # reset extrude value to pre pause value
-                prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
+                    if relative_extrusion:
+                        extrusion_mode_string = "relative"
+                        extrusion_mode_numeric = 83
+
+                    prepend_gcode += self.putValue(M = extrusion_mode_numeric) + " ; switch back to " + extrusion_mode_string + " E values\n"
+
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+
+                elif redo_layer:
+                    # All other options reset the E value to what it was before the pause because E things were added.
+                    # If it's not yet reset, it still needs to be reset if there were any redo layers.
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 layer = prepend_gcode + layer
 

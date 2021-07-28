@@ -1,11 +1,11 @@
 {
-    "name": "TiZYX EVY",
+    "name": "Tizyx Evy",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "TiZYX",
-        "manufacturer": "TiZYX",
+        "author": "Tizyx",
+        "manufacturer": "Tizyx",
         "file_formats": "text/x-gcode",
 
         "has_machine_quality": true,

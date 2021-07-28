@@ -1,12 +1,12 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime
 import json
 import random
 from hashlib import sha512
 from base64 import b64encode
-from typing import Optional, Any, Dict, Tuple
-
+from typing import Optional
 import requests
 
 from UM.i18n import i18nCatalog
@@ -58,7 +58,7 @@ class AuthorizationHelpers:
         :return: An AuthenticationResponse object.
         """
 
-        Logger.log("d", "Refreshing the access token.")
+        Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -69,7 +69,9 @@ class AuthorizationHelpers:
         try:
             return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
         except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
+            return AuthenticationResponse(success = False, err_message = "Unable to connect to remote server")
+        except OSError as e:
+            return AuthenticationResponse(success = False, err_message = "Operating system is unable to set up a secure connection: {err}".format(err = str(e)))
 
     @staticmethod
     def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":
@@ -108,10 +110,12 @@ class AuthorizationHelpers:
         """
 
         try:
-            token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
+            check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
+            Logger.log("d", "Checking the access token for [%s]", check_token_url)
+            token_request = requests.get(check_token_url, headers = {
                 "Authorization": "Bearer {}".format(access_token)
             })
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             # Connection was suddenly dropped. Nothing we can do about that.
             Logger.logException("w", "Something failed while attempting to parse the JWT token")
             return None
