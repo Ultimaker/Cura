@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -31,32 +31,13 @@ Item
         height: icon.height
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        Item
+        UM.StatusIcon
         {
             id: icon
             width: visible ? UM.Theme.getSize("section_icon").width : 0
             height: width
             anchors.verticalCenter: parent.verticalCenter
-            UM.RecolorImage
-            {
-                id: warningIconBackground
-                height: parent.height
-                width: parent.width
-                sourceSize.width: width
-                sourceSize.height: height
-                source: UM.Theme.getIcon("CircleSolid", "low")
-                color: UM.Theme.getColor("warning")
-            }
-            UM.RecolorImage
-            {
-                id: warningIcon
-                height: parent.height
-                width: parent.width
-                sourceSize.width: width
-                sourceSize.height: height
-                source: UM.Theme.getIcon("Warning", "low")
-                color: UM.Theme.getColor("message_warning_icon")
-            }
+            status: UM.StatusIcon.Status.WARNING
         }
         Label
         {

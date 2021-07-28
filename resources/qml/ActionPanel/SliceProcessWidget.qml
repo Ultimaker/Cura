@@ -6,7 +6,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4 as Controls1
 
-import UM 1.3 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 
@@ -63,38 +63,19 @@ Column
         width: parent.width
         visible: widget.backendState == UM.Backend.Error
 
-        height: icon.height
-        Item
+        height: warningIcon.height
+        UM.StatusIcon
         {
-            id: icon
+            id: warningIcon
             anchors.verticalCenter: parent.verticalCenter
             width: visible ? UM.Theme.getSize("section_icon").width : 0
             height: width
-            UM.RecolorImage
-            {
-                id: warningIconBackground
-                height: parent.height
-                width: parent.width
-                sourceSize.width: width
-                sourceSize.height: height
-                source: UM.Theme.getIcon("CircleSolid", "low")
-                color: UM.Theme.getColor("warning")
-            }
-            UM.RecolorImage
-            {
-                id: warningIcon
-                height: parent.height
-                width: parent.width
-                sourceSize.width: width
-                sourceSize.height: height
-                source: UM.Theme.getIcon("Warning", "low")
-                color: UM.Theme.getColor("message_warning_icon")
-            }
+            status: UM.StatusIcon.Status.WARNING
         }
         Label
         {
             id: label
-            anchors.left: icon.right
+            anchors.left: warningIcon.right
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
