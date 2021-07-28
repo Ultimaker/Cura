@@ -393,7 +393,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message = Message(catalog.i18nc("@info:status",
                                                             "Unable to slice with the current material as it is incompatible with the selected machine or configuration."),
                                               title = catalog.i18nc("@info:title", "Unable to slice"),
-                                              message_type = Message.MessageType.ERROR)
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -426,7 +426,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message = Message(catalog.i18nc("@info:status",
                                                             "Unable to slice with the current settings. The following settings have errors: {0}").format(", ".join(error_labels)),
                                               title = catalog.i18nc("@info:title", "Unable to slice"),
-                                              message_type = Message.MessageType.ERROR)
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -452,7 +452,7 @@ class CuraEngineBackend(QObject, Backend):
             self._error_message = Message(catalog.i18nc("@info:status",
                                                         "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
                                           title = catalog.i18nc("@info:title", "Unable to slice"),
-                                          message_type = Message.MessageType.ERROR)
+                                          message_type = Message.MessageType.WARNING)
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)
@@ -463,7 +463,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message = Message(catalog.i18nc("@info:status",
                                                             "Unable to slice because the prime tower or prime position(s) are invalid."),
                                               title = catalog.i18nc("@info:title", "Unable to slice"),
-                                              message_type = Message.MessageType.ERROR)
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -474,7 +474,7 @@ class CuraEngineBackend(QObject, Backend):
             self._error_message = Message(catalog.i18nc("@info:status",
                                                         "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
                                           title = catalog.i18nc("@info:title", "Unable to slice"),
-                                          message_type = Message.MessageType.ERROR)
+                                          message_type = Message.MessageType.WARNING)
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)
@@ -487,7 +487,7 @@ class CuraEngineBackend(QObject, Backend):
                                                                             "\n- Are assigned to an enabled extruder"
                                                                             "\n- Are not all set as modifier meshes"),
                                               title = catalog.i18nc("@info:title", "Unable to slice"),
-                                              message_type = Message.MessageType.ERROR)
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
