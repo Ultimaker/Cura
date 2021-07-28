@@ -530,7 +530,8 @@ class DigitalFactoryController(QObject):
                 Message(
                         text = "Failed to write to temporary file for '{}'.".format(file_name),
                         title = "File-system error",
-                        lifetime = 10
+                        lifetime = 10,
+                        message_type=Message.MessageType.ERROR
                 ).show()
                 return
 
@@ -544,7 +545,8 @@ class DigitalFactoryController(QObject):
             Message(
                     text = "Failed Digital Library download for '{}'.".format(f),
                     title = "Network error {}".format(error),
-                    lifetime = 10
+                    lifetime = 10,
+                    message_type=Message.MessageType.ERROR
             ).show()
 
         download_manager = HttpRequestManager.getInstance()
@@ -589,7 +591,10 @@ class DigitalFactoryController(QObject):
 
         if filename == "":
             Logger.log("w", "The file name cannot be empty.")
-            Message(text = "Cannot upload file with an empty name to the Digital Library", title = "Empty file name provided", lifetime = 0).show()
+            Message(text = "Cannot upload file with an empty name to the Digital Library",
+                    title = "Empty file name provided",
+                    lifetime = 0,
+                    message_type = Message.MessageType.ERROR).show()
             return
 
         self._saveFileToSelectedProjectHelper(filename, formats)

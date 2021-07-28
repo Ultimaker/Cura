@@ -178,7 +178,9 @@ class Account(QObject):
             if self._error_message:
                 self._error_message.hide()
             Logger.log("w", "Failed to login: %s", error_message)
-            self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
+            self._error_message = Message(error_message,
+                                          title = i18n_catalog.i18nc("@info:title", "Login failed"),
+                                          message_type = Message.MessageType.ERROR)
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)

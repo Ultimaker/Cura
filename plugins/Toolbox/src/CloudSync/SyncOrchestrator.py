@@ -111,4 +111,4 @@ class SyncOrchestrator(Extension):
         """Logs an error and shows it to the user"""
 
         Logger.error(text)
-        Message(text, lifetime=0).show()
+        Message(text, lifetime = 0, message_type = Message.MessageType.ERROR).show()
