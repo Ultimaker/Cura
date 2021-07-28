@@ -150,5 +150,5 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
             no_full_solution_message = Message(i18n_catalog.i18nc("@info:status",
                                                                   "Unable to find a location within the build volume for all objects"),
                                                title = i18n_catalog.i18nc("@info:title", "Can't Find Location"),
-                                               message_type = Message.MessageType.ERROR)
+                                               message_type = Message.MessageType.WARNING)
             no_full_solution_message.show()

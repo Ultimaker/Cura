@@ -17,8 +17,7 @@ class RestartApplicationPresenter:
 
         message = Message(self._i18n_catalog.i18nc("@info:generic",
                                                    "You need to quit and restart {} before changes have effect.",
-                                                   app_name),
-                          message_type = Message.MessageType.WARNING)
+                                                   app_name))
 
         message.addAction("quit",
                           name="Quit " + app_name,

@@ -11,7 +11,7 @@ class PrintJobUploadProgressMessage(Message):
     """Class responsible for showing a progress message while a mesh is being uploaded to the cloud."""
 
     def __init__(self):
-        super(PrintJobUploadProgressMessage, self).__init__(
+        super().__init__(
             title = I18N_CATALOG.i18nc("@info:status", "Sending Print Job"),
             text = I18N_CATALOG.i18nc("@info:status", "Uploading print job to printer."),
             progress = -1,

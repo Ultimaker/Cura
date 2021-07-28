@@ -11,7 +11,7 @@ class PrintJobUploadSuccessMessage(Message):
     """Message shown when uploading a print job to a cluster succeeded."""
 
     def __init__(self) -> None:
-        super(PrintJobUploadSuccessMessage, self).__init__(
+        super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
             title = I18N_CATALOG.i18nc("@info:title", "Data Sent"),
             message_type = Message.MessageType.POSITIVE
