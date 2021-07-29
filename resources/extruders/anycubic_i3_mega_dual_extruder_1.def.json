@@ -3,7 +3,7 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "anycubic_i3_mega",
+        "machine": "anycubic_i3_mega_dual",
         "position": "1"
     },
 
