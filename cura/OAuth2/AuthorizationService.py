@@ -186,8 +186,10 @@ class AuthorizationService:
             self._server.start(verification_code, state)
         except OSError:
             Logger.logException("w", "Unable to create authorization request server")
-            Message(i18n_catalog.i18nc("@info", "Unable to start a new sign in process. Check if another sign in attempt is still active."),
-                    title=i18n_catalog.i18nc("@info:title", "Warning")).show()
+            Message(i18n_catalog.i18nc("@info",
+                                       "Unable to start a new sign in process. Check if another sign in attempt is still active."),
+                    title=i18n_catalog.i18nc("@info:title", "Warning"),
+                    message_type = Message.MessageType.WARNING).show()
             return
 
         auth_url = self._generate_auth_url(query_parameters_dict, force_browser_logout)
@@ -241,7 +243,10 @@ class AuthorizationService:
                     if self._unable_to_get_data_message is not None:
                         self._unable_to_get_data_message.hide()
 
-                    self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
+                    self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
+                                                                                  "Unable to reach the Ultimaker account server."),
+                                                               title = i18n_catalog.i18nc("@info:title", "Warning"),
+                                                               message_type = Message.MessageType.ERROR)
                     self._unable_to_get_data_message.show()
         except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
