@@ -125,10 +125,17 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled."),
-                                                  title = catalog.i18nc("@info:title", "Simulation View"))
-        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."), title = catalog.i18nc("@info:title", "No layers to show"),
-                                                    option_text = catalog.i18nc("@info:option_text", "Do not show this message again"), option_state = False)
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
+                                                                "Cura does not accurately display layers when Wire Printing is enabled."),
+                                                  title = catalog.i18nc("@info:title", "Simulation View"),
+                                                  message_type = Message.MessageType.WARNING)
+        self._slice_first_warning_message = Message(catalog.i18nc("@info:status",
+                                                                  "Nothing is shown because you need to slice first."),
+                                                    title = catalog.i18nc("@info:title", "No layers to show"),
+                                                    option_text = catalog.i18nc("@info:option_text",
+                                                                                "Do not show this message again"),
+                                                    option_state = False,
+                                                    message_type = Message.MessageType.WARNING)
         self._slice_first_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         CuraApplication.getInstance().getPreferences().addPreference(self._no_layers_warning_preference, True)
 

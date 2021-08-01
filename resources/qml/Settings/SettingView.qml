@@ -185,6 +185,8 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
+        width: UM.Theme.getSize("medium_button_icon").width
+        height: UM.Theme.getSize("medium_button_icon").height
 
         style: ButtonStyle
         {
