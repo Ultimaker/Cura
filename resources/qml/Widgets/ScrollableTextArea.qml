@@ -34,6 +34,7 @@ ScrollView
         color: UM.Theme.getColor("text")
         textFormat: TextEdit.PlainText
         renderType: Text.NativeRendering
+        wrapMode: Text.Wrap
         selectByMouse: true
     }
 }
