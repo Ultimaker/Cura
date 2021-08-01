@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -214,16 +214,16 @@ Item
             id: troubleshootingButton
 
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("thin_margin").width
             anchors.verticalCenter: parent.verticalCenter
             height: troubleshootingLinkIcon.height
-            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("default_margin").width
+            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("thin_margin").width
 
             UM.RecolorImage
             {
                 id: troubleshootingLinkIcon
                 anchors.right: troubleshootingLabel.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
                 anchors.verticalCenter: parent.verticalCenter
                 height: troubleshootingLabel.height
                 width: height
