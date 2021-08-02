@@ -24,7 +24,7 @@ MenuItem
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        source: UM.Theme.getIcon("arrow_right")
+        source: UM.Theme.getIcon("ChevronSingleRight")
         color: UM.Theme.getColor("setting_control_text")
     }
 
@@ -37,7 +37,7 @@ MenuItem
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        source: UM.Theme.getIcon("check")
+        source: UM.Theme.getIcon("Check")
         color: UM.Theme.getColor("setting_control_text")
     }
 

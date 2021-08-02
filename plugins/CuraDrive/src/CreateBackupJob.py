@@ -43,7 +43,9 @@ class CreateBackupJob(Job):
         """After the job completes, an empty string indicates success. Othrerwise, the value is a translated message."""
 
     def run(self) -> None:
-        upload_message = Message(catalog.i18nc("@info:backup_status", "Creating your backup..."), title = self.MESSAGE_TITLE, progress = -1)
+        upload_message = Message(catalog.i18nc("@info:backup_status", "Creating your backup..."),
+                                 title = self.MESSAGE_TITLE,
+                                 progress = -1)
         upload_message.show()
         CuraApplication.getInstance().processEvents()
         cura_api = CuraApplication.getInstance().getCuraAPI()

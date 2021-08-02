@@ -111,15 +111,15 @@ class Backup:
             return archive
         except (IOError, OSError, BadZipfile) as error:
             Logger.log("e", "Could not create archive from user data directory: %s", error)
-            self._showMessage(
-                self.catalog.i18nc("@info:backup_failed",
-                                   "Could not create archive from user data directory: {}".format(error)))
+            self._showMessage(self.catalog.i18nc("@info:backup_failed",
+                                                 "Could not create archive from user data directory: {}".format(error)),
+                              message_type = Message.MessageType.ERROR)
             return None
 
-    def _showMessage(self, message: str) -> None:
+    def _showMessage(self, message: str, message_type: Message.MessageType = Message.MessageType.NEUTRAL) -> None:
         """Show a UI message."""
 
-        Message(message, title=self.catalog.i18nc("@info:title", "Backup"), lifetime=30).show()
+        Message(message, title=self.catalog.i18nc("@info:title", "Backup"), message_type = message_type).show()
 
     def restore(self) -> bool:
         """Restore this back-up.
@@ -130,9 +130,9 @@ class Backup:
         if not self.zip_file or not self.meta_data or not self.meta_data.get("cura_release", None):
             # We can restore without the minimum required information.
             Logger.log("w", "Tried to restore a Cura backup without having proper data or meta data.")
-            self._showMessage(
-                self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup without having proper data or meta data."))
+            self._showMessage(self.catalog.i18nc("@info:backup_failed",
+                                                 "Tried to restore a Cura backup without having proper data or meta data."),
+                              message_type = Message.MessageType.ERROR)
             return False
 
         current_version = Version(self._application.getVersion())
@@ -141,9 +141,9 @@ class Backup:
         if current_version < version_to_restore:
             # Cannot restore version newer than current because settings might have changed.
             Logger.log("d", "Tried to restore a Cura backup of version {version_to_restore} with cura version {current_version}".format(version_to_restore = version_to_restore, current_version = current_version))
-            self._showMessage(
-                self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup that is higher than the current version."))
+            self._showMessage(self.catalog.i18nc("@info:backup_failed",
+                                                 "Tried to restore a Cura backup that is higher than the current version."),
+                              message_type = Message.MessageType.ERROR)
             return False
 
         # Get the current secrets and store since the back-up doesn't contain those
@@ -154,7 +154,11 @@ class Backup:
             archive = ZipFile(io.BytesIO(self.zip_file), "r")
         except LookupError as e:
             Logger.log("d", f"The following error occurred while trying to restore a Cura backup: {str(e)}")
-            self._showMessage(self.catalog.i18nc("@info:backup_failed", "The following error occurred while trying to restore a Cura backup:") + str(e))
+            Message(self.catalog.i18nc("@info:backup_failed",
+                                       "The following error occurred while trying to restore a Cura backup:") + str(e),
+                    title = self.catalog.i18nc("@info:title", "Backup"),
+                    message_type = Message.MessageType.ERROR).show()
+
             return False
         extracted = self._extractArchive(archive, version_data_dir)
 
