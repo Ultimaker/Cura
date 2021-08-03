@@ -2,9 +2,10 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
+import zipfile  # To export all materials in a .zip archive.
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -20,11 +21,6 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 class MaterialManagementModel(QObject):
-    """Proxy class to the materials page in the preferences.
-
-    This class handles the actions in that page, such as creating new materials, renaming them, etc.
-    """
-
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
 
@@ -264,3 +260,40 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    @pyqtSlot(result = QUrl)
+    def getPreferredExportAllPath(self) -> QUrl:
+        """
+        Get the preferred path to export materials to.
+
+        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
+        file path.
+        :return: The preferred path to export all materials to.
+        """
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        device_manager = cura_application.getOutputDeviceManager()
+        devices = device_manager.getOutputDevices()
+        for device in devices:
+            if device.__class__.__name__ == "RemovableDriveOutputDevice":
+                return QUrl.fromLocalFile(device.getId())
+        else:  # No removable drives? Use local path.
+            return cura_application.getDefaultPath("dialog_material_path")
+
+    @pyqtSlot(QUrl)
+    def exportAll(self, file_path: QUrl) -> None:
+        """
+        Export all materials to a certain file path.
+        :param file_path: The path to export the materials to.
+        """
+        registry = CuraContainerRegistry.getInstance()
+
+        archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+        for metadata in registry.findInstanceContainersMetadata(type = "material"):
+            if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                continue
+            if metadata["id"] == "empty_material":  # Don't export the empty material.
+                continue
+            material = registry.findContainers(id = metadata["id"])[0]
+            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+            filename = metadata["id"] + "." + suffix
+            archive.writestr(filename, material.serialize())

@@ -230,7 +230,8 @@ class CloudOutputDeviceManager:
             ),
             progress = 0,
             lifetime = 0,
-            image_source = image_path
+            image_source = image_path,
+            message_type = Message.MessageType.POSITIVE
         )
         message.show()
 
@@ -316,7 +317,8 @@ class CloudOutputDeviceManager:
                         "A cloud connection is not available for a printer",
                         "A cloud connection is not available for some printers",
                         len(self.reported_device_ids)
-                )
+                ),
+            message_type = Message.MessageType.WARNING
         )
         device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.i18n_catalog.i18ncp(

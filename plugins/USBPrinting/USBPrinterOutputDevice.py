@@ -131,7 +131,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         """
 
         if self._is_printing:
-            message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
+            message = Message(text = catalog.i18nc("@message",
+                                                   "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."),
+                              title = catalog.i18nc("@message", "Print in Progress"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             return  # Already printing
         self.writeStarted.emit(self)

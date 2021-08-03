@@ -391,7 +391,9 @@ class CuraEngineBackend(QObject, Backend):
         if job.getResult() == StartJobResult.MaterialIncompatible:
             if application.platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
-                                            "Unable to slice with the current material as it is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Unable to slice"))
+                                                            "Unable to slice with the current material as it is incompatible with the selected machine or configuration."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -421,8 +423,10 @@ class CuraEngineBackend(QObject, Backend):
                         continue
                     error_labels.add(definitions[0].label)
 
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}").format(", ".join(error_labels)),
-                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                self._error_message = Message(catalog.i18nc("@info:status",
+                                                            "Unable to slice with the current settings. The following settings have errors: {0}").format(", ".join(error_labels)),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -445,8 +449,10 @@ class CuraEngineBackend(QObject, Backend):
                         Logger.log("e", "When checking settings for errors, unable to find definition for key {key} in per-object stack.".format(key = key))
                         continue
                     errors[key] = definition[0].label
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
-                                          title = catalog.i18nc("@info:title", "Unable to slice"))
+            self._error_message = Message(catalog.i18nc("@info:status",
+                                                        "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
+                                          title = catalog.i18nc("@info:title", "Unable to slice"),
+                                          message_type = Message.MessageType.WARNING)
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)
@@ -454,8 +460,10 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartJobResult.BuildPlateError:
             if application.platformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."),
-                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                self._error_message = Message(catalog.i18nc("@info:status",
+                                                            "Unable to slice because the prime tower or prime position(s) are invalid."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -463,8 +471,10 @@ class CuraEngineBackend(QObject, Backend):
                 self.setState(BackendState.NotStarted)
 
         if job.getResult() == StartJobResult.ObjectsWithDisabledExtruder:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
-                                          title = catalog.i18nc("@info:title", "Unable to slice"))
+            self._error_message = Message(catalog.i18nc("@info:status",
+                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
+                                          title = catalog.i18nc("@info:title", "Unable to slice"),
+                                          message_type = Message.MessageType.WARNING)
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)
@@ -476,7 +486,8 @@ class CuraEngineBackend(QObject, Backend):
                                                                             "\n- Fit within the build volume"
                                                                             "\n- Are assigned to an enabled extruder"
                                                                             "\n- Are not all set as modifier meshes"),
-                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
