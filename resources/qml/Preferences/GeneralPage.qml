@@ -770,8 +770,45 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                visible: checkUpdatesCheckbox.visible || sendDataCheckbox.visible
-                text: catalog.i18nc("@label","Privacy")
+                text: catalog.i18nc("@label", "Privacy")
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
+
+                CheckBox
+                {
+                    id: sendDataCheckbox
+                    text: catalog.i18nc("@option:check","Send (anonymous) print information")
+                    checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+                    onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
+                }
+
+                Button
+                {
+                    id: showMoreInfo
+                    anchors.top: sendDataCheckbox.bottom
+                    text: catalog.i18nc("@action:button", "More information")
+                    onClicked:
+                    {
+                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection();
+                    }
+                }
+            }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").height
+            }
+
+            Label
+            {
+                font.bold: true
+                text: catalog.i18nc("@label", "Updates")
             }
 
             UM.TooltipArea
@@ -836,31 +873,7 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("info/automatic_plugin_update_check", checked)
                 }
             }
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
-                CheckBox
-                {
-                    id: sendDataCheckbox
-                    text: catalog.i18nc("@option:check","Send (anonymous) print information")
-                    checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
-                    onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
-                }
-
-                Button
-                {
-                    id: showMoreInfo
-                    anchors.top: sendDataCheckbox.bottom
-                    text: catalog.i18nc("@action:button", "More information")
-                    onClicked:
-                    {
-                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection();
-                    }
-                }
-            }
 
             /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item
