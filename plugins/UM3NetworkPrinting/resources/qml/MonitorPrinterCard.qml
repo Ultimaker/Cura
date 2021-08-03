@@ -271,8 +271,8 @@ Item
         }
 
         // For cloud printing, add this mouse area over the disabled cameraButton to indicate that it's not available
-        //Warning message is commented out because it's factually incorrect. Fix CURA-7637 to allow camera connections via cloud.
-        /* MouseArea
+        // Fix CURA-7637 to allow camera connections via cloud.
+        MouseArea
         {
             id: cameraDisabledButtonArea
             anchors.fill: cameraButton
@@ -286,9 +286,9 @@ Item
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
-            text: catalog.i18nc("@info", "The webcam is not available because you are monitoring a cloud printer.")
+            text: catalog.i18nc("@info", "The webcam is not available for cloud printers. Please visit the printer page in the Ultimaker Digital Factory to see the webcam snapshots.")
             target: cameraButton
-        }*/
+        }
     }
 
     // Divider
