@@ -54,7 +54,7 @@ Item
             {
                 id: networkPrinterScrollView
 
-                maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
+                maxItemCountAtOnce: 9  // show at max 9 items at once, otherwise you need to scroll.
 
                 onRefreshButtonClicked:
                 {

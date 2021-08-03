@@ -54,6 +54,7 @@ class LocalAuthorizationServer:
         if self._web_server:
             # If the server is already running (because of a previously aborted auth flow), we don't have to start it.
             # We still inject the new verification code though.
+            Logger.log("d", "Auth web server was already running. Updating the verification code")
             self._web_server.setVerificationCode(verification_code)
             return
 
@@ -85,6 +86,7 @@ class LocalAuthorizationServer:
             except OSError:
                 # OS error can happen if the socket was already closed. We really don't care about that case.
                 pass
+        Logger.log("d", "Local oauth2 web server was shut down")
         self._web_server = None
         self._web_server_thread = None
 
@@ -96,12 +98,13 @@ class LocalAuthorizationServer:
 
         :return: None
         """
+        Logger.log("d", "Local web server for authorization has started")
         if self._web_server:
             if sys.platform == "win32":
                 try:
                     self._web_server.serve_forever()
-                except OSError as e:
-                    Logger.warning(str(e))
+                except OSError:
+                    Logger.logException("w", "An exception happened while serving the auth server")
             else:
                 # Leave the default behavior in non-windows platforms
                 self._web_server.serve_forever()
