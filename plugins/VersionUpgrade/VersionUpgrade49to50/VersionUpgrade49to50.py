@@ -10,7 +10,9 @@ _removed_settings = {
     "travel_compensate_overlapping_walls_enabled",
     "travel_compensate_overlapping_walls_0_enabled",
     "travel_compensate_overlapping_walls_x_enabled",
-    "fill_perimeter_gaps"
+    "fill_perimeter_gaps",
+    "wall_min_flow",
+    "wall_min_flow_retract"
 }
 
 
