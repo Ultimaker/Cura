@@ -282,11 +282,11 @@ Item
             enabled: !cameraButton.enabled
         }
 
-
         MonitorInfoBlurb
         {
             id: cameraDisabledInfo
-            text: catalog.i18nc("@info", "The webcam is not available for cloud printers. Please visit the printer page in the Ultimaker Digital Factory to see the webcam snapshots.")
+            text: catalog.i18nc("@info", "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura." +
+                " Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam.")
             target: cameraButton
         }
     }
