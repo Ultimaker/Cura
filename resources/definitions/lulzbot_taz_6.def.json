@@ -1,5 +1,4 @@
 {
-    "id": "lulzbot_taz_6",
     "name": "LulzBot TAZ 6",
     "inherits": "lulzbot_base",
     "version": 2,

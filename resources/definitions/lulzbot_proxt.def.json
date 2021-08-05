@@ -1,5 +1,4 @@
 {
-    "id": "lulzbot_pro_xt",
     "name": "LulzBot TAZ Pro XT",
     "inherits": "lulzbot_pro",
     "version": 2,

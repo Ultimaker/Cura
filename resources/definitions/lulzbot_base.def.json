@@ -1,12 +1,10 @@
 {
-    "id": "lulzbot_base",
     "name": "LulzBot",
     "inherits": "fdmprinter",
     "version": 2,
     "metadata":
     {
         "author": "FAME3D Base",
-        "category": "LulzBot",
         "file_formats": "text/x-gcode",
         "firmware_last_version": "1.1.9.34",
         "first_start_actions":["MachineSettingsAction"],
