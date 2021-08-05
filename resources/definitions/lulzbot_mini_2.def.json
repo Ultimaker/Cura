@@ -30,15 +30,6 @@
         "machine_acceleration": {
             "default_value": 1000
         },
-        "acceleration_print": {
-            "default_value": 1000
-        },
-        "jerk_print": {
-            "default_value": 20
-        },
-        "jerk_travel_layer_0": {
-            "default_value": 20
-        },
         "machine_max_feedrate_x": {
             "default_value": 800
         },
