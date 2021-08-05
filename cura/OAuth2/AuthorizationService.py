@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
     from UM.Preferences import Preferences
 
-MYCLOUD_LOGOFF_URL = "https://mycloud.ultimaker.com/logoff"
+MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff"
 
 class AuthorizationService:
     """The authorization service is responsible for handling the login flow, storing user credentials and providing

@@ -81,7 +81,7 @@ Item
             tooltip: "You have reached the maximum number of projects allowed by your subscription. Please upgrade to the Professional subscription to create more projects."
             tooltipWidth: parent.width * 0.5
 
-            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-essentials/sign-up-cura?utm_source=cura&utm_medium=software&utm_campaign=lib-max")
+            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/enterprise-software?utm_source=cura&utm_medium=software&utm_campaign=MaxProjLink")
         }
     }
 
@@ -124,7 +124,7 @@ Item
                 id: visitDigitalLibraryButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Visit Digital Library"
-                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library")
+                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library?utm_source=cura&utm_medium=software&utm_campaign=empty-library")
                 visible: searchBar.text === "" //Show the link to Digital Library when there are no projects in the user's Library.
             }
         }

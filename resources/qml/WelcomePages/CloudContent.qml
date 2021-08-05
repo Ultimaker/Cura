@@ -215,7 +215,7 @@ Item
                 id: createAccountButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: catalog.i18nc("@text", "Create a free Ultimaker Account")
-                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
+                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create?utm_source=cura&utm_medium=software&utm_campaign=onboarding-signup")
             }
         }
     }
