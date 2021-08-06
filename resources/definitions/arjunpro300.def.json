@@ -8,7 +8,7 @@
         "manufacturer": "Sri Vignan Technologies",
         "weight": 3,
         "file_formats": "text/x-gcode",
-        "platform": "arjunpro300_platform.stl",
+        "platform": "arjunpro300_platform.STL",
         "platform_offset": [-155, -6, 190],
         "has_material": true,
         "has_variants": true,
