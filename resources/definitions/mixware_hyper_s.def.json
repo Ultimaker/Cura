@@ -284,7 +284,7 @@
             "value": "line_width * 2"
         },
         "adhesion_type": {
-            "value": "'skirt' if support_enable else 'skirt'"
+            "value": "'skirt'"
         },
         "brim_replaces_support": {
             "value": false
