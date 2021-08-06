@@ -68,9 +68,11 @@ UM.Dialog{
                             Image
                             {
                                 id: packageIcon
-                                source: model.icon_url || "../../images/logobot.svg"
+                                source: model.icon_url || "../../images/placeholder.svg"
                                 height: lineHeight
                                 width: height
+                                sourceSize.height: height
+                                sourceSize.width: width
                                 mipmap: true
                                 fillMode: Image.PreserveAspectFit
                             }
@@ -111,9 +113,11 @@ UM.Dialog{
                             Image
                             {
                                 id: packageIcon
-                                source: model.icon_url || "../../images/logobot.svg"
+                                source: model.icon_url || "../../images/placeholder.svg"
                                 height: lineHeight
                                 width: height
+                                sourceSize.height: height
+                                sourceSize.width: width
                                 mipmap: true
                                 fillMode: Image.PreserveAspectFit
                             }

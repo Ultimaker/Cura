@@ -13,7 +13,7 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "exclude_materials": [ "generic_hips", "generic_petg", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
+        "exclude_materials": [ "generic_hips", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
         "preferred_variant_name": "AA 0.4",
         "preferred_quality_type": "normal",
         "variants_name": "Print core",
@@ -47,7 +47,6 @@
         "machine_depth": { "default_value": 215 },
         "machine_height": { "default_value": 200 },
         "machine_heated_bed": { "default_value": true },
-        "machine_filament_park_distance": { "value": "machine_heat_zone_length + 26.5" },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
         "machine_head_with_fans_polygon":

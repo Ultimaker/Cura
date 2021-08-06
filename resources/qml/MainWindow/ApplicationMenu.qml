@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -35,6 +35,7 @@ Item
             MenuSeparator { }
             MenuItem { action: Cura.Actions.selectAll }
             MenuItem { action: Cura.Actions.arrangeAll }
+            MenuItem { action: Cura.Actions.multiplySelection }
             MenuItem { action: Cura.Actions.deleteSelection }
             MenuItem { action: Cura.Actions.deleteAll }
             MenuItem { action: Cura.Actions.resetAllTranslation }
@@ -47,7 +48,17 @@ Item
 
         ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View") }
 
-        SettingsMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&Settings") }
+        SettingsMenu
+        {
+            //On MacOS, don't translate the "Settings" word.
+            //Qt moves the "settings" entry to a different place, and if it got renamed can't find it again when it
+            //attempts to delete the item upon closing the application, causing a crash.
+            //In the new location, these items are translated automatically according to the system's language.
+            //For more information, see:
+            //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+            //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+            title: (Qt.platform.os == "osx") ? "&Settings" : catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
+        }
 
         Menu
         {
@@ -68,13 +79,17 @@ Item
                     Instantiator
                     {
                         model: actions
-                        MenuItem
+                        Loader
                         {
-                            text: model.text
-                            onTriggered: extensions.model.subMenuTriggered(name, model.text)
+                            property var extensionsModel: extensions.model
+                            property var modelText: model.text
+                            property var extensionName: name
+
+                            sourceComponent: modelText.trim() == "" ? extensionsMenuSeparator : extensionsMenuItem
                         }
-                        onObjectAdded: sub_menu.insertItem(index, object)
-                        onObjectRemoved: sub_menu.removeItem(object)
+
+                        onObjectAdded: sub_menu.insertItem(index, object.item)
+                        onObjectRemoved: sub_menu.removeItem(object.item)
                     }
                 }
 
@@ -86,7 +101,15 @@ Item
         Menu
         {
             id: preferencesMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel", "P&references")
+
+            //On MacOS, don't translate the "Preferences" word.
+            //Qt moves the "preferences" entry to a different place, and if it got renamed can't find it again when it
+            //attempts to delete the item upon closing the application, causing a crash.
+            //In the new location, these items are translated automatically according to the system's language.
+            //For more information, see:
+            //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+            //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+            title: (Qt.platform.os == "osx") ? "&Preferences" : catalog.i18nc("@title:menu menubar:toplevel", "P&references")
 
             MenuItem { action: Cura.Actions.preferences }
         }
@@ -105,6 +128,25 @@ Item
             MenuItem { action: Cura.Actions.about }
         }
     }
+
+    Component
+    {
+        id: extensionsMenuItem
+
+        MenuItem
+        {
+            text: modelText
+            onTriggered: extensionsModel.subMenuTriggered(extensionName, modelText)
+        }
+    }
+
+    Component
+    {
+        id: extensionsMenuSeparator
+
+        MenuSeparator {}
+    }
+
 
     // ###############################################################################################
     // Definition of other components that are linked to the menus
@@ -145,7 +187,7 @@ Item
     Connections
     {
         target: Cura.Actions.newProject
-        onTriggered:
+        function onTriggered()
         {
             if(Printer.platformActivity || Cura.MachineManager.hasUserSettings)
             {
@@ -158,7 +200,7 @@ Item
     Connections
     {
         target: Cura.Actions.browsePackages
-        onTriggered:
+        function onTriggered()
         {
             curaExtensions.callExtensionMethod("Toolbox", "launch")
         }
@@ -168,7 +210,7 @@ Item
     Connections
     {
         target: Cura.Actions.marketplaceMaterials
-        onTriggered:
+        function onTriggered()
         {
             curaExtensions.callExtensionMethod("Toolbox", "launch")
             curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")

@@ -653,7 +653,7 @@ class X3DReader(MeshReader):
 
     def processGeometryTriangleSet2D(self, node):
         verts = readFloatArray(node, "vertices", ())
-        num_faces = len(verts) // 6;
+        num_faces = len(verts) // 6
         verts = [(verts[i], verts[i+1], 0) for i in range(0, 6 * num_faces, 2)]
         self.reserveFaceAndVertexCount(num_faces, num_faces * 3)
         for vert in verts:
@@ -904,6 +904,7 @@ def findOuterNormal(face):
 
     return False
 
+
 # Given two *collinear* vectors a and b, returns the coefficient that takes b to a.
 # No error handling.
 # For stability, taking the ration between the biggest coordinates would be better...
@@ -915,12 +916,13 @@ def ratio(a, b):
     else:
         return a.z / b.z
 
+
 def pointInsideTriangle(vx, next, prev, nextXprev):
     vxXprev = vx.cross(prev)
     r = ratio(vxXprev, nextXprev)
     if r < 0:
         return False
-    vxXnext = vx.cross(next);
+    vxXnext = vx.cross(next)
     s = -ratio(vxXnext, nextXprev)
     return s > 0 and (s + r) < 1
 

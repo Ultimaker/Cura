@@ -1,10 +1,11 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
+import zipfile  # To export all materials in a .zip archive.
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -19,28 +20,26 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
-##  Proxy class to the materials page in the preferences.
-#
-#   This class handles the actions in that page, such as creating new materials,
-#   renaming them, etc.
 class MaterialManagementModel(QObject):
-    ##  Triggered when a favorite is added or removed.
-    #   \param The base file of the material is provided as parameter when this
-    #   emits.
     favoritesChanged = pyqtSignal(str)
+    """Triggered when a favorite is added or removed.
 
-    ##  Can a certain material be deleted, or is it still in use in one of the
-    #   container stacks anywhere?
-    #
-    #   We forbid the user from deleting a material if it's in use in any stack.
-    #   Deleting it while it's in use can lead to corrupted stacks. In the
-    #   future we might enable this functionality again (deleting the material
-    #   from those stacks) but for now it is easier to prevent the user from
-    #   doing this.
-    #   \param material_node The ContainerTree node of the material to check.
-    #   \return Whether or not the material can be removed.
+    :param The base file of the material is provided as parameter when this emits
+    """
+
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
+        """Can a certain material be deleted, or is it still in use in one of the container stacks anywhere?
+
+        We forbid the user from deleting a material if it's in use in any stack. Deleting it while it's in use can
+        lead to corrupted stacks. In the future we might enable this functionality again (deleting the material from
+        those stacks) but for now it is easier to prevent the user from doing this.
+
+        :param material_node: The ContainerTree node of the material to check.
+
+        :return: Whether or not the material can be removed.
+        """
+
         container_registry = CuraContainerRegistry.getInstance()
         ids_to_remove = {metadata.get("id", "") for metadata in container_registry.findInstanceContainersMetadata(base_file = material_node.base_file)}
         for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
@@ -48,11 +47,14 @@ class MaterialManagementModel(QObject):
                 return False
         return True
 
-    ##  Change the user-visible name of a material.
-    #   \param material_node The ContainerTree node of the material to rename.
-    #   \param name The new name for the material.
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
+        """Change the user-visible name of a material.
+
+        :param material_node: The ContainerTree node of the material to rename.
+        :param name: The new name for the material.
+        """
+
         container_registry = CuraContainerRegistry.getInstance()
         root_material_id = material_node.base_file
         if container_registry.isReadOnly(root_material_id):
@@ -60,18 +62,21 @@ class MaterialManagementModel(QObject):
             return
         return container_registry.findContainers(id = root_material_id)[0].setName(name)
 
-    ##  Deletes a material from Cura.
-    #
-    #   This function does not do any safety checking any more. Please call this
-    #   function only if:
-    #   - The material is not read-only.
-    #   - The material is not used in any stacks.
-    #   If the material was not lazy-loaded yet, this will fully load the
-    #   container. When removing this material node, all other materials with
-    #   the same base fill will also be removed.
-    #   \param material_node The material to remove.
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
+        """Deletes a material from Cura.
+
+        This function does not do any safety checking any more. Please call this function only if:
+            - The material is not read-only.
+            - The material is not used in any stacks.
+
+        If the material was not lazy-loaded yet, this will fully load the container. When removing this material
+        node, all other materials with the same base fill will also be removed.
+
+        :param material_node: The material to remove.
+        """
+        Logger.info(f"Removing material {material_node.container_id}")
+
         container_registry = CuraContainerRegistry.getInstance()
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
 
@@ -89,17 +94,19 @@ class MaterialManagementModel(QObject):
             for material_metadata in materials_this_base_file:
                 container_registry.removeContainer(material_metadata["id"])
 
-    ##  Creates a duplicate of a material with the same GUID and base_file
-    #   metadata.
-    #   \param base_file: The base file of the material to duplicate.
-    #   \param new_base_id A new material ID for the base material. The IDs of
-    #   the submaterials will be based off this one. If not provided, a material
-    #   ID will be generated automatically.
-    #   \param new_metadata Metadata for the new material. If not provided, this
-    #   will be duplicated from the original material.
-    #   \return The root material ID of the duplicate material.
     def duplicateMaterialByBaseFile(self, base_file: str, new_base_id: Optional[str] = None,
                                     new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
+        """Creates a duplicate of a material with the same GUID and base_file metadata
+
+        :param base_file: The base file of the material to duplicate.
+        :param new_base_id: A new material ID for the base material. The IDs of the submaterials will be based off this
+        one. If not provided, a material ID will be generated automatically.
+        :param new_metadata: Metadata for the new material. If not provided, this will be duplicated from the original
+        material.
+
+        :return: The root material ID of the duplicate material.
+        """
+
         container_registry = CuraContainerRegistry.getInstance()
 
         root_materials = container_registry.findContainers(id = base_file)
@@ -171,29 +178,33 @@ class MaterialManagementModel(QObject):
 
         return new_base_id
 
-    ##  Creates a duplicate of a material with the same GUID and base_file
-    #   metadata.
-    #   \param material_node The node representing the material to duplicate.
-    #   \param new_base_id A new material ID for the base material. The IDs of
-    #   the submaterials will be based off this one. If not provided, a material
-    #   ID will be generated automatically.
-    #   \param new_metadata Metadata for the new material. If not provided, this
-    #   will be duplicated from the original material.
-    #   \return The root material ID of the duplicate material.
     @pyqtSlot("QVariant", result = str)
     def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None,
                           new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
+        """Creates a duplicate of a material with the same GUID and base_file metadata
+
+        :param material_node: The node representing the material to duplicate.
+        :param new_base_id: A new material ID for the base material. The IDs of the submaterials will be based off this
+        one. If not provided, a material ID will be generated automatically.
+        :param new_metadata: Metadata for the new material. If not provided, this will be duplicated from the original
+        material.
+
+        :return: The root material ID of the duplicate material.
+        """
+        Logger.info(f"Duplicating material {material_node.base_file} to {new_base_id}")
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
-    ##  Create a new material by cloning the preferred material for the current
-    #   material diameter and generate a new GUID.
-    #
-    #   The material type is explicitly left to be the one from the preferred
-    #   material, since this allows the user to still have SOME profiles to work
-    #   with.
-    #   \return The ID of the newly created material.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
+        """Create a new material by cloning the preferred material for the current material diameter and generate a new
+        GUID.
+
+        The material type is explicitly left to be the one from the preferred material, since this allows the user to
+        still have SOME profiles to work with.
+
+        :return: The ID of the newly created material.
+        """
+
         # Ensure all settings are saved.
         application = cura.CuraApplication.CuraApplication.getInstance()
         application.saveSettings()
@@ -218,10 +229,13 @@ class MaterialManagementModel(QObject):
         self.duplicateMaterial(preferred_material_node, new_base_id = new_id, new_metadata = new_metadata)
         return new_id
 
-    ##  Adds a certain material to the favorite materials.
-    #   \param material_base_file The base file of the material to add.
     @pyqtSlot(str)
     def addFavorite(self, material_base_file: str) -> None:
+        """Adds a certain material to the favorite materials.
+
+        :param material_base_file: The base file of the material to add.
+        """
+
         application = cura.CuraApplication.CuraApplication.getInstance()
         favorites = application.getPreferences().getValue("cura/favorite_materials").split(";")
         if material_base_file not in favorites:
@@ -230,11 +244,13 @@ class MaterialManagementModel(QObject):
             application.saveSettings()
             self.favoritesChanged.emit(material_base_file)
 
-    ##  Removes a certain material from the favorite materials.
-    #
-    #   If the material was not in the favorite materials, nothing happens.
     @pyqtSlot(str)
     def removeFavorite(self, material_base_file: str) -> None:
+        """Removes a certain material from the favorite materials.
+
+        If the material was not in the favorite materials, nothing happens.
+        """
+
         application = cura.CuraApplication.CuraApplication.getInstance()
         favorites = application.getPreferences().getValue("cura/favorite_materials").split(";")
         try:
@@ -244,3 +260,40 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    @pyqtSlot(result = QUrl)
+    def getPreferredExportAllPath(self) -> QUrl:
+        """
+        Get the preferred path to export materials to.
+
+        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
+        file path.
+        :return: The preferred path to export all materials to.
+        """
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        device_manager = cura_application.getOutputDeviceManager()
+        devices = device_manager.getOutputDevices()
+        for device in devices:
+            if device.__class__.__name__ == "RemovableDriveOutputDevice":
+                return QUrl.fromLocalFile(device.getId())
+        else:  # No removable drives? Use local path.
+            return cura_application.getDefaultPath("dialog_material_path")
+
+    @pyqtSlot(QUrl)
+    def exportAll(self, file_path: QUrl) -> None:
+        """
+        Export all materials to a certain file path.
+        :param file_path: The path to export the materials to.
+        """
+        registry = CuraContainerRegistry.getInstance()
+
+        archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+        for metadata in registry.findInstanceContainersMetadata(type = "material"):
+            if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                continue
+            if metadata["id"] == "empty_material":  # Don't export the empty material.
+                continue
+            material = registry.findContainers(id = metadata["id"])[0]
+            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+            filename = metadata["id"] + "." + suffix
+            archive.writestr(filename, material.serialize())

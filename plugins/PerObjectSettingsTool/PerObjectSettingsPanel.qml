@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -32,10 +32,7 @@ Item
         var type = currentMeshType
 
         // set checked state of mesh type buttons
-        normalButton.checked = type === normalMeshType
-        supportMeshButton.checked = type === supportMeshType
-        overhangMeshButton.checked = type === infillMeshType || type === cuttingMeshType
-        antiOverhangMeshButton.checked = type === antiOverhangMeshType
+        updateMeshTypeCheckedState(type)
 
         // update active type label
         for (var button in meshTypeButtons.children)
@@ -49,24 +46,22 @@ Item
         visibility_handler.addSkipResetSetting(currentMeshType)
     }
 
-    function setOverhangsMeshType()
+    function updateMeshTypeCheckedState(type)
     {
-        if (infillOnlyCheckbox.checked)
-        {
-            setMeshType(infillMeshType)
-        }
-        else
-        {
-            setMeshType(cuttingMeshType)
-        }
+        // set checked state of mesh type buttons
+        normalButton.checked = type === normalMeshType
+        supportMeshButton.checked = type === supportMeshType
+        overlapMeshButton.checked = type === infillMeshType || type === cuttingMeshType
+        antiOverhangMeshButton.checked = type === antiOverhangMeshType
     }
 
     function setMeshType(type)
     {
         UM.ActiveTool.setProperty("MeshType", type)
+        updateMeshTypeCheckedState(type)
     }
 
-    UM.I18nCatalog { id: catalog; name: "uranium"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     Column
     {
@@ -85,7 +80,7 @@ Item
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                iconSource: UM.Theme.getIcon("pos_normal");
+                iconSource: UM.Theme.getIcon("Infill0");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
@@ -97,7 +92,7 @@ Item
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                iconSource: UM.Theme.getIcon("pos_print_as_support");
+                iconSource: UM.Theme.getIcon("MeshTypeSupport");
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
@@ -107,9 +102,9 @@ Item
 
             Button
             {
-                id: overhangMeshButton
+                id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                iconSource: UM.Theme.getIcon("pos_modify_overlaps");
+                iconSource: UM.Theme.getIcon("MeshTypeIntersect");
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
@@ -121,7 +116,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
@@ -140,26 +135,45 @@ Item
             verticalAlignment: Text.AlignVCenter
         }
 
-        CheckBox
+
+        Cura.ComboBox
         {
-            id: infillOnlyCheckbox
+            id: infillOnlyComboBox
+            width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("setting_control").height
+            textRole: "text"
 
-            text: catalog.i18nc("@action:checkbox", "Infill only");
+            model: ListModel
+            {
+                id: infillOnlyComboBoxModel
 
-            style: UM.Theme.styles.checkbox;
+                Component.onCompleted: {
+                    append({ text: catalog.i18nc("@item:inlistbox", "Infill mesh only") })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Cutting mesh") })
+                }
+            }
 
             visible: currentMeshType === infillMeshType || currentMeshType === cuttingMeshType
-            onClicked: setOverhangsMeshType()
+
+
+            onActivated:
+            {
+                if (index == 0){
+                    setMeshType(infillMeshType)
+                } else {
+                    setMeshType(cuttingMeshType)
+                }
+            }
 
             Binding
             {
-                target: infillOnlyCheckbox
-                property: "checked"
-                value: currentMeshType === infillMeshType
+                target: infillOnlyComboBox
+                property: "currentIndex"
+                value: currentMeshType === infillMeshType ? 0 : 1
             }
         }
 
-        Column // Settings Dialog
+        Column // List of selected Settings to override for the selected object
         {
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
@@ -225,7 +239,7 @@ Item
                             id: settingLoader
                             width: UM.Theme.getSize("setting").width
                             height: UM.Theme.getSize("section").height
-
+                            enabled: provider.properties.enabled === "True"
                             property var definition: model
                             property var settingDefinitionsModel: addedSettingsModel
                             property var propertyProvider: provider
@@ -292,7 +306,7 @@ Item
                                         height: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                        source: UM.Theme.getIcon("minus")
+                                        source: UM.Theme.getIcon("Minus")
                                     }
                                 }
                             }
@@ -322,13 +336,13 @@ Item
                         Connections
                         {
                             target: inheritStackProvider
-                            onPropertiesChanged: provider.forcePropertiesChanged()
+                            function onPropertiesChanged() { provider.forcePropertiesChanged() }
                         }
 
                         Connections
                         {
                             target: UM.ActiveTool
-                            onPropertiesChanged:
+                            function onPropertiesChanged()
                             {
                                 // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
                                 // so here we connect to the signal and update the those values.

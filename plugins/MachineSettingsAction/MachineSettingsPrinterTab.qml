@@ -72,6 +72,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                maximum: 2000000
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -86,6 +87,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                maximum: 2000000
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -204,8 +206,8 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "min"
-                allowNegativeValue: true
-                allowPositiveValue: false
+                minimum: Number.NEGATIVE_INFINITY
+                maximum: 0
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -224,8 +226,8 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "min"
-                allowNegativeValue: true
-                allowPositiveValue: false
+                minimum: Number.NEGATIVE_INFINITY
+                maximum: 0
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -244,8 +246,6 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "max"
-                allowNegativeValue: false
-                allowPositiveValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -266,8 +266,6 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "max"
-                allowNegativeValue: false
-                allowPositiveValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -328,9 +326,36 @@ Item
                 Connections
                 {
                     target: Cura.MachineManager
-                    onGlobalContainerChanged: extruderCountModel.update()
+                    function onGlobalContainerChanged() { extruderCountModel.update() }
                 }
             }
+
+            /* 
+               - Fix for this issue: https://github.com/Ultimaker/Cura/issues/9167 
+               - Allows user to toggle if GCODE coordinates are affected by the extruder offset. 
+               - Machine wide setting. CuraEngine/src/gcodeExport.cpp is not set up to evaluate per extruder currently.
+               - If it is moved to per-extruder (unlikely), then this should be moved to the extruder tab.
+            */
+            Cura.SimpleCheckBox  // "GCode Affected By Extruder Offsets"
+            {
+                id: applyExtruderOffsetsCheckbox
+                containerStackId: machineStackId
+                settingKey: "machine_use_extruder_offset_to_offset_coords"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Apply Extruder offsets to GCode")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+			
+			
+            /* The "Shared Heater" feature is temporarily disabled because its
+            implementation is incomplete. Printers with multiple filaments going
+            into one nozzle will keep the inactive filaments retracted at the
+            start of a print. However CuraEngine assumes that all filaments
+            start at the nozzle tip. So it'll start printing the second filament
+            without unretracting it.
+            See: https://github.com/Ultimaker/Cura/issues/8148
 
             Cura.SimpleCheckBox  // "Shared Heater"
             {
@@ -343,6 +368,7 @@ Item
                 labelWidth: base.labelWidth
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
+            */
         }
     }
 

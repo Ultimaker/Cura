@@ -51,7 +51,7 @@
             "default_value": 0.2
         },
         "wall_thickness": {
-            "default_value": 1.2
+            "value": "1.2"
         },
         "speed_print": {
             "default_value": 40

@@ -7,7 +7,7 @@
         "author": "RBC",
         "manufacturer": "Mankati",
         "file_formats": "text/x-gcode",
-        "platform": "mankati_fullscale_xt_plus_platform.stl",
+        "platform": "mankati_fullscale_xt_plus_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "mankati_fullscale_xt_plus_extruder_0"
@@ -39,7 +39,7 @@
         },
 
         "layer_height": { "default_value": 0.2 },
-        "wall_thickness": { "default_value": 0.8 },
+        "wall_thickness": { "value": "0.8" },
         "top_bottom_thickness": { "default_value": 0.3 },
         "retraction_enable": { "default_value": true },
         "retraction_speed": { "default_value": 50 },

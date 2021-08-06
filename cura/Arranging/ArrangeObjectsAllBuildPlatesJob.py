@@ -18,8 +18,9 @@ from cura.Arranging.ShapeArray import ShapeArray
 from typing import List
 
 
-##  Do arrangements on multiple build plates (aka builtiplexer)
 class ArrangeArray:
+    """Do arrangements on multiple build plates (aka builtiplexer)"""
+
     def __init__(self, x: int, y: int, fixed_nodes: List[SceneNode]) -> None:
         self._x = x
         self._y = y
@@ -146,6 +147,8 @@ class ArrangeObjectsAllBuildPlatesJob(Job):
         status_message.hide()
 
         if not found_solution_for_all:
-            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"),
-                                               title = i18n_catalog.i18nc("@info:title", "Can't Find Location"))
+            no_full_solution_message = Message(i18n_catalog.i18nc("@info:status",
+                                                                  "Unable to find a location within the build volume for all objects"),
+                                               title = i18n_catalog.i18nc("@info:title", "Can't Find Location"),
+                                               message_type = Message.MessageType.WARNING)
             no_full_solution_message.show()

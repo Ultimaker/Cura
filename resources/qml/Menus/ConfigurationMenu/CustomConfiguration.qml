@@ -118,7 +118,7 @@ Item
         Connections
         {
             target: Cura.ExtruderManager
-            onActiveExtruderChanged:
+            function onActiveExtruderChanged()
             {
                 tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex);
             }
@@ -139,7 +139,7 @@ Item
         Connections
         {
             target: repeater.model
-            onModelChanged:
+            function onModelChanged()
             {
                 tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex)
             }
@@ -222,10 +222,17 @@ Item
                 OldControls.CheckBox
                 {
                     id: enabledCheckbox
-                    checked: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.isEnabled : false
                     enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: parent.height
                     style: UM.Theme.styles.checkbox
+
+                    Binding
+                    {
+                        target: enabledCheckbox
+                        property: "checked"
+                        value: Cura.MachineManager.activeStack.isEnabled
+                        when: Cura.MachineManager.activeStack != null
+                    }
 
                     /* Use a MouseArea to process the click on this checkbox.
                        This is necessary because actually clicking the checkbox
@@ -235,8 +242,17 @@ Item
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: Cura.MachineManager.setExtruderEnabled(Cura.ExtruderManager.activeExtruderIndex, !parent.checked)
-                        enabled: parent.enabled
+                        onClicked:
+                        {
+                            if(!parent.enabled)
+                            {
+                                return
+                            }
+                            // Already update the visual indication
+                            parent.checked = !parent.checked
+                            // Update the settings on the background!
+                            Cura.MachineManager.setExtruderEnabled(Cura.ExtruderManager.activeExtruderIndex, parent.checked)
+                        }
                     }
                 }
             }
@@ -244,7 +260,7 @@ Item
             Row
             {
                 height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
-                visible: Cura.MachineManager.activeMachine.hasMaterials
+                visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials : false
 
                 Label
                 {
@@ -273,27 +289,32 @@ Item
 
                     style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true
-                    menu: Cura.MaterialMenu
+                    Cura.MaterialMenu
                     {
+                        id: materialsMenu
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                         updateModels: materialSelection.visible
+                    }
+                    onClicked:
+                    {
+                        materialsMenu.popup();
                     }
                 }
                 Item
                 {
-                    width: instructionButton.width + 2 * UM.Theme.getSize("default_margin").width
+                    width: instructionButton.width + 2 * UM.Theme.getSize("narrow_margin").width
                     height: instructionButton.visible ? materialSelection.height: 0
                     Button
                     {
                         id: instructionButton
                         hoverEnabled: true
                         contentItem: Item {}
-                        height: 0.5 * materialSelection.height
-                        width: height
+                        height: UM.Theme.getSize("small_button").height
+                        width: UM.Theme.getSize("small_button").width
                         anchors.centerIn: parent
                         background: UM.RecolorImage
                         {
-                            source: UM.Theme.getIcon("printing_guideline")
+                            source: UM.Theme.getIcon("Guide")
                             color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
                         }
                         visible: selectors.instructionLink != ""
@@ -305,7 +326,7 @@ Item
             Row
             {
                 height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
-                visible: Cura.MachineManager.activeMachine.hasVariants
+                visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
 
                 Label
                 {
@@ -329,7 +350,15 @@ Item
                     activeFocusOnPress: true
                     enabled: enabledCheckbox.checked
 
-                    menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
+                    Cura.NozzleMenu
+                    {
+                        id: nozzlesMenu
+                        extruderIndex: Cura.ExtruderManager.activeExtruderIndex
+                    }
+                    onClicked:
+                    {
+                        nozzlesMenu.popup();
+                    }
                 }
             }
 
@@ -359,7 +388,7 @@ Item
                     {
                         id: warningImage
                         anchors.left: parent.left
-                        source: UM.Theme.getIcon("warning")
+                        source: UM.Theme.getIcon("Warning")
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
                         sourceSize.width: width

@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Raise3D",
         "manufacturer": "Raise3D",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "machine_extruder_trains":

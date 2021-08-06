@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Aleph Objects, Inc.
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, Union, List, TYPE_CHECKING
@@ -32,7 +32,7 @@ class GCodeReader(MeshReader):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-cura-gcode-file",
-                comment = "Cura GCode File",
+                comment = "Cura G-code File",
                 suffixes = ["gcode"]
             )
         )

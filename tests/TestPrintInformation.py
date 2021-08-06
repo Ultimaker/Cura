@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import functools
 
 from UM.Qt.Duration import Duration
@@ -5,7 +8,6 @@ from cura.UI import PrintInformation
 from cura.Settings.MachineManager import MachineManager
 
 from unittest.mock import MagicMock, patch
-from UM.Application import Application
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 
@@ -23,7 +25,6 @@ def getPrintInformation(printer_name) -> PrintInformation:
     mocked_preferences.getValue = MagicMock(return_value = '{"omgzomg": {"spool_weight": 10, "spool_cost": 9}}')
 
     global_container_stack = MagicMock()
-    global_container_stack.extruders = {"0": mocked_extruder_stack}
     global_container_stack.definition.getName = MagicMock(return_value = printer_name)
     mock_application.getGlobalContainerStack = MagicMock(return_value = global_container_stack)
     mock_application.getPreferences = MagicMock(return_value = mocked_preferences)
@@ -57,7 +58,7 @@ def setup_module():
      MimeTypeDatabase.addMimeType(
          MimeType(
              name = "application/x-cura-gcode-file",
-             comment = "Cura GCode File",
+             comment = "Cura G-code File",
              suffixes = ["gcode"]
          )
      )

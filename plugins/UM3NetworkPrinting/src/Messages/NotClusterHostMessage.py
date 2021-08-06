@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 I18N_CATALOG = i18nCatalog("cura")
 
 
-## Message shown when trying to connect to a printer that is not a host.
 class NotClusterHostMessage(Message):
+    """Message shown when trying to connect to a printer that is not a host."""
 
-    # Singleton used to prevent duplicate messages of this type at the same time.
     __is_visible = False
+    """Singleton used to prevent duplicate messages of this type at the same time."""
 
     def __init__(self, device: "UltimakerNetworkedPrinterOutputDevice") -> None:
         super().__init__(
@@ -29,7 +29,8 @@ class NotClusterHostMessage(Message):
                                                       "it as a group host.", device.name),
             title = I18N_CATALOG.i18nc("@info:title", "Not a group host"),
             lifetime = 0,
-            dismissable = True
+            dismissable = True,
+            message_type = Message.MessageType.ERROR
         )
         self._address = device.address
         self.addAction("", I18N_CATALOG.i18nc("@action", "Configure group"), "", "")

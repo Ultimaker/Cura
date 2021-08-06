@@ -5,11 +5,14 @@ import re #To perform the search and replace.
 
 from ..Script import Script
 
-##  Performs a search-and-replace on all g-code.
-#
-#   Due to technical limitations, the search can't cross the border between
-#   layers.
+
 class SearchAndReplace(Script):
+    """Performs a search-and-replace on all g-code.
+
+    Due to technical limitations, the search can't cross the border between
+    layers.
+    """
+
     def getSettingDataString(self):
         return """{
             "name": "Search and Replace",

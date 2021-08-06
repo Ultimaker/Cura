@@ -19,6 +19,7 @@ _split_settings = { #These settings should be copied to all settings it was spli
     "support_interface_line_distance": {"support_roof_line_distance", "support_bottom_line_distance"}
 } # type: Dict[str, Set[str]]
 
+
 ##  A collection of functions that convert the configuration of the user in Cura
 #   2.5 to a configuration for Cura 2.6.
 #
@@ -27,24 +28,6 @@ class VersionUpgrade25to26(VersionUpgrade):
     def __init__(self) -> None:
         super().__init__()
         self._current_fdm_printer_count = 2
-
-    ##  Gets the version number from a CFG file in Uranium's 2.5 format.
-    #
-    #   Since the format may change, this is implemented for the 2.5 format only
-    #   and needs to be included in the version upgrade system rather than
-    #   globally in Uranium.
-    #
-    #   \param serialised The serialised form of a CFG file.
-    #   \return The version number stored in the CFG file.
-    #   \raises ValueError The format of the version number in the file is
-    #   incorrect.
-    #   \raises KeyError The format of the file is incorrect.
-    def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
-        parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
-        return format_version * 1000000 + setting_version
 
     ##  Upgrades the preferences file from version 2.5 to 2.6.
     #

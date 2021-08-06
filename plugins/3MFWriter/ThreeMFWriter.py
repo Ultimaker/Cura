@@ -14,6 +14,7 @@ from cura.CuraApplication import CuraApplication
 import Savitar
 
 import numpy
+import datetime
 
 MYPY = False
 try:
@@ -60,15 +61,19 @@ class ThreeMFWriter(MeshWriter):
         result += str(matrix._data[2, 3])
         return result
 
-    ##  Should we store the archive
-    #   Note that if this is true, the archive will not be closed.
-    #   The object that set this parameter is then responsible for closing it correctly!
     def setStoreArchive(self, store_archive):
+        """Should we store the archive
+
+        Note that if this is true, the archive will not be closed.
+        The object that set this parameter is then responsible for closing it correctly!
+        """
         self._store_archive = store_archive
 
-    ##  Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
-    #   \returns Uranium Scene node.
     def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
+        """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
+
+        :returns: Uranium Scene node.
+        """
         if not isinstance(um_node, SceneNode):
             return None
 
@@ -77,6 +82,7 @@ class ThreeMFWriter(MeshWriter):
             return
 
         savitar_node = Savitar.SceneNode()
+        savitar_node.setName(um_node.getName())
 
         node_matrix = um_node.getLocalTransformation()
 
@@ -103,7 +109,11 @@ class ThreeMFWriter(MeshWriter):
 
             # Get values for all changed settings & save them.
             for key in changed_setting_keys:
-                savitar_node.setSetting(key, str(stack.getProperty(key, "value")))
+                savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+
+        # Store the metadata.
+        for key, value in um_node.metadata.items():
+            savitar_node.setSetting(key, value)
 
         for child_node in um_node.getChildren():
             # only save the nodes on the active build plate
@@ -140,6 +150,22 @@ class ThreeMFWriter(MeshWriter):
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/3D/3dmodel.model", Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             savitar_scene = Savitar.Scene()
+
+            metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
+
+            for key, value in metadata_to_store.items():
+                savitar_scene.setMetaDataEntry(key, value)
+
+            current_time_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            if "Application" not in metadata_to_store:
+                # This might sound a bit strange, but this field should store the original application that created
+                # the 3mf. So if it was already set, leave it to whatever it was.
+                savitar_scene.setMetaDataEntry("Application", CuraApplication.getInstance().getApplicationDisplayName())
+            if "CreationDate" not in metadata_to_store:
+                savitar_scene.setMetaDataEntry("CreationDate", current_time_string)
+
+            savitar_scene.setMetaDataEntry("ModificationDate", current_time_string)
+
             transformation_matrix = Matrix()
             transformation_matrix._data[1, 1] = 0
             transformation_matrix._data[1, 2] = -1

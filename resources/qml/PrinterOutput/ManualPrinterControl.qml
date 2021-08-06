@@ -90,19 +90,19 @@ Item
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
 
-                    Layout.row: 1
-                    Layout.column: 2
+                    Layout.row: 0
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                 }
 
                 Button
                 {
-                    Layout.row: 2
-                    Layout.column: 2
+                    Layout.row: 1
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("arrow_top");
+                    iconSource: UM.Theme.getIcon("ChevronSingleUp");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -115,11 +115,11 @@ Item
 
                 Button
                 {
-                    Layout.row: 3
-                    Layout.column: 1
+                    Layout.row: 2
+                    Layout.column: 0
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("arrow_left");
+                    iconSource: UM.Theme.getIcon("ChevronSingleLeft");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -132,11 +132,11 @@ Item
 
                 Button
                 {
-                    Layout.row: 3
-                    Layout.column: 3
+                    Layout.row: 2
+                    Layout.column: 2
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("arrow_right");
+                    iconSource: UM.Theme.getIcon("ChevronSingleRight");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -149,11 +149,11 @@ Item
 
                 Button
                 {
-                    Layout.row: 4
-                    Layout.column: 2
+                    Layout.row: 3
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("arrow_bottom");
+                    iconSource: UM.Theme.getIcon("ChevronSingleDown");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -166,11 +166,11 @@ Item
 
                 Button
                 {
-                    Layout.row: 3
-                    Layout.column: 2
+                    Layout.row: 2
+                    Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("home");
+                    iconSource: UM.Theme.getIcon("House");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -200,7 +200,7 @@ Item
 
                 Button
                 {
-                    iconSource: UM.Theme.getIcon("arrow_top");
+                    iconSource: UM.Theme.getIcon("ChevronSingleUp");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -213,7 +213,7 @@ Item
 
                 Button
                 {
-                    iconSource: UM.Theme.getIcon("home");
+                    iconSource: UM.Theme.getIcon("House");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
@@ -226,7 +226,7 @@ Item
 
                 Button
                 {
-                    iconSource: UM.Theme.getIcon("arrow_bottom");
+                    iconSource: UM.Theme.getIcon("ChevronSingleDown");
                     style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height

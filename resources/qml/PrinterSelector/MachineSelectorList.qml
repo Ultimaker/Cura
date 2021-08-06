@@ -28,11 +28,11 @@ ListView
 
     delegate: MachineSelectorButton
     {
-        text: model.name
+        text: model.name ? model.name : ""
         width: listView.width
         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-        checked: Cura.MachineManager.activeMachine.id == model.id
+        checked: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.id == model.id : false
 
         onClicked:
         {

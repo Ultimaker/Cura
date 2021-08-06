@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Stereotech",
         "manufacturer": "Stereotech LLC.",
-        "category": "Other",
         "platform": "stereotech_ste320_platform.obj",
         "platform_texture": "StereotechSte320backplate.png",
         "platform_offset": [

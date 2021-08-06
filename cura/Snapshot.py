@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import numpy
 
@@ -25,19 +25,25 @@ class Snapshot:
         pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
         # Find indices of non zero pixels
         nonzero_pixels = numpy.nonzero(pixels)
-        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)
-        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)
+        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)  # type: ignore
+        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)  # type: ignore
 
         return min_x, max_x, min_y, max_y
 
-    ##  Return a QImage of the scene
-    #   Uses PreviewPass that leaves out some elements
-    #   Aspect ratio assumes a square
     @staticmethod
     def snapshot(width = 300, height = 300):
+        """Return a QImage of the scene
+
+        Uses PreviewPass that leaves out some elements Aspect ratio assumes a square
+
+        :param width: width of the aspect ratio default 300
+        :param height: height of the aspect ratio default 300
+        :return: None when there is no model on the build plate otherwise it will return an image
+        """
+
         scene = Application.getInstance().getController().getScene()
-        active_camera = scene.getActiveCamera()
-        render_width, render_height = active_camera.getWindowSize()
+        active_camera = scene.getActiveCamera() or scene.findCamera("3d")
+        render_width, render_height = (width, height) if active_camera is None else active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
         preview_pass = PreviewPass(render_width, render_height)

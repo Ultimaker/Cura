@@ -38,7 +38,7 @@ Item
 
         Label //Extruder name.
         {
-            text: Cura.MachineManager.activeMachine.extruders[position].name !== "" ? Cura.MachineManager.activeMachine.extruders[position].name : catalog.i18nc("@label", "Extruder")
+            text: Cura.MachineManager.activeMachine.extruderList[position].name !== "" ? Cura.MachineManager.activeMachine.extruderList[position].name : catalog.i18nc("@label", "Extruder")
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.left: parent.left
@@ -173,7 +173,7 @@ Item
                     {
                         base.showTooltip(
                             base,
-                            {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, 0).y},
+                            {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, -parent.height/2).y},
                             catalog.i18nc("@tooltip of temperature input", "The temperature to pre-heat the hotend to.")
                         );
                     }
@@ -209,15 +209,15 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 
-                Component.onCompleted:
+                text:
                 {
                     if (!extruderTemperature.properties.value)
                     {
-                        text = "";
+                        return "";
                     }
                     else
                     {
-                        text = extruderTemperature.properties.value;
+                        return extruderTemperature.properties.value;
                     }
                 }
             }
@@ -366,7 +366,7 @@ Item
                 {
                     base.showTooltip(
                         base,
-                        {x: 0, y: preheatButton.mapToItem(base, 0, 0).y},
+                        {x: 0, y: preheatButton.mapToItem(base, 0, -parent.height).y},
                         catalog.i18nc("@tooltip of pre-heat", "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print.")
                     );
                 }

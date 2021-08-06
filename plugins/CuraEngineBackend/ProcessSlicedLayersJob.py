@@ -28,10 +28,12 @@ from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 catalog = i18nCatalog("cura")
 
 
-##  Return a 4-tuple with floats 0-1 representing the html color code
-#
-#   \param color_code html color code, i.e. "#FF0000" -> red
 def colorCodeToRGBA(color_code):
+    """Return a 4-tuple with floats 0-1 representing the html color code
+
+    :param color_code: html color code, i.e. "#FF0000" -> red
+    """
+
     if color_code is None:
         Logger.log("w", "Unable to convert color code, returning default")
         return [0, 0, 0, 1]
@@ -51,13 +53,15 @@ class ProcessSlicedLayersJob(Job):
         self._abort_requested = False
         self._build_plate_number = None
 
-    ##  Aborts the processing of layers.
-    #
-    #   This abort is made on a best-effort basis, meaning that the actual
-    #   job thread will check once in a while to see whether an abort is
-    #   requested and then stop processing by itself. There is no guarantee
-    #   that the abort will stop the job any time soon or even at all.
     def abort(self):
+        """Aborts the processing of layers.
+
+        This abort is made on a best-effort basis, meaning that the actual
+        job thread will check once in a while to see whether an abort is
+        requested and then stop processing by itself. There is no guarantee
+        that the abort will stop the job any time soon or even at all.
+        """
+
         self._abort_requested = True
 
     def setBuildPlate(self, new_value):
@@ -253,10 +257,10 @@ class ProcessSlicedLayersJob(Job):
         if self.isRunning():
             if Application.getInstance().getController().getActiveView().getPluginId() == "SimulationView":
                 if not self._progress_message:
-                    self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0, catalog.i18nc("@info:title", "Information"))
+                    self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0,
+                                                     catalog.i18nc("@info:title", "Information"))
                 if self._progress_message.getProgress() != 100:
                     self._progress_message.show()
             else:
                 if self._progress_message:
                     self._progress_message.hide()
-

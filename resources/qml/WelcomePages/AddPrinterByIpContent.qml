@@ -41,7 +41,7 @@ Item
     Connections
     {
         target: CuraApplication.getDiscoveredPrintersModel()
-        onDiscoveredPrintersChanged:
+        function onDiscoveredPrintersChanged()
         {
             if (hasRequestFinished && currentRequestAddress)
             {
@@ -130,7 +130,7 @@ Item
 
                     onTextEdited: invalidInputLabel.visible = false
 
-                    placeholderText: catalog.i18nc("@text", "Place enter your printer's IP address.")
+                    placeholderText: catalog.i18nc("@text", "Enter your printer's IP address.")
 
                     enabled: { ! (addPrinterByIpScreen.hasRequestInProgress || addPrinterByIpScreen.isPrinterDiscovered) }
                     onAccepted: addPrinterButton.clicked()
@@ -159,6 +159,7 @@ Item
                     enabled: !addPrinterByIpScreen.hasRequestInProgress && !addPrinterByIpScreen.isPrinterDiscovered && (hostnameField.state != "invalid" && hostnameField.text != "")
                     onClicked:
                     {
+                        addPrinterByIpScreen.hasRequestFinished = false //In case it's pressed multiple times.
                         const address = hostnameField.text
                         if (!networkingUtil.isValidIP(address))
                         {
@@ -197,17 +198,21 @@ Item
                     renderType: Text.NativeRendering
 
                     visible: addPrinterByIpScreen.hasRequestInProgress || (addPrinterByIpScreen.hasRequestFinished && !addPrinterByIpScreen.isPrinterDiscovered)
+                    textFormat: Text.RichText
                     text:
                     {
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
-                            catalog.i18nc("@label", "Could not connect to device.")
+                            return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/en/resources/52891-set-up-a-cloud-connection\">"
+                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
                         }
                         else
                         {
-                            catalog.i18nc("@label", "The printer at this address has not responded yet.")
+                            return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://ultimaker.com/en/resources/52891-set-up-a-cloud-connection\">"
+                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
                         }
                     }
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
                 Item
@@ -305,7 +310,7 @@ Item
                     Connections
                     {
                         target: CuraApplication.getDiscoveredPrintersModel()
-                        onManualDeviceRequestFinished:
+                        function onManualDeviceRequestFinished(success)
                         {
                             var discovered_printers_model = CuraApplication.getDiscoveredPrintersModel()
                             var printer = discovered_printers_model.discoveredPrintersByAddress[hostnameField.text]

@@ -16,19 +16,10 @@ Column
     height: childrenRect.height
     anchors.centerIn: parent
 
-    Image
-    {
-        id: profileImage
-        fillMode: Image.PreserveAspectFit
-        source: "../../images/logobot.svg"
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.round(parent.width / 4)
-    }
-
     Label
     {
         id: welcomeTextLabel
-        text: catalog.i18nc("@description", "Get plugins and materials verified by Ultimaker")
+        text: catalog.i18nc("@description", "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise")
         width: Math.round(parent.width / 2)
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")

@@ -7,7 +7,7 @@
         "author": "lotmaxx.com",
         "manufacturer": "Lotmaxx",
         "file_formats": "text/x-gcode",
-        "platform": "lotmaxx_sc_10_20_platform.stl",
+        "platform": "lotmaxx_sc_10_20_platform.3mf",
         "has_materials": true,
         "machine_extruder_trains":
         {
@@ -55,7 +55,7 @@
         "cool_fan_full_at_height":{ "value":"layer_height_0 + 2 * layer_height" },
         "cool_fan_enabled":{ "value":true },
         "cool_min_layer_time":{ "value":10 },
-        "meshfix_maximum_resolution":{ "value":"0.05" },
+        "meshfix_maximum_resolution":{ "value":"0.25" },
         "meshfix_maximum_travel_resolution":{ "value":"meshfix_maximum_resolution" },
         "adhesion_type": { "value": "'none' if support_enable else 'skirt'" },
         "skirt_gap":{ "value":5.0 },

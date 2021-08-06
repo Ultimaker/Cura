@@ -28,17 +28,19 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self._stream = None
 
-    ##  Request the specified nodes to be written to the removable drive.
-    #
-    #   \param nodes A collection of scene nodes that should be written to the
-    #   removable drive.
-    #   \param file_name \type{string} A suggestion for the file name to write
-    #   to. If none is provided, a file name will be made from the names of the
-    #   meshes.
-    #   \param limit_mimetypes Should we limit the available MIME types to the
-    #   MIME types available to the currently active machine?
-    #
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+        """Request the specified nodes to be written to the removable drive.
+
+        :param nodes: A collection of scene nodes that should be written to the
+            removable drive.
+        :param file_name: :type{string} A suggestion for the file name to write to.
+            If none is provided, a file name will be made from the names of the
+        meshes.
+        :param limit_mimetypes: Should we limit the available MIME types to the
+        MIME types available to the currently active machine?
+
+        """
+
         filter_by_machine = True # This plugin is intended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
@@ -57,7 +59,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
             # Take the intersection between file_formats and machine_file_formats.
             format_by_mimetype = {format["mime_type"]: format for format in file_formats}
-            file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
+            file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats if mimetype in format_by_mimetype]  # Keep them ordered according to the preference in machine_file_formats.
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
@@ -77,7 +79,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         if extension:  # Not empty string.
             extension = "." + extension
-        file_name = os.path.join(self.getId(), os.path.splitext(file_name)[0] + extension)
+        file_name = os.path.join(self.getId(), file_name + extension)
 
         try:
             Logger.log("d", "Writing to %s", file_name)
@@ -91,7 +93,9 @@ class RemovableDriveOutputDevice(OutputDevice):
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
 
-            message = Message(catalog.i18nc("@info:progress Don't translate the XML tags <filename>!", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1, catalog.i18nc("@info:title", "Saving"))
+            message = Message(catalog.i18nc("@info:progress Don't translate the XML tags <filename>!",
+                                            "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()),
+                              0, False, -1, catalog.i18nc("@info:title", "Saving"))
             message.show()
 
             self.writeStarted.emit(self)
@@ -106,14 +110,14 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("e", "Operating system would not let us write to %s: %s", file_name, str(e))
             raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not save to <filename>{0}</filename>: <message>{1}</message>").format(file_name, str(e))) from e
 
-    ##  Generate a file name automatically for the specified nodes to be saved
-    #   in.
-    #
-    #   The name generated will be the name of one of the nodes. Which node that
-    #   is can not be guaranteed.
-    #
-    #   \param nodes A collection of nodes for which to generate a file name.
     def _automaticFileName(self, nodes):
+        """Generate a file name automatically for the specified nodes to be saved in.
+
+        The name generated will be the name of one of the nodes. Which node that
+        is can not be guaranteed.
+
+        :param nodes: A collection of nodes for which to generate a file name.
+        """
         for root in nodes:
             for child in BreadthFirstIterator(root):
                 if child.getMeshData():
@@ -134,7 +138,8 @@ class RemovableDriveOutputDevice(OutputDevice):
             except:
                 Logger.logException("w", "An execption occured while trying to write to removable drive.")
                 message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),str(job.getError())),
-                                  title = catalog.i18nc("@info:title", "Error"))
+                                  title = catalog.i18nc("@info:title", "Error"),
+                                  message_type = Message.MessageType.ERROR)
                 message.show()
                 self.writeError.emit(self)
                 return
@@ -142,13 +147,19 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
         self.writeFinished.emit(self)
         if job.getResult():
-            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())), title = catalog.i18nc("@info:title", "File Saved"))
+            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())),
+                              title = catalog.i18nc("@info:title", "File Saved"),
+                              message_type = Message.MessageType.POSITIVE)
             message.addAction("eject", catalog.i18nc("@action:button", "Eject"), "eject", catalog.i18nc("@action", "Eject removable device {0}").format(self.getName()))
             message.actionTriggered.connect(self._onActionTriggered)
             message.show()
             self.writeSuccess.emit(self)
         else:
-            message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(), str(job.getError())), title = catalog.i18nc("@info:title", "Warning"))
+            message = Message(catalog.i18nc("@info:status",
+                                            "Could not save to removable drive {0}: {1}").format(self.getName(),
+                                                                                                 str(job.getError())),
+                              title = catalog.i18nc("@info:title", "Error"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             self.writeError.emit(self)
         job.getStream().close()
@@ -157,8 +168,12 @@ class RemovableDriveOutputDevice(OutputDevice):
         if action == "eject":
             if Application.getInstance().getOutputDeviceManager().getOutputDevicePlugin("RemovableDriveOutputDevice").ejectDevice(self):
                 message.hide()
-
-                eject_message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(self.getName()), title = catalog.i18nc("@info:title", "Safely Remove Hardware"))
+                eject_message = Message(catalog.i18nc("@info:status",
+                                                      "Ejected {0}. You can now safely remove the drive.").format(self.getName()),
+                                        title = catalog.i18nc("@info:title", "Safely Remove Hardware"))
             else:
-                eject_message = Message(catalog.i18nc("@info:status", "Failed to eject {0}. Another program may be using the drive.").format(self.getName()), title = catalog.i18nc("@info:title", "Warning"))
+                eject_message = Message(catalog.i18nc("@info:status",
+                                                      "Failed to eject {0}. Another program may be using the drive.").format(self.getName()),
+                                        title = catalog.i18nc("@info:title", "Warning"),
+                                        message_type = Message.MessageType.ERROR)
             eject_message.show()

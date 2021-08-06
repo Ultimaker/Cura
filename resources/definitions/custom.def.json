@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Custom",
-        "category": "Custom",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "machine_extruder_trains":

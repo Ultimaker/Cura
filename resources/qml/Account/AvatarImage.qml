@@ -52,8 +52,8 @@ Item
         width: parent.width + 2
         height: parent.height + 2
         visible: hasAvatar
-        source: UM.Theme.getIcon("circle_outline")
+        source: UM.Theme.getIcon("CircleOutline")
         sourceSize: Qt.size(parent.width, parent.height)
-        color: UM.Theme.getColor("account_widget_ouline_active")
+        color: UM.Theme.getColor("account_widget_outline_active")
     }
 }

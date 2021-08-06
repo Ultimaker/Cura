@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -24,6 +24,7 @@ Item
 
     signal refreshButtonClicked()
     signal addByIpButtonClicked()
+    signal addCloudPrinterButtonClicked()
 
     Item
     {
@@ -40,6 +41,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "There is no printer found over your network.")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
             visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.
@@ -56,7 +58,7 @@ Item
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-            height: Math.min(contentHeight, maxItemCountAtOnce * UM.Theme.getSize("action_button").height)
+            height: Math.min(contentHeight, (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height)
 
             visible: networkPrinterListView.count > 0
 
@@ -193,27 +195,41 @@ Item
             onClicked: base.addByIpButtonClicked()
         }
 
+        Cura.SecondaryButton
+        {
+            id: addCloudPrinterButton
+            anchors.left: addPrinterByIpButton.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            text: catalog.i18nc("@label", "Add cloud printer")
+            height: UM.Theme.getSize("message_action_button").height
+            onClicked: {
+                CuraApplication.getDiscoveredCloudPrintersModel().clear()
+                base.addCloudPrinterButtonClicked()
+            }
+        }
+
         Item
         {
             id: troubleshootingButton
 
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("thin_margin").width
             anchors.verticalCenter: parent.verticalCenter
             height: troubleshootingLinkIcon.height
-            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("default_margin").width
+            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("thin_margin").width
 
             UM.RecolorImage
             {
                 id: troubleshootingLinkIcon
                 anchors.right: troubleshootingLabel.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
                 anchors.verticalCenter: parent.verticalCenter
                 height: troubleshootingLabel.height
                 width: height
                 sourceSize.height: width
                 color: UM.Theme.getColor("text_link")
-                source: UM.Theme.getIcon("external_link")
+                source: UM.Theme.getIcon("LinkExternal")
             }
 
             Label

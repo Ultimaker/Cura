@@ -6,8 +6,10 @@ from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 from cura.Stages.CuraStage import CuraStage
 
-##  Stage for preparing model (slicing).
+
 class PrepareStage(CuraStage):
+    """Stage for preparing model (slicing)."""
+
     def __init__(self, parent = None):
         super().__init__(parent)
         Application.getInstance().engineCreatedSignal.connect(self._engineCreated)

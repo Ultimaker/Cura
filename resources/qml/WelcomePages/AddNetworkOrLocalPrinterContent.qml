@@ -54,7 +54,7 @@ Item
             {
                 id: networkPrinterScrollView
 
-                maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
+                maxItemCountAtOnce: 9  // show at max 9 items at once, otherwise you need to scroll.
 
                 onRefreshButtonClicked:
                 {
@@ -64,6 +64,15 @@ Item
                 onAddByIpButtonClicked:
                 {
                     base.goToPage("add_printer_by_ip")
+                }
+
+                onAddCloudPrinterButtonClicked:
+                {
+                    base.goToPage("add_cloud_printers")
+                    if (!Cura.API.account.isLoggedIn)
+                    {
+                        Cura.API.account.login()
+                    }
                 }
             }
         }
@@ -94,6 +103,12 @@ Item
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
+                property int childrenHeight: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
+
+                onChildrenHeightChanged:
+                {
+                    addLocalPrinterDropDown.children[1].height = childrenHeight
+                }
             }
         }
     }
@@ -143,8 +158,8 @@ Item
                 const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
                 CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
 
-                // If we have created a machine, go to the last page, which is the "cloud" page.
-                base.goToPage("cloud")
+                // After the networked machine has been created, go to the next page
+                base.showNextPage()
             }
             else
             {

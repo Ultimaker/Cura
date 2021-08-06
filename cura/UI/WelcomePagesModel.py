@@ -119,8 +119,10 @@ class WelcomePagesModel(ListModel):
                     return
                 next_page_index = idx
 
+            is_final_page = page_item.get("is_final_page")
+
             # If we have reached the last page, emit allFinished signal and reset.
-            if next_page_index == len(self._items):
+            if next_page_index == len(self._items) or is_final_page:
                 self.atEnd()
                 return
 
@@ -237,11 +239,12 @@ class WelcomePagesModel(ListModel):
                           {"id": "user_agreement",
                            "page_url": self._getBuiltinWelcomePagePath("UserAgreementContent.qml"),
                            },
-                          {"id": "whats_new",
-                           "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
-                           },
                           {"id": "data_collections",
                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
+                           },
+                          {"id": "cloud",
+                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
+                           "should_show_function": self.shouldShowCloudPage,
                            },
                           {"id": "add_network_or_local_printer",
                            "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
@@ -251,13 +254,22 @@ class WelcomePagesModel(ListModel):
                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
                            "next_page_id": "machine_actions",
                            },
+                          {"id": "add_cloud_printers",
+                           "page_url": self._getBuiltinWelcomePagePath("AddCloudPrintersView.qml"),
+                           "next_page_button_text": self._catalog.i18nc("@action:button", "Next"),
+                           "next_page_id": "whats_new",
+                           },
                           {"id": "machine_actions",
                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
-                           "next_page_id": "cloud",
                            "should_show_function": self.shouldShowMachineActions,
                            },
-                          {"id": "cloud",
-                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
+                          {"id": "whats_new",
+                           "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
+                           "next_page_button_text": self._catalog.i18nc("@action:button", "Skip"),
+                           },
+                          {"id": "changelog",
+                           "page_url": self._getBuiltinWelcomePagePath("ChangelogContent.qml"),
+                           "next_page_button_text": self._catalog.i18nc("@action:button", "Finish"),
                            },
                           ]
 
@@ -286,6 +298,17 @@ class WelcomePagesModel(ListModel):
         definition_id = global_stack.definition.getId()
         first_start_actions = self._application.getMachineActionManager().getFirstStartActions(definition_id)
         return len([action for action in first_start_actions if action.needsUserInteraction()]) > 0
+
+    def shouldShowCloudPage(self) -> bool:
+        """
+        The cloud page should be shown only if the user is not logged in
+
+        :return: True if the user is not logged in, False if he/she is
+        """
+        # Import CuraApplication locally or else it fails
+        from cura.CuraApplication import CuraApplication
+        api = CuraApplication.getInstance().getCuraAPI()
+        return not api.account.isLoggedIn
 
     def addPage(self) -> None:
         pass

@@ -1,20 +1,20 @@
 # Cura
-# Copyright (C) 2020 Ultimaker B.V.
+# Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.5\n"
+"Project-Id-Version: Cura 4.10\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0100\n"
+"POT-Creation-Date: 2021-06-10 17:35+0000\n"
+"PO-Revision-Date: 2021-04-16 15:03+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Turkish <info@lionbridge.com>, Turkish <info@bothof.nl>\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -57,8 +57,8 @@ msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
 msgstr ""
-" \n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları"
+"ile ayrılan, başlangıçta yürütülecek G-code komutları\n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,8 +71,8 @@ msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
 msgstr ""
-" \n"
-" ile ayrılan, bitişte yürütülecek G-code komutları"
+"ile ayrılan, bitişte yürütülecek G-code komutları\n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -81,8 +81,8 @@ msgstr "GUID malzeme"
 
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "Malzemedeki GUID Otomatik olarak ayarlanır. "
+msgid "GUID of the material. This is set automatically."
+msgstr "Malzemedeki GUID Otomatik olarak ayarlanır."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -225,6 +225,16 @@ msgid "Whether the machine is able to stabilize the build volume temperature."
 msgstr "Makinenin yapı hacmi sıcaklığını dengeleyip dengelemediği."
 
 #: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool label"
+msgid "Always Write Active Tool"
+msgstr "Her Zaman Aktif Aracı Yaz"
+
+#: fdmprinter.def.json
+msgctxt "machine_always_write_active_tool description"
+msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
+msgstr "Aktif olmayan araca geçici komut gönderildikten sonra aktif aracı yazın. Smoothie veya modal araç komutlarına sahip diğer donanım yazılımları ile Çift Ekstrüderli baskı için gereklidir."
+
+#: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
 msgstr "Merkez Nokta"
@@ -293,16 +303,6 @@ msgstr "Isı Bölgesi Uzunluğu"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "Nozülden gelen ısının filamana aktarıldığı nozül ucuna olan mesafe."
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "Filaman Bırakma Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "Bir ekstrüder artık kullanılmadığında filamanın bırakılacağı nozül ucuna olan mesafe."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -420,6 +420,26 @@ msgid "Whether the extruders share a single heater rather than each extruder hav
 msgstr "Ekstrüderlerin tek bir ısıtıcıyı mı paylaşacağı yoksa her bir ekstrüderin kendi ısıtıcısı mı olacağı."
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle label"
+msgid "Extruders Share Nozzle"
+msgstr "Ekstrüder Nozül Paylaşımı"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle description"
+msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
+msgstr "Ekstrüderlerin tek bir nozülü mü paylaşacağı yoksa her bir ekstrüderin kendi nozülü mü olacağıdır. True olarak ayarlandığında printer-start gcode betiğinin tüm ekstrüderleri bilinen ve karşılıklı olarak uyumlu olan bir ilk geri çekme durumunda (sıfır veya geri çekilmemiş bir filament) düzgün bir şekilde ayarlaması beklenir. Bu durumda ilk geri çekme, ekstrüder başına \"machine_extruders_shared_nozzle_initial_retraction\" parametresi ile açıklanır."
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
+msgid "Shared Nozzle Initial Retraction"
+msgstr "Paylaşılan Nozül İlk Geri Çekme"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
+msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
+msgstr "Printer-start gcode betiğinin tamamlanmasında her bir ekstrüder filamentinin paylaşılan nozül ucundan ne kadar geri çekildiğinin varsayıldığıdır. Değer, nozül kanallarının ortak parçasının uzunluğuna eşit veya daha büyük olmalıdır."
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "İzin Verilmeyen Alanlar"
@@ -486,8 +506,8 @@ msgstr "Ekstruder Ofseti"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
-msgid "Apply the extruder offset to the coordinate system."
-msgstr "Ekstruder ofsetini koordinat sistemine uygulayın."
+msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr "Ekstrüder ofsetini koordinat sistemine uygulayın. Tüm ekstrüderleri etkiler."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -881,8 +901,8 @@ msgstr "İlk katman üzerinde bulunan hat genişliği çoğaltıcı. Çoğaltmay
 
 #: fdmprinter.def.json
 msgctxt "shell label"
-msgid "Shell"
-msgstr "Kovan"
+msgid "Walls"
+msgstr "Duvarlar"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -948,6 +968,321 @@ msgstr "Dış Duvar Sürme Mesafesi"
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
 msgstr "Z dikişini daha iyi gizlemek için dış duvardan sonra eklenen hareket mesafesi."
+
+#: fdmprinter.def.json
+msgctxt "wall_0_inset label"
+msgid "Outer Wall Inset"
+msgstr "Dış Duvar İlavesi"
+
+#: fdmprinter.def.json
+msgctxt "wall_0_inset description"
+msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
+msgstr "Dış duvar yoluna uygulanan ilave. Dış duvar nozülden küçükse ve iç duvardan sonra yazdırılmışsa, nozüldeki deliği modelin dış kısmı yerine iç duvarlar ile üst üste bindirmek için bu ofseti kullanın."
+
+#: fdmprinter.def.json
+msgctxt "optimize_wall_printing_order label"
+msgid "Optimize Wall Printing Order"
+msgstr "Duvar Yazdırma Sırasını Optimize Et"
+
+#: fdmprinter.def.json
+msgctxt "optimize_wall_printing_order description"
+msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
+msgstr "Geri çekmelerin sayısını ve kat edilen mesafeyi azaltmak için duvarların yazdırıldığı sırayı optimize edin. Çoğu parça, bunun etkinleştirilmesinden yararlanır, ancak bazılarının yararlanması için gerçekte daha uzun süre gerekebilir. Bu yüzden, yazdırma süresi tahminlerini optimizasyonlu ve optimizasyonsuz olarak karşılaştırın. Kenar, yapı levhası yapıştırması tipi olarak seçildiğinde ilk katman optimize edilmez."
+
+#: fdmprinter.def.json
+msgctxt "outer_inset_first label"
+msgid "Outer Before Inner Walls"
+msgstr "Önce Dış Sonra İç Duvarlar"
+
+#: fdmprinter.def.json
+msgctxt "outer_inset_first description"
+msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
+msgstr "Etkinleştirilmişse, duvarları dıştan içe doğru yazdırır. ABS gibi yüksek viskoziteli plastik kullanılırken boyutsal kesinliğin artırılmasını sağlayabilir; öte yandan dış düzey baskı kalitesini, özellikle çıkmalı kirişlerde etkileyebilir."
+
+#: fdmprinter.def.json
+msgctxt "alternate_extra_perimeter label"
+msgid "Alternate Extra Wall"
+msgstr "Alternatif Ek Duvar"
+
+#: fdmprinter.def.json
+msgctxt "alternate_extra_perimeter description"
+msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
+msgstr "Her katmanda ek duvar yazdırır. Bu şekilde dolgu ek duvarların arasında alır ve daha sağlam baskılar ortaya çıkar."
+
+#: fdmprinter.def.json
+msgctxt "travel_compensate_overlapping_walls_enabled label"
+msgid "Compensate Wall Overlaps"
+msgstr "Duvar Çakışmalarının Telafi Edilmesi"
+
+#: fdmprinter.def.json
+msgctxt "travel_compensate_overlapping_walls_enabled description"
+msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
+msgstr "Halihazırda duvarın olduğu bir yere yazdırılan bir duvarın parçaları için akışı telafi eder."
+
+#: fdmprinter.def.json
+msgctxt "travel_compensate_overlapping_walls_0_enabled label"
+msgid "Compensate Outer Wall Overlaps"
+msgstr "Dış Duvar Çakışmalarının Telafi Edilmesi"
+
+#: fdmprinter.def.json
+msgctxt "travel_compensate_overlapping_walls_0_enabled description"
+msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
+msgstr "Halihazırda dış duvarın olduğu bir yere yazdırılan bir dış duvarın parçaları için akışı telafi eder."
+
+#: fdmprinter.def.json
+msgctxt "travel_compensate_overlapping_walls_x_enabled label"
+msgid "Compensate Inner Wall Overlaps"
+msgstr "İç Duvar Çakışmalarının Telafi Edilmesi"
+
+#: fdmprinter.def.json
+msgctxt "travel_compensate_overlapping_walls_x_enabled description"
+msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
+msgstr "Halihazırda duvarın olduğu bir yere yazdırılan bir iç duvarın parçaları için akışı telafi eder."
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow label"
+msgid "Minimum Wall Flow"
+msgstr "Minimum Duvar Akışı"
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow description"
+msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+msgstr "Bir duvar hattı için izin verilen en düşük yüzde akımdır. Duvar çakışması, mevcut bir duvara yakın duruyorsa bir duvarın akışını azaltır. Akışları bu değerden düşük olan duvarların yerine hareket hamlesi konacaktır. Bu ayarı kullanırken duvar çakışma telafisini açmanız ve iç duvardan önce dış duvarı yazdırmanız gerekir."
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract label"
+msgid "Prefer Retract"
+msgstr "Geri Çekmeyi Tercih Et"
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract description"
+msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+msgstr "Geri çekme etkinleştirildiğinde, akışları minimum akış eşiğinin altındaki duvarların yerini alacak hareketleri taramak yerine geri çekme kullanılır."
+
+#: fdmprinter.def.json
+msgctxt "fill_perimeter_gaps label"
+msgid "Fill Gaps Between Walls"
+msgstr "Duvarlar Arasındaki Boşlukları Doldur"
+
+#: fdmprinter.def.json
+msgctxt "fill_perimeter_gaps description"
+msgid "Fills the gaps between walls where no walls fit."
+msgstr "Duvarların sığmadığı yerlerde duvarlar arasında kalan boşlukları doldurur."
+
+#: fdmprinter.def.json
+msgctxt "fill_perimeter_gaps option nowhere"
+msgid "Nowhere"
+msgstr "Hiçbir yerde"
+
+#: fdmprinter.def.json
+msgctxt "fill_perimeter_gaps option everywhere"
+msgid "Everywhere"
+msgstr "Her bölüm"
+
+#: fdmprinter.def.json
+msgctxt "filter_out_tiny_gaps label"
+msgid "Filter Out Tiny Gaps"
+msgstr "Küçük Boşlukların Filtrelenmesi"
+
+#: fdmprinter.def.json
+msgctxt "filter_out_tiny_gaps description"
+msgid "Filter out tiny gaps to reduce blobs on outside of model."
+msgstr "Modelin dışındaki damlalarını azaltmak için küçük boşlukları filtreleyin."
+
+#: fdmprinter.def.json
+msgctxt "fill_outline_gaps label"
+msgid "Print Thin Walls"
+msgstr "İnce Duvarları Yazdır"
+
+#: fdmprinter.def.json
+msgctxt "fill_outline_gaps description"
+msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
+msgstr "Yatay olarak nozül boyutundan daha ince olan model parçalarını yazdırır."
+
+#: fdmprinter.def.json
+msgctxt "xy_offset label"
+msgid "Horizontal Expansion"
+msgstr "Yatay Büyüme"
+
+#: fdmprinter.def.json
+msgctxt "xy_offset description"
+msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
+msgstr "Her katmandaki poligonlara uygulanan ofset miktarı. Pozitif değerler büyük boşlukları telafi ederken negatif değerler küçük boşlukları telafi edebilir."
+
+#: fdmprinter.def.json
+msgctxt "xy_offset_layer_0 label"
+msgid "Initial Layer Horizontal Expansion"
+msgstr "İlk Katmanın Yatay Genişlemesi"
+
+#: fdmprinter.def.json
+msgctxt "xy_offset_layer_0 description"
+msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
+msgstr "İlk katmandaki tüm poligonlara uygulanan ofset miktarı. Negatif bir değer “fil ayağı” olarak bilinen ilk katman ezilmesini dengeleyebilir."
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr "Delik Yatay Büyüme"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr "Her bir katmandaki tüm deliklere uygulanan ofset miktarıdır. Pozitif değerler deliklerin boyutunu artırırken, negatif değerler deliklerin boyutunu düşürür."
+
+#: fdmprinter.def.json
+msgctxt "z_seam_type label"
+msgid "Z Seam Alignment"
+msgstr "Z Dikiş Hizalama"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_type description"
+msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
+msgstr "Bir katmandaki her yolun başlangıç noktası. Ardışık katmanlardaki yollar aynı noktadan başladığında, çıktıda dikey bir ek yeri görünebilir. Bunları kullanıcının belirlediği bir konumun yakınına hizalarken ek yerinin kaldırılması kolaylaşır. Gelişigüzel yerleştirildiğinde yolların başlangıcındaki düzensizlikler daha az fark edilecektir. En kısa yol kullanıldığında yazdırma hızlanacaktır."
+
+#: fdmprinter.def.json
+msgctxt "z_seam_type option back"
+msgid "User Specified"
+msgstr "Kullanıcı Tarafından Belirtilen"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_type option shortest"
+msgid "Shortest"
+msgstr "En kısa"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_type option random"
+msgid "Random"
+msgstr "Gelişigüzel"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_type option sharpest_corner"
+msgid "Sharpest Corner"
+msgstr "En Keskin Köşe"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position label"
+msgid "Z Seam Position"
+msgstr "Z Dikişi Konumu"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position description"
+msgid "The position near where to start printing each part in a layer."
+msgstr "Bir katmandaki her kısmın basılmaya başlanacağı yere yakın konum."
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option backleft"
+msgid "Back Left"
+msgstr "Sol Arka"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option back"
+msgid "Back"
+msgstr "Geri"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option backright"
+msgid "Back Right"
+msgstr "Sağ Arka"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option right"
+msgid "Right"
+msgstr "Sağ"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option frontright"
+msgid "Front Right"
+msgstr "Sağ Ön"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option front"
+msgid "Front"
+msgstr "Ön"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option frontleft"
+msgid "Front Left"
+msgstr "Sol Ön"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option left"
+msgid "Left"
+msgstr "Sol"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_x label"
+msgid "Z Seam X"
+msgstr "Z Dikişi X"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_x description"
+msgid "The X coordinate of the position near where to start printing each part in a layer."
+msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın konumun X koordinatı."
+
+#: fdmprinter.def.json
+msgctxt "z_seam_y label"
+msgid "Z Seam Y"
+msgstr "Z Dikişi Y"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_y description"
+msgid "The Y coordinate of the position near where to start printing each part in a layer."
+msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın konumun Y koordinatı."
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner label"
+msgid "Seam Corner Preference"
+msgstr "Dikiş Köşesi Tercihi"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner description"
+msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "Modelin ana hatlarında yer alan köşelerin dikişin konumunu etkileyip etkilemediğini kontrol edin. Hiçbiri, köşelerin dikişin konumunu etkilemediği anlamına gelir. Dikişi Gizle, dikişin daha büyük olasılıkla bir iç köşe üzerinde oluşmasını sağlar. Dikişi Açığa Çıkar, dikişin daha büyük olasılıkla bir dış köşe üzerinde oluşmasını sağlar. Dikişi Gizle veya Açığa Çıkar, dikişin daha büyük olasılıkla bir iç veya dış köşe üzerinde oluşmasını sağlar. Akıllı Gizleme, hem iç hem de dış köşelere izin verir ancak uygun olduğu durumlarda iç köşeleri daha sık seçer."
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_none"
+msgid "None"
+msgstr "Hiçbiri"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_inner"
+msgid "Hide Seam"
+msgstr "Dikişi Gizle"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_outer"
+msgid "Expose Seam"
+msgstr "Dikişi Açığa Çıkar"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_any"
+msgid "Hide or Expose Seam"
+msgstr "Dikişi Gizle veya Açığa Çıkar"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_weighted"
+msgid "Smart Hiding"
+msgstr "Akıllı Gizleme"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_relative label"
+msgid "Z Seam Relative"
+msgstr "Z Dikişi Göreliliği"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_relative description"
+msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
+msgstr "Etkin olduğunda, z dikişi koordinatları her parçanın merkezine göre hizalıdır. Devre dışı olduğunda, koordinatlar yapı levhası üzerinde mutlak bir pozisyonu belirtir."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom label"
+msgid "Top/Bottom"
+msgstr "Üst / Alt"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom description"
+msgid "Top/Bottom"
+msgstr "Üst / Alt"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1110,301 +1445,6 @@ msgid "A list of integer line directions to use when the top/bottom layers use t
 msgstr "Üst/alt katmanlar çizgi veya zikzak şekillerini kullandığında kullanılacak tam sayı çizgi yönü listesi. Listedeki öğeler, katmanlar ilerledikçe sıralı olarak kullanılır. Listenin sonuna ulaşıldığında baştan başlanır. Liste öğeleri virgülle ayrılır ve tüm liste köşeli parantez içine alınır. Varsayılan ayar boş listedir ve geleneksel varsayılan açılar (45 ve 135 derece) kullanılır."
 
 #: fdmprinter.def.json
-msgctxt "wall_0_inset label"
-msgid "Outer Wall Inset"
-msgstr "Dış Duvar İlavesi"
-
-#: fdmprinter.def.json
-msgctxt "wall_0_inset description"
-msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
-msgstr "Dış duvar yoluna uygulanan ilave. Dış duvar nozülden küçükse ve iç duvardan sonra yazdırılmışsa, nozüldeki deliği modelin dış kısmı yerine iç duvarlar ile üst üste bindirmek için bu ofseti kullanın."
-
-#: fdmprinter.def.json
-msgctxt "optimize_wall_printing_order label"
-msgid "Optimize Wall Printing Order"
-msgstr "Duvar Yazdırma Sırasını Optimize Et"
-
-#: fdmprinter.def.json
-msgctxt "optimize_wall_printing_order description"
-msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
-msgstr "Geri çekmelerin sayısını ve kat edilen mesafeyi azaltmak için duvarların yazdırıldığı sırayı optimize edin. Çoğu parça, bunun etkinleştirilmesinden yararlanır, ancak bazılarının yararlanması için gerçekte daha uzun süre gerekebilir. Bu yüzden, yazdırma süresi tahminlerini optimizasyonlu ve optimizasyonsuz olarak karşılaştırın. Kenar, yapı levhası yapıştırması tipi olarak seçildiğinde ilk katman optimize edilmez."
-
-#: fdmprinter.def.json
-msgctxt "outer_inset_first label"
-msgid "Outer Before Inner Walls"
-msgstr "Önce Dış Sonra İç Duvarlar"
-
-#: fdmprinter.def.json
-msgctxt "outer_inset_first description"
-msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-msgstr "Etkinleştirilmişse, duvarları dıştan içe doğru yazdırır. ABS gibi yüksek viskoziteli plastik kullanılırken boyutsal kesinliğin artırılmasını sağlayabilir; öte yandan dış düzey baskı kalitesini, özellikle çıkmalı kirişlerde etkileyebilir."
-
-#: fdmprinter.def.json
-msgctxt "alternate_extra_perimeter label"
-msgid "Alternate Extra Wall"
-msgstr "Alternatif Ek Duvar"
-
-#: fdmprinter.def.json
-msgctxt "alternate_extra_perimeter description"
-msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
-msgstr "Her katmanda ek duvar yazdırır. Bu şekilde dolgu ek duvarların arasında alır ve daha sağlam baskılar ortaya çıkar."
-
-#: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled label"
-msgid "Compensate Wall Overlaps"
-msgstr "Duvar Çakışmalarının Telafi Edilmesi"
-
-#: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_enabled description"
-msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-msgstr "Halihazırda duvarın olduğu bir yere yazdırılan bir duvarın parçaları için akışı telafi eder."
-
-#: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled label"
-msgid "Compensate Outer Wall Overlaps"
-msgstr "Dış Duvar Çakışmalarının Telafi Edilmesi"
-
-#: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_0_enabled description"
-msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-msgstr "Halihazırda dış duvarın olduğu bir yere yazdırılan bir dış duvarın parçaları için akışı telafi eder."
-
-#: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled label"
-msgid "Compensate Inner Wall Overlaps"
-msgstr "İç Duvar Çakışmalarının Telafi Edilmesi"
-
-#: fdmprinter.def.json
-msgctxt "travel_compensate_overlapping_walls_x_enabled description"
-msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-msgstr "Halihazırda duvarın olduğu bir yere yazdırılan bir iç duvarın parçaları için akışı telafi eder."
-
-#: fdmprinter.def.json
-msgctxt "wall_min_flow label"
-msgid "Minimum Wall Flow"
-msgstr "Minimum Duvar Akışı"
-
-#: fdmprinter.def.json
-msgctxt "wall_min_flow description"
-msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-msgstr "Bir duvar hattı için izin verilen en düşük yüzde akımdır. Duvar çakışması, mevcut bir duvara yakın duruyorsa bir duvarın akışını azaltır. Akışları bu değerden düşük olan duvarların yerine hareket hamlesi konacaktır. Bu ayarı kullanırken duvar çakışma telafisini açmanız ve iç duvardan önce dış duvarı yazdırmanız gerekir."
-
-#: fdmprinter.def.json
-msgctxt "wall_min_flow_retract label"
-msgid "Prefer Retract"
-msgstr "Geri Çekmeyi Tercih Et"
-
-#: fdmprinter.def.json
-msgctxt "wall_min_flow_retract description"
-msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-msgstr "Geri çekme etkinleştirildiğinde, akışları minimum akış eşiğinin altındaki duvarların yerini alacak hareketleri taramak yerine geri çekme kullanılır."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps label"
-msgid "Fill Gaps Between Walls"
-msgstr "Duvarlar Arasındaki Boşlukları Doldur"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps description"
-msgid "Fills the gaps between walls where no walls fit."
-msgstr "Duvarların sığmadığı yerlerde duvarlar arasında kalan boşlukları doldurur."
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option nowhere"
-msgid "Nowhere"
-msgstr "Hiçbir yerde"
-
-#: fdmprinter.def.json
-msgctxt "fill_perimeter_gaps option everywhere"
-msgid "Everywhere"
-msgstr "Her bölüm"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps label"
-msgid "Filter Out Tiny Gaps"
-msgstr "Küçük Boşlukların Filtrelenmesi"
-
-#: fdmprinter.def.json
-msgctxt "filter_out_tiny_gaps description"
-msgid "Filter out tiny gaps to reduce blobs on outside of model."
-msgstr "Modelin dışındaki damlalarını azaltmak için küçük boşlukları filtreleyin."
-
-#: fdmprinter.def.json
-msgctxt "fill_outline_gaps label"
-msgid "Print Thin Walls"
-msgstr "İnce Duvarları Yazdır"
-
-#: fdmprinter.def.json
-msgctxt "fill_outline_gaps description"
-msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
-msgstr "Yatay olarak nozül boyutundan daha ince olan model parçalarını yazdırır."
-
-#: fdmprinter.def.json
-msgctxt "xy_offset label"
-msgid "Horizontal Expansion"
-msgstr "Yatay Büyüme"
-
-#: fdmprinter.def.json
-msgctxt "xy_offset description"
-msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
-msgstr "Her katmandaki poligonlara uygulanan ofset miktarı. Pozitif değerler büyük boşlukları telafi ederken negatif değerler küçük boşlukları telafi edebilir."
-
-#: fdmprinter.def.json
-msgctxt "xy_offset_layer_0 label"
-msgid "Initial Layer Horizontal Expansion"
-msgstr "İlk Katmanın Yatay Genişlemesi"
-
-#: fdmprinter.def.json
-msgctxt "xy_offset_layer_0 description"
-msgid "Amount of offset applied to all polygons in the first layer. A negative value can compensate for squishing of the first layer known as \"elephant's foot\"."
-msgstr "İlk katmandaki tüm poligonlara uygulanan ofset miktarı. Negatif bir değer “fil ayağı” olarak bilinen ilk katman ezilmesini dengeleyebilir."
-
-#: fdmprinter.def.json
-msgctxt "z_seam_type label"
-msgid "Z Seam Alignment"
-msgstr "Z Dikiş Hizalama"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_type description"
-msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
-msgstr "Bir katmandaki her yolun başlangıç noktası. Ardışık katmanlardaki yollar aynı noktadan başladığında, çıktıda dikey bir ek yeri görünebilir. Bunları kullanıcının belirlediği bir konumun yakınına hizalarken ek yerinin kaldırılması kolaylaşır. Gelişigüzel yerleştirildiğinde yolların başlangıcındaki düzensizlikler daha az fark edilecektir. En kısa yol kullanıldığında yazdırma hızlanacaktır."
-
-#: fdmprinter.def.json
-msgctxt "z_seam_type option back"
-msgid "User Specified"
-msgstr "Kullanıcı Tarafından Belirtilen"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_type option shortest"
-msgid "Shortest"
-msgstr "En kısa"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_type option random"
-msgid "Random"
-msgstr "Gelişigüzel"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_type option sharpest_corner"
-msgid "Sharpest Corner"
-msgstr "En Keskin Köşe"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position label"
-msgid "Z Seam Position"
-msgstr "Z Dikişi Konumu"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position description"
-msgid "The position near where to start printing each part in a layer."
-msgstr "Bir katmandaki her kısmın basılmaya başlanacağı yere yakın konum."
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option backleft"
-msgid "Back Left"
-msgstr "Sol Arka"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option back"
-msgid "Back"
-msgstr "Geri"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option backright"
-msgid "Back Right"
-msgstr "Sağ Arka"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option right"
-msgid "Right"
-msgstr "Sağ"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option frontright"
-msgid "Front Right"
-msgstr "Sağ Ön"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option front"
-msgid "Front"
-msgstr "Ön"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option frontleft"
-msgid "Front Left"
-msgstr "Sol Ön"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_position option left"
-msgid "Left"
-msgstr "Sol"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_x label"
-msgid "Z Seam X"
-msgstr "Z Dikişi X"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_x description"
-msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın konumun X koordinatı."
-
-#: fdmprinter.def.json
-msgctxt "z_seam_y label"
-msgid "Z Seam Y"
-msgstr "Z Dikişi Y"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_y description"
-msgid "The Y coordinate of the position near where to start printing each part in a layer."
-msgstr "Bir katmandaki her kısmın yazdırılmaya başlanacağı yere yakın konumun Y koordinatı."
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner label"
-msgid "Seam Corner Preference"
-msgstr "Dikiş Köşesi Tercihi"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Modelin ana hatlarında yer alan köşelerin dikişin konumunu etkileyip etkilemediğini kontrol edin. Hiçbiri, köşelerin dikişin konumunu etkilemediği anlamına gelir. Dikişi Gizle, dikişin daha büyük olasılıkla bir iç köşe üzerinde oluşmasını sağlar. Dikişi Açığa Çıkar, dikişin daha büyük olasılıkla bir dış köşe üzerinde oluşmasını sağlar. Dikişi Gizle veya Açığa Çıkar, dikişin daha büyük olasılıkla bir iç veya dış köşe üzerinde oluşmasını sağlar. Akıllı Gizleme, hem iç hem de dış köşelere izin verir ancak uygun olduğu durumlarda iç köşeleri daha sık seçer."
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner option z_seam_corner_none"
-msgid "None"
-msgstr "Hiçbiri"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner option z_seam_corner_inner"
-msgid "Hide Seam"
-msgstr "Dikişi Gizle"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner option z_seam_corner_outer"
-msgid "Expose Seam"
-msgstr "Dikişi Açığa Çıkar"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner option z_seam_corner_any"
-msgid "Hide or Expose Seam"
-msgstr "Dikişi Gizle veya Açığa Çıkar"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_corner option z_seam_corner_weighted"
-msgid "Smart Hiding"
-msgstr "Akıllı Gizleme"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_relative label"
-msgid "Z Seam Relative"
-msgstr "Z Dikişi Göreliliği"
-
-#: fdmprinter.def.json
-msgctxt "z_seam_relative description"
-msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
-msgstr "Etkin olduğunda, z dikişi koordinatları her parçanın merkezine göre hizalıdır. Devre dışı olduğunda, koordinatlar yapı levhası üzerinde mutlak bir pozisyonu belirtir."
-
-#: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
 msgstr "Z Boşluklarında Dış Katman Oluşturma"
@@ -1543,6 +1583,86 @@ msgstr "Yüzey Çakışması"
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
 msgstr "Duvarlar ile yüzey ekseni (uçları) arasındaki çakışma miktarını ayarlayın. Az miktar çakışma duvarların yüzeye sıkıca bağlanmasını sağlar. Eşit yüzey ve duvar hattı genişliği söz konusu olduğunda, duvar kalınlığının yarısından fazla değerlerde bu noktada yüzey ekstrüderinin nozül konumu halihazırda duvarın ortasına ulaşmış olacağından yüzeyin duvarı geçmiş olabileceğini unutmayın."
+
+#: fdmprinter.def.json
+msgctxt "skin_preshrink label"
+msgid "Skin Removal Width"
+msgstr "Yüzey Kaldırma Genişliği"
+
+#: fdmprinter.def.json
+msgctxt "skin_preshrink description"
+msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
+msgstr "Kaldırılacak olan yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde alt/üst yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink label"
+msgid "Top Skin Removal Width"
+msgstr "Üst Yüzey Kaldırma Genişliği"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink description"
+msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
+msgstr "Kaldırılacak olan üst yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde üst yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink label"
+msgid "Bottom Skin Removal Width"
+msgstr "Alt Yüzey Kaldırma Genişliği"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink description"
+msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
+msgstr "Kaldırılacak olan alt yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde alt yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance label"
+msgid "Skin Expand Distance"
+msgstr "Yüzey Genişleme Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance description"
+msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
+msgstr "Yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi komşu katmanlardaki duvarların yüzeye daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance label"
+msgid "Top Skin Expand Distance"
+msgstr "Üst Yüzey Genişleme Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance description"
+msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
+msgstr "Üst yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi yukarıdaki katmandaki duvarların yüzeye daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance label"
+msgid "Bottom Skin Expand Distance"
+msgstr "Alt Yüzey Genişleme Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance description"
+msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
+msgstr "Alt yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi yüzeyin aşağıdaki katmandaki duvara daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion label"
+msgid "Maximum Skin Angle for Expansion"
+msgstr "Genişleme için Maksimum Yüzey Açısı"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion description"
+msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
+msgstr "Nesnenizin bu ayardan daha geniş açıya sahip üst ve/veya alt zeminlerinin yüzeyleri genişletilmez. Böylece model yüzeyinin neredeyse dik açıya sahip olduğu durumlarda ortaya çıkan dar yüzey alanlarının genişletilmesi önlenmiş olur. 0°’lik bir açı yataydır ve yüzey alanının genişlemesine neden olmaz; 90°’lik bir açı dikeydir ve tüm yüzey alanlarının genişlemesine neden olur."
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion label"
+msgid "Minimum Skin Width for Expansion"
+msgstr "Genişleme için Minimum Yüzey Genişliği"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion description"
+msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
+msgstr "Bu değerden daha dar olan yüzey alanları genişletilmez. Böylece model yüzeyinin dikeye yakın bir eğime sahip olduğu durumlarda ortaya çıkan dar yüzey alanlarının genişletilmesi önlenmiş olur."
 
 #: fdmprinter.def.json
 msgctxt "infill label"
@@ -1854,86 +1974,6 @@ msgid "The minimum angle of internal overhangs for which infill is added. At a v
 msgstr "Dolum eklenen dahili çıkıntıların minimum açısı. 0° değerde nesneler tamamen doldurulur, 90°’de dolgu yapılmaz."
 
 #: fdmprinter.def.json
-msgctxt "skin_preshrink label"
-msgid "Skin Removal Width"
-msgstr "Yüzey Kaldırma Genişliği"
-
-#: fdmprinter.def.json
-msgctxt "skin_preshrink description"
-msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "Kaldırılacak olan yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde alt/üst yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink label"
-msgid "Top Skin Removal Width"
-msgstr "Üst Yüzey Kaldırma Genişliği"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink description"
-msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "Kaldırılacak olan üst yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde üst yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink label"
-msgid "Bottom Skin Removal Width"
-msgstr "Alt Yüzey Kaldırma Genişliği"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink description"
-msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr "Kaldırılacak olan alt yüzey alanlarının en büyük genişliğidir. Bu değerden daha küçük olan her yüzey alanı kaybolacaktır. Bu, modeldeki eğimli yüzeylerde alt yüzeyin yazdırılması için harcanan süreyi ve malzemeyi sınırlamaya yardımcı olabilir."
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance label"
-msgid "Skin Expand Distance"
-msgstr "Yüzey Genişleme Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance description"
-msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "Yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi komşu katmanlardaki duvarların yüzeye daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance label"
-msgid "Top Skin Expand Distance"
-msgstr "Üst Yüzey Genişleme Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance description"
-msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "Üst yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi yukarıdaki katmandaki duvarların yüzeye daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance label"
-msgid "Bottom Skin Expand Distance"
-msgstr "Alt Yüzey Genişleme Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance description"
-msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "Alt yüzeylerin dolgunun içine doğru genişleyeceği mesafedir. Daha yüksek değerler, yüzeyin dolgu şekline daha iyi tutunmasını sağladığı gibi yüzeyin aşağıdaki katmandaki duvara daha iyi yapışmasını sağlar. Daha düşük değerler, kullanılan malzemenin miktarından tasarruf yapılmasını sağlar."
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion label"
-msgid "Maximum Skin Angle for Expansion"
-msgstr "Genişleme için Maksimum Yüzey Açısı"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion description"
-msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "Nesnenizin bu ayardan daha geniş açıya sahip üst ve/veya alt zeminlerinin yüzeyleri genişletilmez. Böylece model yüzeyinin neredeyse dik açıya sahip olduğu durumlarda ortaya çıkan dar yüzey alanlarının genişletilmesi önlenmiş olur. 0°’lik bir açı yataydır; 90°’lik bir açı dikeydir."
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion label"
-msgid "Minimum Skin Width for Expansion"
-msgstr "Genişleme için Minimum Yüzey Genişliği"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion description"
-msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr "Bu değerden daha dar olan yüzey alanları genişletilmez. Böylece model yüzeyinin dikeye yakın bir eğime sahip olduğu durumlarda ortaya çıkan dar yüzey alanlarının genişletilmesi önlenmiş olur."
-
-#: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
 msgstr "Kaplamanın Kenar Desteği Kalınlığı"
@@ -2050,8 +2090,8 @@ msgstr "Yapı Levhası Sıcaklığı"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
-msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-msgstr "Isınan yapı levhası için kullanılan sıcaklık. Bu değer 0 ise yatak sıcaklığı değiştirilmez."
+msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
+msgstr "Isıtıcı yapı plakası için kullanılan sıcaklık. Bu değer 0 olduğunda yapı plakası ısıtılmaz."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2060,8 +2100,8 @@ msgstr "İlk Katman Yapı Levhası Sıcaklığı"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
-msgid "The temperature used for the heated build plate at the first layer."
-msgstr "İlk katmanda ısınan yapı levhası için kullanılan sıcaklık."
+msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
+msgstr "İlk katmanda ısıtıcı yapı plakası için kullanılan sıcaklık. Bu değer 0 olduğunda yapı plakası ilk katman boyunca ısıtılmaz."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2085,13 +2125,13 @@ msgstr "Yüzey enerjisi."
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
-msgid "Shrinkage Ratio"
-msgstr "Çekme Oranı"
+msgid "Scaling Factor Shrinkage Compensation"
+msgstr "Ölçekleme Faktörü Büzülme Telafisi"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
-msgid "Shrinkage ratio in percentage."
-msgstr "Yüzde cinsinden çekme oranı."
+msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
+msgstr "Malzemenin soğudukça büzülmesini telafi etmek için model bu faktöre göre ölçeklenecektir."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2190,8 +2230,8 @@ msgstr "Temizleme Hızı"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station iç değeri"
+msgid "How fast to prime the material after switching to a different material."
+msgstr "Farklı bir malzemeye geçildikten sonra malzemenin kullanıma hazır hale getirileceği süredir."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2200,28 +2240,28 @@ msgstr "Temizleme Uzunluğu"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station iç değeri"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr "Farklı bir malzemeye geçilirken nozülün önceki malzemeden temizlenmesi için kullanılacak malzeme (filament parçası) miktarıdır."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
+msgid "End of Filament Purge Speed"
 msgstr "Filament Temizliği Bitiş Hızı"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station iç değeri"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr "Boş bir makara aynı malzemeden yeni bir makara ile değiştirildikten sonra malzemenin kullanıma hazır hale getirileceği süredir."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
+msgid "End of Filament Purge Length"
 msgstr "Filament Temizliği Bitiş Uzunluğu"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station iç değeri"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr "Boş bir makara aynı malzemeden yeni bir makara ile değiştirilirken nozülün önceki malzemeden temizlenmesi için kullanılacak malzeme (filament parçası) miktarıdır."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2230,8 +2270,8 @@ msgstr "Maksimum Durma Süresi"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Material Station iç değeri"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr "Malzemenin kuru olmadığı durumda güvenli şekilde saklanabileceği süredir."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2240,8 +2280,8 @@ msgstr "Yük Taşıma Çarpanı Yok"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Material Station iç değeri"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr "Besleme ünitesi ile nozül haznesi arasına sıkıştırılacak filamenti belirten faktördür ve filament değişimi için malzemenin ne kadar hareket ettirileceğini belirlemek için kullanılır."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2550,8 +2590,8 @@ msgstr "İlk Katman Hızı"
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
-msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
-msgstr "İlk katman için belirlenen hız. Yapı tahtasına yapışmayı artırmak için daha düşük bir değer önerilmektedir."
+msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
+msgstr "İlk katman için hız. Yapı plakasında yapışmayı iyileştirmek için düşük bir değer tavsiye edilir. Yapı plakasının kenar ve radye gibi yapışma yapılarını etkilemez."
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3020,8 +3060,8 @@ msgstr "Geri Çekmeyi Etkinleştir"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Nozül yazdırılamayan alana doğru hareket ettiğinde filamanı geri çeker. "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr "Nozül yazdırılamayan alana doğru hareket ettiğinde filamanı geri çeker."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3160,8 +3200,9 @@ msgstr "Geri Çekmesiz Maks. Tarama Mesafesi"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "Sıfır olmadığında, bu mesafeden daha uzun tarama mesafelerinde geri çekme yapılır."
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr "Sıfırdan büyük olduğunda, bu mesafeden daha uzun tarama mesafelerinde geri çekme yapılır. Sıfıra ayarlandığında, bir maksimum belirlenmez ve tarama hareketlerinde"
+" geri çekme kullanılmaz."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3474,6 +3515,76 @@ msgid "The extruder train to use for printing the floors of the support. This is
 msgstr "Desteğin zemininin yazdırılması için kullanılacak ekstrüder dizisi. Çoklu ekstrüzyon sırasında kullanılır."
 
 #: fdmprinter.def.json
+msgctxt "support_structure label"
+msgid "Support Structure"
+msgstr "Destek Yapısı"
+
+#: fdmprinter.def.json
+msgctxt "support_structure description"
+msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgstr "Destek oluşturmak için kullanılabilir teknikler arasından seçim yapar. \"Normal\" destek, çıkıntılı parçaların hemen altında bir destek yapısı oluşturur ve bu alanları dümdüz aşağı indirir. \"Ağaç\"destek, çıkıntılı alanlara doğru dallar oluşturur ve bu dalların uçlarıyla model desteklenir; dallar modelin etrafına sarılarak yapı plakasından olabildiğince destek alır."
+
+#: fdmprinter.def.json
+msgctxt "support_structure option normal"
+msgid "Normal"
+msgstr "Normal"
+
+#: fdmprinter.def.json
+msgctxt "support_structure option tree"
+msgid "Tree"
+msgstr "Ağaç"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr "Ağaç Destek Dal Açısı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr "Ağaç Destek Dal Mesafesi"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr "Ağaç Destek Dalının Çapı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
+msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha dayanıklı olur. Tabana doğru uzanan dallar bundan daha kalın olacaktır."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr "Ağaç Destek Dalının Çap Açısı"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
+
+#: fdmprinter.def.json
 msgctxt "support_type label"
 msgid "Support Placement"
 msgstr "Destek Yerleştirme"
@@ -3715,8 +3826,8 @@ msgstr "Minimum Destek X/Y Mesafesi"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "Destek yapısının X/Y yönlerindeki çıkıntıya mesafesi. "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr "Destek yapısının X/Y yönlerindeki çıkıntıya mesafesi."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -3737,6 +3848,16 @@ msgstr "Destek Merdiveni Maksimum Basamak Genişliği"
 msgctxt "support_bottom_stair_step_width description"
 msgid "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures."
 msgstr "Modelin üzerinde sabit duran desteğin merdiven benzeri alt kısmının maksimum basamak genişliği. Daha düşük bir değer desteğin hareket ettirilmesini zorlaştırırken, daha yüksek bir değer kararsız destek yapılarına yol açabilir."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope label"
+msgid "Support Stair Step Minimum Slope Angle"
+msgstr "Basamak Desteğinin Minimum Eğim Açısı"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_stair_step_min_slope description"
+msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
+msgstr "Basamaklı alanın etkili olması için gereken minimum eğimdir. Düşük değerler, derinliği daha düşük olan eğimlerde desteğin kaldırılmasını kolaylaştırırken, gerçekten düşük değerler ise modelin diğer parçalarında tersine sonuçlar doğurabilir."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4184,6 +4305,16 @@ msgid "Make support everywhere below the support mesh, so that there's no overha
 msgstr "Destek örgüsünde askıda kalan herhangi bir kısım olmaması için destek örgüsünün altındaki her yere destek yapın."
 
 #: fdmprinter.def.json
+msgctxt "support_meshes_present label"
+msgid "Scene Has Support Meshes"
+msgstr "Sahnede Destek Örgüsü Var"
+
+#: fdmprinter.def.json
+msgctxt "support_meshes_present description"
+msgid "There are support meshes present in the scene. This setting is controlled by Cura."
+msgstr "Bunlar sahnedeki mevcut destek örgüleridir. Bu ayar Cura tarafından kontrol edilir."
+
+#: fdmprinter.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Yapı Levhası Yapıştırması"
@@ -4325,8 +4456,7 @@ msgstr "Uç Mesafesi"
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr "Baskının ilk katmanının uçtaki ilk hattı ile ana hattı arasındaki yatay mesafe. Küçük bir boşluk baskının uç kısmının kolayca çıkarılmasını sağlamasının"
-" yanı sıra ısı bakımından da avantajlıdır."
+msgstr "Baskının ilk katmanının uçtaki ilk hattı ile ana hattı arasındaki yatay mesafe. Küçük bir boşluk baskının uç kısmının kolayca çıkarılmasını sağlamasının yanı sıra ısı bakımından da avantajlıdır."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4815,8 +4945,8 @@ msgstr "Ağ Onarımları"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "category_fixes"
+msgid "Make the meshes more suited for 3D printing."
+msgstr "Kafesleri 3D baskı için daha uygun hale getirir."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,8 +5065,8 @@ msgstr "Özel Modlar"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "category_blackmagic"
+msgid "Non-traditional ways to print your models."
+msgstr "Modellerinizi yazdırmanın geleneksel olmayan yollarıdır."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -4945,10 +5075,8 @@ msgstr "Yazdırma Dizisi"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "Sıradakine geçmeden önce, tüm modellerin tek seferde bir katmanla mı yazdırılacağı yoksa bir modelin bitmesinin mi bekleneceği. Teker teker modu a) yalnızca"
-" bir ekstrüder etkinleştirildiğinde b) tüm modeller baskı kafası aralarında hareket edecek veya nozül ile X/Y eksenleri arasındaki mesafeden az olacak"
-" şekilde ayrıldığında kullanılabilir. "
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+msgstr "Sıradakine geçmeden önce, tüm modellerin tek seferde bir katmanla mı yazdırılacağı yoksa bir modelin bitmesinin mi bekleneceği. Teker teker modu a) yalnızca bir ekstrüder etkinleştirildiğinde b) tüm modeller baskı kafası aralarında hareket edecek veya nozül ile X/Y eksenleri arasındaki mesafeden az olacak şekilde ayrıldığında kullanılabilir."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -4972,13 +5100,13 @@ msgstr "Çakıştığı diğer dolgu ağını düzeltmek için bu ağı kullanı
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
-msgid "Infill Mesh Order"
-msgstr "Dolgu Birleşim Düzeni"
+msgid "Mesh Processing Rank"
+msgstr "Örgü İşleme Sıralaması"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr "Hangi dolgu birleşiminin diğer dolgu birleşiminin içinde olacağını belirler. Yüksek düzeyli bir dolgu birleşimi, dolgu birleşimlerinin dolgusunu daha düşük düzey ve normal birleşimler ile düzeltir."
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
+msgstr "Çakışan birden çok dolgu örgüsünü göz önüne alarak bu örgünün önceliğini belirler. Birden çok dolgu örgüsünün çakıştığı alanlar en yüksek sıralamaya sahip örgünün ayarlarını alacaktır. Daha yüksek sıralamaya sahip dolgu örgüsü, dolgu örgülerinin dolgusunu daha düşük sıralı ve normal örgüler ile değiştirecektir."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5112,68 +5240,8 @@ msgstr "Deneysel"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "deneysel!"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable label"
-msgid "Tree Support"
-msgstr "Ağaç Destek"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_enable description"
-msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-msgstr "Baskınızı desteklemesi adına dallarıyla birlikte ağaca benzeyen bir destek oluşturun. Malzeme kullanımı ve baskı süresi düşer ancak dilimleme zamanı da önemli ölçüde artar."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle label"
-msgid "Tree Support Branch Angle"
-msgstr "Ağaç Destek Dal Açısı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_angle description"
-msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr "Dalların açısı. Daha dikey ve daha stabil olmaları için daha düşük bir açı kullanın. Daha fazla erişim için daha yüksek bir açı kullanın."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance label"
-msgid "Tree Support Branch Distance"
-msgstr "Ağaç Destek Dal Mesafesi"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_distance description"
-msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-msgstr "Dalların modele temas ettiklerinde birbirlerine ne kadar uzaklıkta olacakları. Bu mesafenin kısa yapılması ağaç desteğin modele daha fazla noktada temas etmesini sağlayarak daha iyi bir sarkma sunacaktır ancak desteğin sökülmesini de daha güç hale getirecektir."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter label"
-msgid "Tree Support Branch Diameter"
-msgstr "Ağaç Destek Dalının Çapı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter description"
-msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
-msgstr "Ağaç desteğin en ince dallarının çapı. Daha kalın dallar daha dayanıklı olur. Tabana doğru uzanan dallar bundan daha kalın olacaktır."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle label"
-msgid "Tree Support Branch Diameter Angle"
-msgstr "Ağaç Destek Dalının Çap Açısı"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_branch_diameter_angle description"
-msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
-msgstr "Alta doğru gidildikçe kademeli olarak kalınlaşan dalların açısı. 0 derecelik bir açı dalların uzunluklarını gözetmeksizin tekdüze bir kalınlığa sahip olmalarını sağlayacaktır. Birazcık açı ağaç desteğin sabitliğini artırabilir."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution label"
-msgid "Tree Support Collision Resolution"
-msgstr "Ağaç Destek Çarpışma Çözünürlüğü"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_collision_resolution description"
-msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr "Modele çarpmamak adına çarpışmaları hesaplamak için çözünürlük. Buna düşük bir değerin verilmesi daha az hata çıkaran daha isabetli ağaçların üretilmesini sağlar ancak dilimleme süresini önemli ölçüde artırır."
+msgid "Features that haven't completely been fleshed out yet."
+msgstr "Henüz tamamen detaylandırılmamış özelliklerdir."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5182,8 +5250,8 @@ msgstr "Dilimleme Toleransı"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
-msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr "Çapraz yüzeylerle katman dilimleme yolları. Bir katmanın alanları katmanın ortasının yüzeyle kesiştiği yere (Ortalayıcı) göre oluşturulabilir. Diğer bir yol da her katmanın yüksekliği boyunca hacim içinde kalan alanları (Dışlayıcı) veya katmanın içinde herhangi bir yerde kalan alanları (Kapsayıcı) almasıdır. Dışlayıcı seçenek en çok ayrıntıyı tutar; Kapsayıcı seçenek en iyi şekilde oturur; Ortalayıcı ise en kısa sürede işlenir."
+msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
+msgstr "Dilimlenmiş katmanlardaki dikey tolerans. Bir katmanın konturları her katmanın kalınlığının ortasından enine kesitler (Ortalayan) alınarak normal şekilde oluşturulur. Alternatif olarak, her katman, katmanın tüm kalınlığı boyunca hacmin iç kısmına düşen alanlara (Dışlayan) sahip olabilir; veya bir katman, katman içinde herhangi bir yere düşen alanlara (İçeren) sahip olabilir. İçeren seçeneğinde katmandaki çoğu ayrıntı korunur, Dışlayan seçeneği en iyi uyum içindir ve Ortalayan seçeneği ise katmanı orijinal yüzeyin en yakınında tutar."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
@@ -5386,6 +5454,16 @@ msgid "The maximum angle of overhangs after the they have been made printable. A
 msgstr "Yazdırılabilir yapıldıktan sonra çıkıntıların en büyük açısı. 0° değerindeyken tüm modeller yapı levhasına bağlı bir model parçasıyla değiştirilirken 90° modeli hiçbir şekilde değiştirmez."
 
 #: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size label"
+msgid "Maximum Overhang Hole Area"
+msgstr "Maksimum Çıkıntı Deliği Alanı"
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size description"
+msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
+msgstr "Çıkıntıyı Yazdırılabilir Yap işlemiyle çıkarılmadan önce modelin tabanındaki deliğin maksimum alanı.  Bu değerden küçük delikler korunacaktır.  0 mm²'lik değer modellerin tabanındaki tüm delikleri dolduracaktır."
+
+#: fdmprinter.def.json
 msgctxt "coasting_enable label"
 msgid "Enable Coasting"
 msgstr "Taramayı Etkinleştir"
@@ -5454,76 +5532,6 @@ msgstr "Destek için Çapraz Dolgu Yoğunluğu Görüntüsü"
 msgctxt "cross_support_density_image description"
 msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
 msgstr "Parlaklık değerlerinin, desteğin ilgili konumundaki minimum yoğunluğu belirlediği görüntünün dosya konumu."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled label"
-msgid "Spaghetti Infill"
-msgstr "Spagetti Dolgu"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_enabled description"
-msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-msgstr "Filamanın nesnenin içinde düzensiz bir şekilde yukarı doğru kıvrılması için dolguyu arada sırada yazdırın. Böylece yazdırma süresi azalır, ancak davranış önceden kestirilemez."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped label"
-msgid "Spaghetti Infill Stepping"
-msgstr "Spagetti Dolgu Adımları"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_stepped description"
-msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-msgstr "Spagetti dolgusunu adım adım yazdırma veya tüm dolgu filamanını yazdırma işleminin sonunda ekstrude etme."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle label"
-msgid "Spaghetti Maximum Infill Angle"
-msgstr "Spagetti Maksimum Dolgu Açısı"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_infill_angle description"
-msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-msgstr "Daha sonradan spagetti dolgu uygulanacak alanlar için yazdırmanın içindeki Z ekseninin maksimum açısı. Bu değerin düşürülmesi, modelinize yapılan her bir dolgu katmanında daha fazla açılı kısımlara neden olur."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height label"
-msgid "Spaghetti Infill Maximum Height"
-msgstr "Spagetti Dolgu Maksimum Yüksekliği"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_max_height description"
-msgid "The maximum height of inside space which can be combined and filled from the top."
-msgstr "Birleştirilebilecek ve üstten dolgu yapılabilecek iç alanın maksimum yüksekliği."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset label"
-msgid "Spaghetti Inset"
-msgstr "Spagetti İç Dolgusu"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_inset description"
-msgid "The offset from the walls from where the spaghetti infill will be printed."
-msgstr "Spagetti dolgunun yazdırılacağı yerin duvarlardan ofset değeri."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow label"
-msgid "Spaghetti Flow"
-msgstr "Spagetti Debisi"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_flow description"
-msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-msgstr "Spagetti dolgusunun yoğunluğunu ayarlar. Dolgu yoğunluğunun spagetti dolgu için ekstrüzyon miktarını değil, sadece dolgu deseni çizgi boşluğunu kontrol ettiğini unutmayın."
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume label"
-msgid "Spaghetti Infill Extra Volume"
-msgstr "Spagetti Dolgu Ekstra Hacmi"
-
-#: fdmprinter.def.json
-msgctxt "spaghetti_infill_extra_volume description"
-msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-msgstr "Her spagetti dolumunda ekstrude edilen toplam hacmi ayarlamak için kullanılan bir düzeltme terimi."
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled label"
@@ -6152,8 +6160,7 @@ msgstr "Katmanlar Arasındaki Sürme Nozülü"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "Katmanlar arasına nozül sürme G-Code'u eklenip eklenmeyeceği (katman başına maksimum 1). Bu ayarın etkinleştirilmesi katman değişiminde geri çekme davranışını"
-" etkileyebilir. Sürme komutunun çalıştığı katmanlarda geri çekmeyi kontrol etmek için lütfen Sürme Geri Çekme ayarlarını kullanın."
+msgstr "Katmanlar arasına nozül sürme G-Code'u eklenip eklenmeyeceği (katman başına maksimum 1). Bu ayarın etkinleştirilmesi katman değişiminde geri çekme davranışını etkileyebilir. Sürme komutunun çalıştığı katmanlarda geri çekmeyi kontrol etmek için lütfen Sürme Geri Çekme ayarlarını kullanın."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6163,8 +6170,7 @@ msgstr "Sürme Hareketleri Arasındaki Malzeme Hacmi"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr "Başka bir nozül sürme işlemi başlatılmadan önce ekstrüde edilebilecek maksimum malzeme miktarı. Bu değer, bir katmanda gereken malzeme hacminden daha düşükse"
-" ayarın bu katmanda bir etkisi olmayacaktır, yani katman başına bir sürme sınırı vardır."
+msgstr "Başka bir nozül sürme işlemi başlatılmadan önce ekstrüde edilebilecek maksimum malzeme miktarı. Bu değer, bir katmanda gereken malzeme hacminden daha düşükse ayarın bu katmanda bir etkisi olmayacaktır, yani katman başına bir sürme sınırı vardır."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6244,8 +6250,7 @@ msgstr "Sürme Z Sıçraması"
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "Sürme sırasında yapı plakası nozül ve baskı arasında açıklık oluşturmak üzere alçaltılır. Bu işlem, hareket sırasında nozülün baskıya çarpmasını önler"
-" ve baskının devrilerek yapı plakasından düşme olasılığını azaltır."
+msgstr "Sürme sırasında yapı plakası nozül ve baskı arasında açıklık oluşturmak üzere alçaltılır. Bu işlem, hareket sırasında nozülün baskıya çarpmasını önler ve baskının devrilerek yapı plakasından düşme olasılığını azaltır."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6396,6 +6401,194 @@ msgstr "Bileşim Rotasyon Matrisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi."
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "Sıfır olmadığında, bu mesafeden daha uzun tarama mesafelerinde geri çekme yapılır."
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
+#~ msgid "Apply the extruder offset to the coordinate system."
+#~ msgstr "Ekstruder ofsetini koordinat sistemine uygulayın."
+
+#~ msgctxt "shell label"
+#~ msgid "Shell"
+#~ msgstr "Kovan"
+
+#~ msgctxt "max_skin_angle_for_expansion description"
+#~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
+#~ msgstr "Nesnenizin bu ayardan daha geniş açıya sahip üst ve/veya alt zeminlerinin yüzeyleri genişletilmez. Böylece model yüzeyinin neredeyse dik açıya sahip olduğu durumlarda ortaya çıkan dar yüzey alanlarının genişletilmesi önlenmiş olur. 0°’lik bir açı yataydır; 90°’lik bir açı dikeydir."
+
+#~ msgctxt "speed_layer_0 description"
+#~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
+#~ msgstr "İlk katman için belirlenen hız. Yapı tahtasına yapışmayı artırmak için daha düşük bir değer önerilmektedir."
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Çakışan birden çok dolgu örgüsünü göz önüne alarak bu örgünün önceliğini belirler. Birden çok dolgu örgüsünün çakıştığı alanlar en düşük sıralamaya sahip örgünün ayarlarını alacaktır. Daha yüksek sıralamaya sahip dolgu örgüsü, dolgu örgülerinin dolgusunu daha düşük sıralı ve normal örgüler ile değiştirecektir."
+
+#~ msgctxt "material_bed_temperature description"
+#~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
+#~ msgstr "Isınan yapı levhası için kullanılan sıcaklık. Bu değer 0 ise yatak sıcaklığı değiştirilmez."
+
+#~ msgctxt "material_bed_temperature_layer_0 description"
+#~ msgid "The temperature used for the heated build plate at the first layer."
+#~ msgstr "İlk katmanda ısınan yapı levhası için kullanılan sıcaklık."
+
+#~ msgctxt "material_shrinkage_percentage label"
+#~ msgid "Shrinkage Ratio"
+#~ msgstr "Çekme Oranı"
+
+#~ msgctxt "material_shrinkage_percentage description"
+#~ msgid "Shrinkage ratio in percentage."
+#~ msgstr "Yüzde cinsinden çekme oranı."
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Çakışan birimleri göz önüne alarak bu örgünün önceliğini belirler. Birden çok örgünün bulunduğu alanlarda düşük sıralamalı örgü öncelenir. Daha yüksek sıralamaya sahip dolgu örgüsü, dolgu örgülerin dolgusunu daha düşük sıralı ve normal örgüler ile değiştirecektir."
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+#~ msgstr "Sıradakine geçmeden önce, tüm modellerin tek seferde bir katmanla mı yazdırılacağı yoksa bir modelin bitmesinin mi bekleneceği. Teker teker modu a) yalnızca bir ekstrüder etkinleştirildiğinde b) tüm modeller baskı kafası aralarında hareket edecek veya nozül ile X/Y eksenleri arasındaki mesafeden az olacak şekilde ayrıldığında kullanılabilir. "
+
+#~ msgctxt "infill_mesh_order label"
+#~ msgid "Infill Mesh Order"
+#~ msgstr "Dolgu Birleşim Düzeni"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Hangi dolgu birleşiminin diğer dolgu birleşiminin içinde olacağını belirler. Yüksek düzeyli bir dolgu birleşimi, dolgu birleşimlerinin dolgusunu daha düşük düzey ve normal birleşimler ile düzeltir."
+
+#~ msgctxt "support_tree_enable label"
+#~ msgid "Tree Support"
+#~ msgstr "Ağaç Destek"
+
+#~ msgctxt "support_tree_enable description"
+#~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
+#~ msgstr "Baskınızı desteklemesi adına dallarıyla birlikte ağaca benzeyen bir destek oluşturun. Malzeme kullanımı ve baskı süresi düşer ancak dilimleme zamanı da önemli ölçüde artar."
+
+#~ msgctxt "slicing_tolerance description"
+#~ msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+#~ msgstr "Çapraz yüzeylerle katman dilimleme yolları. Bir katmanın alanları katmanın ortasının yüzeyle kesiştiği yere (Ortalayıcı) göre oluşturulabilir. Diğer bir yol da her katmanın yüksekliği boyunca hacim içinde kalan alanları (Dışlayıcı) veya katmanın içinde herhangi bir yerde kalan alanları (Kapsayıcı) almasıdır. Dışlayıcı seçenek en çok ayrıntıyı tutar; Kapsayıcı seçenek en iyi şekilde oturur; Ortalayıcı ise en kısa sürede işlenir."
+
+#~ msgctxt "spaghetti_infill_enabled label"
+#~ msgid "Spaghetti Infill"
+#~ msgstr "Spagetti Dolgu"
+
+#~ msgctxt "spaghetti_infill_enabled description"
+#~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
+#~ msgstr "Filamanın nesnenin içinde düzensiz bir şekilde yukarı doğru kıvrılması için dolguyu arada sırada yazdırın. Böylece yazdırma süresi azalır, ancak davranış önceden kestirilemez."
+
+#~ msgctxt "spaghetti_infill_stepped label"
+#~ msgid "Spaghetti Infill Stepping"
+#~ msgstr "Spagetti Dolgu Adımları"
+
+#~ msgctxt "spaghetti_infill_stepped description"
+#~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
+#~ msgstr "Spagetti dolgusunu adım adım yazdırma veya tüm dolgu filamanını yazdırma işleminin sonunda ekstrude etme."
+
+#~ msgctxt "spaghetti_max_infill_angle label"
+#~ msgid "Spaghetti Maximum Infill Angle"
+#~ msgstr "Spagetti Maksimum Dolgu Açısı"
+
+#~ msgctxt "spaghetti_max_infill_angle description"
+#~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
+#~ msgstr "Daha sonradan spagetti dolgu uygulanacak alanlar için yazdırmanın içindeki Z ekseninin maksimum açısı. Bu değerin düşürülmesi, modelinize yapılan her bir dolgu katmanında daha fazla açılı kısımlara neden olur."
+
+#~ msgctxt "spaghetti_max_height label"
+#~ msgid "Spaghetti Infill Maximum Height"
+#~ msgstr "Spagetti Dolgu Maksimum Yüksekliği"
+
+#~ msgctxt "spaghetti_max_height description"
+#~ msgid "The maximum height of inside space which can be combined and filled from the top."
+#~ msgstr "Birleştirilebilecek ve üstten dolgu yapılabilecek iç alanın maksimum yüksekliği."
+
+#~ msgctxt "spaghetti_inset label"
+#~ msgid "Spaghetti Inset"
+#~ msgstr "Spagetti İç Dolgusu"
+
+#~ msgctxt "spaghetti_inset description"
+#~ msgid "The offset from the walls from where the spaghetti infill will be printed."
+#~ msgstr "Spagetti dolgunun yazdırılacağı yerin duvarlardan ofset değeri."
+
+#~ msgctxt "spaghetti_flow label"
+#~ msgid "Spaghetti Flow"
+#~ msgstr "Spagetti Debisi"
+
+#~ msgctxt "spaghetti_flow description"
+#~ msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
+#~ msgstr "Spagetti dolgusunun yoğunluğunu ayarlar. Dolgu yoğunluğunun spagetti dolgu için ekstrüzyon miktarını değil, sadece dolgu deseni çizgi boşluğunu kontrol ettiğini unutmayın."
+
+#~ msgctxt "spaghetti_infill_extra_volume label"
+#~ msgid "Spaghetti Infill Extra Volume"
+#~ msgstr "Spagetti Dolgu Ekstra Hacmi"
+
+#~ msgctxt "spaghetti_infill_extra_volume description"
+#~ msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
+#~ msgstr "Her spagetti dolumunda ekstrude edilen toplam hacmi ayarlamak için kullanılan bir düzeltme terimi."
+
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "Malzemedeki GUID Otomatik olarak ayarlanır. "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "Filaman Bırakma Mesafesi"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "Bir ekstrüder artık kullanılmadığında filamanın bırakılacağı nozül ucuna olan mesafe."
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station iç değeri"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station iç değeri"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "Filament Temizliği Bitiş Hızı"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station iç değeri"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "Filament Temizliği Bitiş Uzunluğu"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station iç değeri"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station iç değeri"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station iç değeri"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "Nozül yazdırılamayan alana doğru hareket ettiğinde filamanı geri çeker. "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "Destek yapısının X/Y yönlerindeki çıkıntıya mesafesi. "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "category_fixes"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "category_blackmagic"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "deneysel!"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"

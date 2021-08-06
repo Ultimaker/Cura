@@ -5,15 +5,66 @@ import QtQuick 2.7
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 Cura.ExpandablePopup
 {
     id: machineSelector
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasNetworkConnection
-    property bool isCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isConnectedCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
+
+    readonly property string connectionStatus: {
+        if (isNetworkPrinter)
+        {
+            return "printer_connected"
+        }
+        else if (isConnectedCloudPrinter && Cura.API.connectionStatus.isInternetReachable)
+        {
+            return "printer_cloud_connected"
+        }
+        else if (isCloudRegistered)
+        {
+            return "printer_cloud_not_available"
+        }
+        else
+        {
+            return ""
+        }
+    }
+
+    function getConnectionStatusMessage() {
+        if (connectionStatus == "printer_cloud_not_available")
+        {
+            if(Cura.API.connectionStatus.isInternetReachable)
+            {
+                if (Cura.API.account.isLoggedIn)
+                {
+                    if (Cura.MachineManager.activeMachineIsLinkedToCurrentAccount)
+                    {
+                        return catalog.i18nc("@status", "The cloud printer is offline. Please check if the printer is turned on and connected to the internet.")
+                    }
+                    else
+                    {
+                        return catalog.i18nc("@status", "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection.")
+                    }
+                }
+                else
+                {
+                    return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer.")
+                }
+            } else
+            {
+                return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection.")
+            }
+        }
+        else
+        {
+            return ""
+        }
+    }
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
@@ -42,11 +93,11 @@ Cura.ExpandablePopup
         {
             if (isGroup)
             {
-                return UM.Theme.getIcon("printer_group")
+                return UM.Theme.getIcon("PrinterTriple", "medium")
             }
-            else if (isNetworkPrinter || isCloudPrinter)
+            else if (isNetworkPrinter || isCloudRegistered)
             {
-                return UM.Theme.getIcon("printer_single")
+                return UM.Theme.getIcon("Printer", "medium")
             }
             else
             {
@@ -59,22 +110,24 @@ Cura.ExpandablePopup
 
         UM.RecolorImage
         {
+            id: connectionStatusImage
             anchors
             {
                 bottom: parent.bottom
+                bottomMargin: - height * 1 / 6
                 left: parent.left
-                leftMargin: UM.Theme.getSize("thick_margin").width
+                leftMargin: iconSize - width * 5 / 6
             }
 
             source:
             {
-                if (isNetworkPrinter)
+                if (connectionStatus == "printer_connected")
                 {
-                    return UM.Theme.getIcon("printer_connected")
+                    return UM.Theme.getIcon("CheckBlueBG", "low")
                 }
-                else if (isCloudPrinter)
+                else if (connectionStatus == "printer_cloud_connected" || connectionStatus == "printer_cloud_not_available")
                 {
-                    return UM.Theme.getIcon("printer_cloud_connected")
+                    return UM.Theme.getIcon("CloudBadge", "low")
                 }
                 else
                 {
@@ -85,21 +138,54 @@ Cura.ExpandablePopup
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
-            color: UM.Theme.getColor("primary")
-            visible: isNetworkPrinter || isCloudPrinter
+            color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+
+            visible: isNetworkPrinter || isCloudRegistered
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle
             {
                 id: iconBackground
                 anchors.centerIn: parent
-                // Make it a bit bigger so there is an outline
-                width: parent.width + 2 * UM.Theme.getSize("default_lining").width
-                height: parent.height + 2 * UM.Theme.getSize("default_lining").height
-                radius: Math.round(width / 2)
-                color: UM.Theme.getColor("main_background")
+                width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                height: parent.height - 1.5
+                radius: width / 2
+                color: UM.Theme.getColor("connection_badge_background")
                 z: parent.z - 1
             }
+
+        }
+
+        MouseArea // Connection status tooltip hover area
+        {
+            id: connectionStatusTooltipHoverArea
+            anchors.fill: parent
+            hoverEnabled: getConnectionStatusMessage() !== ""
+            acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+            onEntered:
+            {
+                machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+                tooltip.tooltipText = getConnectionStatusMessage()
+                tooltip.show()
+            }
+            onExited: { tooltip.hide() }
+        }
+
+        Cura.ToolTip
+        {
+            id: tooltip
+
+            width: 250 * screenScaleFactor
+            tooltipText: getConnectionStatusMessage()
+            arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
+            x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
+            y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
+            z: popup.z + 1
+            targetPoint: Qt.point(
+                connectionStatusImage.x + Math.round(connectionStatusImage.width / 2),
+                connectionStatusImage.y
+            )
         }
     }
 
@@ -166,7 +252,8 @@ Cura.ExpandablePopup
                 text: catalog.i18nc("@button", "Add printer")
                 // The maximum width of the button is half of the total space, minus the padding of the parent, the left
                 // padding of the component and half the spacing because of the space between buttons.
-                maximumWidth: UM.Theme.getSize("machine_selector_widget_content").width / 2 - parent.padding - leftPadding - parent.spacing / 2
+                fixedWidthMode: true
+                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
                 onClicked:
                 {
                     toggleContent()
@@ -180,9 +267,10 @@ Cura.ExpandablePopup
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Manage printers")
+                fixedWidthMode: true
                 // The maximum width of the button is half of the total space, minus the padding of the parent, the right
                 // padding of the component and half the spacing because of the space between buttons.
-                maximumWidth: UM.Theme.getSize("machine_selector_widget_content").width / 2 - parent.padding - rightPadding - parent.spacing / 2
+                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
                 onClicked:
                 {
                     toggleContent()

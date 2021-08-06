@@ -7,7 +7,7 @@
         "author": "3DTech",
         "manufacturer": "3DTech",
         "file_formats": "text/x-gcode",
-        "platform": "3dtech_semi_professional_platform.stl",
+        "platform": "3dtech_semi_professional_platform.3mf",
         "platform_offset": [0, -2.5, 0 ],
         "machine_extruder_trains":
         {

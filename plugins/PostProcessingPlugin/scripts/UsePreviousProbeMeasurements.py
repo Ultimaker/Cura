@@ -30,7 +30,7 @@ class UsePreviousProbeMeasurements(Script):
                 }
             }
         }"""
-    
+
     def execute(self, data):
         text = "M501 ;load bed level data\nM420 S1 ;enable bed leveling"
         if self.getSettingValueByKey("use_previous_measurements"):

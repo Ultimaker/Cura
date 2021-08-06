@@ -1,11 +1,11 @@
 {
-    "name": "VORON2 350",
+    "name": "Voron2 350",
     "version": 2,
     "inherits": "voron2_base",
     "metadata":
     {
         "visible": true,
-        "platform": "voron2_350_bed.stl",
+        "platform": "voron2_350_bed.3mf",
         "quality_definition": "voron2_base"
     },
     "overrides":

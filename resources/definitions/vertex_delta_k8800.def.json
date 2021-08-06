@@ -49,7 +49,7 @@
         "value": 0.35
     },
     "wall_thickness": {
-        "value": 0.7
+        "value": "0.7"
     },
     "top_bottom_thickness": {
         "value": 0.6

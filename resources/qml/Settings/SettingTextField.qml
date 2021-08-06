@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -92,11 +92,18 @@ SettingItem
 
         Label
         {
-            anchors.right: parent.right
-            anchors.rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
-            anchors.verticalCenter: parent.verticalCenter
+            anchors
+            {
+                left: parent.left
+                leftMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+                right: parent.right
+                rightMargin: Math.round(UM.Theme.getSize("setting_unit_margin").width)
+                verticalCenter: parent.verticalCenter
+            }
 
             text: definition.unit
+            //However the setting value is aligned, align the unit opposite. That way it stays readable with right-to-left languages.
+            horizontalAlignment: (input.effectiveHorizontalAlignment == Text.AlignLeft) ? Text.AlignRight : Text.AlignLeft
             textFormat: Text.PlainText
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
@@ -153,7 +160,10 @@ SettingItem
             selectByMouse: true
 
             maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 10
-            clip: true; //Hide any text that exceeds the width of the text box.
+
+            // Since [int] & str don't have a max length, they need to be clipped (since clipping is expensive, this
+            // should be done as little as possible)
+            clip: definition.type == "str" || definition.type == "[int]"
 
             validator: RegExpValidator { regExp: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,9}\s*,)*(\s*-?[0-9]{0,9})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : (definition.type == "float") ? /^-?[0-9]{0,9}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
 

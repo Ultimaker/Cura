@@ -44,7 +44,6 @@ Item
 
             anchors.top: parent.top
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
@@ -69,7 +68,8 @@ Item
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
 
-                        sourceSize: UM.Theme.getSize("button_icon")
+                        sourceSize.height: Math.round(UM.Theme.getSize("button").height / 2)
+                        sourceSize.width: Math.round(UM.Theme.getSize("button").width / 2)
                     }
 
                     onCheckedChanged:
@@ -78,6 +78,10 @@ Item
                         {
                             base.activeY = y;
                         }
+                        //Clear focus when tools change. This prevents the tool grabbing focus when activated.
+                        //Grabbing focus prevents items from being deleted.
+                        //Apparently this was only a problem on MacOS.
+                        forceActiveFocus();
                     }
 
                     //Workaround since using ToolButton's onClicked would break the binding of the checked property, instead
@@ -96,6 +100,8 @@ Item
                             {
                                 UM.Controller.setActiveTool(model.id);
                             }
+
+                            base.state = (index < toolsModel.count/2) ? "anchorAtTop" : "anchorAtBottom";
                         }
                     }
                 }
@@ -125,11 +131,9 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
-                id: extruders
                 width: childrenRect.width
                 height: childrenRect.height
                 model: extrudersModel.items.length > 1 ? extrudersModel : 0
@@ -182,7 +186,7 @@ Item
         MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
             anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+            acceptedButtons: Qt.AllButtons
             onWheel: wheel.accepted = true
         }
 
@@ -220,4 +224,40 @@ Item
 
         visible: toolHint.text != ""
     }
+
+    states: [
+        State {
+            name: "anchorAtTop"
+
+            AnchorChanges {
+                target: panelBorder
+                anchors.top: base.top
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: panelBorder
+                anchors.topMargin: base.activeY
+            }
+        },
+        State {
+            name: "anchorAtBottom"
+
+            AnchorChanges {
+                target: panelBorder
+                anchors.top: undefined
+                anchors.bottom: base.top
+            }
+            PropertyChanges {
+                target: panelBorder
+                anchors.bottomMargin: {
+                    if (panelBorder.height > (base.activeY + UM.Theme.getSize("button").height)) {
+                        // panel is tall, align the top of the panel with the top of the first tool button
+                        return -panelBorder.height
+                    }
+                    // align the bottom of the panel with the bottom of the selected tool button
+                    return -(base.activeY + UM.Theme.getSize("button").height)
+                }
+            }
+        }
+    ]
 }

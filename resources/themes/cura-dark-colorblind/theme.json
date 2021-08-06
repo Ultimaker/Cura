@@ -12,6 +12,8 @@
         "model_overhang": [200, 0, 255, 255],
 
 
+        "xray_error_dark": [255,  0,  0, 255],
+        "xray_error_light": [255,  255,  0, 255],
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],
 

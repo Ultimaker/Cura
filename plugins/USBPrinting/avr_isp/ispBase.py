@@ -22,7 +22,7 @@ class IspBase():
         if not self.chip:
             raise IspError("Chip with signature: " + str(self.getSignature()) + "not found")
         self.chipErase()
-        
+
         Logger.log("d", "Flashing %i bytes", len(flash_data))
         self.writeFlash(flash_data)
         Logger.log("d", "Verifying %i bytes", len(flash_data))

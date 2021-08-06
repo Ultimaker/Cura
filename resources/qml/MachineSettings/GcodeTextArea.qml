@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -24,7 +24,7 @@ UM.TooltipArea
     property alias settingKey: propertyProvider.key
     property alias settingStoreIndex: propertyProvider.storeIndex
 
-    property string tooltip: propertyProvider.properties.description
+    property string tooltip: propertyProvider.properties.description ? propertyProvider.properties.description : ""
 
     property alias labelText: titleLabel.text
     property alias labelFont: titleLabel.font

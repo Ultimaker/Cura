@@ -18,7 +18,7 @@ Item
 
     UM.RecolorImage
     {
-        source: UM.Theme.getIcon("info")
+        source: UM.Theme.getIcon("Information")
         color: UM.Theme.getColor("icon")
         anchors.fill: parent
     }

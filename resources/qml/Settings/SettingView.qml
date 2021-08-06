@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -65,7 +65,13 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
+            placeholderText:
+            {
+                var imageSize = "width='" + UM.Theme.getSize("small_button_icon").width + "' height='" + UM.Theme.getSize("small_button_icon").height
+                var imageSource = "' src='"+ UM.Theme.getIcon("Magnifier")
+                var searchPlaceholder = catalog.i18nc("@label:textbox", "Search settings")
+                return "<img align='middle' " + imageSize + imageSource +"'>" +  "<div vertical-align=bottom>" + searchPlaceholder
+            }
 
             style: TextFieldStyle
             {
@@ -85,7 +91,7 @@ Item
 
             onEditingFinished:
             {
-                definitionsModel.filter = {"i18n_label": "*" + text}
+                definitionsModel.filter = {"i18n_label|i18n_description" : "*" + text}
                 findingSettings = (text.length > 0)
                 if (findingSettings != lastFindingSettings)
                 {
@@ -133,7 +139,7 @@ Item
         UM.SimpleButton
         {
             id: clearFilterButton
-            iconSource: UM.Theme.getIcon("cross1")
+            iconSource: UM.Theme.getIcon("Cancel")
             visible: findingSettings
 
             height: Math.round(parent.height * 0.4)
@@ -154,6 +160,20 @@ Item
         }
     }
 
+    SettingVisibilityPresetsMenu
+    {
+        id: settingVisibilityPresetsMenu
+        x: settingVisibilityMenu.x
+        y: settingVisibilityMenu.y
+        onCollapseAllCategories:
+        {
+            settingsSearchTimer.stop()
+            filter.text = "" // clear search field
+            filter.editingFinished()
+            definitionsModel.collapseAllCategories()
+        }
+    }
+
     ToolButton
     {
         id: settingVisibilityMenu
@@ -165,6 +185,8 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
+        width: UM.Theme.getSize("medium_button_icon").width
+        height: UM.Theme.getSize("medium_button_icon").height
 
         style: ButtonStyle
         {
@@ -174,26 +196,24 @@ Item
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
+                    width: UM.Theme.getSize("medium_button_icon").width
+                    height: UM.Theme.getSize("medium_button_icon").height
                     sourceSize.width: width
                     sourceSize.height: height
                     color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                    source: UM.Theme.getIcon("menu")
+                    source: UM.Theme.getIcon("Hamburger")
                 }
             }
             label: Label {}
         }
 
-        menu: SettingVisibilityPresetsMenu
+        onClicked:
         {
-            onCollapseAllCategories:
-            {
-                settingsSearchTimer.stop()
-                filter.text = "" // clear search field
-                filter.editingFinished()
-                definitionsModel.collapseAllCategories()
-            }
+            settingVisibilityPresetsMenu.popup(
+                settingVisibilityMenu,
+                -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
+                settingVisibilityMenu.height
+            )
         }
     }
 
@@ -246,25 +266,18 @@ Item
             }
 
             property int indexWithFocus: -1
+            property double delegateHeight: UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height
             property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
             delegate: Loader
             {
                 id: delegate
 
                 width: scrollView.width
-                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height : 0
+                height: enabled ? contents.delegateHeight: 0
                 Behavior on height { NumberAnimation { duration: 100 } }
-                opacity: provider.properties.enabled === "True" ? 1 : 0
+                opacity: enabled ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
-                enabled:
-                {
-                    if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
-                    {
-                        // disable all controls on the global tab, except categories
-                        return model.type === "category"
-                    }
-                    return provider.properties.enabled === "True"
-                }
+                enabled: provider.properties.enabled === "True"
 
                 property var definition: model
                 property var settingDefinitionsModel: definitionsModel
@@ -355,7 +368,7 @@ Item
                     id: provider
 
                     containerStackId: contents.activeMachineId
-                    key: model.key ? model.key : ""
+                    key: model.key
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
                     removeUnusedValue: model.resolve === undefined
@@ -364,16 +377,16 @@ Item
                 Connections
                 {
                     target: item
-                    onContextMenuRequested:
+                    function onContextMenuRequested()
                     {
                         contextMenu.key = model.key;
                         contextMenu.settingVisible = model.visible;
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
-                    onHideTooltip: base.hideTooltip()
-                    onShowAllHiddenInheritedSettings:
+                    function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
+                    function onHideTooltip() { base.hideTooltip() }
+                    function onShowAllHiddenInheritedSettings()
                     {
                         var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
                         for(var i = 0; i < children_with_override.length; i++)
@@ -382,7 +395,7 @@ Item
                         }
                         Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
                     }
-                    onFocusReceived:
+                    function onFocusReceived()
                     {
                         contents.indexWithFocus = index;
                         animateContentY.from = contents.contentY;
@@ -390,7 +403,7 @@ Item
                         animateContentY.to = contents.contentY;
                         animateContentY.running = true;
                     }
-                    onSetActiveFocusToNextSetting:
+                    function onSetActiveFocusToNextSetting(forward)
                     {
                         if (forward == undefined || forward)
                         {

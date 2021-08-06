@@ -20,9 +20,6 @@
         "machine_heated_bed": {
             "default_value": true
         },
-        "travel_compensate_overlapping_walls_enabled": {
-            "default_value": false
-        },
         "layer_height": {
             "default_value": 0.2
         },
@@ -33,7 +30,6 @@
             "default_value": "raft"
         },
         "top_bottom_pattern": { "default_value": "lines" },
-        "fill_perimeter_gaps": { "default_value": "everywhere" },
         "infill_sparse_density": { "default_value": 20 },
         "infill_before_walls": { "default_value": false },
         "top_bottom_thickness": {
@@ -46,7 +42,7 @@
         "max_skin_angle_for_expansion": { "default_value": 90 },
         "skin_angles": { "default_value": "[135,45]" },
         "coasting_volume": { "default_value": 0.032 },
-        "wall_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "1.2" },
         "cool_min_layer_time_fan_speed_max": { "default_value": 15 },
         "cool_min_layer_time": { "default_value": 15 },
         "support_interface_pattern": { "default_value": "zigzag" },

@@ -13,11 +13,11 @@ if TYPE_CHECKING:
 I18N_CATALOG = i18nCatalog("cura")
 
 
-## Message shown when sending material files to cluster host.
 class MaterialSyncMessage(Message):
+    """Message shown when sending material files to cluster host."""
 
-    # Singleton used to prevent duplicate messages of this type at the same time.
     __is_visible = False
+    """Singleton used to prevent duplicate messages of this type at the same time."""
 
     def __init__(self, device: "UltimakerNetworkedPrinterOutputDevice") -> None:
         super().__init__(
@@ -25,8 +25,7 @@ class MaterialSyncMessage(Message):
                                                       "on the host printer of group {0}.", device.name),
             title = I18N_CATALOG.i18nc("@info:title", "Sending materials to printer"),
             lifetime = 10,
-            dismissable = True
-        )
+            dismissable = True)
 
     def show(self) -> None:
         if MaterialSyncMessage.__is_visible:

@@ -5,7 +5,7 @@
     "metadata": {
         "quality_definition": "creality_base",
         "visible": true,
-        "platform": "creality_ender3.stl"
+        "platform": "creality_ender3.3mf"
     },
     "overrides": {
         "machine_name": { "default_value": "Creality Ender-3" },
