@@ -209,10 +209,6 @@
         "material_flow_layer_0": {
             "enabled": false
         },
-        "speed_equalize_flow_enabled": {
-            "enabled": false,
-            "value": "False"
-        },
         "draft_shield_enabled": {
             "enabled": false,
             "value": "False"
