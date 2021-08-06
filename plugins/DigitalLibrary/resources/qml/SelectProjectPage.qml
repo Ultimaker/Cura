@@ -49,11 +49,27 @@ Item
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
+            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
 
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
 
-            leftIcon: UM.Theme.getIcon("Magnifier")
             placeholderText: "Search"
+
+            UM.RecolorImage
+            {
+                id: searchIcon
+
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+                source: UM.Theme.getIcon("Magnifier")
+                height: UM.Theme.getSize("small_button_icon").height
+                width: height
+                color: UM.Theme.getColor("text")
+            }
         }
 
         Cura.SecondaryButton
