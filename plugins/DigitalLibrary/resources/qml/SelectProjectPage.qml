@@ -65,7 +65,7 @@ Item
                     left: parent.left
                     leftMargin: UM.Theme.getSize("default_margin").width
                 }
-                source: UM.Theme.getIcon("Magnifier")
+                source: UM.Theme.getIcon("search")
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
                 color: UM.Theme.getColor("text")
@@ -92,7 +92,7 @@ Item
             id: upgradePlanButton
 
             text: "Upgrade plan"
-            iconSource: UM.Theme.getIcon("LinkExternal")
+            iconSource: UM.Theme.getIcon("external_link")
             visible: createNewProjectButtonVisible && !manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
             tooltip: "Maximum number of projects reached. Please upgrade your subscription to create more projects."
 
