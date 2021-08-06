@@ -128,6 +128,6 @@
         "support_interface_enable": { "value": "True" },
         "support_interface_height": { "value": "0.5" },
         "support_roof_pattern": { "value": "'concentric'" },
-        "z_seam_type": { "value": "'shortest'" },
+        "z_seam_type": { "value": "'shortest'" }
     }
 }
