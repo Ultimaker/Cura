@@ -3118,7 +3118,7 @@
                     "type": "float",
                     "unit": "mm³/s",
                     "enabled": "speed_equalize_flow_enabled",
-                    "default_value": 1.1,
+                    "default_value": 0.0,
                     "minimum_value_warning": "0.0",
                     "maximum_value_warning": "3.0",
                     "settable_per_mesh": false,
