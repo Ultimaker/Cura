@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "CZ-300",
+    "name": "Crazy3DPrint CZ-300",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,

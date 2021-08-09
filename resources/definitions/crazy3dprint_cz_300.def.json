@@ -1,6 +1,6 @@
 {
     "version": 2, 
-    "name": "CZ-300",
+    "name": "Crazy3DPrint CZ-300",
     "inherits": "crazy3dprint_base",
     "metadata": {
         "visible": true,
@@ -29,14 +29,20 @@
             ]
         },
 		"layer_height": {  "default_value": 0.2 },
-		"infill_sparse_density": {  "default_value": 10 },
+		"infill_sparse_density": {  "default_value": 15 },
+	    "infill_line_distance": {  "value": 2.6667 },
+		"infill_pattern": {  "default_value": "lines" },
+		"infill_overlap": {  "default_value": 8.0 },
+		"min_infill_area": {  "default_value": 2.0 },
+		"retract_at_layer_change": { "default_value": true },
 		"default_material_print_temperature": {  "default_value": 210 },
 		"material_print_temperature": { "value": 210 },
+		"material_final_print_temperature": {  "value": 210 },
 		"material_bed_temperature": { "value": 70 },
         "material_bed_temperature_layer_0": {  "value": 70 },
 		"material_flow_layer_0": {"value": 140},
-		"retraction_amount": {  "default_value": 4.5 },
-		"retraction_speed": {  "default_value": 30 },
+		"retraction_amount": {  "default_value": 10 },
+		"retraction_speed": {  "default_value": 70 },
         "speed_print": {  "default_value": 40 },
         "speed_travel": { "value": 60 },
         "cool_fan_enabled": { "default_value": true },
@@ -44,6 +50,10 @@
         "adhesion_type": { "default_value" : "skirt" },
 		"brim_line_count": { "value" : 5 },
 		"skirt_line_count": { "default_value" : 5 },
+		"initial_layer_line_width_factor": { "default_value" : 140 },
+		"top_bottom_pattern": { "default_value" : "concentric" },
+		"outer_inset_first": { "default_value": true },
+		"fill_outline_gaps": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": {
             "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n"
