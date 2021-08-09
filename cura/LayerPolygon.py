@@ -55,6 +55,14 @@ class LayerPolygon:
 
         self._jump_mask = self.__jump_map[self._types]
         self._jump_count = numpy.sum(self._jump_mask)
+        self._cumulative_type_change_counts = numpy.zeros(len(self._types))
+        last_type = self.types[0]
+        current_type_count = 0
+        for i in range(0, len(self._cumulative_type_change_counts)):
+            if last_type != self.types[i]:
+                current_type_count += 1
+            last_type = self.types[i]
+            self._cumulative_type_change_counts[i] = current_type_count
         self._mesh_line_count = len(self._types) - self._jump_count
         self._vertex_count = self._mesh_line_count + numpy.sum(self._types[1:] == self._types[:-1])
 
@@ -206,6 +214,10 @@ class LayerPolygon:
     @property
     def jumpCount(self):
         return self._jump_count
+
+    @property
+    def cumulativeTypeChangeCounts(self):
+        return self._cumulative_type_change_counts
 
     def getNormals(self) -> numpy.ndarray:
         """Calculate normals for the entire polygon using numpy.
