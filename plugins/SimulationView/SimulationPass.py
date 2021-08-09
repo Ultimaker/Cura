@@ -162,7 +162,7 @@ class SimulationPass(RenderPass):
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
                                 break
                             break
-                        end += layer_data.getLayer(layer).lineMeshVertexCount()
+                        end += layer_data.getLayer(layer).vertexCount
                         if layer < self._layer_view._minimum_layer_num:
                             start = end
 

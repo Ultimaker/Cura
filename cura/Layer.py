@@ -15,6 +15,7 @@ class Layer:
         self._height = 0.0
         self._thickness = 0.0
         self._polygons = []  # type: List[LayerPolygon]
+        self._vertex_count = 0
         self._element_count = 0
 
     @property
@@ -28,6 +29,10 @@ class Layer:
     @property
     def polygons(self) -> List[LayerPolygon]:
         return self._polygons
+
+    @property
+    def vertexCount(self):
+        return self._vertex_count
 
     @property
     def elementCount(self):
@@ -64,11 +69,13 @@ class Layer:
     def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):
         result_vertex_offset = vertex_offset
         result_index_offset = index_offset
+        self._vertex_count = 0
         self._element_count = 0
         for polygon in self._polygons:
             polygon.build(result_vertex_offset, result_index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
             result_vertex_offset += polygon.lineMeshVertexCount()
             result_index_offset += polygon.lineMeshElementCount()
+            self._vertex_count += polygon.vertexCount
             self._element_count += polygon.elementCount
 
         return result_vertex_offset, result_index_offset

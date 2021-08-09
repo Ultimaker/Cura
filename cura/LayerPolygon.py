@@ -188,6 +188,10 @@ class LayerPolygon:
         return self._data
 
     @property
+    def vertexCount(self):
+        return self._vertex_end - self._vertex_begin
+
+    @property
     def elementCount(self):
         return (self._index_end - self._index_begin) * 2  # The range of vertices multiplied by 2 since each vertex is used twice
 
