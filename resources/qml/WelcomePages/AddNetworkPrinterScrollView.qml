@@ -251,7 +251,7 @@ Item
                 onClicked:
                 {
                     // open the troubleshooting URL with web browser
-                    const url = "https://ultimaker.com/in/cura/troubleshooting/network"
+                    const url = "https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer"
                     Qt.openUrlExternally(url)
                 }
                 onEntered:
