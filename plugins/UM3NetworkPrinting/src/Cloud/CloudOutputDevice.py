@@ -334,7 +334,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl)+ "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-browser")
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl + "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-browser"))
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
