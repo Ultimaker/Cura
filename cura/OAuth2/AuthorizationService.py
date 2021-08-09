@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
     from UM.Preferences import Preferences
 
-MYCLOUD_LOGOFF_URL = "https://mycloud.ultimaker.com/logoff"
+MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff?utm_source=cura&utm_medium=software&utm_campaign=change-account-before-adding-printers"
 
 class AuthorizationService:
     """The authorization service is responsible for handling the login flow, storing user credentials and providing
@@ -209,10 +209,11 @@ class AuthorizationService:
                                      link to force the a browser logout from mycloud.ultimaker.com
         :return: The authentication URL, properly formatted and encoded
         """
-        auth_url = "{}?{}".format(self._auth_url, urlencode(query_parameters_dict))
+        auth_url = f"{self._auth_url}?{urlencode(query_parameters_dict)}"
         if force_browser_logout:
-            # The url after '?next=' should be urlencoded
-            auth_url = "{}?next={}".format(MYCLOUD_LOGOFF_URL, quote_plus(auth_url))
+            connecting_char = "&" if "?" in MYCLOUD_LOGOFF_URL else "?"
+            # The url after 'next=' should be urlencoded
+            auth_url = f"{MYCLOUD_LOGOFF_URL}{connecting_char}next={quote_plus(auth_url)}"
         return auth_url
 
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:

@@ -12,7 +12,7 @@ import Cura 1.7 as Cura
 //
 // This component gets activated when the user presses the "Add cloud printers" button from the "Add a Printer" page.
 // It contains a busy indicator that remains active until the user logs in and adds a cloud printer in his/her account.
-// Once a cloud printer is added in mycloud.ultimaker.com, Cura discovers it (in a time window of 30 sec) and displays
+// Once a cloud printer is added in digitalfactory.ultimaker.com, Cura discovers it (in a time window of 30 sec) and displays
 // the newly added printers in this page.
 //
 Item

@@ -319,7 +319,7 @@ class DFFileExportAndUploadManager:
 
     def _onMessageActionTriggered(self, message, action):
         if action == "open_df_project":
-            project_url = "{}/app/library/project/{}?wait_for_new_files=true".format(CuraApplication.getInstance().ultimakerDigitalFactoryUrl, self._library_project_id)
+            project_url = "{}/app/library/project/{}?wait_for_new_files=true&utm_source=cura&utm_medium=software&utm_campaign=saved-library-file-message".format(CuraApplication.getInstance().ultimakerDigitalFactoryUrl, self._library_project_id)
             QDesktopServices.openUrl(QUrl(project_url))
             message.hide()
 

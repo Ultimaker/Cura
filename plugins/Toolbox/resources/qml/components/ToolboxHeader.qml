@@ -91,7 +91,7 @@ Item
             verticalCenter: parent.verticalCenter
         }
         acceptedButtons: Qt.LeftButton
-        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins"))
+        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins") + "?utm_source=cura&utm_medium=software&utm_campaign=marketplace-button")
         UM.RecolorImage
         {
             id: cloudMarketplaceButton

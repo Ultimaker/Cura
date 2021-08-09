@@ -60,6 +60,6 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         height: UM.Theme.getSize("account_button").height
         text: catalog.i18nc("@button", "Create a free Ultimaker account")
-        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
+        onClicked: Qt.openUrlExternally("https://ultimaker.com/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=menu-signup")
     }
 }
