@@ -107,6 +107,8 @@ class VersionUpgrade49to50(VersionUpgrade):
         # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
+
+        parser["general"]["version"] = "5"
         parser["metadata"]["setting_version"] = "18"
 
         result = io.StringIO()
