@@ -1,0 +1,145 @@
+  {
+    "version": 2,
+    "name": "TeraForm Inventor",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "SpaceFactory",
+        "manufacturer": "SpaceFactory",
+        "file_formats": "text/x-gcode",
+        "platform": "teraform_inventor_platform.stl",
+        "platform_offset": [0, 0, -20],
+        "has_materials": true,
+        "has_machine_quality": true,
+        "machine_extruder_trains":
+        {
+            "0": "teraform_x_120"
+        }
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "TeraForm Inventor" },
+        "machine_show_variants": { "default_value": false },
+        "material_diameter": { "default_value": 12 },
+        "material_bed_temp_wait": { "default_value": false },
+        "material_bed_temp_prepend": { "default_value": false },
+        "machine_width": { "default_value": 2400 },
+        "machine_depth": { "default_value": 1200 },
+        "machine_height": { "default_value": 1200 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_nozzle_tip_outer_diameter": { "default_value": 25 },
+        "machine_nozzle_head_distance": { "default_value": 15 },
+        "machine_firmware_retract": { "default_value": true },
+        "machine_nozzle_size": { "default_value": 12 },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
+        "layer_height":
+        {
+            "minimum_value": "1",
+            "minimum_value_warning":"2",
+            "maximum_value_warning":"10",
+            "settable_per_extruder": false
+        },
+        "layer_height_0":
+        {       
+            "minimum_value": "1",
+            "minimum_value_warning":"2",
+            "maximum_value_warning":"10",
+            "settable_per_extruder": false
+        },     
+        "line_width":
+        {
+            "minimum_value": "5",
+            "minimum_value_warning": "10",
+            "maximum_value_warning": "50",
+            "settable_per_mesh": false
+        },
+        "wall_thickness":
+        {
+            "default_value": 15,
+            "value": "wall_line_width_0 if magic_spiralize else line_width",
+            "minimum_value": "line_width",
+            "minimum_value_warning": "line_width",
+            "maximum_value_warning": "4 * line_width"
+        },
+        "wall_0_wipe_dist":
+        {
+            "default_value": 0,
+            "value": 0,
+            "settable_per_mesh": false
+        },
+        "wall_min_flow": 
+        {
+            "default_value": 50,
+            "settable_per_mesh": false
+        },
+        "wall_min_flow_retract":
+        {
+            "default_value": true,
+            "settable_per_mesh": false
+        },
+        "fill_perimeter_gaps":
+        {
+            "default_value": "nowhere",
+            "settable_per_mesh": false
+        },
+        "fill_outline_gaps":
+        {
+            "default_value": false,
+            "settable_per_mesh": false
+        },
+        "ironing_enabled": 
+        {
+            "default_value": false,
+            "settable_per_mesh": false
+        },
+        "infill_sparse_density":
+        {
+            "default_value": 50
+        },
+        "infill_pattern":
+        {
+            "options":
+            {
+                "lines": "Lines",
+                "gyroid": "Gyroid"
+            },
+            "default_value": "lines"
+        },
+        "zig_zaggify_infill":
+        {
+            "value": true,
+            "settable_per_mesh": true
+        },
+        "infill_wipe_dist":
+        {
+            "enabled": false,
+            "settable_per_mesh": false
+        },
+        "infill_support_enabled":
+        {
+            "default_value": true
+        },
+        "infill_support_angle":
+        {
+            "default_value": 60
+        },
+        "retract_at_layer_change":
+        {
+            "default_value": true
+        },
+        "retraction_combing": 
+        {
+            "default_value": "off",
+            "resolve": "off"
+        },
+        "relative_extrusion":
+        {
+            "default_value": true,
+            "value": true
+        },
+        "prime_tower_position_x": { "value": 0 },
+        "prime_tower_position_y": { "value": 0 },
+        "support_zag_skip_count": { "enabled": false}
+    }
+}
