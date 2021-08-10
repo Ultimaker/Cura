@@ -8,7 +8,6 @@
         "manufacturer": "ZONESTAR",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0],
-        "exclude_materials": [ "zonestar_pla", "zonestar_petg", "generic_pla", "generic_petg" ],
         "machine_extruder_trains":
         {
             "0": "zonestar_Z8R3_extruder_1st",
