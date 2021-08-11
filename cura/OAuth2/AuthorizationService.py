@@ -218,17 +218,18 @@ class AuthorizationService:
 
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:
         """Callback method for the authentication flow."""
-
         if auth_response.success:
+            Logger.log("d", "Got callback from Authorization state. The user should now be logged in!")
             self._storeAuthData(auth_response)
             self.onAuthStateChanged.emit(logged_in = True)
         else:
+            Logger.log("d", "Got callback from Authorization state. Something went wrong: [%s]", auth_response.err_message)
             self.onAuthenticationError.emit(logged_in = False, error_message = auth_response.err_message)
         self._server.stop()  # Stop the web server at all times.
 
     def loadAuthDataFromPreferences(self) -> None:
         """Load authentication data from preferences."""
-
+        Logger.log("d", "Attempting to load the auth data from preferences.")
         if self._preferences is None:
             Logger.log("e", "Unable to load authentication data, since no preference has been set!")
             return
@@ -240,6 +241,7 @@ class AuthorizationService:
                 user_profile = self.getUserProfile()
                 if user_profile is not None:
                     self.onAuthStateChanged.emit(logged_in = True)
+                    Logger.log("d", "Auth data was successfully loaded")
                 else:
                     if self._unable_to_get_data_message is not None:
                         self._unable_to_get_data_message.hide()
@@ -248,6 +250,7 @@ class AuthorizationService:
                                                                                   "Unable to reach the Ultimaker account server."),
                                                                title = i18n_catalog.i18nc("@info:title", "Warning"),
                                                                message_type = Message.MessageType.ERROR)
+                    Logger.log("w", "Unable to load auth data from preferences")
                     self._unable_to_get_data_message.show()
         except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
@@ -265,6 +268,7 @@ class AuthorizationService:
             self._user_profile = self.getUserProfile()
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
+            Logger.log("d", "Clearing the user profile")
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
 
