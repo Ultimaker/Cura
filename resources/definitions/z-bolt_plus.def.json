@@ -5,15 +5,13 @@
     "metadata":
     {
         "visible": true,
-        "quality_definition": "z-bolt_base",
-		"has_machine_quality": false,
-        "has_variants": false
+        "quality_definition": "z-bolt_base"
     },
     "overrides":
     {
         "machine_name":     { "default_value": "Z-Bolt Plus" },
-        "machine_width":    { "default_value": 200 },
+        "machine_width":    { "default_value": 300 },
         "machine_depth":    { "default_value": 200 },
-        "machine_height":   { "default_value": 240 }
+        "machine_height":   { "default_value": 335 }
     }
 }

@@ -5,9 +5,7 @@
     "metadata":
     {
         "visible": true,
-        "quality_definition": "z-bolt_base",
-		"has_machine_quality": false,
-        "has_variants": false
+        "quality_definition": "z-bolt_base"
     },
     "overrides":
     {
