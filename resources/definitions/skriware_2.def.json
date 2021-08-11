@@ -578,9 +578,6 @@
     "infill_material_flow": {
       "value": "99"
     },
-    "speed_equalize_flow_max": {
-      "default_value": 40
-    },
     "skin_preshrink": {
       "value": "0.0"
     },
