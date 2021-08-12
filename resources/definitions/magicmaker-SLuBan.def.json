@@ -1,0 +1,98 @@
+ "version": 2,
+    "name": "SLuBan",
+    "inherits": "fdmprinter",   
+ 
+    "metadata": {
+        "author": "Jason",
+        "manufacturer": "magicmaker",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+
+        # This is 3D model for your machine platform. Put your model file in "resources/meshes/" folder 
+        "platform": "magicmaker-owl.obj",
+
+        # The texture image file of your machine platform. It's usually the logo of your machine.
+        "platform_texture": "magicmaker.png",
+
+        # The offset of your platform model for rendering
+        "platform_offset": [0, 0, 0],
+
+        "has_materials": true,
+
+        # Whether your machine has the possibility to choose different variants.
+        # If this is set to "true", you will see the variant selection menu in Cura for your machine.
+        # By variants, we meant nozzles. You can have some specific variant profiles defined in folder
+        # "resources/variants". See files there as examples.
+        "has_variants":false,
+
+        # The human-readable label for variants.
+        "variants_name": "Print core",
+
+        # The preferred variant name for your machine.
+        # This is used as the default variant for your machine.
+        "preferred_variant_name": "AA 0.4",
+
+        # If there are machine-specific settings in material profiles for your machine.
+        # Open one material file and you can see that there are overall settings and there are specific settings
+        # for certain types of machines such as Ultimaker 3 and even more specific settings for a machine with
+        # a variant/nozzle such as "Ultimaker 3 AA 0.4". This field indicates whether you have machine-specific
+        # settings in materials in that regard.
+        "has_machine_materials": false,
+
+        # Similar to "has_machine_materials", but this says if there is variant-specific settings in materials,
+        # such as for "Ultimaker 3 AA 0.4".
+        "has_variant_materials": false,
+
+        # The preferred quality type for your machine.
+        # This is used as the default quality type for your machine.
+        # For quality types that are available, please check the "quality_type" field in files in
+        # "resources/quality" folder
+        "preferred_quality_type": "fine",
+
+        # This field indicates whether your machine has specific quality profiles which you have created.
+        # Normally, we will just use the default profiles for your machine in "resources/quality" folder
+        # and NOT in its sub-folders. But you can also create your set of quality profiles for your machine.
+        # Those profiles can be places in "resources/quality/<my-machine>" folder. Please check the other
+        # folders for examples.
+        # In this case, you need to set this field to "true" so Cura knows to look for your specific qualities
+        # instead of using the default ones.
+        "has_machine_quality": true,
+        "machine_extruder_trains":
+        {
+            "0": "SLuBan_extruder_0"
+        },
+    },
+    "machine_name": {
+      "default_value": "SLuBan"
+    },
+    "machine_width": {
+      "default_value": 123
+    },
+    "machine_height": {
+      "default_value": 162
+    },
+    "machine_depth": {
+      "default_value": 123
+    },
+    "machine_heated_bed": {
+      "default_value": true
+},
+"machine_center_is_zero": { "default_value": false },
+    "machine_gcode_flavor": {
+       "machine gcode flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    },
+    "machine_start_gcode": {
+      "default_value": "G28 ;Home\n G0 Z1\n G0 X0\n G92 E0 ;zero the extruded length again\n G0 Z0.5\n G1 F1000 Y100 E20 \n G92 E0\n ;Put printing message on LCD screen\n M117 Printing..."
+    },
+    "machine_end_gcode": {
+      "default_value": "M104 S0 ;extruder heater off \n M140 S0\n G92 E1\n G1 E-1 F300\n G28 X0\n G0 Y120\n G1 E-15 F9000\n M84 ;steppers off\n"
+    }
+  }
+}
+
+    "overrides": {
+         ...
+         settings and values
+         ...
+    }
+}
