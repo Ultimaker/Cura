@@ -43,6 +43,10 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.log("i", "Access to the keyring was denied.")
                 return getattr(instance, self._name)
+            except UnicodeDecodeError:
+                self._store_secure = False
+                Logger.log("w", "The password retrieved from the keyring cannot be used because it contains characters that cannot be decoded.")
+                return getattr(instance, self._name)
         else:
             return getattr(instance, self._name)
 
