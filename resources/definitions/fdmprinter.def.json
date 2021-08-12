@@ -1090,17 +1090,43 @@
                     "default_value": "inward_distributed",
                     "limit_to_extruder": "wall_0_extruder_nr"
                 },
-                "wall_transition_threshold":
-                {
-                    "label": "Line Compactness",
-                    "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines.",
+                "wall_transition_threshold": {
+                    "label": "Middle Line Threshold",
+                    "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space the wall needs to occupy. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
                     "type": "float",
                     "unit": "%",
                     "default_value": 50,
                     "minimum_value": "1",
                     "minimum_value_warning": "min_bead_width / line_width * 100",
                     "maximum_value_warning": "75",
-                    "maximum_value": "100"
+                    "maximum_value": "99",
+                    "children":
+                    {
+                        "wall_split_middle_threshold": {
+                            "label": "Split Middle Line Threshold",
+                            "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 50,
+                            "value": "wall_transition_threshold",
+                            "minimum_value": "1",
+                            "minimum_value_warning": "min_bead_width / line_width * 100",
+                            "maximum_value_warning": "75",
+                            "maximum_value": "99"
+                        },
+                        "wall_add_middle_threshold": {
+                            "label": "Add Middle Line Threshold",
+                            "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 50,
+                            "value": "wall_transition_threshold",
+                            "minimum_value": "1",
+                            "minimum_value_warning": "min_bead_width / line_width * 100",
+                            "maximum_value_warning": "75",
+                            "maximum_value": "99"
+                        }
+                    }
                 },
                 "wall_transition_length":
                 {
