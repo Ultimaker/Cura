@@ -10,6 +10,6 @@ def getBackwardsCompatibleMessage(text: str, title: str, lifetime: int, message_
         return Message(text=text, title=title, lifetime=lifetime)
     else:
         message_type = Message.MessageType.NEUTRAL
-        if message_type in Message.MessageType:
+        if ("MessageType." + message_type_str) in [str(item) for item in Message.MessageType]:
             message_type = Message.MessageType[message_type_str]
         return Message(text=text, title=title, lifetime=lifetime, message_type=message_type)
