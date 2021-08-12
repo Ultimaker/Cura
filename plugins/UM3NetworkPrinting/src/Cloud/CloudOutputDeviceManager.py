@@ -332,7 +332,7 @@ class CloudOutputDeviceManager:
 
         message_text += self.i18n_catalog.i18nc(
                 "info:status",
-                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>.".format(digital_factory_string))
+                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&utm_campaign=change-account-connect-printer'>{}</a>.".format(digital_factory_string))
         )
         self._removed_printers_message.setText(message_text)
         self._removed_printers_message.addAction("keep_printer_configurations_action",
@@ -419,7 +419,7 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
         digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
+        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&utm_campaign=change-account-remove-printer'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
         removal_warning_string = self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "{printer_name} will be removed until the next account sync.").format(printer_name = device.name) \
             + "<br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "To remove {printer_name} permanently, visit {digital_factory_link}").format(printer_name = device.name, digital_factory_link = digital_factory_link) \
             + "<br><br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "Are you sure you want to remove {printer_name} temporarily?").format(printer_name = device.name)

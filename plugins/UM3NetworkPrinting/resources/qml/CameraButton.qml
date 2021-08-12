@@ -30,7 +30,7 @@ Button
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
         }
-        color: UM.Theme.getColor("primary")
+        color: enabled ? UM.Theme.getColor("primary") : UM.Theme.getColor("main_background")
         height: width
         source: iconSource
         width: Math.round(parent.width / 2)

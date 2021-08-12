@@ -49,11 +49,27 @@ Item
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
+            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
 
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
 
-            leftIcon: UM.Theme.getIcon("Magnifier")
             placeholderText: "Search"
+
+            UM.RecolorImage
+            {
+                id: searchIcon
+
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+                source: UM.Theme.getIcon("search")
+                height: UM.Theme.getSize("small_button_icon").height
+                width: height
+                color: UM.Theme.getColor("text")
+            }
         }
 
         Cura.SecondaryButton
@@ -76,12 +92,11 @@ Item
             id: upgradePlanButton
 
             text: "Upgrade plan"
-            iconSource: UM.Theme.getIcon("LinkExternal")
+            iconSource: UM.Theme.getIcon("external_link")
             visible: createNewProjectButtonVisible && !manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
-            tooltip: "You have reached the maximum number of projects allowed by your subscription. Please upgrade to the Professional subscription to create more projects."
-            tooltipWidth: parent.width * 0.5
+            tooltip: "Maximum number of projects reached. Please upgrade your subscription to create more projects."
 
-            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-essentials/sign-up-cura?utm_source=cura&utm_medium=software&utm_campaign=lib-max")
+            onClicked: Qt.openUrlExternally("https://ultimaker.com/software/enterprise-software?utm_source=cura&utm_medium=software&utm_campaign=MaxProjLink")
         }
     }
 
@@ -124,7 +139,7 @@ Item
                 id: visitDigitalLibraryButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Visit Digital Library"
-                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library")
+                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library?utm_source=cura&utm_medium=software&utm_campaign=empty-library")
                 visible: searchBar.text === "" //Show the link to Digital Library when there are no projects in the user's Library.
             }
         }

@@ -183,11 +183,14 @@ class Toolbox(QObject, Extension):
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
 
+        preferences = CuraApplication.getInstance().getPreferences()
+
+        preferences.addPreference("info/automatic_plugin_update_check", True)
+
         # On boot we check which packages have updates.
-        if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
+        if preferences.getValue("info/automatic_plugin_update_check") and len(installed_package_ids_with_versions) > 0:
             # Request the latest and greatest!
             self._makeRequestByType("updates")
-
 
     def _fetchPackageData(self) -> None:
         self._makeRequestByType("packages")
@@ -648,8 +651,11 @@ class Toolbox(QObject, Extension):
         self.resetDownload()
 
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-            Logger.log("w", "Failed to download package. The following error was returned: %s",
-                       json.loads(reply.readAll().data().decode("utf-8")))
+            try:
+                reply_error = json.loads(reply.readAll().data().decode("utf-8"))
+            except Exception as e:
+                reply_error = str(e)
+            Logger.log("w", "Failed to download package. The following error was returned: %s", reply_error)
             return
         # Must not delete the temporary file on Windows
         self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
