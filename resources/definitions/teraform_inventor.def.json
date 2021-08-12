@@ -41,22 +41,19 @@
         {
             "minimum_value": "1",
             "minimum_value_warning":"2",
-            "maximum_value_warning":"10",
-            "settable_per_extruder": false
+            "maximum_value_warning":"10"
         },
         "layer_height_0":
         {       
             "minimum_value": "1",
             "minimum_value_warning":"2",
-            "maximum_value_warning":"10",
-            "settable_per_extruder": false
+            "maximum_value_warning":"10"
         },     
         "line_width":
         {
             "minimum_value": "5",
             "minimum_value_warning": "10",
-            "maximum_value_warning": "50",
-            "settable_per_mesh": false
+            "maximum_value_warning": "50"
         },
         "wall_thickness":
         {
@@ -97,10 +94,7 @@
             "default_value": false,
             "settable_per_mesh": false
         },
-        "infill_sparse_density":
-        {
-            "default_value": 50
-        },
+        "infill_sparse_density": { "default_value": 50 },
         "infill_pattern":
         {
             "options":
@@ -110,33 +104,16 @@
             },
             "default_value": "lines"
         },
-        "zig_zaggify_infill":
-        {
-            "value": true,
-            "settable_per_mesh": true
-        },
+        "zig_zaggify_infill": { "value": true },
         "infill_wipe_dist":
         {
             "enabled": false,
             "settable_per_mesh": false
         },
-        "infill_support_enabled":
-        {
-            "default_value": true
-        },
-        "infill_support_angle":
-        {
-            "default_value": 60
-        },
-        "retract_at_layer_change":
-        {
-            "default_value": true
-        },
-        "retraction_combing": 
-        {
-            "default_value": "off",
-            "resolve": "off"
-        },
+        "infill_support_enabled": { "default_value": true },
+        "infill_support_angle": { "default_value": 60 },
+        "retract_at_layer_change": { "default_value": true },
+        "retraction_combing": { "default_value": "off" },
         "relative_extrusion":
         {
             "default_value": true,
