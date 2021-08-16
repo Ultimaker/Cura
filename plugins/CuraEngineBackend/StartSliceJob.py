@@ -411,8 +411,10 @@ class StartSliceJob(Job):
         extruder_nr = stack.getProperty("extruder_nr", "value")
         settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
-        # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
+        # Also send the material GUID, type and name. These are settings in fdmprinter, but we have no interface for it.
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
+        settings["material_type"] = stack.material.getMetaDataEntry("material", "")
+        settings["material_name"] = stack.material.getMetaDataEntry("name", "")
 
         # Replace the setting tokens in start and end g-code.
         extruder_nr = stack.getProperty("extruder_nr", "value")
