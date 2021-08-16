@@ -505,7 +505,7 @@ class PauseAtHeight(Script):
                     # Move the head back
                     if park_enabled:
                         if current_z < 15:
-                            prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                            prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
                         prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
                         prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
 
