@@ -74,7 +74,7 @@ class PauseAtHeight(Script):
                     "label": "Park Print",
                     "description": "Instruct the head to move to a safe location when pausing. Leave this unchecked if your printer handles parking for you.",
                     "type": "bool",
-                    "default_value": True,
+                    "default_value": true,
                     "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "head_park_x":
