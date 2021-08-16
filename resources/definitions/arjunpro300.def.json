@@ -45,7 +45,7 @@
 		"adhesion_type": { "default_value": "skirt" },
         "machine_gcode_flavor": { "default_value": "Marlin"},
 	    "ironing_enabled":{"default_value": true},
-        "machine_start_gcode": { "default_value": "M605 S0\nG21\nG90\nM82\nM107\nT1\nG28 \nG29 \nG1 X0 Y0 F150\nT1\nG92 E0\nG1 E45 F210\nG92 E0\nT0\nG92 E0\nG1 E45 F210\nG92 E0\nM117\n"},
+        "machine_start_gcode": { "default_value": "M605 S0\nG21\nG90\nM82\nM107\nT1\nG28 \nG29 \nG1 X0 Y5 F2000\nT1\nG92 E0\nG1 E45 F210\nG92 E0\nT0\nG92 E0\nG1 E45 F210\nG92 E0\nM117\n"},
         "machine_end_gcode": { "default_value": "G91\nG1 Z+0.5 E-16 Y+10 F9000\nG90\nM107\nM104 S0 T1\nM104 S0 T0\nM140 S0\nM117\nG28 X0 Y0\nT0\nM84"},
         "machine_extruder_count": { "default_value": 2 }
     }
