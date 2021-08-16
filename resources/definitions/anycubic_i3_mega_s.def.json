@@ -44,7 +44,7 @@
 
         "material_diameter": { "default_value": 1.75 },
 
-        "acceleration_print": { "value": 1800 },
+        "acceleration_print": { "value": 1500 },
         "acceleration_travel": { "value": 3000 },
         "acceleration_travel_layer_0": { "value": "acceleration_travel" },
         "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
