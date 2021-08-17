@@ -468,8 +468,8 @@ class PauseAtHeight(Script):
 
                     #Move the head back
                     if park_enabled:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
                         prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
 
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
