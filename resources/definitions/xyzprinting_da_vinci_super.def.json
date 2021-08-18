@@ -9,7 +9,10 @@
         "preferred_quality_type": "normal",
 		"quality_definition": "xyzprinting_da_vinci_super",
 		"preferred_variant_name": "Copper 0.4mm Nozzle",
-        "variants_name": "Nozzle Type"
+        "variants_name": "Nozzle Type",
+		"machine_extruder_trains": {
+            "0": "xyzprinting_da_vinci_super_extruder_0"
+        }
     },
 
     "overrides": {
