@@ -24,7 +24,6 @@
             "leapfrog_pva_natural",
             "generic_pc_175",
             "generic_nylon_175",
-            "generic_nylon",
             "goofoo_abs",
             "goofoo_asa",
             "goofoo_bronze_pla",
@@ -152,8 +151,7 @@
         {
             "0": "weedo_x40_extruder_left_0",
             "1": "weedo_x40_extruder_right_0"
-        },
-        "supports_usb_connection": true
+        }
     },
     
     "overrides": {
