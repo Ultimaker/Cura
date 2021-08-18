@@ -21,6 +21,10 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
 if Platform.isOSX() and hasattr(sys, "frozen"):
     from keyring.backends.macOS import Keyring
     keyring.set_keyring(Keyring())
+if Platform.isLinux() and hasattr(sys, "frozen"):
+    # We do not support the keyring on Linux, so make sure no Keyring backend is loaded, even if there is a system one.
+    from keyring.backends.fail import Keyring
+    keyring.set_keyring(Keyring())
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
