@@ -73,7 +73,6 @@ class DFFileExportAndUploadManager:
         self._generic_success_message = getBackwardsCompatibleMessage(
                 text = "Your {} uploaded to '{}'.".format("file was" if len(self._file_upload_job_metadata) <= 1 else "files were", self._library_project_name),
                 title = "Upload successful",
-                lifetime = 0,
                 message_type_str = "POSITIVE"
         )
         self._generic_success_message.addAction(
@@ -341,7 +340,6 @@ class DFFileExportAndUploadManager:
                 "file_upload_success_message": getBackwardsCompatibleMessage(
                     text = "'{}' was uploaded to '{}'.".format(filename_3mf, self._library_project_name),
                     title = "Upload successful",
-                    lifetime = 0,
                     message_type_str = "POSITIVE"
                 ),
                 "file_upload_failed_message": getBackwardsCompatibleMessage(
@@ -365,7 +363,6 @@ class DFFileExportAndUploadManager:
                 "file_upload_success_message": getBackwardsCompatibleMessage(
                     text = "'{}' was uploaded to '{}'.".format(filename_ufp, self._library_project_name),
                     title = "Upload successful",
-                    lifetime = 0,
                     message_type_str = "POSITIVE"
                 ),
                 "file_upload_failed_message": getBackwardsCompatibleMessage(
