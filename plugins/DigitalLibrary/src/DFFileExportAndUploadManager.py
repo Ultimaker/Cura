@@ -220,8 +220,8 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     text = "Failed to export the file '{}'. The upload process is aborted.".format(filename),
                     title = "Export error",
-                    lifetime = 0,
-                    message_type_str = "ERROR"
+                    message_type_str = "ERROR",
+                    lifetime = 0
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename)
@@ -243,8 +243,8 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename_3mf]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'. {}".format(filename_3mf, self._library_project_name, human_readable_error),
                     title = "File upload error",
-                    lifetime = 0,
-                    message_type_str = "ERROR"
+                    message_type_str = "ERROR",
+                    lifetime = 0
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename_3mf)
@@ -266,8 +266,8 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename_ufp]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     title = "File upload error",
                     text = "Failed to upload the file '{}' to '{}'. {}".format(filename_ufp, self._library_project_name, human_readable_error),
-                    lifetime = 0,
-                    message_type_str = "ERROR"
+                    message_type_str = "ERROR",
+                    lifetime = 0
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename_ufp)
@@ -303,8 +303,8 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     title = "File upload error",
                     text = "Failed to upload the file '{}' to '{}'. {}".format(self._file_name, self._library_project_name, human_readable_error),
-                    lifetime = 0,
-                    message_type_str = "ERROR"
+                    message_type_str = "ERROR",
+                    lifetime = 0
             )
 
         self._on_upload_error()
@@ -345,8 +345,8 @@ class DFFileExportAndUploadManager:
                 "file_upload_failed_message": getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'.".format(filename_3mf, self._library_project_name),
                     title = "File upload error",
-                    lifetime = 0,
-                    message_type_str = "ERROR"
+                    message_type_str = "ERROR",
+                    lifetime = 0
                 )
             }
             job_3mf = ExportFileJob(self._file_handlers["3mf"], self._nodes, self._file_name, "3mf")
@@ -368,8 +368,8 @@ class DFFileExportAndUploadManager:
                 "file_upload_failed_message": getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'.".format(filename_ufp, self._library_project_name),
                     title = "File upload error",
-                    lifetime = 0,
-                    message_type_str = "ERROR"
+                    message_type_str = "ERROR",
+                    lifetime = 0
                 )
             }
             job_ufp = ExportFileJob(self._file_handlers["ufp"], self._nodes, self._file_name, "ufp")
