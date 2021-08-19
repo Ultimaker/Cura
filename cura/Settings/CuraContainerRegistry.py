@@ -45,6 +45,32 @@ class CuraContainerRegistry(ContainerRegistry):
         self.containerAdded.connect(self._onContainerAdded)
 
     @override(ContainerRegistry)
+    def _createDatabaseFile(self, db_path: str) -> None:
+        connection = super()._createDatabaseFile(db_path)
+        cursor = connection.cursor()
+        cursor.execute("""
+                CREATE TABLE qualities(
+                    id text,
+                    name text,
+                    quality_type text,
+                    material text,
+                    variant text,
+                    global_quality bool,
+                    definition text
+                );
+                CREATE UNIQUE INDEX idx_qualities_id on qualities (id);
+
+                CREATE TABLE variants(
+                    id text,
+                    name text,
+                    hardware_type text,
+                    definition text
+                );
+                CREATE UNIQUE INDEX idx_variants_id on variants (id);
+            """)
+        return connection
+
+    @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> bool:
         """Overridden from ContainerRegistry
 
