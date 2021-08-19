@@ -73,6 +73,7 @@ class DFFileExportAndUploadManager:
         self._generic_success_message = getBackwardsCompatibleMessage(
                 text = "Your {} uploaded to '{}'.".format("file was" if len(self._file_upload_job_metadata) <= 1 else "files were", self._library_project_name),
                 title = "Upload successful",
+                lifetime = 30,
                 message_type_str = "POSITIVE"
         )
         self._generic_success_message.addAction(
@@ -221,7 +222,7 @@ class DFFileExportAndUploadManager:
                     text = "Failed to export the file '{}'. The upload process is aborted.".format(filename),
                     title = "Export error",
                     message_type_str = "ERROR",
-                    lifetime = 0
+                    lifetime = 30
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename)
@@ -244,7 +245,7 @@ class DFFileExportAndUploadManager:
                     text = "Failed to upload the file '{}' to '{}'. {}".format(filename_3mf, self._library_project_name, human_readable_error),
                     title = "File upload error",
                     message_type_str = "ERROR",
-                    lifetime = 0
+                    lifetime = 30
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename_3mf)
@@ -267,7 +268,7 @@ class DFFileExportAndUploadManager:
                     title = "File upload error",
                     text = "Failed to upload the file '{}' to '{}'. {}".format(filename_ufp, self._library_project_name, human_readable_error),
                     message_type_str = "ERROR",
-                    lifetime = 0
+                    lifetime = 30
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename_ufp)
@@ -304,7 +305,7 @@ class DFFileExportAndUploadManager:
                     title = "File upload error",
                     text = "Failed to upload the file '{}' to '{}'. {}".format(self._file_name, self._library_project_name, human_readable_error),
                     message_type_str = "ERROR",
-                    lifetime = 0
+                    lifetime = 30
             )
 
         self._on_upload_error()
@@ -340,13 +341,14 @@ class DFFileExportAndUploadManager:
                 "file_upload_success_message": getBackwardsCompatibleMessage(
                     text = "'{}' was uploaded to '{}'.".format(filename_3mf, self._library_project_name),
                     title = "Upload successful",
-                    message_type_str = "POSITIVE"
+                    message_type_str = "POSITIVE",
+                    lifetime = 30
                 ),
                 "file_upload_failed_message": getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'.".format(filename_3mf, self._library_project_name),
                     title = "File upload error",
                     message_type_str = "ERROR",
-                    lifetime = 0
+                    lifetime = 30
                 )
             }
             job_3mf = ExportFileJob(self._file_handlers["3mf"], self._nodes, self._file_name, "3mf")
@@ -363,13 +365,14 @@ class DFFileExportAndUploadManager:
                 "file_upload_success_message": getBackwardsCompatibleMessage(
                     text = "'{}' was uploaded to '{}'.".format(filename_ufp, self._library_project_name),
                     title = "Upload successful",
-                    message_type_str = "POSITIVE"
+                    message_type_str = "POSITIVE",
+                    lifetime = 30,
                 ),
                 "file_upload_failed_message": getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'.".format(filename_ufp, self._library_project_name),
                     title = "File upload error",
                     message_type_str = "ERROR",
-                    lifetime = 0
+                    lifetime = 30
                 )
             }
             job_ufp = ExportFileJob(self._file_handlers["ufp"], self._nodes, self._file_name, "ufp")
