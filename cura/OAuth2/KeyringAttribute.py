@@ -14,13 +14,17 @@ if TYPE_CHECKING:
 # Need to do some extra workarounds on windows:
 import sys
 from UM.Platform import Platform
-if Platform.isWindows() and hasattr(sys, "frozen"):
+if Platform.isWindows():
     import win32timezone
     from keyring.backends.Windows import WinVaultKeyring
     keyring.set_keyring(WinVaultKeyring())
-if Platform.isOSX() and hasattr(sys, "frozen"):
+if Platform.isOSX():
     from keyring.backends.macOS import Keyring
     keyring.set_keyring(Keyring())
+if Platform.isLinux():
+    # We do not support the keyring on Linux, so make sure no Keyring backend is loaded, even if there is a system one.
+    from keyring.backends.fail import Keyring as NoKeyringBackend
+    keyring.set_keyring(NoKeyringBackend())
 
 # Even if errors happen, we don't want this stored locally:
 DONT_EVER_STORE_LOCALLY: List[str] = ["refresh_token"]
