@@ -172,7 +172,7 @@ Item
                 MouseArea
                 {
                     anchors.fill: managePrinterLink
-                    onClicked: OutputDevice.openPrintJobControlPanel()
+                    onClicked: OutputDevice.openPrinterControlPanel()
                     onEntered:
                     {
                         manageQueueText.font.underline = true
