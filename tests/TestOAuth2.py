@@ -238,7 +238,7 @@ def test__generate_auth_url() -> None:
         "response_type": "code"
     }
     auth_url = authorization_service._generate_auth_url(query_parameters_dict, force_browser_logout = False)
-    assert MYCLOUD_LOGOFF_URL + "?next=" not in auth_url
+    assert MYCLOUD_LOGOFF_URL + "&next=" not in auth_url
 
     auth_url = authorization_service._generate_auth_url(query_parameters_dict, force_browser_logout = True)
-    assert MYCLOUD_LOGOFF_URL + "?next=" in auth_url
+    assert MYCLOUD_LOGOFF_URL + "&next=" in auth_url

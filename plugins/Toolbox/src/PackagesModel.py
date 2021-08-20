@@ -58,7 +58,6 @@ class PackagesModel(ListModel):
         items = []
 
         if self._metadata is None:
-            Logger.logException("w", "Failed to load packages for Marketplace")
             self.setItems(items)
             return
 
