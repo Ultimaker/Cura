@@ -46,6 +46,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         self._add_to_database_handlers["variant"] = self._addVariantToDatabase
         self._add_to_database_handlers["quality"] = self._addQualityToDatabase
+        self._add_to_database_handlers["intent"]  = self._addIntentToDatabase
 
         self._get_from_database_handlers["variant"] = self._getVariantFromDatabase
         self._get_from_database_handlers["quality"] = self._getQualityFromDatabase
@@ -60,7 +61,14 @@ class CuraContainerRegistry(ContainerRegistry):
         connection = self._getDatabaseConnection()
         result = connection.cursor().execute("SELECT * FROM variants where id = ?", (container_id,))
         data = result.fetchone()
-        return {"id": data[0], "name": data[1], "hardware_type": data[2], "definition": data[3] }
+        return {"id": data[0], "name": data[1], "hardware_type": data[2], "definition": data[3]}
+
+    def _getIntentFromDatabase(self, container_id):
+
+        connection = self._getDatabaseConnection()
+        result = connection.cursor().execute("SELECT * FROM intents where id = ?", (container_id,))
+        data = result.fetchone()
+        return {"id": data[0], "name": data[1], "quality_type": data[2], "intent_category": data[3], "variant": data[4], "definition": data[5]}
 
     def _addVariantToDatabase(self, metadata) -> None:
         connection = self._getDatabaseConnection()
@@ -84,12 +92,22 @@ class CuraContainerRegistry(ContainerRegistry):
             "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition) VALUES (?, ?, ? ,?, ?, ?, ?)",
                         (metadata["id"], metadata["name"], metadata["quality_type"], material, variant, global_quality, metadata["definition"]))
 
+    def _addIntentToDatabase(self, metadata) -> None:
+        connection = self._getDatabaseConnection()
+
+        connection.cursor().execute(
+            "INSERT INTO intents (id, name, quality_type, intent_category, variant, definition) VALUES (?, ?, ? ,?, ?, ?)",
+            (metadata["id"], metadata["name"], metadata["quality_type"], metadata["intent_category"], metadata["variant"],
+             metadata["definition"]))
+
+
     @override(ContainerRegistry)
     def _createDatabaseFile(self, db_path: str) -> None:
         connection = super()._createDatabaseFile(db_path)
         cursor = connection.cursor()
         cursor.execute("""
-                CREATE TABLE qualities(
+                CREATE TABLE qualities
+                (
                     id text,
                     name text,
                     quality_type text,
@@ -100,13 +118,25 @@ class CuraContainerRegistry(ContainerRegistry):
                 );
                 CREATE UNIQUE INDEX idx_qualities_id on qualities (id);
 
-                CREATE TABLE variants(
+                CREATE TABLE variants
+                (
                     id text,
                     name text,
                     hardware_type text,
                     definition text
                 );
                 CREATE UNIQUE INDEX idx_variants_id on variants (id);
+
+                CREATE TABLE intents
+                (
+                    id text,
+                    name text,
+                    quality_type text,
+                    intent_category text,
+                    variant text,
+                    definition text
+                );
+                CREATE UNIQUE INDEX idx_intents_id on intents (id);
             """)
         return connection
 
