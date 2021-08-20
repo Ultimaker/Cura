@@ -52,30 +52,30 @@ class CuraContainerRegistry(ContainerRegistry):
         self._get_from_database_handlers["quality"] = self._getQualityFromDatabase
         self._get_from_database_handlers["intent"] = self._getIntentFromDatabase
 
-        self._insert_into_database_queries["variant"] = "INSERT INTO variants (id, name, hardware_type, definition) VALUES (?, ?, ? ,?)"
-        self._insert_into_database_queries["quality"] = "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition) VALUES (?, ?, ? ,?, ?, ?, ?)"
-        self._insert_into_database_queries["intent"] = "INSERT INTO intents (id, name, quality_type, intent_category, variant, definition) VALUES (?, ?, ? ,?, ?, ?)"
+        self._insert_into_database_queries["variant"] = "INSERT INTO variants (id, name, hardware_type, definition, version, setting_version) VALUES (?, ?, ?, ?, ?, ?)"
+        self._insert_into_database_queries["quality"] = "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition, version, setting_version) VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)"
+        self._insert_into_database_queries["intent"] = "INSERT INTO intents (id, name, quality_type, intent_category, variant, definition, material, version, setting_version) VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)"
 
     def _getQualityFromDatabase(self, container_id):
         connection = self._getDatabaseConnection()
         result = connection.cursor().execute("SELECT * FROM qualities where id = ?", (container_id,))
         data = result.fetchone()
-        return {"id": data[0], "name": data[1], "quality_type": data[2], "material": data[3], "variant": data[4], "global_quality": data[5], "definition": data[6]}
+        return {"id": data[0], "name": data[1], "quality_type": data[2], "material": data[3], "variant": data[4], "global_quality": data[5], "definition": data[6], "container_type": InstanceContainer, "version": data[7], "setting_version": data[8], "type": "quality"}
 
     def _getVariantFromDatabase(self, container_id):
         connection = self._getDatabaseConnection()
         result = connection.cursor().execute("SELECT * FROM variants where id = ?", (container_id,))
         data = result.fetchone()
-        return {"id": data[0], "name": data[1], "hardware_type": data[2], "definition": data[3]}
+        return {"id": data[0], "name": data[1], "hardware_type": data[2], "definition": data[3], "container_type": InstanceContainer, "version": data[4], "setting_version": data[5], "type": "variant"}
 
     def _getIntentFromDatabase(self, container_id):
         connection = self._getDatabaseConnection()
         result = connection.cursor().execute("SELECT * FROM intents where id = ?", (container_id,))
         data = result.fetchone()
-        return {"id": data[0], "name": data[1], "quality_type": data[2], "intent_category": data[3], "variant": data[4], "definition": data[5]}
+        return {"id": data[0], "name": data[1], "quality_type": data[2], "intent_category": data[3], "variant": data[4], "definition": data[5], "container_type": InstanceContainer, "material": data[6], "version": data[7], "setting_version": data[8], "type": "intent"}
 
     def _prepareVariantForDatabase(self, metadata):
-        return metadata["id"], metadata["name"], metadata["hardware_type"], metadata["definition"]
+        return metadata["id"], metadata["name"], metadata["hardware_type"], metadata["definition"], metadata["version"], metadata["setting_version"]
 
     def _prepareQualityForDatabase(self, metadata):
         global_quality = False
@@ -88,10 +88,10 @@ class CuraContainerRegistry(ContainerRegistry):
         if "variant" in metadata:
             variant = metadata["variant"]
 
-        return metadata["id"], metadata["name"], metadata["quality_type"], material, variant, global_quality, metadata["definition"]
+        return metadata["id"], metadata["name"], metadata["quality_type"], material, variant, global_quality, metadata["definition"], metadata["version"], metadata["setting_version"]
 
     def _prepareIntentForDatabase(self, metadata) -> None:
-        return metadata["id"], metadata["name"], metadata["quality_type"], metadata["intent_category"], metadata["variant"], metadata["definition"]
+        return metadata["id"], metadata["name"], metadata["quality_type"], metadata["intent_category"], metadata["variant"], metadata["definition"], metadata["material"], metadata["version"], metadata["setting_version"]
         connection = self._getDatabaseConnection()
 
         connection.cursor().execute(
@@ -112,7 +112,9 @@ class CuraContainerRegistry(ContainerRegistry):
                     material text,
                     variant text,
                     global_quality bool,
-                    definition text
+                    definition text,
+                    version text,
+                    setting_version text
                 );
                 CREATE UNIQUE INDEX idx_qualities_id on qualities (id);
 
@@ -121,7 +123,9 @@ class CuraContainerRegistry(ContainerRegistry):
                     id text,
                     name text,
                     hardware_type text,
-                    definition text
+                    definition text,
+                    version text,
+                    setting_version text
                 );
                 CREATE UNIQUE INDEX idx_variants_id on variants (id);
 
@@ -132,7 +136,10 @@ class CuraContainerRegistry(ContainerRegistry):
                     quality_type text,
                     intent_category text,
                     variant text,
-                    definition text
+                    definition text,
+                    material text,
+                    version text,
+                    setting_version text
                 );
                 CREATE UNIQUE INDEX idx_intents_id on intents (id);
             """)
