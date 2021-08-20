@@ -44,6 +44,46 @@ class CuraContainerRegistry(ContainerRegistry):
         # is added, we check to see if an extruder stack needs to be added.
         self.containerAdded.connect(self._onContainerAdded)
 
+        self._add_to_database_handlers["variant"] = self._addVariantToDatabase
+        self._add_to_database_handlers["quality"] = self._addQualityToDatabase
+
+        self._get_from_database_handlers["variant"] = self._getVariantFromDatabase
+        self._get_from_database_handlers["quality"] = self._getQualityFromDatabase
+
+    def _getQualityFromDatabase(self, container_id):
+        connection = self._getDatabaseConnection()
+        result = connection.cursor().execute("SELECT * FROM qualities where id = ?", (container_id,))
+        data = result.fetchone()
+        return {"id": data[0], "name": data[1], "quality_type": data[2], "material": data[3], "variant": data[4], "global_quality": data[5], "definition": data[6]}
+
+    def _getVariantFromDatabase(self, container_id):
+        connection = self._getDatabaseConnection()
+        result = connection.cursor().execute("SELECT * FROM variants where id = ?", (container_id,))
+        data = result.fetchone()
+        return {"id": data[0], "name": data[1], "hardware_type": data[2], "definition": data[3] }
+
+    def _addVariantToDatabase(self, metadata) -> None:
+        connection = self._getDatabaseConnection()
+        connection.cursor().execute(
+            "INSERT INTO variants (id, name, hardware_type, definition) VALUES (?, ?, ? ,?)",
+            (metadata["id"], metadata["name"], metadata["hardware_type"], metadata["definition"]))
+
+    def _addQualityToDatabase(self, metadata) -> None:
+        connection = self._getDatabaseConnection()
+        global_quality = False
+        if "global_quality" in metadata:
+            global_quality = metadata["global_quality"]
+        material = ""
+        if "material" in metadata:
+            material = metadata["material"]
+        variant = ""
+        if "variant" in metadata:
+            variant = metadata["variant"]
+
+        connection.cursor().execute(
+            "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition) VALUES (?, ?, ? ,?, ?, ?, ?)",
+                        (metadata["id"], metadata["name"], metadata["quality_type"], material, variant, global_quality, metadata["definition"]))
+
     @override(ContainerRegistry)
     def _createDatabaseFile(self, db_path: str) -> None:
         connection = super()._createDatabaseFile(db_path)
