@@ -9,13 +9,13 @@ Look around and you will notice that we have refreshed over 100 icons throughout
 Collaborative workflows using the Digital Library are now simpler. Every user with a cloud-connected Ultimaker 3D printer can access stored projects. And we have added a “Search” function to make finding files easier.
 
 * Save materials profiles to USB
-Users can now save all third-party material profiles to USB. <i>This feature is for Ultimaker S-line printers only and is espacially useful for cloud-connected (or offline) printers.</i>
+Users can now save all third-party material profiles to USB. <i>This feature is for Ultimaker S-line printers only and is especially useful for cloud-connected (or offline) printers.</i>
 
 * Notifications for beta and plugin releases
-Users can now set notification preferences to alert them to new Ulitmaker Cura beta and plugin releases.
+Users can now set notification preferences to alert them to new Ultimaker Cura beta and plug-in releases.
 
 * Improve logging of errors in OAuth flow
-When helping a user with log-in problems it is easiers to see where the OAuth flow goes wrong.
+When helping a user with log-in problems it is easier to see where the OAuth flow goes wrong.
 
 * Search in the description in the settings visibility menu
 When searching in the settings visibility menu you will also search in the description of the settings.
