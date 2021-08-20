@@ -44,12 +44,17 @@ class CuraContainerRegistry(ContainerRegistry):
         # is added, we check to see if an extruder stack needs to be added.
         self.containerAdded.connect(self._onContainerAdded)
 
-        self._add_to_database_handlers["variant"] = self._addVariantToDatabase
-        self._add_to_database_handlers["quality"] = self._addQualityToDatabase
-        self._add_to_database_handlers["intent"]  = self._addIntentToDatabase
+        self._prepare_for_database_handlers["variant"] = self._prepareVariantForDatabase
+        self._prepare_for_database_handlers["quality"] = self._prepareQualityForDatabase
+        self._prepare_for_database_handlers["intent"] = self._prepareIntentForDatabase
 
         self._get_from_database_handlers["variant"] = self._getVariantFromDatabase
         self._get_from_database_handlers["quality"] = self._getQualityFromDatabase
+        self._get_from_database_handlers["intent"] = self._getIntentFromDatabase
+
+        self._insert_into_database_queries["variant"] = "INSERT INTO variants (id, name, hardware_type, definition) VALUES (?, ?, ? ,?)"
+        self._insert_into_database_queries["quality"] = "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition) VALUES (?, ?, ? ,?, ?, ?, ?)"
+        self._insert_into_database_queries["intent"] = "INSERT INTO intents (id, name, quality_type, intent_category, variant, definition) VALUES (?, ?, ? ,?, ?, ?)"
 
     def _getQualityFromDatabase(self, container_id):
         connection = self._getDatabaseConnection()
@@ -64,20 +69,15 @@ class CuraContainerRegistry(ContainerRegistry):
         return {"id": data[0], "name": data[1], "hardware_type": data[2], "definition": data[3]}
 
     def _getIntentFromDatabase(self, container_id):
-
         connection = self._getDatabaseConnection()
         result = connection.cursor().execute("SELECT * FROM intents where id = ?", (container_id,))
         data = result.fetchone()
         return {"id": data[0], "name": data[1], "quality_type": data[2], "intent_category": data[3], "variant": data[4], "definition": data[5]}
 
-    def _addVariantToDatabase(self, metadata) -> None:
-        connection = self._getDatabaseConnection()
-        connection.cursor().execute(
-            "INSERT INTO variants (id, name, hardware_type, definition) VALUES (?, ?, ? ,?)",
-            (metadata["id"], metadata["name"], metadata["hardware_type"], metadata["definition"]))
+    def _prepareVariantForDatabase(self, metadata):
+        return metadata["id"], metadata["name"], metadata["hardware_type"], metadata["definition"]
 
-    def _addQualityToDatabase(self, metadata) -> None:
-        connection = self._getDatabaseConnection()
+    def _prepareQualityForDatabase(self, metadata):
         global_quality = False
         if "global_quality" in metadata:
             global_quality = metadata["global_quality"]
@@ -88,17 +88,15 @@ class CuraContainerRegistry(ContainerRegistry):
         if "variant" in metadata:
             variant = metadata["variant"]
 
-        connection.cursor().execute(
-            "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition) VALUES (?, ?, ? ,?, ?, ?, ?)",
-                        (metadata["id"], metadata["name"], metadata["quality_type"], material, variant, global_quality, metadata["definition"]))
+        return metadata["id"], metadata["name"], metadata["quality_type"], material, variant, global_quality, metadata["definition"]
 
-    def _addIntentToDatabase(self, metadata) -> None:
+    def _prepareIntentForDatabase(self, metadata) -> None:
+        return metadata["id"], metadata["name"], metadata["quality_type"], metadata["intent_category"], metadata["variant"], metadata["definition"]
         connection = self._getDatabaseConnection()
 
         connection.cursor().execute(
             "INSERT INTO intents (id, name, quality_type, intent_category, variant, definition) VALUES (?, ?, ? ,?, ?, ?)",
-            (metadata["id"], metadata["name"], metadata["quality_type"], metadata["intent_category"], metadata["variant"],
-             metadata["definition"]))
+            ())
 
 
     @override(ContainerRegistry)
