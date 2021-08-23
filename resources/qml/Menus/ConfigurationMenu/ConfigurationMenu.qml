@@ -84,8 +84,6 @@ Cura.ExpandablePopup
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                             Layout.preferredWidth: parent.width
-                            width: parent.width
-
                             visible: !truncated
                         }
 
@@ -99,8 +97,6 @@ Cura.ExpandablePopup
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                             Layout.preferredWidth: parent.width
-                            width: parent.width
-
                             visible: !materialBrandColorTypeLabel.visible && !truncated
                         }
 
@@ -114,7 +110,6 @@ Cura.ExpandablePopup
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                             Layout.preferredWidth: parent.width
-                            width: parent.width
                             visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
                         }
                         // Label that shows the name of the variant
@@ -130,7 +125,6 @@ Cura.ExpandablePopup
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                             Layout.preferredWidth: parent.width
-                            width: parent.width
                         }
                     }
                 }
