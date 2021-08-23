@@ -48,6 +48,7 @@ Cura.ExpandablePopup
                 delegate: Item
                 {
                     Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
+                    Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
@@ -63,6 +64,7 @@ Cura.ExpandablePopup
                     {
                         opacity: model.enabled ? 1 : UM.Theme.getColor("extruder_disabled").a
                         spacing: 0
+                        visible: width > 0
                         anchors
                         {
                             left: extruderIcon.right
@@ -81,8 +83,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            width: parent.width
-
+                            Layout.preferredWidth: parent.width
                             visible: !truncated
                         }
 
@@ -95,8 +96,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            width: parent.width
-
+                            Layout.preferredWidth: parent.width
                             visible: !materialBrandColorTypeLabel.visible && !truncated
                         }
 
@@ -109,7 +109,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            width: parent.width
+                            Layout.preferredWidth: parent.width
                             visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
                         }
                         // Label that shows the name of the variant
@@ -124,7 +124,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default_bold")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            width: parent.width
+                            Layout.preferredWidth: parent.width
                         }
                     }
                 }
