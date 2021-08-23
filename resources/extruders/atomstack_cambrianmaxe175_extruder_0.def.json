@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "cambrian_maxe175",
+        "machine": "atomstack_cambrianmaxe285",
         "position": "0"
     },
 
