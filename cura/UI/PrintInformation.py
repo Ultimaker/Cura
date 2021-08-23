@@ -67,7 +67,7 @@ class PrintInformation(QObject):
         self._application.globalContainerStackChanged.connect(self._updateJobName)
         self._application.globalContainerStackChanged.connect(self.setToZeroPrintInformation)
         self._application.fileLoaded.connect(self.setBaseName)
-        self._application.workspaceLoaded.connect(self.setProjectName)
+        self._application.workspaceLoaded.connect(self._onWorkspaceLoaded)
         self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
         self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
@@ -439,3 +439,7 @@ class PrintInformation(QObject):
         """Listen to scene changes to check if we need to reset the print information"""
 
         self.setToZeroPrintInformation(self._active_build_plate)
+
+    def _onWorkspaceLoaded(self, new_name: str) -> None:
+        """Update the job name whenever a new workspace is loaded."""
+        self.setJobName(os.path.splitext(os.path.basename(new_name))[0])
