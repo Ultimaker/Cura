@@ -23,6 +23,7 @@ Item
     {
         opacity: extruderEnabled ? 1 : UM.Theme.getColor("extruder_disabled").a
         anchors.fill: parent
+        layer.enabled: true // Prevent weird opacity effects.
 
         UM.RecolorImage
         {

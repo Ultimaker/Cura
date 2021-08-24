@@ -1,0 +1,15 @@
+{
+    "name": "Goofoo Mini+",
+    "version": 2,
+    "inherits": "goofoo_near",
+    "overrides": {
+        "machine_name": { "default_value": "Goofoo Mini+" },
+        "machine_width": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 150 }
+
+    },
+    "metadata": {
+        "visible": true
+    }
+}

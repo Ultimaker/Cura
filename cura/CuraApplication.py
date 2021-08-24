@@ -161,7 +161,7 @@ class CuraApplication(QtApplication):
 
         self.default_theme = "cura-light"
 
-        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
+        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
 
         self._boot_loading_time = time.time()
 
@@ -471,6 +471,7 @@ class CuraApplication(QtApplication):
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):              (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
                 ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):                         (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("setting_visibility", SettingVisibilityPresetsModel.Version * 1000000 + self.SettingVersion):  (self.ResourceTypes.SettingVisibilityPreset, "application/x-uranium-preferences"),
+                ("machine", 2):                                                                                 (Resources.DefinitionContainers, "application/x-uranium-definitioncontainer")
             }
         )
 
@@ -1798,8 +1799,10 @@ class CuraApplication(QtApplication):
             if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
-                                       "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Warning"))
+                                             "Only one G-code file can be loaded at a time. Skipped importing {0}",
+                                             filename),
+                    title = self._i18n_catalog.i18nc("@info:title", "Warning"),
+                    message_type = Message.MessageType.WARNING)
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
@@ -1808,8 +1811,10 @@ class CuraApplication(QtApplication):
             if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
-                                       "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Error"))
+                                             "Can't open any other file if G-code is loading. Skipped importing {0}",
+                                             filename),
+                    title = self._i18n_catalog.i18nc("@info:title", "Error"),
+                    message_type = Message.MessageType.ERROR)
                 message.show()
                 return
 

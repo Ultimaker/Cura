@@ -540,7 +540,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                  "Project file <filename>{0}</filename> contains an unknown machine type"
                                                  " <message>{1}</message>. Cannot import the machine."
                                                  " Models will be imported instead.", file_name, machine_definition_id),
-                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"))
+                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"),
+                                                 message_type = Message.MessageType.WARNING)
             message.show()
 
             Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
@@ -637,14 +638,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         except EnvironmentError as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>.", file_name, str(e)),
-                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"))
+                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                                                 message_type = Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
         except zipfile.BadZipFile as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.", file_name, str(e)),
-                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"))
+                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                                                 message_type = Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
@@ -696,7 +699,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
                                                      "Project file <filename>{0}</filename> is made using profiles that"
-                                                     " are unknown to this version of Ultimaker Cura.", file_name))
+                                                     " are unknown to this version of Ultimaker Cura.", file_name),
+                                                     message_type = Message.MessageType.ERROR)
                 message.show()
                 self.setWorkspaceName("")
                 return [], {}
