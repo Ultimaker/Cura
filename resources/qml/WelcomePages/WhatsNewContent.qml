@@ -119,7 +119,7 @@ Item
                         do_borders: false
 
                         textArea.wrapMode: TextEdit.Wrap
-                        textArea.text: manager.getSubpageText(index)
+                        textArea.text: "<style>a:link { color: " + UM.Theme.getColor("text_link") + "; text-decoration: underline; }</style>" + manager.getSubpageText(index)
                         textArea.textFormat: Text.RichText
                         textArea.readOnly: true
                         textArea.font: UM.Theme.getFont("default")
