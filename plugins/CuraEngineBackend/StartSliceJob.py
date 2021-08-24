@@ -353,10 +353,19 @@ class StartSliceJob(Job):
             result[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
-        result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
+        # Material identification in addition to non-human-readable GUID
+        result["material_id"] = stack.material.getMetaDataEntry("base_file", "")
+        result["material_type"] = stack.material.getMetaDataEntry("material", "")
+        result["material_name"] = stack.material.getMetaDataEntry("name", "")
+        result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
+
+        # Renamed settings.
+        result["print_bed_temperature"] = result["material_bed_temperature"]
         result["print_temperature"] = result["material_print_temperature"]
         result["travel_speed"] = result["speed_travel"]
-        result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
+
+        #Some extra settings.
+        result["time"] = time.strftime("%H:%M:%S")
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
         result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
@@ -411,10 +420,8 @@ class StartSliceJob(Job):
         extruder_nr = stack.getProperty("extruder_nr", "value")
         settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
-        # Also send the material GUID, type and name. These are settings in fdmprinter, but we have no interface for it.
+        # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
-        settings["material_type"] = stack.material.getMetaDataEntry("material", "")
-        settings["material_name"] = stack.material.getMetaDataEntry("name", "")
 
         # Replace the setting tokens in start and end g-code.
         extruder_nr = stack.getProperty("extruder_nr", "value")

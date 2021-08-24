@@ -79,22 +79,6 @@
                     "type": "str",
                     "enabled": false
                 },
-                "material_type":
-                {
-                    "label": "Material Type",
-                    "description": "Type of material. This is set automatically.",
-                    "default_value": "",
-                    "type": "str",
-                    "enabled": false
-                },
-                "material_name":
-                {
-                    "label": "Material Name",
-                    "description": "Name of the material. This is set automatically.",
-                    "default_value": "",
-                    "type": "str",
-                    "enabled": false
-                },
                 "material_diameter":
                 {
                     "label": "Diameter",
