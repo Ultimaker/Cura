@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 
@@ -60,7 +60,7 @@ Cura.ExpandablePopup
                     }
 
                     // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
-                    UM.RecolorImage
+                    UM.StatusIcon
                     {
                         id: configurationWarning
 
@@ -74,10 +74,21 @@ Cura.ExpandablePopup
                         anchors.leftMargin: visible ? UM.Theme.getSize("thin_margin").width : 0
                         anchors.verticalCenter: parent.verticalCenter
 
-                        source: valueError ? UM.Theme.getIcon("Cancel") : UM.Theme.getIcon("Warning")
-                        color: valueError ? UM.Theme.getColor("setting_validation_error_background") : UM.Theme.getColor("setting_validation_warning_background")
                         width: visible ? UM.Theme.getSize("section_icon").width : 0
                         height: width
+
+                        status:
+                        {
+                            if (valueError)
+                            {
+                                return UM.StatusIcon.Status.ERROR
+                            }
+                            if (valueWarning)
+                            {
+                                return UM.StatusIcon.Status.WARNING
+                            }
+                            return UM.StatusIcon.Status.NEUTRAL
+                        }
                     }
 
                     ColumnLayout
