@@ -53,7 +53,6 @@ class CuraContainerRegistry(ContainerRegistry):
         self._database_handlers["quality"] = QualityDatabaseHandler()
         self._database_handlers["intent"] = IntentDatabaseHandler()
 
-
     @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> bool:
         """Overridden from ContainerRegistry
