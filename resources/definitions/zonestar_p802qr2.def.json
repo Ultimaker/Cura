@@ -10,8 +10,8 @@
         "platform_offset": [ 0, 0, 0],        
         "machine_extruder_trains":
         {
-            "0": "zonestar_p802qr2_extruder_0.def",
-            "1": "zonestar_p802qr2_extruder_1.def"
+            "0": "zonestar_r2_extruder_1.def",
+            "1": "zonestar_r2_extruder_2.def"
         }
     },
 
