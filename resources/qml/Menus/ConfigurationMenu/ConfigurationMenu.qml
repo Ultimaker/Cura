@@ -40,7 +40,10 @@ Cura.ExpandablePopup
         // Horizontal list that shows the extruders and their materials
         RowLayout
         {
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            width: parent.width - UM.Theme.getSize("standard_arrow").width
             visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials : false
             Repeater
             {
