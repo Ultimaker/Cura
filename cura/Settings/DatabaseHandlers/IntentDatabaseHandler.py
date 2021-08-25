@@ -5,7 +5,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 class IntentDatabaseHandler(DatabaseMetadataContainerController):
     def __init__(self) -> None:
         super().__init__(
-            insert_query="INSERT INTO intents (id, name, quality_type, intent_category, variant, definition, material, version, setting_version) VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)",
+            insert_query = """  INSERT INTO intents (id, name, quality_type, intent_category, variant, definition, material, version, setting_version)
+                                VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)""",
             update_query="""UPDATE intents
                             SET name = ?,
                                 quality_type = ?,

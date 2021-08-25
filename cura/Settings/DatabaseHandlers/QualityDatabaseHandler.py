@@ -5,7 +5,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 class QualityDatabaseHandler(DatabaseMetadataContainerController):
     def __init__(self) -> None:
         super().__init__(
-            insert_query = "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition, version, setting_version) VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)",
+            insert_query = """  INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition, version, setting_version) 
+                                VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)""",
             update_query = """  UPDATE qualities
                                 SET name = ?,
                                     quality_type = ?,

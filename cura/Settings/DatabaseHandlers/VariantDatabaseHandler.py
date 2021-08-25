@@ -5,17 +5,18 @@ from UM.Settings.InstanceContainer import InstanceContainer
 class VariantDatabaseHandler(DatabaseMetadataContainerController):
     def __init__(self) -> None:
         super().__init__(
-            insert_query= "INSERT INTO variants (id, name, hardware_type, definition, version, setting_version) VALUES (?, ?, ?, ?, ?, ?)",
-            update_query="""UPDATE variants
-                            SET name = ?,
-                                hardware_type = ?,
-                                definition = ?,
-                                version = ?,
-                                setting_version = ?
-                            WHERE id = ?
-                        """,
+            insert_query = """INSERT INTO variants (id, name, hardware_type, definition, version, setting_version) 
+                             VALUES (?, ?, ?, ?, ?, ?)""",
+            update_query = """  UPDATE variants
+                                SET name = ?,
+                                    hardware_type = ?,
+                                    definition = ?,
+                                    version = ?,
+                                    setting_version = ?
+                                WHERE id = ?
+                           """,
             select_query= "SELECT * FROM variants where id = ?",
-            table_query="""CREATE TABLE variants
+            table_query = """CREATE TABLE variants
                 (
                     id text,
                     name text,
