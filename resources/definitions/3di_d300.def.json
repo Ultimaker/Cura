@@ -4,7 +4,7 @@
     "inherits": "3di_base",
     "metadata": {
         "visible": true,
-        "platform": "3di_d300_platform.stl",
+        "platform": "3di_d300_platform.STL",
         "platform_offset": [-200, -5, 173.205]
     },
 
