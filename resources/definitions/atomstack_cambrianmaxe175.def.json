@@ -7,7 +7,6 @@
     "author": "AtomStack",
     "manufacturer": "AtomStack",
     "file_formats": "text/x-gcode",
-    "icon": "wanhao-icon.png",
     "has_materials": true,
     "machine_extruder_trains": {
       "0": "atomstack_cambrianmaxe175_extruder_0"
@@ -23,13 +22,13 @@
       "default_value": "Cambrian MAX E175"
     },
     "machine_width": {
-      "default_value": 330
+      "default_value": 320
     },
     "machine_height": {
       "default_value": 380
     },
     "machine_depth": {
-      "default_value": 320
+      "default_value": 330
     },
     "machine_heated_bed": {
       "default_value": true
