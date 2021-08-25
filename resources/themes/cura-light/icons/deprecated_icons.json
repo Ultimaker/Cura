@@ -167,6 +167,10 @@
         "new_icon": "Check",
         "size": "default"
     },
+    "star": {
+        "new_icon": "StarFilled",
+        "size": "default"
+    },
     "pencil": {
         "new_icon": "Pen",
         "size": "default"
