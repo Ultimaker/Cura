@@ -6,7 +6,17 @@ class QualityDatabaseHandler(DatabaseMetadataContainerController):
     def __init__(self) -> None:
         super().__init__(
             insert_query = "INSERT INTO qualities (id, name, quality_type, material, variant, global_quality, definition, version, setting_version) VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)",
-            update_query = "",
+            update_query = """  UPDATE qualities
+                                SET name = ?,
+                                    quality_type = ?,
+                                    material = ?,
+                                    variant = ?,
+                                    global_quality = ?,
+                                    definition = ?,
+                                    version = ?,
+                                    setting_version = ?
+                                WHERE id = ?
+                            """,
             select_query = "SELECT * FROM qualities where id = ?",
             table_query = """CREATE TABLE qualities
                 (
@@ -22,6 +32,9 @@ class QualityDatabaseHandler(DatabaseMetadataContainerController):
                 );
                 CREATE UNIQUE INDEX idx_qualities_id on qualities (id);"""
         )
+
+    def _convertMetadataToUpdateBatch(self, metadata):
+        return self._convertMetadataToInsertBatch(metadata)[1:]
 
     def _convertRawDataToMetadata(self, data):
         return {"id": data[0], "name": data[1], "quality_type": data[2], "material": data[3], "variant": data[4],

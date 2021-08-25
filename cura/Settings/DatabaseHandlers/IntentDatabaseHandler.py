@@ -6,7 +6,17 @@ class IntentDatabaseHandler(DatabaseMetadataContainerController):
     def __init__(self) -> None:
         super().__init__(
             insert_query="INSERT INTO intents (id, name, quality_type, intent_category, variant, definition, material, version, setting_version) VALUES (?, ?, ? ,?, ?, ?, ?, ?, ?)",
-            update_query="",
+            update_query="""UPDATE intents
+                            SET name = ?,
+                                quality_type = ?,
+                                intent_category = ?,
+                                variant = ?,
+                                definition = ?,
+                                material = ?,
+                                version = ?,
+                                setting_version = ?
+                            WHERE id = ?
+                        """,
             select_query = "SELECT * FROM intents where id = ?",
             table_query="""CREATE TABLE intents
                (
@@ -23,9 +33,11 @@ class IntentDatabaseHandler(DatabaseMetadataContainerController):
                CREATE UNIQUE INDEX idx_intents_id on intents (id);"""
         )
 
+    def _convertMetadataToUpdateBatch(self, metadata):
+        return self._convertMetadataToInsertBatch(metadata)[1:]
+
     def _convertRawDataToMetadata(self, data):
         return {"id": data[0], "name": data[1], "quality_type": data[2], "intent_category": data[3], "variant": data[4], "definition": data[5], "container_type": InstanceContainer, "material": data[6], "version": data[7], "setting_version": data[8], "type": "intent"}
-
 
     def _convertMetadataToInsertBatch(self, metadata):
         return metadata["id"], metadata["name"], metadata["quality_type"], metadata["intent_category"], metadata[
