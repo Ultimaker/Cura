@@ -60,7 +60,7 @@ Cura.ExpandablePopup
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    ColumnLayout
+                    Column
                     {
                         opacity: model.enabled ? 1 : UM.Theme.getColor("extruder_disabled").a
                         spacing: 0
@@ -83,7 +83,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            Layout.preferredWidth: parent.width
+                            width: parent.width
                             visible: !truncated
                         }
 
@@ -96,7 +96,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            Layout.preferredWidth: parent.width
+                            width: parent.width
                             visible: !materialBrandColorTypeLabel.visible && !truncated
                         }
 
@@ -109,7 +109,7 @@ Cura.ExpandablePopup
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                            Layout.preferredWidth: parent.width
+                            width: parent.width
                             visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
                         }
                         // Label that shows the name of the variant
