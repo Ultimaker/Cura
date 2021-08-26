@@ -48,8 +48,8 @@ class AuthorizationHelpers:
             }
         try:
             return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
+        except requests.exceptions.ConnectionError as connection_error:
+            return AuthenticationResponse(success = False, err_message = f"Unable to connect to remote server: {connection_error}")
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
         """Request the access token from the authorization server using a refresh token.

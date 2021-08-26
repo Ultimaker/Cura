@@ -1,12 +1,12 @@
 # Cura
 # Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.10\n"
+"Project-Id-Version: Cura 4.11\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0000\n"
+"POT-Creation-Date: 2021-08-11 09:58+0000\n"
 "PO-Revision-Date: 2021-04-16 15:00+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
@@ -715,8 +715,8 @@ msgstr "ミリメートルあたりのステップ (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1488,6 +1488,16 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "互いに次に実行する上層/底層スキンパスに接合します。同心円のパターンの場合、この設定を有効にすることにより、移動時間が短縮されますが、インフィルまでの途中で接合があるため、この機能で上層面の品質が損なわれることがあります。"
 
 #: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "上層/底層ラインの向き"
@@ -1560,6 +1570,16 @@ msgstr "同心円"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "ジグザグ"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
@@ -5432,6 +5452,16 @@ msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "ジグザグ"
 
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
+
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -6534,6 +6564,10 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
 
 #~ msgctxt "retraction_combing_max_distance description"
 #~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."

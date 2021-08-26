@@ -1,12 +1,12 @@
 # Cura
 # Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.10\n"
+"Project-Id-Version: Cura 4.11\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0200\n"
+"POT-Creation-Date: 2021-08-11 09:59+0200\n"
 "PO-Revision-Date: 2021-04-16 14:56+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Portuguese <info@lionbridge.com>, Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
@@ -17,110 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.4.1\n"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:110
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:361
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1612
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
-msgctxt "@label"
-msgid "Unknown"
-msgstr "Desconhecido"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:113
-msgctxt "@label"
-msgid "The printer(s) below cannot be connected because they are part of a group"
-msgstr "Não é possível ligar a(s) impressora(s) abaixo porque faz(em) parte de um grupo"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:115
-msgctxt "@label"
-msgid "Available networked printers"
-msgstr "Impressoras em rede disponíveis"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/ExtrudersModel.py:211
-msgctxt "@menuitem"
-msgid "Not overridden"
-msgstr "Manter"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/GlobalStacksModel.py:76
-#, python-brace-format
-msgctxt "@label {0} is the name of a printer that's about to be deleted."
-msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr "Tem a certeza de que pretende remover {0}? Esta ação não pode ser anulada!"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:42
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:11
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:338
-msgctxt "@label"
-msgid "Default"
-msgstr "Default"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:45
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:14
-msgctxt "@label"
-msgid "Visual"
-msgstr "Acabamento"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:46
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:15
-msgctxt "@text"
-msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
-msgstr "O perfil de acabamento foi criado para imprimir modelos e protótipos finais com o objetivo de se obter uma elevada qualidade de acabamento da superfície em termos visuais."
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:49
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:18
-msgctxt "@label"
-msgid "Engineering"
-msgstr "Engineering"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:50
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:19
-msgctxt "@text"
-msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "O perfil de engenharia foi criado para imprimir protótipos funcionais e peças finais com o objetivo de se obter uma maior precisão dimensional assim como tolerâncias menores."
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:53
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:22
-msgctxt "@label"
-msgid "Draft"
-msgstr "Rascunho"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:54
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:23
-msgctxt "@text"
-msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
-msgstr "O perfil de rascunho foi concebido para imprimir protótipos de teste e de validação de conceitos com o objetivo de se obter uma redução significativa do tempo de impressão."
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:234
-msgctxt "@label"
-msgid "Custom Material"
-msgstr "Material Personalizado"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:235
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:205
-msgctxt "@label"
-msgid "Custom"
-msgstr "Personalizado"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
-msgctxt "@label"
-msgid "Custom profiles"
-msgstr "Perfis personalizados"
-
-# rever!
-# contexto
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:418
-#, python-brace-format
-msgctxt "@item:inlistbox"
-msgid "All Supported Types ({0})"
-msgstr "Todos os Formatos Suportados ({0})"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:419
-msgctxt "@item:inlistbox"
-msgid "All Files (*)"
-msgstr "Todos os Ficheiros (*)"
-
-#: /home/trin/Gedeeld/Projects/Cura/cura/API/Account.py:181
+#: /home/trin/Gedeeld/Projects/Cura/cura/API/Account.py:182
 msgctxt "@info:title"
 msgid "Login failed"
 msgstr "Falha no início de sessão"
@@ -137,7 +34,7 @@ msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "A Procurar Posição"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:150
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:41
 #: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:76
 msgctxt "@info:status"
@@ -145,35 +42,36 @@ msgid "Unable to find a location within the build volume for all objects"
 msgstr "Não é possível posicionar todos os objetos dentro do volume de construção"
 
 # rever!
-#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
+#: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
 #: /home/trin/Gedeeld/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:42
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "Não é Possível Posicionar"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:116
+#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:115
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Não é possível criar um arquivo a partir do directório de dados do utilizador: {}"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:122
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:107
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:113
+#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:159
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "Backup"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:135
+#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:134
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "Tentou restaurar um Cura backup sem existirem dados ou metadados correctos."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:146
+#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:145
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
 msgstr "Tentativa de reposição de uma cópia de segurança do Cura que é superior à versão atual."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:157
+#: /home/trin/Gedeeld/Projects/Cura/cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
 msgstr "O seguinte erro ocorreu ao tentar restaurar uma cópia de segurança do Cura:"
@@ -183,7 +81,7 @@ msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "A altura do volume de construção foi reduzida devido ao valor da definição \"Sequência de impressão\" para impedir que o pórtico colida com os modelos impressos."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/BuildVolume.py:100
+#: /home/trin/Gedeeld/Projects/Cura/cura/BuildVolume.py:101
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "Volume de construção"
@@ -346,38 +244,38 @@ msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "A Inicializar a Máquina Ativa..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:803
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:805
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "A inicializar o gestor das máquinas..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:817
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:819
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "A inicializar o volume de construção..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:888
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:890
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "A configurar cenário..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:924
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:926
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "A carregar interface..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:929
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:931
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "A inicializar o motor..."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1246
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1248
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1799
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1801
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
@@ -386,28 +284,131 @@ msgstr "Apenas pode ser carregado um ficheiro G-code de cada vez. Importação {
 # rever!
 # contexto!
 # Atenção?
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1800
-#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:190
-#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:244
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:165
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1803
+#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:191
+#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:249
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Aviso"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1809
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1813
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Não é possível abrir outro ficheiro enquanto o G-code estiver a carregar. Importação {0} ignorada"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1810
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:146
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:153
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:139
+#: /home/trin/Gedeeld/Projects/Cura/cura/CuraApplication.py:1815
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:148
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:158
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:161
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Erro"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:110
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:361
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1613
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
+msgctxt "@label"
+msgid "Unknown"
+msgstr "Desconhecido"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:113
+msgctxt "@label"
+msgid "The printer(s) below cannot be connected because they are part of a group"
+msgstr "Não é possível ligar a(s) impressora(s) abaixo porque faz(em) parte de um grupo"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:115
+msgctxt "@label"
+msgid "Available networked printers"
+msgstr "Impressoras em rede disponíveis"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/ExtrudersModel.py:216
+msgctxt "@menuitem"
+msgid "Not overridden"
+msgstr "Manter"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/GlobalStacksModel.py:76
+#, python-brace-format
+msgctxt "@label {0} is the name of a printer that's about to be deleted."
+msgid "Are you sure you wish to remove {0}? This cannot be undone!"
+msgstr "Tem a certeza de que pretende remover {0}? Esta ação não pode ser anulada!"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:42
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:11
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:338
+msgctxt "@label"
+msgid "Default"
+msgstr "Default"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:45
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:14
+msgctxt "@label"
+msgid "Visual"
+msgstr "Acabamento"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:46
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:15
+msgctxt "@text"
+msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+msgstr "O perfil de acabamento foi criado para imprimir modelos e protótipos finais com o objetivo de se obter uma elevada qualidade de acabamento da superfície em termos visuais."
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:49
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:18
+msgctxt "@label"
+msgid "Engineering"
+msgstr "Engineering"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:50
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:19
+msgctxt "@text"
+msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+msgstr "O perfil de engenharia foi criado para imprimir protótipos funcionais e peças finais com o objetivo de se obter uma maior precisão dimensional assim como tolerâncias menores."
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:53
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:22
+msgctxt "@label"
+msgid "Draft"
+msgstr "Rascunho"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:54
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:23
+msgctxt "@text"
+msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+msgstr "O perfil de rascunho foi concebido para imprimir protótipos de teste e de validação de conceitos com o objetivo de se obter uma redução significativa do tempo de impressão."
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:224
+msgctxt "@label"
+msgid "Custom Material"
+msgstr "Material Personalizado"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:225
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:230
+msgctxt "@label"
+msgid "Custom"
+msgstr "Personalizado"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
+msgctxt "@label"
+msgid "Custom profiles"
+msgstr "Perfis personalizados"
+
+# rever!
+# contexto
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:418
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Todos os Formatos Suportados ({0})"
+
+#: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:419
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Todos os Ficheiros (*)"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/MultiplyObjectsJob.py:26
 msgctxt "@info:status"
@@ -444,12 +445,12 @@ msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Ocorreu algo inesperado ao tentar iniciar sessão, tente novamente."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:189
+#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:190
 msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Não é possível iniciar um novo processo de início de sessão. Verifique se ainda está ativa outra tentativa de início de sessão."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:244
+#: /home/trin/Gedeeld/Projects/Cura/cura/OAuth2/AuthorizationService.py:248
 msgctxt "@info"
 msgid "Unable to reach the Ultimaker account server."
 msgstr "Não é possível aceder ao servidor da conta Ultimaker."
@@ -473,111 +474,111 @@ msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "URL de ficheiro inválido:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:145
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Falha ao exportar perfil para <filename>{0}</filename>: <message>{1}</message>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:151
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:155
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Falha ao exportar perfil para <filename>{0}</filename>: O plug-in de gravação comunicou uma falha."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:156
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:163
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Perfil exportado para <filename>{0}</filename>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:157
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:165
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Exportação bem-sucedida"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:188
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:197
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Falha ao importar perfil de <filename>{0}</filename>: {1}"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:192
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:201
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Não é possível importar o perfil de <filename>{0}</filename> antes de ser adicionada uma impressora."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:207
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:216
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Nenhum perfil personalizado para importar no ficheiro <filename>{0}</filename>"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:211
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:220
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Falha ao importar perfil de <filename>{0}</filename>:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:235
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:245
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:244
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:254
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "O perfil <filename>{0}</filename> contém dados incorretos, não foi possível importá-lo."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:338
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:347
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Falha ao importar perfil de <filename>{0}</filename>:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:342
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:351
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Perfil {0} importado com êxito."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:349
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:358
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "O ficheiro {0} não contém qualquer perfil válido."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:352
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:361
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "O perfil {0} é de um formato de ficheiro desconhecido ou está corrompido."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:426
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:435
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "Perfil personalizado"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:442
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:451
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "O perfil não inclui qualquer tipo de qualidade."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:446
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:455
 msgctxt "@info:status"
 msgid "There is no active printer yet."
 msgstr "Ainda não existe qualquer impressora ativa."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:452
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:461
 msgctxt "@info:status"
 msgid "Unable to add the profile."
 msgstr "Não é possível adicionar o perfil."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:466
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:475
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "O tipo de qualidade '{0}' não é compatível com a definição de máquina atualmente ativa '{1}'."
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:471
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:480
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
@@ -599,17 +600,17 @@ msgctxt "@label"
 msgid "Nozzle"
 msgstr "Nozzle"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:856
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:857
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "As definições foram alteradas de forma a corresponder aos extrusores disponíveis de momento:"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:858
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:859
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "Definições atualizadas"
 
-#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1478
+#: /home/trin/Gedeeld/Projects/Cura/cura/Settings/MachineManager.py:1479
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "Extrusor(es) desativado(s)"
@@ -637,7 +638,7 @@ msgstr "Concluir"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:42
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:292
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:293
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Cancelar"
@@ -708,6 +709,12 @@ msgctxt "@tooltip"
 msgid "Other"
 msgstr "Outro"
 
+#: /home/trin/Gedeeld/Projects/Cura/cura/UI/TextManager.py:37
+#: /home/trin/Gedeeld/Projects/Cura/cura/UI/TextManager.py:61
+msgctxt "@text:window"
+msgid "The release notes could not be opened."
+msgstr ""
+
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/WelcomePagesModel.py:56
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/WelcomePagesModel.py:259
 msgctxt "@action:button"
@@ -730,26 +737,6 @@ msgctxt "@action:button"
 msgid "Close"
 msgstr "Fechar"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/ModelChecker/ModelChecker.py:31
-msgctxt "@info:title"
-msgid "3D Model Assistant"
-msgstr "Assistente de Modelos 3D"
-
-# rever!
-#: /home/trin/Gedeeld/Projects/Cura/plugins/ModelChecker/ModelChecker.py:96
-#, python-brace-format
-msgctxt "@info:status"
-msgid ""
-"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
-"<p>Um, ou mais, dos modelos 3D podem ter menos qualidade de impressão devido à dimensão do modelo 3D e definição de material:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>Descubra como assegurar a melhor qualidade e fiabilidade possível da impressão.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver o guia de qualidade da impressão</a></p>"
-
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:540
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
@@ -761,25 +748,25 @@ msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Abrir ficheiro de projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:639
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:640
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "O projeto de ficheiro <filename>{0}</filename> ficou subitamente inacessível: <message>{1}</message>."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:640
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:647
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:641
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:649
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Não é possível abrir o ficheiro de projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:646
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:648
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "O ficheiro de projeto <filename>{0}</filename> está corrompido: <message>{1}</message>."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:698
+#: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:701
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
@@ -837,37 +824,37 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "Ficheiro AMF"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:26
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:25
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "Cópias de segurança"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:27
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:26
 msgctxt "@info:backup_status"
 msgid "There was an error while uploading your backup."
 msgstr "Ocorreu um erro ao carregar a sua cópia de segurança."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:47
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:46
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "A criar a cópia de segurança..."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:54
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:55
 msgctxt "@info:backup_status"
 msgid "There was an error while creating your backup."
 msgstr "Ocorreu um erro ao criar a cópia de segurança."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:58
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:59
 msgctxt "@info:backup_status"
 msgid "Uploading your backup..."
 msgstr "A carregar a sua cópia de segurança..."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:68
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:69
 msgctxt "@info:backup_status"
 msgid "Your backup has finished uploading."
 msgstr "A cópia de segurança terminou o seu carregamento."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:107
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:103
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "A cópia de segurança excede o tamanho de ficheiro máximo."
@@ -878,50 +865,70 @@ msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "Ocorreu um erro ao tentar restaurar a sua cópia de segurança."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:64
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:69
 msgctxt "@item:inmenu"
 msgid "Manage backups"
 msgstr "Gerir cópias de segurança"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:382
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:161
+msgctxt "@message"
+msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:162
+msgctxt "@message:title"
+msgid "Slicing failed"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:166
+msgctxt "@message:button"
+msgid "Report a bug"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:167
+msgctxt "@message:description"
+msgid "Report a bug on Ultimaker Cura's issue tracker."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:394
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Não é possível seccionar com o material atual, uma vez que é incompatível com a impressora ou configuração selecionada."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:382
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:437
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:446
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:455
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:467
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:395
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:428
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:454
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:465
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:476
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:489
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Não é possível Seccionar"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:412
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:427
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Não é possível seccionar com as definições atuais. As seguintes definições apresentam erros: {0}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:436
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:453
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Não é possível seccionar devido a algumas definições por modelo. As seguintes definições apresentam erros num ou mais modelos: {error_labels}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:445
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:464
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Não é possível seccionar porque a torre de preparação ou a(s) posição(ões) de preparação é(são) inválidas."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:454
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:475
 #, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Não é possível seccionar porque existem objetos associados ao extrusor %s desativado."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:463
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:485
 msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
@@ -940,7 +947,7 @@ msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "A Processar Camadas"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:261
 msgctxt "@info:title"
 msgid "Information"
 msgstr "Informações"
@@ -959,14 +966,14 @@ msgstr "Não foi possível aceder às informações de atualização."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:17
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
-msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
-msgstr "Poderão estar disponíveis novas funcionalidades ou correções de erros para {machine_name}! Se ainda não tiver a versão mais recente, recomendamos que atualize o firmware da sua impressora para a versão {latest_version}."
+msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
-msgid "New %s firmware available"
-msgstr "Novo firmware para %s está disponível"
+msgid "New %s stable firmware available"
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:28
 msgctxt "@action:button"
@@ -1063,6 +1070,26 @@ msgctxt "@action"
 msgid "Machine Settings"
 msgstr "Definições da Máquina"
 
+#: /home/trin/Gedeeld/Projects/Cura/plugins/ModelChecker/ModelChecker.py:31
+msgctxt "@info:title"
+msgid "3D Model Assistant"
+msgstr "Assistente de Modelos 3D"
+
+# rever!
+#: /home/trin/Gedeeld/Projects/Cura/plugins/ModelChecker/ModelChecker.py:97
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr ""
+"<p>Um, ou mais, dos modelos 3D podem ter menos qualidade de impressão devido à dimensão do modelo 3D e definição de material:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Descubra como assegurar a melhor qualidade e fiabilidade possível da impressão.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver o guia de qualidade da impressão</a></p>"
+
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
 msgid "Monitor"
@@ -1117,71 +1144,71 @@ msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Não existem quaisquer formatos disponíveis para gravar o ficheiro!"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:96
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:97
 #, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "A Guardar no Disco Externo <filename>{0}</filename>"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:96
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:98
 msgctxt "@info:title"
 msgid "Saving"
 msgstr "A Guardar"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:106
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:109
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Não foi possível guardar em <filename>{0}</filename>: <message>{1}</message>"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:125
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:127
 #, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Não foi possível encontrar um nome do ficheiro ao tentar gravar em {device}."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:138
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Não foi possível guardar no Disco Externo {0}: {1}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:147
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:150
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Guardado no Disco Externo {0} como {1}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:147
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 msgctxt "@info:title"
 msgid "File Saved"
 msgstr "Ficheiro Guardado"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:148
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 msgctxt "@action:button"
 msgid "Eject"
 msgstr "Ejetar"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:148
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:153
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Ejetar Disco Externo {0}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:172
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "{0} foi ejetado. O Disco já pode ser removido de forma segura."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:173
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
 msgstr "Remover Hardware de forma segura"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:165
+#: /home/trin/Gedeeld/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:176
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
@@ -1192,27 +1219,27 @@ msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Disco Externo"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:128
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled."
 msgstr "Quando a opção Wire Printing está ativa, o Cura não permite visualizar as camadas de uma forma precisa."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:129
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:130
 msgctxt "@info:title"
 msgid "Simulation View"
 msgstr "Visualização por Camadas"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:133
 msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "Não consegue visualizar, porque precisa de fazer o seccionamento primeiro."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:130
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:134
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Sem camadas para visualizar"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:131
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationView.py:136
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -1222,6 +1249,11 @@ msgstr "Não mostrar esta mensagem novamente"
 msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Vista Camadas"
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:95
+msgctxt "@text"
+msgid "Unable to read example data file."
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
@@ -1233,7 +1265,7 @@ msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "Erros no modelo"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:79
+#: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:80
 msgctxt "@action:button"
 msgid "Learn more"
 msgstr "Saber mais"
@@ -1295,7 +1327,7 @@ msgctxt "@button"
 msgid "Decline and remove from account"
 msgstr "Rejeitar e remover da conta"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:20
+#: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:19
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
 msgstr "É necessário reiniciar o {} para que as alterações tenham efeito."
@@ -1375,7 +1407,17 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Ligada através da cloud"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:270
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:261
+msgctxt "@action:button"
+msgid "Monitor print"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:263
+msgctxt "@action:tooltip"
+msgid "Track the print in Ultimaker Digital Factory"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:279
 #, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
@@ -1388,13 +1430,13 @@ msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "Nova impressora detetada a partir da sua conta Ultimaker"
 msgstr[1] "Novas impressoras detetadas a partir da sua conta Ultimaker"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:238
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:239
 #, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "Adicionar impressora {name} ({model}) a partir da sua conta"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:255
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:256
 #, python-brace-format
 msgctxt "info:{0} gets replaced by a number of printers"
 msgid "... and {0} other"
@@ -1402,71 +1444,71 @@ msgid_plural "... and {0} others"
 msgstr[0] "... e {0} outra"
 msgstr[1] "... e {0} outras"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:260
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:261
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
 msgstr "Impressoras adicionadas a partir da Digital Factory:"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:316
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:317
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "Não existe uma conectividade de cloud disponível para a impressora"
 msgstr[1] "Não existe uma conectividade de cloud disponível para algumas impressoras"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:324
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:326
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "Esta impressora não está associada à Digital Factory:"
 msgstr[1] "Estas impressoras não estão associadas à Digital Factory:"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:329
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:419
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:331
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:421
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:333
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:335
 #, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "Para estabelecer uma ligação, visite {website_link}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:337
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:339
 msgctxt "@action:button"
 msgid "Keep printer configurations"
 msgstr "Manter configurações da impressora"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:344
 msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "Remover impressoras"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:421
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:423
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "A impressora {printer_name} vai ser removida até à próxima sincronização de conta."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:422
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:424
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "Para remover a impressora {printer_name} de forma permanente, visite {digital_factory_link}"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:423
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:425
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "Tem a certeza de que pretende remover a impressora {printer_name} temporariamente?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:460
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:462
 msgctxt "@title:window"
 msgid "Remove printers?"
 msgstr "Remover impressoras?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:463
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:465
 #, python-brace-format
 msgctxt "@label"
 msgid ""
@@ -1482,7 +1524,7 @@ msgstr[1] ""
 "Está prestes a remover {0} impressoras do Cura. Esta ação não pode ser anulada.\n"
 "Tem a certeza de que pretende continuar?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:468
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:470
 msgctxt "@label"
 msgid ""
 "You are about to remove all printers from Cura. This action cannot be undone.\n"
@@ -1536,7 +1578,7 @@ msgctxt "@info:title"
 msgid "Not a group host"
 msgstr "Não é Host do grupo"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:35
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:36
 msgctxt "@action"
 msgid "Configure group"
 msgstr "Configurar grupo"
@@ -1646,12 +1688,12 @@ msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "Existe uma impressão por USB em curso; fechar o Cura irá interromper esta impressão. Tem a certeza?"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:134
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:135
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
 msgstr "Existe uma impressão em curso. O Cura não consegue iniciar outra impressão via USB até a impressão anterior ser concluída."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:134
+#: /home/trin/Gedeeld/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:136
 msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Impressão em curso"
@@ -1665,11 +1707,6 @@ msgstr "Ficheiro X3D"
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Vista Raio-X"
-
-#: /home/trin/Gedeeld/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
-msgctxt "@info:tooltip"
-msgid "Some things could be problematic in this print. Click to see tips for adjustment."
-msgstr "Alguns factores podem vir a ser problemáticos nesta impressão. Clique para ver algumas sugestões para melhorar a qualidade da impressão."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:15
 msgctxt "@title:window"
@@ -1687,13 +1724,13 @@ msgid "Create new"
 msgstr "Criar nova"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:75
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:69
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:70
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Resumo – Projeto Cura"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:97
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:93
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:94
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "Definições da impressora"
@@ -1704,19 +1741,19 @@ msgid "How should the conflict in the machine be resolved?"
 msgstr "Como deve ser resolvido o conflito da máquina?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:102
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:103
 msgctxt "@action:label"
 msgid "Type"
 msgstr "Tipo"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "Grupo da Impressora"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:205
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:218
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:219
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Definições do perfil"
@@ -1728,20 +1765,20 @@ msgstr "Como deve ser resolvido o conflito no perfil?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:242
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:353
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:117
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:242
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:243
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Nome"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:258
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:259
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:260
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:274
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:227
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Inexistente no perfil"
@@ -1749,7 +1786,7 @@ msgstr "Inexistente no perfil"
 # rever!
 # contexto?!
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:279
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:231
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:232
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -1833,22 +1870,22 @@ msgctxt "@button"
 msgid "Restore"
 msgstr "Restaurar"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:99
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:100
 msgctxt "@dialog:title"
 msgid "Delete Backup"
 msgstr "Eliminar cópia de segurança"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:100
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:101
 msgctxt "@dialog:info"
 msgid "Are you sure you want to delete this backup? This cannot be undone."
 msgstr "Tem a certeza de que pretende eliminar esta cópia de segurança? Esta ação não pode ser anulada."
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:108
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:109
 msgctxt "@dialog:title"
 msgid "Restore Backup"
 msgstr "Restaurar cópia de segurança"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:109
+#: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:110
 msgctxt "@dialog:info"
 msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
 msgstr "É necessário reiniciar o Cura para restaurar a sua cópia de segurança. Pretende fechar o Cura agora?"
@@ -2247,6 +2284,11 @@ msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-code final"
 
+#: /home/trin/Gedeeld/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
+msgctxt "@info:tooltip"
+msgid "Some things could be problematic in this print. Click to see tips for adjustment."
+msgstr "Alguns factores podem vir a ser problemáticos nesta impressão. Clique para ver algumas sugestões para melhorar a qualidade da impressão."
+
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2300,17 +2342,17 @@ msgctxt "@label"
 msgid "Don't support overlaps"
 msgstr "Não suportar sobreposições"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:149
+#: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:151
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
 msgstr "Apenas objeto de enchimento"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:150
+#: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:152
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
 msgstr "Malha de corte"
 
-#: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:380
+#: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:382
 msgctxt "@action:button"
 msgid "Select settings"
 msgstr "Selecionar definições"
@@ -2599,7 +2641,7 @@ msgid "Plugins"
 msgstr "Plug-ins"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:457
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:475
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89
 msgctxt "@title:tab"
 msgid "Materials"
@@ -3067,6 +3109,11 @@ msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "Atualize o firmware da impressora para gerir a fila remotamente."
 
+#: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:288
+msgctxt "@info"
+msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura."
+msgstr ""
+
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
 msgid "Loading..."
@@ -3270,17 +3317,17 @@ msgctxt "@button"
 msgid "Check for account updates"
 msgstr "Verificar atualizações de conta"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:81
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:82
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
 msgstr "Atualização mais recente: %1"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:109
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:110
 msgctxt "@button"
 msgid "Ultimaker Account"
 msgstr "Conta Ultimaker"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:125
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/UserOperations.qml:126
 msgctxt "@button"
 msgid "Sign Out"
 msgstr "Terminar sessão"
@@ -3325,27 +3372,27 @@ msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "A Seccionar..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:67
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:82
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
 msgstr "Não é possível seccionar"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:121
 msgctxt "@button"
 msgid "Processing"
 msgstr "A processar"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:121
 msgctxt "@button"
 msgid "Slice"
 msgstr "Segmentação"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:104
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:122
 msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "Iniciar o processo de segmentação"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:118
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:136
 msgctxt "@button"
 msgid "Cancel"
 msgstr "Cancelar"
@@ -3375,215 +3422,215 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Refazer"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:125
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:133
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Sair"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:133
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:141
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "Vista 3D"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:140
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:148
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Vista Frente"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:147
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:155
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "Vista Cima"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:154
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:162
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
 msgstr "Vista Inferior"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:161
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:169
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Vista Lado Esquerdo"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:168
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:176
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "Vista Lado Direito"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:175
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:190
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "Configurar Cura..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:182
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:197
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Adicionar Impressora..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:188
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Gerir Im&pressoras..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:195
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:210
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Gerir Materiais..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:203
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:218
 msgctxt "@action:inmenu"
 msgid "Add more materials from Marketplace"
 msgstr "Use o Mercado para adicionar outros materiais"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:210
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:225
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "&Atualizar perfil com as definições/substituições atuais"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:218
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:233
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "&Descartar alterações atuais"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:230
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:245
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "&Criar perfil a partir das definições/substituições atuais..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:236
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:251
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Gerir Perfis..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:244
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:259
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Mostrar &documentação online"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:252
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:267
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Reportar um &erro"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:260
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:275
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "Novidades"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:266
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:289
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "Sobre..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:273
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:296
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
 msgstr "Apagar seleção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:283
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:306
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
 msgstr "Centrar seleção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:292
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:315
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
 msgstr "Multiplicar seleção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:301
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:324
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "Apagar Modelo"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:309
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:332
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "Ce&ntrar Modelo na Base"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:315
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:338
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "&Agrupar Modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:335
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:358
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Desagrupar Modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:345
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:368
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "&Combinar Modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:355
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:378
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "&Multiplicar Modelo..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:362
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:385
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "Selecionar todos os modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:372
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:395
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Limpar base de construção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:382
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:405
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "Recarregar todos os modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:391
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:414
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models To All Build Plates"
 msgstr "Dispor todos os modelos em todas as bases de construção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:398
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:421
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Dispor todos os modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:406
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:429
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "Dispor seleção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:413
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:436
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "Repor todas as posições de modelos"
 
 # rever!
 # Cancelar todas?
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:420
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:443
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "Repor Todas as Transformações do Modelo"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:429
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:452
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "&Abrir Ficheiro(s)..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:439
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:462
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "&Novo Projeto..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:446
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:469
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Mostrar pasta de configuração"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:453
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:550
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:476
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:558
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Configurar visibilidade das definições..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:460
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Actions.qml:483
 msgctxt "@action:menu"
 msgid "&Marketplace"
 msgstr "&Mercado"
@@ -3593,67 +3640,67 @@ msgctxt "@label"
 msgid "This package will be installed after restarting."
 msgstr "Este pacote será instalado após reiniciar."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:450
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:468
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:17
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Geral"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:453
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:471
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Definições"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:455
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:473
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:16
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Impressoras"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:459
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:477
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:34
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Perfis"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:576
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:594
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "A fechar %1"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:577
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:589
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:595
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:607
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "Tem a certeza de que pretende sair de %1?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:627
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:645
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Abrir ficheiro(s)"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:737
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:755
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Instalar Pacote"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:745
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:763
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "Abrir ficheiro(s)"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:748
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:766
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "Encontrámos um ou mais ficheiros G-code nos ficheiros selecionados. Só é possível abrir um ficheiro G-code de cada vez. Se pretender abrir um ficheiro G-code, selecione apenas um."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:857
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:875
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Adicionar Impressora"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:865
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:883
 msgctxt "@title:window"
 msgid "What's New"
 msgstr "Novidades"
@@ -3883,7 +3930,7 @@ msgid "Current changes"
 msgstr "Alterações atuais"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:733
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:737
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Perguntar sempre isto"
@@ -3918,32 +3965,32 @@ msgctxt "@action:button"
 msgid "Import all as models"
 msgstr "Importar tudo como modelos 3D"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:15
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:16
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Guardar projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:173
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:174
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Extrusor %1"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:189
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:190
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 & material"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:191
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:192
 msgctxt "@action:label"
 msgid "Material"
 msgstr "Material"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:281
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:282
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "Não mostrar novamente o resumo do projeto ao guardar"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:300
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:301
 msgctxt "@action:button"
 msgid "Save"
 msgstr "Guardar"
@@ -3977,38 +4024,38 @@ msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Visualizar"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:51
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:60
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Definições"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:56
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:66
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "E&xtensões"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:94
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:112
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
 msgstr "P&referências"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:102
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:120
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Ajuda"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:148
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:166
 msgctxt "@title:window"
 msgid "New project"
 msgstr "Novo projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:149
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:167
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "Tem a certeza de que deseja iniciar um novo projeto? Isto irá apagar tudo na base de construção assim como quaisquer definições que não tenham sido guardadas."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/MainWindowHeader.qml:90
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/MainWindow/MainWindowHeader.qml:89
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "Mercado"
@@ -4028,22 +4075,22 @@ msgctxt "@label"
 msgid "Marketplace"
 msgstr "Mercado"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:57
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:52
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
 msgstr "A carregar as configurações disponíveis da impressora..."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:58
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:53
 msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
 msgstr "As configurações não estão disponíveis porque a impressora está desligada."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:112
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:137
 msgctxt "@label"
 msgid "Select configuration"
 msgstr "Selecionar configuração"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:223
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:248
 msgctxt "@label"
 msgid "Configurations"
 msgstr "Configurações"
@@ -4262,27 +4309,27 @@ msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "Tem a certeza de que deseja cancelar a impressão?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:114
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:112
 msgctxt "@label"
 msgid "Is printed as support."
 msgstr "É imprimido como suporte."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:117
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:115
 msgctxt "@label"
 msgid "Other models overlapping with this model are modified."
 msgstr "Foram modificados outros modelos sobrepostos com este modelo."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:120
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:118
 msgctxt "@label"
 msgid "Infill overlapping with this model is modified."
 msgstr "Foi modificada a sobreposição de enchimento com este modelo."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:123
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:121
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
 msgstr "Não são suportadas sobreposições com este modelo."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:130
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/ObjectItemButton.qml:128
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
@@ -4294,313 +4341,348 @@ msgctxt "@label"
 msgid "Object list"
 msgstr "Lista de objetos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:137
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:141
 msgctxt "@label"
 msgid "Interface"
 msgstr "Interface"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:209
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:213
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Moeda:"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:222
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:226
 msgctxt "@label"
 msgid "Theme:"
 msgstr "Tema:"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:267
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:271
 msgctxt "@label"
 msgid "You will need to restart the application for these changes to have effect."
 msgstr "É necessário reiniciar a aplicação para que estas alterações sejam aplicadas."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:284
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:288
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Seccionar automaticamente ao alterar as definições."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:292
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:296
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "Seccionar automaticamente"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:306
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:310
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "Comportamento da janela"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:314
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:318
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "Realçar, a vermelho, as áreas do modelo sem apoio. Sem suporte, estas áreas podem não ser impressas correctamente."
 
 # rever!
 # consolas?
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:323
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:327
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Mostrar Saliências (Overhangs)"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:337
 msgctxt "@info:tooltip"
 msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
 msgstr "Destaque as superfícies extra ou em falta do modelo utilizando sinais de aviso. As trajetórias de ferramentas irão falhar muitas vezes partes da geometria pretendida."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:342
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:346
 msgctxt "@option:check"
 msgid "Display model errors"
 msgstr "Apresentar erros de modelo"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:350
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:354
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "Move a câmara de forma que o modelo fique no centro da visualização quando é selecionado um modelo"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:355
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:359
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "Centrar câmara ao selecionar item"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:365
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:369
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "O comportamento de zoom predefinido do Cura deve ser invertido?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:370
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:374
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "Inverta a direção do zoom da câmera."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:390
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "O zoom deve deslocar-se na direção do rato?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:386
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:390
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "Fazer zoom em direção ao rato não é suportado na perspetiva ortográfica."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:391
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:395
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Fazer Zoom na direção do rato"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:417
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:421
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "Os modelos, na plataforma, devem ser movidos para que não se intersectem?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:422
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:426
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "Garantir que os modelos não se interceptam"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:431
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:435
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "Pousar os modelos na base de construção?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:436
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:440
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Pousar automaticamente os modelos na base de construção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:448
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:452
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "Mostrar mensagem de aviso no leitor de g-code."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:457
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:461
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "Mensagem de aviso no leitor de g-code"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:469
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "A vista por camada deve ser forçada a utilizar o modo de compatibilidade?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:470
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:474
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Forçar o modo de compatibilidade na visualização por camada (é necessário reiniciar)"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:480
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgctxt "@info:tooltip"
 msgid "Should Cura open at the location it was closed?"
 msgstr "O Cura deve abrir na localização onde foi fechado?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:485
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:489
 msgctxt "@option:check"
 msgid "Restore window position on start"
 msgstr "Restaurar posição da janela ao iniciar"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:499
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
 msgstr "Que tipo de composição de câmara deve ser utilizado?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:502
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgctxt "@window:text"
 msgid "Camera rendering:"
 msgstr "Composição de câmara:"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:509
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:513
 msgid "Perspective"
 msgstr "Perspetiva"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:510
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:514
 msgid "Orthographic"
 msgstr "Ortográfica"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:548
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:552
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "Abrir e guardar ficheiros"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:555
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:559
 msgctxt "@info:tooltip"
 msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
 msgstr "Pretende que os ficheiros abertos a partir do ambiente de trabalho ou de aplicações externas sejam executados na mesma instância do Cura?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:560
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:564
 msgctxt "@option:check"
 msgid "Use a single instance of Cura"
 msgstr "Utilizar uma única instância do Cura"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:570
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:574
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "Os modelos devem ser redimensionados até ao volume de construção se forem demasiado grandes?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:575
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:579
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Redimensionar modelos demasiado grandes"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:585
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:589
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Um modelo pode parecer extremamente pequeno se, por exemplo, este tiver sido criado em metros e não em milímetros. Estes modelos devem ser redimensionados?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:590
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:594
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "Redimensionar modelos extremamente pequenos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:600
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:604
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
 msgstr "Selecionar os modelos depois de abertos?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:605
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:609
 msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr "Selecionar os modelos depois de abertos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:615
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:619
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "Deve um prefixo com base no nome da impressora ser adicionado ao nome do trabalho de impressão automaticamente?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:624
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "Adicionar prefixo da máquina ao nome do trabalho"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:630
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:634
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "Deve ser apresentado um resumo ao guardar um ficheiro de projeto?"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:634
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:638
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Mostrar caixa de diálogo de resumo ao guardar projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:644
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:648
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "Comportamento predefinido ao abrir um ficheiro de projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:652
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:656
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "Comportamento predefinido ao abrir um ficheiro de projeto: "
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:666
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:670
 msgctxt "@option:openProject"
 msgid "Always ask me this"
 msgstr "Perguntar sempre isto"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:667
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:671
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "Abrir sempre como projeto"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:668
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:672
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "Importar sempre modelos"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:705
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:709
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "Quando tiver realizado alterações a um perfil e mudado para outro, será apresentada uma caixa de diálogo a perguntar se pretende manter as alterações. Caso contrário, pode escolher um comportamento predefinido, sendo que a caixa de diálogo nunca mais é apresentada."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:714
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:718
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Perfis"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:719
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:723
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "Comportamento predefinido para valores de definição alterados ao mudar para um perfil diferente: "
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:734
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:738
 msgctxt "@option:discardOrKeep"
 msgid "Always discard changed settings"
 msgstr "Descartar sempre definições alteradas"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:735
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:739
 msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr "Transferir sempre definições alteradas para o novo perfil"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:770
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:773
 msgctxt "@label"
 msgid "Privacy"
 msgstr "Privacidade"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:777
-msgctxt "@info:tooltip"
-msgid "Should Cura check for updates when the program is started?"
-msgstr "O Cura deve procurar atualizações quando o programa é iniciado?"
-
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:782
-msgctxt "@option:check"
-msgid "Check for updates on start"
-msgstr "Procurar atualizações ao iniciar"
-
 # rever!
 # legal wording
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:792
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:779
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "Podem alguns dados anónimos sobre a impressão ser enviados para a Ultimaker? Não são enviadas, nem armazenadas, quaisquer informações pessoais, incluindo modelos, endereços IP ou outro tipo de identificação pessoal."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:797
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:784
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "Enviar dados (anónimos) sobre a impressão"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:806
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:793
 msgctxt "@action:button"
 msgid "More information"
 msgstr "Mais informações"
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:811
+msgctxt "@label"
+msgid "Updates"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:818
+msgctxt "@info:tooltip"
+msgid "Should Cura check for updates when the program is started?"
+msgstr "O Cura deve procurar atualizações quando o programa é iniciado?"
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:823
+msgctxt "@option:check"
+msgid "Check for updates on start"
+msgstr "Procurar atualizações ao iniciar"
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:834
+msgctxt "@info:tooltip"
+msgid "When checking for updates, only check for stable releases."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:839
+msgctxt "@option:radio"
+msgid "Stable releases only"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:850
+msgctxt "@info:tooltip"
+msgid "When checking for updates, check for both stable and for beta releases."
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:855
+msgctxt "@option:radio"
+msgid "Stable and Beta releases"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:866
+msgctxt "@info:tooltip"
+msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
+msgstr ""
+
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:871
+msgctxt "@option:check"
+msgid "Get notifications for plugin updates"
+msgstr ""
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:40
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
@@ -4642,56 +4724,56 @@ msgctxt "@action:button Sending materials to printers"
 msgid "Sync with Printers"
 msgstr "Sincronizar com Impressoras"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:248
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:249
 msgctxt "@action:label"
 msgid "Printer"
 msgstr "Impressora"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:313
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:277
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Confirmar Remoção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:316
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:278
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Tem a certeza de que deseja remover o perfil %1? Não é possível desfazer esta ação!"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:329
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:337
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:330
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:338
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Importar material"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:338
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:339
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Não foi possível importar o material <filename>%1</filename>: <message>%2</message>"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:342
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:343
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Material <filename>%1</filename> importado com êxito"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:360
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:368
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:361
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:369
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Exportar Material"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:372
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:373
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Falha ao exportar material para <filename>%1</filename>: <message>%2</message>"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:378
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:379
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Material exportado com êxito para <filename>%1</filename>"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:388
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:389
 msgctxt "@title:window"
 msgid "Export All Materials"
 msgstr "Exportar Todos os Materiais"
@@ -5036,12 +5118,12 @@ msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please check your internet connection."
 msgstr "A conectividade de cloud está atualmente indisponível. Verifique a sua ligação à Internet."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:238
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:252
 msgctxt "@button"
 msgid "Add printer"
 msgstr "Adicionar Impressora"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:255
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:269
 msgctxt "@button"
 msgid "Manage printers"
 msgstr "Gerir impressoras"
@@ -5129,7 +5211,7 @@ msgctxt "@label:Should be short"
 msgid "Off"
 msgstr "Desligado"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:33
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:34
 msgctxt "@label"
 msgid "Experimental"
 msgstr "Experimental"
@@ -5139,22 +5221,22 @@ msgctxt "@label"
 msgid "Adhesion"
 msgstr "Aderência à Base de Construção"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:74
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:75
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Permite a impressão de uma aba ou raft. Isto irá adicionar, respetivamente, uma área plana em torno ou sob a base do seu objeto, que são fáceis de retirar posteriormente."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:193
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:196
 msgctxt "@label"
 msgid "Gradual infill"
 msgstr "Enchimento gradual"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:232
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:235
 msgctxt "@label"
 msgid "Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "O enchimento gradual irá aumentar progressivamente a densidade do enchimento em direção ao topo."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:81
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:82
 msgctxt "@tooltip"
 msgid "You have modified some profile settings. If you want to change these go to custom mode."
 msgstr "Algumas definições do perfil foram modificadas. Se pretender alterá-las, aceda ao modo Personalizado."
@@ -5167,7 +5249,7 @@ msgstr "Suportes"
 # rever!
 # collapse ?
 # desmoronar? desabar?
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:71
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:72
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliências. Sem estas estruturas, essas partes do modelo podem desmoronar durante a impressão."
@@ -5176,7 +5258,7 @@ msgstr "Criar estruturas para suportar partes do modelo, suspensas ou com saliê
 # ocultas?
 # escondidas?
 # valor normal? automatico?
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingCategory.qml:200
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingCategory.qml:203
 msgctxt "@label"
 msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
@@ -5207,17 +5289,17 @@ msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Modificado Por"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:187
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:188
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "Esta definição é sempre partilhada entre todos os extrusores. Ao alterá-la aqui, o valor será alterado em todos os extrusores."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:192
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "Esta definição está resolvida a partir de valores específicos da extrusora em conflito:"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:232
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
@@ -5228,7 +5310,7 @@ msgstr ""
 "\n"
 "Clique para restaurar o valor do perfil."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:329
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:332
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
@@ -5239,32 +5321,32 @@ msgstr ""
 "\n"
 "Clique para restaurar o valor calculado."
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:68
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:72
 msgctxt "@label:textbox"
 msgid "Search settings"
 msgstr "Procurar definições"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:468
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:476
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Copiar valor para todos os extrusores"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:477
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:485
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Copiar todos os valores alterados para todos os extrusores"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:514
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:522
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "Esconder esta definição"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:527
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:535
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "Não mostrar esta definição"
 
-#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:531
+#: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingView.qml:539
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Manter esta definição visível"
@@ -5540,16 +5622,6 @@ msgctxt "@label"
 msgid "No items to select from"
 msgstr "Nenhum item para selecionar"
 
-#: ModelChecker/plugin.json
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Verifica potenciais problemas de impressão nos modelos e definições de impressão, e oferece sugestões."
-
-#: ModelChecker/plugin.json
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Verificador de Modelos"
-
 #: 3MFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
@@ -5731,6 +5803,16 @@ msgstr "Proporciona uma forma de alterar as definições da máquina (tal como o
 msgctxt "name"
 msgid "Machine Settings Action"
 msgstr "Função Definições da Máquina"
+
+#: ModelChecker/plugin.json
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Verifica potenciais problemas de impressão nos modelos e definições de impressão, e oferece sugestões."
+
+#: ModelChecker/plugin.json
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Verificador de Modelos"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -6152,6 +6234,14 @@ msgstr "Permite a visualização em Raio-X."
 msgctxt "name"
 msgid "X-Ray View"
 msgstr "Vista Raio-X"
+
+#~ msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
+#~ msgid "New features or bug-fixes may be available for your {machine_name}! If not already at the latest version, it is recommended to update the firmware on your printer to version {latest_version}."
+#~ msgstr "Poderão estar disponíveis novas funcionalidades ou correções de erros para {machine_name}! Se ainda não tiver a versão mais recente, recomendamos que atualize o firmware da sua impressora para a versão {latest_version}."
+
+#~ msgctxt "@info:title The %s gets replaced with the printer name."
+#~ msgid "New %s firmware available"
+#~ msgstr "Novo firmware para %s está disponível"
 
 #~ msgctxt "@info:status"
 #~ msgid "Global stack is missing."
