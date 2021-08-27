@@ -18,7 +18,8 @@ class IntentDatabaseHandler(DatabaseMetadataContainerController):
                                 setting_version = ?
                             WHERE id = ?
                         """,
-            select_query = "SELECT * FROM intents where id = ?",
+            select_query = "SELECT * FROM intents WHERE id = ?",
+            delete_query = "DELETE FROM intents WHERE id = ?",
             table_query="""CREATE TABLE intents
                (
                    id text,

@@ -15,7 +15,8 @@ class VariantDatabaseHandler(DatabaseMetadataContainerController):
                                     setting_version = ?
                                 WHERE id = ?
                            """,
-            select_query= "SELECT * FROM variants where id = ?",
+            select_query = "SELECT * FROM variants WHERE id = ?",
+            delete_query = "DELETE FROM variants WHERE id = ?",
             table_query = """CREATE TABLE variants
                 (
                     id text,

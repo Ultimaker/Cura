@@ -18,7 +18,8 @@ class QualityDatabaseHandler(DatabaseMetadataContainerController):
                                     setting_version = ?
                                 WHERE id = ?
                             """,
-            select_query = "SELECT * FROM qualities where id = ?",
+            select_query = "SELECT * FROM qualities WHERE id = ?",
+            delete_query = "DELETE FROM qualities WHERE id = ?",
             table_query = """CREATE TABLE qualities
                 (
                     id text,
