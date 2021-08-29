@@ -41,14 +41,17 @@
             ]
         },
         
+        
+        
+        "machine_firmware_retract":  { "default_value": true },
         "retraction_amount": { "default_value": 0.75, "value": 0.75 },
         "retraction_speed": { "default_value": 15.0, "value": 15.0 }, 
         "retraction_extrusion_window": { "value":  "retraction_amount * 2" },
 
         "machine_heat_zone_length":  { "default_value": 16.0 },
         
-        "switch_extruder_retraction_amount": { "value": 16},
-        "switch_extruder_retraction_speed": { "value": 15.0 },
+        "switch_extruder_retraction_amount": { "value": 0},
+        "switch_extruder_retraction_speed": { "value": 0.0 },
         "switch_extruder_prime_speed": { "value": 15.0 },
         "switch_extruder_extra_prime_amount": { "default_value": 0 },
         
