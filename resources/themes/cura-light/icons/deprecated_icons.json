@@ -339,6 +339,10 @@
         "new_icon": "Link",
         "size": "default"
     },
+    "play": {
+        "new_icon": "Play",
+        "size": "default"
+    },
     "print_time": {
         "new_icon": "Clock",
         "size": "default"
