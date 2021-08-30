@@ -51,7 +51,7 @@ Item
                 anchors.centerIn: parent
                 color: UM.Theme.getColor("monitor_icon_primary")
                 height: UM.Theme.getSize("medium_button_icon").width
-                source: "../svg/icons/Buildplate.svg"
+                source: UM.Theme.getIcon("Buildplate")
                 width: height
                 visible: buildplate
             }

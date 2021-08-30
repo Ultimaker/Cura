@@ -306,5 +306,9 @@
     "translate": {
         "new_icon": "ArrowFourWay",
         "size": "default"
+    },
+    "buildplate": {
+        "new_icon": "Buildplate",
+        "size": "default"
     }
 }
