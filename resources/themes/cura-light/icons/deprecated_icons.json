@@ -331,6 +331,10 @@
         "new_icon": "ChevronSingleDown",
         "size": "default"
     },
+    "group": {
+        "new_icon": "Group",
+        "size": "default"
+    },
     "link": {
         "new_icon": "Link",
         "size": "default"
