@@ -49,6 +49,7 @@ Item
             anchors.right: parent.right
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             placeholderText:  catalog.i18nc("@label:textbox", "Search settings")
+            font.italic: true
 
             property var expandedCategories
             property bool lastFindingSettings: false
