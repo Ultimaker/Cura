@@ -391,7 +391,11 @@
         "new_icon": "CancelBlock",
         "size": "default"
     },
-    "viewMode": {
+    "view_normal": {
+        "new_icon": "Infill0",
+        "size": "default"
+    },
+    "viewmode": {
         "new_icon": "Eye",
         "size": "default"
     }
