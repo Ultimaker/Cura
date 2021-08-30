@@ -19,26 +19,9 @@ Item
     property Action configureSettings
     property bool findingSettings
 
-    Rectangle
+    Item
     {
         id: filterContainer
-        visible: true
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color:
-        {
-            if (hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
-            {
-                return UM.Theme.getColor("setting_control_border_highlight")
-            }
-            else
-            {
-                return UM.Theme.getColor("setting_control_border")
-            }
-        }
-
-        color: UM.Theme.getColor("setting_control")
 
         anchors
         {
@@ -48,6 +31,7 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         height: UM.Theme.getSize("print_setup_big_item").height
+
         Timer
         {
             id: settingsSearchTimer
@@ -57,32 +41,34 @@ Item
             repeat: false
         }
 
-        TextField
+        Cura.TextField
         {
             id: filter
             height: parent.height
             anchors.left: parent.left
-            anchors.right: clearFilterButton.left
-            anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
-
-            placeholderText:
-            {
-                var imageSize = "width='" + UM.Theme.getSize("small_button_icon").width + "' height='" + UM.Theme.getSize("small_button_icon").height
-                var imageSource = "' src='"+ UM.Theme.getIcon("Magnifier")
-                var searchPlaceholder = catalog.i18nc("@label:textbox", "Search settings")
-                return "<img align='middle' " + imageSize + imageSource +"'>" +  "<div vertical-align=bottom>" + searchPlaceholder
-            }
-
-            style: TextFieldStyle
-            {
-                textColor: UM.Theme.getColor("setting_control_text")
-                placeholderTextColor: UM.Theme.getColor("setting_filter_field")
-                font: UM.Theme.getFont("default_italic")
-                background: Item {}
-            }
+            anchors.right: parent.right
+            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
+            placeholderText:  catalog.i18nc("@label:textbox", "Search settings")
+            font.italic: true
 
             property var expandedCategories
             property bool lastFindingSettings: false
+
+            UM.RecolorImage
+            {
+                id: searchIcon
+
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+                source: UM.Theme.getIcon("search")
+                height: UM.Theme.getSize("small_button_icon").height
+                width: height
+                color: UM.Theme.getColor("text")
+            }
 
             onTextChanged:
             {
@@ -125,15 +111,6 @@ Item
                     definitionsModel.showAll = false
                 }
             }
-        }
-
-        MouseArea
-        {
-            id: hoverMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.NoButton
-            cursorShape: Qt.IBeamCursor
         }
 
         UM.SimpleButton
