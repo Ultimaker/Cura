@@ -179,11 +179,16 @@ class MachineManager(QObject):
             self.setActiveMachine(active_machine_id)
 
     def _onOutputDevicesChanged(self) -> None:
-        self._printer_output_devices = []
-        for printer_output_device in self._application.getOutputDeviceManager().getOutputDevices():
-            if isinstance(printer_output_device, PrinterOutputDevice):
-                self._printer_output_devices.append(printer_output_device)
-
+        try:
+            output_devices = [d for d in self._application.getOutputDeviceManager().getOutputDevices() if
+                              isinstance(d, PrinterOutputDevice)]
+        except RuntimeError as e:
+            if "dictionary changed size during iteration" in str(e):
+                Logger.warning("The number of output devices changed while processing the previous changed number of output devices.")
+                return
+            else:
+                raise RuntimeError from e
+        self._printer_output_devices = output_devices
         self.outputDevicesChanged.emit()
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
