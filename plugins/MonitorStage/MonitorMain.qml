@@ -159,7 +159,7 @@ Rectangle
             {
                 anchors.fill: parent
                 hoverEnabled: true
-                onClicked: Qt.openUrlExternally("https://ultimaker.com/en/resources/manuals/ultimaker-3d-printers")
+                onClicked: Qt.openUrlExternally("https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=monitor-not-connected")
                 onEntered: manageQueueText.font.underline = true
                 onExited: manageQueueText.font.underline = false
             }
