@@ -468,6 +468,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
+                return
             else:
                 self.setState(BackendState.NotStarted)
 
