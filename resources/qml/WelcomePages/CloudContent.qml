@@ -172,7 +172,7 @@ Item
                         anchors.horizontalCenter: communityColumn.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("Group", "high")
+                        source: UM.Theme.getIcon("People", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
