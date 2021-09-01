@@ -13,6 +13,7 @@ from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
+from UM.OutputDevice import OutputDevice
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -67,7 +68,8 @@ class PrintInformation(QObject):
         self._application.globalContainerStackChanged.connect(self._updateJobName)
         self._application.globalContainerStackChanged.connect(self.setToZeroPrintInformation)
         self._application.fileLoaded.connect(self.setBaseName)
-        self._application.workspaceLoaded.connect(self._onWorkspaceLoaded)
+        self._application.workspaceLoaded.connect(self.setProjectName)
+        self._application.getOutputDeviceManager().writeStarted.connect(self._onOutputStart)
         self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
         self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
@@ -440,6 +442,12 @@ class PrintInformation(QObject):
 
         self.setToZeroPrintInformation(self._active_build_plate)
 
-    def _onWorkspaceLoaded(self, new_name: str) -> None:
-        """Update the job name whenever a new workspace is loaded."""
-        self.setJobName(os.path.splitext(os.path.basename(new_name))[0])
+    def _onOutputStart(self, output_device: OutputDevice) -> None:
+        """If this is the sort of output 'device' (like local or online file storage, rather than a printer),
+           the user could have altered the file-name, and thus the project name should be altered as well."""
+        new_name = output_device.getLastOutputName()
+        if new_name is not None:
+            if len(os.path.dirname(new_name)) > 0:
+                self.setProjectName(new_name)
+            else:
+                self.setJobName(new_name)
