@@ -105,8 +105,10 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         self.enabled = logged_in and self._controller.userAccountHasLibraryAccess()
         self.enabledChanged.emit()
 
-    def _onWriteStarted(self) -> None:
+    def _onWriteStarted(self, new_name: Optional[str] = None) -> None:
         self._writing = True
+        if new_name:
+            self.setLastOutputName(new_name)  # On saving, the user can change the name, this should propagate.
         self.writeStarted.emit(self)
 
     def _onWriteFinished(self) -> None:
