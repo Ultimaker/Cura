@@ -1,5 +1,3 @@
-from typing import Generator
-
 from UM.Settings.SQLQueryFactory import SQLQueryFactory, metadata_type
 from UM.Settings.DatabaseContainerMetadataController import DatabaseMetadataContainerController
 from UM.Settings.InstanceContainer import InstanceContainer

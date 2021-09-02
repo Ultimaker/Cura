@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
 from UM.Settings.ContainerFormatError import ContainerFormatError
-from UM.Settings.DatabaseContainerMetadataController import DatabaseMetadataContainerController
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
