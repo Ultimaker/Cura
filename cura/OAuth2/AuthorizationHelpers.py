@@ -3,7 +3,7 @@
 
 from datetime import datetime
 import json
-import random
+import secrets
 from hashlib import sha512
 from base64 import b64encode
 from typing import Optional
@@ -143,7 +143,7 @@ class AuthorizationHelpers:
         better to leave it at 32
         """
 
-        return "".join(random.choice("0123456789ABCDEF") for i in range(code_length))
+        return "".join(secrets.choice("0123456789ABCDEF") for i in range(code_length))
 
     @staticmethod
     def generateVerificationCodeChallenge(verification_code: str) -> str:
