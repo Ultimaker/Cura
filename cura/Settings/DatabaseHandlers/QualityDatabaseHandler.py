@@ -1,6 +1,5 @@
 from UM.Settings.SQLQueryFactory import SQLQueryFactory, metadata_type
 from UM.Settings.DatabaseContainerMetadataController import DatabaseMetadataContainerController
-from UM.Settings.InstanceContainer import InstanceContainer
 
 
 class QualityDatabaseHandler(DatabaseMetadataContainerController):
@@ -9,7 +8,6 @@ class QualityDatabaseHandler(DatabaseMetadataContainerController):
     def __init__(self):
         super().__init__(SQLQueryFactory(table = "qualities",
                                          fields = {
-                                             "id": "text",
                                              "name": "text",
                                              "quality_type": "text",
                                              "material": "text",
@@ -19,7 +17,6 @@ class QualityDatabaseHandler(DatabaseMetadataContainerController):
                                              "version": "text",
                                              "setting_version": "text"
                                          }))
-        self.container_type = InstanceContainer
 
     def groomMetadata(self, metadata: metadata_type) -> metadata_type:
         """
