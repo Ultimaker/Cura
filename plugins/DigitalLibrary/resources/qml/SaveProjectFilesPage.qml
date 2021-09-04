@@ -200,7 +200,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Save"
-        enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1
+        enabled: (asProjectCheckbox.checked || asSlicedCheckbox.checked) && dfFilenameTextfield.text.length >= 1 && dfFilenameTextfield.state !== 'invalid'
 
         onClicked:
         {
