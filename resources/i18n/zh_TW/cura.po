@@ -1504,8 +1504,6 @@ msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
 msgstr[0] ""
-msgid ""
-msgid_plural ""
 "你將從 Cura 移除 {0} 印表機。此動作無法復原。\n"
 "你確定要繼續嗎？"
 
