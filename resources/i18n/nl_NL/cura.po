@@ -474,7 +474,7 @@ msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: <message>{
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: Invoegtoepassing voor de schrijver heeft een fout gerapporteerd."
+msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: Plug-in voor de schrijver heeft een fout gerapporteerd."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Settings/CuraContainerRegistry.py:163
 #, python-brace-format
@@ -1308,7 +1308,7 @@ msgstr "Akkoord"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:74
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
-msgstr "Licentieovereenkomst invoegtoepassing"
+msgstr "Licentieovereenkomst plug-in"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/LicensePresenter.py:38
 msgctxt "@button"
@@ -1905,7 +1905,7 @@ msgstr "Profielen"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItemDetails.qml:53
 msgctxt "@backuplist:label"
 msgid "Plugins"
-msgstr "Invoegtoepassingen"
+msgstr "Plug-ins"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/qml/main.qml:25
 msgctxt "@title:window"
@@ -2366,7 +2366,7 @@ msgstr "Alles weergeven"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:20
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
-msgstr "Invoegtoepassing voor Nabewerking"
+msgstr "Plug-in voor Nabewerking"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:59
 msgctxt "@label"
@@ -2625,7 +2625,7 @@ msgstr "Sluit %1"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:30
 msgctxt "@title:tab"
 msgid "Plugins"
-msgstr "Invoegtoepassingen"
+msgstr "Plug-ins"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:475
@@ -2761,7 +2761,7 @@ msgstr "Community-bijdragen"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDownloadsPage.qml:33
 msgctxt "@label"
 msgid "Community Plugins"
-msgstr "Community-invoegtoepassingen"
+msgstr "Community-plug-ins"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDownloadsPage.qml:42
 msgctxt "@label"
@@ -5830,7 +5830,7 @@ msgstr "Biedt hotplug- en schrijfondersteuning voor verwisselbare stations."
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
-msgstr "Invoegtoepassing voor Verwijderbaar uitvoerapparaat"
+msgstr "Plug-in voor Verwijderbaar Uitvoerapparaat"
 
 #: SentryLogger/plugin.json
 msgctxt "description"
@@ -5945,7 +5945,7 @@ msgstr "Ultimaker-netwerkverbinding"
 #: USBPrinting/plugin.json
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Hiermee accepteert u G-code en verzendt u deze code naar een printer. Via de invoegtoepassing kan tevens de firmware worden bijgewerkt."
+msgstr "Hiermee accepteert u G-code en verzendt u deze code naar een printer. Via de plug-in kan tevens de firmware worden bijgewerkt."
 
 #: USBPrinting/plugin.json
 msgctxt "name"
@@ -6426,7 +6426,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@description"
 #~ msgid "Get plugins and materials verified by Ultimaker"
-#~ msgstr "Krijg invoegtoepassingen en materialen die door Ultimaker zijn geverifieerd"
+#~ msgstr "Krijg plug-ins en materialen die door Ultimaker zijn geverifieerd"
 
 #~ msgctxt "@label The argument is a username."
 #~ msgid "Hi %1"
@@ -6612,8 +6612,8 @@ msgstr "Röntgenweergave"
 #~ "You need to accept this license to install this plugin.\n"
 #~ "Do you agree with the terms below?"
 #~ msgstr ""
-#~ "Deze invoegtoepassing bevat een licentie.\n"
-#~ "U moet akkoord gaan met deze licentie om deze invoegtoepassing te mogen installeren.\n"
+#~ "Deze plug-in bevat een licentie.\n"
+#~ "U moet akkoord gaan met deze licentie om deze plug-in te mogen installeren.\n"
 #~ "Gaat u akkoord met de onderstaande voorwaarden?"
 
 #~ msgctxt "@action:button"
@@ -8008,7 +8008,7 @@ msgstr "Röntgenweergave"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
 #~ "Beste klant,\n"
-#~ "Momenteel voert u deze invoegtoepassing uit op een ander besturingssysteem dan Windows. Deze invoegtoepassing werkt alleen op systemen waarop Windows en SolidWorks met een geldige licentie zijn geïnstalleerd. Installeer deze invoegtoepassing op een Windows-systeem waarop SolidWorks is geïnstalleerd.\n"
+#~ "Momenteel voert u deze plug-in uit op een ander besturingssysteem dan Windows. Deze plug-in werkt alleen op systemen waarop Windows en SolidWorks met een geldige licentie zijn geïnstalleerd. Installeer deze plug-in op een Windows-systeem waarop SolidWorks is geïnstalleerd.\n"
 #~ "\n"
 #~ "Met vriendelijke groeten\n"
 #~ " - Thomas Karl Pietrowski"
@@ -8031,20 +8031,20 @@ msgstr "Röntgenweergave"
 #~ msgstr "Installeren"
 
 #~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR. It is not set to a directory."
-#~ msgstr "Kan de bestanden voor de Siemens NX-invoegtoepassingen niet kopiëren. Controleer uw UGII_USER_DIR. Deze is niet ingesteld op een map."
+#~ msgstr "Kan de bestanden voor de Siemens NX-plug-ins niet kopiëren. Controleer uw UGII_USER_DIR. Deze is niet ingesteld op een map."
 
 #~ msgid "Successfully installed Siemens NX Cura plugin."
-#~ msgstr "De Siemens NX Cura-invoegtoepassing is geïnstalleerd."
+#~ msgstr "De Siemens NX Cura-plug-in is geïnstalleerd."
 
 #~ msgid "Failed to copy Siemens NX plugins files. Please check your UGII_USER_DIR."
-#~ msgstr "Kan de bestanden voor de Siemens NX-invoegtoepassingen niet installeren. Controleer uw UGII_USER_DIR."
+#~ msgstr "Kan de bestanden voor de Siemens NX-plug-ins niet installeren. Controleer uw UGII_USER_DIR."
 
 #~ msgid "Failed to install Siemens NX plugin. Could not set environment variable UGII_USER_DIR for Siemens NX."
-#~ msgstr "Kan de Siemens NX-invoegtoepassing niet installeren. Het instellen van de omgevingsvariabele UGII_USER_DIR voor Siemens NX is mislukt."
+#~ msgstr "Kan de Siemens NX-plug-in niet installeren. Het instellen van de omgevingsvariabele UGII_USER_DIR voor Siemens NX is mislukt."
 
 #~ msgctxt "@info:status"
 #~ msgid "Failed to get plugin ID from <filename>{0}</filename>"
-#~ msgstr "Kan de invoegtoepassing-ID van <filename>{0}</filename> niet vinden"
+#~ msgstr "Kan de plug-in-ID van <filename>{0}</filename> niet vinden"
 
 #~ msgctxt "@info:tile"
 #~ msgid "Warning"
@@ -8052,7 +8052,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@window:title"
 #~ msgid "Plugin browser"
-#~ msgstr "Invoegtoepassingbrowser"
+#~ msgstr "plug-in-browser"
 
 #~ msgctxt "@label"
 #~ msgid "Ultimaker 3"
@@ -8140,7 +8140,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@title:window"
 #~ msgid "SolidWorks plugin: Configuration"
-#~ msgstr "SolidWorks-invoegtoepassing: configuratie"
+#~ msgstr "SolidWorks-plug-in: configuratie"
 
 #~ msgctxt "@title:tab"
 #~ msgid "Conversion settings"
@@ -8196,7 +8196,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@action:menu"
 #~ msgid "Browse plugins..."
-#~ msgstr "Door invoegtoepassingen bladeren..."
+#~ msgstr "Door plug-ins bladeren..."
 
 #~ msgctxt "@title:menu menubar:toplevel"
 #~ msgid "P&lugins"
@@ -8204,7 +8204,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@window:title"
 #~ msgid "Install Plugin"
-#~ msgstr "Invoegtoepassing installeren"
+#~ msgstr "plug-in installeren"
 
 #~ msgctxt "description"
 #~ msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc)"
@@ -8216,7 +8216,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "description"
 #~ msgid "Gives you the possibility to open certain files using SolidWorks itself. Conversion is done by this plugin and additional optimizations."
-#~ msgstr "Deze optie biedt u de mogelijkheid bepaalde bestanden via SolidWorks te openen. De bestanden worden vervolgens via deze invoegtoepassing geconverteerd en geoptimaliseerd."
+#~ msgstr "Deze optie biedt u de mogelijkheid bepaalde bestanden via SolidWorks te openen. De bestanden worden vervolgens via deze plug-in geconverteerd en geoptimaliseerd."
 
 #~ msgctxt "name"
 #~ msgid "SolidWorks Integration"
@@ -8240,11 +8240,11 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "description"
 #~ msgid "Find, manage and install new plugins."
-#~ msgstr "Zoek, beheer en installeer nieuwe invoegtoepassingen."
+#~ msgstr "Zoek, beheer en installeer nieuwe plug-ins."
 
 #~ msgctxt "name"
 #~ msgid "Plugin Browser"
-#~ msgstr "Invoegtoepassingbrowser"
+#~ msgstr "plug-in-browser"
 
 #~ msgctxt "description"
 #~ msgid "Ask the user once if he/she agrees with our license"
@@ -8511,11 +8511,11 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@title:window"
 #~ msgid "Find & Update plugins"
-#~ msgstr "Invoegtoepassingen zoeken en bijwerken"
+#~ msgstr "Plug-ins zoeken en bijwerken"
 
 #~ msgctxt "@label"
 #~ msgid "Here you can find a list of Third Party plugins."
-#~ msgstr "Hier vindt u een lijst met invoegtoepassingen van derden."
+#~ msgstr "Hier vindt u een lijst met plug-ins van derden."
 
 #~ msgctxt "@action:button"
 #~ msgid "Upgrade"
@@ -8653,7 +8653,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@title:window"
 #~ msgid "Cura SolidWorks Plugin Configuration"
-#~ msgstr "Configuratie Cura SolidWorks-invoegtoepassing"
+#~ msgstr "Configuratie Cura SolidWorks-plug-in"
 
 #~ msgctxt "@action:label"
 #~ msgid "Default quality of the exported STL:"
@@ -8753,7 +8753,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@menuitem"
 #~ msgid "Browse plugins"
-#~ msgstr "Door invoegtoepassingen bladeren"
+#~ msgstr "Door plug-ins bladeren"
 
 #~ msgctxt "@info:title"
 #~ msgid "Export Details"
@@ -8807,8 +8807,8 @@ msgstr "Röntgenweergave"
 #~ "You need to accept this license to install this plugin.\n"
 #~ "Do you agree with the terms below?"
 #~ msgstr ""
-#~ " invoegtoepassing bevat een licentie.\n"
-#~ "U moet akkoord gaan met deze licentie om deze invoegtoepassing te mogen installeren.\n"
+#~ " plug-in bevat een licentie.\n"
+#~ "U moet akkoord gaan met deze licentie om deze plug-ins te mogen installeren.\n"
 #~ "Gaat u akkoord met onderstaande voorwaarden?"
 
 #~ msgctxt "@label"
@@ -8900,7 +8900,7 @@ msgstr "Röntgenweergave"
 #~ msgstr "Lagen"
 
 #~ msgid "Browse plugins"
-#~ msgstr "Vind invoegtoepassingen"
+#~ msgstr "Vind plug-ins"
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Solid"
@@ -8916,7 +8916,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@info:status"
 #~ msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-#~ msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: de invoegtoepassing voor de schrijver heeft een fout gerapporteerd."
+#~ msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: de plug-in voor de schrijver heeft een fout gerapporteerd."
 
 #~ msgctxt "@info:status"
 #~ msgid "Exported profile to <filename>{0}</filename>"
@@ -9084,7 +9084,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-#~ msgstr "Accepteert G-code en verzendt deze code naar een printer. Via de invoegtoepassing kan tevens de firmware worden bijgewerkt."
+#~ msgstr "Accepteert G-code en verzendt deze code naar een printer. Via de plug-in kan tevens de firmware worden bijgewerkt."
 
 #~ msgctxt "X3G Writer Plugin Description"
 #~ msgid "Writes X3G to a file"
@@ -9092,7 +9092,7 @@ msgstr "Röntgenweergave"
 
 #~ msgctxt "@label"
 #~ msgid "Removable Drive Output Device Plugin"
-#~ msgstr "Invoegtoepassing voor Verwijderbaar Uitvoerapparaat"
+#~ msgstr "Plug-in voor Verwijderbaar Uitvoerapparaat"
 
 #~ msgctxt "@info:whatsthis"
 #~ msgid "Provides removable drive hotplugging and writing support."
