@@ -82,7 +82,7 @@ msgstr "GUID Materiału"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "GUID of the material. This is set automatically."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -227,12 +227,12 @@ msgstr "Określa czy drukarka posiada zamkniętą komorę stabilizującą temper
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
-msgstr ""
+msgstr "Always Write Active Tool"
 
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool description"
 msgid "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
-msgstr ""
+msgstr "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -412,32 +412,35 @@ msgstr "Używaj komend retrakcji (G10/G11) zamiast używać współrzędną E w 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
-msgstr ""
+msgstr "Extruders Share Heater"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr ""
+msgstr "Whether the extruders share a single heater rather than each extruder having its own heater."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle label"
 msgid "Extruders Share Nozzle"
-msgstr ""
+msgstr "Extruders Share Nozzle"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
-msgstr ""
+msgstr "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode"
+" script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted);"
+" in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
 msgid "Shared Nozzle Initial Retraction"
-msgstr ""
+msgstr "Shared Nozzle Initial Retraction"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
 msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
-msgstr ""
+msgstr "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script;"
+" the value should be equal to or greater than the length of the common part of the nozzle's ducts."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -507,7 +510,7 @@ msgstr "Przesunięcie ekstrudera"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
-msgstr ""
+msgstr "Apply the extruder offset to the coordinate system. Affects all extruders."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -687,7 +690,7 @@ msgstr "Kroki na milimetr (E)"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -902,7 +905,7 @@ msgstr "Mnożnik szerokości linii na pierwszej warstwie. Zwiększenie może pol
 #: fdmprinter.def.json
 msgctxt "shell label"
 msgid "Walls"
-msgstr ""
+msgstr "Walls"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -1122,12 +1125,12 @@ msgstr "Wartość przesunięcia dodawana do wszystkich powierzchni na pierwszej 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "Hole Horizontal Expansion"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -1277,12 +1280,12 @@ msgstr "Kiedy włączone, współrzędne szwu są względne do każdego środka 
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Top/Bottom"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr ""
+msgstr "Top/Bottom"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1437,12 +1440,13 @@ msgstr "Połącz górne/dolne ścieżki, które przebiegają koło siebie. Włą
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "Monotonic Top/Bottom Order"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print,"
+" but makes flat surfaces look more consistent."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1517,12 +1521,13 @@ msgstr "Zygzak"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "Monotonic Ironing Order"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print,"
+" but makes flat surfaces look more consistent."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1672,7 +1677,9 @@ msgstr "Maks. Kąt Rozciągania Ścian"
 #: fdmprinter.def.json
 msgctxt "max_skin_angle_for_expansion description"
 msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
-msgstr ""
+msgstr "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the"
+" narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded,"
+" while an angle of 90° is vertical and will cause all skin to be expanded."
 
 #: fdmprinter.def.json
 msgctxt "min_skin_width_for_expansion label"
@@ -1996,22 +2003,22 @@ msgstr "Minimalny kąt zwisu wewnętrznego, dla którego zostanie dodane wypełn
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
-msgstr ""
+msgstr "Skin Edge Support Thickness"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness description"
 msgid "The thickness of the extra infill that supports skin edges."
-msgstr ""
+msgstr "The thickness of the extra infill that supports skin edges."
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers label"
 msgid "Skin Edge Support Layers"
-msgstr ""
+msgstr "Skin Edge Support Layers"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
-msgstr ""
+msgstr "The number of infill layers that supports skin edges."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2111,7 +2118,7 @@ msgstr "Temperatura Stołu"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2121,7 +2128,7 @@ msgstr "Temp. Stołu na Pierw. Warstwie"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2146,12 +2153,12 @@ msgstr "Energia powierzchni."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Scaling Factor Shrinkage Compensation"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2206,12 +2213,12 @@ msgstr "Jak szybko filament musi zostać wycofany, aby pękł podczas cofania."
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature label"
 msgid "Break Preparation Temperature"
-msgstr ""
+msgstr "Break Preparation Temperature"
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature description"
 msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
-msgstr ""
+msgstr "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
@@ -2246,62 +2253,64 @@ msgstr "Temperatura, w której filament można złamać na czysto."
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
-msgstr ""
+msgstr "Flush Purge Speed"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "How fast to prime the material after switching to a different material."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
-msgstr ""
+msgstr "Flush Purge Length"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "End of Filament Purge Speed"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "End of Filament Purge Length"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the"
+" same material."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
 msgid "Maximum Park Duration"
-msgstr ""
+msgstr "Maximum Park Duration"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "How long the material can be kept out of dry storage safely."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
-msgstr ""
+msgstr "No Load Move Factor"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for"
+" a filament switch."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2611,7 +2620,8 @@ msgstr "Prędk. Początk. Warstwy"
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
 msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
-msgstr ""
+msgstr "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves,"
+" like brim and raft."
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3081,7 +3091,7 @@ msgstr "Włącz Retrakcję"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Retract the filament when the nozzle is moving over a non-printed area."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3221,7 +3231,8 @@ msgstr "Max. Dystans Kombinowania Bez Retrakcji"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr ""
+msgstr "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves"
+" will not use retraction."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -3536,22 +3547,24 @@ msgstr "Ekstruder używany do druku podłoża podpory. Służy do multi-ekstruzj
 #: fdmprinter.def.json
 msgctxt "support_structure label"
 msgid "Support Structure"
-msgstr ""
+msgstr "Support Structure"
 
 #: fdmprinter.def.json
 msgctxt "support_structure description"
 msgid "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr ""
+msgstr "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops"
+" those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows"
+" the branches to crawl around the model to support it from the build plate as much as possible."
 
 #: fdmprinter.def.json
 msgctxt "support_structure option normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: fdmprinter.def.json
 msgctxt "support_structure option tree"
 msgid "Tree"
-msgstr ""
+msgstr "Tree"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_angle label"
@@ -3846,7 +3859,7 @@ msgstr "Min. Odległość X/Y Podpory"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "Distance of the support structure from the overhang in the X/Y directions."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -3871,12 +3884,13 @@ msgstr "Maksymalna szerokość stopni dołu schodkowego podpory opartej na model
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope label"
 msgid "Support Stair Step Minimum Slope Angle"
-msgstr ""
+msgstr "Support Stair Step Minimum Slope Angle"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
-msgstr ""
+msgstr "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values"
+" may result in some very counter-intuitive results on other parts of the model."
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance label"
@@ -4326,12 +4340,12 @@ msgstr "Twórz podpory wszędzie pod siatką podpory, tak aby nie było zwisu w 
 #: fdmprinter.def.json
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
-msgstr ""
+msgstr "Scene Has Support Meshes"
 
 #: fdmprinter.def.json
 msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
-msgstr ""
+msgstr "There are support meshes present in the scene. This setting is controlled by Cura."
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -4470,12 +4484,13 @@ msgstr "Liczba linii używana dla obrysu. Więcej linii obrysu poprawia przyczep
 #: fdmprinter.def.json
 msgctxt "brim_gap label"
 msgid "Brim Distance"
-msgstr ""
+msgstr "Brim Distance"
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr ""
+msgstr "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while"
+" still providing the thermal benefits."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4965,7 +4980,7 @@ msgstr "Poprawki Siatki"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "Make the meshes more suited for 3D printing."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -5085,7 +5100,7 @@ msgstr "Specjalne Tryby"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "Non-traditional ways to print your models."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5095,7 +5110,9 @@ msgstr "Sekwencja Wydruku"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr ""
+msgstr "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a)"
+" only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than"
+" the distance between the nozzle and the X/Y axes."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5120,12 +5137,13 @@ msgstr "Użyj tej siatki, aby zmodyfikować wypełnienie innych siatek, z który
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Mesh Processing Rank"
-msgstr ""
+msgstr "Mesh Processing Rank"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
-msgstr ""
+msgstr "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings"
+" of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5260,7 +5278,7 @@ msgstr "Eksperymentalne"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "Features that haven't completely been fleshed out yet."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5270,7 +5288,10 @@ msgstr "Tolerancja Cięcia"
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance description"
 msgid "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle stays closest to the original surface."
-msgstr ""
+msgstr "Vertical tolerance in the sliced layers. The contours of a layer are normally generated by taking cross sections through the middle of each layer's thickness"
+" (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the entire thickness of the layer (Exclusive) or a layer"
+" has the areas which fall inside anywhere within the layer (Inclusive). Inclusive retains the most details, Exclusive makes for the best fit and Middle"
+" stays closest to the original surface."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance option middle"
@@ -5325,12 +5346,13 @@ msgstr "Zygzak"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "Monotonic Top Surface Order"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print,"
+" but makes flat surfaces look more consistent."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -5485,12 +5507,13 @@ msgstr "Maksymalny kąt zwisów po którym będą one drukowalne. Przy wartości
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size label"
 msgid "Maximum Overhang Hole Area"
-msgstr ""
+msgstr "Maximum Overhang Hole Area"
 
 #: fdmprinter.def.json
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
-msgstr ""
+msgstr "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value"
+" of 0 mm² will fill all holes in the models base."
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
@@ -5605,12 +5628,12 @@ msgstr "Losowe drgania podczas drukowania zewnętrznej ściany, dzięki czemu po
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only label"
 msgid "Fuzzy Skin Outside Only"
-msgstr ""
+msgstr "Fuzzy Skin Outside Only"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
-msgstr ""
+msgstr "Jitter only the parts' outlines and not the parts' holes."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -6014,12 +6037,12 @@ msgstr "Jeśli obszar skóry jest podpierany w mniejszym procencie jego powierzc
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density label"
 msgid "Bridge Sparse Infill Max Density"
-msgstr ""
+msgstr "Bridge Sparse Infill Max Density"
 
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr ""
+msgstr "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6189,7 +6212,8 @@ msgstr "Wytrzyj dyszę pomiędzy warstwami"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change."
+" Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6199,7 +6223,8 @@ msgstr "Objętość materiału między czyszczeniem"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr ""
+msgstr "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the"
+" setting has no effect in this layer, i.e. it is limited to one wipe per layer."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6254,7 +6279,7 @@ msgstr "Prędkość, z jaką jest wykonywana retrakcja podczas ruchu czyszczenia
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Wipe Retraction Prime Speed"
-msgstr ""
+msgstr "Wipe Retraction Prime Speed"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6274,12 +6299,13 @@ msgstr "Wstrzymaj czyszczenie, jeśli brak retrakcji."
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop"
-msgstr ""
+msgstr "Wipe Z Hop"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel"
+" moves, reducing the chance to knock the print from the build plate."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"

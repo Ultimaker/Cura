@@ -704,7 +704,7 @@ msgstr "其它"
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/TextManager.py:61
 msgctxt "@text:window"
 msgid "The release notes could not be opened."
-msgstr ""
+msgstr "The release notes could not be opened."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/WelcomePagesModel.py:56
 #: /home/trin/Gedeeld/Projects/Cura/cura/UI/WelcomePagesModel.py:259
@@ -864,22 +864,22 @@ msgstr "管理備份"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:161
 msgctxt "@message"
 msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
-msgstr ""
+msgstr "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:162
 msgctxt "@message:title"
 msgid "Slicing failed"
-msgstr ""
+msgstr "Slicing failed"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:166
 msgctxt "@message:button"
 msgid "Report a bug"
-msgstr ""
+msgstr "Report a bug"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:167
 msgctxt "@message:description"
 msgid "Report a bug on Ultimaker Cura's issue tracker."
-msgstr ""
+msgstr "Report a bug on Ultimaker Cura's issue tracker."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:394
 msgctxt "@info:status"
@@ -958,13 +958,14 @@ msgstr "無法存取更新資訊。"
 #, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
-msgstr ""
+msgstr "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer"
+" to version {latest_version}."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
 #, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
-msgstr ""
+msgstr "New %s stable firmware available"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:28
 msgctxt "@action:button"
@@ -1242,7 +1243,7 @@ msgstr "分層檢視"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SliceInfoPlugin/SliceInfo.py:95
 msgctxt "@text"
 msgid "Unable to read example data file."
-msgstr ""
+msgstr "Unable to read example data file."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
@@ -1399,12 +1400,12 @@ msgstr "透過雲端服務連接"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:261
 msgctxt "@action:button"
 msgid "Monitor print"
-msgstr ""
+msgstr "Monitor print"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:263
 msgctxt "@action:tooltip"
 msgid "Track the print in Ultimaker Digital Factory"
-msgstr ""
+msgstr "Track the print in Ultimaker Digital Factory"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:279
 #, python-brace-format
@@ -1503,6 +1504,8 @@ msgid_plural ""
 "You are about to remove {0} printers from Cura. This action cannot be undone.\n"
 "Are you sure you want to continue?"
 msgstr[0] ""
+msgid ""
+msgid_plural ""
 "你將從 Cura 移除 {0} 印表機。此動作無法復原。\n"
 "你確定要繼續嗎？"
 
@@ -3085,7 +3088,7 @@ msgstr "請更新你印表機的韌體以便遠端管理工作隊列。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:288
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura."
-msgstr ""
+msgstr "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
@@ -4600,7 +4603,7 @@ msgstr "更多資訊"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:811
 msgctxt "@label"
 msgid "Updates"
-msgstr ""
+msgstr "Updates"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:818
 msgctxt "@info:tooltip"
@@ -4615,32 +4618,32 @@ msgstr "啟動時檢查更新"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:834
 msgctxt "@info:tooltip"
 msgid "When checking for updates, only check for stable releases."
-msgstr ""
+msgstr "When checking for updates, only check for stable releases."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:839
 msgctxt "@option:radio"
 msgid "Stable releases only"
-msgstr ""
+msgstr "Stable releases only"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:850
 msgctxt "@info:tooltip"
 msgid "When checking for updates, check for both stable and for beta releases."
-msgstr ""
+msgstr "When checking for updates, check for both stable and for beta releases."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:855
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
-msgstr ""
+msgstr "Stable and Beta releases"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:866
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
-msgstr ""
+msgstr "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:871
 msgctxt "@option:check"
 msgid "Get notifications for plugin updates"
-msgstr ""
+msgstr "Get notifications for plugin updates"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:40
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
