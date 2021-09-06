@@ -2,13 +2,13 @@
 # Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2021.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.11\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-08-11 09:58+0000\n"
-"PO-Revision-Date: 2021-06-14 16:21+0800\n"
+"PO-Revision-Date: 2021-08-16 20:48+0800\n"
 "Last-Translator: Valen Chang <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>/Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -688,7 +688,7 @@ msgstr "每毫米的步數（E）"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "在擠出輪旋轉一毫米時，步進馬達所需移動的步數."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1438,12 +1438,12 @@ msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時啟�
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "Monotonic列印 頂層/底層 順序"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "再列印頂層/底層線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1518,12 +1518,12 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "Monotonous燙平順序"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "再使用燙平列印線條時，命令相鄰線條於單方向重疊。雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -5326,12 +5326,12 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "頂層Monotonic列印順序"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "再列印頂層表面線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
