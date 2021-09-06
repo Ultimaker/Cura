@@ -1437,7 +1437,7 @@ msgstr "Relier les voies de couche extérieure supérieures / inférieures lor
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr "Ordre monotone haut/bas"
+msgstr "Ordre monotone dessus / dessous"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
