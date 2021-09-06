@@ -98,7 +98,7 @@ Column
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
         text: "Ultimaker Digital Factory"
-        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl)
+        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-DF")
         fixedWidthMode: false
     }
 
@@ -108,7 +108,7 @@ Column
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
         text: catalog.i18nc("@button", "Ultimaker Account")
-        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl)
+        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "?utm_source=cura&utm_medium=software&utm_campaign=menu-visit-account")
         fixedWidthMode: false
     }
 

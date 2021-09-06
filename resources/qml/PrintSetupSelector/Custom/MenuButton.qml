@@ -18,6 +18,7 @@ Button
     property string labelText: ""
     id: button
     hoverEnabled: true
+    leftPadding:UM.Theme.getSize("wide_margin").width
 
     background: Rectangle
     {
@@ -45,8 +46,6 @@ Button
         text: button.text != "" ? replaceText(button.text) : replaceText(button.labelText)
         height: contentHeight
         verticalAlignment: Text.AlignVCenter
-        anchors.left: button.left
-        anchors.leftMargin: UM.Theme.getSize("wide_margin").width
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("default")
         color: button.enabled ? UM.Theme.getColor("text") :UM.Theme.getColor("text_inactive")

@@ -159,7 +159,8 @@ class CuraEngineBackend(QObject, Backend):
 
         self._slicing_error_message = Message(
             text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
-            title = catalog.i18nc("@message:title", "Slicing failed")
+            title = catalog.i18nc("@message:title", "Slicing failed"),
+            message_type = Message.MessageType.ERROR
         )
         self._slicing_error_message.addAction(
             action_id = "report_bug",
@@ -467,6 +468,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
+                return
             else:
                 self.setState(BackendState.NotStarted)
 
