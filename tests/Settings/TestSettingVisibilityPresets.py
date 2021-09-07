@@ -19,7 +19,7 @@ def test_createVisibilityPresetFromLocalFile():
     # of the other profiles, since they might change over time.
     visibility_preset = SettingVisibilityPreset()
 
-    visibility_preset.loadFromFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "setting_visiblity_preset_test.cfg"))
+    visibility_preset.loadFromFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "setting_visibility_preset_test.cfg"))
     assert setting_visibility_preset_test_settings == set(visibility_preset.settings)
 
     assert visibility_preset.name == "test"

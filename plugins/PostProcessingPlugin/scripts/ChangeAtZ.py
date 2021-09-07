@@ -1367,11 +1367,11 @@ class ChangeAtZProcessor:
         # handle extruder temp changes
         if command.command == "M104" or command.command == "M109":
 
-            # get our tempurature
-            tempurature = command.getArgumentAsFloat("S")
+            # get our temperature
+            temperature = command.getArgumentAsFloat("S")
 
-            # don't bother if we don't have a tempurature
-            if tempurature is None:
+            # don't bother if we don't have a temperature
+            if temperature is None:
                 return
 
             # get our extruder, default to extruder one
@@ -1379,10 +1379,10 @@ class ChangeAtZProcessor:
 
             # set our extruder temp based on the extruder
             if extruder is None or extruder == 0:
-                self.lastValues["extruderOne"] = tempurature
+                self.lastValues["extruderOne"] = temperature
 
             if extruder is None or extruder == 1:
-                self.lastValues["extruderTwo"] = tempurature
+                self.lastValues["extruderTwo"] = temperature
 
             # move to the next command
             return
@@ -1401,10 +1401,10 @@ class ChangeAtZProcessor:
         if command.command == "M221":
 
             # get our flow rate
-            tempurature = command.getArgumentAsFloat("S")
+            temperature = command.getArgumentAsFloat("S")
 
             # don't bother if we don't have a flow rate (for some reason)
-            if tempurature is None:
+            if temperature is None:
                 return
 
             # get our extruder, default to global
@@ -1412,11 +1412,11 @@ class ChangeAtZProcessor:
 
             # set our extruder temp based on the extruder
             if extruder is None:
-                self.lastValues["flowrate"] = tempurature
+                self.lastValues["flowrate"] = temperature
             elif extruder == 1:
-                self.lastValues["flowrateOne"] = tempurature
+                self.lastValues["flowrateOne"] = temperature
             elif extruder == 1:
-                self.lastValues["flowrateTwo"] = tempurature
+                self.lastValues["flowrateTwo"] = temperature
 
             # move to the next command
             return

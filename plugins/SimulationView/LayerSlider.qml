@@ -300,7 +300,7 @@ Item
             // don't allow the upper handle to be lower than the lower handle
             if (y - (upperHandle.y + upperHandle.height) < sliderRoot.minimumRangeHandleSize)
             {
-                upperHandle.y = y - (upperHandle.heigth + sliderRoot.minimumRangeHandleSize)
+                upperHandle.y = y - (upperHandle.height + sliderRoot.minimumRangeHandleSize)
             }
 
             // update the range handle
