@@ -1343,7 +1343,7 @@ msgstr "gITF binární soubor"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/TrimeshReader/__init__.py:27
 msgctxt "@item:inlistbox"
 msgid "glTF Embedded JSON"
-msgstr "gITF Embedded JSON"
+msgstr "glTF Embedded JSON"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/TrimeshReader/__init__.py:36
 msgctxt "@item:inlistbox"
