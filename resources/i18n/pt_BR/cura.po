@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.11\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2021-08-11 09:59+0200\n"
-"PO-Revision-Date: 2021-08-18 02:29+0200\n"
+"PO-Revision-Date: 2021-09-07 08:07+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -1273,7 +1273,7 @@ msgstr "Binário glTF"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/TrimeshReader/__init__.py:27
 msgctxt "@item:inlistbox"
 msgid "glTF Embedded JSON"
-msgstr "JSON Embutido glTF"
+msgstr "glTF Embutido JSON"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/TrimeshReader/__init__.py:36
 msgctxt "@item:inlistbox"
@@ -2130,22 +2130,22 @@ msgstr "Ajustes da Cabeça de Impressão"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:201
 msgctxt "@label"
 msgid "X min"
-msgstr "X mín."
+msgstr "X mín"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:221
 msgctxt "@label"
 msgid "Y min"
-msgstr "Y mín."
+msgstr "Y mín"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:241
 msgctxt "@label"
 msgid "X max"
-msgstr "X máx."
+msgstr "X máx"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:261
 msgctxt "@label"
 msgid "Y max"
-msgstr "Y máx."
+msgstr "Y máx"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:279
 msgctxt "@label"
