@@ -3127,7 +3127,10 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr "- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace - Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins - Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
+msgstr ""
+"- Ajoutez des profils de matériaux et des plug-ins à partir de la Marketplace\n"
+"- Sauvegardez et synchronisez vos profils de matériaux et vos plug-ins\n"
+"- Partagez vos idées et obtenez l'aide de plus de 48 000 utilisateurs de la communauté Ultimaker"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:62
 msgctxt "@button"
