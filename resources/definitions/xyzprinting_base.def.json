@@ -32,7 +32,11 @@
         "machine_acceleration": { "value": 500 },
         "machine_max_jerk_xy": { "value": 10 },
         "machine_max_jerk_z": { "value": 0.4 },
-        "machine_max_jerk_e": { "value": 5 }
+        "machine_max_jerk_e": { "value": 5 },
+		"adhesion_type": { "value": "'none' if support_enable else 'brim'" },
+		"brim_width": { "value": 10.0 },
+		"cool_fan_speed": { "value": 100 },
+		"cool_fan_speed_0": { "value": 0 }
         },
 
 
