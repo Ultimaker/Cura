@@ -15,7 +15,7 @@ Resources.addStorageType(CuraApplication.ResourceTypes.SettingVisibilityPreset, 
 
 
 def test_createVisibilityPresetFromLocalFile():
-    # Simple creation test. This is seperated from the visibilityFromPrevious, since we can't check for the contents
+    # Simple creation test. This is separated from the visibilityFromPrevious, since we can't check for the contents
     # of the other profiles, since they might change over time.
     visibility_preset = SettingVisibilityPreset()
 
@@ -49,7 +49,7 @@ def test_setActivePreset():
     with patch("cura.CuraApplication.CuraApplication.getInstance"):
         visibility_model = SettingVisibilityPresetsModel(preferences)
     visibility_model.activePresetChanged = MagicMock()
-    # Ensure that we start off with basic (since we didn't change anyting just yet!)
+    # Ensure that we start off with basic (since we didn't change anything just yet!)
     assert visibility_model.activePreset == "basic"
 
     # Everything should be the same.

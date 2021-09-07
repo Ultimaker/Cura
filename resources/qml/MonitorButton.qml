@@ -37,7 +37,7 @@ Item
         }
         if(activePrintJob.timeTotal == 0)
         {
-            return 0  // Prevent devision by 0
+            return 0  // Prevent division by 0
         }
         return activePrintJob.timeElapsed / activePrintJob.timeTotal * 100
     }

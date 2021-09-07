@@ -31,7 +31,7 @@
 # V4.9.93:	Minor bugfixes (input settings) / documentation
 # V4.9.94:	Bugfix Combobox-selection; remove logger
 # V5.0:		Bugfix for fall back after one layer and doubled G0 commands when using print speed tweak, Initial version for Cura 2.x
-# V5.0.1:	Bugfix for calling unknown property 'bedTemp' of previous settings storage and unkown variable 'speed'
+# V5.0.1:	Bugfix for calling unknown property 'bedTemp' of previous settings storage and unknown variable 'speed'
 # V5.1:		API Changes included for use with Cura 2.2
 # V5.2.0:	Wes Hanney. Added support for changing Retract Length and Speed. Removed layer spread option. Fixed issue of cumulative ChangeZ
 # mods so they can now properly be stacked on top of each other. Applied code refactoring to clean up various coding styles. Added comments.
@@ -657,7 +657,7 @@ class ChangeAtZProcessor:
     # Indicates if the user has opted for linear move retractions or firmware retractions
     linearRetraction = True
 
-    # Indicates if we're targetting by layer or height value
+    # Indicates if we're targeting by layer or height value
     targetByLayer = True
 
     # Indicates if we have injected our changed values for the given layer yet
@@ -1079,7 +1079,7 @@ class ChangeAtZProcessor:
         else:
             modified_gcode += line + "\n"
 
-        # if we're targetting by layer we want to add our values just after the layer label
+        # if we're targeting by layer we want to add our values just after the layer label
         if ";LAYER:" in line:
             modified_gcode += self.getInjectCode()
 

@@ -187,7 +187,7 @@ Item
         {
             sliderRoot.manuallyChanged = true
 
-            // don't allow the lower handle to be heigher than the upper handle
+            // don't allow the lower handle to be higher than the upper handle
             if (lowerHandle.y - (y + height) < sliderRoot.minimumRangeHandleSize)
             {
                 lowerHandle.y = y + height + sliderRoot.minimumRangeHandleSize

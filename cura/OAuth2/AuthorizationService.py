@@ -120,7 +120,7 @@ class AuthorizationService:
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     def getAccessToken(self) -> Optional[str]:
-        """Get the access token as provided by the repsonse data."""
+        """Get the access token as provided by the response data."""
 
         if self._auth_data is None:
             Logger.log("d", "No auth data to retrieve the access_token from")

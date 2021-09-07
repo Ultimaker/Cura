@@ -319,7 +319,7 @@ class ContainerManager(QObject):
                 stack.qualityChanges = quality_changes
 
             if not quality_changes or container_registry.isReadOnly(quality_changes.getId()):
-                Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
+                Logger.log("e", "Could not update quality of a nonexistent or read only quality profile in stack %s", stack.getId())
                 continue
 
             self._performMerge(quality_changes, stack.getTop())
