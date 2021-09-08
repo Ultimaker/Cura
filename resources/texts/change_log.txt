@@ -1,4 +1,6 @@
 [4.11.0]
+<i>For an overview of the new features in Cura 4.11, please watch <a href="https://youtu.be/OcFkcDyO5DU">our video</a>.</i>
+
 * Monotonic ordering
 The new Monotonic top/bottom order setting enables users to print parts with smoother top surfaces. This is especially useful for parts that need good aesthetics, such as visual prototypes. Or for parts that benefit from smooth surfaces, such as those that contact-sensitive components. 
 
@@ -34,6 +36,11 @@ When searching in the settings visibility menu you will also search in the descr
 - Fixed connecting USB printing with detecting baud-rates, contributed by rrrlasse
 - Fixed crash when Cura crashes on exit
 - Fixed a bug where the infill goes through walls
+- Fixed the version upgrade of preferences file
+- Fixed missing icons in deprecated icons list, contributed by fieldOfView
+- Fixed a crash in CuraEngine when the prime tower is placed in an invalid position
+- Fixed a bug when user is unable to sign in on Linux if a Keyring backend is installed
+- Fixed the rotation direction of the 90 degrees rotation arrows, contributed by fieldOfView
 
 * Printer definitions, profiles and materials:
 - Added SecKit SK-Tank, SK-Go printer definitions, contributed by SecKit
