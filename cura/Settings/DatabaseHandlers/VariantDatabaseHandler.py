@@ -16,4 +16,4 @@ class VariantDatabaseHandler(DatabaseMetadataContainerController):
                                              "version": "text",
                                              "setting_version": "text"
                                          }))
-        self.container_type = InstanceContainer
+        self._container_type = InstanceContainer
