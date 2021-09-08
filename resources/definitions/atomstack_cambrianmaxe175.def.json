@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Cambrian MAX E175",
+    "name": "Cambrian Max E175",
     "inherits": "atomstack_cambrian_base",
     "metadata": {
         "visible": true,
