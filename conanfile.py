@@ -35,8 +35,8 @@ class CuraVirtualRunEnv(VirtualRunEnv):
         test_req = self._conanfile.dependencies.test
         for _, dep in list(host_req.items()) + list(test_req.items()):
             if dep.runenv_info:
-                runenv.compose(dep.runenv_info)
-            runenv.compose(runenv_from_cpp_info(self._conanfile, dep.cpp_info))
+                runenv.compose_env(dep.runenv_info)
+            runenv.compose_env(runenv_from_cpp_info(self._conanfile, dep.cpp_info))
 
         return runenv
 
@@ -78,8 +78,8 @@ class PyCharmRunEnv(VirtualRunEnv):
         test_req = self._conanfile.dependencies.test
         for _, dep in list(host_req.items()) + list(test_req.items()):
             if dep.runenv_info:
-                runenv.compose(dep.runenv_info)
-            runenv.compose(runenv_from_cpp_info(self._conanfile, dep.cpp_info))
+                runenv.compose_env(dep.runenv_info)
+            runenv.compose_env(runenv_from_cpp_info(self._conanfile, dep.cpp_info))
 
         return runenv
 
@@ -103,13 +103,15 @@ class PyCharmRunEnv(VirtualRunEnv):
 
 class CuraConan(ConanFile):
     name = "Cura"
-    version = "4.10.0"
+    version = "4.11.0"
     license = "LGPL-3.0"
     author = "Ultimaker B.V."
     url = "https://github.com/Ultimaker/cura"
     description = "3D printer / slicing GUI built on top of the Uranium framework"
     topics = ("conan", "python", "pyqt5", "qt", "qml", "3d-printing", "slicer")
     settings = "os", "compiler", "build_type", "arch"
+    revision_mode = "scm"
+    build_policy = "missing"
     exports = "LICENSE", str(os.path.join(".conan_gen", "Cura.run.xml.jinja"))
     base_path = pathlib.Path(__file__).parent.absolute()
     pycharm_targets = [
@@ -129,13 +131,11 @@ class CuraConan(ConanFile):
         }
     ]
     options = {
-        "python_version": "ANY",
         "enterprise": [True, False],
         "staging": [True, False],
         "external_engine": [True, False]
     }
     default_options = {
-        "python_version": "3.8",
         "enterprise": False,
         "staging": False,
         "external_engine": False
@@ -146,12 +146,6 @@ class CuraConan(ConanFile):
         "url": "auto",
         "revision": "auto"
     }
-
-    def configure(self):
-        self.options["Savitar"].python_version = self.options.python_version
-        self.options["pynest2d"].python_version = self.options.python_version
-        self.options["Arcus"].python_version = self.options.python_version
-        self.options["Uranium"].python_version = self.options.python_version
 
     def build_requirements(self):
         self.build_requires("cmake/[>=3.16.2]")
@@ -190,16 +184,17 @@ class CuraConan(ConanFile):
             shutil.copy(curaengine_src, curaengine_dst)
 
         tc = CMakeToolchain(self)
-        tc.variables["Python_VERSION"] = self.options.python_version
+        tc.variables["Python_VERSION"] = self.deps_cpp_info["Python"].version
         tc.variables["URANIUM_CMAKE_PATH"] = self.deps_user_info["Uranium"].URANIUM_CMAKE_PATH
         tc.generate()
 
     def requirements(self):
-        self.requires(f"Charon/4.10.0@ultimaker/testing")
-        self.requires(f"pynest2d/4.10.0@ultimaker/testing")
-        self.requires(f"Savitar/4.10.0@ultimaker/testing")
-        self.requires(f"Uranium/4.10.0@ultimaker/testing")
-        self.requires(f"CuraEngine/4.10.0@ultimaker/testing")
+        self.requires(f"Python/3.8.10@python/testing")
+        self.requires(f"Charon/4.11.0@ultimaker/testing")
+        self.requires(f"pynest2d/4.11.0@ultimaker/testing")
+        self.requires(f"Savitar/4.11.0@ultimaker/testing")
+        self.requires(f"Uranium/4.11.0@ultimaker/testing")
+        self.requires(f"CuraEngine/4.11.0@ultimaker/testing")
 
     def build(self):
         cmake = CMake(self)
