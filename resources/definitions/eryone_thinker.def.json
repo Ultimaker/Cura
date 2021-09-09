@@ -12,7 +12,7 @@
         "platform_texture": "eryone_thinker_plate.png",
         "platform_offset": [0, -120, 0],
         "has_materials": true,
-        "preferred_material": "generic_pla",
+        "preferred_material": "eryone_pla",
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "machine_extruder_trains": 
@@ -160,7 +160,7 @@
             "value": 10
         },
         "skirt_brim_speed": {
-            "value": 40
+            "value": "math.ceil(speed_print * 40 / 60)"
         },
         "skirt_gap": {
             "value": 5
@@ -229,7 +229,7 @@
             "value": 3
           },
         "wall_thickness": {
-            "value": "1.2"
+            "value": "line_width * wall_line_count"
         },
         "bottom_layers": {
             "value": "4"
