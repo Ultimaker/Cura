@@ -5,7 +5,12 @@
     "metadata":
     {
         "visible": true,
-        "quality_definition": "z-bolt_base"
+        "quality_definition": "z-bolt_base",
+        "machine_extruder_trains":
+        {
+            "0": "z-bolt_extruder_0",
+            "1": "z-bolt_extruder_1"
+        }
     },
     "overrides":
     {

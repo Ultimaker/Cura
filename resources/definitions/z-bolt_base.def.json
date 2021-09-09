@@ -14,7 +14,6 @@
         "has_variants": true,
         "variants_name": "Toolhead",
         "preferred_variant_name": "Direct E3DV6 0.40mm",
-        "machine_extruder_trains": { "0": "z-bolt_extruder_0" },
         "exclude_materials": [
 			"3D-Fuel_PLA_PRO_Black",
 			"3D-Fuel_PLA_SnapSupport",
