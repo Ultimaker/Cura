@@ -13,8 +13,7 @@ from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
-from UM.OutputDevice.OutputDevice import OutputDevice
-from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
+from UM.OutputDevice import OutputDevice
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -446,10 +445,9 @@ class PrintInformation(QObject):
     def _onOutputStart(self, output_device: OutputDevice) -> None:
         """If this is the sort of output 'device' (like local or online file storage, rather than a printer),
            the user could have altered the file-name, and thus the project name should be altered as well."""
-        if isinstance(output_device, ProjectOutputDevice):
-            new_name = output_device.getLastOutputName()
-            if new_name is not None:
-                if len(os.path.dirname(new_name)) > 0:
-                    self.setProjectName(new_name)
-                else:
-                    self.setJobName(new_name)
+        new_name = output_device.getLastOutputName()
+        if new_name is not None:
+            if len(os.path.dirname(new_name)) > 0:
+                self.setProjectName(new_name)
+            else:
+                self.setJobName(new_name)
