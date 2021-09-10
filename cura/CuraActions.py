@@ -35,7 +35,7 @@ class CuraActions(QObject):
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
-        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software")], {})
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software?utm_source=cura&utm_medium=software&utm_campaign=dropdown-documentation")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
@@ -67,11 +67,15 @@ class CuraActions(QObject):
                 current_node = parent_node
                 parent_node = current_node.getParent()
 
-            #   This was formerly done with SetTransformOperation but because of
-            #   unpredictable matrix deconstruction it was possible that mirrors
-            #   could manifest as rotations. Centering is therefore done by
-            #   moving the node to negative whatever its position is:
-            center_operation = TranslateOperation(current_node, -current_node._position)
+            # Find out where the bottom of the object is
+            bbox = current_node.getBoundingBox()
+            if bbox:
+                center_y = current_node.getWorldPosition().y - bbox.bottom
+            else:
+                center_y = 0
+
+            # Move the object so that it's bottom is on to of the buildplate
+            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             operation.addOperation(center_operation)
         operation.push()
 

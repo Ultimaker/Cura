@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "BIBO2 dual",
+    "name": "Bibo 2 dual",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

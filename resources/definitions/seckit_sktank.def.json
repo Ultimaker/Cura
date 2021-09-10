@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "SecKit SK-Tank",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Ernest Lin",
+        "manufacturer": "SecKit 3DP Design",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "has_machine_quality": false,
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "seckit_sktank_extruder_0"
+        }
+    },
+
+
+    "overrides": {
+        "machine_name": { "default_value": "SecKit SK-Tank" },
+        "machine_width": {
+            "default_value": 350
+        },
+        "machine_depth": {
+            "default_value": 350
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -10, 20 ],
+                [ -10, -20 ],
+                [ 10, 20 ],
+                [ 10, -20 ]
+            ]
+        },
+        "gantry_height": {
+            "value": "50"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (RepRap)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G32 ;auto bed tramming and find a correct Z datum\nG29 S1 ;load default mesh\nM572 D0 S0.08 ; Pressure advance\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+        },
+        "machine_end_gcode": {
+            "default value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG90\nG1 X2 Y300 F6000\n; move bed to the bottom to prevent bed falls\n;G91\n;G1 Z300\nM106 P0 S0\nM18"
+        }
+     }
+}

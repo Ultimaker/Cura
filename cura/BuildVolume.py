@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -95,9 +95,11 @@ class BuildVolume(SceneNode):
         self._edge_disallowed_size = None
 
         self._build_volume_message = Message(catalog.i18nc("@info:status",
-            "The build volume height has been reduced due to the value of the"
-            " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
+                "The build volume height has been reduced due to the value of the"
+                " \"Print Sequence\" setting to prevent the gantry from colliding"
+                " with printed models."),
+            title = catalog.i18nc("@info:title", "Build Volume"),
+            message_type = Message.MessageType.WARNING)
 
         self._global_container_stack = None  # type: Optional[GlobalStack]
 
@@ -916,6 +918,8 @@ class BuildVolume(SceneNode):
             return {}
 
         for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
+            if len(area) == 0:
+                continue  # Numpy doesn't deal well with 0-length arrays, since it can't determine the dimensionality of them.
             polygon = Polygon(numpy.array(area, numpy.float32))
             polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
             machine_disallowed_polygons.append(polygon)

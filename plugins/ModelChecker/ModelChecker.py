@@ -28,7 +28,8 @@ class ModelChecker(QObject, Extension):
 
         self._caution_message = Message("", #Message text gets set when the message gets shown, to display the models in question.
             lifetime = 0,
-            title = catalog.i18nc("@info:title", "3D Model Assistant"))
+            title = catalog.i18nc("@info:title", "3D Model Assistant"),
+            message_type = Message.MessageType.WARNING)
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)

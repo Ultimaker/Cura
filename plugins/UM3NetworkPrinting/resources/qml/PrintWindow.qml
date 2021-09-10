@@ -2,7 +2,9 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 import QtQuick 2.2
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.1
+import QtQuick.Controls 2.15 as NewControls
+
 import UM 1.1 as UM
 
 UM.Dialog {
@@ -82,8 +84,9 @@ UM.Dialog {
             renderType: Text.NativeRendering;
         }
 
-        ComboBox {
+        NewControls.ComboBox {
             id: printerComboBox;
+            currentIndex: 0;
             Behavior on height { NumberAnimation { duration: 100 } }
             height: 40 * screenScaleFactor;
             model: ListModel {

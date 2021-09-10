@@ -32,6 +32,10 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
 from UM.i18n import i18nCatalog
+from .DatabaseHandlers.IntentDatabaseHandler import IntentDatabaseHandler
+from .DatabaseHandlers.QualityDatabaseHandler import QualityDatabaseHandler
+from .DatabaseHandlers.VariantDatabaseHandler import VariantDatabaseHandler
+
 catalog = i18nCatalog("cura")
 
 
@@ -43,6 +47,10 @@ class CuraContainerRegistry(ContainerRegistry):
         # for single extrusion machines, we subscribe to the containerAdded signal, and whenever a global stack
         # is added, we check to see if an extruder stack needs to be added.
         self.containerAdded.connect(self._onContainerAdded)
+
+        self._database_handlers["variant"] = VariantDatabaseHandler()
+        self._database_handlers["quality"] = QualityDatabaseHandler()
+        self._database_handlers["intent"] = IntentDatabaseHandler()
 
     @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> bool:
@@ -141,20 +149,29 @@ class CuraContainerRegistry(ContainerRegistry):
             success = profile_writer.write(file_name, container_list)
         except Exception as e:
             Logger.log("e", "Failed to export profile to %s: %s", file_name, str(e))
-            m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>", file_name, str(e)),
+            m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
+                                      "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>",
+                                      file_name, str(e)),
                         lifetime = 0,
-                        title = catalog.i18nc("@info:title", "Error"))
+                        title = catalog.i18nc("@info:title", "Error"),
+                        message_type = Message.MessageType.ERROR)
             m.show()
             return False
         if not success:
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
-            m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name),
+            m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!",
+                                      "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.",
+                                      file_name),
                         lifetime = 0,
-                        title = catalog.i18nc("@info:title", "Error"))
+                        title = catalog.i18nc("@info:title", "Error"),
+                        message_type = Message.MessageType.ERROR)
             m.show()
             return False
-        m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
-                    title = catalog.i18nc("@info:title", "Export succeeded"))
+        m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!",
+                                  "Exported profile to <filename>{0}</filename>",
+                                  file_name),
+                    title = catalog.i18nc("@info:title", "Export succeeded"),
+                    message_type = Message.MessageType.POSITIVE)
         m.show()
         return True
 

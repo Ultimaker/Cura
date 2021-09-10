@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -23,7 +23,6 @@ Item
         id: saveToButton
         height: parent.height
         fixedWidthMode: true
-        cornerSide: deviceSelectionMenu.visible ? Cura.RoundedRectangle.Direction.Left : Cura.RoundedRectangle.Direction.All
 
         anchors
         {
@@ -43,14 +42,10 @@ Item
         }
     }
 
-    Cura.ActionButton
+    Cura.PrimaryButton
     {
         id: deviceSelectionMenu
         height: parent.height
-
-        shadowEnabled: true
-        shadowColor: UM.Theme.getColor("primary_shadow")
-        cornerSide: Cura.RoundedRectangle.Direction.Right
 
         anchors
         {
@@ -60,8 +55,8 @@ Item
 
         leftPadding: UM.Theme.getSize("narrow_margin").width //Need more space than usual here for wide text.
         rightPadding: UM.Theme.getSize("narrow_margin").width
-        iconSource: popup.opened ? UM.Theme.getIcon("arrow_top") : UM.Theme.getIcon("arrow_bottom")
-        color: UM.Theme.getColor("action_panel_secondary")
+        iconSource: popup.opened ? UM.Theme.getIcon("ChevronSingleUp") : UM.Theme.getIcon("ChevronSingleDown")
+        color: popup.opened ? hoverColor : UM.Theme.getColor("action_panel_secondary")
         visible: (devicesModel.deviceCount > 1)
 
         onClicked: popup.opened ? popup.close() : popup.open()
@@ -70,6 +65,7 @@ Item
         {
             id: popup
             padding: 0
+            spacing: 0
 
             y: -height
             x: parent.width - width
@@ -78,17 +74,16 @@ Item
 
             contentItem: ColumnLayout
             {
+                spacing: 0
+
                 Repeater
                 {
                     model: devicesModel
 
-                    delegate: Cura.ActionButton
+                    delegate: Cura.PrimaryButton
                     {
                         text: model.description
                         visible: model.id != UM.OutputDeviceManager.activeDevice  // Don't show the active device in the list
-                        color: "transparent"
-                        cornerRadius: 0
-                        hoverColor: UM.Theme.getColor("primary")
                         Layout.fillWidth: true
                         // The total width of the popup should be defined by the largest button. By stating that each
                         // button should be minimally the size of it's content (aka; implicitWidth) we can ensure that.
@@ -101,13 +96,6 @@ Item
                         }
                     }
                 }
-            }
-
-            background: Rectangle
-            {
-                opacity: visible ? 1 : 0
-                Behavior on opacity { NumberAnimation { duration: 100 } }
-                color: UM.Theme.getColor("action_panel_secondary")
             }
         }
     }

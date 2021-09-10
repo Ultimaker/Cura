@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
@@ -54,10 +54,10 @@ class PauseAtHeight(Script):
                     "label": "Method",
                     "description": "The method or gcode command to use for pausing.",
                     "type": "enum",
-                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
+                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier/OctoPrint (@pause)"},
                     "default_value": "marlin",
                     "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name or \\\"Flying Bear Ghost 4S\\\" in machine_name  else \\\"marlin\\\""
-                },                    
+                },
                 "disarm_timeout":
                 {
                     "label": "Disarm timeout",
@@ -69,6 +69,14 @@ class PauseAtHeight(Script):
                     "maximum_value_warning": "1800",
                     "unit": "s"
                 },
+                "head_park_enabled":
+                {
+                    "label": "Park Print",
+                    "description": "Instruct the head to move to a safe location when pausing. Leave this unchecked if your printer handles parking for you.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "pause_method != \\\"griffin\\\""
+                },
                 "head_park_x":
                 {
                     "label": "Park Print Head X",
@@ -76,7 +84,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 190,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
                 },
                 "head_park_y":
                 {
@@ -85,7 +93,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 190,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
                 },
                 "head_move_z":
                 {
@@ -94,7 +102,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 15.0,
-                    "enabled": "pause_method == \\\"repetier\\\""
+                    "enabled": "head_park_enabled and pause_method == \\\"repetier\\\""
                 },
                 "retraction_amount":
                 {
@@ -239,6 +247,7 @@ class PauseAtHeight(Script):
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
         extrude_speed = self.getSettingValueByKey("extrude_speed")
+        park_enabled = self.getSettingValueByKey("head_park_enabled")
         park_x = self.getSettingValueByKey("head_park_x")
         park_y = self.getSettingValueByKey("head_park_y")
         move_z = self.getSettingValueByKey("head_move_z")
@@ -387,13 +396,14 @@ class PauseAtHeight(Script):
                     #Retraction
                     prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
-                    #Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
-                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
-                    if current_z < move_z:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + move_z, F = 300) + "\n"
+                    if park_enabled:
+                        #Move the head away
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                        prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+                        if current_z < move_z:
+                            prepend_gcode += self.putValue(G = 1, Z = current_z + move_z, F = 300) + "\n"
 
                     #Disable the E steppers
                     prepend_gcode += self.putValue(M = 84, E = 0) + "\n"
@@ -409,14 +419,15 @@ class PauseAtHeight(Script):
                         else:
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
-                    # Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                    if park_enabled:
+                        # Move the head away
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
 
-                    # This line should be ok
-                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+                        # This line should be ok
+                        prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
 
-                    if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
+                        if current_z < 15:
+                            prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
 
                     if control_temperatures:
                         # Set extruder standby temperature
@@ -456,8 +467,10 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
 
                     #Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
-                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                    if park_enabled:
+                        prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
+
                     if retraction_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
 
@@ -490,10 +503,12 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head back
-                    if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
-                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
-                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
+                    if park_enabled:
+                        if current_z < 15:
+                            prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + "\n"
+                        prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
+
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -507,10 +522,23 @@ class PauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
+                    extrusion_mode_string = "absolute"
+                    extrusion_mode_numeric = 82
 
-                # reset extrude value to pre pause value
-                prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
+                    if relative_extrusion:
+                        extrusion_mode_string = "relative"
+                        extrusion_mode_numeric = 83
+
+                    prepend_gcode += self.putValue(M = extrusion_mode_numeric) + " ; switch back to " + extrusion_mode_string + " E values\n"
+
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+
+                elif redo_layer:
+                    # All other options reset the E value to what it was before the pause because E things were added.
+                    # If it's not yet reset, it still needs to be reset if there were any redo layers.
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 layer = prepend_gcode + layer
 

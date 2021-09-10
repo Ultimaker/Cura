@@ -48,7 +48,7 @@ Item
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
             color: UM.Theme.getColor("text_link")
-            source: UM.Theme.getIcon("external_link")
+            source: UM.Theme.getIcon("LinkExternal")
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
         }

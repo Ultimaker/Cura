@@ -40,7 +40,7 @@ class Account(QObject):
     """
 
     # The interval in which sync services are automatically triggered
-    SYNC_INTERVAL = 30.0  # seconds
+    SYNC_INTERVAL = 60.0  # seconds
     Q_ENUMS(SyncState)
 
     loginStateChanged = pyqtSignal(bool)
@@ -57,6 +57,11 @@ class Account(QObject):
     syncStateChanged = pyqtSignal(int)  # because SyncState is an int Enum
     manualSyncEnabledChanged = pyqtSignal(bool)
     updatePackagesEnabledChanged = pyqtSignal(bool)
+
+    CLIENT_SCOPES = "account.user.read drive.backup.read drive.backup.write packages.download " \
+                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write " \
+                    "library.project.read library.project.write cura.printjob.read cura.printjob.write " \
+                    "cura.mesh.read cura.mesh.write"
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -79,10 +84,7 @@ class Account(QObject):
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
             CLIENT_ID="um----------------------------ultimaker_cura",
-            CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download "
-                          "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write "
-                          "library.project.read library.project.write cura.printjob.read cura.printjob.write "
-                          "cura.mesh.read cura.mesh.write",
+            CLIENT_SCOPES=self.CLIENT_SCOPES,
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
@@ -106,7 +108,6 @@ class Account(QObject):
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
-
 
     @pyqtProperty(int, notify=syncStateChanged)
     def syncState(self):
@@ -176,7 +177,10 @@ class Account(QObject):
         if error_message:
             if self._error_message:
                 self._error_message.hide()
-            self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
+            Logger.log("w", "Failed to login: %s", error_message)
+            self._error_message = Message(error_message,
+                                          title = i18n_catalog.i18nc("@info:title", "Login failed"),
+                                          message_type = Message.MessageType.ERROR)
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)
@@ -207,7 +211,7 @@ class Account(QObject):
         if self._update_timer.isActive():
             self._update_timer.stop()
         elif self._sync_state == SyncState.SYNCING:
-            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+            Logger.debug("Starting a new sync while previous sync was not completed")
 
         self.syncRequested.emit()
 

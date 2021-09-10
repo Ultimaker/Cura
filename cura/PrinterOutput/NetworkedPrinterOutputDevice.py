@@ -414,6 +414,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def ipAddress(self) -> str:
-        """IP adress of this printer"""
+        """IP address of this printer"""
 
         return self._address

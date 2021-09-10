@@ -27,7 +27,7 @@ Cura.MachineAction
     Connections
     {
         target: extrudersModel
-        onItemsChanged: tabNameModel.update()
+        function onItemsChanged() { tabNameModel.update() }
     }
 
     ListModel

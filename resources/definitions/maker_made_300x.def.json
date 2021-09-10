@@ -96,7 +96,6 @@
         "speed_travel": {"value": 150},
         "speed_layer_0": {"value": 10},
         "speed_travel_layer_0": {"value": 50},
-        "machine_max_feedrate_z": {"value": 0},
         "speed_slowdown_layers": {"value": 2},
         "speed_equalize_flow_enabled": {"value": false },
         "acceleration_enabled": {"value": false },
