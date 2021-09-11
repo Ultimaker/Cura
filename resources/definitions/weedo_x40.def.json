@@ -1,10 +1,10 @@
 {
     "version": 2,
-    "name": "WEEDO X40",
+    "name": "Weedo X40",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "X40-Community.org",
-        "manufacturer": "WEEDO",
+        "manufacturer": "Weedo",
         "visible": true,
         "file_formats": "text/x-gcode",
         "platform": "weedo_x40.3mf",
