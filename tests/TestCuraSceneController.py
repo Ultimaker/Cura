@@ -75,5 +75,5 @@ def test_updateMaxBuildPlate(objects_model, multi_build_plate_model):
         # And check what happens if we move down again!
         controller._calcMaxBuildPlate = MagicMock(return_value=2)
         controller.updateMaxBuildPlate(SceneNode())
-        assert controller._active_build_plate == 0 # We don't have any items anywere, so default to 0
+        assert controller._active_build_plate == 0 # We don't have any items anywhere, so default to 0
 

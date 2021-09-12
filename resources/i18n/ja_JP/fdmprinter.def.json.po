@@ -716,7 +716,7 @@ msgstr "ミリメートルあたりのステップ (E)"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "フィーダーホイールを円周上で1ミリメートル移動させるのに、ステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1490,12 +1490,12 @@ msgstr "互いに次に実行する上層/底層スキンパスに接合しま�
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "上面/底面の方向一貫性"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "上面/底面のラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1574,12 +1574,12 @@ msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "アイロン方向一貫性"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "アイロンラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
@@ -5455,12 +5455,12 @@ msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "上面方向一貫性"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "上面のラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json

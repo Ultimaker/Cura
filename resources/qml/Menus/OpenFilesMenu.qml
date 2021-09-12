@@ -37,7 +37,7 @@ Menu
                 }
             }
             // Unassign the shortcuts when the submenu is invisible (i.e. when there is only one file provider) to avoid ambiguous shortcuts.
-            // When there is a signle file provider, the openAction is assigned with the Ctrl+O shortcut instead.
+            // When there is a single file provider, the openAction is assigned with the Ctrl+O shortcut instead.
             shortcut: openFilesMenu.visible ? model.shortcut : ""
         }
         onObjectAdded: openFilesMenu.insertItem(index, object)

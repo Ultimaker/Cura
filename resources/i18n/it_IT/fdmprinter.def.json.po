@@ -687,7 +687,7 @@ msgstr "Passi per millimetro (E)"
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
-msgstr ""
+msgstr "Quanti passi dei motori passo-passo causano lo spostamento della ruota del tirafilo di un millimetro attorno alla sua circonferenza."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1437,12 +1437,13 @@ msgstr "Collega i percorsi del rivestimento esterno superiore/inferiore quando c
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr ""
+msgstr "Ordine superiore/inferiore monotonico"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Stampa linee superiori/inferiori in un ordine che ne causa sempre la sovrapposizione con le linee adiacenti in un singola direzione. Questa operazione"
+" richiede un tempo di stampa leggermente superiore ma rende l'aspetto delle superfici piane più uniforme."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1517,12 +1518,13 @@ msgstr "Zig Zag"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr ""
+msgstr "Ordine di stiratura monotonico"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
 msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Stampa linee di stiratura in un ordine che ne causa sempre la sovrapposizione con le linee adiacenti in un singola direzione. Questa operazione richiede"
+" un tempo di stampa leggermente superiore ma rende l'aspetto delle superfici piane più uniforme."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -5325,12 +5327,13 @@ msgstr "Zig Zag"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr ""
+msgstr "Ordine superficie superiore monotonico"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
 msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "Stampa linee superficie superiori in un ordine che ne causa sempre la sovrapposizione con le linee adiacenti in un singola direzione. Questa operazione"
+" richiede un tempo di stampa leggermente superiore ma rende l'aspetto delle superfici piane più uniforme."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"

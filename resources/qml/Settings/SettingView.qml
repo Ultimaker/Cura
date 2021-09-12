@@ -228,7 +228,7 @@ Item
                 id: definitionsModel
                 containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id: ""
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
+                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settings are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
@@ -330,7 +330,7 @@ Item
                     }
                 }
 
-                // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
                 // so we bypass that to make a dedicated provider).
                 UM.SettingPropertyProvider
                 {

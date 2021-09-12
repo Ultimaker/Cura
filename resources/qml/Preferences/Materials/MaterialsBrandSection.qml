@@ -18,7 +18,7 @@ Item
 
     property var sectionName: ""
     property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
-    property var hasMaterialTypes: true  // It indicates wheather it has material types or not
+    property var hasMaterialTypes: true  // It indicates whether it has material types or not
     property var expanded: materialList.expandedBrands.indexOf(sectionName) > -1
 
     height: childrenRect.height

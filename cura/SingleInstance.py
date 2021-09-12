@@ -68,7 +68,7 @@ class SingleInstance:
             Logger.log("e", "Single instance server was not created.")
 
     def _onClientConnected(self) -> None:
-        Logger.log("i", "New connection recevied on our single-instance server")
+        Logger.log("i", "New connection received on our single-instance server")
         connection = None #type: Optional[QLocalSocket]
         if self._single_instance_server:
             connection = self._single_instance_server.nextPendingConnection()
