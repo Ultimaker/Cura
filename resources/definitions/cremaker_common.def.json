@@ -15,6 +15,7 @@
   },
 
   "overrides": {
+    "machine_name": {"cremaker"},
     "machine_heated_bed": { "default_value": true },
     "machine_center_is_zero": { "default_value": false },
     "material_diameter": { "default_value": 1.75 },
@@ -26,8 +27,8 @@
     "xy_offset_layer_0": { "default_value": -0.1 },
     "hole_xy_offset": { "default_value": 0.15 },
     "material_print_temperature": { "default_value": 200 },
-    "speed_travel": { "default_value": 100 },
-    "speed_layer_0": { "default_value": 25 },
+    "speed_travel": { "value": 100 },
+    "speed_layer_0": { "value": 25 },
     "acceleration_enabled": { "default_value": true },
     "acceleration_print": { "default_value": 1250 },
     "acceleration_infill": { "value": 1250 },
@@ -45,7 +46,7 @@
     "retraction_hop_only_when_collides": { "default_value": true },
     "retraction_hop": { "default_value": 0.3 },
     "adhesion_type": { "default_value": "skirt" },
-    "relative_extrusion": { "default_value": true },
+    "relative_extrusion": { "value": true },
     "gantry_height": { "value": 28 },
     "machine_max_feedrate_z": { "default_value": 12 },
     "machine_max_feedrate_e": { "default_value": 120 },
