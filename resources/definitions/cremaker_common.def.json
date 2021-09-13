@@ -14,8 +14,7 @@
     }
   },
 
-  "overrides": {
-    "machine_name": {"cremaker"},
+  "overrides": {    
     "machine_heated_bed": { "default_value": true },
     "machine_center_is_zero": { "default_value": false },
     "material_diameter": { "default_value": 1.75 },
