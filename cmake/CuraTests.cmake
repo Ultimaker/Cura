@@ -4,7 +4,7 @@
 include(CTest)
 include(CMakeParseArguments)
 
-# FIXME: The new FindPython3 finds the system's Python3.6 reather than the Python3.5 that we built for Cura's environment.
+# FIXME: The new FindPython3 finds the system's Python3.6 rather than the Python3.5 that we built for Cura's environment.
 # So we're using the old method here, with FindPythonInterp for now.
 find_package(PythonInterp 3 REQUIRED)
 

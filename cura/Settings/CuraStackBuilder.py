@@ -66,7 +66,7 @@ class CuraStackBuilder:
                 Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos = position, err = str(e)))
                 return None
 
-        # If given, set the machine_extruder_count when creating the machine, or else the extruderList used bellow will
+        # If given, set the machine_extruder_count when creating the machine, or else the extruderList used below will
         # not return the correct extruder list (since by default, the machine_extruder_count is 1) in machines with
         # settable number of extruders.
         if machine_extruder_count and 0 <= machine_extruder_count <= len(extruder_dict):

@@ -428,6 +428,7 @@
         "printer_config_mismatch": [127, 127, 127, 255],
 
         "toolbox_header_button_text_inactive": [0, 0, 0, 255],
+        "toolbox_premium_packages_background": [240, 240, 240, 255],
 
         "favorites_header_bar": [245, 245, 245, 255],
         "favorites_header_hover": [245, 245, 245, 255],

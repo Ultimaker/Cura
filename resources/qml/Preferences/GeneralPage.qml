@@ -19,7 +19,7 @@ UM.PreferencesPage
 
     function setDefaultLanguage(languageCode)
     {
-        //loops trough the languageList and sets the language using the languageCode
+        //loops through the languageList and sets the language using the languageCode
         for(var i = 0; i < languageList.count; i++)
         {
             if (languageComboBox.model.get(i).code == languageCode)

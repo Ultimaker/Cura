@@ -216,11 +216,6 @@ class CloudOutputDeviceManager:
         online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
         new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
-        image_path = os.path.join(
-            CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
-            "resources", "svg", "cloud-flow-completed.svg"
-        )
-
         message = Message(
             title = self.i18n_catalog.i18ncp(
                 "info:status",
@@ -230,7 +225,6 @@ class CloudOutputDeviceManager:
             ),
             progress = 0,
             lifetime = 0,
-            image_source = image_path,
             message_type = Message.MessageType.POSITIVE
         )
         message.show()

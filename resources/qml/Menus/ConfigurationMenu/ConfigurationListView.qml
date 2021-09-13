@@ -46,7 +46,7 @@ Item
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            // There are two cases that we want to differenciate, one is when Cura is loading the configurations and the
+            // There are two cases that we want to differentiate, one is when Cura is loading the configurations and the
             // other when the connection was lost
             text: Cura.MachineManager.printerConnected ?
                     catalog.i18nc("@label", "Loading available configurations from the printer...") :

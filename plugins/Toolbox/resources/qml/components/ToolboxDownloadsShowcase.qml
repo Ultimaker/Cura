@@ -8,7 +8,7 @@ import UM 1.1 as UM
 
 Rectangle
 {
-    color: UM.Theme.getColor("secondary")
+    color: UM.Theme.getColor("toolbox_premium_packages_background")
     height: childrenRect.height
     width: parent.width
     Column

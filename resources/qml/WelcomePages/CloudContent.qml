@@ -112,7 +112,7 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("Plugin")
+                        source: UM.Theme.getIcon("Plugin", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -142,7 +142,7 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("Spool")
+                        source: UM.Theme.getIcon("Spool", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -172,7 +172,7 @@ Item
                         anchors.horizontalCenter: communityColumn.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("PrinterTriple", "medium")
+                        source: UM.Theme.getIcon("People", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -215,7 +215,7 @@ Item
                 id: createAccountButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: catalog.i18nc("@text", "Create a free Ultimaker Account")
-                onClicked:  Qt.openUrlExternally("https://ultimaker.com/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=onboarding-signup")
+                onClicked:  Qt.openUrlExternally("https://ultimaker.com/app/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=onboarding-signup")
             }
         }
     }
