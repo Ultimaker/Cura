@@ -29,7 +29,7 @@
       "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y200\nM84"
     },
     
-    "cool_fan_speed": { "default_value": 50 },
+    "cool_fan_speed": { "value": 50 },
     "coasting_enable": { "default_value": true },
     "coasting_volume": { "default_value": 0.05 },
     "coasting_min_volume": { "default_value": 1.0 },
