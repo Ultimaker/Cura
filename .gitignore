@@ -44,7 +44,6 @@ plugins/CuraCloudPlugin
 plugins/CuraDrivePlugin
 plugins/CuraLiveScriptingPlugin
 plugins/CuraOpenSCADPlugin
-plugins/CuraRemoteSupport
 plugins/CuraPrintProfileCreator
 plugins/CuraSolidWorksPlugin
 plugins/CuraVariSlicePlugin
