@@ -36,7 +36,7 @@ class VersionUpgrade411to412(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "19"
 
         result = io.StringIO()
         parser.write(result)
@@ -57,7 +57,7 @@ class VersionUpgrade411to412(VersionUpgrade):
         # Update setting version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "19"
 
         result = io.StringIO()
         parser.write(result)
@@ -78,7 +78,7 @@ class VersionUpgrade411to412(VersionUpgrade):
         # Update setting version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "19"
 
         # Change renamed profiles.
         if "containers" in parser:
