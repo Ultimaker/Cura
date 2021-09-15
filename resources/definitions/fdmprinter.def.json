@@ -1156,9 +1156,9 @@
                     "description": "When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.",
                     "type": "float",
                     "unit": "°",
-                    "default_value": 30,
+                    "default_value": 10,
                     "minimum_value": "1",
-                    "minimum_value_warning": "15",
+                    "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "maximum_value": "59"
                 },
@@ -1218,7 +1218,7 @@
                         "outside_in": "Outside To Inside",
                         "center_last": "Center Last"
                     },
-                    "default_value": "inside_out",
+                    "default_value": "center_last",
                     "settable_per_mesh": true
                 },
                 "alternate_extra_perimeter":
