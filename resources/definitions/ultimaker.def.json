@@ -49,6 +49,9 @@
         },
         "min_bead_width": {
             "value": "wall_line_width_0 / 2"
+        },
+        "meshfix_maximum_extrusion_area_deviation": {
+            "value": "50000"
         }
     }
 }
