@@ -114,9 +114,9 @@ Cura.ExpandablePopup
             anchors
             {
                 bottom: parent.bottom
-                bottomMargin: - height * 1 / 6
+                bottomMargin: - Math.round(height * 1 / 6)
                 left: parent.left
-                leftMargin: iconSize - width * 5 / 6
+                leftMargin: iconSize - Math.round(width * 5 / 6)
             }
 
             source:

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import math
@@ -153,7 +153,7 @@ class FlavorParser:
         Af = (self._filament_diameter / 2) ** 2 * numpy.pi
         # Length of the extruded filament
         de = current_extrusion - previous_extrusion
-        # Volumne of the extruded filament
+        # Volume of the extruded filament
         dVe = de * Af
         # Length of the printed line
         dX = numpy.sqrt((current_point[0] - previous_point[0])**2 + (current_point[2] - previous_point[2])**2)
@@ -428,7 +428,7 @@ class FlavorParser:
 
             G = self._getInt(line, "G")
             if G is not None:
-                # When find a movement, the new posistion is calculated and added to the current_path, but
+                # When find a movement, the new position is calculated and added to the current_path, but
                 # don't need to create a polygon until the end of the layer
                 current_position = self.processGCode(G, line, current_position, current_path)
                 continue

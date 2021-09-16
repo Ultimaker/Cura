@@ -3,7 +3,7 @@
 
 from datetime import datetime
 import json
-import random
+import secrets
 from hashlib import sha512
 from base64 import b64encode
 from typing import Optional
@@ -48,8 +48,8 @@ class AuthorizationHelpers:
             }
         try:
             return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
+        except requests.exceptions.ConnectionError as connection_error:
+            return AuthenticationResponse(success = False, err_message = f"Unable to connect to remote server: {connection_error}")
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
         """Request the access token from the authorization server using a refresh token.
@@ -139,11 +139,11 @@ class AuthorizationHelpers:
     def generateVerificationCode(code_length: int = 32) -> str:
         """Generate a verification code of arbitrary length.
 
-        :param code_length:: How long should the code be? This should never be lower than 16, but it's probably
+        :param code_length:: How long should the code be in bytes? This should never be lower than 16, but it's probably
         better to leave it at 32
         """
 
-        return "".join(random.choice("0123456789ABCDEF") for i in range(code_length))
+        return secrets.token_hex(code_length)
 
     @staticmethod
     def generateVerificationCodeChallenge(verification_code: str) -> str:

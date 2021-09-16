@@ -21,6 +21,7 @@ def getMetaData() -> Dict[str, Any]:
             ("quality_changes",    4000016):  ("quality_changes",    4000017,   upgrade.upgradeInstanceContainer),
             ("quality",            4000016):  ("quality",            4000017,   upgrade.upgradeInstanceContainer),
             ("user",               4000016):  ("user",               4000017,   upgrade.upgradeInstanceContainer),
+            ("preferences",        7000016):  ("preferences",        7000017,   upgrade.upgradePreferences),
         },
         "sources": {
             "machine_stack": {

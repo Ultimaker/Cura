@@ -70,7 +70,7 @@ Item
                 // This id is required to find the stage buttons through Squish
                 property string stageId: model.id
 
-                // This is a trick to assure the activeStage is correctly changed. It doesn't work propertly if done in the onClicked (see CURA-6028)
+                // This is a trick to assure the activeStage is correctly changed. It doesn't work properly if done in the onClicked (see CURA-6028)
                 MouseArea
                 {
                     anchors.fill: parent

@@ -169,8 +169,8 @@ Item
                 // Update the slider value to represent the rounded value
                 infillSlider.value = roundedSliderValue
 
-                // Update value only if the Recomended mode is Active,
-                // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
+                // Update value only if the Recommended mode is Active,
+                // Otherwise if I change the value in the Custom mode the Recommended view will try to repeat
                 // same operation
                 var active_mode = UM.Preferences.getValue("cura/active_mode")
 

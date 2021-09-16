@@ -159,7 +159,8 @@ class CuraEngineBackend(QObject, Backend):
 
         self._slicing_error_message = Message(
             text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
-            title = catalog.i18nc("@message:title", "Slicing failed")
+            title = catalog.i18nc("@message:title", "Slicing failed"),
+            message_type = Message.MessageType.ERROR
         )
         self._slicing_error_message.addAction(
             action_id = "report_bug",
@@ -467,6 +468,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
+                return
             else:
                 self.setState(BackendState.NotStarted)
 
@@ -645,7 +647,7 @@ class CuraEngineBackend(QObject, Backend):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    # We can asume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    # We can assume that all nodes have a parent as we're looping through the scene (and filter out root)
                     cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:

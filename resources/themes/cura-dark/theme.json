@@ -177,6 +177,7 @@
 
         "toolbox_header_button_text_active": [255, 255, 255, 255],
         "toolbox_header_button_text_inactive": [128, 128, 128, 255],
+        "toolbox_premium_packages_background": [57, 57, 57, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],
         "monitor_text_disabled": [102, 102, 102, 255],

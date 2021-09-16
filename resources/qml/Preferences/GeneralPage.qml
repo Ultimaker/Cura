@@ -19,7 +19,7 @@ UM.PreferencesPage
 
     function setDefaultLanguage(languageCode)
     {
-        //loops trough the languageList and sets the language using the languageCode
+        //loops through the languageList and sets the language using the languageCode
         for(var i = 0; i < languageList.count; i++)
         {
             if (languageComboBox.model.get(i).code == languageCode)
@@ -76,6 +76,8 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("cura/single_instance")
         singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
+        UM.Preferences.resetPreference("cura/single_instance_clear_before_load")
+        singleInstanceClearBeforeLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
@@ -118,6 +120,10 @@ UM.PreferencesPage
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+
+        UM.Preferences.resetPreference("info/latest_update_source")
+        UM.Preferences.resetPreference("info/automatic_plugin_update_check")
+        pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
     }
 
     ScrollView
@@ -567,6 +573,22 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should the build plate be cleared before loading a new model in the single instance of Cura?")
+                enabled: singleInstanceCheckbox.checked
+
+                CheckBox
+                {
+                    id: singleInstanceClearBeforeLoadCheckbox
+                    text: catalog.i18nc("@option:check","Clear buildplate before loading model into the single instance")
+                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance_clear_before_load", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
 
                 CheckBox
@@ -766,30 +788,13 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                visible: checkUpdatesCheckbox.visible || sendDataCheckbox.visible
-                text: catalog.i18nc("@label","Privacy")
+                text: catalog.i18nc("@label", "Privacy")
             }
-
             UM.TooltipArea
             {
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
-
-                CheckBox
-                {
-                    id: checkUpdatesCheckbox
-                    text: catalog.i18nc("@option:check","Check for updates on start")
-                    checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-                    onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
+                text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
                 CheckBox
                 {
@@ -810,6 +815,83 @@ UM.PreferencesPage
                     }
                 }
             }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").height
+            }
+
+            Label
+            {
+                font.bold: true
+                text: catalog.i18nc("@label", "Updates")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should Cura check for updates when the program is started?")
+
+                CheckBox
+                {
+                    id: checkUpdatesCheckbox
+                    text: catalog.i18nc("@option:check","Check for updates on start")
+                    checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+                    onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
+                }
+            }
+
+            ExclusiveGroup { id: curaUpdatesGroup }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                RadioButton
+                {
+                    text: catalog.i18nc("@option:radio", "Stable releases only")
+                    exclusiveGroup: curaUpdatesGroup
+                    enabled: checkUpdatesCheckbox.checked
+                    checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
+                    onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                RadioButton
+                {
+                    text: catalog.i18nc("@option:radio", "Stable and Beta releases")
+                    exclusiveGroup: curaUpdatesGroup
+                    enabled: checkUpdatesCheckbox.checked
+                    checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
+                    onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!")
+
+                CheckBox
+                {
+                    id: pluginNotificationsUpdateCheckbox
+                    text: catalog.i18nc("@option:check", "Get notifications for plugin updates")
+                    checked: boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
+                    onCheckedChanged: UM.Preferences.setValue("info/automatic_plugin_update_check", checked)
+                }
+            }
+
 
             /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item

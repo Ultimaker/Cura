@@ -143,7 +143,7 @@ Button
 
             Binding
             {
-                // When settting width directly, an unjust binding loop warning would be triggered,
+                // When setting width directly, an unjust binding loop warning would be triggered,
                 // because button.width is part of this expression.
                 // Using parent.width is fine in fixedWidthMode.
                 target: buttonText
