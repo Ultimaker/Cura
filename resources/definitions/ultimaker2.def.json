@@ -98,6 +98,9 @@
         },
         "roofing_monotonic": {
             "value": "True"
+        },
+        "speed_equalize_flow_width_factor": {
+            "value": "0.5"
         }
     }
 }
