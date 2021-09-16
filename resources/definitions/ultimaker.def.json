@@ -40,6 +40,15 @@
         {
             "value": false,
             "enabled": false
+        },
+        "fill_outline_gaps": {
+            "value": "True"
+        },
+        "min_feature_size": {
+            "value": "wall_line_width_0 / 4"
+        },
+        "min_bead_width": {
+            "value": "wall_line_width_0 / 2"
         }
     }
 }
