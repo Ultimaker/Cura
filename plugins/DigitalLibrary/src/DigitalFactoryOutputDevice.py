@@ -111,7 +111,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         self._writing = True
         if new_name and Version(ApplicationMetadata.CuraSDKVersion) >= Version("7.8.0"):
             # setLastOutputName is only supported in sdk version 7.8.0 and up
-            self.setLastOutputName(new_name)
+            self.setLastOutputName(new_name) # On saving, the user can change the name, this should propagate.
         self.writeStarted.emit(self)
 
     def _onWriteFinished(self) -> None:
