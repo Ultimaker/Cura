@@ -603,8 +603,8 @@ class DigitalFactoryController(QObject):
         self._saveFileToSelectedProjectHelper(filename, formats)
 
     def _saveFileToSelectedProjectHelper(self, filename: str, formats: List[str]) -> None:
-        # Indicate we have started sending a job.
-        self.uploadStarted.emit()
+        # Indicate we have started sending a job (and propagate any user file name changes back to the open project)
+        self.uploadStarted.emit(filename if "3mf" in formats else None)
 
         library_project_id = self._project_model.items[self._selected_project_idx]["libraryProjectId"]
         library_project_name = self._project_model.items[self._selected_project_idx]["displayName"]
