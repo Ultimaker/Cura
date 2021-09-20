@@ -20,13 +20,6 @@
         "speed_travel": { "value": 80.0 },
         "coasting_enable": { "value": true},
         "coasting_min_volume": { "value": 0.5},
-        "machine_head_polygon": { "default_value": [
-                [-26, 34],
-                [-26, -32],
-                [22, -32],
-                [22, 34]
-            ]
-        },
         "machine_head_with_fans_polygon": { "default_value": [
                 [-26, 34],
                 [-26, -32],
