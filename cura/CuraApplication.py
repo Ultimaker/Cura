@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -129,7 +129,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 16
+    SettingVersion = 17
 
     Created = False
 
@@ -161,7 +161,7 @@ class CuraApplication(QtApplication):
 
         self.default_theme = "cura-light"
 
-        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features"
+        self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
 
         self._boot_loading_time = time.time()
 
@@ -257,6 +257,9 @@ class CuraApplication(QtApplication):
         from cura.CuraPackageManager import CuraPackageManager
         self._package_manager_class = CuraPackageManager
 
+        from UM.CentralFileStorage import CentralFileStorage
+        CentralFileStorage.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
+
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
         return UltimakerCloudConstants.CuraCloudAPIRoot
@@ -317,7 +320,7 @@ class CuraApplication(QtApplication):
         super().initialize()
 
         self._preferences.addPreference("cura/single_instance", False)
-        self._use_single_instance = self._preferences.getValue("cura/single_instance")
+        self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
 
         self.__sendCommandToSingleInstance()
         self._initializeSettingDefinitions()
@@ -458,15 +461,18 @@ class CuraApplication(QtApplication):
 
         self._version_upgrade_manager.setCurrentVersions(
             {
-                ("quality", InstanceContainer.Version * 1000000 + self.SettingVersion):             (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):     (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("intent", InstanceContainer.Version * 1000000 + self.SettingVersion):              (self.ResourceTypes.IntentInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", GlobalStack.Version * 1000000 + self.SettingVersion):             (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
-                ("extruder_train", ExtruderStack.Version * 1000000 + self.SettingVersion):          (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
-                ("preferences", Preferences.Version * 1000000 + self.SettingVersion):               (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):                (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):  (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
-                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):             (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality", InstanceContainer.Version * 1000000 + self.SettingVersion):                         (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):                 (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("intent", InstanceContainer.Version * 1000000 + self.SettingVersion):                          (self.ResourceTypes.IntentInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", GlobalStack.Version * 1000000 + self.SettingVersion):                         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
+                ("extruder_train", ExtruderStack.Version * 1000000 + self.SettingVersion):                      (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
+                ("preferences", Preferences.Version * 1000000 + self.SettingVersion):                           (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):                            (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):              (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):                         (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("setting_visibility", SettingVisibilityPresetsModel.Version * 1000000 + self.SettingVersion):  (self.ResourceTypes.SettingVisibilityPreset, "application/x-uranium-preferences"),
+                ("machine", 2):                                                                                 (Resources.DefinitionContainers, "application/x-uranium-definitioncontainer"),
+                ("extruder", 2):                                                                                    (Resources.DefinitionContainers, "application/x-uranium-definitioncontainer")
             }
         )
 
@@ -603,6 +609,15 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def closeApplication(self) -> None:
         Logger.log("i", "Close application")
+
+        # Workaround: Before closing the window, remove the global stack.
+        # This is necessary because as the main window gets closed, hundreds of QML elements get updated which often
+        # request the global stack. However as the Qt-side of the Machine Manager is being dismantled, the conversion of
+        # the Global Stack to a QObject fails.
+        # If instead we first take down the global stack, PyQt will just convert `None` to `null` which succeeds, and
+        # the QML code then gets `null` as the global stack and can deal with that as it deems fit.
+        self.getMachineManager().setActiveMachine(None)
+
         main_window = self.getMainWindow()
         if main_window is not None:
             main_window.close()
@@ -695,6 +710,8 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str)
     def discardOrKeepProfileChangesClosed(self, option: str) -> None:
         global_stack = self.getGlobalContainerStack()
+        if global_stack is None:
+            return
         if option == "discard":
             for extruder in global_stack.extruderList:
                 extruder.userChanges.clear()
@@ -894,14 +911,14 @@ class CuraApplication(QtApplication):
         diagonal = self.getBuildVolume().getDiagonalSize()
         if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
             diagonal = 375
-        camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
+        camera.setPosition(Vector(-80, 180, 700) * diagonal / 375)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
         if camera_tool:
-            camera_tool.setOrigin(Vector(0, 100, 0))
+            camera_tool.setOrigin(Vector(0, 30, 0))
             camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
@@ -1268,9 +1285,10 @@ class CuraApplication(QtApplication):
                 if other_bb is not None:
                     scene_bounding_box = scene_bounding_box + node.getBoundingBox()
 
-
         if print_information:
             print_information.setPreSliced(is_block_slicing_node)
+
+        self.getWorkspaceFileHandler().setEnabled(not is_block_slicing_node)
 
         if not scene_bounding_box:
             scene_bounding_box = AxisAlignedBox.Null
@@ -1294,9 +1312,9 @@ class CuraApplication(QtApplication):
             if not isinstance(node, SceneNode):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent().callDecoration("isSliceable"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
@@ -1314,9 +1332,9 @@ class CuraApplication(QtApplication):
             if not isinstance(node, SceneNode):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
             nodes.append(node)
@@ -1343,9 +1361,9 @@ class CuraApplication(QtApplication):
             if not isinstance(node, SceneNode):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
             nodes.append(node)
@@ -1372,7 +1390,7 @@ class CuraApplication(QtApplication):
                 continue
 
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
 
             parent_node = node.getParent()
             if parent_node and parent_node.callDecoration("isGroup"):
@@ -1400,11 +1418,11 @@ class CuraApplication(QtApplication):
                 continue
 
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
 
             parent_node = node.getParent()
             if parent_node and parent_node.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
 
             if not node.isSelectable():
                 continue  # i.e. node with layer data
@@ -1515,12 +1533,8 @@ class CuraApplication(QtApplication):
 
         # Compute the center of the objects
         object_centers = []
-        # Forget about the translation that the original objects have
-        zero_translation = Matrix(data=numpy.zeros(3))
         for mesh, node in zip(meshes, group_node.getChildren()):
-            transformation = node.getLocalTransformation()
-            transformation.setTranslation(zero_translation)
-            transformed_mesh = mesh.getTransformed(transformation)
+            transformed_mesh = mesh.getTransformed(Matrix())  # Forget about the transformations that the original object had.
             center = transformed_mesh.getCenterPosition()
             if center is not None:
                 object_centers.append(center)
@@ -1535,7 +1549,7 @@ class CuraApplication(QtApplication):
 
         # Move each node to the same position.
         for mesh, node in zip(meshes, group_node.getChildren()):
-            node.setTransformation(Matrix())
+            node.setTransformation(Matrix())  # Removes any changes in position and rotation.
             # Align the object around its zero position
             # and also apply the offset to center it inside the group.
             node.setPosition(-mesh.getZeroPosition() - offset)
@@ -1733,8 +1747,9 @@ class CuraApplication(QtApplication):
     def log(self, msg):
         Logger.log("d", msg)
 
-    openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
+    openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
+    @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
     def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None, add_to_recent_files: bool = True):
@@ -1742,6 +1757,7 @@ class CuraApplication(QtApplication):
 
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
+        :param add_to_recent_files: Whether or not to add the file as an option to the Recent Files list.
         """
         Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
@@ -1762,12 +1778,12 @@ class CuraApplication(QtApplication):
         if is_project_file and project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
-            workspace_handler.readLocalFile(file, add_to_recent_files = add_to_recent_files)
+            workspace_handler.readLocalFile(file, add_to_recent_files_hint = add_to_recent_files)
             return
 
         if is_project_file and project_mode == "always_ask":
             # present a dialog asking to open as project or import models
-            self.callLater(self.openProjectFile.emit, file)
+            self.callLater(self.openProjectFile.emit, file, add_to_recent_files)
             return
 
         # Either the file is a model file or we want to load only models from project. Continue to load models.
@@ -1784,8 +1800,10 @@ class CuraApplication(QtApplication):
             if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
-                                       "Only one G-code file can be loaded at a time. Skipped importing {0}",
-                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Warning"))
+                                             "Only one G-code file can be loaded at a time. Skipped importing {0}",
+                                             filename),
+                    title = self._i18n_catalog.i18nc("@info:title", "Warning"),
+                    message_type = Message.MessageType.WARNING)
                 message.show()
                 return
             # If file being loaded is non-slicable file, then prevent loading of any other files
@@ -1794,8 +1812,10 @@ class CuraApplication(QtApplication):
             if extension in self._non_sliceable_extensions:
                 message = Message(
                     self._i18n_catalog.i18nc("@info:status",
-                                       "Can't open any other file if G-code is loading. Skipped importing {0}",
-                                       filename), title = self._i18n_catalog.i18nc("@info:title", "Error"))
+                                             "Can't open any other file if G-code is loading. Skipped importing {0}",
+                                             filename),
+                    title = self._i18n_catalog.i18nc("@info:title", "Error"),
+                    message_type = Message.MessageType.ERROR)
                 message.show()
                 return
 
@@ -1854,6 +1874,7 @@ class CuraApplication(QtApplication):
             else:
                 node = CuraSceneNode()
                 node.setMeshData(original_node.getMeshData())
+                node.source_mime_type = original_node.source_mime_type
 
                 # Setting meshdata does not apply scaling.
                 if original_node.getScale() != Vector(1.0, 1.0, 1.0):
@@ -1939,7 +1960,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except Exception:
+        except:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 
@@ -2018,11 +2039,11 @@ class CuraApplication(QtApplication):
             if not node.isEnabled():
                 continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if only_selectable and not node.isSelectable():
                 continue  # Only remove nodes that are selectable.
             if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             nodes.append(node)
         if nodes:
             from UM.Operations.GroupedOperation import GroupedOperation

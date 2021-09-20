@@ -35,7 +35,7 @@ UM.TooltipArea
     Connections
     {
         target: addedSettingsModel
-        onVisibleCountChanged:
+        function onVisibleCountChanged()
         {
             check.checked = addedSettingsModel.getVisible(model.key)
         }

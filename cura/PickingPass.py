@@ -79,7 +79,7 @@ class PickingPass(RenderPass):
             return -1
 
         distance = output.pixel(px, py) # distance in micron, from in r, g & b channels
-        distance = (distance & 0x00ffffff) / 1000. # drop the alpha channel and covert to mm
+        distance = (distance & 0x00ffffff) / 1000. # drop the alpha channel and convert to mm
         return distance
 
     def getPickedPosition(self, x: int, y: int) -> Vector:

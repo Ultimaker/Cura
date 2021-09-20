@@ -17,7 +17,7 @@
 		"machine_name": 		{ "default_value": "Flying Bear Ghost 4S" },
 		"machine_width": 		{ "default_value": 255 },
 		"machine_depth": 		{ "default_value": 210 },
-		"machine_height": 		{ "default_value": 210 },
+		"machine_height": 		{ "default_value": 200 },
 
 		"machine_steps_per_mm_x": 	{ "default_value": 80 },
 		"machine_steps_per_mm_y": 	{ "default_value": 80 },

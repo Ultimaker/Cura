@@ -1,11 +1,11 @@
 {
-    "name": "MINGDA Base Printer",
+    "name": "Mingda Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,
-        "author": "cataclism",
-        "manufacturer": "MINGDA",
+        "author": "Cataclism",
+        "manufacturer": "Mingda",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 

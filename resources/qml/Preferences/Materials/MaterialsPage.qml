@@ -1,5 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2021 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -191,6 +191,21 @@ Item
             }
             enabled: base.hasCurrentItem
         }
+
+        //Sync button.
+        Button
+        {
+            id: syncMaterialsButton
+            text: catalog.i18nc("@action:button Sending materials to printers", "Sync with Printers")
+            iconName: "sync-synchronizing"
+            onClicked:
+            {
+                forceActiveFocus();
+                exportAllMaterialsDialog.folder = base.materialManagementModel.getPreferredExportAllPath();
+                exportAllMaterialsDialog.open();
+            }
+            visible: Cura.MachineManager.activeMachine.supportsMaterialExport
+        }
     }
 
     Item {
@@ -364,6 +379,19 @@ Item
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
                 messageDialog.open();
             }
+            CuraApplication.setDefaultPath("dialog_material_path", folder);
+        }
+    }
+
+    FileDialog
+    {
+        id: exportAllMaterialsDialog
+        title: catalog.i18nc("@title:window", "Export All Materials")
+        selectExisting: false
+        nameFilters: ["Material archives (*.umm)", "All files (*)"]
+        onAccepted:
+        {
+            base.materialManagementModel.exportAll(fileUrl);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
         }
     }

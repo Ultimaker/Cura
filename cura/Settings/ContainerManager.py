@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -241,6 +241,7 @@ class ContainerManager(QObject):
             file_url = file_url_or_string.toLocalFile()
         else:
             file_url = file_url_or_string
+        Logger.info(f"Importing material from {file_url}")
 
         if not file_url or not os.path.exists(file_url):
             return {"status": "error", "message": "Invalid path"}
@@ -318,7 +319,7 @@ class ContainerManager(QObject):
                 stack.qualityChanges = quality_changes
 
             if not quality_changes or container_registry.isReadOnly(quality_changes.getId()):
-                Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
+                Logger.log("e", "Could not update quality of a nonexistent or read only quality profile in stack %s", stack.getId())
                 continue
 
             self._performMerge(quality_changes, stack.getTop())

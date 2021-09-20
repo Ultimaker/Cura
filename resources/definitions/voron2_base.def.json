@@ -1,12 +1,12 @@
 {
-    "name": "VORON2 Base",
+    "name": "Voron2 Base",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": 
     {
         "visible": false,
         "author": "Fulg, Maglin, pizzle_Dizzle",
-        "manufacturer": "VORONDesign",
+        "manufacturer": "VoronDesign",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
         "preferred_quality_type": "fast",

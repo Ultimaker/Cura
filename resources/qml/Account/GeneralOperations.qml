@@ -11,35 +11,26 @@ Column
 {
     spacing: UM.Theme.getSize("default_margin").width
     padding: UM.Theme.getSize("default_margin").width
-    Image
-    {
-        id: machinesImage
-        anchors.horizontalCenter: parent.horizontalCenter
-        source: UM.Theme.getIcon("sign_in_to_cloud")
-        horizontalAlignment: Image.AlignHCenter
-        verticalAlignment: Image.AlignVCenter
-    }
 
     Label
     {
         id: title
         anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: "Ultimaker Account"
+        text: catalog.i18nc("@label",  "Sign in to the Ultimaker platform")
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
     }
 
-    Label
+    Image
     {
-        id: generalInformation
+        id: machinesImage
         anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "Your key to connected 3D printing")
-        font: UM.Theme.getFont("default_bold")
-        color: UM.Theme.getColor("text")
+        source: UM.Theme.getImage("welcome_cura")
+        width: parent.width / 2
+        fillMode: Image.PreserveAspectFit
+        horizontalAlignment: Image.AlignHCenter
+        verticalAlignment: Image.AlignVCenter
     }
 
     Label
@@ -48,16 +39,10 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignLeft
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@text", "- Customize your experience with more print profiles and plugins\n- Stay flexible by syncing your setup and loading it anywhere\n- Increase efficiency with a remote workflow on Ultimaker printers")
+        text: catalog.i18nc("@text", "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the Ultimaker community")
         lineHeight: 1.4
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
-    }
-
-    // placeholder
-    Label
-    {
-        text: " "
     }
 
     Cura.PrimaryButton
@@ -70,13 +55,11 @@ Column
         fixedWidthMode: true
     }
 
-    Cura.SecondaryButton
+    Cura.TertiaryButton
     {
         anchors.horizontalCenter: parent.horizontalCenter
-        width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Create account")
-        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
-        fixedWidthMode: true
+        text: catalog.i18nc("@button", "Create a free Ultimaker account")
+        onClicked: Qt.openUrlExternally("https://ultimaker.com/app/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=menu-signup")
     }
 }

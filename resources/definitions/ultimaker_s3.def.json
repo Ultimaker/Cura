@@ -27,11 +27,12 @@
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
+        "supports_material_export": true,
         "weight": -1,
         "firmware_update_info": {
             "id": 213482,
             "check_urls": ["https://software.ultimaker.com/releases/firmware/213482/stable/um-update.swu.version"],
-            "update_url": "https://ultimaker.com/firmware"
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
         },
         "bom_numbers": [
             213482
@@ -61,7 +62,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "value": "60" },
+        "gantry_height": { "value": "55" },
         "machine_extruder_count": { "default_value": 2 },
         "extruder_prime_pos_abs": { "default_value": true },
         "machine_start_gcode": { "default_value": "" },

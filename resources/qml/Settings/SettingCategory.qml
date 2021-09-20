@@ -12,14 +12,17 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    // To avoid overlaping with the scrollBars
+    // To avoid overlapping with the scrollBars
     anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
     hoverEnabled: true
+
+    height: UM.Theme.getSize("section_icon_column").height
 
     background: Rectangle
     {
         id: backgroundRectangle
         height: UM.Theme.getSize("section").height
+        anchors.verticalCenter: parent.verticalCenter
         color:
         {
             if (!base.enabled)
@@ -93,7 +96,7 @@ Button
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.height: width
             color: UM.Theme.getColor("setting_control_button")
-            source: definition.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+            source: definition.expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
         }
     }
 
@@ -107,8 +110,8 @@ Button
         source: UM.Theme.getIcon(definition.icon)
         width: UM.Theme.getSize("section_icon").width
         height: UM.Theme.getSize("section_icon").height
-        sourceSize.width: width + 15 * screenScaleFactor
-        sourceSize.height: width + 15 * screenScaleFactor
+        sourceSize.width: width
+        sourceSize.height: width
     }
 
     onClicked:
@@ -141,8 +144,8 @@ Button
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
-        height: Math.round(base.height * 0.6)
-        width: Math.round(base.height * 0.6)
+        height: UM.Theme.getSize("small_button_icon").height
+        width: height
 
         anchors
         {
@@ -154,7 +157,7 @@ Button
 
         color: UM.Theme.getColor("setting_control_button")
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("settings")
+        iconSource: UM.Theme.getIcon("Sliders")
 
         onClicked: Cura.Actions.configureSettingVisibility.trigger(definition)
     }
@@ -184,7 +187,7 @@ Button
             return false
         }
 
-        height: Math.round(parent.height / 2)
+        height: UM.Theme.getSize("small_button_icon").height
         width: height
 
         onClicked:
@@ -195,7 +198,7 @@ Button
 
         color: UM.Theme.getColor("setting_control_button")
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("notice")
+        iconSource: UM.Theme.getIcon("Information")
 
         onEntered: base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
 
