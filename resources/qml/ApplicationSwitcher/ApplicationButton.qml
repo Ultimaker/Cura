@@ -60,8 +60,10 @@ Button
                     right: parent.right
                     rightMargin: - Math.round(width * 5 / 6)
                 }
+
                 Rectangle
                 {
+                    id: externalLinkIndicatorBackground
                     anchors.centerIn: parent
                     width: UM.Theme.getSize("small_button_icon").width
                     height: width
@@ -71,14 +73,12 @@ Button
 
                 UM.RecolorImage
                 {
-                    id: externalLinkIcon
+                    id: externalLinkIndicatorIcon
                     anchors.centerIn: parent
 
                     width: UM.Theme.getSize("printer_status_icon").width
                     height: width
-
                     color: UM.Theme.getColor("monitor_icon_primary")
-
                     source: UM.Theme.getIcon("LinkExternal")
                 }
             }
@@ -87,8 +87,14 @@ Button
         Label
         {
             id: applicationDisplayName
+
             anchors.horizontalCenter: parent.horizontalCenter
 
+            width: base.width - UM.Theme.getSize("default_margin").width
+            horizontalAlignment: Text.AlignHCenter
+            maximumLineCount: 2
+            wrapMode: Text.Wrap
+            elide: Text.ElideRight
         }
     }
 }
