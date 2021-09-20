@@ -26,7 +26,7 @@ Item
 
         background: UM.RecolorImage
         {
-            width: UM.Theme.getSize("small_button_icon").width
+            width: parent.width
             height: width
             anchors.verticalCenter: appSwitcherButton.verticalCenter
             anchors.horizontalCenter: appSwitcherButton.horizontalCenter
