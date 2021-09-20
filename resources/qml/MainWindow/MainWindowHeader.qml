@@ -146,7 +146,7 @@ Item
         {
             verticalCenter: parent.verticalCenter
             right: accountWidget.left
-//            rightMargin: UM.Theme.getSize("default_margin").width
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
     }
 
