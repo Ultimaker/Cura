@@ -574,6 +574,9 @@
         "favorites_button": [2, 2],
         "favorites_button_icon": [1.2, 1.2],
 
+        "icon_indicator_background": [1.5, 1.5],
+        "icon_indicator": [1, 1],
+
         "printer_status_icon": [1.0, 1.0],
         "printer_sync_icon": [1.2, 1.2],
 

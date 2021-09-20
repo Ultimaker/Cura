@@ -42,7 +42,7 @@ Button
             id: applicationIcon
             anchors.horizontalCenter: parent.horizontalCenter
 
-            color: UM.Theme.getColor("monitor_icon_primary")
+            color: UM.Theme.getColor("icon")
             width: UM.Theme.getSize("application_switcher_icon").width
             height: width
 
@@ -64,7 +64,7 @@ Button
                 {
                     id: externalLinkIndicatorBackground
                     anchors.centerIn: parent
-                    width: UM.Theme.getSize("small_button_icon").width
+                    width: UM.Theme.getSize("icon_indicator_background").width
                     height: width
                     color: base.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                     radius: 0.5 * width
@@ -75,9 +75,9 @@ Button
                     id: externalLinkIndicatorIcon
                     anchors.centerIn: parent
 
-                    width: UM.Theme.getSize("printer_status_icon").width
+                    width: UM.Theme.getSize("icon_indicator").width
                     height: width
-                    color: UM.Theme.getColor("monitor_icon_primary")
+                    color: UM.Theme.getColor("icon")
                     source: UM.Theme.getIcon("LinkExternal")
                 }
             }

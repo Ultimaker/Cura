@@ -11,13 +11,12 @@ import Cura 1.1 as Cura
 Item
 {
     id: applicationSwitcherWidget
-    width: appSwitcherButton.width
+    width: applicationSwitcherButton.width
     height: width
-
 
     Button
     {
-        id: appSwitcherButton
+        id: applicationSwitcherButton
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -28,8 +27,8 @@ Item
         {
             width: parent.width
             height: width
-            anchors.verticalCenter: appSwitcherButton.verticalCenter
-            anchors.horizontalCenter: appSwitcherButton.horizontalCenter
+            anchors.verticalCenter: applicationSwitcherButton.verticalCenter
+            anchors.horizontalCenter: applicationSwitcherButton.horizontalCenter
             color: UM.Theme.getColor("main_background")
 
             source: UM.Theme.getIcon("ApplicationSwitcher")
@@ -37,18 +36,18 @@ Item
 
         onClicked:
         {
-            if (popup.opened)
+            if (applicationSwitcherPopup.opened)
             {
-                popup.close()
+                applicationSwitcherPopup.close()
             } else {
-                popup.open()
+                applicationSwitcherPopup.open()
             }
         }
     }
 
     Popup
     {
-        id: popup
+        id: applicationSwitcherPopup
 
         y: parent.height + UM.Theme.getSize("default_arrow").height
         x: parent.width - width
@@ -63,7 +62,7 @@ Item
 
         contentItem: Item
         {
-            id: projectListContainer
+            id: applicationsContainer
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("wide_margin").width
 
@@ -73,17 +72,16 @@ Item
                 anchors.top: parent.top
                 anchors.left: parent.left
 
-                width: gridLayout.width
+                width: ultimakerPlatformLinksGrid.width
 
                 Grid
                 {
-                    id: gridLayout
+                    id: ultimakerPlatformLinksGrid
                     columns: 3
                     spacing: UM.Theme.getSize("default_margin").width
+
                     Repeater
                     {
-                        id:gridgenerate
-
                         model:
                         [
                             { displayName: "Report issue1", thumbnail: UM.Theme.getIcon("Bug"), description: "This is the description1", link: "https://github.com/Ultimaker/Cura/issues/1" },
@@ -114,7 +112,7 @@ Item
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
 
-            target: Qt.point(width - (appSwitcherButton.width / 2), -10)
+            target: Qt.point(width - (applicationSwitcherButton.width / 2), -10)
 
             arrowSize: UM.Theme.getSize("default_arrow").width
         }
