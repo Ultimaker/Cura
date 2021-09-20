@@ -10,6 +10,7 @@ import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 import "../Account"
+import "../ApplicationSwitcher"
 
 Item
 {
@@ -113,7 +114,7 @@ Item
 
         anchors
         {
-            right: accountWidget.left
+            right: applicationSwitcher.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
@@ -135,6 +136,17 @@ Item
                 const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
                 return itemCount > 9 ? "9+" : itemCount
             }
+        }
+    }
+
+    ApplicationSwitcher
+    {
+        id: applicationSwitcher
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: accountWidget.left
+//            rightMargin: UM.Theme.getSize("default_margin").width
         }
     }
 
