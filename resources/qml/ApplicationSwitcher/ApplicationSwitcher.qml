@@ -31,7 +31,7 @@ Item
             anchors.horizontalCenter: applicationSwitcherButton.horizontalCenter
             color: UM.Theme.getColor("main_background")
 
-            source: UM.Theme.getIcon("ApplicationSwitcher")
+            source: UM.Theme.getIcon("BlockGrid")
         }
 
         onClicked:
