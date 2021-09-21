@@ -22,8 +22,6 @@ Item
 
         background: Item
         {
-            anchors.fill: parent
-
             Rectangle
             {
                 anchors.fill: parent
