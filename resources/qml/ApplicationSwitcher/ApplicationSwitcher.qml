@@ -23,15 +23,25 @@ Item
         width: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         height: width
 
-        background: UM.RecolorImage
+        background: Item
         {
-            width: parent.width
-            height: width
-            anchors.verticalCenter: applicationSwitcherButton.verticalCenter
-            anchors.horizontalCenter: applicationSwitcherButton.horizontalCenter
-            color: UM.Theme.getColor("main_background")
+            anchors.fill: parent
 
-            source: UM.Theme.getIcon("BlockGrid")
+            Rectangle
+            {
+                anchors.fill: parent
+                radius: UM.Theme.getSize("action_button_radius").width
+                color: applicationSwitcherButton.hovered ? UM.Theme.getColor("primary_text") : "transparent"
+                opacity: applicationSwitcherButton.hovered ? 0.2 : 0
+            }
+
+            UM.RecolorImage
+            {
+                anchors.fill: parent
+                color: UM.Theme.getColor("primary_text")
+
+                source: UM.Theme.getIcon("BlockGrid")
+            }
         }
 
         onClicked:
