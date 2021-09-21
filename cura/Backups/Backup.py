@@ -206,6 +206,8 @@ class Backup:
                 archive.extract(archive_filename, target_path)
             except (PermissionError, EnvironmentError):
                 Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+            except UnicodeEncodeError:
+                Logger.error(f"Unable to extract the file {archive_filename} because of an encoding error.")
             CuraApplication.getInstance().processEvents()
         return True
 
