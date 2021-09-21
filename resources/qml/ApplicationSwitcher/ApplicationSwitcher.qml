@@ -96,7 +96,7 @@ Item
                             displayName: modelData.displayName
                             iconSource: modelData.thumbnail
                             tooltipText: modelData.description
-                            isExternalLink: (index % 2 == 0)
+                            isExternalLink: true
 
                             onClicked: Qt.openUrlExternally(modelData.link)
                         }
