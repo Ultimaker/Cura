@@ -60,7 +60,9 @@ Item
         id: applicationSwitcherPopup
 
         y: parent.height + UM.Theme.getSize("default_arrow").height
-        x: parent.width - width
+
+        // Move the x position by the default margin so that the arrow isn't drawn exactly on the corner
+        x: parent.width - width + UM.Theme.getSize("default_margin").width
 
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
@@ -122,7 +124,8 @@ Item
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
 
-            target: Qt.point(width - (applicationSwitcherButton.width / 2), -10)
+            // Move the target by the default margin so that the arrow isn't drawn exactly on the corner
+            target: Qt.point(width - UM.Theme.getSize("default_margin").width - (applicationSwitcherButton.width / 2), -10)
 
             arrowSize: UM.Theme.getSize("default_arrow").width
         }
