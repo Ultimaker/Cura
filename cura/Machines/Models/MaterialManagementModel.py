@@ -296,4 +296,7 @@ class MaterialManagementModel(QObject):
             material = registry.findContainers(id = metadata["id"])[0]
             suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
             filename = metadata["id"] + "." + suffix
-            archive.writestr(filename, material.serialize())
+            try:
+                archive.writestr(filename, material.serialize())
+            except OSError as e:
+                Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
