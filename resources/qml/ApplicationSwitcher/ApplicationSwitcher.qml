@@ -11,17 +11,14 @@ import Cura 1.1 as Cura
 Item
 {
     id: applicationSwitcherWidget
-    width: applicationSwitcherButton.width
+    width: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
     height: width
 
     Button
     {
         id: applicationSwitcherButton
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
 
-        width: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-        height: width
+        anchors.fill: parent
 
         background: Item
         {
