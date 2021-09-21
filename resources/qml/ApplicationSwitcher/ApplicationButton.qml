@@ -95,7 +95,7 @@ Button
             verticalAlignment: Text.AlignVCenter
             wrapMode: Text.Wrap
             elide: Text.ElideRight
-            color: UM.Theme.getColor("primary_text")
+            color: UM.Theme.getColor("text")
         }
     }
 }
