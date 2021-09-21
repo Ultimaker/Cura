@@ -12,8 +12,8 @@ Item
     property var profile: Cura.API.account.userProfile
     property var loggedIn: Cura.API.account.isLoggedIn
 
-    height: signInButton.height > accountWidget.height ? signInButton.height : accountWidget.height
-    width: signInButton.width > accountWidget.width ? signInButton.width : accountWidget.width
+    height: signInButton.visible ? signInButton.height : accountWidget.height
+    width: signInButton.visible ? signInButton.width : accountWidget.width
 
     Button
     {
@@ -54,7 +54,6 @@ Item
         id: accountWidget
 
         anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: signInButton.horizontalCenter
 
         implicitHeight: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         implicitWidth: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
@@ -142,7 +141,7 @@ Item
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
 
-            target: Qt.point(width - (signInButton.width / 2), -10)
+            target: Qt.point(width - ((signInButton.visible ? signInButton.width : accountWidget.width) / 2), -10)
 
             arrowSize: UM.Theme.getSize("default_arrow").width
         }
