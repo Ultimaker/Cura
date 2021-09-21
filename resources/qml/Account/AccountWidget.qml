@@ -32,9 +32,17 @@ Item
         background: Rectangle
         {
             radius: UM.Theme.getSize("action_button_radius").width
-            color: signInButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            color: UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("primary_text")
+
+            Rectangle
+            {
+                anchors.fill: parent
+                radius: parent.radius
+                color: UM.Theme.getColor("primary_text")
+                opacity: signInButton.hovered ? 0.2 : 0
+            }
         }
 
         contentItem: Label
@@ -42,7 +50,7 @@ Item
             id: label
             text: signInButton.text
             font: UM.Theme.getFont("default")
-            color: signInButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            color: UM.Theme.getColor("primary_text")
             width: contentWidth
             verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
@@ -89,9 +97,18 @@ Item
                 width: Math.min(accountWidget.width, accountWidget.height)
                 height: width
                 radius: width
-                color: accountWidget.hovered ? UM.Theme.getColor("primary_text") : "transparent"
-                border.width: 1
+                color: UM.Theme.getColor("main_window_header_background")
+                border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("primary_text")
+
+                Rectangle
+                {
+                    id: initialCircleFill
+                    anchors.fill: parent
+                    radius: parent.radius
+                    color: UM.Theme.getColor("primary_text")
+                    opacity: accountWidget.hovered ? 0.2 : 0
+                }
             }
 
             Label
@@ -101,7 +118,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: accountWidget.text
                 font: UM.Theme.getFont("large_bold")
-                color: accountWidget.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+                color: UM.Theme.getColor("primary_text")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 renderType: Text.NativeRendering

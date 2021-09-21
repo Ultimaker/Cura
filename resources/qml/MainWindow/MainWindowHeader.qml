@@ -95,10 +95,20 @@ Item
 
         background: Rectangle
         {
+            id: marketplaceButtonBorder
             radius: UM.Theme.getSize("action_button_radius").width
-            color: marketplaceButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            color: UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("primary_text")
+
+            Rectangle
+            {
+                id: marketplaceButtonFill
+                anchors.fill: parent
+                radius: parent.radius
+                color: UM.Theme.getColor("primary_text")
+                opacity: marketplaceButton.hovered ? 0.2 : 0
+            }
         }
 
         contentItem: Label
@@ -106,7 +116,7 @@ Item
             id: label
             text: marketplaceButton.text
             font: UM.Theme.getFont("default")
-            color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            color: UM.Theme.getColor("primary_text")
             width: contentWidth
             verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
