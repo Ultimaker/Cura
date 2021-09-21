@@ -35,7 +35,9 @@ Button
     Column
     {
         id: applicationButtonContent
-        anchors.centerIn: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
 
         UM.RecolorImage
         {
@@ -87,9 +89,9 @@ Button
         {
             id: applicationDisplayName
 
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+            anchors.right: parent.right
 
-            width: base.width - UM.Theme.getSize("default_margin").width
             height: base.height - applicationIcon.height - 2 * UM.Theme.getSize("default_margin").width  // Account for the top and bottom margins
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
