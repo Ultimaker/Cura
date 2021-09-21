@@ -54,7 +54,6 @@ Item
         id: accountWidget
 
         anchors.verticalCenter: parent.verticalCenter
-//        anchors.horizontalCenter: signInButton.horizontalCenter
 
         implicitHeight: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         implicitWidth: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
