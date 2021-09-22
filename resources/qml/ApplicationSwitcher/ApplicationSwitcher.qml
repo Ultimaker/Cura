@@ -26,7 +26,7 @@ Item
             {
                 anchors.fill: parent
                 radius: UM.Theme.getSize("action_button_radius").width
-                color: applicationSwitcherButton.hovered ? UM.Theme.getColor("primary_text") : "transparent"
+                color: UM.Theme.getColor("primary_text")
                 opacity: applicationSwitcherButton.hovered ? 0.2 : 0
             }
 
