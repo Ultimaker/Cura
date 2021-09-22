@@ -51,10 +51,9 @@ Button
             width: UM.Theme.getSize("application_switcher_icon").width
             height: width
 
-            Item
+            UM.RecolorImage
             {
-                id: externalLinkIndicator
-
+                id: externalLinkIndicatorIcon
                 visible: base.isExternalLink
 
                 anchors
@@ -64,17 +63,10 @@ Button
                     right: parent.right
                     rightMargin: - Math.round(width * 5 / 6)
                 }
-
-                UM.RecolorImage
-                {
-                    id: externalLinkIndicatorIcon
-                    anchors.centerIn: parent
-
-                    width: UM.Theme.getSize("icon_indicator").width
-                    height: width
-                    color: UM.Theme.getColor("icon")
-                    source: UM.Theme.getIcon("LinkExternal")
-                }
+                width: UM.Theme.getSize("icon_indicator").width
+                height: width
+                color: UM.Theme.getColor("icon")
+                source: UM.Theme.getIcon("LinkExternal")
             }
         }
 
