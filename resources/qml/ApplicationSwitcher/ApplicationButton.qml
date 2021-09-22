@@ -18,7 +18,7 @@ Button
     property color backgroundColor: hovered ? UM.Theme.getColor("primary") : "transparent"
     Behavior on backgroundColor { ColorAnimation { duration: 200; } }
 
-
+    hoverEnabled: true
     width: UM.Theme.getSize("application_switcher_item").width
     height: UM.Theme.getSize("application_switcher_item").height
 
@@ -29,10 +29,11 @@ Button
         border.width: UM.Theme.getSize("default_lining").width
     }
 
-    UM.TooltipArea
+    Cura.ToolTip
     {
         id: tooltip
-        anchors.fill: parent
+        tooltipText: base.text
+        visible: base.hovered
     }
 
     Column
