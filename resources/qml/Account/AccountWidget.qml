@@ -42,6 +42,7 @@ Item
                 radius: parent.radius
                 color: UM.Theme.getColor("primary_text")
                 opacity: signInButton.hovered ? 0.2 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
             }
         }
 
@@ -108,6 +109,7 @@ Item
                     radius: parent.radius
                     color: UM.Theme.getColor("primary_text")
                     opacity: accountWidget.hovered ? 0.2 : 0
+                    Behavior on opacity { NumberAnimation { duration: 100 } }
                 }
             }
 

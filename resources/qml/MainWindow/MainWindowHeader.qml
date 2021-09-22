@@ -108,6 +108,7 @@ Item
                 radius: parent.radius
                 color: UM.Theme.getColor("primary_text")
                 opacity: marketplaceButton.hovered ? 0.2 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
             }
         }
 
