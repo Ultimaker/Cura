@@ -15,8 +15,10 @@ Button
     property alias displayName: applicationDisplayName.text
     property alias tooltipText: tooltip.text
     property bool isExternalLink: false
-    property color backgroundColor: hovered ? UM.Theme.getColor("primary") : "transparent"
+    property color borderColor: hovered ? UM.Theme.getColor("primary") : "transparent"
+    property color backgroundColor: hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
     Behavior on backgroundColor { ColorAnimation { duration: 200; } }
+    Behavior on borderColor { ColorAnimation { duration: 200; } }
 
 
     width: UM.Theme.getSize("application_switcher_item").width
@@ -24,8 +26,8 @@ Button
 
     background: Rectangle
     {
-        color: backgroundColor
-        border.color: backgroundColor
+        color:backgroundColor
+        border.color: borderColor
         border.width: UM.Theme.getSize("default_lining").width
     }
 
