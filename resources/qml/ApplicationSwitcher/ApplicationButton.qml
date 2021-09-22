@@ -15,14 +15,17 @@ Button
     property alias displayName: applicationDisplayName.text
     property alias tooltipText: tooltip.text
     property bool isExternalLink: false
+    property color backgroundColor: hovered ? UM.Theme.getColor("primary") : "transparent"
+    Behavior on backgroundColor { ColorAnimation { duration: 200; } }
+
 
     width: UM.Theme.getSize("application_switcher_item").width
     height: UM.Theme.getSize("application_switcher_item").height
 
     background: Rectangle
     {
-        color: parent.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-        border.color: parent.hovered ? UM.Theme.getColor("primary") : "transparent"
+        color: backgroundColor
+        border.color: backgroundColor
         border.width: UM.Theme.getSize("default_lining").width
     }
 
@@ -60,16 +63,6 @@ Button
                     bottomMargin: - Math.round(height * 1 / 6)
                     right: parent.right
                     rightMargin: - Math.round(width * 5 / 6)
-                }
-
-                Rectangle
-                {
-                    id: externalLinkIndicatorBackground
-                    anchors.centerIn: parent
-                    width: UM.Theme.getSize("icon_indicator_background").width
-                    height: width
-                    color: base.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-                    radius: 0.5 * width
                 }
 
                 UM.RecolorImage
