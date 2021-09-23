@@ -12,8 +12,8 @@ Item
     property var profile: Cura.API.account.userProfile
     property var loggedIn: Cura.API.account.isLoggedIn
 
-    height: signInButton.height > accountWidget.height ? signInButton.height : accountWidget.height
-    width: signInButton.width > accountWidget.width ? signInButton.width : accountWidget.width
+    height: signInButton.visible ? signInButton.height : accountWidget.height
+    width: signInButton.visible ? signInButton.width : accountWidget.width
 
     Button
     {
@@ -32,9 +32,18 @@ Item
         background: Rectangle
         {
             radius: UM.Theme.getSize("action_button_radius").width
-            color: signInButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            color: UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("primary_text")
+
+            Rectangle
+            {
+                anchors.fill: parent
+                radius: parent.radius
+                color: UM.Theme.getColor("primary_text")
+                opacity: signInButton.hovered ? 0.2 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+            }
         }
 
         contentItem: Label
@@ -42,7 +51,7 @@ Item
             id: label
             text: signInButton.text
             font: UM.Theme.getFont("default")
-            color: signInButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            color: UM.Theme.getColor("primary_text")
             width: contentWidth
             verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
@@ -54,7 +63,6 @@ Item
         id: accountWidget
 
         anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: signInButton.horizontalCenter
 
         implicitHeight: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         implicitWidth: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
@@ -90,9 +98,19 @@ Item
                 width: Math.min(accountWidget.width, accountWidget.height)
                 height: width
                 radius: width
-                color: accountWidget.hovered ? UM.Theme.getColor("primary_text") : "transparent"
-                border.width: 1
+                color: UM.Theme.getColor("main_window_header_background")
+                border.width: UM.Theme.getSize("default_lining").width
                 border.color: UM.Theme.getColor("primary_text")
+
+                Rectangle
+                {
+                    id: initialCircleFill
+                    anchors.fill: parent
+                    radius: parent.radius
+                    color: UM.Theme.getColor("primary_text")
+                    opacity: accountWidget.hovered ? 0.2 : 0
+                    Behavior on opacity { NumberAnimation { duration: 100 } }
+                }
             }
 
             Label
@@ -102,7 +120,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: accountWidget.text
                 font: UM.Theme.getFont("large_bold")
-                color: accountWidget.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+                color: UM.Theme.getColor("primary_text")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 renderType: Text.NativeRendering
@@ -142,7 +160,7 @@ Item
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
 
-            target: Qt.point(width - (signInButton.width / 2), -10)
+            target: Qt.point(width - ((signInButton.visible ? signInButton.width : accountWidget.width) / 2), -10)
 
             arrowSize: UM.Theme.getSize("default_arrow").width
         }

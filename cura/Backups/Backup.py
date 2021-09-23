@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import io
@@ -168,7 +168,10 @@ class Backup:
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
-            shutil.move(backup_preferences_file, preferences_file)
+            try:
+                shutil.move(backup_preferences_file, preferences_file)
+            except EnvironmentError as e:
+                Logger.error(f"Unable to back-up preferences file: {type(e)} - {str(e)}")
 
         # Read the preferences from the newly restored configuration (or else the cached Preferences will override the restored ones)
         self._application.readPreferencesFromConfiguration()
@@ -203,6 +206,8 @@ class Backup:
                 archive.extract(archive_filename, target_path)
             except (PermissionError, EnvironmentError):
                 Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+            except UnicodeEncodeError:
+                Logger.error(f"Unable to extract the file {archive_filename} because of an encoding error.")
             CuraApplication.getInstance().processEvents()
         return True
 

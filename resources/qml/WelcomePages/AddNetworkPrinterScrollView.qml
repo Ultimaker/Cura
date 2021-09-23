@@ -205,6 +205,7 @@ Item
             height: UM.Theme.getSize("message_action_button").height
             onClicked: {
                 CuraApplication.getDiscoveredCloudPrintersModel().clear()
+                Cura.API.account.sync(true)
                 base.addCloudPrinterButtonClicked()
             }
         }
