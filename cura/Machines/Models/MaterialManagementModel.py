@@ -9,6 +9,7 @@ import zipfile  # To export all materials in a .zip archive.
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -287,7 +288,17 @@ class MaterialManagementModel(QObject):
         """
         registry = CuraContainerRegistry.getInstance()
 
-        archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+        try:
+            archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+        except OSError as e:
+            Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
+            error_message = Message(
+                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
+                title = catalog.i18nc("@message:title", "Failed to save material archive"),
+                message_type = Message.MessageType.ERROR
+            )
+            error_message.show()
+            return
         for metadata in registry.findInstanceContainersMetadata(type = "material"):
             if metadata["base_file"] != metadata["id"]:  # Only process base files.
                 continue
