@@ -3,6 +3,7 @@
 
 import configparser
 import io
+import os.path
 from typing import List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
@@ -22,6 +23,16 @@ class VersionUpgrade411to412(VersionUpgrade):
         "fast": "flsun_sr_normal",
         "normal": "flsun_sr_normal",
         "high": "flsun_sr_fine"
+    }
+
+    _flsun_quality_type_mapping = {
+        "extra coarse": "normal",
+        "coarse"      : "normal",
+        "verydraft"   : "normal",
+        "draft"       : "normal",
+        "fast"        : "normal",
+        "normal"      : "normal",
+        "high"        : "fine"
     }
 
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -58,6 +69,15 @@ class VersionUpgrade411to412(VersionUpgrade):
         if "metadata" not in parser:
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "19"
+
+        # Update user-made quality profiles of flsun_sr printers to use the flsun_sr-specific qualities instead of the
+        # global ones as their base
+        file_base_name = os.path.basename(filename)  # Remove any path-related characters from the filename
+        old_definition = parser["general"]["definition"]
+        old_quality_type = parser["metadata"]["quality_type"]
+        if file_base_name.startswith("flsun_sr") and old_definition == "fdmprinter" and parser["metadata"]["type"] == "quality_changes":
+            parser["general"]["definition"] = "flsun_sr"
+            parser["metadata"]["quality_type"] = self._flsun_quality_type_mapping.get(old_quality_type, "normal")
 
         result = io.StringIO()
         parser.write(result)
