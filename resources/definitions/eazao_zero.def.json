@@ -54,7 +54,7 @@
         },
         "machine_end_gcode":
         {
-            "default_value": "M107 ; Fan off\nG91 ;relative positioning\nG1 E-10 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+3 E-5  F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0;move X Y to min endstops\nG90 ;Absolute positioning\nM84 ;steppers off\n
+            "default_value": "M107 ; Fan off\nG91 ;relative positioning\nG1 E-10 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+3 E-5  F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0;move X Y to min endstops\nG90 ;Absolute positioning\nM84 ;steppers off\n"
         },
         "machine_max_feedrate_x": { "value": 100 },
         "machine_max_feedrate_y": { "value": 100 },
