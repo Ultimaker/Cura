@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "Eazao_zero",
+    "inherits": "fdmprinter",
+    "metadata": 
+  {
+        "visible": true,
+        "author": "Eazao",
+        "manufacturer": "Eazao LLC",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "has_machine_quality": true,
+        "preferred_quality_type": "normal",
+        "preferred_material": "generic_pla",
+    
+        "machine_extruder_trains":
+        {
+            "0": "eazao_zero_extruder_0"
+        }  
+  },
+  "overrides":
+    {
+        "machine_name":
+        {
+            "default_value": "EAZAO Zero
+        },
+        "machine_heated_bed":
+        {
+            "default_value": false
+        },
+        "machine_width":
+        {
+            "default_value": 150
+        },
+        "machine_depth":
+        {
+            "default_value": 150
+        },
+        "machine_height":
+        {
+            "default_value": 240
+        },
+        "machine_center_is_zero":
+        {
+            "default_value": false
+        },
+        "machine_gcode_flavor":
+        {
+            "default_value": "Marlin (Marlin/Sprinter)"
+        },
+        "machine_start_gcode":
+        {
+            "default_value": ";Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F{speed_travel} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F300 E10 ;extrude 10mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 Z5.0 F1500 ; Move Z Axis up little to prevent scratching of Bed\nM302; report current cold extrusion state\nM163 S0 P0.9; Set Mix Factor\nM163 S1 P0.1; Set Mix Factor\nM164 S0\n"
+        },
+        "machine_end_gcode":
+        {
+            "default_value": "M107 ; Fan off\nG91 ;relative positioning\nG1 E-10 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+3 E-5  F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0;move X Y to min endstops\nG90 ;Absolute positioning\nM84 ;steppers off\n
+        },
+  
