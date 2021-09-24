@@ -1,12 +1,12 @@
 {
     "version": 2,
-    "name": "Eazao_zero",
+    "name": "Eazao Zero",
     "inherits": "fdmprinter",
     "metadata": 
   {
         "visible": true,
         "author": "Eazao",
-        "manufacturer": "Eazao LLC",
+        "manufacturer": "Eazao",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "has_machine_quality": true,
@@ -50,11 +50,11 @@
         },
         "machine_start_gcode":
         {
-            "default_value": ";Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F{speed_travel} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F300 E10 ;extrude 10mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 Z5.0 F1500 ; Move Z Axis up little to prevent scratching of Bed\nM302; report current cold extrusion state\nM163 S0 P0.9; Set Mix Factor\nM163 S1 P0.1; Set Mix Factor\nM164 S0\n"
+            "default_value": "G21 \nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG28 ;Home \nG1 Z15.0 F1500 ;move the platform down 15mm\nG92 E0 \nG1 F300 E10\nG92 E0\nM302\nM163 S0 P0.9; Set Mix Factor\nM163 S1 P0.1; Set Mix Factor\nM164 S0\n"
         },
         "machine_end_gcode":
         {
-            "default_value": "M107 ; Fan off\nG91 ;relative positioning\nG1 E-10 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+3 E-5  F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0;move X Y to min endstops\nG90 ;Absolute positioning\nM84 ;steppers off\n"
+            "default_value": "G92 E10\nG1 E-10 F300\nG28 X0 Y0 ;move X Y to min endstops\nM82\nM84 ;steppers off\n"
         },
         "machine_max_feedrate_x": { "value": 100 },
         "machine_max_feedrate_y": { "value": 100 },
@@ -78,13 +78,32 @@
         "jerk_travel_layer_0": { "value": "jerk_travel" },
         "jerk_enabled": { "value": false },
 
-        "speed_print": { "value": 20.0 },
-        "speed_z_hop": { "value": "machine_max_feedrate_z" },
-
+        "layer_height": {"value":1.0},
+        "layer_height_0": {"value":1.0},
+        "line_width": {"value":3.0},
+        
+        "wall_thickness": {"value":3.0},
         "optimize_wall_printing_order": { "value": "True" },
+        "travel_compensate_overlapping_walls_enabled": { "value": false},
+        
+        "top_bottom_thickness": {"value":0},
+        "bottom_layers":{"value":2},
+        "initial_bottom_layers":{"value":2},
+
+        "infill_sparse_density": {"value":0},
+
+        "material_print_temperature": { "value": "0" },
+        "material_print_temperature_layer_0": { "value": "0" },
         "material_initial_print_temperature": { "value": "0" },
         "material_final_print_temperature": { "value": "0" },
 
+        "speed_print": { "value": 20.0 },
+        "speed_wall": { "value": 20.0 },
+        "speed_wall_0": { "value": 20.0 },
+        "speed_wall_x": { "value": 20.0 },
+        "speed_travel": { "value": 20.0 },
+        "speed_z_hop": { "value": "machine_max_feedrate_z" },
+             
         "retraction_hop_enabled": { "value": "false" },
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "default_value": "noskin" },
@@ -99,7 +118,10 @@
         "retraction_amount": { "value": 7 },
         "retraction_count_max": { "value": 100 },
         "retraction_extrusion_window": { "value": 10 },
-        "retraction_min_travel": { "value": 1.5 }
+        
+        "cool_fan_enabled": { "value": false },
+        
+        "adhesion_type": { "default_value": "none" }
 
     }
 }
