@@ -73,11 +73,11 @@ class VersionUpgrade411to412(VersionUpgrade):
         # Update user-made quality profiles of flsun_sr printers to use the flsun_sr-specific qualities instead of the
         # global ones as their base
         file_base_name = os.path.basename(filename)  # Remove any path-related characters from the filename
-        old_definition = parser["general"]["definition"]
-        old_quality_type = parser["metadata"]["quality_type"]
-        if file_base_name.startswith("flsun_sr") and old_definition == "fdmprinter" and parser["metadata"]["type"] == "quality_changes":
-            parser["general"]["definition"] = "flsun_sr"
-            parser["metadata"]["quality_type"] = self._flsun_quality_type_mapping.get(old_quality_type, "normal")
+        if file_base_name.startswith("flsun_sr_") and parser["metadata"].get("type") == "quality_changes":
+            if "general" in parser and parser["general"].get("definition") == "fdmprinter":
+                old_quality_type = parser["metadata"].get("quality_type", "normal")
+                parser["general"]["definition"] = "flsun_sr"
+                parser["metadata"]["quality_type"] = self._flsun_quality_type_mapping.get(old_quality_type, "normal")
 
         result = io.StringIO()
         parser.write(result)
