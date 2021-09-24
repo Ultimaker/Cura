@@ -647,7 +647,7 @@ class CuraEngineBackend(QObject, Backend):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    # We can asume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    # We can assume that all nodes have a parent as we're looping through the scene (and filter out root)
                     cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:

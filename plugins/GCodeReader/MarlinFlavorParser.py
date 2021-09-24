@@ -3,7 +3,7 @@
 
 from . import FlavorParser
 
-# This parser is intented for interpret the Marlin/Sprinter Firmware flavor
+# This parser is intended to interpret the Marlin/Sprinter Firmware flavor
 class MarlinFlavorParser(FlavorParser.FlavorParser):
 
     def __init__(self):

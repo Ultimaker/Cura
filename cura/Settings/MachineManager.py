@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -627,7 +627,7 @@ class MachineManager(QObject):
             return ""
         return global_container_stack.getIntentCategory()
 
-    # Provies a list of extruder positions that have a different intent from the active one.
+    # Provides a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
     def extruderPositionsWithNonActiveIntent(self):
         global_container_stack = self._application.getGlobalContainerStack()
@@ -1398,6 +1398,8 @@ class MachineManager(QObject):
         # previous one).
         self._global_container_stack.setUserChanges(global_user_changes)
         for i, user_changes in enumerate(per_extruder_user_changes):
+            if i >= len(self._global_container_stack.extruderList):  # New printer has fewer extruders.
+                break
             self._global_container_stack.extruderList[i].setUserChanges(per_extruder_user_changes[i])
 
     @pyqtSlot(QObject)

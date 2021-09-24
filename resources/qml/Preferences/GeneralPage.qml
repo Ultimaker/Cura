@@ -19,7 +19,7 @@ UM.PreferencesPage
 
     function setDefaultLanguage(languageCode)
     {
-        //loops trough the languageList and sets the language using the languageCode
+        //loops through the languageList and sets the language using the languageCode
         for(var i = 0; i < languageList.count; i++)
         {
             if (languageComboBox.model.get(i).code == languageCode)
@@ -76,6 +76,8 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("cura/single_instance")
         singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
+        UM.Preferences.resetPreference("cura/single_instance_clear_before_load")
+        singleInstanceClearBeforeLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
@@ -564,6 +566,22 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Use a single instance of Cura")
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should the build plate be cleared before loading a new model in the single instance of Cura?")
+                enabled: singleInstanceCheckbox.checked
+
+                CheckBox
+                {
+                    id: singleInstanceClearBeforeLoadCheckbox
+                    text: catalog.i18nc("@option:check","Clear buildplate before loading model into the single instance")
+                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance_clear_before_load", checked)
                 }
             }
 

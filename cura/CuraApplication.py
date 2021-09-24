@@ -320,7 +320,7 @@ class CuraApplication(QtApplication):
         super().initialize()
 
         self._preferences.addPreference("cura/single_instance", False)
-        self._use_single_instance = self._preferences.getValue("cura/single_instance")
+        self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
 
         self.__sendCommandToSingleInstance()
         self._initializeSettingDefinitions()
@@ -1312,9 +1312,9 @@ class CuraApplication(QtApplication):
             if not isinstance(node, SceneNode):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent().callDecoration("isSliceable"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
@@ -1332,9 +1332,9 @@ class CuraApplication(QtApplication):
             if not isinstance(node, SceneNode):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             if not node.isSelectable():
                 continue  # i.e. node with layer data
             nodes.append(node)
@@ -1361,9 +1361,9 @@ class CuraApplication(QtApplication):
             if not isinstance(node, SceneNode):
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue  # i.e. node with layer data
             nodes.append(node)
@@ -1390,7 +1390,7 @@ class CuraApplication(QtApplication):
                 continue
 
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
 
             parent_node = node.getParent()
             if parent_node and parent_node.callDecoration("isGroup"):
@@ -1418,11 +1418,11 @@ class CuraApplication(QtApplication):
                 continue
 
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
 
             parent_node = node.getParent()
             if parent_node and parent_node.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
 
             if not node.isSelectable():
                 continue  # i.e. node with layer data
@@ -2039,11 +2039,11 @@ class CuraApplication(QtApplication):
             if not node.isEnabled():
                 continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
-                continue  # Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesn't have a mesh and is not a group.
             if only_selectable and not node.isSelectable():
                 continue  # Only remove nodes that are selectable.
             if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
             nodes.append(node)
         if nodes:
             from UM.Operations.GroupedOperation import GroupedOperation

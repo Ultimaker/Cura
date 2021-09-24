@@ -190,11 +190,11 @@ Item
         }
     }
 
-    // Scrolls trough Z layers
+    // Scrolls through Z layers
     LayerSlider
     {
         property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
-        property double heightMargin: UM.Theme.getSize("default_margin").height * 3 // extra margin to accomodate layer number tooltips
+        property double heightMargin: UM.Theme.getSize("default_margin").height * 3 // extra margin to accommodate layer number tooltips
         property double layerSliderSafeHeight: layerSliderSafeYMax - layerSliderSafeYMin
 
         id: layerSlider

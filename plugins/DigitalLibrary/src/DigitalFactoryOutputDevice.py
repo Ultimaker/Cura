@@ -8,6 +8,8 @@ from UM.Logger import Logger
 from UM.OutputDevice import OutputDeviceError
 from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 from UM.Scene.SceneNode import SceneNode
+from UM.Version import Version
+from cura import ApplicationMetadata
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from .DigitalFactoryController import DigitalFactoryController
@@ -107,8 +109,9 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
 
     def _onWriteStarted(self, new_name: Optional[str] = None) -> None:
         self._writing = True
-        if new_name:
-            self.setLastOutputName(new_name)  # On saving, the user can change the name, this should propagate.
+        if new_name and Version(ApplicationMetadata.CuraSDKVersion) >= Version("7.8.0"):
+            # setLastOutputName is only supported in sdk version 7.8.0 and up
+            self.setLastOutputName(new_name) # On saving, the user can change the name, this should propagate.
         self.writeStarted.emit(self)
 
     def _onWriteFinished(self) -> None:
