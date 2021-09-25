@@ -104,7 +104,7 @@
         "speed_travel": { "value": 20.0 },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
              
-        "retraction_hop_enabled": { "value": "false" },
+        "retraction_hop_enabled": { "value": false },
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "default_value": "noskin" },
         "retraction_combing_max_distance": { "value": 0 },
