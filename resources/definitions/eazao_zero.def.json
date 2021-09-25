@@ -9,7 +9,7 @@
         "manufacturer": "Eazao",
         "file_formats": "text/x-gcode",
         "has_materials": true,
-        "has_machine_quality": true,
+        "has_machine_quality": false,
         "preferred_quality_type": "normal",
         "preferred_material": "generic_pla",
     
@@ -83,7 +83,7 @@
         "line_width": {"value":3.0},
         
         "wall_thickness": {"value":3.0},
-        "optimize_wall_printing_order": { "value": "True" },
+        "optimize_wall_printing_order": { "value": True },
         "travel_compensate_overlapping_walls_enabled": { "value": false},
         
         "top_bottom_thickness": {"value":0},
