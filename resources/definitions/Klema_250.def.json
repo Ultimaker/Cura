@@ -1,0 +1,70 @@
+{
+    "version": 2,
+    "name": "Klema 250",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "3dDevice",
+        "manufacturer": "KLEMA",
+        "file_formats": "text/x-gcode",
+        "platform": "steklo_250.stl",
+        "platform_offset": [-195, -5.5, 150],
+        "has_materials": true,
+        "machine_extruder_trains": {
+            "0": "klema_250_extruder"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Klema 250"
+        },
+        "machine_width": {
+            "default_value": 250
+        },
+        "machine_depth": {
+            "default_value": 250
+        },
+        "machine_height": {
+            "default_value": 350
+        },
+        "machine_heated_bed": {
+	        "default_value": true
+	    },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -37.5, -21.5 ],
+                [ -37.5, 68 ],
+                [ 38.5, 68 ],
+                [ 38.5, -21.5 ]
+            ]
+        },
+        "gantry_height": {
+            "value": "34"
+        },
+        "machine_max_feedrate_x": { 
+            "default_value": 300 
+        },         
+        "machine_max_feedrate_y": { 
+            "default_value": 300 
+        },         
+        "machine_max_feedrate_z": { 
+            "default_value": 5 
+        },          
+        "machine_max_acceleration_z": { 
+            "default_value": 100 
+        },     
+        "machine_acceleration": { 
+            "default_value": 1500 
+        },          
+        "machine_max_jerk_xy": { 
+            "default_value": 10 
+        },
+        "machine_start_gcode": {
+            "default_value": "G92 E0\nG28\nG1 Z2.0 F3000\nG1 X20 Y0.1 Z0.3 F5000.0\nG1 X50 Y0.1.0 Z0.3 F1500.0 E15\nG1 X50\nY0.4.0 Z0.3 F5000.0\nG1 X20 Y0.4 Z0.3 F1500.0 E30\nG92 E0\nG1 Z2.0 F3000\nG1 X5 Y20 Z0.3 F5000.0"
+        },
+        "machine_end_gcode": {
+            "default_value": "G91\nG1 Z10\nG90\nG1 X0 Y0\nM106 S0\nM104 S0\nM140 S0\nM84 X Y E"
+        }            
+    }
+}
