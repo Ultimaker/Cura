@@ -499,6 +499,9 @@
         "print_setup_icon": [1.2, 1.2],
         "drag_icon": [1.416, 0.25],
 
+        "application_switcher_item": [8, 9],
+        "application_switcher_icon": [3.75, 3.75],
+
         "expandable_component_content_header": [0.0, 3.0],
 
         "configuration_selector": [35.0, 4.0],
@@ -570,6 +573,9 @@
         "favorites_row": [2, 2],
         "favorites_button": [2, 2],
         "favorites_button_icon": [1.2, 1.2],
+
+        "icon_indicator_background": [1.5, 1.5],
+        "icon_indicator": [1, 1],
 
         "printer_status_icon": [1.0, 1.0],
         "printer_sync_icon": [1.2, 1.2],

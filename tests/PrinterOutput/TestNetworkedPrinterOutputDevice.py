@@ -38,7 +38,7 @@ def test_post():
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
-    # Create a fake reply (we cant use a QReply, since those are abstract C++)
+    # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
     reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
@@ -47,7 +47,7 @@ def test_post():
     mocked_callback_handler = MagicMock()
     output_device.post("whatever", "omgzomg", on_finished = mocked_callback_handler.onFinished)
 
-    # So we now fake that the request was sucesful.
+    # So we now fake that the request was successful.
     output_device._handleOnFinished(reply)
 
     # We expect to get a callback regarding this.
@@ -60,7 +60,7 @@ def test_get():
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
-    # Create a fake reply (we cant use a QReply, since those are abstract C++)
+    # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
     reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
@@ -69,7 +69,7 @@ def test_get():
     mocked_callback_handler = MagicMock()
     output_device.get("whatever", on_finished=mocked_callback_handler.onFinished)
 
-    # So we now fake that the request was sucesful.
+    # So we now fake that the request was successful.
     output_device._handleOnFinished(reply)
 
     # We expect to get a callback regarding this.
@@ -82,7 +82,7 @@ def test_delete():
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
-    # Create a fake reply (we cant use a QReply, since those are abstract C++)
+    # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
     reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
@@ -91,7 +91,7 @@ def test_delete():
     mocked_callback_handler = MagicMock()
     output_device.delete("whatever", on_finished=mocked_callback_handler.onFinished)
 
-    # So we now fake that the request was sucesful.
+    # So we now fake that the request was successful.
     output_device._handleOnFinished(reply)
 
     # We expect to get a callback regarding this.
@@ -104,7 +104,7 @@ def test_put():
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
-    # Create a fake reply (we cant use a QReply, since those are abstract C++)
+    # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
     reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
@@ -113,7 +113,7 @@ def test_put():
     mocked_callback_handler = MagicMock()
     output_device.put("whatever", "omgzomg", on_finished = mocked_callback_handler.onFinished)
 
-    # So we now fake that the request was sucesful.
+    # So we now fake that the request was successful.
     output_device._handleOnFinished(reply)
 
     # We expect to get a callback regarding this.

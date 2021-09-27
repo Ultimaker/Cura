@@ -76,7 +76,8 @@ Item
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
 
-    property int popupOffset: 2
+    // Distance between the header and the content.
+    property int popupOffset: 2 * UM.Theme.getSize("default_lining").height
 
     // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
     property string dragPreferencesNamePrefix: ""

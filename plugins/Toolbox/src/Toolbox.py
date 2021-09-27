@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -542,7 +542,7 @@ class Toolbox(QObject, Extension):
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
-        Logger.log("d", "Requesting [%s] metadata from server.", request_type)
+        Logger.debug(f"Requesting {request_type} metadata from server.")
         url = self._request_urls[request_type]
 
         callback = lambda r, rt = request_type: self._onDataRequestFinished(rt, r)
@@ -554,7 +554,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def startDownload(self, url: str) -> None:
-        Logger.log("i", "Attempting to download & install package from %s.", url)
+        Logger.info(f"Attempting to download & install package from {url}.")
 
         callback = lambda r: self._onDownloadFinished(r)
         error_callback = lambda r, e: self._onDownloadFailed(r, e)
@@ -572,7 +572,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def cancelDownload(self) -> None:
-        Logger.log("i", "User cancelled the download of a package. request %s", self._download_request_data)
+        Logger.info(f"User cancelled the download of a package. request {self._download_request_data}")
         if self._download_request_data is not None:
             self._application.getHttpRequestManager().abortRequest(self._download_request_data)
             self._download_request_data = None
@@ -585,7 +585,7 @@ class Toolbox(QObject, Extension):
     # Handlers for Network Events
     # --------------------------------------------------------------------------
     def _onDataRequestError(self, request_type: str, reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:
-        Logger.log("e", "Request [%s] failed due to error [%s]: %s", request_type, error, reply.errorString())
+        Logger.error(f"Request {request_type} failed due to error {error}: {reply.errorString()}")
         self.setViewPage("errored")
 
     def _onDataRequestFinished(self, request_type: str, reply: "QNetworkReply") -> None:

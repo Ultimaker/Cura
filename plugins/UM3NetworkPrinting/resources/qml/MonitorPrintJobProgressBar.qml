@@ -16,7 +16,7 @@ Item
 {
     id: base
 
-    // The print job which all other information is dervied from
+    // The print job which all other information is derived from
     property var printJob: null
 
     width: childrenRect.width
