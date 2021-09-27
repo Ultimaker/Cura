@@ -7,6 +7,8 @@
 from typing import List
 from ..Script import Script
 
+from UM.Application import Application #To get the current printer's settings.
+
 class FilamentChange(Script):
 
     _layer_keyword = ";LAYER:"
@@ -81,9 +83,50 @@ class FilamentChange(Script):
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": 0
+                },
+                "retract_method":
+                {
+                    "label": "Retract method",
+                    "description": "The gcode variant to use for retract.",
+                    "type": "enum",
+                    "options": {"U": "Marlin (M600 U)", "L": "Reprap (M600 L)"},
+                    "default_value": "U",
+                    "value": "\\\"L\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"U\\\"",
+                    "enabled": "not firmware_config"
+                },                    
+                "machine_gcode_flavor":
+                {
+                    "label": "G-code flavor",
+                    "description": "The type of g-code to be generated. This setting is controlled by the script and will not be visible.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "RepRap (Marlin/Sprinter)": "Marlin",
+                        "RepRap (Volumetric)": "Marlin (Volumetric)",
+                        "RepRap (RepRap)": "RepRap",
+                        "UltiGCode": "Ultimaker 2",
+                        "Griffin": "Griffin",
+                        "Makerbot": "Makerbot",
+                        "BFB": "Bits from Bytes",
+                        "MACH3": "Mach3",
+                        "Repetier": "Repetier"
+                    },
+                    "default_value": "RepRap (Marlin/Sprinter)",
+                    "enabled": "false"
                 }
             }
         }"""
+
+    ##  Copy machine name and gcode flavor from global stack so we can use their value in the script stack
+    def initialize(self) -> None:
+        super().initialize()
+
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None or self._instance is None:
+            return
+
+        for key in ["machine_gcode_flavor"]:
+            self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
 
     def execute(self, data: List[str]):
         """Inserts the filament change g-code at specific layer numbers.
@@ -106,7 +149,10 @@ class FilamentChange(Script):
                 color_change = color_change + (" E%.2f" % initial_retract)
 
             if later_retract is not None and later_retract > 0.:
-                color_change = color_change + (" L%.2f" % later_retract)
+                # Reprap uses 'L': https://reprap.org/wiki/G-code#M600:_Filament_change_pause
+                # Marlin uses 'U' https://marlinfw.org/docs/gcode/M600.html
+                retract_method = self.getSettingValueByKey("retract_method")
+                color_change = color_change + (" %s%.2f" % (retract_method, later_retract))
 
             if x_pos is not None:
                 color_change = color_change + (" X%.2f" % x_pos)
