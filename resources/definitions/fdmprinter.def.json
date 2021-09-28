@@ -3855,6 +3855,7 @@
                         "infill": "Within Infill"
                     },
                     "default_value": "all",
+                    "value": "'no_outer_surfaces' if (any(extruderValues('skin_monotonic')) or any(extruderValues('ironing_enabled')) or (any(extruderValues('roofing_monotonic')) and any(extruderValues('roofing_layer_count')))) else 'all'",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else ('no_outer_surfaces' if 'no_outer_surfaces' in extruderValues('retraction_combing') else 'off')))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
