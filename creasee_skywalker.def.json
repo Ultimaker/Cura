@@ -7,7 +7,7 @@
         "manufacturer": "CREASEE",
         "machine_extruder_trains":
         {
-            "0": "creasee_extruder_2"
+            "0": "creasee_skywalker_extruder"
         }
     },
 
