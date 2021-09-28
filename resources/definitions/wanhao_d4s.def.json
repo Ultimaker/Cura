@@ -11,7 +11,8 @@
     "platform": "wanhao_225_145_platform.obj",
     "platform_texture": "Wanhaobackplate.png",
     "machine_extruder_trains": {
-        "0": "wanhao_d4s_extruder_0"
+        "0": "wanhao_d4s_extruder_0",
+        "1": "wanhao_d4s_extruder_1"
     },
     "platform_offset": [
       0,
