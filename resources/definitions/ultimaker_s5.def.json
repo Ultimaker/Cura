@@ -117,7 +117,7 @@
         "fill_outline_gaps": { "value": "True" },
         "min_feature_size": { "value": "wall_line_width_0 / 4" },
         "min_bead_width": { "value": "wall_line_width_0 / 2" },
-        "raft_airgap",: { "value": "0" },
+        "raft_airgap": { "value": "0" },
         "raft_base_speed": { "value": "20" },
         "raft_base_thickness": { "value": "0.3" },
         "raft_interface_line_spacing": { "value": "0.5" },

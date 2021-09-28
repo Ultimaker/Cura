@@ -1,5 +1,5 @@
 {
-    "version": 2, 
+    "version": 2,
     "name": "Crazy3DPrint CZ-300",
     "inherits": "crazy3dprint_base",
     "metadata": {
@@ -52,7 +52,6 @@
 		"skirt_line_count": { "default_value" : 5 },
 		"initial_layer_line_width_factor": { "default_value" : 140 },
 		"top_bottom_pattern": { "default_value" : "concentric" },
-		"outer_inset_first": { "default_value": true },
 		"fill_outline_gaps": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": {
