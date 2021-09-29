@@ -417,7 +417,7 @@
       "value": "1"
     },
     "retraction_combing": {
-      "default_value": "infill"
+      "value": "'infill'"
     },
     "acceleration_prime_tower": {
       "value": "250"
