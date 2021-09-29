@@ -153,7 +153,7 @@
             "value": "5.0"
         },
         "retraction_combing": {
-            "value": "all"
+            "value": "'all'"
         },
         "retraction_enable": {
             "value": "True"
