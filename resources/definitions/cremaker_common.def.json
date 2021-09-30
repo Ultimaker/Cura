@@ -16,7 +16,6 @@
 
   "overrides": {    
     "machine_heated_bed": { "default_value": true },
-    "machine_center_is_zero": { "default_value": false },
     "material_diameter": { "default_value": 1.75 },
     "machine_nozzle_size": { "default_value": 0.4 },
     "layer_height": { "value": 0.2 },
@@ -40,11 +39,11 @@
     "acceleration_travel_layer_0": { "value": 1000 },
     "retraction_amount": { "value": 1.2 },
     "retraction_speed": { "value": 40 },
-    "retraction_combing": { "value": "Within Infill" },
+    "retraction_combing": { "value": "'infill'" },
     "retraction_hop_enabled": { "value": true },
     "retraction_hop_only_when_collides": { "value": true },
     "retraction_hop": { "value": 0.3 },
-    "adhesion_type": { "value": "skirt" },
+    "adhesion_type": { "value": "'skirt'" },
     "relative_extrusion": { "value": true },
     "gantry_height": { "value": 28 },
     "machine_max_feedrate_z": { "value": 12 },
