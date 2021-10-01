@@ -166,7 +166,7 @@
         "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 150" },
         "meshfix_maximum_deviation": { "value": "layer_height / 4" },
         "optimize_wall_printing_order": { "value": "True" },
-        "retraction_combing": { "value": "no_outer_surfaces", "default_value": "no_outer_surfaces" },
+        "retraction_combing": { "value": "no_outer_surfaces" },
         "initial_layer_line_width_factor": { "value": "120" },
         "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
         "build_volume_temperature": { "maximum_value": 50 }
