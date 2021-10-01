@@ -201,8 +201,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                exportAllMaterialsDialog.folder = base.materialManagementModel.getPreferredExportAllPath();
-                exportAllMaterialsDialog.open();
+                materialsSyncDialog.show();
             }
             visible: Cura.MachineManager.activeMachine.supportsMaterialExport
         }
@@ -399,5 +398,10 @@ Item
     MessageDialog
     {
         id: messageDialog
+    }
+
+    MaterialsSyncDialog
+    {
+        id: materialsSyncDialog
     }
 }
