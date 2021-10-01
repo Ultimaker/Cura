@@ -104,7 +104,7 @@
         "retraction_prime_speed":                       { "value": "math.ceil(retraction_speed * 0.4)", "maximum_value_warning": 130 },
         "retraction_hop_enabled":                       { "default_value": true },
         "retraction_hop":                               { "default_value": 0.2 },
-        "retraction_combing":                           { "default_value": "noskin" },
+        "retraction_combing":                           { "value": "'noskin'" },
         "retraction_combing_max_distance":              { "default_value": 10 },
         "travel_avoid_other_parts":                     { "default_value": false },
         "speed_travel":                                 { "maximum_value": 300, "value": 300, "maximum_value_warning": 501 },
