@@ -87,6 +87,7 @@
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 4000)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 500 / 1000)" },
         "brim_width": { "value": "3" },
+        "build_volume_temperature": { "maximum_value": 50 }
         "cool_fan_full_at_height": { "value": "layer_height_0 + 4 * layer_height" },
         "cool_fan_speed": { "value": "50" },
         "cool_fan_speed_max": { "value": "100" },
@@ -96,6 +97,7 @@
         "infill_pattern": { "value": "'lines'" },
         "infill_wipe_dist": { "value": "0" },
         "infill_before_walls": { "value": "False" },
+        "initial_layer_line_width_factor": { "value": "120" },
         "jerk_enabled": { "value": "True" },
         "jerk_layer_0": { "value": "jerk_topbottom" },
         "jerk_prime_tower": { "value": "max(math.ceil(jerk_print * 15 / 25), 20)" },
@@ -112,7 +114,10 @@
         "machine_min_cool_heat_time_window": { "value": "15" },
         "default_material_print_temperature": { "value": "200" },
         "material_standby_temperature": { "value": "100" },
+        "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 150" },
+        "meshfix_maximum_deviation": { "value": "layer_height / 4" },
         "multiple_mesh_overlap": { "value": "0" },
+        "optimize_wall_printing_order": { "value": "True" },
         "prime_tower_enable": { "value": "True" },
         "raft_airgap": { "value": "0" },
         "raft_base_speed": { "value": "20" },
@@ -126,6 +131,7 @@
         "raft_speed": { "value": "25" },
         "raft_surface_layers": { "value": "1" },
         "retraction_amount": { "value": "6.5" },
+        "retraction_combing": { "value": "no_outer_surfaces" },
         "retraction_count_max": { "value": "10" },
         "retraction_extrusion_window": { "value": "1" },
         "retraction_hop": { "value": "2" },
@@ -163,12 +169,6 @@
         "wall_line_width_x": { "value": "round(line_width * 0.3 / 0.35, 2)" },
         "wall_thickness": { "value": "1" },
         "wall_material_flow": {"value": "90"},
-        "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 150" },
-        "meshfix_maximum_deviation": { "value": "layer_height / 4" },
-        "optimize_wall_printing_order": { "value": "True" },
-        "retraction_combing": { "value": "no_outer_surfaces" },
-        "initial_layer_line_width_factor": { "value": "120" },
         "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
-        "build_volume_temperature": { "maximum_value": 50 }
     }
 }
