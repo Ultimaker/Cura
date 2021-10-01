@@ -20,7 +20,8 @@ class CloudFlowMessage(Message):
         super().__init__(
             text=I18N_CATALOG.i18nc("@info:status",
                                     f"Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"),
-            title=I18N_CATALOG.i18nc("@info:title", "Are you ready for cloud printing?")
+            title=I18N_CATALOG.i18nc("@info:title", "Are you ready for cloud printing?"),
+            message_type=Message.MessageType.CLOUD
         )
         self._printer_name = printer_name
         self.addAction("get_started", I18N_CATALOG.i18nc("@action", "Get started"), "", "")
