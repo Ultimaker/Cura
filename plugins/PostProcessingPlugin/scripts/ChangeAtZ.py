@@ -79,7 +79,7 @@ class ChangeAtZ(Script):
                     "description": "Allows adding multiple ChangeAtZ mods and disabling them as needed.",
                     "type": "bool",
                     "default_value": true
-                },             
+                },
                 "a_trigger": {
                     "label": "Trigger",
                     "description": "Trigger at height or at layer no.",
@@ -126,7 +126,7 @@ class ChangeAtZ(Script):
                     "description": "Displays the current changes to the LCD",
                     "type": "bool",
                     "default_value": false
-                },                                                         
+                },
                 "e1_Change_speed": {
                     "label": "Change Speed",
                     "description": "Select if total speed (print and travel) has to be changed",
@@ -160,7 +160,7 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
                     "enabled": "f1_Change_printspeed"
-                },               
+                },
                 "g1_Change_flowrate": {
                     "label": "Change Flow Rate",
                     "description": "Select if flow rate has to be changed",
@@ -302,25 +302,25 @@ class ChangeAtZ(Script):
                     "description": "Indicates you would like to modify retraction properties.",
                     "type": "bool",
                     "default_value": false
-                },                  
+                },
                 "caz_retractstyle": {
                     "label": "Retract Style",
                     "description": "Specify if you're using firmware retraction or linear move based retractions. Check your printer settings to see which you're using.",
                     "type": "enum",
                     "options": {
-                        "linear": "Linear Move",                       
+                        "linear": "Linear Move",
                         "firmware": "Firmware"
                     },
                     "default_value": "linear",
                     "enabled": "caz_change_retract"
-                },                  
+                },
                 "caz_change_retractfeedrate": {
                     "label": "Change Retract Feed Rate",
                     "description": "Changes the retraction feed rate during print",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "caz_change_retract"
-                },                
+                },
                 "caz_retractfeedrate": {
                     "label": "Retract Feed Rate",
                     "description": "New Retract Feed Rate (mm/s)",
@@ -370,7 +370,6 @@ class ChangeAtZ(Script):
         self.setIntSettingIfEnabled(caz_instance, "g5_Change_flowrateTwo", "flowrateTwo", "g6_flowrateTwo")
         self.setFloatSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
         self.setFloatSettingIfEnabled(caz_instance, "h1_Change_enclosureTemp", "enclosureTemp", "h2_enclosureTemp")
-
         self.setFloatSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
         self.setFloatSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
         self.setIntSettingIfEnabled(caz_instance, "j1_Change_fanSpeed", "fanSpeed", "j2_fanSpeed")
@@ -876,7 +875,7 @@ class ChangeAtZProcessor:
             return ""
 
         # return our default block for this layer
-        return ";[CAZD:\n" + "\n".join(codes) + "\n;:CAZD]"
+        return ";[ChangeAtZ:\n" + "\n".join(codes) + "\n;ChangeAtZ]"
 
     # Builds the relevant GCODE lines from the given collection of values
     def getCodeLinesFromValues(self, values: Dict[str, any]) -> List[str]:
@@ -981,8 +980,8 @@ class ChangeAtZProcessor:
     @staticmethod
     def getOriginalLine(line: str) -> str:
 
-        # get the change at z original (cazo) details
-        original_line = re.search(r"\[CAZO:(.*?):CAZO\]", line)
+        # get the change at z original (ChangeAtZ) details
+        original_line = re.search(r"\[ChangeAtZ:(.*?):ChangeAtZ\]", line)
 
         # if we didn't get a hit, this is the original line
         if original_line is None:
@@ -1027,7 +1026,7 @@ class ChangeAtZProcessor:
     # Marks any current ChangeAtZ layer defaults in the layer for deletion
     @staticmethod
     def markChangesForDeletion(layer: str):
-        return re.sub(r";\[CAZD:", ";[CAZD:DELETE:", layer)
+        return re.sub(r";\[ChangeAtZ:", ";[ChangeAtZ:DELETE:", layer)
 
     # Grabs the current height
     def processLayerHeight(self, line: str):
@@ -1100,8 +1099,8 @@ class ChangeAtZProcessor:
                 self.processSetting(line)
 
             # if we haven't hit our target yet, leave the defaults as is (unmark them for deletion)
-            if "[CAZD:DELETE:" in line:
-                line = line.replace("[CAZD:DELETE:", "[CAZD:")
+            if "[ChangeAtZ:DELETE:" in line:
+                line = line.replace("[ChangeAtZ:DELETE:", "[ChangeAtZ:")
 
         # if we're targeting by Z, we want to add our values before the first linear move
         if "G1 " in line or "G0 " in line:
@@ -1325,7 +1324,7 @@ class ChangeAtZProcessor:
     # Removes all the ChangeAtZ layer defaults from the given layer
     @staticmethod
     def removeMarkedChanges(layer: str) -> str:
-        return re.sub(r";\[CAZD:DELETE:[\s\S]+?:CAZD\](\n|$)", "", layer)
+        return re.sub(r";\[ChangeAtZ:DELETE:[\s\S]+?:ChangeAtZ\](\n|$)", "", layer)
 
     # Resets the class contents to defaults
     def reset(self):
@@ -1350,7 +1349,7 @@ class ChangeAtZProcessor:
     # Sets the original GCODE line in a given GCODE command
     @staticmethod
     def setOriginalLine(line, original) -> str:
-        return line + ";[CAZO:" + original + ":CAZO]"
+        return line + ";[ChangeAtZ:" + original + ":ChangeAtZ]"
 
     # Tracks the change in gcode values we're interested in
     def trackChangeableValues(self, line: str):
