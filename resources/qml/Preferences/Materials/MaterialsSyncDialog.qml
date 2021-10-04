@@ -47,20 +47,32 @@ Window
                 }
                 Row
                 {
+                    /*
+                    This is a row with 3 images, and a dashed line between each of them.
+                    The images have various sizes, scaled to the window size:
+                    - The computer screen and 3D printer have 1/3rd of the window size each.
+                    - The remaining space is 2/3rds filled with the material spool image (so 2/9th in total).
+                    - The remaining remaining space is divided equally over the two dashed lines (so 1/9th in total, or 1/18th per line).
+                    */
                     width: parent.width
                     height: parent.height * 2 / 3
-                    Image
+                    Item
                     {
-                        id: spool_image
-                        source: UM.Theme.getImage("material_spool")
-                        width: Math.round(parent.width / 6)
-                        anchors.bottom: parent.bottom
-                        fillMode: Image.PreserveAspectFit
-                        sourceSize.width: width
+                        width: Math.round(parent.width * 2 / 9)
+                        height: parent.height
+                        Image
+                        {
+                            id: spool_image
+                            source: UM.Theme.getImage("material_spool")
+                            width: parent.width - UM.Theme.getSize("default_margin").width
+                            anchors.bottom: parent.bottom
+                            fillMode: Image.PreserveAspectFit
+                            sourceSize.width: width
+                        }
                     }
                     Canvas
                     {
-                        width: Math.round(parent.width / 12)
+                        width: Math.round(parent.width / 18)
                         height: UM.Theme.getSize("thick_lining").width
                         onPaint: {
                             var ctx = getContext("2d");
@@ -84,7 +96,7 @@ Window
                     }
                     Canvas
                     {
-                        width: Math.round(parent.width / 12)
+                        width: Math.round(parent.width / 18)
                         height: UM.Theme.getSize("thick_lining").width
                         onPaint: {
                             var ctx = getContext("2d");
