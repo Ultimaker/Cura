@@ -44,6 +44,8 @@ Window
                     text: catalog.i18nc("@text", "Following a few simple steps, you will be able to synchronize all your material profiles with your printers.")
                     font: UM.Theme.getFont("medium")
                     color: UM.Theme.getColor("text")
+                    wrapMode: Text.WordWrap
+                    width: parent.width - parent.anchors.margins * 2
                 }
                 Row
                 {
