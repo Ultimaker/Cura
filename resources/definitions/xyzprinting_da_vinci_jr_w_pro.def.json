@@ -16,7 +16,7 @@
 		"preferred_variant_name": "Hardened Steel 0.4mm Nozzle",
         "variants_name": "Nozzle Type",
 		"machine_extruder_trains": {
-            "0": "xyzprinting_da_vinci_jr_wifi_pro_extruder_0"
+            "0": "xyzprinting_da_vinci_jr_w_pro_extruder_0"
         }
     },
 
