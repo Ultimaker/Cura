@@ -36,13 +36,7 @@
                 [ 10, -10 ]
             ]
         },
-		"layer_height": {  "default_value": 0.2 },
-		"layer_height_0": {  "default_value": 0.30 },
-		"infill_sparse_density": {  "default_value": 10 },
 		"material_flow_layer_0": {"value": 120},
-		"retraction_amount": {  "default_value": 5.0 },
-		"retraction_speed": {  "default_value": 15 },
-        "speed_print": {  "default_value": 30 },
         "speed_travel": { "value": 120 },
         "cool_fan_enabled": { "default_value": true },
 		"cool_fan_speed_0": { "value": 100 },
