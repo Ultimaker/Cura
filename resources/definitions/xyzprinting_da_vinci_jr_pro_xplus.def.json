@@ -39,7 +39,6 @@
 		"material_flow_layer_0": {"value": 120},
         "cool_fan_enabled": { "default_value": true },
 		"cool_fan_speed_0": { "value": 100 },
-        "adhesion_type": { "default_value" : "skirt" },
 		"brim_line_count": { "value" : 5 },
 		"skirt_line_count": { "default_value" : 5 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
