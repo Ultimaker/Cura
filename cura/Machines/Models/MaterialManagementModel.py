@@ -36,9 +36,12 @@ class MaterialManagementModel(QObject):
         self._checkIfNewMaterialsWereInstalled()
 
     def _checkIfNewMaterialsWereInstalled(self):
+        """
+        Checks whether new material packages were installed in the latest startup. If there were, then it shows
+        a message prompting the user to sync the materials with their printers.
+        """
         application = cura.CuraApplication.CuraApplication.getInstance()
         new_materials_installed = False
-        print(application.getPackageManager().installed_packages)
         for package_id, package_info in application.getPackageManager().installed_packages.items():
             new_materials_installed = package_info["package_info"]["package_type"] == "material"
         if new_materials_installed:
@@ -57,6 +60,7 @@ class MaterialManagementModel(QObject):
                 "sync",
                 name = catalog.i18nc("@action:button", "Sync materials with printers"),
                 icon = "",
+                description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
         )
 
@@ -64,6 +68,7 @@ class MaterialManagementModel(QObject):
                 "learn_more",
                 name = catalog.i18nc("@action:button", "Learn more"),
                 icon = "",
+                description = "Learn more about syncing your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
                 button_style = Message.ActionButtonStyle.LINK
         )
