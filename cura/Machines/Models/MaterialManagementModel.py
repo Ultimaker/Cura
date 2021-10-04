@@ -7,6 +7,8 @@ from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 import zipfile  # To export all materials in a .zip archive.
 
+from PyQt5.QtGui import QDesktopServices
+
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
@@ -21,12 +23,63 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class MaterialManagementModel(QObject):
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
 
     :param The base file of the material is provided as parameter when this emits
     """
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super().__init__(parent = parent)
+        self._checkIfNewMaterialsWereInstalled()
+
+    def _checkIfNewMaterialsWereInstalled(self):
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        new_materials_installed = False
+        print(application.getPackageManager().installed_packages)
+        for package_id, package_info in application.getPackageManager().installed_packages.items():
+            new_materials_installed = package_info["package_info"]["package_type"] == "material"
+        if new_materials_installed:
+            self._showSyncNewMaterialsMessage()
+
+    def _showSyncNewMaterialsMessage(self):
+        sync_materials_message = Message(
+                text = catalog.i18nc("@action:button",
+                                     "Please sync the material profiles with your pinter before starting to print."),
+                title = catalog.i18nc("@action:button", "New materials installed"),
+                message_type = Message.MessageType.WARNING,
+                lifetime = 0
+        )
+
+        sync_materials_message.addAction(
+                "sync",
+                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                icon = "",
+                description = "Sync your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
+        )
+
+        sync_materials_message.addAction(
+                "learn_more",
+                name = catalog.i18nc("@action:button", "Learn more"),
+                icon = "",
+                description = "Learn more.",
+                button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
+                button_style = Message.ActionButtonStyle.LINK
+        )
+        sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
+        sync_materials_message.show()
+
+    @staticmethod
+    def _onSyncMaterialsMessageActionTriggered(sync_message: Optional[Message], sync_message_action: Optional[str]):
+        if sync_message_action == "sync":
+            QDesktopServices.openUrl(QUrl("https://example.com/sync"))
+            if sync_message is not None:
+                sync_message.hide()
+        elif sync_message_action == "learn_more":
+            QDesktopServices.openUrl(QUrl("https://example.com/learn_more"))
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
