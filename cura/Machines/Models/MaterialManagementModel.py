@@ -10,6 +10,7 @@ import zipfile  # To export all materials in a .zip archive.
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Resources import Resources  # To find QML files.
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -27,6 +28,10 @@ class MaterialManagementModel(QObject):
 
     :param The base file of the material is provided as parameter when this emits
     """
+
+    def __init__(self, parent: QObject = None):
+        super().__init__(parent)
+        self._sync_all_dialog = None  # type: Optional[QObject]
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
@@ -261,6 +266,18 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    @pyqtSlot()
+    def openSyncAllWindow(self) -> None:
+        """
+        Opens the window to sync all materials.
+        """
+        if self._sync_all_dialog is None:
+            qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences", "Materials", "MaterialsSyncDialog.qml")
+            self._sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})
+        if self._sync_all_dialog is None:  # Failed to load QML file.
+            return
+        self._sync_all_dialog.show()
 
     @pyqtSlot(result = QUrl)
     def getPreferredExportAllPath(self) -> QUrl:

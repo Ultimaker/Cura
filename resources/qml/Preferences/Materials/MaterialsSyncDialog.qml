@@ -9,6 +9,8 @@ import UM 1.2 as UM
 Window
 {
     id: materialsSyncDialog
+    property variant catalog: UM.I18nCatalog { name: "cura" }
+
     title: catalog.i18nc("@title:window", "Sync materials with printers")
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
