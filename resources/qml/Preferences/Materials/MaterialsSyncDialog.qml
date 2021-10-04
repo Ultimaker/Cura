@@ -29,6 +29,10 @@ Window
             color: UM.Theme.getColor("main_background")
             Column
             {
+                spacing: UM.Theme.getSize("default_margin").height
+                anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_margin").width
+
                 Label
                 {
                     text: catalog.i18nc("@title:header", "Sync materials with printers")
