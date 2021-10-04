@@ -45,6 +45,68 @@ Window
                     font: UM.Theme.getFont("medium")
                     color: UM.Theme.getColor("text")
                 }
+                Row
+                {
+                    width: parent.width
+                    height: parent.height * 2 / 3
+                    Image
+                    {
+                        id: spool_image
+                        source: UM.Theme.getImage("material_spool")
+                        width: Math.round(parent.width / 6)
+                        anchors.bottom: parent.bottom
+                        fillMode: Image.PreserveAspectFit
+                        sourceSize.width: width
+                    }
+                    Canvas
+                    {
+                        width: Math.round(parent.width / 12)
+                        height: UM.Theme.getSize("thick_lining").width
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            ctx.setLineDash([2, 2]);
+                            ctx.lineWidth = UM.Theme.getSize("thick_lining").width;
+                            ctx.beginPath();
+                            ctx.moveTo(0, height / 2);
+                            ctx.lineTo(width, height / 2);
+                            ctx.stroke();
+                        }
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: spool_image.paintedHeight / 2 - height / 2 //Align to the vertical center of spool_image's real size.
+                    }
+                    Image
+                    {
+                        source: UM.Theme.getImage("connected_cura")
+                        width: Math.round(parent.width / 3)
+                        anchors.bottom: parent.bottom
+                        fillMode: Image.PreserveAspectFit
+                        sourceSize.width: width
+                    }
+                    Canvas
+                    {
+                        width: Math.round(parent.width / 12)
+                        height: UM.Theme.getSize("thick_lining").width
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            ctx.setLineDash([2, 2]);
+                            ctx.lineWidth = UM.Theme.getSize("thick_lining").width;
+                            ctx.beginPath();
+                            ctx.moveTo(0, height / 2);
+                            ctx.lineTo(width, height / 2);
+                            ctx.stroke();
+                        }
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: spool_image.paintedHeight / 2 - height / 2 //Align to the vertical center of spool_image's real size.
+                    }
+                    Image
+                    {
+                        source: UM.Theme.getImage("3d_printer")
+                        width: Math.round(parent.width / 3)
+                        anchors.bottom: parent.bottom
+                        fillMode: Image.PreserveAspectFit
+                        sourceSize.width: width
+                    }
+                }
             }
         }
     }
