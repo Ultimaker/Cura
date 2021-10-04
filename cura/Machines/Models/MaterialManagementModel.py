@@ -47,7 +47,7 @@ class MaterialManagementModel(QObject):
     def _showSyncNewMaterialsMessage(self):
         sync_materials_message = Message(
                 text = catalog.i18nc("@action:button",
-                                     "Please sync the material profiles with your pinter before starting to print."),
+                                     "Please sync the material profiles with your printer before starting to print."),
                 title = catalog.i18nc("@action:button", "New materials installed"),
                 message_type = Message.MessageType.WARNING,
                 lifetime = 0
@@ -57,7 +57,6 @@ class MaterialManagementModel(QObject):
                 "sync",
                 name = catalog.i18nc("@action:button", "Sync materials with printers"),
                 icon = "",
-                description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
         )
 
@@ -65,21 +64,20 @@ class MaterialManagementModel(QObject):
                 "learn_more",
                 name = catalog.i18nc("@action:button", "Learn more"),
                 icon = "",
-                description = "Learn more.",
                 button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
                 button_style = Message.ActionButtonStyle.LINK
         )
         sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
         sync_materials_message.show()
 
-    @staticmethod
-    def _onSyncMaterialsMessageActionTriggered(sync_message: Optional[Message], sync_message_action: Optional[str]):
+    def _onSyncMaterialsMessageActionTriggered(self, sync_message: Optional[Message], sync_message_action: Optional[str]):
         if sync_message_action == "sync":
-            QDesktopServices.openUrl(QUrl("https://example.com/sync"))
+            QDesktopServices.openUrl(QUrl("https://example.com/openSyncAllWindow"))
+            # self.openSyncAllWindow()
             if sync_message is not None:
                 sync_message.hide()
         elif sync_message_action == "learn_more":
-            QDesktopServices.openUrl(QUrl("https://example.com/learn_more"))
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer"))
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
