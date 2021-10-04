@@ -16,6 +16,7 @@ Window
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
+    modality: Qt.ApplicationModal
 
     SwipeView
     {
