@@ -4,6 +4,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.1
+import Cura 1.1 as Cura
 import UM 1.2 as UM
 
 Window
@@ -53,6 +54,33 @@ Window
                     width: parent.width
                     sourceSize.width: width
                 }
+            }
+
+            Cura.PrimaryButton
+            {
+                id: startButton
+                anchors
+                {
+                    right: parent.right
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.getSize("default_margin").height
+                }
+                text: catalog.i18nc("@button", "Start")
+                onClicked: swipeView.currentIndex += 1
+            }
+            Cura.TertiaryButton
+            {
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    verticalCenter: startButton.verticalCenter
+                }
+                text: catalog.i18nc("@button", "Why do I need to sync material profiles?")
+                iconSource: UM.Theme.getIcon("LinkExternal")
+                isIconOnRightSide: true
+                onClicked: Qt.openUrlExternally("https://ultimaker.com")
             }
         }
     }
