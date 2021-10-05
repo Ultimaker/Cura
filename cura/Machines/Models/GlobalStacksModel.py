@@ -1,7 +1,7 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
@@ -37,11 +37,28 @@ class GlobalStacksModel(ListModel):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._update)
 
+        self._filter_connection_type = -1
+
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._updateDelayed()
+
+    filterConnectionTypeChanged = pyqtSignal()
+
+    def setFilterConnectionType(self, new_filter: int) -> None:
+        self._filter_connection_type = new_filter
+
+    @pyqtProperty(int, fset = setFilterConnectionType, notify = filterConnectionTypeChanged)
+    def filterConnectionType(self) -> int:
+        """
+        The connection type to filter the list of printers by.
+
+        Only printers that match this connection type will be listed in the
+        model.
+        """
+        return self._filter_connection_type
 
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
@@ -58,6 +75,10 @@ class GlobalStacksModel(ListModel):
 
         container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
         for container_stack in container_stacks:
+            if self._filter_connection_type != -1:  # We want to filter on connection types.
+                if not any((connection_type == self._filter_connection_type for connection_type in container_stack.configuredConnectionTypes)):
+                    continue  # No connection type on this printer matches the filter.
+
             has_remote_connection = False
 
             for connection_type in container_stack.configuredConnectionTypes:

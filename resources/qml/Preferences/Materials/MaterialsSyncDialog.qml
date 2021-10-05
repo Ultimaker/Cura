@@ -203,7 +203,10 @@ Window
                         width: parent.width
                         spacing: UM.Theme.getSize("default_margin").height
 
-                        model: Cura.GlobalStacksModel {}
+                        model: Cura.GlobalStacksModel
+                        {
+                            filterConnectionType: 3 //Only show cloud connections.
+                        }
                         delegate: Rectangle
                         {
                             border.color: UM.Theme.getColor("lining")
