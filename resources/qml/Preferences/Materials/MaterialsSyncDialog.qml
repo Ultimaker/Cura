@@ -147,5 +147,27 @@ Window
                 }
             }
         }
+
+        Rectangle
+        {
+            id: printerListPage
+            color: UM.Theme.getColor("main_background")
+
+            ColumnLayout
+            {
+                spacing: UM.Theme.getSize("default_margin").height
+                anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_margin").width
+
+                Label
+                {
+                    text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles")
+                    font: UM.Theme.getFont("large_bold")
+                    color: UM.Theme.getColor("text")
+                    Layout.preferredHeight: height
+                }
+                //TODO: Add contents.
+            }
+        }
     }
 }
