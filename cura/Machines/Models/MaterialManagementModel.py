@@ -41,7 +41,7 @@ class MaterialManagementModel(QObject):
         a message prompting the user to sync the materials with their printers.
         """
         application = cura.CuraApplication.CuraApplication.getInstance()
-        for package_id, package_data in application.getPackageManager().installed_packages.items():
+        for package_id, package_data in application.getPackageManager().getPackagesInstalledOnStartup().items():
             if package_data["package_info"]["package_type"] == "material":
                 # At least one new material was installed
                 self._showSyncNewMaterialsMessage()
