@@ -73,6 +73,8 @@ class MaterialManagementModel(QObject):
                 button_style = Message.ActionButtonStyle.LINK
         )
         sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
+
+        # Show the message only if there are printers that support material export
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         global_stacks = container_registry.findContainerStacks(type = "machine")
         if any([stack.supportsMaterialExport for stack in global_stacks]):
