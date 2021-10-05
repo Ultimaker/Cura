@@ -318,6 +318,8 @@ Window
 
                                         Layout.alignment: Qt.AlignVCenter
                                         Layout.preferredWidth: width
+
+                                        onClicked: Cura.API.account.sync(true)
                                     }
                                 }
                             }
