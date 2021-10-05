@@ -73,7 +73,10 @@ class MaterialManagementModel(QObject):
                 button_style = Message.ActionButtonStyle.LINK
         )
         sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
-        sync_materials_message.show()
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        global_stacks = container_registry.findContainerStacks(type = "machine")
+        if any([stack.supportsMaterialExport for stack in global_stacks]):
+            sync_materials_message.show()
 
     def _onSyncMaterialsMessageActionTriggered(self, sync_message: Optional[Message], sync_message_action: Optional[str]):
         if sync_message_action == "sync":
