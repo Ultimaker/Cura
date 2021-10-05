@@ -136,11 +136,13 @@ Window
                     {
                         anchors.left: parent.left
                         text: catalog.i18nc("@button", "Sync materials with USB")
+                        onClicked: swipeView.currentIndex = swipeView.count - 1 //Go to the last page, which is USB.
                     }
                     Cura.PrimaryButton
                     {
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Sign in")
+                        onClicked: Cura.API.account.login()
                     }
                 }
             }
