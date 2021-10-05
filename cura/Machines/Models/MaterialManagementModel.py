@@ -50,7 +50,7 @@ class MaterialManagementModel(QObject):
     def _showSyncNewMaterialsMessage(self):
         sync_materials_message = Message(
                 text = catalog.i18nc("@action:button",
-                                     "Please sync the material profiles with your printer before starting to print."),
+                                     "Please sync the material profiles with your printers before starting to print."),
                 title = catalog.i18nc("@action:button", "New materials installed"),
                 message_type = Message.MessageType.WARNING,
                 lifetime = 0
