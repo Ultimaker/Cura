@@ -199,6 +199,7 @@ Window
 
                     ListView
                     {
+                        id: printerList
                         width: parent.width
                         spacing: UM.Theme.getSize("default_margin").height
 
@@ -253,6 +254,70 @@ Window
                                         radius: width / 2
                                         color: UM.Theme.getColor("connection_badge_background")
                                         z: parent.z - 1
+                                    }
+                                }
+                            }
+                        }
+
+                        footer: Item
+                        {
+                            width: printerListScrollView.width
+                            height: UM.Theme.getSize("card").height + UM.Theme.getSize("default_margin").height
+                            Rectangle
+                            {
+                                border.color: UM.Theme.getColor("lining")
+                                border.width: UM.Theme.getSize("default_lining").width
+                                anchors.fill: parent
+                                anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+                                RowLayout
+                                {
+                                    anchors
+                                    {
+                                        fill: parent
+                                        leftMargin: (parent.height - infoIcon.height) / 2 //Same margin on the left as top and bottom.
+                                        rightMargin: (parent.height - infoIcon.height) / 2
+                                    }
+                                    spacing: UM.Theme.getSize("default_margin").width
+
+                                    Rectangle //Info icon with a themeable color and background.
+                                    {
+                                        id: infoIcon
+                                        width: UM.Theme.getSize("machine_selector_icon").width
+                                        height: width
+                                        Layout.preferredWidth: width
+                                        Layout.alignment: Qt.AlignVCenter
+                                        radius: height / 2
+                                        color: UM.Theme.getColor("warning")
+
+                                        UM.RecolorImage
+                                        {
+                                            source: UM.Theme.getIcon("EmptyInfo")
+                                            anchors.fill: parent
+                                            color: UM.Theme.getColor("machine_selector_printer_icon")
+                                        }
+                                    }
+
+                                    Label
+                                    {
+                                        text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
+                                          + "\n"
+                                          + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
+                                        font: UM.Theme.getFont("medium")
+                                        elide: Text.ElideRight
+
+                                        Layout.alignment: Qt.AlignVCenter
+                                        Layout.fillWidth: true
+                                    }
+
+                                    Cura.SecondaryButton
+                                    {
+                                        id: refreshListButton
+                                        text: catalog.i18nc("@button", "Refresh List")
+                                        iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
+
+                                        Layout.alignment: Qt.AlignVCenter
+                                        Layout.preferredWidth: width
                                     }
                                 }
                             }
