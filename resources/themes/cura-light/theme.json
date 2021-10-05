@@ -540,6 +540,7 @@
         "section_icon": [2, 2],
         "section_icon_column": [2.5, 2.5],
         "rating_star": [1.0, 1.0],
+        "card": [25.0, 6.0],
 
         "setting": [25.0, 1.8],
         "setting_control": [11.0, 2.0],

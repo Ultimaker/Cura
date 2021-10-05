@@ -2,7 +2,7 @@
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
 import Cura 1.1 as Cura
@@ -146,8 +146,7 @@ Window
                         source: UM.Theme.getImage("first_run_ultimaker_cloud")
                         width: parent.width / 2
                         sourceSize.width: width
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.centerIn: parent
                     }
                 }
                 Item
@@ -189,13 +188,76 @@ Window
                     color: UM.Theme.getColor("text")
                     Layout.preferredHeight: height
                 }
-                Rectangle
+                ScrollView
                 {
-                    color: "pink"
+                    id: printerListScrollView
                     width: parent.width
                     Layout.preferredWidth: width
                     Layout.fillHeight: true
-                    //TODO: Add printer list.
+                    clip: true
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+                    ListView
+                    {
+                        width: parent.width
+                        spacing: UM.Theme.getSize("default_margin").height
+
+                        model: Cura.GlobalStacksModel {}
+                        delegate: Rectangle
+                        {
+                            border.color: UM.Theme.getColor("lining")
+                            border.width: UM.Theme.getSize("default_lining").width
+                            width: printerListScrollView.width
+                            height: UM.Theme.getSize("card").height
+
+                            Cura.IconWithText
+                            {
+                                anchors
+                                {
+                                    verticalCenter: parent.verticalCenter
+                                    left: parent.left
+                                    leftMargin: Math.round(parent.height - height) / 2 //Equal margin on the left as above and below.
+                                    right: parent.right
+                                    rightMargin: Math.round(parent.height - height) / 2
+                                }
+
+                                text: model.name
+                                font: UM.Theme.getFont("medium")
+
+                                source: UM.Theme.getIcon("Printer", "medium")
+                                iconColor: UM.Theme.getColor("machine_selector_printer_icon")
+                                iconSize: UM.Theme.getSize("machine_selector_icon").width
+
+                                //Printer status badge (always cloud, but whether it's online or offline).
+                                UM.RecolorImage
+                                {
+                                    width: UM.Theme.getSize("printer_status_icon").width
+                                    height: UM.Theme.getSize("printer_status_icon").height
+                                    anchors
+                                    {
+                                        bottom: parent.bottom
+                                        bottomMargin: -Math.round(height / 6)
+                                        left: parent.left
+                                        leftMargin: parent.iconSize - Math.round(width * 5 / 6)
+                                    }
+
+                                    source: UM.Theme.getIcon("CloudBadge", "low")
+                                    color: "red" //TODO: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+
+                                    //Make a themeable circle in the background so we can change it in other themes.
+                                    Rectangle
+                                    {
+                                        anchors.centerIn: parent
+                                        width: parent.width - 1.5 //1.5 pixels smaller (at least sqrt(2), regardless of pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                                        height: parent.height - 1.5
+                                        radius: width / 2
+                                        color: UM.Theme.getColor("connection_badge_background")
+                                        z: parent.z - 1
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 Cura.TertiaryButton
                 {
