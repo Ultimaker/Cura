@@ -7,6 +7,8 @@ from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 import zipfile  # To export all materials in a .zip archive.
 
+from PyQt5.QtGui import QDesktopServices
+
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
@@ -21,12 +23,70 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class MaterialManagementModel(QObject):
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
 
     :param The base file of the material is provided as parameter when this emits
     """
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super().__init__(parent = parent)
+        self._checkIfNewMaterialsWereInstalled()
+
+    def _checkIfNewMaterialsWereInstalled(self) -> None:
+        """
+        Checks whether new material packages were installed in the latest startup. If there were, then it shows
+        a message prompting the user to sync the materials with their printers.
+        """
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        for package_id, package_data in application.getPackageManager().getPackagesInstalledOnStartup().items():
+            if package_data["package_info"]["package_type"] == "material":
+                # At least one new material was installed
+                self._showSyncNewMaterialsMessage()
+                break
+
+    def _showSyncNewMaterialsMessage(self) -> None:
+        sync_materials_message = Message(
+                text = catalog.i18nc("@action:button",
+                                     "Please sync the material profiles with your printers before starting to print."),
+                title = catalog.i18nc("@action:button", "New materials installed"),
+                message_type = Message.MessageType.WARNING,
+                lifetime = 0
+        )
+
+        sync_materials_message.addAction(
+                "sync",
+                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                icon = "",
+                description = "Sync your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
+        )
+
+        sync_materials_message.addAction(
+                "learn_more",
+                name = catalog.i18nc("@action:button", "Learn more"),
+                icon = "",
+                description = "Learn more about syncing your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
+                button_style = Message.ActionButtonStyle.LINK
+        )
+        sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
+
+        # Show the message only if there are printers that support material export
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        global_stacks = container_registry.findContainerStacks(type = "machine")
+        if any([stack.supportsMaterialExport for stack in global_stacks]):
+            sync_materials_message.show()
+
+    def _onSyncMaterialsMessageActionTriggered(self, sync_message: Message, sync_message_action: str):
+        if sync_message_action == "sync":
+            QDesktopServices.openUrl(QUrl("https://example.com/openSyncAllWindow"))
+            # self.openSyncAllWindow()
+            sync_message.hide()
+        elif sync_message_action == "learn_more":
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
