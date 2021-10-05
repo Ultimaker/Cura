@@ -102,6 +102,18 @@ Window
             id: signinPage
             color: UM.Theme.getColor("main_background")
 
+            Connections //While this page is active, continue to the next page if the user logs in.
+            {
+                target: Cura.API.account
+                function onLoginStateChanged(is_logged_in)
+                {
+                    if(is_logged_in && signinPage.SwipeView.isCurrentItem)
+                    {
+                        swipeView.currentIndex += 1;
+                    }
+                }
+            }
+
             ColumnLayout
             {
                 spacing: UM.Theme.getSize("default_margin").height
