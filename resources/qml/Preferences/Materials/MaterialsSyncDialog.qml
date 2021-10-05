@@ -71,7 +71,16 @@ Window
                     bottomMargin: UM.Theme.getSize("default_margin").height
                 }
                 text: catalog.i18nc("@button", "Start")
-                onClicked: swipeView.currentIndex += 1
+                onClicked: {
+                    if(Cura.API.account.isLoggedIn)
+                    {
+                        swipeView.currentIndex += 2; //Skip sign in page.
+                    }
+                    else
+                    {
+                        swipeView.currentIndex += 1;
+                    }
+                }
             }
             Cura.TertiaryButton
             {
