@@ -3,6 +3,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
 import Cura 1.1 as Cura
 import UM 1.2 as UM
@@ -23,6 +24,7 @@ Window
     {
         id: swipeView
         anchors.fill: parent
+        interactive: false
 
         Rectangle
         {
@@ -81,6 +83,66 @@ Window
                 iconSource: UM.Theme.getIcon("LinkExternal")
                 isIconOnRightSide: true
                 onClicked: Qt.openUrlExternally("https://ultimaker.com")
+            }
+        }
+
+        Rectangle
+        {
+            id: signinPage
+            color: UM.Theme.getColor("main_background")
+
+            ColumnLayout
+            {
+                spacing: UM.Theme.getSize("default_margin").height
+                anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_margin").width
+
+                Label
+                {
+                    text: catalog.i18nc("@title:header", "Sign in")
+                    font: UM.Theme.getFont("large_bold")
+                    color: UM.Theme.getColor("text")
+                    Layout.preferredHeight: height
+                }
+                Label
+                {
+                    text: catalog.i18nc("@text", "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura.")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    wrapMode: Text.WordWrap
+                    width: parent.width
+                    Layout.maximumWidth: width
+                    Layout.preferredHeight: height
+                }
+                Item
+                {
+                    Layout.preferredWidth: parent.width
+                    Layout.fillHeight: true
+                    Image
+                    {
+                        source: UM.Theme.getImage("first_run_ultimaker_cloud")
+                        width: parent.width / 2
+                        sourceSize.width: width
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+                Item
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Layout.preferredHeight: height
+                    Cura.SecondaryButton
+                    {
+                        anchors.left: parent.left
+                        text: catalog.i18nc("@button", "Sync materials with USB")
+                    }
+                    Cura.PrimaryButton
+                    {
+                        anchors.right: parent.right
+                        text: catalog.i18nc("@button", "Sign in")
+                    }
+                }
             }
         }
     }
