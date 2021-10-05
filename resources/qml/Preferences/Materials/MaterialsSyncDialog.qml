@@ -20,6 +20,8 @@ Window
     height: minimumHeight
     modality: Qt.ApplicationModal
 
+    property alias pageIndex: swipeView.currentIndex
+
     SwipeView
     {
         id: swipeView
