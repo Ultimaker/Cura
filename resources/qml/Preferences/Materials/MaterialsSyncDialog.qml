@@ -189,7 +189,38 @@ Window
                     color: UM.Theme.getColor("text")
                     Layout.preferredHeight: height
                 }
-                //TODO: Add contents.
+                Rectangle
+                {
+                    color: "pink"
+                    width: parent.width
+                    Layout.preferredWidth: width
+                    Layout.fillHeight: true
+                    //TODO: Add printer list.
+                }
+                Cura.TertiaryButton
+                {
+                    text: catalog.i18nc("@button", "Troubleshooting")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    Layout.preferredHeight: height
+                }
+                Item
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
+                    Cura.SecondaryButton
+                    {
+                        anchors.left: parent.left
+                        text: catalog.i18nc("@button", "Sync materials with USB")
+                        onClicked: swipeView.currentIndex = swipeView.count - 1 //Go to the last page, which is USB.
+                    }
+                    Cura.PrimaryButton
+                    {
+                        anchors.right: parent.right
+                        text: catalog.i18nc("@button", "Sync")
+                    }
+                }
             }
         }
     }
