@@ -35,7 +35,7 @@ class MaterialManagementModel(QObject):
         super().__init__(parent = parent)
         self._checkIfNewMaterialsWereInstalled()
 
-    def _checkIfNewMaterialsWereInstalled(self):
+    def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
         Checks whether new material packages were installed in the latest startup. If there were, then it shows
         a message prompting the user to sync the materials with their printers.
@@ -47,7 +47,7 @@ class MaterialManagementModel(QObject):
                 self._showSyncNewMaterialsMessage()
                 break
 
-    def _showSyncNewMaterialsMessage(self):
+    def _showSyncNewMaterialsMessage(self) -> None:
         sync_materials_message = Message(
                 text = catalog.i18nc("@action:button",
                                      "Please sync the material profiles with your printers before starting to print."),
@@ -80,12 +80,11 @@ class MaterialManagementModel(QObject):
         if any([stack.supportsMaterialExport for stack in global_stacks]):
             sync_materials_message.show()
 
-    def _onSyncMaterialsMessageActionTriggered(self, sync_message: Optional[Message], sync_message_action: Optional[str]):
+    def _onSyncMaterialsMessageActionTriggered(self, sync_message: Message, sync_message_action: str):
         if sync_message_action == "sync":
             QDesktopServices.openUrl(QUrl("https://example.com/openSyncAllWindow"))
             # self.openSyncAllWindow()
-            if sync_message is not None:
-                sync_message.hide()
+            sync_message.hide()
         elif sync_message_action == "learn_more":
             QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
 
