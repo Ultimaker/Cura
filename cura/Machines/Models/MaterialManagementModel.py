@@ -41,11 +41,11 @@ class MaterialManagementModel(QObject):
         a message prompting the user to sync the materials with their printers.
         """
         application = cura.CuraApplication.CuraApplication.getInstance()
-        new_materials_installed = False
-        for package_id, package_info in application.getPackageManager().installed_packages.items():
-            new_materials_installed = package_info["package_info"]["package_type"] == "material"
-        if new_materials_installed:
-            self._showSyncNewMaterialsMessage()
+        for package_id, package_data in application.getPackageManager().installed_packages.items():
+            if package_data["package_info"]["package_type"] == "material":
+                # At least one new material was installed
+                self._showSyncNewMaterialsMessage()
+                break
 
     def _showSyncNewMaterialsMessage(self):
         sync_materials_message = Message(
