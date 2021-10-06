@@ -51,7 +51,7 @@ Window
                     text: catalog.i18nc("@text", "Following a few simple steps, you will be able to synchronize all your material profiles with your printers.")
                     font: UM.Theme.getFont("medium")
                     color: UM.Theme.getColor("text")
-                    wrapMode: Text.WordWrap
+                    wrapMode: Text.Wrap
                     width: parent.width
                 }
                 Image
@@ -73,7 +73,8 @@ Window
                     bottomMargin: UM.Theme.getSize("default_margin").height
                 }
                 text: catalog.i18nc("@button", "Start")
-                onClicked: {
+                onClicked:
+                {
                     if(Cura.API.account.isLoggedIn)
                     {
                         swipeView.currentIndex += 2; //Skip sign in page.
@@ -134,7 +135,7 @@ Window
                     text: catalog.i18nc("@text", "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura.")
                     font: UM.Theme.getFont("medium")
                     color: UM.Theme.getColor("text")
-                    wrapMode: Text.WordWrap
+                    wrapMode: Text.Wrap
                     width: parent.width
                     Layout.maximumWidth: width
                     Layout.preferredHeight: height
@@ -182,6 +183,7 @@ Window
                 spacing: UM.Theme.getSize("default_margin").height
                 anchors.fill: parent
                 anchors.margins: UM.Theme.getSize("default_margin").width
+                visible: cloudPrinterList.count > 0
 
                 Label
                 {
@@ -205,10 +207,7 @@ Window
                         width: parent.width
                         spacing: UM.Theme.getSize("default_margin").height
 
-                        model: Cura.GlobalStacksModel
-                        {
-                            filterConnectionType: 3 //Only show cloud connections.
-                        }
+                        model: cloudPrinterList
                         delegate: Rectangle
                         {
                             border.color: UM.Theme.getColor("lining")
@@ -358,6 +357,82 @@ Window
                     }
                 }
             }
+
+            ColumnLayout //Placeholder for when the user has no cloud printers.
+            {
+                spacing: UM.Theme.getSize("default_margin").height
+                anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_margin").width
+                visible: cloudPrinterList.count == 0
+
+                Label
+                {
+                    text: catalog.i18nc("@title:header", "No printers found")
+                    font: UM.Theme.getFont("large_bold")
+                    color: UM.Theme.getColor("text")
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
+                }
+                Image
+                {
+                    source: UM.Theme.getImage("3d_printer_faded")
+                    sourceSize.width: width
+                    fillMode: Image.PreserveAspectFit
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.preferredWidth: parent.width / 3
+                }
+                Label
+                {
+                    text: catalog.i18nc("@text", "It seems like you don't have access to any printers connected to Digital Factory.")
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
+                }
+                Item
+                {
+                    Layout.preferredWidth: parent.width
+                    Layout.fillHeight: true
+                    Cura.TertiaryButton
+                    {
+                        text: catalog.i18nc("@button", "Learn how to connect your printer to Digital Factory")
+                        iconSource: UM.Theme.getIcon("LinkExternal")
+                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-add-cloud-printer")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                }
+                Item
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
+
+                    Cura.SecondaryButton
+                    {
+                        anchors.left: parent.left
+                        text: catalog.i18nc("@button", "Sync materials with USB")
+                        onClicked: swipeView.currentIndex = swipeView.count - 1 //Go to the last page, which is USB.
+                    }
+                    Cura.PrimaryButton
+                    {
+                        id: disabledSyncButton
+                        anchors.right: parent.right
+                        text: catalog.i18nc("@button", "Sync")
+                        enabled: false //If there are no printers, always disable this button.
+                    }
+                    Cura.SecondaryButton
+                    {
+                        anchors.right: disabledSyncButton.left
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@button", "Refresh")
+                        iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                        outlineColor: "transparent"
+                        onClicked: Cura.API.account.sync(true)
+                    }
+                }
+            }
         }
 
         Rectangle
@@ -383,7 +458,7 @@ Window
                     text: catalog.i18nc("@text In the UI this is followed by a list of steps the user needs to take.", "Follow the following steps to load the new material profiles to your printer.")
                     font: UM.Theme.getFont("medium")
                     color: UM.Theme.getColor("text")
-                    wrapMode: Text.WordWrap
+                    wrapMode: Text.Wrap
                     width: parent.width
                     Layout.maximumWidth: width
                     Layout.preferredHeight: height
@@ -410,7 +485,7 @@ Window
                           + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
                         font: UM.Theme.getFont("medium")
                         color: UM.Theme.getColor("text")
-                        wrapMode: Text.WordWrap
+                        wrapMode: Text.Wrap
                         width: parent.width * 3 / 4 - UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
                     }
@@ -442,6 +517,12 @@ Window
                 }
             }
         }
+    }
+
+    Cura.GlobalStacksModel
+    {
+        id: cloudPrinterList
+        filterConnectionType: 3 //Only show cloud connections.
     }
 
     FileDialog
