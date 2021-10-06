@@ -161,7 +161,7 @@ Window
                     {
                         anchors.left: parent.left
                         text: catalog.i18nc("@button", "Sync materials with USB")
-                        onClicked: swipeView.currentIndex = swipeView.count - 1 //Go to the last page, which is USB.
+                        onClicked: swipeView.currentIndex = removableDriveSyncPage.SwipeView.index
                     }
                     Cura.PrimaryButton
                     {
@@ -348,7 +348,7 @@ Window
                     {
                         anchors.left: parent.left
                         text: catalog.i18nc("@button", "Sync materials with USB")
-                        onClicked: swipeView.currentIndex = swipeView.count - 1 //Go to the last page, which is USB.
+                        onClicked: swipeView.currentIndex = removableDriveSyncPage.SwipeView.index
                     }
                     Cura.PrimaryButton
                     {
@@ -413,7 +413,7 @@ Window
                     {
                         anchors.left: parent.left
                         text: catalog.i18nc("@button", "Sync materials with USB")
-                        onClicked: swipeView.currentIndex = swipeView.count - 1 //Go to the last page, which is USB.
+                        onClicked: swipeView.currentIndex = removableDriveSyncPage.SwipeView.index
                     }
                     Cura.PrimaryButton
                     {
