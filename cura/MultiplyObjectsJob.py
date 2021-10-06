@@ -72,13 +72,13 @@ class MultiplyObjectsJob(Job):
                     new_node.setParent(current_node.getParent())
 
         found_solution_for_all = True
+        group_operation = GroupedOperation()
         if nodes:
             group_operation, not_fit_count = createGroupOperationForArrange(nodes,
                                                                             Application.getInstance().getBuildVolume(),
                                                                             fixed_nodes,
-                                                                            factor=10000, add_new_nodes_in_scene=True)
-        else:
-            group_operation = GroupedOperation()
+                                                                            factor = 10000,
+                                                                            add_new_nodes_in_scene = True)
 
         if nodes_to_add_without_arrange:
             for nested_node in nodes_to_add_without_arrange:
