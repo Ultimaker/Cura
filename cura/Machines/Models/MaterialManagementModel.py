@@ -332,6 +332,7 @@ class MaterialManagementModel(QObject):
             self._sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})
         if self._sync_all_dialog is None:  # Failed to load QML file.
             return
+        self._sync_all_dialog.setProperty("materialManagementModel", self)
         self._sync_all_dialog.setProperty("pageIndex", 0)
         self._sync_all_dialog.show()
 

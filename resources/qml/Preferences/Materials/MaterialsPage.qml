@@ -382,19 +382,6 @@ Item
         }
     }
 
-    FileDialog
-    {
-        id: exportAllMaterialsDialog
-        title: catalog.i18nc("@title:window", "Export All Materials")
-        selectExisting: false
-        nameFilters: ["Material archives (*.umm)", "All files (*)"]
-        onAccepted:
-        {
-            base.materialManagementModel.exportAll(fileUrl);
-            CuraApplication.setDefaultPath("dialog_material_path", folder);
-        }
-    }
-
     MessageDialog
     {
         id: messageDialog
