@@ -91,7 +91,7 @@ class MultiplyObjectsJob(Job):
                 # happened (and after moving it, it's clear that there are more underneath)
                 group_operation.addOperation(TranslateOperation(nested_node, Vector(2.5, 2.5, 2.5)))
 
-        group_operation.redo()
+        group_operation.push()
         status_message.hide()
 
         if not found_solution_for_all:
