@@ -682,9 +682,13 @@ class Toolbox(QObject, Extension):
         if not package_info:
             Logger.log("w", "Package file [%s] was not a valid CuraPackage.", file_path)
             return
-
-        license_content = self._package_manager.getPackageLicense(file_path)
         package_id = package_info["package_id"]
+
+        try:
+            license_content = self._package_manager.getPackageLicense(file_path)
+        except EnvironmentError as e:
+            Logger.error(f"Could not open downloaded package {package_id} to read license file! {type(e)} - {e}")
+            return
         if license_content is not None:
             # get the icon url for package_id, make sure the result is a string, never None
             icon_url = next((x["icon_url"] for x in self.packagesModel.items if x["id"] == package_id), None) or ""
