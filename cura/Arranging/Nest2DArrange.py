@@ -114,7 +114,7 @@ def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
                                    build_volume: "BuildVolume",
                                    fixed_nodes: Optional[List["SceneNode"]] = None,
                                    factor = 10000,
-                                   add_new_nodes_in_scene: bool = False):
+                                   add_new_nodes_in_scene: bool = False)  -> Tuple[GroupedOperation, int]:
     scene_root = Application.getInstance().getController().getScene().getRoot()
     found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
 
@@ -134,8 +134,7 @@ def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
         else:
             # We didn't find a spot
             grouped_operation.addOperation(
-                TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20),
-                                   set_position=True))
+                TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
             not_fit_count += 1
 
     return grouped_operation, not_fit_count
