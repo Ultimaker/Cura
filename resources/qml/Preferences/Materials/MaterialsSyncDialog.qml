@@ -95,7 +95,7 @@ Window
                 text: catalog.i18nc("@button", "Why do I need to sync material profiles?")
                 iconSource: UM.Theme.getIcon("LinkExternal")
                 isIconOnRightSide: true
-                onClicked: Qt.openUrlExternally("https://ultimaker.com")
+                onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-why")
             }
         }
 
@@ -336,6 +336,7 @@ Window
                     text: catalog.i18nc("@button", "Troubleshooting")
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     Layout.preferredHeight: height
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                 }
                 Item
                 {
@@ -426,7 +427,7 @@ Window
                         anchors.left: parent.left
                         text: catalog.i18nc("@button", "How to load new material profiles to my printer")
                         iconSource: UM.Theme.getIcon("LinkExternal")
-                        onClicked: Qt.openUrlExternally("https://www.ultimaker.com")
+                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-how-usb")
                     }
                     Cura.PrimaryButton
                     {
