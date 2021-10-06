@@ -341,6 +341,7 @@ Window
                     height: childrenRect.height
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
+
                     Cura.SecondaryButton
                     {
                         anchors.left: parent.left
@@ -351,6 +352,84 @@ Window
                     {
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Sync")
+                    }
+                }
+            }
+        }
+
+        Rectangle
+        {
+            id: removableDriveSyncPage
+            color: UM.Theme.getColor("main_background")
+
+            ColumnLayout
+            {
+                spacing: UM.Theme.getSize("default_margin").height
+                anchors.fill: parent
+                anchors.margins: UM.Theme.getSize("default_margin").width
+
+                Label
+                {
+                    text: catalog.i18nc("@title:header", "Sync material profiles via USB")
+                    font: UM.Theme.getFont("large_bold")
+                    color: UM.Theme.getColor("text")
+                    Layout.preferredHeight: height
+                }
+                Label
+                {
+                    text: catalog.i18nc("@text In the UI this is followed by a list of steps the user needs to take.", "Follow the following steps to load the new material profiles to your printer.")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    wrapMode: Text.WordWrap
+                    width: parent.width
+                    Layout.maximumWidth: width
+                    Layout.preferredHeight: height
+                }
+                Row
+                {
+                    width: parent.width
+                    Layout.preferredWidth: width
+                    Layout.fillHeight: true
+                    spacing: UM.Theme.getSize("default_margin").width
+
+                    Image
+                    {
+                        source: UM.Theme.getImage("insert_usb")
+                        width: parent.width / 4
+                        height: width
+                        anchors.verticalCenter: parent.verticalCenter
+                        sourceSize.width: width
+                    }
+                    Label
+                    {
+                        text: "1. " + catalog.i18nc("@text 'hit' as in pressing the button", "Hit the export material archive button.")
+                          + "\n2. " + catalog.i18nc("@text", "Save the .umm file on a USB stick.")
+                          + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
+                        font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
+                        wrapMode: Text.WordWrap
+                        width: parent.width * 3 / 4 - UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+                Item
+                {
+                    width: parent.width
+                    height: childrenRect.height
+                    Layout.preferredWidth: width
+                    Layout.preferredHeight: height
+
+                    Cura.TertiaryButton
+                    {
+                        anchors.left: parent.left
+                        text: catalog.i18nc("@button", "How to load new material profiles to my printer")
+                        iconSource: UM.Theme.getIcon("LinkExternal")
+                        onClicked: Qt.openUrlExternally("https://www.ultimaker.com")
+                    }
+                    Cura.PrimaryButton
+                    {
+                        anchors.right: parent.right
+                        text: catalog.i18nc("@button", "Export material archive")
                     }
                 }
             }
