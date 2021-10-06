@@ -6,9 +6,11 @@ from typing import List
 
 from UM.Application import Application
 from UM.Job import Job
+from UM.Math.Vector import Vector
 from UM.Message import Message
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
@@ -84,6 +86,10 @@ class MultiplyObjectsJob(Job):
         if nodes_to_add_without_arrange:
             for nested_node in nodes_to_add_without_arrange:
                 group_operation.addOperation(AddSceneNodeOperation(nested_node, nested_node.getParent()))
+                # Move the node a tiny bit so it doesn't overlap with the existing one.
+                # This doesn't fix it if someone creates more than one duplicate, but it at least shows that something
+                # happened (and after moving it, it's clear that there are more underneath)
+                group_operation.addOperation(TranslateOperation(nested_node, Vector(2.5, 2.5, 2.5)))
 
         group_operation.redo()
         status_message.hide()
