@@ -40,6 +40,7 @@ class GlobalStacksModel(ListModel):
         self._change_timer.timeout.connect(self._update)
 
         self._filter_connection_type = -1
+        self._filter_online_only = False
 
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
@@ -48,7 +49,6 @@ class GlobalStacksModel(ListModel):
         self._updateDelayed()
 
     filterConnectionTypeChanged = pyqtSignal()
-
     def setFilterConnectionType(self, new_filter: int) -> None:
         self._filter_connection_type = new_filter
 
@@ -61,6 +61,17 @@ class GlobalStacksModel(ListModel):
         model.
         """
         return self._filter_connection_type
+
+    filterOnlineOnlyChanged = pyqtSignal()
+    def setFilterOnlineOnly(self, new_filter: bool) -> None:
+        self._filter_online_only = new_filter
+
+    @pyqtProperty(bool, fset = setFilterOnlineOnly, notify = filterOnlineOnlyChanged)
+    def filterOnlineOnly(self) -> bool:
+        """
+        Whether to filter the global stacks to show only printers that are online.
+        """
+        return self._filter_online_only
 
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
@@ -90,10 +101,13 @@ class GlobalStacksModel(ListModel):
             if parseBool(container_stack.getMetaDataEntry("hidden", False)):
                 continue
 
+            is_online = container_stack.getMetaDataEntry("is_online", False)
+            if self._filter_online_only and not is_online:
+                continue
+
             device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
             section_name = "Connected printers" if has_remote_connection else "Preset printers"
             section_name = self._catalog.i18nc("@info:title", section_name)
-            is_online = container_stack.getMetaDataEntry("is_online", False)
 
             default_removal_warning = self._catalog.i18nc(
                 "@label {0} is the name of a printer that's about to be deleted.",
