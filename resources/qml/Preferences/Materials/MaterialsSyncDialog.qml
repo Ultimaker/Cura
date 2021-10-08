@@ -354,6 +354,7 @@ Window
                     {
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Sync")
+                        onClicked: materialManagementModel.exportUpload()
                     }
                 }
             }

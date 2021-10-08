@@ -16,6 +16,7 @@ from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
+from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob  # To export materials to the output printer.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
 
 if TYPE_CHECKING:
@@ -385,3 +386,11 @@ class MaterialManagementModel(QObject):
                 archive.writestr(filename, material.serialize())
             except OSError as e:
                 Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
+
+    @pyqtSlot()
+    def exportUpload(self) -> None:
+        """
+        Export all materials and upload them to the user's account.
+        """
+        job = UploadMaterialsJob()
+        job.start()
