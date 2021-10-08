@@ -1,26 +1,26 @@
 {
     "version": 2,
-    "name": "Creasee CS50s Pro",
+    "name": "Creasee Phoenix",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "manufacturer": "CREASEE",
+        "manufacturer": "Creasee",
         "machine_extruder_trains":
         {
-            "0": "creasee_cs50spro_extruder"
+            "0": "creasee_phoenix_extruder"
         }
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Creasee CS50s Pro" },
+        "machine_name": { "default_value": "Creasee Phoenix" },
         "machine_width": {
-            "default_value": 500
+            "default_value": 350
         },
         "machine_depth": {
-            "default_value": 500
+            "default_value": 350
         },
         "machine_height": {
-            "default_value": 600
+            "default_value": 350
         },
         "machine_start_gcode": {
             "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
