@@ -20,6 +20,7 @@ class GlobalStacksModel(ListModel):
     MetaDataRole = Qt.UserRole + 5
     DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
     RemovalWarningRole = Qt.UserRole + 7
+    IsOnlineRole = Qt.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -31,6 +32,7 @@ class GlobalStacksModel(ListModel):
         self.addRoleName(self.HasRemoteConnectionRole, "hasRemoteConnection")
         self.addRoleName(self.MetaDataRole, "metadata")
         self.addRoleName(self.DiscoverySourceRole, "discoverySource")
+        self.addRoleName(self.IsOnlineRole, "isOnline")
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -91,6 +93,7 @@ class GlobalStacksModel(ListModel):
             device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
             section_name = "Connected printers" if has_remote_connection else "Preset printers"
             section_name = self._catalog.i18nc("@info:title", section_name)
+            is_online = container_stack.getMetaDataEntry("is_online", False)
 
             default_removal_warning = self._catalog.i18nc(
                 "@label {0} is the name of a printer that's about to be deleted.",
@@ -103,6 +106,7 @@ class GlobalStacksModel(ListModel):
                           "hasRemoteConnection": has_remote_connection,
                           "metadata": container_stack.getMetaData().copy(),
                           "discoverySource": section_name,
-                          "removalWarning": removal_warning})
+                          "removalWarning": removal_warning,
+                          "isOnline": is_online})
         items.sort(key=lambda i: (not i["hasRemoteConnection"], i["name"]))
         self.setItems(items)

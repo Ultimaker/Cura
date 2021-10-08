@@ -247,7 +247,7 @@ Window
                                     }
 
                                     source: UM.Theme.getIcon("CloudBadge", "low")
-                                    color: "red" //TODO: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+                                    color: model.isOnline ? UM.Theme.getColor("primary") : UM.Theme.getColor("cloud_unavailable")
 
                                     //Make a themeable circle in the background so we can change it in other themes.
                                     Rectangle
