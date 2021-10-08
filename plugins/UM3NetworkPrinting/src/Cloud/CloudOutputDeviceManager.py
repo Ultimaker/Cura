@@ -157,6 +157,8 @@ class CloudOutputDeviceManager:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
 
+        Logger.debug("Synced cloud printers with account.")
+
     def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
