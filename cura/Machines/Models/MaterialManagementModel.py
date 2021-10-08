@@ -330,11 +330,12 @@ class MaterialManagementModel(QObject):
         """
         if self._sync_all_dialog is None:
             qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences", "Materials", "MaterialsSyncDialog.qml")
-            self._sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})
+            self._sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {
+                "materialManagementModel": self,
+                "pageIndex": 0
+            })
         if self._sync_all_dialog is None:  # Failed to load QML file.
             return
-        self._sync_all_dialog.setProperty("materialManagementModel", self)
-        self._sync_all_dialog.setProperty("pageIndex", 0)
         self._sync_all_dialog.show()
 
     @pyqtSlot(result = QUrl)
