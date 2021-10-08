@@ -481,7 +481,7 @@ Window
                     }
                     Label
                     {
-                        text: "1. " + catalog.i18nc("@text 'hit' as in pressing the button", "Hit the export material archive button.")
+                        text: "1. " + catalog.i18nc("@text", "Click the export material archive button.")
                           + "\n2. " + catalog.i18nc("@text", "Save the .umm file on a USB stick.")
                           + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
                         font: UM.Theme.getFont("medium")
