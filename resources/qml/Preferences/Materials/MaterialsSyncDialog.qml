@@ -247,7 +247,7 @@ Window
                                     }
 
                                     source: UM.Theme.getIcon("CloudBadge", "low")
-                                    color: model.isOnline ? UM.Theme.getColor("primary") : UM.Theme.getColor("cloud_unavailable")
+                                    color: UM.Theme.getColor("primary")
 
                                     //Make a themeable circle in the background so we can change it in other themes.
                                     Rectangle
@@ -523,6 +523,7 @@ Window
     {
         id: cloudPrinterList
         filterConnectionType: 3 //Only show cloud connections.
+        filterOnlineOnly: true //Only show printers that are online.
     }
 
     FileDialog
