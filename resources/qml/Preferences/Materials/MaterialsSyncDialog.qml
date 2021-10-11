@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
 import Cura 1.1 as Cura
-import UM 1.2 as UM
+import UM 1.4 as UM
 
 Window
 {
@@ -284,22 +284,14 @@ Window
                                     }
                                     spacing: UM.Theme.getSize("default_margin").width
 
-                                    Rectangle //Info icon with a themeable color and background.
+                                    UM.StatusIcon
                                     {
                                         id: infoIcon
-                                        width: UM.Theme.getSize("machine_selector_icon").width
+                                        width: UM.Theme.getSize("section_icon").width
                                         height: width
-                                        Layout.preferredWidth: width
                                         Layout.alignment: Qt.AlignVCenter
-                                        radius: height / 2
-                                        color: UM.Theme.getColor("warning")
 
-                                        UM.RecolorImage
-                                        {
-                                            source: UM.Theme.getIcon("EmptyInfo")
-                                            anchors.fill: parent
-                                            color: UM.Theme.getColor("machine_selector_printer_icon")
-                                        }
+                                        status: UM.StatusIcon.Status.WARNING
                                     }
 
                                     Label
