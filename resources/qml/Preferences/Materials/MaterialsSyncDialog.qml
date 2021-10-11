@@ -491,6 +491,14 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
+
+                Cura.TertiaryButton
+                {
+                    text: catalog.i18nc("@button", "How to load new material profiles to my printer")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-how-usb")
+                }
+
                 Item
                 {
                     width: parent.width
@@ -498,12 +506,11 @@ Window
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
 
-                    Cura.TertiaryButton
+                    Cura.SecondaryButton
                     {
                         anchors.left: parent.left
-                        text: catalog.i18nc("@button", "How to load new material profiles to my printer")
-                        iconSource: UM.Theme.getIcon("LinkExternal")
-                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-how-usb")
+                        text: catalog.i18nc("@button", "Back")
+                        onClicked: swipeView.currentIndex = 0 //Reset to first page.
                     }
                     Cura.PrimaryButton
                     {
