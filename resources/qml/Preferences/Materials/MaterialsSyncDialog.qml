@@ -1,7 +1,7 @@
 //Copyright (c) 2021 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.15
@@ -345,16 +345,58 @@ Window
                     }
                     Cura.PrimaryButton
                     {
+                        id: syncButton
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Sync")
                         onClicked: materialManagementModel.exportUpload()
-                        enabled:
+                        visible:
                         {
                             if(!materialManagementModel) //When the dialog is created, this is not set yet.
                             {
-                                return false;
+                                return true;
                             }
                             return materialManagementModel.exportUploadStatus != "uploading";
+                        }
+                    }
+                    Item
+                    {
+                        anchors.right: parent.right
+                        width: childrenRect.width
+                        height: syncButton.height
+
+                        visible: !syncButton.visible
+
+                        UM.RecolorImage
+                        {
+                            id: syncingIcon
+                            height: UM.Theme.getSize("action_button_icon").height
+                            width: height
+                            anchors.right: syncingLabel.left
+                            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                            color: UM.Theme.getColor("primary")
+
+                            RotationAnimator
+                            {
+                                target: syncingIcon
+                                from: 0
+                                to: 360
+                                duration: 1000
+                                loops: Animation.Infinite
+                                running: !syncButton.visible //Don't run while invisible. Would be a waste of render updates.
+                            }
+                        }
+                        Label
+                        {
+                            id: syncingLabel
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: catalog.i18nc("@button", "Syncing")
+                            color: UM.Theme.getColor("primary")
+                            font: UM.Theme.getFont("medium")
                         }
                     }
                 }
