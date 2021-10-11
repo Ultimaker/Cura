@@ -79,9 +79,11 @@ class UploadMaterialsJob(Job):
         if error is not None:
             Logger.error(f"Failed to upload material archive: {error}")
             self.setResult(self.Result.FAILED)
-            return
-        self.setResult(self.Result.SUCCESS)
-        self.uploadCompleted.emit()
+        else:
+            self.setResult(self.Result.SUCCESS)
+        self.uploadCompleted.emit(self.getResult())
 
     def onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
-        pass  # TODO: Handle errors.
+        Logger.error(f"Failed to upload material archive: {error}")
+        self.setResult(self.Result.FAILED)
+        self.uploadCompleted.emit(self.getResult())

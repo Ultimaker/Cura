@@ -23,6 +23,7 @@ Window
 
     property variant materialManagementModel
     property alias pageIndex: swipeView.currentIndex
+    property alias syncStatusText: syncStatusLabel.text
 
     SwipeView
     {
@@ -357,6 +358,19 @@ Window
                             }
                             return materialManagementModel.exportUploadStatus != "uploading";
                         }
+                    }
+                    Label
+                    {
+                        id: syncStatusLabel
+
+                        anchors.right: syncButton.left
+                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                        anchors.verticalCenter: parent.verticalCenter
+
+                        visible: syncButton.visible
+                        text: ""
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
                     }
                     Item
                     {
