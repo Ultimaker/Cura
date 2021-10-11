@@ -11,6 +11,7 @@ from cura.UltimakerCloud import UltimakerCloudConstants  # To know where the API
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To know how to communicate with this server.
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To call the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 
@@ -32,6 +33,8 @@ class UploadMaterialsJob(Job):
     def __init__(self):
         super().__init__()
         self._scope = JsonDecoratorScope(UltimakerCloudScope(cura.CuraApplication.CuraApplication.getInstance()))  # type: JsonDecoratorScope
+
+    uploadCompleted = Signal()
 
     def run(self):
         archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
@@ -78,6 +81,7 @@ class UploadMaterialsJob(Job):
             self.setResult(self.Result.FAILED)
             return
         self.setResult(self.Result.SUCCESS)
+        self.uploadCompleted.emit()
 
     def onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
         pass  # TODO: Handle errors.

@@ -355,6 +355,14 @@ Window
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Sync")
                         onClicked: materialManagementModel.exportUpload()
+                        enabled:
+                        {
+                            if(!materialManagementModel)
+                            {
+                                return false;
+                            }
+                            return materialManagementModel.exportUploadStatus != "uploading";
+                        }
                     }
                 }
             }

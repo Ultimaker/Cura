@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
@@ -35,6 +35,7 @@ class MaterialManagementModel(QObject):
     def __init__(self, parent: QObject = None):
         super().__init__(parent)
         self._sync_all_dialog = None  # type: Optional[QObject]
+        self._export_upload_status = "idle"
         self._checkIfNewMaterialsWereInstalled()
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
@@ -330,12 +331,11 @@ class MaterialManagementModel(QObject):
         """
         if self._sync_all_dialog is None:
             qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences", "Materials", "MaterialsSyncDialog.qml")
-            self._sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {
-                "materialManagementModel": self,
-                "pageIndex": 0
-            })
+            self._sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})
         if self._sync_all_dialog is None:  # Failed to load QML file.
             return
+        self._sync_all_dialog.setProperty("materialManagementModel", self)
+        self._sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
         self._sync_all_dialog.show()
 
     @pyqtSlot(result = QUrl)
@@ -388,10 +388,23 @@ class MaterialManagementModel(QObject):
             except OSError as e:
                 Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
 
+    exportUploadStatusChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = exportUploadStatusChanged)
+    def exportUploadStatus(self):
+        return self._export_upload_status
+
     @pyqtSlot()
     def exportUpload(self) -> None:
         """
         Export all materials and upload them to the user's account.
         """
+        self._export_upload_status = "uploading"
+        self.exportUploadStatusChanged.emit()
         job = UploadMaterialsJob()
+        job.uploadCompleted.connect(self.exportUploadCompleted)
         job.start()
+
+    def exportUploadCompleted(self):
+        self._export_upload_status = "idle"
+        self.exportUploadStatusChanged.emit()
