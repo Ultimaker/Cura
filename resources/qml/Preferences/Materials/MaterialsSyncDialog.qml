@@ -365,7 +365,6 @@ Window
 
                         anchors.right: syncButton.left
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        anchors.verticalCenter: parent.verticalCenter
 
                         visible: syncButton.visible
                         text: ""
@@ -385,9 +384,7 @@ Window
                             id: syncingIcon
                             height: UM.Theme.getSize("action_button_icon").height
                             width: height
-                            anchors.right: syncingLabel.left
-                            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.verticalCenter: syncingLabel.verticalCenter
 
                             source: UM.Theme.getIcon("ArrowDoubleCircleRight")
                             color: UM.Theme.getColor("primary")
@@ -405,8 +402,8 @@ Window
                         Label
                         {
                             id: syncingLabel
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: syncingIcon.right
+                            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
 
                             text: catalog.i18nc("@button", "Syncing")
                             color: UM.Theme.getColor("primary")
