@@ -11,7 +11,7 @@
 # Modified by Jaime van Kessel (Ultimaker), j.vankessel@ultimaker.com to make it work for 15.10 / 2.x
 # Modified by Ruben Dulek (Ultimaker), r.dulek@ultimaker.com, to debug.
 # Modified by Wes Hanney, https://github.com/novamxd, Retract Length + Speed, Clean up
-# Modified by Alex Jaxon, https://github.com/legend069, Added option to modify enclosure temperature
+# Modified by Alex Jaxon, https://github.com/legend069, Added option to modify Build Volume Temperature
 
 
 # history / changelog:
@@ -42,7 +42,7 @@
 # Added support for outputting changes to LCD (untested). Added type hints to most functions and variables. Added more comments. Created GCodeCommand
 # class for better detection of G1 vs G10 or G11 commands, and accessing arguments. Moved most GCode methods to GCodeCommand class. Improved wording
 # of Single Layer vs Keep Layer to better reflect what was happening.
-# V5.2.2    Alex Jaxon, Added option to modify enclosure temperature keeping current format
+# V5.2.2    Alex Jaxon, Added option to modify Build Volume Temperature keeping current format
 #           updated from "Experimental" to "Beta"
 #
 
@@ -229,22 +229,22 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "120",
                     "enabled": "h1_Change_bedTemp"
                 },
-                                        "h1_Change_enclosureTemp": {
-                                        "label": "Change Enclosure Temp",
-                                        "description": "Select if Enclosure Temperature has to be changed",
+                                        "h1_Change_BuildVolumeTemperature": {
+                                        "label": "Change Build Volume Temperature",
+                                        "description": "Select if Build Volume Temperature has to be changed",
                                         "type": "bool",
                                         "default_value": false
                 },
-                                    "h2_enclosureTemp": {
-                                        "label": "Enclosure Temp",
-                                        "description": "New Enclosure Temperature",
+                                    "h2_BuildVolumeTemperature": {
+                                        "label": "Build Volume Temperature",
+                                        "description": "New Build Volume Temperature",
                                         "unit": "C",
                                         "type": "float",
                                         "default_value": 20,
                                         "minimum_value": "0",
                                         "minimum_value_warning": "10",
                                         "maximum_value_warning": "50",
-                                        "enabled": "h1_Change_enclosureTemp"
+                                        "enabled": "h1_Change_BuildVolumeTemperature"
                 },
                 "i1_Change_extruderOne": {
                     "label": "Change Extruder 1 Temp",
@@ -369,7 +369,7 @@ class ChangeAtZ(Script):
         self.setIntSettingIfEnabled(caz_instance, "g3_Change_flowrateOne", "flowrateOne", "g4_flowrateOne")
         self.setIntSettingIfEnabled(caz_instance, "g5_Change_flowrateTwo", "flowrateTwo", "g6_flowrateTwo")
         self.setFloatSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
-        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_enclosureTemp", "enclosureTemp", "h2_enclosureTemp")
+        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_BuildVolumeTemperature", "BuildVolumeTemperature", "h2_BuildVolumeTemperature")
         self.setFloatSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
         self.setFloatSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
         self.setIntSettingIfEnabled(caz_instance, "j1_Change_fanSpeed", "fanSpeed", "j2_fanSpeed")
@@ -801,9 +801,9 @@ class ChangeAtZProcessor:
         if "bedTemp" in values:
             codes.append("BedTemp: " + str(round(values["bedTemp"])))
 
-        # looking for wait for enclosure temp
-        if "enclosureTemp" in values:
-            codes.append("EnclosureTemp: " + str(round(values["enclosureTemp"])))
+        # looking for wait for Build Volume Temperature
+        if "BuildVolumeTemperature" in values:
+            codes.append("BuildVolumeTemperature: " + str(round(values["BuildVolumeTemperature"])))
 
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
@@ -887,9 +887,9 @@ class ChangeAtZProcessor:
         if "bedTemp" in values:
             codes.append("M140 S" + str(values["bedTemp"]))
 
-        # looking for wait for enclosure temp
-        if "enclosureTemp" in values:
-            codes.append("M141 S" + str(values["enclosureTemp"]))
+        # looking for wait for Build Volume Temperature
+        if "BuildVolumeTemperature" in values:
+            codes.append("M141 S" + str(values["BuildVolumeTemperature"]))
 
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
@@ -1397,12 +1397,12 @@ class ChangeAtZProcessor:
             # move to the next command
             return
 
-        # handle enclosure temp changes, really shouldn't want to wait for enclousure temp mid print though.
+        # handle Build Volume Temperature changes, really shouldn't want to wait for enclousure temp mid print though.
         if command.command == "M141" or command.command == "M191":
 
             # get our bed temp if provided
             if "S" in command.arguments:
-                self.lastValues["enclosureTemp"] = command.getArgumentAsFloat("S")
+                self.lastValues["BuildVolumeTemperature"] = command.getArgumentAsFloat("S")
 
             # move to the next command
             return
