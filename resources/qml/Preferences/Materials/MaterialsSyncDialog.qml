@@ -266,7 +266,8 @@ Window
                         footer: Item
                         {
                             width: printerListScrollView.width
-                            height: UM.Theme.getSize("card").height + UM.Theme.getSize("default_margin").height
+                            height: visible ? UM.Theme.getSize("card").height + UM.Theme.getSize("default_margin").height : 0
+                            visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0
                             Rectangle
                             {
                                 border.color: UM.Theme.getColor("lining")
@@ -532,6 +533,13 @@ Window
         id: cloudPrinterList
         filterConnectionType: 3 //Only show cloud connections.
         filterOnlineOnly: true //Only show printers that are online.
+    }
+    Cura.GlobalStacksModel
+    {
+        //In order to show a refresh button only when there are offline cloud printers, we need to know if there are any offline printers.
+        //A global stacks model without the filter for online-only printers allows this.
+        id: includeOfflinePrinterList
+        filterConnectionType: 3 //Still only show cloud connections.
     }
 
     FileDialog
