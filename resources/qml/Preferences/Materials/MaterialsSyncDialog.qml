@@ -186,12 +186,62 @@ Window
                 anchors.margins: UM.Theme.getSize("default_margin").width
                 visible: cloudPrinterList.count > 0
 
+                Row
+                {
+                    Layout.preferredHeight: childrenRect.height
+                    spacing: UM.Theme.getSize("default_margin").width
+
+                    states: [
+                        State
+                        {
+                            name: "idle"
+                            when: typeof materialManagementModel === "undefined" || materialManagementModel.exportUploadStatus == "idle" || materialManagementModel.exportUploadStatus == "uploading"
+                            PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles:") }
+                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL }
+                        },
+                        State
+                        {
+                            name: "error"
+                            when: typeof materialManagementModel !== "undefined" && materialManagementModel.exportUploadStatus == "error"
+                            PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Something went wrong when sending the materials to the printers.") }
+                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.ERROR }
+                        },
+                        State
+                        {
+                            name: "success"
+                            when: typeof materialManagementModel !== "undefined" && materialManagementModel.exportUploadStatus == "success"
+                            PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Material profiles successfully synced with the following printers:") }
+                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.POSITIVE }
+                        }
+                    ]
+
+                    UM.StatusIcon
+                    {
+                        id: printerListHeaderIcon
+                        width: UM.Theme.getSize("section_icon").width
+                        height: width
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Label
+                    {
+                        id: printerListHeader
+                        anchors.verticalCenter: parent.verticalCenter
+                        //Text is always defined by the states above.
+                        font: UM.Theme.getFont("large_bold")
+                        color: UM.Theme.getColor("text")
+                    }
+                }
                 Label
                 {
-                    text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles")
-                    font: UM.Theme.getFont("large_bold")
+                    id: syncStatusLabel
+
+                    anchors.right: syncButton.left
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                    visible: text !== ""
+                    text: ""
                     color: UM.Theme.getColor("text")
-                    Layout.preferredHeight: height
+                    font: UM.Theme.getFont("medium")
                 }
                 ScrollView
                 {
@@ -358,18 +408,6 @@ Window
                             }
                             return materialManagementModel.exportUploadStatus != "uploading";
                         }
-                    }
-                    Label
-                    {
-                        id: syncStatusLabel
-
-                        anchors.right: syncButton.left
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                        visible: syncButton.visible
-                        text: ""
-                        color: UM.Theme.getColor("text")
-                        font: UM.Theme.getFont("default")
                     }
                     Item
                     {

@@ -408,5 +408,7 @@ class MaterialManagementModel(QObject):
     def exportUploadCompleted(self, job_result: UploadMaterialsJob.Result):
         if job_result == UploadMaterialsJob.Result.FAILED:
             self._sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Something went wrong when sending the materials to the printers."))
-        self._export_upload_status = "idle"
+            self._export_upload_status = "error"
+        else:
+            self._export_upload_status = "success"
         self.exportUploadStatusChanged.emit()
