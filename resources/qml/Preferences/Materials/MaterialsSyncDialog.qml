@@ -357,7 +357,7 @@ Window
                         onClicked: materialManagementModel.exportUpload()
                         enabled:
                         {
-                            if(!materialManagementModel)
+                            if(!materialManagementModel) //When the dialog is created, this is not set yet.
                             {
                                 return false;
                             }
@@ -482,7 +482,7 @@ Window
                     Image
                     {
                         source: UM.Theme.getImage("insert_usb")
-                        width: parent.width / 4
+                        width: parent.width / 3
                         height: width
                         anchors.verticalCenter: parent.verticalCenter
                         sourceSize.width: width
@@ -495,7 +495,7 @@ Window
                         font: UM.Theme.getFont("medium")
                         color: UM.Theme.getColor("text")
                         wrapMode: Text.Wrap
-                        width: parent.width * 3 / 4 - UM.Theme.getSize("default_margin").width
+                        width: parent.width * 2 / 3 - UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
