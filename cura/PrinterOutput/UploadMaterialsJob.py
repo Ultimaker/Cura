@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import enum
-import functools
 import json  # To serialise metadata for API calls.
 import os  # To delete the archive when we're done.
 from PyQt5.QtCore import QUrl
@@ -132,8 +131,8 @@ class UploadMaterialsJob(Job):
             http = HttpRequestManager.getInstance()
             http.get(
                 url = self.UPLOAD_CONFIRM_URL.format(cluster_id = cluster_id, cluster_printer_id = printer_id),
-                callback = functools.partialmethod(self.onUploadConfirmed, printer_id),
-                error_callback = functools.partialmethod(self.onUploadConfirmed, printer_id),  # Let this same function handle the error too.
+                callback = lambda reply, error: self.onUploadConfirmed(printer_id, reply, error),
+                error_callback = lambda reply, error: self.onUploadConfirmed(printer_id, reply, error),  # Let this same function handle the error too.
                 scope = self._scope
             )
 
