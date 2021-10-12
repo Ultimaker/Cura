@@ -258,10 +258,21 @@ Window
                         model: cloudPrinterList
                         delegate: Rectangle
                         {
+                            id: delegateContainer
                             border.color: UM.Theme.getColor("lining")
                             border.width: UM.Theme.getSize("default_lining").width
                             width: printerListScrollView.width
                             height: UM.Theme.getSize("card").height
+
+                            property string syncStatus:
+                            {
+                                var printer_id = model.metadata["host_guid"]
+                                if(syncModel.printerStatus[printer_id] === undefined) //No status information available. Could be added after we started syncing.
+                                {
+                                    return "idle";
+                                }
+                                return syncModel.printerStatus[printer_id];
+                            }
 
                             Cura.IconWithText
                             {
@@ -308,6 +319,40 @@ Window
                                         z: parent.z - 1
                                     }
                                 }
+                            }
+
+                            UM.RecolorImage
+                            {
+                                width: UM.Theme.getSize("section_icon").width
+                                height: width
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+                                anchors.rightMargin: Math.round((parent.height - height) / 2) //Same margin on the right as above and below.
+
+                                visible: delegateContainer.syncStatus === "uploading"
+                                source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                                color: UM.Theme.getColor("primary")
+
+                                RotationAnimator
+                                {
+                                    target: printerStatusSyncingIcon
+                                    from: 0
+                                    to: 360
+                                    duration: 1000
+                                    loops: Animation.Infinite
+                                    running: true
+                                }
+                            }
+                            UM.StatusIcon
+                            {
+                                width: UM.Theme.getSize("section_icon").width
+                                height: width
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+                                anchors.rightMargin: Math.round((parent.height - height) / 2) //Same margin on the right as above and below.
+
+                                visible: delegateContainer.syncStatus === "failed" || delegateContainer.syncStatus === "success"
+                                status: delegateContainer.syncStatus === "success" ? UM.StatusIcon.Status.POSITIVE : UM.StatusIcon.Status.ERROR
                             }
                         }
 
@@ -431,7 +476,7 @@ Window
                                 to: 360
                                 duration: 1000
                                 loops: Animation.Infinite
-                                running: !syncButton.visible //Don't run while invisible. Would be a waste of render updates.
+                                running: true
                             }
                         }
                         Label
