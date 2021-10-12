@@ -452,7 +452,7 @@ Window
                     {
                         id: syncButton
                         anchors.right: parent.right
-                        text: catalog.i18nc("@button", "Sync")
+                        text: (typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error") ? catalog.i18nc("@button", "Try again") : catalog.i18nc("@button", "Sync")
                         onClicked: syncModel.exportUpload()
                         visible:
                         {
