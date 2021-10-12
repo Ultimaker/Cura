@@ -46,10 +46,11 @@ class UploadMaterialsJob(Job):
         self._archive_filename = archive_file.name
 
         self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.uploadProgressChanged)
+        file_size = os.path.getsize(self._archive_filename)
 
         http = HttpRequestManager.getInstance()
         http.get(
-            url = self.UPLOAD_REQUEST_URL,
+            url = self.UPLOAD_REQUEST_URL + f"?file_size={file_size}&file_name=cura.umm",  # File name can be anything as long as it's .umm. It's not used by Cloud or firmware.
             callback = self.onUploadRequestCompleted,
             error_callback = self.onError,
             scope = self._scope
