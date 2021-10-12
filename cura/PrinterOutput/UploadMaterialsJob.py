@@ -46,8 +46,10 @@ class UploadMaterialsJob(Job):
         self._archive_remote_id = None  # type: Optional[str]  # ID that the server gives to this archive. Used to communicate about the archive to the server.
         self._printer_sync_status = {}
         self._printer_metadata = {}
+        self.processProgressChanged.connect(self._onProcessProgressChanged)
 
     uploadCompleted = Signal()
+    processProgressChanged = Signal()
     uploadProgressChanged = Signal()
 
     def run(self):
@@ -65,7 +67,7 @@ class UploadMaterialsJob(Job):
         archive_file.close()
         self._archive_filename = archive_file.name
 
-        self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.uploadProgressChanged)
+        self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.processProgressChanged)
         file_size = os.path.getsize(self._archive_filename)
 
         http = HttpRequestManager.getInstance()
@@ -143,7 +145,10 @@ class UploadMaterialsJob(Job):
         else:
             self._printer_sync_status[printer_id] = "success"
 
-        if "uploading" not in self._printer_sync_status.values():  # This is the last response to be processed.
+        still_uploading = len([val for val in self._printer_sync_status.values() if val == "uploading"])
+        self.uploadProgressChanged.emit(0.8 + (len(self._printer_sync_status) - still_uploading) / len(self._printer_sync_status), self.getPrinterSyncStatus())
+
+        if still_uploading == 0:  # This is the last response to be processed.
             if "failed" in self._printer_sync_status.values():
                 self.setResult(self.Result.FAILED)
                 self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory to sync materials with some of the printers.")))
@@ -159,6 +164,9 @@ class UploadMaterialsJob(Job):
 
     def getPrinterSyncStatus(self) -> Dict[str, str]:
         return self._printer_sync_status
+
+    def _onProcessProgressChanged(self, progress: float) -> None:
+        self.uploadProgressChanged.emit(progress * 0.8, self.getPrinterSyncStatus())  # The processing is 80% of the progress bar.
 
 
 class UploadMaterialsError(Exception):

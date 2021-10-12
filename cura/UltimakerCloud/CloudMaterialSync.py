@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import Optional, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -28,6 +28,7 @@ class CloudMaterialSync(QObject):
         self._export_upload_status = "idle"
         self._checkIfNewMaterialsWereInstalled()
         self._export_progress = 0
+        self._printer_status = {}
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
@@ -151,9 +152,13 @@ class CloudMaterialSync(QObject):
         self._export_upload_status = "uploading"
         self.exportUploadStatusChanged.emit()
         job = UploadMaterialsJob(self)
-        job.uploadProgressChanged.connect(self.setExportProgress)
+        job.uploadProgressChanged.connect(self._onUploadProgressChanged)
         job.uploadCompleted.connect(self.exportUploadCompleted)
         job.start()
+
+    def _onUploadProgressChanged(self, progress: float, printers_status: Dict[str, str]):
+        self.setExportProgress(progress)
+        self.setPrinterStatus(printers_status)
 
     def exportUploadCompleted(self, job_result: UploadMaterialsJob.Result, job_error: Optional[Exception]):
         if job_result == UploadMaterialsJob.Result.FAILED:
@@ -175,3 +180,13 @@ class CloudMaterialSync(QObject):
     @pyqtProperty(float, fset = setExportProgress, notify = exportProgressChanged)
     def exportProgress(self) -> float:
         return self._export_progress
+
+    printerStatusChanged = pyqtSignal()
+
+    def setPrinterStatus(self, new_status: Dict[str, str]) -> None:
+        self._printer_status = new_status
+        self.printerStatusChanged.emit()
+
+    @pyqtProperty("QVariantMap", fset = setPrinterStatus, notify = printerStatusChanged)
+    def printerStatus(self) -> Dict[str, str]:
+        return self._printer_status
