@@ -25,7 +25,7 @@ class UploadMaterialsJob(Job):
     Job that uploads a set of materials to the Digital Factory.
     """
 
-    UPLOAD_REQUEST_URL = f"{UltimakerCloudConstants.CuraDigitalFactoryURL}/materials/profile_upload"
+    UPLOAD_REQUEST_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/connect/v1/materials/upload"
 
     class Result(enum.IntEnum):
         SUCCCESS = 0
