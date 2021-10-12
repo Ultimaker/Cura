@@ -62,8 +62,8 @@ class UploadMaterialsJob(Job):
     def run(self):
         self._printer_metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(
             type = "machine",
-            connection_type = 3,  # Only cloud printers.
-            is_online = True,  # Only online printers. Otherwise the server gives an error.
+            connection_type = "3",  # Only cloud printers.
+            is_online = "True",  # Only online printers. Otherwise the server gives an error.
             host_guid = "*",  # Required metadata field. Otherwise we get a KeyError.
             um_cloud_cluster_id = "*"  # Required metadata field. Otherwise we get a KeyError.
         )
