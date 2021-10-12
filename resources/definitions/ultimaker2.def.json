@@ -91,8 +91,7 @@
             "value": false
         },
         "retraction_combing": {
-            "value": "no_outer_surfaces",
-            "default_value": "no_outer_surfaces"
+            "value": "no_outer_surfaces"
         },
         "skin_monotonic" : {
             "value": true
