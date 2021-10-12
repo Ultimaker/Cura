@@ -98,11 +98,6 @@ class UploadMaterialsJob(Job):
         )
 
     def onUploadRequestCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
-        if error is not None:
-            Logger.error(f"Could not request URL to upload material archive to: {error}")
-            self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
-            return
-
         response_data = HttpRequestManager.readJSON(reply)
         if response_data is None:
             Logger.error(f"Invalid response to material upload request. Could not parse JSON data.")
@@ -130,11 +125,6 @@ class UploadMaterialsJob(Job):
         )
 
     def onUploadCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
-        if error is not None:
-            Logger.error(f"Failed to upload material archive: {error}")
-            self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
-            return
-
         for container_stack in self._printer_metadata:
             cluster_id = container_stack["um_cloud_cluster_id"]
             printer_id = container_stack["host_guid"]
