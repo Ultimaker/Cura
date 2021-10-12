@@ -1,11 +1,12 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QUrl
-import os  # To delete the archive when we're done.
-import tempfile  # To create an archive before we upload it.
 import enum
 import functools
+import json  # To serialise metadata for API calls.
+import os  # To delete the archive when we're done.
+from PyQt5.QtCore import QUrl
+import tempfile  # To create an archive before we upload it.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find all printers to upload to.
@@ -77,9 +78,20 @@ class UploadMaterialsJob(Job):
         self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.processProgressChanged)
         file_size = os.path.getsize(self._archive_filename)
 
+        request_metadata = {
+            "data": {
+                "file_size": file_size,
+                "file_name": "cura.umm",  # File name can be anything as long as it's .umm. It's not used by anyone.
+                "content_type": "application/zip",  # This endpoint won't receive files of different MIME types.
+                "origin": "cura"  # Some identifier against hackers intercepting this upload request, apparently.
+            }
+        }
+        request_payload = json.dumps(request_metadata).encode("UTF-8")
+
         http = HttpRequestManager.getInstance()
-        http.get(
-            url = self.UPLOAD_REQUEST_URL + f"?file_size={file_size}&file_name=cura.umm",  # File name can be anything as long as it's .umm. It's not used by Cloud or firmware.
+        http.put(
+            url = self.UPLOAD_REQUEST_URL,
+            data = request_payload,
             callback = self.onUploadRequestCompleted,
             error_callback = self.onError,
             scope = self._scope
