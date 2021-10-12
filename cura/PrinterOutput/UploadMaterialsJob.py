@@ -9,11 +9,14 @@ import enum
 import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.UltimakerCloud import UltimakerCloudConstants  # To know where the API is.
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To know how to communicate with this server.
+from UM.i18n import i18nCatalog
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To call the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
+
+catalog = i18nCatalog("cura")
 
 from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
@@ -66,14 +69,17 @@ class UploadMaterialsJob(Job):
         response_data = HttpRequestManager.readJSON(reply)
         if response_data is None:
             Logger.error(f"Invalid response to material upload request. Could not parse JSON data.")
+            self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory appears to be corrupted.")))
             self.setResult(self.Result.FAILED)
             return
         if "upload_url" not in response_data:
             Logger.error(f"Invalid response to material upload request: Missing 'upload_url' field to upload archive to.")
+            self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
             self.setResult(self.Result.FAILED)
             return
         if "material_profile_id" not in response_data:
             Logger.error(f"Invalid response to material upload request: Missing 'material_profile_id' to communicate about the materials with the server.")
+            self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
             self.setResult(self.Result.FAILED)
             return
 
@@ -92,7 +98,7 @@ class UploadMaterialsJob(Job):
     def onUploadCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
         if error is not None:
             Logger.error(f"Failed to upload material archive: {error}")
-            self.setError(UploadMaterialsError(error))
+            self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
             self.setResult(self.Result.FAILED)
         else:
             self.setResult(self.Result.SUCCESS)
@@ -101,7 +107,7 @@ class UploadMaterialsJob(Job):
     def onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
         Logger.error(f"Failed to upload material archive: {error}")
         self.setResult(self.Result.FAILED)
-        self.setError(UploadMaterialsError(error))
+        self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
         self.uploadCompleted.emit(self.getResult(), self.getError())
 
 class UploadMaterialsError(Exception):
