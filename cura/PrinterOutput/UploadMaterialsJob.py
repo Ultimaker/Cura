@@ -63,7 +63,9 @@ class UploadMaterialsJob(Job):
     def onUploadRequestCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
         if error is not None:
             Logger.error(f"Could not request URL to upload material archive to: {error}")
+            self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
             self.setResult(self.Result.FAILED)
+            self.uploadCompleted.emit(self.getResult(), self.getError())
             return
 
         response_data = HttpRequestManager.readJSON(reply)
@@ -71,16 +73,19 @@ class UploadMaterialsJob(Job):
             Logger.error(f"Invalid response to material upload request. Could not parse JSON data.")
             self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory appears to be corrupted.")))
             self.setResult(self.Result.FAILED)
+            self.uploadCompleted.emit(self.getResult(), self.getError())
             return
         if "upload_url" not in response_data:
             Logger.error(f"Invalid response to material upload request: Missing 'upload_url' field to upload archive to.")
             self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
             self.setResult(self.Result.FAILED)
+            self.uploadCompleted.emit(self.getResult(), self.getError())
             return
         if "material_profile_id" not in response_data:
             Logger.error(f"Invalid response to material upload request: Missing 'material_profile_id' to communicate about the materials with the server.")
             self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
             self.setResult(self.Result.FAILED)
+            self.uploadCompleted.emit(self.getResult(), self.getError())
             return
 
         upload_url = response_data["upload_url"]
@@ -100,6 +105,10 @@ class UploadMaterialsJob(Job):
             Logger.error(f"Failed to upload material archive: {error}")
             self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
             self.setResult(self.Result.FAILED)
+            return
+
+
+
         else:
             self.setResult(self.Result.SUCCESS)
         self.uploadCompleted.emit(self.getResult(), self.getError())
