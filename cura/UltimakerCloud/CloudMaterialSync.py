@@ -7,7 +7,7 @@ from typing import Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
-from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob  # To export materials to the output printer.
+from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob, UploadMaterialsError  # To export materials to the output printer.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -155,9 +155,12 @@ class CloudMaterialSync(QObject):
         job.uploadCompleted.connect(self.exportUploadCompleted)
         job.start()
 
-    def exportUploadCompleted(self, job_result: UploadMaterialsJob.Result):
+    def exportUploadCompleted(self, job_result: UploadMaterialsJob.Result, job_error: Optional[Exception]):
         if job_result == UploadMaterialsJob.Result.FAILED:
-            self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Something went wrong when sending the materials to the printers."))
+            if isinstance(job_error, UploadMaterialsError):
+                self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Error sending materials to the Digital Factory:") + " " + str(job_error))
+            else:  # Could be "None"
+                self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Unknown error."))
             self._export_upload_status = "error"
         else:
             self._export_upload_status = "success"
