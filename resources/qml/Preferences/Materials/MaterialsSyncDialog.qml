@@ -235,9 +235,6 @@ Window
                 {
                     id: syncStatusLabel
 
-                    anchors.right: syncButton.left
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
                     visible: text !== ""
                     text: ""
                     color: UM.Theme.getColor("text")
