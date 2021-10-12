@@ -21,7 +21,7 @@ Window
     height: minimumHeight
     modality: Qt.ApplicationModal
 
-    property variant materialManagementModel
+    property variant syncModel
     property alias pageIndex: swipeView.currentIndex
     property alias syncStatusText: syncStatusLabel.text
 
@@ -195,21 +195,21 @@ Window
                         State
                         {
                             name: "idle"
-                            when: typeof materialManagementModel === "undefined" || materialManagementModel.exportUploadStatus == "idle" || materialManagementModel.exportUploadStatus == "uploading"
+                            when: typeof syncModel === "undefined" || syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles:") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL }
                         },
                         State
                         {
                             name: "error"
-                            when: typeof materialManagementModel !== "undefined" && materialManagementModel.exportUploadStatus == "error"
+                            when: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Something went wrong when sending the materials to the printers.") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.ERROR }
                         },
                         State
                         {
                             name: "success"
-                            when: typeof materialManagementModel !== "undefined" && materialManagementModel.exportUploadStatus == "success"
+                            when: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "Material profiles successfully synced with the following printers:") }
                             PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.POSITIVE }
                         }
@@ -399,14 +399,14 @@ Window
                         id: syncButton
                         anchors.right: parent.right
                         text: catalog.i18nc("@button", "Sync")
-                        onClicked: materialManagementModel.exportUpload()
+                        onClicked: syncModel.exportUpload()
                         visible:
                         {
-                            if(!materialManagementModel) //When the dialog is created, this is not set yet.
+                            if(!syncModel) //When the dialog is created, this is not set yet.
                             {
                                 return true;
                             }
-                            return materialManagementModel.exportUploadStatus != "uploading";
+                            return syncModel.exportUploadStatus != "uploading";
                         }
                     }
                     Item
@@ -610,7 +610,7 @@ Window
                         text: catalog.i18nc("@button", "Export material archive")
                         onClicked:
                         {
-                            exportUsbDialog.folder = materialManagementModel.getPreferredExportAllPath();
+                            exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
                             exportUsbDialog.open();
                         }
                     }
@@ -641,7 +641,7 @@ Window
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
         onAccepted:
         {
-            materialManagementModel.exportAll(fileUrl);
+            syncModel.exportAll(fileUrl);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
         }
     }

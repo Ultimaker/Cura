@@ -18,6 +18,7 @@ from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from PyQt5.QtNetwork import QNetworkReply
+    from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
 
 class UploadMaterialsJob(Job):
     """
@@ -30,8 +31,9 @@ class UploadMaterialsJob(Job):
         SUCCCESS = 0
         FAILED = 1
 
-    def __init__(self):
+    def __init__(self, material_sync: "CloudMaterialSync"):
         super().__init__()
+        self._material_sync = material_sync
         self._scope = JsonDecoratorScope(UltimakerCloudScope(cura.CuraApplication.CuraApplication.getInstance()))  # type: JsonDecoratorScope
 
     uploadCompleted = Signal()
@@ -40,7 +42,7 @@ class UploadMaterialsJob(Job):
         archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
         archive_file.close()
 
-        cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().exportAll(QUrl.fromLocalFile(archive_file.name))
+        self._material_sync.exportAll(QUrl.fromLocalFile(archive_file.name))
 
         http = HttpRequestManager.getInstance()
         http.get(
