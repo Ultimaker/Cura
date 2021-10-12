@@ -452,8 +452,29 @@ Window
                     {
                         id: syncButton
                         anchors.right: parent.right
-                        text: (typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error") ? catalog.i18nc("@button", "Try again") : catalog.i18nc("@button", "Sync")
-                        onClicked: syncModel.exportUpload()
+                        text:
+                        {
+                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error")
+                            {
+                                return catalog.i18nc("@button", "Try again");
+                            }
+                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success")
+                            {
+                                return catalog.i18nc("@button", "Done");
+                            }
+                            return catalog.i18nc("@button", "Sync");
+                        }
+                        onClicked:
+                        {
+                            if(typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "success")
+                            {
+                                materialsSyncDialog.close();
+                            }
+                            else
+                            {
+                                syncModel.exportUpload();
+                            }
+                        }
                         visible:
                         {
                             if(!syncModel) //When the dialog is created, this is not set yet.
