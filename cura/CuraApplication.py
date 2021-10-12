@@ -750,7 +750,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
         default_path = self.getPreferences().getValue("local_file/%s" % key)
-        return QUrl.fromLocalFile(default_path)
+        if os.path.exists(default_path):
+            return QUrl.fromLocalFile(default_path)
+        return QUrl()
 
     @pyqtSlot(str, str)
     def setDefaultPath(self, key, default_path):

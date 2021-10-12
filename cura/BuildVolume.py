@@ -1078,9 +1078,10 @@ class BuildVolume(SceneNode):
         # setting does *not* have a limit_to_extruder setting (which means that we can't ask the global extruder what
         # the value is.
         adhesion_extruder = self._global_container_stack.getProperty("adhesion_extruder_nr", "value")
-        skirt_brim_line_width = self._global_container_stack.extruderList[int(adhesion_extruder)].getProperty("skirt_brim_line_width", "value")
+        adhesion_stack = self._global_container_stack.extruderList[int(adhesion_extruder)]
+        skirt_brim_line_width = adhesion_stack.getProperty("skirt_brim_line_width", "value")
 
-        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
+        initial_layer_line_width_factor = adhesion_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
         if adhesion_type == "brim":
             brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
