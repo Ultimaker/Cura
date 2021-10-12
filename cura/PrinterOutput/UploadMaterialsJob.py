@@ -36,6 +36,7 @@ class UploadMaterialsJob(Job):
         self._material_sync = material_sync
         self._scope = JsonDecoratorScope(UltimakerCloudScope(cura.CuraApplication.CuraApplication.getInstance()))  # type: JsonDecoratorScope
         self._archive_filename = None  # type: Optional[str]
+        self._archive_remote_id = None  # type: Optional[str]  # ID that the server gives to this archive. Used to communicate about the archive to the server.
 
     uploadCompleted = Signal()
     uploadProgressChanged = Signal()
@@ -69,10 +70,15 @@ class UploadMaterialsJob(Job):
             return
         if "upload_url" not in response_data:
             Logger.error(f"Invalid response to material upload request: Missing 'upload_url' field to upload archive to.")
-            self.setResult(self.Result.Failed)
+            self.setResult(self.Result.FAILED)
+            return
+        if "material_profile_id" not in response_data:
+            Logger.error(f"Invalid response to material upload request: Missing 'material_profile_id' to communicate about the materials with the server.")
+            self.setResult(self.Result.FAILED)
             return
 
         upload_url = response_data["upload_url"]
+        self._archive_remote_id = response_data["material_profile_id"]
         file_data = open(self._archive_filename, "rb").read()
         http = HttpRequestManager.getInstance()
         http.put(
