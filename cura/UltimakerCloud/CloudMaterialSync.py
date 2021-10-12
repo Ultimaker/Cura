@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -13,6 +13,8 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 
+if TYPE_CHECKING:
+    from UM.Signal import Signal
 catalog = i18nCatalog("cura")
 
 class CloudMaterialSync(QObject):
@@ -25,6 +27,7 @@ class CloudMaterialSync(QObject):
         self.sync_all_dialog = None  # type: Optional[QObject]
         self._export_upload_status = "idle"
         self._checkIfNewMaterialsWereInstalled()
+        self._export_progress = 0
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
@@ -97,13 +100,14 @@ class CloudMaterialSync(QObject):
             return cura_application.getDefaultPath("dialog_material_path")
 
     @pyqtSlot(QUrl)
-    def exportAll(self, file_path: QUrl) -> None:
+    def exportAll(self, file_path: QUrl, notify_progress: Optional["Signal"] = None) -> None:
         """
         Export all materials to a certain file path.
         :param file_path: The path to export the materials to.
         """
         registry = CuraContainerRegistry.getInstance()
 
+        # Create empty archive.
         try:
             archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
         except OSError as e:
@@ -115,7 +119,12 @@ class CloudMaterialSync(QObject):
             )
             error_message.show()
             return
-        for metadata in registry.findInstanceContainersMetadata(type = "material"):
+
+        materials_metadata = registry.findInstanceContainersMetadata(type = "material")
+        for index, metadata in enumerate(materials_metadata):
+            if notify_progress is not None:
+                progress = index / len(materials_metadata)
+                notify_progress.emit(progress)
             if metadata["base_file"] != metadata["id"]:  # Only process base files.
                 continue
             if metadata["id"] == "empty_material":  # Don't export the empty material.
@@ -131,7 +140,7 @@ class CloudMaterialSync(QObject):
     exportUploadStatusChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = exportUploadStatusChanged)
-    def exportUploadStatus(self):
+    def exportUploadStatus(self) -> str:
         return self._export_upload_status
 
     @pyqtSlot()
@@ -142,6 +151,7 @@ class CloudMaterialSync(QObject):
         self._export_upload_status = "uploading"
         self.exportUploadStatusChanged.emit()
         job = UploadMaterialsJob(self)
+        job.uploadProgressChanged.connect(self.setExportProgress)
         job.uploadCompleted.connect(self.exportUploadCompleted)
         job.start()
 
@@ -152,3 +162,13 @@ class CloudMaterialSync(QObject):
         else:
             self._export_upload_status = "success"
         self.exportUploadStatusChanged.emit()
+
+    exportProgressChanged = pyqtSignal(float)
+
+    def setExportProgress(self, progress: float) -> None:
+        self._export_progress = progress
+        self.exportProgressChanged.emit(self._export_progress)
+
+    @pyqtProperty(float, fset = setExportProgress, notify = exportProgressChanged)
+    def exportProgress(self) -> float:
+        return self._export_progress

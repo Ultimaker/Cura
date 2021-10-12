@@ -37,12 +37,13 @@ class UploadMaterialsJob(Job):
         self._scope = JsonDecoratorScope(UltimakerCloudScope(cura.CuraApplication.CuraApplication.getInstance()))  # type: JsonDecoratorScope
 
     uploadCompleted = Signal()
+    uploadProgressChanged = Signal()
 
     def run(self):
         archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
         archive_file.close()
 
-        self._material_sync.exportAll(QUrl.fromLocalFile(archive_file.name))
+        self._material_sync.exportAll(QUrl.fromLocalFile(archive_file.name), notify_progress = self.uploadProgressChanged)
 
         http = HttpRequestManager.getInstance()
         http.get(
