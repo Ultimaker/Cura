@@ -18,7 +18,7 @@ from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To call the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 
-from typing import Optional, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from PyQt5.QtNetwork import QNetworkReply
     from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
@@ -44,14 +44,23 @@ class UploadMaterialsJob(Job):
         self._scope = JsonDecoratorScope(UltimakerCloudScope(cura.CuraApplication.CuraApplication.getInstance()))  # type: JsonDecoratorScope
         self._archive_filename = None  # type: Optional[str]
         self._archive_remote_id = None  # type: Optional[str]  # ID that the server gives to this archive. Used to communicate about the archive to the server.
-        self._num_synced_printers = 0
-        self._completed_printers = set()  # The printers that have successfully completed the upload.
-        self._failed_printers = set()
+        self._printer_sync_status = {}
+        self._printer_metadata = {}
 
     uploadCompleted = Signal()
     uploadProgressChanged = Signal()
 
     def run(self):
+        self._printer_metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(
+            type = "machine",
+            connection_type = 3,  # Only cloud printers.
+            is_online = True,  # Only online printers. Otherwise the server gives an error.
+            host_guid = "*",  # Required metadata field. Otherwise we get a KeyError.
+            um_cloud_cluster_id = "*"  # Required metadata field. Otherwise we get a KeyError.
+        )
+        for printer in self._printer_metadata:
+            self._printer_sync_status[printer["host_guid"]] = "uploading"
+
         archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
         archive_file.close()
         self._archive_filename = archive_file.name
@@ -115,15 +124,7 @@ class UploadMaterialsJob(Job):
             self.uploadCompleted.emit(self.getResult(), self.getError())
             return
 
-        online_cloud_printers = CuraContainerRegistry.getInstance().findContainerStacksMetadata(
-            type = "machine",
-            connection_type = 3,  # Only cloud printers.
-            is_online = True,  # Only online printers. Otherwise the server gives an error.
-            host_guid = "*",  # Required metadata field. Otherwise we get a KeyError.
-            um_cloud_cluster_id = "*"  # Required metadata field. Otherwise we get a KeyError.
-        )
-        self._num_synced_printers = len(online_cloud_printers)
-        for container_stack in online_cloud_printers:
+        for container_stack in self._printer_metadata:
             cluster_id = container_stack["um_cloud_cluster_id"]
             printer_id = container_stack["host_guid"]
 
@@ -138,12 +139,12 @@ class UploadMaterialsJob(Job):
     def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         if error is not None:
             Logger.error(f"Failed to confirm uploading material archive to printer {printer_id}: {error}")
-            self._failed_printers.add(printer_id)
+            self._printer_sync_status[printer_id] = "failed"
         else:
-            self._completed_printers.add(printer_id)
+            self._printer_sync_status[printer_id] = "success"
 
-        if len(self._completed_printers) + len(self._failed_printers) >= self._num_synced_printers:  # This is the last response to be processed.
-            if self._failed_printers:
+        if "uploading" not in self._printer_sync_status.values():  # This is the last response to be processed.
+            if "failed" in self._printer_sync_status.values():
                 self.setResult(self.Result.FAILED)
                 self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory to sync materials with some of the printers.")))
             else:
@@ -156,9 +157,12 @@ class UploadMaterialsJob(Job):
         self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
         self.uploadCompleted.emit(self.getResult(), self.getError())
 
+    def getPrinterSyncStatus(self) -> Dict[str, str]:
+        return self._printer_sync_status
+
 
 class UploadMaterialsError(Exception):
     """
-    Marker class to indicate something went wrong while uploading.
+    Class to indicate something went wrong while uploading.
     """
     pass
