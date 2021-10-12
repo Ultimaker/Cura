@@ -5,8 +5,10 @@ from PyQt5.QtCore import QUrl
 import os  # To delete the archive when we're done.
 import tempfile  # To create an archive before we upload it.
 import enum
+import functools
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find all printers to upload to.
 from cura.UltimakerCloud import UltimakerCloudConstants  # To know where the API is.
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To know how to communicate with this server.
 from UM.i18n import i18nCatalog
@@ -29,6 +31,7 @@ class UploadMaterialsJob(Job):
     """
 
     UPLOAD_REQUEST_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/connect/v1/materials/upload"
+    UPLOAD_CONFIRM_URL = UltimakerCloudConstants.CuraCloudAPIRoot + "/connect/v1/clusters/{cluster_id}/printers/{cluster_printer_id}/action/confirm_material_upload"
 
     class Result(enum.IntEnum):
         SUCCCESS = 0
@@ -105,12 +108,36 @@ class UploadMaterialsJob(Job):
             Logger.error(f"Failed to upload material archive: {error}")
             self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
             self.setResult(self.Result.FAILED)
+            self.uploadCompleted.emit(self.getResult(), self.getError())
             return
 
+        for container_stack in CuraContainerRegistry.getInstance().findContainerStacksMetadata(type = "machine"):
+            if container_stack.get("connection_type", -1) != 3:  # Not a cloud printer.
+                continue  # Only upload to cloud printers.
+            if not container_stack.get("is_online", False):  # Not online.
+                continue  # Only upload to online printers.
+            if "host_guid" not in container_stack or "um_cloud_cluster_id" not in container_stack:
+                continue  # Incomplete information about cloud printer.
+            cluster_id = container_stack["um_cloud_cluster_id"]
+            printer_id = container_stack["host_guid"]
 
+            http = HttpRequestManager.getInstance()
+            http.get(
+                url = self.UPLOAD_CONFIRM_URL.format(cluster_id = cluster_id, cluster_printer_id = printer_id),
+                callback = functools.partialmethod(self.onUploadConfirmed, printer_id),
+                error_callback = self.onError,
+                scope = self._scope
+            )
 
-        else:
-            self.setResult(self.Result.SUCCESS)
+    def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+        if error is not None:
+            Logger.error(f"Failed to confirm uploading material archive to printer {printer_id}: {error}")
+            self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
+            self.setResult(self.Result.FAILED)
+            self.uploadCompleted.emit(self.getResult(), self.getError())
+            return
+
+        self.setResult(self.Result.SUCCCESS)
         self.uploadCompleted.emit(self.getResult(), self.getError())
 
     def onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
