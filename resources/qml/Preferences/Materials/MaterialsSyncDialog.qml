@@ -231,14 +231,33 @@ Window
                         color: UM.Theme.getColor("text")
                     }
                 }
-                Label
+                Row
                 {
-                    id: syncStatusLabel
+                    Layout.preferredWidth: parent.width
+                    Layout.preferredHeight: contentRect.height
 
-                    visible: text !== ""
-                    text: ""
-                    color: UM.Theme.getColor("text")
-                    font: UM.Theme.getFont("medium")
+                    Label
+                    {
+                        id: syncStatusLabel
+
+                        width: parent.width - UM.Theme.getSize("default_margin").width - troubleshootingLink.width
+                        anchors.verticalCenter: troubleshootingLink.verticalCenter
+
+                        elide: Text.ElideRight
+                        visible: text !== ""
+                        text: ""
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("medium")
+                    }
+                    Cura.TertiaryButton
+                    {
+                        id: troubleshootingLink
+                        text: catalog.i18nc("@button", "Troubleshooting")
+                        visible: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
+                        iconSource: UM.Theme.getIcon("LinkExternal")
+                        Layout.preferredHeight: height
+                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
+                    }
                 }
                 ScrollView
                 {
@@ -415,13 +434,6 @@ Window
                             }
                         }
                     }
-                }
-                Cura.TertiaryButton
-                {
-                    text: catalog.i18nc("@button", "Troubleshooting")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    Layout.preferredHeight: height
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                 }
                 Item
                 {
