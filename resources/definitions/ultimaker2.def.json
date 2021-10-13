@@ -91,13 +91,13 @@
             "value": false
         },
         "retraction_combing": {
-            "value": "no_outer_surfaces"
+            "value": "'no_outer_surfaces'"
         },
         "skin_monotonic" : {
             "value": true
         },
         "top_bottom_pattern" : {
-            "value":  "zigzag"
+            "value":  "'zigzag'"
         }
     }
 }
