@@ -5,11 +5,11 @@ from PyQt5.QtNetwork import QNetworkRequest
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestScope import DefaultUserAgentScope
-from cura.API import Account
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
+    from cura.API.Account import Account
 
 
 class UltimakerCloudScope(DefaultUserAgentScope):

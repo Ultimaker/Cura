@@ -27,8 +27,8 @@ class CloudMaterialSync(QObject):
         self.sync_all_dialog = None  # type: Optional[QObject]
         self._export_upload_status = "idle"
         self._checkIfNewMaterialsWereInstalled()
-        self._export_progress = 0
-        self._printer_status = {}
+        self._export_progress = 0.0
+        self._printer_status = {}  # type: Dict[str, str]
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
         """
@@ -161,6 +161,8 @@ class CloudMaterialSync(QObject):
         self.setPrinterStatus(printers_status)
 
     def exportUploadCompleted(self, job_result: UploadMaterialsJob.Result, job_error: Optional[Exception]):
+        if not self.sync_all_dialog:  # Shouldn't get triggered before the dialog is open, but better to check anyway.
+            return
         if job_result == UploadMaterialsJob.Result.FAILED:
             if isinstance(job_error, UploadMaterialsError):
                 self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Error sending materials to the Digital Factory:") + " " + str(job_error))
