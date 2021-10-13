@@ -18,7 +18,7 @@ from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To call the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 
-from typing import Any, Dict, Optional, TYPE_CHECKING
+from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from PyQt5.QtNetwork import QNetworkReply
     from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
@@ -52,7 +52,7 @@ class UploadMaterialsJob(Job):
         self._archive_filename = None  # type: Optional[str]
         self._archive_remote_id = None  # type: Optional[str]  # ID that the server gives to this archive. Used to communicate about the archive to the server.
         self._printer_sync_status = {}  # type: Dict[str, str]
-        self._printer_metadata = {}  # type: Dict[str, Any]
+        self._printer_metadata = []  # type: List[Dict[str, Any]]
         self.processProgressChanged.connect(self._onProcessProgressChanged)
 
     uploadCompleted = Signal()
@@ -113,7 +113,7 @@ class UploadMaterialsJob(Job):
 
         upload_url = response_data["upload_url"]
         self._archive_remote_id = response_data["material_profile_id"]
-        with open(self._archive_filename, "rb") as f:
+        with open(cast(str, self._archive_filename), "rb") as f:
             file_data = f.read()
         http = HttpRequestManager.getInstance()
         http.put(
