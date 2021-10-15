@@ -1,0 +1,19 @@
+{
+    "version":              2,
+    "name":                 "Extruder 1",
+    "inherits":             "fdmextruder",
+    "metadata": {
+        "machine":          "bel_all_metal_delta",
+        "position":         "0"
+    },
+
+    "overrides": {
+        "extruder_nr":                   { "default_value": 0, "maximum_value": "3" },
+        "machine_nozzle_size":           { "default_value": 0.4 },
+        "material_diameter":             { "default_value": 1.75 },
+        "machine_nozzle_offset_x":       { "default_value": 0.0 },
+        "machine_nozzle_offset_y":       { "default_value": 0.0 },
+        "machine_extruder_start_code":   { "default_value": ";Metal Delta Extruder 1\nT0 ;then prime T0\nG90\nG92 E0\nG1 E5 F1000\nG92 E0\nG1 E20 F500\nG92 E0"},
+        "machine_extruder_end_code":     { "default_value": ";Metal Delta Extruder 1\n;Put your custom code here"}
+    }
+}
