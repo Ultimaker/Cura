@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Arjunpro 300 Duplication",
+    "name": "Arjun Pro 300 Duplication",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Arjunpro 300 Mirror",
+    "name": "Arjun Pro 300 Mirror",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
