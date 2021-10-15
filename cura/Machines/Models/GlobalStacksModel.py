@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
+from typing import Optional
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
@@ -39,7 +40,7 @@ class GlobalStacksModel(ListModel):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._update)
 
-        self._filter_connection_type = -1
+        self._filter_connection_type = None  # type: Optional[ConnectionType]
         self._filter_online_only = False
 
         # Listen to changes
@@ -49,7 +50,7 @@ class GlobalStacksModel(ListModel):
         self._updateDelayed()
 
     filterConnectionTypeChanged = pyqtSignal()
-    def setFilterConnectionType(self, new_filter: int) -> None:
+    def setFilterConnectionType(self, new_filter: Optional[ConnectionType]) -> None:
         self._filter_connection_type = new_filter
 
     @pyqtProperty(int, fset = setFilterConnectionType, notify = filterConnectionTypeChanged)
@@ -60,7 +61,7 @@ class GlobalStacksModel(ListModel):
         Only printers that match this connection type will be listed in the
         model.
         """
-        return self._filter_connection_type
+        return int(self._filter_connection_type)
 
     filterOnlineOnlyChanged = pyqtSignal()
     def setFilterOnlineOnly(self, new_filter: bool) -> None:
@@ -88,7 +89,7 @@ class GlobalStacksModel(ListModel):
 
         container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
         for container_stack in container_stacks:
-            if self._filter_connection_type != -1:  # We want to filter on connection types.
+            if self._filter_connection_type is not None:  # We want to filter on connection types.
                 if not any((connection_type == self._filter_connection_type for connection_type in container_stack.configuredConnectionTypes)):
                     continue  # No connection type on this printer matches the filter.
 
