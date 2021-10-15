@@ -121,13 +121,12 @@ class UploadMaterialsJob(Job):
             scope = self._scope
         )
 
-    def onUploadRequestCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+    def onUploadRequestCompleted(self, reply: "QNetworkReply") -> None:
         """
         Triggered when we successfully requested to upload a material archive.
 
         We then need to start uploading the material archive to the URL that the request answered with.
         :param reply: The reply from the server to our request to upload an archive.
-        :param error: An error code (Qt enum) if the request failed. Failure is handled by `onError` though.
         """
         response_data = HttpRequestManager.readJSON(reply)
         if response_data is None:
@@ -161,12 +160,11 @@ class UploadMaterialsJob(Job):
             scope = self._scope
         )
 
-    def onUploadCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+    def onUploadCompleted(self, reply: "QNetworkReply") -> None:
         """
         When we've successfully uploaded the archive to the cloud, we need to notify the API to start syncing that
         archive to every printer.
         :param reply: The reply from the cloud storage when the upload succeeded.
-        :param error: An error message if the upload failed. Errors are handled by the `onError` function though.
         """
         for container_stack in self._printer_metadata:
             cluster_id = container_stack["um_cloud_cluster_id"]
@@ -180,7 +178,7 @@ class UploadMaterialsJob(Job):
                 scope = self._scope
             )
 
-    def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+    def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         """
         Triggered when we've got a confirmation that the material is synced with the printer, or that syncing failed.
 
