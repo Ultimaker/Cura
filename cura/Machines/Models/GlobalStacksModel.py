@@ -61,7 +61,9 @@ class GlobalStacksModel(ListModel):
         Only printers that match this connection type will be listed in the
         model.
         """
-        return int(self._filter_connection_type)
+        if self._filter_connection_type is None:
+            return -1
+        return self._filter_connection_type.value
 
     filterOnlineOnlyChanged = pyqtSignal()
     def setFilterOnlineOnly(self, new_filter: bool) -> None:
