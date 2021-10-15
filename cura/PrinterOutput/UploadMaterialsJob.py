@@ -128,8 +128,13 @@ class UploadMaterialsJob(Job):
 
         upload_url = response_data["upload_url"]
         self._archive_remote_id = response_data["material_profile_id"]
-        with open(cast(str, self._archive_filename), "rb") as f:
-            file_data = f.read()
+        try:
+            with open(cast(str, self._archive_filename), "rb") as f:
+                file_data = f.read()
+        except OSError as e:
+            Logger.error(f"Failed to load archive back in for sending to cloud: {type(e)} - {e}")
+            self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to load the archive of materials to sync it with printers.")))
+            return
         http = HttpRequestManager.getInstance()
         http.put(
             url = upload_url,
