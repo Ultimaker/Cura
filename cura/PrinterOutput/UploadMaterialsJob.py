@@ -45,6 +45,11 @@ class UploadMaterialsJob(Job):
         SUCCESS = 0
         FAILED = 1
 
+    class PrinterStatus(enum.Enum):
+        UPLOADING = "uploading"
+        SUCCESS = "success"
+        FAILED = "failed"
+
     def __init__(self, material_sync: "CloudMaterialSync"):
         super().__init__()
         self._material_sync = material_sync
@@ -68,7 +73,7 @@ class UploadMaterialsJob(Job):
             um_cloud_cluster_id = "*"  # Required metadata field. Otherwise we get a KeyError.
         )
         for printer in self._printer_metadata:
-            self._printer_sync_status[printer["host_guid"]] = "uploading"
+            self._printer_sync_status[printer["host_guid"]] = self.PrinterStatus.UPLOADING.value
 
         archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
         archive_file.close()
@@ -140,15 +145,15 @@ class UploadMaterialsJob(Job):
     def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         if error is not None:
             Logger.error(f"Failed to confirm uploading material archive to printer {printer_id}: {error}")
-            self._printer_sync_status[printer_id] = "failed"
+            self._printer_sync_status[printer_id] = self.PrinterStatus.FAILED.value
         else:
-            self._printer_sync_status[printer_id] = "success"
+            self._printer_sync_status[printer_id] = self.PrinterStatus.SUCCESS.value
 
-        still_uploading = len([val for val in self._printer_sync_status.values() if val == "uploading"])
+        still_uploading = len([val for val in self._printer_sync_status.values() if val == self.PrinterStatus.UPLOADING.value])
         self.uploadProgressChanged.emit(0.8 + (len(self._printer_sync_status) - still_uploading) / len(self._printer_sync_status), self.getPrinterSyncStatus())
 
         if still_uploading == 0:  # This is the last response to be processed.
-            if "failed" in self._printer_sync_status.values():
+            if self.PrinterStatus.FAILED.value in self._printer_sync_status.values():
                 self.setResult(self.Result.FAILED)
                 self.setError(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory to sync materials with some of the printers.")))
             else:
@@ -173,7 +178,7 @@ class UploadMaterialsJob(Job):
         self.setResult(self.Result.FAILED)
         self.setError(error)
         for printer_id in self._printer_sync_status:
-            self._printer_sync_status[printer_id] = "failed"
+            self._printer_sync_status[printer_id] = self.PrinterStatus.FAILED.value
         self.uploadProgressChanged.emit(1.0, self.getPrinterSyncStatus())
         self.uploadCompleted.emit(self.getResult(), self.getError())
 
