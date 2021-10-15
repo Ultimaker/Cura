@@ -234,7 +234,7 @@ Window
                 Row
                 {
                     Layout.preferredWidth: parent.width
-                    Layout.preferredHeight: contentRect.height
+                    Layout.preferredHeight: childrenRect.height
 
                     Label
                     {
@@ -342,6 +342,7 @@ Window
 
                             UM.RecolorImage
                             {
+                                id: printerSpinner
                                 width: UM.Theme.getSize("section_icon").width
                                 height: width
                                 anchors.verticalCenter: parent.verticalCenter
@@ -354,7 +355,7 @@ Window
 
                                 RotationAnimator
                                 {
-                                    target: printerStatusSyncingIcon
+                                    target: printerSpinner
                                     from: 0
                                     to: 360
                                     duration: 1000
