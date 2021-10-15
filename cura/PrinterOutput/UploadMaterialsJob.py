@@ -36,6 +36,13 @@ class UploadMaterialsError(Exception):
 class UploadMaterialsJob(Job):
     """
     Job that uploads a set of materials to the Digital Factory.
+
+    The job has a number of stages:
+    - First, it generates an archive of all materials. This typically takes a lot of processing power during which the
+      GIL remains locked.
+    - Then it requests the API to upload an archive.
+    - Then it uploads the archive to the URL given by the first request.
+    - Then it tells the API that the archive can be distributed to the printers.
     """
 
     UPLOAD_REQUEST_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/connect/v1/materials/upload"
@@ -60,11 +67,14 @@ class UploadMaterialsJob(Job):
         self._printer_metadata = []  # type: List[Dict[str, Any]]
         self.processProgressChanged.connect(self._onProcessProgressChanged)
 
-    uploadCompleted = Signal()
-    processProgressChanged = Signal()
-    uploadProgressChanged = Signal()
+    uploadCompleted = Signal()  # Triggered when the job is really complete, including uploading to the cloud.
+    processProgressChanged = Signal()  # Triggered when we've made progress creating the archive.
+    uploadProgressChanged = Signal()  # Triggered when we've made progress with the complete job. This signal emits a progress fraction (0-1) as well as the status of every printer.
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Generates an archive of materials and starts uploading that archive to the cloud.
+        """
         self._printer_metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(
             type = "machine",
             connection_type = "3",  # Only cloud printers.
@@ -111,7 +121,14 @@ class UploadMaterialsJob(Job):
             scope = self._scope
         )
 
-    def onUploadRequestCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
+    def onUploadRequestCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+        """
+        Triggered when we successfully requested to upload a material archive.
+
+        We then need to start uploading the material archive to the URL that the request answered with.
+        :param reply: The reply from the server to our request to upload an archive.
+        :param error: An error code (Qt enum) if the request failed. Failure is handled by `onError` though.
+        """
         response_data = HttpRequestManager.readJSON(reply)
         if response_data is None:
             Logger.error(f"Invalid response to material upload request. Could not parse JSON data.")
@@ -144,7 +161,13 @@ class UploadMaterialsJob(Job):
             scope = self._scope
         )
 
-    def onUploadCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
+    def onUploadCompleted(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+        """
+        When we've successfully uploaded the archive to the cloud, we need to notify the API to start syncing that
+        archive to every printer.
+        :param reply: The reply from the cloud storage when the upload succeeded.
+        :param error: An error message if the upload failed. Errors are handled by the `onError` function though.
+        """
         for container_stack in self._printer_metadata:
             cluster_id = container_stack["um_cloud_cluster_id"]
             printer_id = container_stack["host_guid"]
@@ -158,6 +181,16 @@ class UploadMaterialsJob(Job):
             )
 
     def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+        """
+        Triggered when we've got a confirmation that the material is synced with the printer, or that syncing failed.
+
+        If syncing succeeded we mark this printer as having the status "success". If it failed we mark the printer as
+        "failed". If this is the last upload that needed to be completed, we complete the job with either a success
+        state (every printer successfully synced) or a failed state (any printer failed).
+        :param printer_id: The printer host_guid that we completed syncing with.
+        :param reply: The reply that the server gave to confirm.
+        :param error: If the request failed, this error gives an indication what happened.
+        """
         if error is not None:
             Logger.error(f"Failed to confirm uploading material archive to printer {printer_id}: {error}")
             self._printer_sync_status[printer_id] = self.PrinterStatus.FAILED.value
@@ -175,11 +208,24 @@ class UploadMaterialsJob(Job):
                 self.setResult(self.Result.SUCCESS)
             self.uploadCompleted.emit(self.getResult(), self.getError())
 
-    def onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]):
+    def onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+        """
+        Used as callback from HTTP requests when the request failed.
+
+        The given network error from the `HttpRequestManager` is logged, and the job is marked as failed.
+        :param reply: The main reply of the server. This reply will most likely not be valid.
+        :param error: The network error (Qt's enum) that occurred.
+        """
         Logger.error(f"Failed to upload material archive: {error}")
         self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to connect to Digital Factory.")))
 
     def getPrinterSyncStatus(self) -> Dict[str, str]:
+        """
+        For each printer, identified by host_guid, this gives the current status of uploading the material archive.
+
+        The possible states are given in the PrinterStatus enum.
+        :return: A dictionary with printer host_guids as keys, and their status as values.
+        """
         return self._printer_sync_status
 
     def failed(self, error: UploadMaterialsError) -> None:
@@ -198,4 +244,9 @@ class UploadMaterialsJob(Job):
         self.uploadCompleted.emit(self.getResult(), self.getError())
 
     def _onProcessProgressChanged(self, progress: float) -> None:
+        """
+        When we progress in the process of uploading materials, we not only signal the new progress (float from 0 to 1)
+        but we also signal the current status of every printer. These are emitted as the two parameters of the signal.
+        :param progress: The progress of this job, between 0 and 1.
+        """
         self.uploadProgressChanged.emit(progress * 0.8, self.getPrinterSyncStatus())  # The processing is 80% of the progress bar.
