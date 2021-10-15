@@ -75,12 +75,22 @@ class UploadMaterialsJob(Job):
         for printer in self._printer_metadata:
             self._printer_sync_status[printer["host_guid"]] = self.PrinterStatus.UPLOADING.value
 
-        archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
-        archive_file.close()
-        self._archive_filename = archive_file.name
+        try:
+            archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
+            archive_file.close()
+            self._archive_filename = archive_file.name
+            self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.processProgressChanged)
+        except OSError as e:
+            Logger.error(f"Failed to create archive of materials to sync with printers: {type(e)} - {e}")
+            self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to create archive of materials to sync with printers.")))
+            return
 
-        self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.processProgressChanged)
-        file_size = os.path.getsize(self._archive_filename)
+        try:
+            file_size = os.path.getsize(self._archive_filename)
+        except OSError as e:
+            Logger.error(f"Failed to load the archive of materials to sync it with printers: {type(e)} - {e}")
+            self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to load the archive of materials to sync it with printers.")))
+            return
 
         request_metadata = {
             "data": {
