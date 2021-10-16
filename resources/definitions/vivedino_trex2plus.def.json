@@ -19,7 +19,7 @@
 		]
 	},
         
-        "gantry_height": { "default_value": 30 }
+        "gantry_height": { "value": 30 }
 
     },
     "metadata": {
