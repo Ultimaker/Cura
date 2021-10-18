@@ -4,7 +4,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Ruben Dulek",
+        "author": "Ghostkeeper",
         "manufacturer": "Malyan",
         "machine_x3g_variant": "r1d",
         "file_formats": "application/x3g",
