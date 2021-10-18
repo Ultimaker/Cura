@@ -5354,7 +5354,7 @@ msgstr "Оптимизация перемещения заполнения"
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr "Если включено, заказ, в котором печатаются линии заполнения, оптимизируется для сокращения пройденного расстояния. Достигнутое сокращение времени перемещения в очень большой степени зависит от модели, разделяемой на слои, шаблона заполнения, плотности и т. п. Обратите внимание, что для некоторых моделей, имеющих множество небольших заполняемых областей, время разделения на слои может существенно возрасти."
+msgstr "Если включено, порядок, в котором печатаются линии заполнения, оптимизируется для сокращения пройденного расстояния. Достигнутое сокращение времени перемещения в очень большой степени зависит от модели, разделяемой на слои, шаблона заполнения, плотности и т. п. Обратите внимание, что для некоторых моделей, имеющих множество небольших заполняемых областей, время разделения на слои может существенно возрасти."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
