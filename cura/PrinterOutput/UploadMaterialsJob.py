@@ -105,7 +105,7 @@ class UploadMaterialsJob(Job):
         request_metadata = {
             "data": {
                 "file_size": file_size,
-                "file_name": "cura.umm",  # File name can be anything as long as it's .umm. It's not used by anyone.
+                "material_profile_name": "cura.umm",  # File name can be anything as long as it's .umm. It's not used by anyone.
                 "content_type": "application/zip",  # This endpoint won't receive files of different MIME types.
                 "origin": "cura"  # Some identifier against hackers intercepting this upload request, apparently.
             }
