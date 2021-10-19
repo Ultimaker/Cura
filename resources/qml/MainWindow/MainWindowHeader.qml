@@ -86,6 +86,7 @@ Item
     // Shortcut button to quick access the Toolbox
     Controls2.Button
     {
+        id: marketplaceButton
         text: catalog.i18nc("@action:button", "Marketplace")
         height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         onClicked: Cura.Actions.browsePackages.trigger()
@@ -106,7 +107,7 @@ Item
                 anchors.fill: parent
                 radius: parent.radius
                 color: UM.Theme.getColor("primary_text")
-                opacity: parent.hovered ? 0.2 : 0
+                opacity: marketplaceButton.hovered ? 0.2 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
             }
         }
@@ -114,7 +115,7 @@ Item
         contentItem: Label
         {
             id: label
-            text: parent.text
+            text: marketplaceButton.text
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("primary_text")
             width: contentWidth
@@ -124,7 +125,7 @@ Item
 
         anchors
         {
-            right: marketplaceButton.left
+            right: applicationSwitcher.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
@@ -147,37 +148,6 @@ Item
                 return itemCount > 9 ? "9+" : itemCount
             }
         }
-    }
-
-    Controls2.Button
-    {
-        id: marketplaceButton
-        width: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-        height: width
-        anchors
-        {
-            verticalCenter: parent.verticalCenter
-            right: applicationSwitcher.left
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-
-        background: UM.RecolorImage
-        {
-            anchors.fill: parent
-            color: UM.Theme.getColor("primary_text")
-            source: UM.Theme.getIcon("Shop")
-
-            Rectangle
-            {
-                anchors.fill: parent
-                radius: UM.Theme.getSize("action_button_radius").width
-                color: UM.Theme.getColor("primary_text")
-                opacity: marketplaceButton.hovered ? 0.2 : 0
-                Behavior on opacity { NumberAnimation { duration: 100; } }
-            }
-        }
-
-        onClicked: Cura.Actions.browsePackages.trigger()
     }
 
     ApplicationSwitcher
