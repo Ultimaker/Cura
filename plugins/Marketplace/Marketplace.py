@@ -5,7 +5,9 @@ import os.path
 from PyQt5.QtCore import pyqtSlot
 from typing import Optional, TYPE_CHECKING
 
+from cura.ApplicationMetadata import CuraSDKVersion
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
+from cura.UltimakerCloud import UltimakerCloudConstants
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
@@ -17,6 +19,9 @@ class Marketplace(Extension):
     """
     The main managing object for the Marketplace plug-in.
     """
+
+    ROOT_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}"  # Root of all Marketplace API requests.
+    PACKAGES_URL = f"{ROOT_URL}/packages"  # URL to use for requesting the list of packages.
 
     def __init__(self):
         super().__init__()
