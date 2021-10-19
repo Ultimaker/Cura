@@ -202,7 +202,7 @@ Item
         target: Cura.Actions.browsePackages
         function onTriggered()
         {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
+            curaExtensions.callExtensionMethod("Marketplace", "show")
         }
     }
 
