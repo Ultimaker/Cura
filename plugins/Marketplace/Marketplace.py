@@ -39,3 +39,4 @@ class Marketplace(Extension):
             Logger.error(f"Failed to load QML for Marketplace window.")
             return
         self._window.show()
+        self._window.requestActivate()  # Bring window into focus, if it was already open in the background.
