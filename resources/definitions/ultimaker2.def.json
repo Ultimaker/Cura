@@ -90,17 +90,17 @@
         "infill_before_walls": {
             "value": "False"
         },
-        "top_bottom_pattern": {
-            "value": "zigzag"
-        },
-        "roofing_layer_count": {
-            "value": "1"
-        },
-        "roofing_monotonic": {
-            "value": "True"
-        },
         "speed_equalize_flow_width_factor": {
             "value": "0.5"
+        },
+        "retraction_combing": {
+            "value": "'no_outer_surfaces'"
+        },
+        "skin_monotonic" : {
+            "value": true
+        },
+        "top_bottom_pattern" : {
+            "value":  "'zigzag'"
         }
     }
 }

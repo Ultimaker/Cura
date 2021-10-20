@@ -428,6 +428,7 @@ class CuraEngineBackend(QObject, Backend):
                                                             "Unable to slice with the current settings. The following settings have errors: {0}").format(", ".join(error_labels)),
                                               title = catalog.i18nc("@info:title", "Unable to slice"),
                                               message_type = Message.MessageType.WARNING)
+                Logger.warning(f"Unable to slice with the current settings. The following settings have errors: {', '.join(error_labels)}")
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -454,6 +455,7 @@ class CuraEngineBackend(QObject, Backend):
                                                         "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
                                           title = catalog.i18nc("@info:title", "Unable to slice"),
                                           message_type = Message.MessageType.WARNING)
+            Logger.warning(f"Unable to slice due to per-object settings. The following settings have errors on one or more models: {', '.join(errors.values())}")
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)

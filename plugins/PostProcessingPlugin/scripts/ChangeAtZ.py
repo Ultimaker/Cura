@@ -9,7 +9,7 @@
 # Modified by Ricardo Gomez, ricardoga@otulook.com, to add Bed Temperature and make it work with Cura_13.06.04+
 # Modified by Stefan Heule, Dim3nsioneer@gmx.ch since V3.0 (see changelog below)
 # Modified by Jaime van Kessel (Ultimaker), j.vankessel@ultimaker.com to make it work for 15.10 / 2.x
-# Modified by Ruben Dulek (Ultimaker), r.dulek@ultimaker.com, to debug.
+# Modified by Ghostkeeper (Ultimaker), rubend@tutanota.com, to debug.
 # Modified by Wes Hanney, https://github.com/novamxd, Retract Length + Speed, Clean up
 
 # history / changelog:

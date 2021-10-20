@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.11\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2021-08-11 09:58+0000\n"
 "PO-Revision-Date: 2021-04-16 14:58+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
@@ -5354,7 +5354,7 @@ msgstr "Оптимизация перемещения заполнения"
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
-msgstr "Если включено, заказ, в котором печатаются линии заполнения, оптимизируется для сокращения пройденного расстояния. Достигнутое сокращение времени перемещения в очень большой степени зависит от модели, разделяемой на слои, шаблона заполнения, плотности и т. п. Обратите внимание, что для некоторых моделей, имеющих множество небольших заполняемых областей, время разделения на слои может существенно возрасти."
+msgstr "Если включено, порядок, в котором печатаются линии заполнения, оптимизируется для сокращения пройденного расстояния. Достигнутое сокращение времени перемещения в очень большой степени зависит от модели, разделяемой на слои, шаблона заполнения, плотности и т. п. Обратите внимание, что для некоторых моделей, имеющих множество небольших заполняемых областей, время разделения на слои может существенно возрасти."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_dependent_temperature label"
