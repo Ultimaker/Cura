@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 18,
+        "setting_version": 19,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1943,7 +1943,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else 1))))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else (1.6 if infill_pattern == 'lightning' else 1)))))",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -1952,7 +1952,7 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction.",
+                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model.",
                     "type": "enum",
                     "options":
                     {
@@ -1968,7 +1968,8 @@
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
                         "cross_3d": "Cross 3D",
-                        "gyroid": "Gyroid"
+                        "gyroid": "Gyroid",
+                        "lightning": "Lightning"
                     },
                     "default_value": "grid",
                     "enabled": "infill_line_distance > 0",
@@ -1994,7 +1995,7 @@
                     "type": "bool",
                     "default_value": true,
                     "value": "(infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0) and infill_wall_line_count > 0",
-                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1",
+                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2004,7 +2005,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern != 'concentric' and infill_sparse_density > 0",
+                    "enabled": "infill_pattern != 'lightning' and infill_pattern != 'concentric' and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2015,7 +2016,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2026,7 +2027,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2037,7 +2038,7 @@
                     "type": "bool",
                     "default_value": false,
                     "warning_value": "True if infill_pattern not in ('grid', 'triangles', 'trihexagon', 'cubic', 'cubicsubdiv', 'tetrahedral', 'quarter_cubic') else None",
-                    "enabled": "not ((infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
+                    "enabled": "not (infill_pattern == 'lightning' or (infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2146,7 +2147,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "1 if (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or support_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2))",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
+                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_pattern != 'cubicsubdiv'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2159,7 +2160,7 @@
                     "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
+                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern != 'cubicsubdiv'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2189,7 +2190,7 @@
                     "description": "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2203,7 +2204,7 @@
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
                     "default_value": 40,
-                    "enabled": "infill_sparse_density > 0 and infill_support_enabled",
+                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_support_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2236,6 +2237,72 @@
                               "enabled": "infill_sparse_density > 0",
                               "settable_per_mesh": true
                          }
+                    }
+                },
+                "lightning_infill_support_angle":
+                {
+                    "label": "Lightning Infill Support Angle",
+                    "description": "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "75",
+                    "default_value": 40,
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_pattern == 'lightning'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "lightning_infill_overhang_angle":
+                        {
+                            "label": "Lightning Infill Overhang Angle",
+                            "description": "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness.",
+                            "unit": "°",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "lightning_infill_support_angle"
+                        },
+                        "lightning_infill_prune_angle":
+                        {
+                            "label": "Lightning Infill Prune Angle",
+                            "description": "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness.",
+                            "unit": "°",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "lightning_infill_support_angle"
+                        },
+                        "lightning_infill_straightening_angle":
+                        {
+                            "label": "Lightning Infill Straightening Angle",
+                            "description": "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness.",
+                            "unit": "°",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "lightning_infill_support_angle"
+                        }
                     }
                 }
             }
@@ -3901,11 +3968,13 @@
                     {
                         "off": "Off",
                         "all": "All",
+                        "no_outer_surfaces": "Not on Outer Surface",
                         "noskin": "Not in Skin",
                         "infill": "Within Infill"
                     },
                     "default_value": "all",
-                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off'))",
+                    "value": "'no_outer_surfaces' if (any(extruderValues('skin_monotonic')) or any(extruderValues('ironing_enabled')) or (any(extruderValues('roofing_monotonic')) and any(extruderValues('roofing_layer_count')))) else 'all'",
+                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else ('no_outer_surfaces' if 'no_outer_surfaces' in extruderValues('retraction_combing') else 'off')))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },

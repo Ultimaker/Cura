@@ -64,7 +64,7 @@
         "retraction_hop":                    { "default_value": 1.0 },
         "retraction_amount" :                { "default_value": 3.5 },
         "retraction_speed" :                 { "default_value": 40 },
-        "retraction_combing" :               { "default_value": "noskin" },
+        "retraction_combing" :               { "value": "'noskin'" },
         "travel_avoid_distance":             { "value": "1" },
         "travel_avoid_supports":             { "value": "True" },
         "retraction_hop_only_when_collides": { "value": "1" },

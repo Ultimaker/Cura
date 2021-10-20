@@ -1,12 +1,12 @@
 # Cura
 # Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2020.
+# Ultimaker <plugins@ultimaker.com>, 2020.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.11\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2021-08-11 09:58+0000\n"
 "PO-Revision-Date: 2021-04-04 19:37+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
