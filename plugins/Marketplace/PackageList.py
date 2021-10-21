@@ -2,8 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt
-
+from typing import List, TYPE_CHECKING
 from UM.Qt.ListModel import ListModel
+
+from .PackageModel import PackageModel  # This list is a list of PackageModels.
+
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
 
 class PackageList(ListModel):
     """
@@ -13,9 +18,12 @@ class PackageList(ListModel):
     paginated.
     """
 
-    PackageIDRole = Qt.UserRole + 1
-    DisplayNameRole = Qt.UserRole + 2
-    # TODO: Add more roles here when we need to display more information about packages.
+    PackageRole = Qt.UserRole + 1
+
+    def __init__(self, parent: "QObject" = None):
+        super().__init__(parent)
+
+        self._packages: List[PackageModel] = []
 
     def _update(self) -> None:
         # TODO: Get list of packages from Marketplace class.
