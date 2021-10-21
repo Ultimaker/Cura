@@ -5,7 +5,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Cura 1.7 as Cura
 
-Item
+Column
 {
     Repeater
     {

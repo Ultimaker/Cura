@@ -31,9 +31,10 @@ class PackageList(ListModel):
     def __init__(self, parent: "QObject" = None):
         super().__init__(parent)
 
-        self._packages: List[PackageModel] = []
         self._is_loading = True
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+
+        self.addRoleName(self.PackageRole, "package")
 
         self.requestFirst()
 
@@ -82,8 +83,7 @@ class PackageList(ListModel):
 
         for package_data in response_data["data"]:
             package = PackageModel(package_data, parent = self)
-            self._packages.append(package)
-        self._update()
+            self.appendItem({"package": package})  # Add it to this list model.
 
     def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         """
@@ -92,7 +92,3 @@ class PackageList(ListModel):
         :param error: The error status of the request.
         """
         pass  # TODO: Handle errors.
-
-    def _update(self) -> None:
-        # TODO: Get list of packages from Marketplace class.
-        pass
