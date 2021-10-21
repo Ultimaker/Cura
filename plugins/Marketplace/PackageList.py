@@ -39,6 +39,7 @@ class PackageList(ListModel):
 
         self.request()
 
+    @pyqtSlot()
     def request(self) -> None:
         """
         Make a request for the first paginated page of packages.

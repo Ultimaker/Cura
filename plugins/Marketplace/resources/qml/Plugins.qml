@@ -50,6 +50,7 @@ ScrollView
             height: UM.Theme.getSize("card").height
 
             enabled: pluginList.hasMore && !pluginList.isLoading
+            onClicked: pluginList.request()  //Load next page in plug-in list.
 
             background: Rectangle
             {
