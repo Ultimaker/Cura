@@ -18,7 +18,10 @@ ScrollView
 
         Repeater
         {
-            model: Cura.PackageList{}
+            model: Cura.PackageList
+            {
+                id: pluginList
+            }
 
             delegate: Rectangle
             {
@@ -46,6 +49,8 @@ ScrollView
             width: parent.width
             height: UM.Theme.getSize("card").height
 
+            enabled: pluginList.hasMore && !pluginList.isLoading
+
             background: Rectangle
             {
                 anchors.fill: parent
@@ -61,19 +66,20 @@ ScrollView
 
                 UM.RecolorImage
                 {
-                    width: UM.Theme.getSize("small_button_icon").width
+                    width: visible ? UM.Theme.getSize("small_button_icon").width : 0
                     height: UM.Theme.getSize("small_button_icon").height
                     anchors.verticalCenter: loadMoreLabel.verticalCenter
 
+                    visible: pluginList.hasMore
                     source: UM.Theme.getIcon("ArrowDown")
-                    color: UM.Theme.getColor("primary")
+                    color: UM.Theme.getColor(loadMoreButton.enabled ? "secondary_button_text" : "action_button_disabled_text")
                 }
                 Label
                 {
                     id: loadMoreLabel
-                    text: catalog.i18nc("@button", "Load More")
+                    text: pluginList.hasMore ? catalog.i18nc("@button", "Load More") : catalog.i18nc("@button", "No more results to load")
                     font: UM.Theme.getFont("medium_bold")
-                    color: UM.Theme.getColor("primary")
+                    color: UM.Theme.getColor(loadMoreButton.enabled ? "secondary_button_text" : "action_button_disabled_text")
                 }
             }
         }
