@@ -40,5 +40,42 @@ ScrollView
                 }
             }
         }
+        Button
+        {
+            id: loadMoreButton
+            width: parent.width
+            height: UM.Theme.getSize("card").height
+
+            background: Rectangle
+            {
+                anchors.fill: parent
+                radius: UM.Theme.getSize("default_radius").width
+                color: UM.Theme.getColor("main_background")
+            }
+
+            Row
+            {
+                anchors.centerIn: parent
+
+                spacing: UM.Theme.getSize("thin_margin").width
+
+                UM.RecolorImage
+                {
+                    width: UM.Theme.getSize("small_button_icon").width
+                    height: UM.Theme.getSize("small_button_icon").height
+                    anchors.verticalCenter: loadMoreLabel.verticalCenter
+
+                    source: UM.Theme.getIcon("ArrowDown")
+                    color: UM.Theme.getColor("primary")
+                }
+                Label
+                {
+                    id: loadMoreLabel
+                    text: catalog.i18nc("@button", "Load More")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("primary")
+                }
+            }
+        }
     }
 }
