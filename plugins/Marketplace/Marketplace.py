@@ -3,6 +3,7 @@
 
 import os.path
 from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtQml import qmlRegisterType
 from typing import Optional, TYPE_CHECKING
 
 from cura.ApplicationMetadata import CuraSDKVersion
@@ -11,6 +12,8 @@ from cura.UltimakerCloud import UltimakerCloudConstants
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
+
+from .PackageList import PackageList  # To register this type with QML.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -26,6 +29,8 @@ class Marketplace(Extension):
     def __init__(self):
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
+
+        qmlRegisterType(PackageList, "Cura", 1, 7, "PackageList")
 
     @pyqtSlot()
     def show(self) -> None:

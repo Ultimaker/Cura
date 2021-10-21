@@ -9,7 +9,7 @@ from UM.Qt.ListModel import ListModel
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
 
-from .Marketplace import PACKAGES_URL  # To get the list of packages.
+from . import Marketplace   # To get the list of packages. Imported this way to prevent circular imports.
 from .PackageModel import PackageModel  # This list is a list of PackageModels.
 
 if TYPE_CHECKING:
@@ -47,7 +47,7 @@ class PackageList(ListModel):
 
         http = HttpRequestManager.getInstance()
         http.get(
-            PACKAGES_URL,
+            Marketplace.PACKAGES_URL,
             scope = self._scope,
             callback = self._parseResponse,
             error_callback = self._onError
