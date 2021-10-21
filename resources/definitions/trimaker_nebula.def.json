@@ -182,7 +182,7 @@
         "support_enable": {"default_value": true},
         "support_type": {"default_value": "everywhere"},
         "support_angle": {"default_value": 50},
-        "support_pattern": {"default_value": "zigzag"},
+        "support_pattern": {"default_value": "'zigzag'"},
         "support_z_distance": {"default_value": 0.17},
         "support_xy_distance": {"default_value": 0.7},
         "adhesion_type": {"default_value": "skirt"},

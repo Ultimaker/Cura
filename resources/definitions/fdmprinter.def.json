@@ -1653,7 +1653,7 @@
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
                     },
-                    "default_value": "zigzag",
+                    "default_value": "'zigzag'",
                     "enabled": "ironing_enabled",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
@@ -4483,7 +4483,7 @@
                         "cross": "Cross",
                         "gyroid": "Gyroid"
                     },
-                    "default_value": "zigzag",
+                    "default_value": "'zigzag'",
                     "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
