@@ -99,6 +99,7 @@ class PackageList(ListModel):
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
         self.hasMoreChanged.emit()
+        self.setIsLoading(False)
 
     def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         """
