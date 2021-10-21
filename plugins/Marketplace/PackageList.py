@@ -71,6 +71,17 @@ class PackageList(ListModel):
         """
         return self._is_loading
 
+    hasMoreChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = hasMoreChanged)
+    def hasMore(self) -> bool:
+        """
+        Returns whether there are more packages to load.
+        :return: ``True`` if there are more packages to load, or ``False`` if we've reached the last page of the
+        pagination.
+        """
+        return self._request_url != ""
+
     def _parseResponse(self, reply: "QNetworkReply") -> None:
         """
         Parse the response from the package list API request.
@@ -87,6 +98,7 @@ class PackageList(ListModel):
             self.appendItem({"package": package})  # Add it to this list model.
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
+        self.hasMoreChanged.emit()
 
     def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         """
