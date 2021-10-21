@@ -99,7 +99,14 @@ class AuthorizationService:
             # If no auth data exists, we should always log in again.
             Logger.log("d", "There was no auth data or access token")
             return None
-        user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
+
+        try:
+            user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
+        except AttributeError:
+            # THis might seem a bit double, but we get crash reports about this (CURA-2N2 in sentry)
+            Logger.log("d", "There was no auth data or access token")
+            return None
+
         if user_data:
             # If the profile was found, we return it immediately.
             return user_data

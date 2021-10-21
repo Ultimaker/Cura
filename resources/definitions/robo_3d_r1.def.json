@@ -36,7 +36,7 @@
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 40 },
         "machine_extruder_count": { "default_value": 1 },
-        "retraction_combing": { "default_value": "off" },
+        "retraction_combing": { "value": "'off'" },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "machine_height": { "default_value": 210 },

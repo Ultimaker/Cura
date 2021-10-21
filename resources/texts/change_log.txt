@@ -98,7 +98,7 @@ When double clicking on a file in the open project dialog in Digital Factory it 
 - Fixed a bug when the seam was not placed in sharpest corner.
 - Fixed the gantry height for S-line printers. 
 - Fixed a bug where a model is partially below build plate if center selected model is used.
-- Fixed a bug where a tootip arrow appeared when the "Manage printers" button is hovered.
+- Fixed a bug where a tooltip arrow appeared when the "Manage printers" button is hovered.
 - Fixed a bug where assemblies were not arranged in the center of the build plate. 
 
 * Printer definitions, profiles and materials.

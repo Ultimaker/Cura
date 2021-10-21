@@ -129,7 +129,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 17
+    SettingVersion = 19
 
     Created = False
 
@@ -320,7 +320,7 @@ class CuraApplication(QtApplication):
         super().initialize()
 
         self._preferences.addPreference("cura/single_instance", False)
-        self._use_single_instance = self._preferences.getValue("cura/single_instance")
+        self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
 
         self.__sendCommandToSingleInstance()
         self._initializeSettingDefinitions()
@@ -750,7 +750,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
         default_path = self.getPreferences().getValue("local_file/%s" % key)
-        return QUrl.fromLocalFile(default_path)
+        if os.path.exists(default_path):
+            return QUrl.fromLocalFile(default_path)
+        return QUrl()
 
     @pyqtSlot(str, str)
     def setDefaultPath(self, key, default_path):

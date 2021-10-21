@@ -26,9 +26,9 @@
         "machine_depth": {
             "default_value": 220
         },
-	"machine_heated_bed": { 
-	    "default_value": true 
-	},
+        "machine_heated_bed": {
+            "default_value": true
+        },
         "machine_height": {
             "default_value": 260
         },
