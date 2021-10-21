@@ -40,18 +40,6 @@
         {
             "value": false,
             "enabled": false
-        },
-        "fill_outline_gaps": {
-            "value": "True"
-        },
-        "min_feature_size": {
-            "value": "wall_line_width_0 / 4"
-        },
-        "min_bead_width": {
-            "value": "wall_line_width_0 / 2"
-        },
-        "meshfix_maximum_extrusion_area_deviation": {
-            "value": "50000"
         }
     }
 }
