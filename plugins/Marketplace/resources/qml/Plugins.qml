@@ -67,18 +67,41 @@ ScrollView
 
                 UM.RecolorImage
                 {
+                    id: loadMoreIcon
                     width: visible ? UM.Theme.getSize("small_button_icon").width : 0
                     height: UM.Theme.getSize("small_button_icon").height
                     anchors.verticalCenter: loadMoreLabel.verticalCenter
 
-                    visible: pluginList.hasMore
-                    source: UM.Theme.getIcon("ArrowDown")
+                    visible: pluginList.hasMore || pluginList.isLoading
+                    source: UM.Theme.getIcon(pluginList.isLoading ? "ArrowDoubleCircleRight" : "ArrowDown")
                     color: UM.Theme.getColor(loadMoreButton.enabled ? "secondary_button_text" : "action_button_disabled_text")
+
+                    RotationAnimator
+                    {
+                        target: loadMoreIcon
+                        from: 0
+                        to: 360
+                        duration: 1000
+                        loops: Animation.Infinite
+                        running: pluginList.isLoading
+                        alwaysRunToEnd: true
+                    }
                 }
                 Label
                 {
                     id: loadMoreLabel
-                    text: pluginList.hasMore ? catalog.i18nc("@button", "Load More") : catalog.i18nc("@button", "No more results to load")
+                    text:
+                    {
+                        if(pluginList.isLoading)
+                        {
+                            return catalog.i18nc("@button", "Loading");
+                        }
+                        if(pluginList.hasMore)
+                        {
+                            return catalog.i18nc("@button", "Load more");
+                        }
+                        return catalog.i18nc("@button", "No more results to load");
+                    }
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor(loadMoreButton.enabled ? "secondary_button_text" : "action_button_disabled_text")
                 }
