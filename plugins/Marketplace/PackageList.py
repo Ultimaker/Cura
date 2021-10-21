@@ -76,7 +76,14 @@ class PackageList(ListModel):
         This converts that response into PackageModels, and triggers the ListModel to update.
         :param reply: A reply containing information about a number of packages.
         """
-        pass  # TODO: Parse reply dictionary.
+        response_data = HttpRequestManager.readJSON(reply)
+        if "data" not in response_data:
+            return  # TODO: Handle invalid response.
+
+        for package_data in response_data["data"]:
+            package = PackageModel(package_data, parent = self)
+            self._packages.append(package)
+        self._update()
 
     def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         """

@@ -2,19 +2,29 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, QObject
+from typing import Any, Dict
+
+from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
+
+catalog = i18nCatalog("cura")
 
 class PackageModel(QObject):
     """
     Represents a package, containing all the relevant information to be displayed about a package.
 
     Effectively this behaves like a glorified named tuple, but as a QObject so that its properties can be obtained from
-    QML.
+    QML. The model can also be constructed directly from a response received by the API.
     """
 
-    def __init__(self, package_id: str, display_name: str, parent: QObject = None):
+    def __init__(self, package_data: Dict[str, Any], parent: QObject = None):
+        """
+        Constructs a new model for a single package.
+        :param package_data: The data received from the Marketplace API about the package to create.
+        :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
+        """
         super().__init__(parent)
-        self._package_id = package_id
-        self._display_name = display_name
+        self._package_id = package_data.get("package_id", "UnknownPackageId")
+        self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
 
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
