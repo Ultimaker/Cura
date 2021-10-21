@@ -1,14 +1,20 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import List, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 from UM.Qt.ListModel import ListModel
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
 
+from .Marketplace import PACKAGES_URL  # To get the list of packages.
 from .PackageModel import PackageModel  # This list is a list of PackageModels.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+    from PyQt5.QtNetwork import QNetworkReply
 
 class PackageList(ListModel):
     """
@@ -26,7 +32,8 @@ class PackageList(ListModel):
         super().__init__(parent)
 
         self._packages: List[PackageModel] = []
-        self.setIsLoading(True)
+        self._is_loading = True
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
         self.requestFirst()
 
@@ -37,6 +44,14 @@ class PackageList(ListModel):
         When the request is done, the list will get updated with the new package models.
         """
         self.setIsLoading(True)
+
+        http = HttpRequestManager.getInstance()
+        http.get(
+            PACKAGES_URL,
+            scope = self._scope,
+            callback = self._parseResponse,
+            error_callback = self._onError
+        )
 
     isLoadingChanged = pyqtSignal()
 
@@ -53,6 +68,23 @@ class PackageList(ListModel):
         :return: ``True`` if the list is downloading, or ``False`` if not downloading.
         """
         return self._is_loading
+
+    def _parseResponse(self, reply: "QNetworkReply") -> None:
+        """
+        Parse the response from the package list API request.
+
+        This converts that response into PackageModels, and triggers the ListModel to update.
+        :param reply: A reply containing information about a number of packages.
+        """
+        pass  # TODO: Parse reply dictionary.
+
+    def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+        """
+        Handles networking and server errors when requesting the list of packages.
+        :param reply: The reply with packages. This will most likely be incomplete and should be ignored.
+        :param error: The error status of the request.
+        """
+        pass  # TODO: Handle errors.
 
     def _update(self) -> None:
         # TODO: Get list of packages from Marketplace class.
