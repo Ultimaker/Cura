@@ -173,6 +173,7 @@
     "colors": {
 
         "main_background": [255, 255, 255, 255],
+        "detail_background": [243, 243, 243, 255],
         "wide_lining": [245, 245, 245, 255],
         "thick_lining": [180, 180, 180, 255],
         "lining": [192, 193, 194, 255],

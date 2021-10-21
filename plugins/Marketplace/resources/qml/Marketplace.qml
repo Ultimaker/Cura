@@ -29,25 +29,43 @@ Window
         ColumnLayout
         {
             anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_margin").width
 
             spacing: UM.Theme.getSize("default_margin").height
 
-            Label //Page title.
+            Item //Page title.
             {
                 Layout.preferredWidth: parent.width
-                Layout.preferredHeight: contentHeight
+                Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
 
-                font: UM.Theme.getFont("large")
-                color: UM.Theme.getColor("text")
-                text: catalog.i18nc("@header", "Install Plugins")
+                Label
+                {
+                    anchors
+                    {
+                        left: parent.left
+                        leftMargin: UM.Theme.getSize("default_margin").width
+                        right: parent.right
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                        bottom: parent.bottom
+                    }
+
+                    font: UM.Theme.getFont("large")
+                    color: UM.Theme.getColor("text")
+                    text: catalog.i18nc("@header", "Install Plugins")
+                }
             }
-            Loader //Page contents.
+            Rectangle //Page contents.
             {
                 Layout.preferredWidth: parent.width
                 Layout.fillHeight: true
+                color: UM.Theme.getColor("detail_background")
 
-                source: "Plugins.qml"
+                Loader //Page contents.
+                {
+                    anchors.fill: parent
+                    anchors.margins: UM.Theme.getSize("default_margin").width
+
+                    source: "Plugins.qml"
+                }
             }
         }
     }
