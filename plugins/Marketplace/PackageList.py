@@ -33,12 +33,13 @@ class PackageList(ListModel):
 
         self._is_loading = True
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+        self._request_url = f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
 
         self.addRoleName(self.PackageRole, "package")
 
-        self.requestFirst()
+        self.request()
 
-    def requestFirst(self) -> None:
+    def request(self) -> None:
         """
         Make a request for the first paginated page of packages.
 
@@ -48,7 +49,7 @@ class PackageList(ListModel):
 
         http = HttpRequestManager.getInstance()
         http.get(
-            Marketplace.PACKAGES_URL,
+            self._request_url,
             scope = self._scope,
             callback = self._parseResponse,
             error_callback = self._onError
@@ -78,12 +79,14 @@ class PackageList(ListModel):
         :param reply: A reply containing information about a number of packages.
         """
         response_data = HttpRequestManager.readJSON(reply)
-        if "data" not in response_data:
+        if "data" not in response_data or "links" not in response_data:
             return  # TODO: Handle invalid response.
 
         for package_data in response_data["data"]:
             package = PackageModel(package_data, parent = self)
             self.appendItem({"package": package})  # Add it to this list model.
+
+        self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
 
     def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
         """
