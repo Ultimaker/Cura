@@ -4,16 +4,41 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Cura 1.7 as Cura
+import UM 1.0 as UM
 
-Column
+ScrollView
 {
-    Repeater
-    {
-        model: Cura.PackageList{}
+    clip: true
 
-        Label
+    Column
+    {
+        id: pluginColumn
+        width: parent.width
+        spacing: UM.Theme.getSize("default_margin").height
+
+        Repeater
         {
-            text: "Test"  //TODO: Create a card for each package.
+            model: Cura.PackageList{}
+
+            delegate: Rectangle
+            {
+                width: pluginColumn.width
+                height: UM.Theme.getSize("card").height
+
+                color: UM.Theme.getColor("main_background")
+                radius: UM.Theme.getSize("default_radius").width
+
+                Label
+                {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: (parent.height - height) / 2
+
+                    text: model.package.displayName
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                }
+            }
         }
     }
 }
