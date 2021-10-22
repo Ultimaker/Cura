@@ -1,7 +1,5 @@
 [4.12.0]
 Beta
-*New features:
-
 * Lightning infill
 The new lightning infill setting lets you to print high-quality top layers but is optimized to use less material and increase your production speed. Special thanks to rburema and BagelOrb!
 
@@ -17,13 +15,11 @@ The new switcher provides a simpler way to navigate and use other Ultimaker appl
 * Faster start-up
 We've shaved 10 seconds from Ultimaker Cura's start-up time by optimizing profile data caching
 
-* Moved the Skip button to the left bottom on the Sign in onboarding page and replaced with the Sign in button and Create new account.
-
-* Add {material_type} and {material_name} as replacement patterns, contributed by fieldOfView
-
-* Update file name after saving
-
-* Make parking optional in all "methods" of Pause at Height, contributed by fieldOfView
+*Other new features:
+- Moved the Skip button to the left bottom on the Sign in onboarding page and replaced with the Sign in button and Create new account.
+- Add {material_type} and {material_name} as replacement patterns, contributed by fieldOfView
+- Update file name after saving
+- Make parking optional in all "methods" of Pause at Height, contributed by fieldOfView
 
 *Bug fixes:
 - Fixed a bug when coming goes through skin on Top Surface Skin Layers
