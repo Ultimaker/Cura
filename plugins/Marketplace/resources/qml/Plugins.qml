@@ -4,7 +4,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import Cura 1.7 as Cura
-import UM 1.0 as UM
+import UM 1.4 as UM
 
 ScrollView
 {
@@ -49,7 +49,7 @@ ScrollView
             width: parent.width
             height: UM.Theme.getSize("card").height
 
-            enabled: pluginList.hasMore && !pluginList.isLoading
+            enabled: pluginList.hasMore && !pluginList.isLoading || pluginList.errorMessage != ""
             onClicked: pluginList.request()  //Load next page in plug-in list.
 
             background: Rectangle
@@ -67,6 +67,26 @@ ScrollView
 
                 states:
                 [
+                    State
+                    {
+                        name: "Error"
+                        when: pluginList.errorMessage != ""
+                        PropertyChanges
+                        {
+                            target: errorIcon
+                            visible: true
+                        }
+                        PropertyChanges
+                        {
+                            target: loadMoreIcon
+                            visible: false
+                        }
+                        PropertyChanges
+                        {
+                            target: loadMoreLabel
+                            text: catalog.i18nc("@button", "Failed to load plug-ins:") + " " + pluginList.errorMessage + "\n" + catalog.i18nc("@button", "Retry?")
+                        }
+                    },
                     State
                     {
                         name: "Loading"
@@ -102,25 +122,38 @@ ScrollView
                     }
                 ]
 
-                UM.RecolorImage
+                Item
                 {
-                    id: loadMoreIcon
-                    width: visible ? UM.Theme.getSize("small_button_icon").width : 0
+                    width: (errorIcon.visible || loadMoreIcon.visible) ? UM.Theme.getSize("small_button_icon").width : 0
                     height: UM.Theme.getSize("small_button_icon").height
                     anchors.verticalCenter: loadMoreLabel.verticalCenter
 
-                    source: UM.Theme.getIcon("ArrowDown")
-                    color: UM.Theme.getColor("secondary_button_text")
-
-                    RotationAnimator
+                    UM.StatusIcon
                     {
-                        target: loadMoreIcon
-                        from: 0
-                        to: 360
-                        duration: 1000
-                        loops: Animation.Infinite
-                        running: pluginList.isLoading
-                        alwaysRunToEnd: true
+                        id: errorIcon
+                        anchors.fill: parent
+
+                        status: UM.StatusIcon.Status.ERROR
+                        visible: false
+                    }
+                    UM.RecolorImage
+                    {
+                        id: loadMoreIcon
+                        anchors.fill: parent
+
+                        source: UM.Theme.getIcon("ArrowDown")
+                        color: UM.Theme.getColor("secondary_button_text")
+
+                        RotationAnimator
+                        {
+                            target: loadMoreIcon
+                            from: 0
+                            to: 360
+                            duration: 1000
+                            loops: Animation.Infinite
+                            running: pluginList.isLoading
+                            alwaysRunToEnd: true
+                        }
                     }
                 }
                 Label

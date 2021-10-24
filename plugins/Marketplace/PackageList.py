@@ -1,10 +1,13 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
+from typing import Optional, TYPE_CHECKING
+
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import List, Optional, TYPE_CHECKING
+from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
@@ -15,6 +18,8 @@ from .PackageModel import PackageModel  # This list is a list of PackageModels.
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
     from PyQt5.QtNetwork import QNetworkReply
+
+catalog = i18nCatalog("cura")
 
 class PackageList(ListModel):
     """
@@ -34,6 +39,7 @@ class PackageList(ListModel):
         self._is_loading = True
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._request_url = f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
+        self._error_message = ""
 
         self.addRoleName(self.PackageRole, "package")
 
@@ -47,6 +53,7 @@ class PackageList(ListModel):
         When the request is done, the list will get updated with the new package models.
         """
         self.setIsLoading(True)
+        self.setErrorMessage("")  # Clear any previous errors.
 
         http = HttpRequestManager.getInstance()
         http.get(
@@ -83,6 +90,23 @@ class PackageList(ListModel):
         """
         return self._request_url != ""
 
+    def setErrorMessage(self, error_message: str) -> None:
+        if(self._error_message != error_message):
+            self._error_message = error_message
+            self.errorMessageChanged.emit()
+
+    errorMessageChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = errorMessageChanged, fset = setErrorMessage)
+    def errorMessage(self) -> str:
+        """
+        If an error occurred getting the list of packages, an error message will be held here.
+
+        If no error occurred (yet), this will be an empty string.
+        :return: An error message, if any, or an empty string if everything went okay.
+        """
+        return self._error_message
+
     def _parseResponse(self, reply: "QNetworkReply") -> None:
         """
         Parse the response from the package list API request.
@@ -92,7 +116,9 @@ class PackageList(ListModel):
         """
         response_data = HttpRequestManager.readJSON(reply)
         if "data" not in response_data or "links" not in response_data:
-            return  # TODO: Handle invalid response.
+            Logger.error(f"Could not interpret the server's response. Missing 'data' or 'links' from response data. Keys in response: {response_data.keys()}")
+            self.setErrorMessage(catalog.i18nc("@info:error", "Could not interpret the server's response."))
+            return
 
         for package_data in response_data["data"]:
             package = PackageModel(package_data, parent = self)
@@ -108,4 +134,5 @@ class PackageList(ListModel):
         :param reply: The reply with packages. This will most likely be incomplete and should be ignored.
         :param error: The error status of the request.
         """
-        pass  # TODO: Handle errors.
+        Logger.error(f"Could not reach Marketplace server.")
+        self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))
