@@ -177,7 +177,7 @@ Item
             }
         }
 
-        onClicked: Cura.Actions.browsePackages.trigger()
+        onClicked: Cura.Actions.openMarketplace.trigger()
     }
 
     ApplicationSwitcher

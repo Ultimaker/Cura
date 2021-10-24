@@ -202,6 +202,14 @@ Item
         target: Cura.Actions.browsePackages
         function onTriggered()
         {
+            curaExtensions.callExtensionMethod("Toolbox", "launch")
+        }
+    }
+    Connections
+    {
+        target: Cura.Actions.openMarketplace
+        function onTriggered()
+        {
             curaExtensions.callExtensionMethod("Marketplace", "show")
         }
     }
