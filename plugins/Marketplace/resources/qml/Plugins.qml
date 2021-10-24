@@ -65,6 +65,43 @@ ScrollView
 
                 spacing: UM.Theme.getSize("thin_margin").width
 
+                states:
+                [
+                    State
+                    {
+                        name: "Loading"
+                        when: pluginList.isLoading
+                        PropertyChanges
+                        {
+                            target: loadMoreIcon
+                            source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                            color: UM.Theme.getColor("action_button_disabled_text")
+                        }
+                        PropertyChanges
+                        {
+                            target: loadMoreLabel
+                            text: catalog.i18nc("@button", "Loading")
+                            color: UM.Theme.getColor("action_button_disabled_text")
+                        }
+                    },
+                    State
+                    {
+                        name: "LastPage"
+                        when: !pluginList.hasMore
+                        PropertyChanges
+                        {
+                            target: loadMoreIcon
+                            visible: false
+                        }
+                        PropertyChanges
+                        {
+                            target: loadMoreLabel
+                            text: catalog.i18nc("@button", "No more results to load")
+                            color: UM.Theme.getColor("action_button_disabled_text")
+                        }
+                    }
+                ]
+
                 UM.RecolorImage
                 {
                     id: loadMoreIcon
@@ -72,9 +109,8 @@ ScrollView
                     height: UM.Theme.getSize("small_button_icon").height
                     anchors.verticalCenter: loadMoreLabel.verticalCenter
 
-                    visible: pluginList.hasMore || pluginList.isLoading
-                    source: UM.Theme.getIcon(pluginList.isLoading ? "ArrowDoubleCircleRight" : "ArrowDown")
-                    color: UM.Theme.getColor(loadMoreButton.enabled ? "secondary_button_text" : "action_button_disabled_text")
+                    source: UM.Theme.getIcon("ArrowDown")
+                    color: UM.Theme.getColor("secondary_button_text")
 
                     RotationAnimator
                     {
@@ -90,20 +126,9 @@ ScrollView
                 Label
                 {
                     id: loadMoreLabel
-                    text:
-                    {
-                        if(pluginList.isLoading)
-                        {
-                            return catalog.i18nc("@button", "Loading");
-                        }
-                        if(pluginList.hasMore)
-                        {
-                            return catalog.i18nc("@button", "Load more");
-                        }
-                        return catalog.i18nc("@button", "No more results to load");
-                    }
+                    text: catalog.i18nc("@button", "Load more")
                     font: UM.Theme.getFont("medium_bold")
-                    color: UM.Theme.getColor(loadMoreButton.enabled ? "secondary_button_text" : "action_button_disabled_text")
+                    color: UM.Theme.getColor("secondary_button_text")
                 }
             }
         }
