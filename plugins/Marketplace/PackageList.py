@@ -13,7 +13,7 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To reques
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
 
 from . import Marketplace   # To get the list of packages. Imported this way to prevent circular imports.
-from .PackageModel import PackageModel  # This list is a list of PackageModels.
+from .PackageModel import PackageModel  # The contents of this list.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
