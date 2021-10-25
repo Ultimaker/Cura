@@ -68,7 +68,7 @@ class PackageList(ListModel):
 
     @pyqtSlot(bool)
     def setIsLoading(self, is_loading: bool) -> None:
-        if(is_loading != self._is_loading):
+        if is_loading != self._is_loading:
             self._is_loading = is_loading
             self.isLoadingChanged.emit()
 
@@ -92,7 +92,7 @@ class PackageList(ListModel):
         return self._request_url != ""
 
     def setErrorMessage(self, error_message: str) -> None:
-        if(self._error_message != error_message):
+        if self._error_message != error_message:
             self._error_message = error_message
             self.errorMessageChanged.emit()
 
