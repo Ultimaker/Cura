@@ -62,11 +62,11 @@
         "machine_end_gcode": { 
             "default_value": "M104 S0 ;turn off extruder\nM140 S0 ;turn off bed\nM107 ;turn off all fans\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 ;move Z up a bit and retract filament even more\nG90 ;absolute positioning\nG1 X0 Y250 F4800 ; position for easy part removal\nM84 ;steppers off" 
         },
-        "layer_height_0": {
-            "value": "max(0.1, min(extruderValues('layer_height')))"
-        },
         "layer_height": {
             "value": 0.2
+        },
+        "layer_height_0": {
+            "resolve": "max(0.1, layer_height)"
         },
         "initial_layer_line_width_factor": {
             "value": 120
