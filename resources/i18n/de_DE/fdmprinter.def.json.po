@@ -1783,12 +1783,12 @@ msgstr "Zickzack"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
-msgstr "Quer"
+msgstr "Kreuz"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
-msgstr "3D-Quer"
+msgstr "3D-Kreuz"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
@@ -5283,7 +5283,7 @@ msgstr "Durch Spiralisieren wird die Z-Bewegung der äußeren Kante geglättet. 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours label"
 msgid "Smooth Spiralized Contours"
-msgstr "Spiralisieren der äußeren Konturen glätten"
+msgstr "Glätten der spiralisierten Kontur"
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
