@@ -16,7 +16,7 @@ class PackageModel(QObject):
     QML. The model can also be constructed directly from a response received by the API.
     """
 
-    def __init__(self, package_data: Dict[str, Any], parent: QObject = None):
+    def __init__(self, package_data: Dict[str, Any], parent: QObject = None) -> None:
         """
         Constructs a new model for a single package.
         :param package_data: The data received from the Marketplace API about the package to create.

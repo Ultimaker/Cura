@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class PackageList(ListModel):
     """
     Represents a list of packages to be displayed in the interface.
@@ -33,7 +34,7 @@ class PackageList(ListModel):
 
     ITEMS_PER_PAGE = 20  # Pagination of number of elements to download at once.
 
-    def __init__(self, parent: "QObject" = None):
+    def __init__(self, parent: "QObject" = None) -> None:
         super().__init__(parent)
 
         self._is_loading = True

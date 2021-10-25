@@ -21,12 +21,13 @@ if TYPE_CHECKING:
 ROOT_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}"  # Root of all Marketplace API requests.
 PACKAGES_URL = f"{ROOT_URL}/packages"  # URL to use for requesting the list of packages.
 
+
 class Marketplace(Extension):
     """
     The main managing object for the Marketplace plug-in.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
 
