@@ -66,7 +66,6 @@ class PackageList(ListModel):
 
     isLoadingChanged = pyqtSignal()
 
-    @pyqtSlot(bool)
     def setIsLoading(self, is_loading: bool) -> None:
         if is_loading != self._is_loading:
             self._is_loading = is_loading
