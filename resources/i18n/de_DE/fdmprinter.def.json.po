@@ -1787,12 +1787,12 @@ msgstr "Zickzack"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
 msgid "Cross"
-msgstr "Quer"
+msgstr "Kreuz"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
-msgstr "3D-Quer"
+msgstr "3D-Kreuz"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
@@ -1802,7 +1802,7 @@ msgstr "Gyroid"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Blitz"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -3266,7 +3266,7 @@ msgstr "Innerhalb der Füllung"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance label"
 msgid "Max Comb Distance With No Retract"
-msgstr "Max. Kammentfernung ohne Einziehen"
+msgstr "Max. Combing Entfernung ohne Einziehen"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
@@ -3356,7 +3356,7 @@ msgstr "Führen Sie nur einen Z-Sprung aus, wenn Sie über gedruckte Teile fahre
 #: fdmprinter.def.json
 msgctxt "retraction_hop label"
 msgid "Z Hop Height"
-msgstr "Z-Spring Höhe"
+msgstr "Z-Sprung Höhe"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop description"
@@ -3366,22 +3366,22 @@ msgstr "Der Höhenunterschied bei Ausführung eines Z-Sprungs."
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch label"
 msgid "Z Hop After Extruder Switch"
-msgstr "Z-Sprung nach Extruder-Schalter"
+msgstr "Z-Sprung nach Extruder-Wechsel"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch description"
 msgid "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print."
-msgstr "Nachdem das Gerät von einem Extruder zu einem anderen geschaltet hat, wird die Druckplatte abgesenkt, um einen Abstand zwischen der Düse und dem Druck zu bilden. Das verhindert, dass die Düse abgesondertes Material auf der Außenseite des Drucks hinterlässt."
+msgstr "Nachdem das Gerät von einem Extruder zu einem anderen gewechselt hat, wird die Druckplatte abgesenkt, um einen Abstand zwischen der Düse und dem Druck zu bilden. Das verhindert, dass die Düse abgesondertes Material auf der Außenseite des Drucks hinterlässt."
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr "Z-Sprung nach Extruder-Schalterhöhe"
+msgstr "Z-Sprung Höhe nach Extruder-Wechsel"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr "Der Höhenunterschied bei Ausführung eines Z-Sprungs nach Extruder-Schalter."
+msgstr "Der Höhenunterschied bei Ausführung eines Z-Sprungs nach Extruder-Wechsel."
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -4890,7 +4890,7 @@ msgstr "Das Mindestvolumen für jede Schicht des Einzugsturms, um ausreichend Ma
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
-msgstr "X-Position für Einzugsturm"
+msgstr "X-Position des Einzugsturm"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x description"
@@ -4960,7 +4960,7 @@ msgstr "Der Abstand des Sicherschutzes zum gedruckten Objekt in den X/Y-Richtung
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount label"
 msgid "Nozzle Switch Retraction Distance"
-msgstr "Düsenschalter Einzugsabstand"
+msgstr "Düsenwechsel Einzugsabstand"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
@@ -4970,7 +4970,7 @@ msgstr "Der Wert für den Einzug beim Umstellen der Extruder: 0 einstellen, um k
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
-msgstr "Düsenschalter Rückzugsgeschwindigkeit"
+msgstr "Düsenwechsel Rückzugsgeschwindigkeit"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds description"
@@ -4980,22 +4980,22 @@ msgstr "Die Geschwindigkeit, mit der das Filament zurückgezogen wird. Eine höh
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speed label"
 msgid "Nozzle Switch Retract Speed"
-msgstr "Düsenschalter Rückzuggeschwindigkeit"
+msgstr "Düsenwechsel Rückzuggeschwindigkeit"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speed description"
 msgid "The speed at which the filament is retracted during a nozzle switch retract."
-msgstr "Die Geschwindigkeit, mit der das Filament während eines Düsenschaltereinzugs zurückgezogen wird."
+msgstr "Die Geschwindigkeit, mit der das Filament während eines Düsenwechseleinzugs zurückgezogen wird."
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed label"
 msgid "Nozzle Switch Prime Speed"
-msgstr "Düsenschalter Einzugsgeschwindigkeit (Zurückschieben)"
+msgstr "Düsenwechsel Einzugsgeschwindigkeit (Zurückschieben)"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed description"
 msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
-msgstr "Die Geschwindigkeit, mit der das Filament während eines Düsenschaltereinzugs zurückgeschoben wird."
+msgstr "Die Geschwindigkeit, mit der das Filament während eines Düsenwechseleinzugs zurückgeschoben wird."
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_extra_prime_amount label"
@@ -5285,7 +5285,7 @@ msgstr "Durch Spiralisieren wird die Z-Bewegung der äußeren Kante geglättet. 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours label"
 msgid "Smooth Spiralized Contours"
-msgstr "Spiralisieren der äußeren Konturen glätten"
+msgstr "Glätten der spiralisierten Kontur"
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
