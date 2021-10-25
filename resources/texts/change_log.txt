@@ -22,7 +22,7 @@ We've shaved 10 seconds from Ultimaker Cura's start-up time by optimizing profil
 - Make parking optional in all "methods" of Pause at Height, contributed by fieldOfView
 
 *Bug fixes:
-- Fixed a bug when coming goes through skin on Top Surface Skin Layers
+- Fixed a bug when combing goes through skin on Top Surface Skin Layers
 - Fixed a bug in one-at-a-time mode to not wait for initial layer bed temperature if the temperature stays the same
 - Fixed a bug where there was double infill and gap filling 
 - Fixed a bug with monotonic ironing that causes fan speed jump to 255 for ironing pass
