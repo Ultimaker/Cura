@@ -3,7 +3,7 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import Cura 1.7 as Cura
+import Marketplace 1.0 as Marketplace
 import UM 1.4 as UM
 
 ScrollView
@@ -18,7 +18,7 @@ ScrollView
 
         Repeater
         {
-            model: Cura.PackageList
+            model: Marketplace.PackageList
             {
                 id: pluginList
             }

@@ -31,7 +31,7 @@ class Marketplace(Extension):
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
 
-        qmlRegisterType(PackageList, "Cura", 1, 7, "PackageList")
+        qmlRegisterType(PackageList, "Marketplace", 1, 0, "PackageList")
 
     @pyqtSlot()
     def show(self) -> None:
