@@ -33,7 +33,7 @@ ScrollView
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                anchors.leftMargin: (parent.height - height) / 2
+                anchors.leftMargin: Math.round((parent.height - height) / 2)
 
                 text: model.package.displayName
                 font: UM.Theme.getFont("medium_bold")
