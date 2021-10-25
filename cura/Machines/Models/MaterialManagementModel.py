@@ -354,8 +354,8 @@ class MaterialManagementModel(QObject):
         except OSError as e:
             Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
             error_message = Message(
-                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
-                title = catalog.i18nc("@message:title", "Failed to save material archive"),
+                text = catalog.i18nc("@error:text Followed by an error message of why it could not save", "Could not save material archive to {filename}:").format(filename = file_path.toLocalFile()) + " " + str(e),
+                title = catalog.i18nc("@error:title", "Failed to save material archive"),
                 message_type = Message.MessageType.ERROR
             )
             error_message.show()
