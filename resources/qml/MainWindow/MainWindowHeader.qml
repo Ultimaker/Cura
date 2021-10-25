@@ -84,9 +84,9 @@ Item
     }
 
     // Shortcut button to quick access the Toolbox
-    Controls2.Button
+    Controls2.Button //TODO: Remove once new Marketplace is completed.
     {
-        text: catalog.i18nc("@action:button", "Marketplace")
+        text: "Old Marketplace"
         height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         onClicked: Cura.Actions.browsePackages.trigger()
 
@@ -128,10 +128,50 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
+    }
+
+    Controls2.Button
+    {
+        id: marketplaceButton
+        height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: applicationSwitcher.left
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
+
+        hoverEnabled: true
+        onClicked: Cura.Actions.openMarketplace.trigger()
+
+        contentItem: Label
+        {
+            text: "Marketplace" //Ultimaker considers this a product name, so it shouldn't be translated.
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("primary_text")
+            width: contentWidth
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        background: Rectangle
+        {
+            radius: UM.Theme.getSize("action_button_radius").width
+            color: UM.Theme.getColor("main_window_header_background")
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("primary_text")
+
+            Rectangle
+            {
+                anchors.fill: parent
+                radius: parent.radius
+                color: UM.Theme.getColor("primary_text")
+                opacity: marketplaceButton.hovered ? 0.2 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+            }
+        }
 
         Cura.NotificationIcon
         {
-            id: marketplaceNotificationIcon
             anchors
             {
                 top: parent.top
@@ -147,37 +187,6 @@ Item
                 return itemCount > 9 ? "9+" : itemCount
             }
         }
-    }
-
-    Controls2.Button
-    {
-        id: marketplaceButton
-        width: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-        height: width
-        anchors
-        {
-            verticalCenter: parent.verticalCenter
-            right: applicationSwitcher.left
-            rightMargin: UM.Theme.getSize("default_margin").width
-        }
-
-        background: UM.RecolorImage
-        {
-            anchors.fill: parent
-            color: UM.Theme.getColor("primary_text")
-            source: UM.Theme.getIcon("Shop")
-
-            Rectangle
-            {
-                anchors.fill: parent
-                radius: UM.Theme.getSize("action_button_radius").width
-                color: UM.Theme.getColor("primary_text")
-                opacity: marketplaceButton.hovered ? 0.2 : 0
-                Behavior on opacity { NumberAnimation { duration: 100; } }
-            }
-        }
-
-        onClicked: Cura.Actions.openMarketplace.trigger()
     }
 
     ApplicationSwitcher
