@@ -272,6 +272,8 @@ class MaterialManagementModel(QObject):
         """
         Opens the window to sync all materials.
         """
+        self._material_sync.reset()
+
         if self._material_sync.sync_all_dialog is None:
             qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences", "Materials", "MaterialsSyncDialog.qml")
             self._material_sync.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})

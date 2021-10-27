@@ -192,3 +192,9 @@ class CloudMaterialSync(QObject):
     @pyqtProperty("QVariantMap", fset = setPrinterStatus, notify = printerStatusChanged)
     def printerStatus(self) -> Dict[str, str]:
         return self._printer_status
+
+    def reset(self) -> None:
+        self.setPrinterStatus({})
+        self.setExportProgress(0.0)
+        self._export_upload_status = "idle"
+        self.exportUploadStatusChanged.emit()
