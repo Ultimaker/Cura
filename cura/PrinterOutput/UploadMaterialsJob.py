@@ -46,7 +46,7 @@ class UploadMaterialsJob(Job):
     """
 
     UPLOAD_REQUEST_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/connect/v1/materials/upload"
-    UPLOAD_CONFIRM_URL = UltimakerCloudConstants.CuraCloudAPIRoot + "/connect/v1/clusters/{cluster_id}/printers/{cluster_printer_id}/action/confirm_material_upload"
+    UPLOAD_CONFIRM_URL = UltimakerCloudConstants.CuraCloudAPIRoot + "/connect/v1/clusters/{cluster_id}/printers/{cluster_printer_id}/action/import_material"
 
     class Result(enum.IntEnum):
         SUCCESS = 0
@@ -175,11 +175,12 @@ class UploadMaterialsJob(Job):
             printer_id = container_stack["host_guid"]
 
             http = HttpRequestManager.getInstance()
-            http.get(
+            http.post(
                 url = self.UPLOAD_CONFIRM_URL.format(cluster_id = cluster_id, cluster_printer_id = printer_id),
-                callback = lambda reply, error: self.onUploadConfirmed(printer_id, reply, error),
+                callback = lambda reply: self.onUploadConfirmed(printer_id, reply, None),
                 error_callback = lambda reply, error: self.onUploadConfirmed(printer_id, reply, error),  # Let this same function handle the error too.
-                scope = self._scope
+                scope = self._scope,
+                data = json.dumps({"data": {"material_profile_id": self._archive_remote_id}}).encode("UTF-8")
             )
 
     def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:
