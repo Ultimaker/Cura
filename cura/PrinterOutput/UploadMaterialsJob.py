@@ -133,17 +133,21 @@ class UploadMaterialsJob(Job):
             Logger.error(f"Invalid response to material upload request. Could not parse JSON data.")
             self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory appears to be corrupted.")))
             return
-        if "upload_url" not in response_data:
+        if "data" not in response_data:
+            Logger.error(f"Invalid response to material upload request: Missing 'data' field that contains the entire response.")
+            self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
+            return
+        if "upload_url" not in response_data["data"]:
             Logger.error(f"Invalid response to material upload request: Missing 'upload_url' field to upload archive to.")
             self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
             return
-        if "material_profile_id" not in response_data:
+        if "material_profile_id" not in response_data["data"]:
             Logger.error(f"Invalid response to material upload request: Missing 'material_profile_id' to communicate about the materials with the server.")
             self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "The response from Digital Factory is missing important information.")))
             return
 
-        upload_url = response_data["upload_url"]
-        self._archive_remote_id = response_data["material_profile_id"]
+        upload_url = response_data["data"]["upload_url"]
+        self._archive_remote_id = response_data["data"]["material_profile_id"]
         try:
             with open(cast(str, self._archive_filename), "rb") as f:
                 file_data = f.read()
