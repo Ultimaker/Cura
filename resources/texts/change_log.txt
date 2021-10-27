@@ -1,3 +1,62 @@
+[4.12.0]
+Beta
+* Lightning infill
+The new lightning infill setting lets you to print high-quality top layers but is optimized to use less material and increase your production speed. Special thanks to rburema and BagelOrb!
+
+* Improved top surface quality
+We’ve tweaked the Monotonic setting and made adjustments throughout print profiles. This removes occasional scarring on models and improves top surface quality by default. 
+
+* Improved horizontal print quality
+Resulting in reduction of ringing, improving resolution and overall print quality.  
+
+* App switcher
+The new switcher provides a simpler way to navigate and use other Ultimaker applications, including Ultimaker Digital Factory, Ultimaker Marketplace, and Ultimaker 3D Printing Academy. Reporting bugs to Github is now just one click away, and it’s easier to find the application you need.
+
+* Faster start-up
+We've shaved 10 seconds from Ultimaker Cura's start-up time by optimizing profile data caching
+
+*Other new features:
+- Moved the Skip button to the left bottom on the Sign in onboarding page and replaced with the Sign in button and Create new account.
+- Add {material_type} and {material_name} as replacement patterns, contributed by fieldOfView
+- Update file name after saving
+- Make parking optional in all "methods" of Pause at Height, contributed by fieldOfView
+
+*Bug fixes:
+- Fixed a bug when combing goes through skin on Top Surface Skin Layers
+- Fixed a bug in one-at-a-time mode to not wait for initial layer bed temperature if the temperature stays the same
+- Fixed a bug where there was double infill and gap filling 
+- Fixed a bug with monotonic ironing that causes fan speed jump to 255 for ironing pass
+- Fixed an engine crash when using monotonic ordering with zigzag skin pattern
+- Fixed missing commas in disallowed list for code injections, contributed by YuvalZilber
+- Fixed various typos, contributed by luzpaz
+- Fixed FilamentChange Retract method
+- Fixed extra microsegments inserted from Wall Overlap Computation
+- Fixed inconsistent material name in the header and material selection dropdown
+- Fixed scaling model down after scaling it up with tool handles
+- Fixed single instance option when opening different files
+- Fixed duplicating and multiplying support blockers
+
+* Printer definitions, profiles and materials:
+- Added Creasee CS50S pro, Creasee Skywalker and Creasee Phoenix printer definitions, contributed by ivovk9
+- Added Joyplace Cremaker M V1, M V2, S V1, contributed by hyu7000
+- Added Hellbot printer definitions, contributed by DevelopmentHellbot
+- Added Arjun Pro 300 printer definition, contributed by venkatkamesh
+- Added AtomStack printer definitions, contributed by zhpt
+- Added Weedo X40 printer definition, contributed by x40-Community
+- Added 3DI D300 printer definition, contributed by v27jain
+- Changed Crealiy Ender 5 Plus end g-code, contributed by mothnox
+- Updated definitions and extruders of Hellbot Magna 2 230/300 dual, contributed by DevelopmentHellbot
+- Updated Eryone Thinker printer profile, contributed by Eryone
+- Updated FLSUN Super Racer profiles, contritubed by Guilouz
+- Updated Mega S and X acceleration to firmware default, contributed by NilsRo
+
+*Known bugs with Lighting infill:
+- Connect infill polygons doesn't work
+- Infill Wipe Distance applies to every polyline
+- Infill mesh modifier density
+- Infill Overlap doesn't work
+- Infill before walls order doesn't respect the order when Lightning is enabled
+
 [4.11.0]
 <i>For an overview of the new features in Cura 4.11, please watch <a href="https://youtu.be/OcFkcDyO5DU">our video</a>.</i>
 

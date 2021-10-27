@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.11\n"
+"Project-Id-Version: Cura 4.12\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-08-11 09:58+0000\n"
+"POT-Creation-Date: 2021-10-20 16:43+0000\n"
 "PO-Revision-Date: 2021-08-18 02:56+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -1732,8 +1732,8 @@ msgstr "Padrão de Preenchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "O padrão do material de preenchimento da impressão. Os preenchimentos de linha e ziguezague mudam de direção em camadas alternadas, reduzindo o custo do material. Os padrões de grade, triângulo, tri-hexágono, cúbico, octeto, quarto cúbico, cruzado e concêntrico são impressos em totalidade a cada camada. Os padrões giróide, cúbico, quarto cúbico e octeto mudam a cada camada para prover uma distribuição mais igualitária de força em cada direção."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1799,6 +1799,11 @@ msgstr "Cruzado 3D"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Giróide"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2013,6 +2018,46 @@ msgstr "Camadas do Suporte da Aresta de Contorno"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "O número de camadas de preenchimento que suportam arestas de contorno."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3203,6 +3248,11 @@ msgstr "Desligado"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "Tudo"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5155,8 +5205,8 @@ msgstr "Largura Mínima do Molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "A distância mínima entre o exterior do molde e do modelo."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -6431,6 +6481,14 @@ msgstr "Matriz de Rotação da Malha"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matriz de transformação a ser aplicada ao modelo após o carregamento do arquivo."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "O padrão do material de preenchimento da impressão. Os preenchimentos de linha e ziguezague mudam de direção em camadas alternadas, reduzindo o custo do material. Os padrões de grade, triângulo, tri-hexágono, cúbico, octeto, quarto cúbico, cruzado e concêntrico são impressos em totalidade a cada camada. Os padrões giróide, cúbico, quarto cúbico e octeto mudam a cada camada para prover uma distribuição mais igualitária de força em cada direção."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "A distância mínima entre o exterior do molde e do modelo."
 
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."

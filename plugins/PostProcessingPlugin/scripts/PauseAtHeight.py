@@ -458,7 +458,7 @@ class PauseAtHeight(Script):
 
                     # Optionally extrude material
                     if extrude_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = 200) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = 200) + "; Extra extrude after the unpause\n"
                         prepend_gcode += self.putValue("@info wait for cleaning nozzle from previous filament") + "\n"
                         prepend_gcode += self.putValue("@pause remove the waste filament from parking area and press continue printing") + "\n"
 
@@ -495,7 +495,7 @@ class PauseAtHeight(Script):
 
                     # Optionally extrude material
                     if extrude_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "\n"
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "; Extra extrude after the unpause\n"
 
                     # and retract again, the properly primes the nozzle
                     # when changing filament.
