@@ -2,10 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt5.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Resources import Resources  # To find QML files.
@@ -29,13 +31,9 @@ class MaterialManagementModel(QObject):
     :param The base file of the material is provided as parameter when this emits
     """
 
-<<<<<<< HEAD
-    def __init__(self, parent: QObject = None):
-        super().__init__(parent)
-        self._material_sync = CloudMaterialSync(parent = self)
-=======
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent = parent)
+        self._material_sync = CloudMaterialSync(parent=self)
         self._checkIfNewMaterialsWereInstalled()
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
@@ -91,7 +89,7 @@ class MaterialManagementModel(QObject):
             sync_message.hide()
         elif sync_message_action == "learn_more":
             QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
->>>>>>> master
+
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
