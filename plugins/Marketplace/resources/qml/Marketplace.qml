@@ -18,6 +18,18 @@ Window
     width: minimumWidth
     height: minimumHeight
 
+    onVisibleChanged:
+    {
+        // Set and unset the content. No need to keep things in memory if it's not visible. 
+        if(visible)
+        {
+            content.source = "plugins.qml"
+        }
+        else
+        {
+            content.source = ""
+        }
+    }
     title: "Marketplace" //Seen by Ultimaker as a brand name, so this doesn't get translated.
     modality: Qt.NonModal
 
@@ -61,9 +73,9 @@ Window
 
                 Loader //Page contents.
                 {
+                    id: content
                     anchors.fill: parent
                     anchors.margins: UM.Theme.getSize("default_margin").width
-
                     source: "Plugins.qml"
                 }
             }
