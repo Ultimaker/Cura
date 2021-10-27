@@ -2,21 +2,21 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt5.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
-import zipfile  # To export all materials in a .zip archive.
 
-from PyQt5.QtGui import QDesktopServices
-
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.Message import Message
+from UM.Resources import Resources  # To find QML files.
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
+from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialNode import MaterialNode
@@ -33,6 +33,7 @@ class MaterialManagementModel(QObject):
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent = parent)
+        self._material_sync = CloudMaterialSync(parent=self)
         self._checkIfNewMaterialsWereInstalled()
 
     def _checkIfNewMaterialsWereInstalled(self) -> None:
@@ -88,6 +89,7 @@ class MaterialManagementModel(QObject):
             sync_message.hide()
         elif sync_message_action == "learn_more":
             QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
+
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
@@ -323,52 +325,18 @@ class MaterialManagementModel(QObject):
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
 
-    @pyqtSlot(result = QUrl)
-    def getPreferredExportAllPath(self) -> QUrl:
+    @pyqtSlot()
+    def openSyncAllWindow(self) -> None:
         """
-        Get the preferred path to export materials to.
+        Opens the window to sync all materials.
+        """
+        self._material_sync.reset()
 
-        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
-        file path.
-        :return: The preferred path to export all materials to.
-        """
-        cura_application = cura.CuraApplication.CuraApplication.getInstance()
-        device_manager = cura_application.getOutputDeviceManager()
-        devices = device_manager.getOutputDevices()
-        for device in devices:
-            if device.__class__.__name__ == "RemovableDriveOutputDevice":
-                return QUrl.fromLocalFile(device.getId())
-        else:  # No removable drives? Use local path.
-            return cura_application.getDefaultPath("dialog_material_path")
-
-    @pyqtSlot(QUrl)
-    def exportAll(self, file_path: QUrl) -> None:
-        """
-        Export all materials to a certain file path.
-        :param file_path: The path to export the materials to.
-        """
-        registry = CuraContainerRegistry.getInstance()
-
-        try:
-            archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
-        except OSError as e:
-            Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
-            error_message = Message(
-                text = catalog.i18nc("@error:text Followed by an error message of why it could not save", "Could not save material archive to {filename}:").format(filename = file_path.toLocalFile()) + " " + str(e),
-                title = catalog.i18nc("@error:title", "Failed to save material archive"),
-                message_type = Message.MessageType.ERROR
-            )
-            error_message.show()
+        if self._material_sync.sync_all_dialog is None:
+            qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences", "Materials", "MaterialsSyncDialog.qml")
+            self._material_sync.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})
+        if self._material_sync.sync_all_dialog is None:  # Failed to load QML file.
             return
-        for metadata in registry.findInstanceContainersMetadata(type = "material"):
-            if metadata["base_file"] != metadata["id"]:  # Only process base files.
-                continue
-            if metadata["id"] == "empty_material":  # Don't export the empty material.
-                continue
-            material = registry.findContainers(id = metadata["id"])[0]
-            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
-            filename = metadata["id"] + "." + suffix
-            try:
-                archive.writestr(filename, material.serialize())
-            except OSError as e:
-                Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")
+        self._material_sync.sync_all_dialog.setProperty("syncModel", self._material_sync)
+        self._material_sync.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
+        self._material_sync.sync_all_dialog.show()
