@@ -16,13 +16,20 @@
         "primary_text": [255, 255, 255, 204],
         "secondary": [95, 95, 95, 255],
 
-        "icon": [204, 204, 204, 255],
+        "secondary_button": [39, 44, 48, 255],
+        "secondary_button_hover": [85, 85, 87, 255],
+        "secondary_button_text": [255, 255, 255, 255],
+
+        "icon": [255, 255, 255, 255],
         "toolbar_background": [39, 44, 48, 255],
-        "toolbar_button_active": [95, 95, 95, 255],
-        "toolbar_button_hover": [95, 95, 95, 255],
-        "toolbar_button_active_hover": [95, 95, 95, 255],
+        "toolbar_button_active": [57, 57, 58, 255],
+        "toolbar_button_hover": [57, 57, 58, 255],
+        "toolbar_button_active_hover": [57, 57, 58, 255],
 
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
+        "main_window_header_background": [14, 14, 14, 255],
+        "main_window_header_background_gradient": [32, 32, 32, 255],
+        "main_window_header_button_background_hovered": [46, 46, 46, 255],
 
         "account_sync_state_icon": [255, 255, 255, 204],
 
@@ -32,7 +39,7 @@
 
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],
-        "text_link": [255, 255, 255, 127],
+        "text_link": [25, 110, 240, 255],
         "text_inactive": [255, 255, 255, 88],
         "text_hover": [255, 255, 255, 204],
         "text_pressed": [255, 255, 255, 204],
@@ -87,8 +94,8 @@
         "action_button_active": [39, 44, 48, 30],
         "action_button_active_text": [255, 255, 255, 255],
         "action_button_active_border": [255, 255, 255, 100],
-        "action_button_disabled": [19, 24, 28, 255],
-        "action_button_disabled_text": [200, 200, 200, 80],
+        "action_button_disabled": [85, 85, 87, 255],
+        "action_button_disabled_text": [103, 103, 104, 255],
         "action_button_disabled_border": [255, 255, 255, 30],
 
         "scrollbar_background": [39, 44, 48, 0],
@@ -170,6 +177,7 @@
 
         "toolbox_header_button_text_active": [255, 255, 255, 255],
         "toolbox_header_button_text_inactive": [128, 128, 128, 255],
+        "toolbox_premium_packages_background": [57, 57, 57, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],
         "monitor_text_disabled": [102, 102, 102, 255],

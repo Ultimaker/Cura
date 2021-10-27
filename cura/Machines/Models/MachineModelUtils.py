@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import TYPE_CHECKING
@@ -34,4 +34,4 @@ def fetchLayerHeight(quality_group: "QualityGroup") -> float:
     if isinstance(layer_height, SettingFunction):
         layer_height = layer_height(global_stack)
 
-    return float(layer_height)
+    return round(float(layer_height), 3)

@@ -7,25 +7,33 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 from UM.Job import Job
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
+from cura.Utils.Threading import call_on_qt_thread
 
 from ..Models.Http.ClusterMaterial import ClusterMaterial
 from ..Models.LocalMaterial import LocalMaterial
 from ..Messages.MaterialSyncMessage import MaterialSyncMessage
+
+import time
+import threading
 
 if TYPE_CHECKING:
     from .LocalClusterOutputDevice import LocalClusterOutputDevice
 
 
 class SendMaterialJob(Job):
+
     """Asynchronous job to send material profiles to the printer.
 
     This way it won't freeze up the interface while sending those materials.
     """
-
-
     def __init__(self, device: "LocalClusterOutputDevice") -> None:
         super().__init__()
         self.device = device  # type: LocalClusterOutputDevice
+
+        self._send_material_thread = threading.Thread(target = self._sendMissingMaterials)
+        self._send_material_thread.setDaemon(True)
+
+        self._remote_materials = {}  # type: Dict[str, ClusterMaterial]
 
     def run(self) -> None:
         """Send the request to the printer and register a callback"""
@@ -36,9 +44,15 @@ class SendMaterialJob(Job):
         """Callback for when the remote materials were returned."""
 
         remote_materials_by_guid = {material.guid: material for material in materials}
-        self._sendMissingMaterials(remote_materials_by_guid)
+        self._remote_materials = remote_materials_by_guid
+        # It's not the nicest way to do it, but if we don't handle this in a thread
+        # we are blocking the main interface (even though the original call was done in a job)
+        # This should really be refactored so that calculating the list of materials that need to be sent
+        # to the printer is done outside of the job (and running the job actually sends the materials)
+        # TODO: Fix this hack that was introduced for 4.9.1
+        self._send_material_thread.start()
 
-    def _sendMissingMaterials(self, remote_materials_by_guid: Dict[str, ClusterMaterial]) -> None:
+    def _sendMissingMaterials(self) -> None:
         """Determine which materials should be updated and send them to the printer.
 
         :param remote_materials_by_guid: The remote materials by GUID.
@@ -47,7 +61,7 @@ class SendMaterialJob(Job):
         if len(local_materials_by_guid) == 0:
             Logger.log("d", "There are no local materials to synchronize with the printer.")
             return
-        material_ids_to_send = self._determineMaterialsToSend(local_materials_by_guid, remote_materials_by_guid)
+        material_ids_to_send = self._determineMaterialsToSend(local_materials_by_guid, self._remote_materials)
         if len(material_ids_to_send) == 0:
             Logger.log("d", "There are no remote materials to update.")
             return
@@ -96,7 +110,11 @@ class SendMaterialJob(Job):
 
             file_name = os.path.basename(file_path)
             self._sendMaterialFile(file_path, file_name, root_material_id)
+            time.sleep(1)  # Throttle the sending a bit.
 
+    # This needs to be called on the QT thread since the onFinished needs to happen
+    # in the same thread as where the network manager is located (aka; main thread)
+    @call_on_qt_thread
     def _sendMaterialFile(self, file_path: str, file_name: str, material_id: str) -> None:
         """Send a single material file to the printer.
 
@@ -114,6 +132,9 @@ class SendMaterialJob(Job):
                                                         .format(file_name = file_name), f.read()))
         except FileNotFoundError:
             Logger.error("Unable to send material {material_id}, since it has been deleted in the meanwhile.".format(material_id = material_id))
+            return
+        except EnvironmentError as e:
+            Logger.error(f"Unable to send material {material_id}. We can't open that file for reading: {str(e)}")
             return
 
         # Add the material signature file if needed.

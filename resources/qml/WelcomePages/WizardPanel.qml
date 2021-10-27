@@ -53,7 +53,7 @@ Item
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: UM.Theme.getSize("progressbar").height
+            height: visible ? UM.Theme.getSize("progressbar").height : 0
 
             value: base.progressValue
         }
@@ -64,7 +64,6 @@ Item
             anchors
             {
                 margins: UM.Theme.getSize("wide_margin").width
-                bottomMargin: UM.Theme.getSize("default_margin").width
                 top: progressBar.bottom
                 bottom: parent.bottom
                 left: parent.left

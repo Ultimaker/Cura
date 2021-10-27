@@ -84,12 +84,12 @@ def test_getOverridesForExtruderNoGlobalStack(setting_inheritance_manager):
 
 
 def test_settingIsOverwritingInheritanceNoUserState(setting_inheritance_manager, mocked_stack):
-    # Setting 1 doesn't have a user state, so it cant have an override
+    # Setting 1 doesn't have a user state, so it can't have an override
     assert not setting_inheritance_manager._settingIsOverwritingInheritance("setting_1", mocked_stack)
 
 
 def test_settingIsOverwritingInheritanceNotEnabled(setting_inheritance_manager, mocked_stack):
-    # Setting 2 doesn't have a enabled, so it cant have an override
+    # Setting 2 doesn't have a enabled, so it can't have an override
     assert not setting_inheritance_manager._settingIsOverwritingInheritance("setting_2", mocked_stack)
 
 

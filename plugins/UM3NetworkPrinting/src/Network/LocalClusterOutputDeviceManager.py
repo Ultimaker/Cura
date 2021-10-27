@@ -52,7 +52,6 @@ class LocalClusterOutputDeviceManager:
 
     def start(self) -> None:
         """Start the network discovery."""
-
         self._zero_conf_client.start()
         for address in self._getStoredManualAddresses():
             self.addManualDevice(address)
@@ -292,4 +291,4 @@ class LocalClusterOutputDeviceManager:
         if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
             # Do not show the message if the user is not signed in.
             return
-        CloudFlowMessage(device.ipAddress).show()
+        CloudFlowMessage(device.name).show()

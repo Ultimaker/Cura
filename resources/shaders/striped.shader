@@ -36,7 +36,7 @@ fragment =
 
     uniform mediump float u_width;
     uniform bool u_vertical_stripes;
-    uniform lowp u_lowestPrintableHeight;
+    uniform lowp float u_lowestPrintableHeight;
 
     varying highp vec3 v_position;
     varying highp vec3 v_vertex;

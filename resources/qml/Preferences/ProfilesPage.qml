@@ -217,7 +217,7 @@ Item
     Connections
     {
         target: base.qualityManagementModel
-        onItemsChanged:
+        function onItemsChanged()
         {
             var toSelectItemName = base.currentItem == null ? "" : base.currentItem.name;
             if (newQualityNameToSelect != "")

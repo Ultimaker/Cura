@@ -216,11 +216,6 @@ class CloudOutputDeviceManager:
         online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
         new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
-        image_path = os.path.join(
-            CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
-            "resources", "svg", "cloud-flow-completed.svg"
-        )
-
         message = Message(
             title = self.i18n_catalog.i18ncp(
                 "info:status",
@@ -230,7 +225,7 @@ class CloudOutputDeviceManager:
             ),
             progress = 0,
             lifetime = 0,
-            image_source = image_path
+            message_type = Message.MessageType.POSITIVE
         )
         message.show()
 
@@ -316,7 +311,8 @@ class CloudOutputDeviceManager:
                         "A cloud connection is not available for a printer",
                         "A cloud connection is not available for some printers",
                         len(self.reported_device_ids)
-                )
+                ),
+            message_type = Message.MessageType.WARNING
         )
         device_names = "".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.i18n_catalog.i18ncp(
@@ -330,7 +326,7 @@ class CloudOutputDeviceManager:
 
         message_text += self.i18n_catalog.i18nc(
                 "info:status",
-                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com/'>{}</a>.".format(digital_factory_string))
+                "To establish a connection, please visit the {website_link}".format(website_link = "<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&utm_campaign=change-account-connect-printer'>{}</a>.".format(digital_factory_string))
         )
         self._removed_printers_message.setText(message_text)
         self._removed_printers_message.addAction("keep_printer_configurations_action",
@@ -399,7 +395,7 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
-        for device in self._remote_clusters.values():
+        for device in list(self._remote_clusters.values()):  # Make a copy of the remote devices list, to prevent modifying the list while iterating, if a device gets added asynchronously.
             if device.key == stored_cluster_id:
                 # Connect to it if the stored ID matches.
                 self._connectToOutputDevice(device, active_machine)
@@ -417,7 +413,7 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
         digital_factory_string = self.i18n_catalog.i18nc("info:name", "Ultimaker Digital Factory")
-        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com/'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
+        digital_factory_link = "<a href='https://digitalfactory.ultimaker.com?utm_source=cura&utm_medium=software&utm_campaign=change-account-remove-printer'>{digital_factory_string}</a>".format(digital_factory_string = digital_factory_string)
         removal_warning_string = self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "{printer_name} will be removed until the next account sync.").format(printer_name = device.name) \
             + "<br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "To remove {printer_name} permanently, visit {digital_factory_link}").format(printer_name = device.name, digital_factory_link = digital_factory_link) \
             + "<br><br>" + self.i18n_catalog.i18nc("@message {printer_name} is replaced with the name of the printer", "Are you sure you want to remove {printer_name} temporarily?").format(printer_name = device.name)

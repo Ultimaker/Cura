@@ -96,11 +96,11 @@ UM.Dialog
                 }
                 showAll: toggleShowAll.checked || filterInput.text !== ""
             }
-            delegate:Loader
+            delegate: Loader
             {
                 id: loader
 
-                width: parent.width
+                width: listview.width
                 height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
                 property var definition: model

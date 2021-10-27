@@ -1,0 +1,126 @@
+{
+    "name": "Two Trees Base Printer",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": false,
+        "author": "3DGadgets.my",
+        "manufacturer": "Two Trees",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": ["MachineSettingsAction"],
+
+        "machine_extruder_trains": {
+            "0": "two_trees_base_extruder_0"
+        },
+
+        "has_materials": true,
+        "has_variants": true,
+        "has_machine_quality": true,
+        "variants_name": "Nozzle Size",
+
+        "preferred_variant_name": "0.4mm Nozzle",
+        "preferred_quality_type": "standard",
+        "preferred_material": "generic_pla"
+        
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Two Trees Base Printer" },
+        "machine_start_gcode": { "default_value": "G28 ;Home\nM420 S1 ;Enable ABL using saved Mesh and Fade Height\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move bed down\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X10.4 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Bed up" },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positioning\n\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z\n" },
+     
+        "machine_heated_bed": { "default_value": true },
+
+        "material_diameter": { "default_value": 1.75 },
+		
+		
+        "speed_print": { "value": 50.0 } ,
+        "speed_infill": { "value": "speed_print" },
+        "speed_wall": { "value": "speed_print / 2" },
+        "speed_wall_0": { "value": "speed_wall" },
+        "speed_wall_x": { "value": "speed_print / 1.5" },
+        "speed_topbottom": { "value": "speed_print / 2" },
+        "speed_roofing": { "value": "speed_topbottom" },
+        "speed_layer_0": { "value": 20.0 },
+        "speed_print_layer_0": { "value": "speed_layer_0" },      
+        "speed_prime_tower": { "value": "speed_topbottom" },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_z_hop": { "value": 5 },
+
+        "skirt_brim_speed": { "value": "speed_layer_0" },
+
+        "line_width": { "value": "machine_nozzle_size" },
+
+        "optimize_wall_printing_order": { "value": "True" },
+
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
+        
+        "infill_sparse_density": { "value": "20" },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
+        "infill_before_walls": { "value": false },
+        "infill_overlap": { "value": 30.0 },
+        "skin_overlap": { "value": 10.0 },
+        "infill_wipe_dist": { "value": 0.0 },
+        "wall_0_wipe_dist": { "value": 0.0 },
+
+        "fill_perimeter_gaps": { "value": "'everywhere'" },
+        "fill_outline_gaps": { "value": false },
+        "filter_out_tiny_gaps": { "value": false },
+
+
+        "retraction_hop_enabled": { "value": "False" },
+        "retraction_hop": { "value": 0.2 },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
+        "retraction_combing_max_distance": { "value": 30 },
+        "travel_avoid_other_parts": { "value": true },
+        "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": true },
+        
+        "retraction_enable": { "value": true },
+        "retraction_speed": { "default_value" : 40 },
+        "retraction_amount": { "default_value" : 7 }, 
+        "retraction_count_max": { "value": 100 },
+        "retraction_extrusion_window": { "value": 10 },
+        "retraction_min_travel": { "value": 1.5 },
+
+
+        "cool_fan_full_layer": { "value": "2" },
+        "cool_fan_enabled": { "value": true },
+        "cool_min_layer_time": { "value": 10 },
+
+        "adhesion_type": { "value": "'skirt'" },
+        "brim_replaces_support": { "value": false },
+        "skirt_gap": { "value": 10.0 },
+        "skirt_line_count": { "value": 3 },
+
+        "adaptive_layer_height_variation": { "value": 0.04 },
+        "adaptive_layer_height_variation_step": { "value": 0.04 },
+
+        "meshfix_maximum_resolution": { "value": "0.25" },
+        "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
+
+        "support_angle": { "value": 50 },
+        "support_pattern": { "value": "'zigzag'" },
+        "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 25" },
+        "support_use_towers": { "value": false },
+        "support_xy_distance": { "value": "wall_line_width_0 * 2" },
+        "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
+        "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
+        "support_wall_count": { "value": 0 },
+        "support_brim_enable": { "value": true },
+        "support_brim_width": { "value": 5 },
+
+        "support_interface_enable": { "value": false },
+        "support_interface_height": { "value": "layer_height * 4" },
+        "support_interface_density": { "value": 33.333 },
+        "support_interface_pattern": { "value": "'grid'" },
+        "support_interface_skip_height": { "value": 0.2 },
+        "minimum_support_area": { "value": 2 },
+        "minimum_interface_area": { "value": 10 },
+        "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
+        "wall_thickness": {"value": "line_width * 2" }
+
+    }
+}

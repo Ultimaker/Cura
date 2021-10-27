@@ -1,13 +1,17 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
+import zipfile  # To export all materials in a .zip archive.
+
+from PyQt5.QtGui import QDesktopServices
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
@@ -19,17 +23,70 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class MaterialManagementModel(QObject):
-    """Proxy class to the materials page in the preferences.
-
-    This class handles the actions in that page, such as creating new materials, renaming them, etc.
-    """
-
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
 
     :param The base file of the material is provided as parameter when this emits
     """
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super().__init__(parent = parent)
+        self._checkIfNewMaterialsWereInstalled()
+
+    def _checkIfNewMaterialsWereInstalled(self) -> None:
+        """
+        Checks whether new material packages were installed in the latest startup. If there were, then it shows
+        a message prompting the user to sync the materials with their printers.
+        """
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        for package_id, package_data in application.getPackageManager().getPackagesInstalledOnStartup().items():
+            if package_data["package_info"]["package_type"] == "material":
+                # At least one new material was installed
+                self._showSyncNewMaterialsMessage()
+                break
+
+    def _showSyncNewMaterialsMessage(self) -> None:
+        sync_materials_message = Message(
+                text = catalog.i18nc("@action:button",
+                                     "Please sync the material profiles with your printers before starting to print."),
+                title = catalog.i18nc("@action:button", "New materials installed"),
+                message_type = Message.MessageType.WARNING,
+                lifetime = 0
+        )
+
+        sync_materials_message.addAction(
+                "sync",
+                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                icon = "",
+                description = "Sync your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
+        )
+
+        sync_materials_message.addAction(
+                "learn_more",
+                name = catalog.i18nc("@action:button", "Learn more"),
+                icon = "",
+                description = "Learn more about syncing your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
+                button_style = Message.ActionButtonStyle.LINK
+        )
+        sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
+
+        # Show the message only if there are printers that support material export
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        global_stacks = container_registry.findContainerStacks(type = "machine")
+        if any([stack.supportsMaterialExport for stack in global_stacks]):
+            sync_materials_message.show()
+
+    def _onSyncMaterialsMessageActionTriggered(self, sync_message: Message, sync_message_action: str):
+        if sync_message_action == "sync":
+            QDesktopServices.openUrl(QUrl("https://example.com/openSyncAllWindow"))
+            # self.openSyncAllWindow()
+            sync_message.hide()
+        elif sync_message_action == "learn_more":
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
@@ -79,6 +136,7 @@ class MaterialManagementModel(QObject):
 
         :param material_node: The material to remove.
         """
+        Logger.info(f"Removing material {material_node.container_id}")
 
         container_registry = CuraContainerRegistry.getInstance()
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
@@ -194,6 +252,7 @@ class MaterialManagementModel(QObject):
 
         :return: The root material ID of the duplicate material.
         """
+        Logger.info(f"Duplicating material {material_node.base_file} to {new_base_id}")
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
     @pyqtSlot(result = str)
@@ -262,3 +321,53 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    @pyqtSlot(result = QUrl)
+    def getPreferredExportAllPath(self) -> QUrl:
+        """
+        Get the preferred path to export materials to.
+
+        If there is a removable drive, that should be the preferred path. Otherwise it should be the most recent local
+        file path.
+        :return: The preferred path to export all materials to.
+        """
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        device_manager = cura_application.getOutputDeviceManager()
+        devices = device_manager.getOutputDevices()
+        for device in devices:
+            if device.__class__.__name__ == "RemovableDriveOutputDevice":
+                return QUrl.fromLocalFile(device.getId())
+        else:  # No removable drives? Use local path.
+            return cura_application.getDefaultPath("dialog_material_path")
+
+    @pyqtSlot(QUrl)
+    def exportAll(self, file_path: QUrl) -> None:
+        """
+        Export all materials to a certain file path.
+        :param file_path: The path to export the materials to.
+        """
+        registry = CuraContainerRegistry.getInstance()
+
+        try:
+            archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+        except OSError as e:
+            Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
+            error_message = Message(
+                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
+                title = catalog.i18nc("@message:title", "Failed to save material archive"),
+                message_type = Message.MessageType.ERROR
+            )
+            error_message.show()
+            return
+        for metadata in registry.findInstanceContainersMetadata(type = "material"):
+            if metadata["base_file"] != metadata["id"]:  # Only process base files.
+                continue
+            if metadata["id"] == "empty_material":  # Don't export the empty material.
+                continue
+            material = registry.findContainers(id = metadata["id"])[0]
+            suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
+            filename = metadata["id"] + "." + suffix
+            try:
+                archive.writestr(filename, material.serialize())
+            except OSError as e:
+                Logger.log("e", f"An error has occurred while writing the material \'{metadata['id']}\' in the file \'{filename}\': {e}.")

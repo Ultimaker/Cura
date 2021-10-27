@@ -1,0 +1,402 @@
+{
+    "notice": {
+        "new_icon": "Information",
+        "size": "default"
+    },
+    "info": {
+        "new_icon": "Information",
+        "size": "default"
+    },
+    "plus": {
+        "new_icon": "Plus",
+        "size": "default"
+    },
+    "cross1": {
+        "new_icon": "Cancel",
+        "size": "default"
+    },
+    "application": {
+        "new_icon": "UltimakerCura",
+        "size": "default"
+    },
+    "printer_single": {
+        "new_icon": "Printer",
+        "size": "default"
+    },
+    "category_material": {
+        "new_icon": "Spool",
+        "size": "default"
+    },
+    "settings": {
+        "new_icon": "Sliders",
+        "size": "default"
+    },
+    "plugin": {
+        "new_icon": "Plugin",
+        "size": "default"
+    },
+    "external_link": {
+        "new_icon": "LinkExternal",
+        "size": "default"
+    },
+    "arrow_top": {
+        "new_icon": "ChevronSingleUp",
+        "size": "default"
+    },
+    "arrow_bottom": {
+        "new_icon": "ChevronSingleDown",
+        "size": "default"
+    },
+    "arrow_right": {
+        "new_icon": "ChevronSingleRight",
+        "size": "default"
+    },
+    "pos_normal": {
+        "new_icon": "Infill0",
+        "size": "default"
+    },
+    "pos_print_as_support": {
+        "new_icon": "MeshTypeSupport",
+        "size": "default"
+    },
+    "pos_modify_overlaps": {
+        "new_icon": "MeshTypeIntersect",
+        "size": "default"
+    },
+    "pos_modify_dont_support_overlap": {
+        "new_icon": "BlockSupportOverlaps",
+        "size": "default"
+    },
+    "minus": {
+        "new_icon": "Minus",
+        "size": "default"
+    },
+    "load": {
+        "new_icon": "Folder",
+        "size": "default"
+    },
+    "extruder_button": {
+        "new_icon": "Extruder",
+        "size": "medium"
+    },
+    "category_adhesion": {
+        "new_icon": "Adhesion",
+        "size": "default"
+    },
+    "category_machine": {
+        "new_icon": "Printer",
+        "size": "default"
+    },
+    "category_layer_height": {
+        "new_icon": "PrintQuality",
+        "size": "default"
+    },
+    "category_shell": {
+        "new_icon": "PrintShell",
+        "size": "default"
+    },
+    "category_topbottom": {
+        "new_icon": "PrintTopBottom",
+        "size": "default"
+    },
+    "category_infill": {
+        "new_icon": "Infill1",
+        "size": "default"
+    },
+    "category_speed": {
+        "new_icon": "SpeedOMeter",
+        "size": "default"
+    },
+    "category_travel": {
+        "new_icon": "PrintTravel",
+        "size": "default"
+    },
+    "category_cool": {
+        "new_icon": "Fan",
+        "size": "default"
+    },
+    "category_support": {
+        "new_icon": "Support",
+        "size": "default"
+    },
+    "category_dual": {
+        "new_icon": "DualExtrusion",
+        "size": "default"
+    },
+    "category_fixes": {
+        "new_icon": "Bandage",
+        "size": "default"
+    },
+    "category_blackmagic": {
+        "new_icon": "BlackMagic",
+        "size": "default"
+    },
+    "category_experimental": {
+        "new_icon": "Experiment",
+        "size": "default"
+    },
+    "circle_outline": {
+        "new_icon": "CircleOutline",
+        "size": "default"
+    },
+    "update": {
+        "new_icon": "ArrowDoubleCircleRight",
+        "size": "default"
+    },
+    "checked": {
+        "new_icon": "CheckCircle",
+        "size": "default"
+    },
+    "warning_light": {
+        "new_icon": "Warning",
+        "size": "default"
+    },
+    "clock": {
+        "new_icon": "Clock",
+        "size": "default"
+    },
+    "spool": {
+        "new_icon": "Spool",
+        "size": "default"
+    },
+    "warning": {
+        "new_icon": "Warning",
+        "size": "default"
+    },
+    "check": {
+        "new_icon": "Check",
+        "size": "default"
+    },
+    "star": {
+        "new_icon": "StarFilled",
+        "size": "default"
+    },
+    "pencil": {
+        "new_icon": "Pen",
+        "size": "default"
+    },
+    "printing_guideline": {
+        "new_icon": "Guide",
+        "size": "default"
+    },
+    "favorites_star_full": {
+        "new_icon": "StarFilled",
+        "size": "default"
+    },
+    "favorites_star_empty": {
+        "new_icon": "Star",
+        "size": "default"
+    },
+    "resize": {
+        "new_icon": "ThreeDots",
+        "size": "default"
+    },
+    "gradual": {
+        "new_icon": "InfillGradual",
+        "size": "default"
+    },
+    "hollow": {
+        "new_icon": "Infill0",
+        "size": "default"
+    },
+    "sparse": {
+        "new_icon": "Infill3",
+        "size": "default"
+    },
+    "dense": {
+        "new_icon": "Infill2",
+        "size": "default"
+    },
+    "solid": {
+        "new_icon": "Solid",
+        "size": "default"
+    },
+    "reset": {
+        "new_icon": "ArrowReset",
+        "size": "default"
+    },
+    "arrow_left": {
+        "new_icon": "ChevronSingleLeft",
+        "size": "default"
+    },
+    "home": {
+        "new_icon": "House",
+        "size": "default"
+    },
+    "printer_group": {
+        "new_icon": "PrinterTriple",
+        "size": "medium"
+    },
+    "formula": {
+        "new_icon": "Function",
+        "size": "default"
+    },
+    "search": {
+        "new_icon": "Magnifier",
+        "size": "default"
+    },
+    "menu": {
+        "new_icon": "Hamburger",
+        "size": "default"
+    },
+    "view_3d": {
+        "new_icon": "View3D",
+        "size": "default"
+    },
+    "view_layer": {
+        "new_icon": "Layers",
+        "size": "default"
+    },
+    "view_front": {
+        "new_icon": "ViewFront",
+        "size": "default"
+    },
+    "view_top": {
+        "new_icon": "ViewTop",
+        "size": "default"
+    },
+    "view_left": {
+        "new_icon": "ViewLeft",
+        "size": "default"
+    },
+    "view_right": {
+        "new_icon": "ViewRight",
+        "size": "default"
+    },
+    "package": {
+        "new_icon": "Plugin",
+        "size": "default"
+    },
+    "material_spool": {
+        "new_icon": "Spool",
+        "size": "default"
+    },
+    "dot": {
+        "new_icon": "Dot",
+        "size": "low"
+    },
+    "mirror": {
+        "new_icon": "Mirror",
+        "size": "default"
+    },
+    "rotate_reset": {
+        "new_icon": "ArrowReset",
+        "size": "default"
+    },
+    "rotate_layflat": {
+        "new_icon": "LayFlat",
+        "size": "default"
+    },
+    "rotate_face_layflat": {
+        "new_icon": "LayFlatOnFace",
+        "size": "default"
+    },
+    "rotate": {
+        "new_icon": "Rotate",
+        "size": "default"
+    },
+    "scale_reset": {
+        "new_icon": "ArrowReset",
+        "size": "default"
+    },
+    "scale": {
+        "new_icon": "Scale",
+        "size": "default"
+    },
+    "translate": {
+        "new_icon": "ArrowFourWay",
+        "size": "default"
+    },
+    "buildplate": {
+        "new_icon": "Buildplate",
+        "size": "default"
+    },
+    "basic": {
+        "new_icon": "PrintQuality",
+        "size": "default"
+    },
+    "category_shield": {
+        "new_icon": "Shield",
+        "size": "default"
+    },
+    "category_unknown": {
+        "new_icon": "Sputnik",
+        "size": "default"
+    },
+    "cross2": {
+        "new_icon": "CancelBlock",
+        "size": "default"
+    },
+    "drop_down_button": {
+        "new_icon": "ChevronSingleDown",
+        "size": "default"
+    },
+    "group": {
+        "new_icon": "People",
+        "size": "default"
+    },
+    "link": {
+        "new_icon": "Link",
+        "size": "default"
+    },
+    "play": {
+        "new_icon": "Play",
+        "size": "default"
+    },
+    "print_time": {
+        "new_icon": "Clock",
+        "size": "default"
+    },
+    "printer_cloud_connected": {
+        "new_icon": "CloudBadge",
+        "size": "low"
+    },
+    "printer_cloud_not_available": {
+        "new_icon": "CloudBadge",
+        "size": "low"
+    },
+    "printer_connected": {
+        "new_icon": "CheckBlueBG",
+        "size": "low"
+    },
+    "printsetup": {
+        "new_icon": "Sliders",
+        "size": "default"
+    },
+    "quick": {
+        "new_icon": "Quick",
+        "size": "default"
+    },
+    "scale_max": {
+        "new_icon": "ScaleMax",
+        "size": "default"
+    },
+    "setting_per_object": {
+        "new_icon": "MeshType",
+        "size": "default"
+    },
+    "star_empty": {
+        "new_icon": "Star",
+        "size": "default"
+    },
+    "star_filled": {
+        "new_icon": "StarFilled",
+        "size": "default"
+    },
+    "ulti": {
+        "new_icon": "PrintQuality",
+        "size": "default"
+    },
+    "view_xray": {
+        "new_icon": "CancelBlock",
+        "size": "default"
+    },
+    "view_normal": {
+        "new_icon": "Infill0",
+        "size": "default"
+    },
+    "viewmode": {
+        "new_icon": "Eye",
+        "size": "default"
+    }
+}

@@ -4,6 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.12 // For the DropShadow
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -31,23 +32,16 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Item
-    {
-        id: topSpacer
-        anchors.top: titleLabel.bottom
-        height: UM.Theme.getSize("default_margin").height
-        width: UM.Theme.getSize("default_margin").width
-    }
-
     Rectangle
     {
         anchors
         {
-            top: topSpacer.bottom
+            top: titleLabel.bottom
+            topMargin: UM.Theme.getSize("default_margin").width
             bottom: whatsNewDots.top
+            bottomMargin: UM.Theme.getSize("narrow_margin").width
             left: parent.left
             right: parent.right
-            margins: UM.Theme.getSize("default_margin").width * 2
         }
 
         color: UM.Theme.getColor("viewport_overlay")
@@ -59,7 +53,6 @@ Item
             anchors
             {
                 top: parent.top
-                topMargin: UM.Theme.getSize("default_margin").width
                 horizontalCenter: parent.horizontalCenter
             }
             height: parent.height
@@ -69,12 +62,6 @@ Item
 
             Repeater
             {
-                anchors
-                {
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_margin").width / 2
-                    horizontalCenter: parent.horizontalCenter
-                }
 
                 model: manager.subpageCount
 
@@ -82,22 +69,34 @@ Item
                 {
                     Layout.alignment: Qt.AlignHCenter
                     color: UM.Theme.getColor("viewport_overlay")
+                    width: whatsNewViewport.width
+                    height: whatsNewViewport.height
 
-                    Image
+                    AnimatedImage
                     {
                         id: subpageImage
 
                         anchors
                         {
-                            horizontalCenter: parent.horizontalCenter
                             top: parent.top
-                            topMargin: UM.Theme.getSize("default_margin").width
+                            topMargin: UM.Theme.getSize("thick_margin").width
+                            left: parent.left
+                            leftMargin: UM.Theme.getSize("thick_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("thick_margin").width
                         }
-                        width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
-                        height: (parent.height - UM.Theme.getSize("default_margin").height) * 0.75
+                        width: Math.round(parent.width - (UM.Theme.getSize("thick_margin").height * 2))
                         fillMode: Image.PreserveAspectFit
+                        onStatusChanged: playing = (status == AnimatedImage.Ready)
 
                         source: manager.getSubpageImageSource(index)
+                    }
+
+                    DropShadow {
+                        anchors.fill: subpageImage
+                        radius: UM.Theme.getSize("monitor_shadow_radius").width
+                        color: UM.Theme.getColor("first_run_shadow")
+                        source: subpageImage
                     }
 
                     Cura.ScrollableTextArea
@@ -107,10 +106,12 @@ Item
                         anchors
                         {
                             top: subpageImage.bottom
+                            topMargin: UM.Theme.getSize("default_margin").height
                             bottom: parent.bottom
-                            horizontalCenter: parent.horizontalCenter
+                            bottomMargin: UM.Theme.getSize("thin_margin").height
+                            left: subpageImage.left
+                            right: subpageImage.right
                         }
-                        width: parent.width - (UM.Theme.getSize("default_margin").width * 2)
 
                         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
@@ -118,11 +119,13 @@ Item
                         do_borders: false
 
                         textArea.wrapMode: TextEdit.Wrap
-                        textArea.text: manager.getSubpageText(index)
+                        textArea.text: "<style>a:link { color: " + UM.Theme.getColor("text_link") + "; text-decoration: underline; }</style>" + manager.getSubpageText(index)
                         textArea.textFormat: Text.RichText
                         textArea.readOnly: true
-                        textArea.font: UM.Theme.getFont("medium")
+                        textArea.font: UM.Theme.getFont("default")
                         textArea.onLinkActivated: Qt.openUrlExternally(link)
+                        textArea.leftPadding: 0
+                        textArea.rightPadding: 0
                     }
                 }
             }
@@ -139,7 +142,8 @@ Item
 
         anchors
         {
-            bottom: bottomSpacer.top
+            bottom: whatsNewNextButton.top
+            bottomMargin: UM.Theme.getSize("wide_margin").height
             horizontalCenter: parent.horizontalCenter
         }
 

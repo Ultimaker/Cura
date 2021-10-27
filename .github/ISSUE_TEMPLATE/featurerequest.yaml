@@ -1,7 +1,6 @@
 name: Feature Request
 description: Suggest an idea for this project.
 labels: "Type: New Feature"
-issue_body: true
 body:
 - type: markdown
   attributes:
@@ -28,7 +27,7 @@ body:
 - type: textarea
   attributes:
     label: Describe alternatives you've considered
-    description: A clear and concise description of any alternative solutions or features you've considered. Again, if possible, think about why these alternatives are not working out.
+    description: A clear and concise description of any alternative solutions or features you've considered. If possible, think about why these alternatives are not working out.
     placeholder: The alternatives I've considered are...
   validations:
     required: true
@@ -39,8 +38,7 @@ body:
     placeholder: It will affect...
   validations:
     required: true
-- type: markdown
+- type: textarea
   attributes:
-    value: |
-      ## Additional information & file uploads
-      You can add pictures or files to visualize your feature request in the comments below.
+    label: Additional information & file uploads
+    description: You can add pictures or files to visualize your feature request in the comments below.
