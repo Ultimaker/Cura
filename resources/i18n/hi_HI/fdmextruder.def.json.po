@@ -1,0 +1,276 @@
+# Cura
+# Copyright (C) 2021 PBR Research
+# This file is distributed under the same license as the Cura package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cura 4.10\n"
+"Report-Msgid-Bugs-To: ksonone8@gmail.com\n"
+"POT-Creation-Date: 2021-10-15 11:35+0000\n"
+"PO-Revision-Date: 2021-10-27 1:22+0200\n"
+"Last-Translator: Komal R. Gupta, Kapil H. Sonone <ksonone8@gmail.com>\n"
+"Language-Team: Kapil <www.github.com/ksonone>\n"
+"Language: hi_HI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "मशीन"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "मशीन विशिष्ट सेटिंग्स"
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_nr label"
+msgid "Extruder"
+msgstr "एक्सट्रूडर"
+#: fdmextruder.def.json
+msgctxt "extruder_nr description"
+msgid "The extruder train used for printing. This is used in multi-extrusion."
+msgstr "प्रिंटिंग के लिए इस्तेमाल की जाने वाली एक्सट्रूडर ट्रेन। इसका उपयोग मल्टी-एक्सट्रूज़न में किया जाता है"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "नोजल ID"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "एक एक्सट्रूडर ट्रेन के लिए नोजल आईडी, जैसे \"AA 0.4\" और \"BB 0.8\"।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "नोजल व्यास"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "नोजल का भीतरी व्यास। गैर-मानक नोजल आकार का उपयोग करते समय इस सेटिंग को बदलें।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x label"
+msgid "Nozzle X Offset"
+msgstr "नोजल X ऑफसेट"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_x description"
+msgid "The x-coordinate of the offset of the nozzle."
+msgstr "नोजल के ऑफसेट का x-निर्देशांक।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y label"
+msgid "Nozzle Y Offset"
+msgstr "नोजल Y ऑफसेट"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_nozzle_offset_y description"
+msgid "The y-coordinate of the offset of the nozzle."
+msgstr "नोजल के ऑफसेट का y-निर्देशांक।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code label"
+msgid "Extruder Start G-Code"
+msgstr "एक्सट्रूडर स्टार्ट G-कोड"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_code description"
+msgid "Start g-code to execute when switching to this extruder."
+msgstr "इस एक्सट्रूडर पर स्विच करते समय एक्सीक्यूट करने के लिए जी-कोड शुरू करें।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs label"
+msgid "Extruder Start Position Absolute"
+msgstr "एक्सट्रूडर स्टार्ट पोजिशन एब्सोल्यूट"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_abs description"
+msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
+msgstr "हेड के अंतिम ज्ञात स्थान के सापेक्ष एक्सट्रूडर की प्रारंभिक स्थिति को एब्सोल्यूट बनाएं।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x label"
+msgid "Extruder Start Position X"
+msgstr "एक्सट्रूडर प्रारंभ X स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_x description"
+msgid "The x-coordinate of the starting position when turning the extruder on."
+msgstr "एक्सट्रूडर को चालू करते समय प्रारंभिक स्थिति का x-निर्देशांक।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y label"
+msgid "Extruder Start Position Y"
+msgstr "एक्सट्रूडर स्टार्ट Y स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_start_pos_y description"
+msgid "The y-coordinate of the starting position when turning the extruder on."
+msgstr "एक्सट्रूडर को चालू करते समय प्रारंभिक स्थिति का y-निर्देशांक।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code label"
+msgid "Extruder End G-Code"
+msgstr "एक्सट्रूडर अंत G-Code"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_code description"
+msgid "End g-code to execute when switching away from this extruder."
+msgstr "इस एक्सट्रूडर से दूर स्विच करते समय निष्पादित करने के लिए g-code समाप्त करें।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs label"
+msgid "Extruder End Position Absolute"
+msgstr "एक्सट्रूडर एंड पोजिशन एब्सोल्यूट"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_abs description"
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgstr "हेड के अंतिम-ज्ञात स्थान के सापेक्ष एक्सट्रूडर की समाप्ति स्थिति को पूर्ण बनाएं।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x label"
+msgid "Extruder End Position X"
+msgstr "एक्सट्रूडर अंत X स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_x description"
+msgid "The x-coordinate of the ending position when turning the extruder off."
+msgstr "एक्सट्रूडर को बंद करते समय अंतिम स्थिति का x-निर्देशांक।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y label"
+msgid "Extruder End Position Y"
+msgstr "एक्सट्रूडर अंत Y स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_end_pos_y description"
+msgid "The y-coordinate of the ending position when turning the extruder off."
+msgstr "एक्सट्रूडर को बंद करते समय अंतिम स्थिति का y-निर्देशांक।"
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "एक्सट्रूडर प्राइम Z स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "उस स्थिति का Z निर्देशांक जहां  प्रिंटिंग की शुरुआत में नोजल प्राइम करता है।"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number label"
+msgid "Extruder Print Cooling Fan"
+msgstr "एक्सट्रूडर प्रिंट कूलिंग फैन"
+
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number description"
+msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgstr "इस एक्सट्रूडर से जुड़े प्रिंट कूलिंग फैन की संख्या। इसे केवल 0 के डिफ़ॉल्ट मान से तब बदलें जब आपके पास प्रत्येक एक्सट्रूडर के लिए एक अलग प्रिंट कूलिंग फैन हो।"
+
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "बिल्ड प्लेट चिपकाव"
+
+
+#: fdmextruder.def.json
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "जुड़ाव/चिपकाव"
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "एक्सट्रूडर प्राइम X स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "X उस स्थिति का समन्वय करता है जहां प्रिंटिंग की शुरुआत में नोजल प्राइम होता है। "
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "एक्सट्रूडर प्राइम Y स्थिति"
+
+
+#: fdmextruder.def.json
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "उस स्थिति का Y निर्देशांक जहां प्रिंटिंग की शुरुआत में नोजल प्राइम करता है।"
+
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr "मटेरियल"
+
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr "मटेरियल"
+
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "व्यास"
+
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "उपयोग में लाये गये फिलामेंट के व्यास को समायोजित करें। इस मान को प्रयुक्त फिलामेंट के व्यास के साथ सुमेलित करें।"
+
+
+#~ msgctxt "machine_extruder_start_code description"
+#~ msgid "Start g-code to execute whenever turning the extruder on."
+#~ msgstr "एक्सट्रूडर को चालू करते समय एक्सीक्यूट करने के लिए g-code प्रारंभ करें।"
+
+
+#~ msgctxt "machine_extruder_end_code description"
+#~ msgid "End g-code to execute whenever turning the extruder off."
+#~ msgstr "एक्सट्रूडर को बंद करते समय एक्सीक्यूट करने के लिए g-code समाप्त करें।"
