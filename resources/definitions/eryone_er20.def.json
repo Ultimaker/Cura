@@ -84,7 +84,7 @@
             "value": 100
         },
         "cool_fan_speed_0": {
-            "value": 100
+            "value": 0
         },
         "infill_overlap": {
             "value": "25 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
