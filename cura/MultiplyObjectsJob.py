@@ -6,11 +6,15 @@ from typing import List
 
 from UM.Application import Application
 from UM.Job import Job
+from UM.Math.Vector import Vector
 from UM.Message import Message
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
+from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.Nest2DArrange import arrange
+from cura.Arranging.Nest2DArrange import arrange, createGroupOperationForArrange
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -43,11 +47,11 @@ class MultiplyObjectsJob(Job):
             # Only count sliceable objects
             if node_.callDecoration("isSliceable"):
                 fixed_nodes.append(node_)
-
+        nodes_to_add_without_arrange = []
         for node in self._objects:
             # If object is part of a group, multiply group
             current_node = node
-            while current_node.getParent() and (current_node.getParent().callDecoration("isGroup") or current_node.getParent().callDecoration("isSliceable")):
+            while current_node.getParent() and current_node.getParent().callDecoration("isGroup"):
                 current_node = current_node.getParent()
 
             if current_node in processed_nodes:
@@ -56,19 +60,38 @@ class MultiplyObjectsJob(Job):
 
             for _ in range(self._count):
                 new_node = copy.deepcopy(node)
-
                 # Same build plate
                 build_plate_number = current_node.callDecoration("getBuildPlateNumber")
                 new_node.callDecoration("setBuildPlateNumber", build_plate_number)
                 for child in new_node.getChildren():
                     child.callDecoration("setBuildPlateNumber", build_plate_number)
-
-                nodes.append(new_node)
+                if not current_node.getParent().callDecoration("isSliceable"):
+                    nodes.append(new_node)
+                else:
+                    # The node we're trying to place has another node that is sliceable as a parent.
+                    # As such, we shouldn't arrange it (but it should be added to the scene!)
+                    nodes_to_add_without_arrange.append(new_node)
+                    new_node.setParent(current_node.getParent())
 
         found_solution_for_all = True
+        group_operation = GroupedOperation()
         if nodes:
-            found_solution_for_all = arrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes,
-                                             factor = 10000, add_new_nodes_in_scene = True)
+            group_operation, not_fit_count = createGroupOperationForArrange(nodes,
+                                                                            Application.getInstance().getBuildVolume(),
+                                                                            fixed_nodes,
+                                                                            factor = 10000,
+                                                                            add_new_nodes_in_scene = True)
+            found_solution_for_all = not_fit_count == 0
+
+        if nodes_to_add_without_arrange:
+            for nested_node in nodes_to_add_without_arrange:
+                group_operation.addOperation(AddSceneNodeOperation(nested_node, nested_node.getParent()))
+                # Move the node a tiny bit so it doesn't overlap with the existing one.
+                # This doesn't fix it if someone creates more than one duplicate, but it at least shows that something
+                # happened (and after moving it, it's clear that there are more underneath)
+                group_operation.addOperation(TranslateOperation(nested_node, Vector(2.5, 2.5, 2.5)))
+
+        group_operation.push()
         status_message.hide()
 
         if not found_solution_for_all:

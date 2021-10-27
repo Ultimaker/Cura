@@ -369,7 +369,7 @@
             "value": 45
         },
         "retraction_combing": {
-            "value": "infill"
+            "value": "'infill'"
         },
         "retraction_hop_enabled": {
             "value": true
