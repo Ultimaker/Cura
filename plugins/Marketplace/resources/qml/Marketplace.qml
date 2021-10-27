@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.2
 
 import UM 1.2 as UM
+import Cura 1.6 as Cura
 
 Window
 {
@@ -18,18 +19,18 @@ Window
     width: minimumWidth
     height: minimumHeight
 
-    onVisibleChanged:
+    // Set and unset the content. No need to keep things in memory if it's not visible.
+    onVisibleChanged: content.source = visible ? "Plugins.qml" : ""
+
+    Connections
     {
-        // Set and unset the content. No need to keep things in memory if it's not visible. 
-        if(visible)
+        target: Cura.API.account
+        function onLoginStateChanged()
         {
-            content.source = "plugins.qml"
-        }
-        else
-        {
-            content.source = ""
+            close();
         }
     }
+
     title: "Marketplace" //Seen by Ultimaker as a brand name, so this doesn't get translated.
     modality: Qt.NonModal
 
