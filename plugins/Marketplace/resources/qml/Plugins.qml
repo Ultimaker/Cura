@@ -9,6 +9,7 @@ import UM 1.4 as UM
 ScrollView
 {
     clip: true
+    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
     ListView
     {
