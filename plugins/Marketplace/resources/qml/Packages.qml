@@ -13,6 +13,8 @@ ScrollView
 
     property alias model: pluginColumn.model
 
+    Component.onCompleted: model.request()
+
     ListView
     {
         id: pluginColumn

@@ -40,12 +40,12 @@ class PackageList(ListModel):
 
         self._is_loading = True
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
-        self._request_url = f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
         self._error_message = ""
 
-        self.addRoleName(self.PackageRole, "package")
+        self._package_type_filter = ""
+        self._request_url = self._initialRequestUrl()
 
-        self.request()
+        self.addRoleName(self.PackageRole, "package")
 
     @pyqtSlot()
     def request(self) -> None:
@@ -64,6 +64,10 @@ class PackageList(ListModel):
             callback = self._parseResponse,
             error_callback = self._onError
         )
+
+    def reset(self) -> None:
+        self.clear()
+        self._request_url = self._initialRequestUrl()
 
     isLoadingChanged = pyqtSignal()
 
@@ -91,6 +95,22 @@ class PackageList(ListModel):
         """
         return self._request_url != ""
 
+    packageTypeFilterChanged = pyqtSignal()
+
+    def setPackageTypeFilter(self, new_filter: str) -> None:
+        if new_filter != self._package_type_filter:
+            self._package_type_filter = new_filter
+            self.reset()
+            self.packageTypeFilterChanged.emit()
+
+    @pyqtProperty(str, notify = packageTypeFilterChanged, fset = setPackageTypeFilter)
+    def packageTypeFilter(self) -> str:
+        """
+        Get the package type this package list is filtering on, like ``plugin`` or ``material``.
+        :return: The package type this list is filtering on.
+        """
+        return self._package_type_filter
+
     def setErrorMessage(self, error_message: str) -> None:
         if self._error_message != error_message:
             self._error_message = error_message
@@ -107,6 +127,15 @@ class PackageList(ListModel):
         :return: An error message, if any, or an empty string if everything went okay.
         """
         return self._error_message
+
+    def _initialRequestUrl(self) -> str:
+        """
+        Get the URL to request the first paginated page with.
+        :return: A URL to request.
+        """
+        if self._package_type_filter != "":
+            return f"{Marketplace.PACKAGES_URL}?package_type={self._package_type_filter}&limit={self.ITEMS_PER_PAGE}"
+        return f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:
         """

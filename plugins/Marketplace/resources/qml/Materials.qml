@@ -7,5 +7,6 @@ Packages
 {
     model: Marketplace.PackageList
     {
+        packageTypeFilter: "material"
     }
 }
