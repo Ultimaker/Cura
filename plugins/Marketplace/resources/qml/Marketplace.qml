@@ -77,12 +77,14 @@ Window
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
-                    TabButton
+                    spacing: 0
+
+                    PackageTypeTab
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Plug-ins")
                     }
-                    TabButton
+                    PackageTypeTab
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Materials")
