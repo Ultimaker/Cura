@@ -74,6 +74,7 @@ Window
 
                 TabBar //Page selection.
                 {
+                    id: pageSelectionTabBar
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
@@ -83,11 +84,13 @@ Window
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Plug-ins")
+                        onClicked: content.source = "Plugins.qml"
                     }
                     PackageTypeTab
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Materials")
+                        onClicked: content.source = "Materials.qml"
                     }
                 }
             }
