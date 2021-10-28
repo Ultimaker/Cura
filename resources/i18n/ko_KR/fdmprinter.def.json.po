@@ -1,12 +1,12 @@
 # Cura
 # Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# 
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.11\n"
+"Project-Id-Version: Cura 4.12\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-08-11 09:58+0000\n"
+"POT-Creation-Date: 2021-10-20 16:43+0000\n"
 "PO-Revision-Date: 2021-04-16 15:02+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -1732,8 +1732,8 @@ msgstr "내부채움 패턴"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "프린트 충진 재료의 패턴입니다. 선과 갈지자형 충진이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 입방체, 옥텟, 4분 입방체, 십자, 동심원 패턴이 레이어마다 완전히 인쇄됩니다. 자이로이드, 입방체, 4분 입방체, 옥텟 충진이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1799,6 +1799,11 @@ msgstr "십자형 3D"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "자이로이드"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2013,6 +2018,46 @@ msgstr "스킨 에지의 레이어 지원"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "스킨 에지를 지원하는 내부채움 레이어의 수."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3203,6 +3248,11 @@ msgstr "끔"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "모두"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5155,8 +5205,8 @@ msgstr "최소 몰드 너비"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "몰드의 바깥 쪽과 모델의 바깥 쪽 사이의 최소 거리입니다."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -6429,6 +6479,14 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "프린트 충진 재료의 패턴입니다. 선과 갈지자형 충진이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 입방체, 옥텟, 4분 입방체, 십자, 동심원 패턴이 레이어마다 완전히 인쇄됩니다. 자이로이드, 입방체, 4분 입방체, 옥텟 충진이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "몰드의 바깥 쪽과 모델의 바깥 쪽 사이의 최소 거리입니다."
 
 #~ msgctxt "machine_steps_per_mm_e description"
 #~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
