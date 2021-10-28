@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.2
 
 import UM 1.2 as UM
+import Cura 1.6 as Cura
 
 Window
 {
@@ -17,6 +18,18 @@ Window
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
+
+    // Set and unset the content. No need to keep things in memory if it's not visible.
+    onVisibleChanged: content.source = visible ? "Plugins.qml" : ""
+
+    Connections
+    {
+        target: Cura.API.account
+        function onLoginStateChanged()
+        {
+            close();
+        }
+    }
 
     title: "Marketplace" //Seen by Ultimaker as a brand name, so this doesn't get translated.
     modality: Qt.NonModal
@@ -61,9 +74,9 @@ Window
 
                 Loader //Page contents.
                 {
+                    id: content
                     anchors.fill: parent
                     anchors.margins: UM.Theme.getSize("default_margin").width
-
                     source: "Plugins.qml"
                 }
             }
