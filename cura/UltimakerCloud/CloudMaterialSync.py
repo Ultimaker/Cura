@@ -7,6 +7,7 @@ from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
+from UM.Resources import Resources
 from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob, UploadMaterialsError  # To export materials to the output printer.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from UM.i18n import i18nCatalog
@@ -41,6 +42,21 @@ class CloudMaterialSync(QObject):
                 # At least one new material was installed
                 self._showSyncNewMaterialsMessage()
                 break
+
+    def openSyncAllWindow(self):
+
+        self.reset()
+
+        if self.sync_all_dialog is None:
+            qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences",
+                                         "Materials", "MaterialsSyncDialog.qml")
+            self.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(
+                qml_path, {})
+        if self.sync_all_dialog is None:  # Failed to load QML file.
+            return
+        self.sync_all_dialog.setProperty("syncModel", self)
+        self.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
+        self.sync_all_dialog.show()
 
     def _showSyncNewMaterialsMessage(self) -> None:
         sync_materials_message = Message(

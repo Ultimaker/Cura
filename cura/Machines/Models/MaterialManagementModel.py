@@ -13,7 +13,7 @@ from UM.Logger import Logger
 from UM.Resources import Resources  # To find QML files.
 from UM.Signal import postponeSignals, CompressTechnique
 
-import cura.CuraApplication  # Imported like this to prevent circular imports.
+import cura.CuraApplication  # Imported like this to prevent cirmanagecular imports.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
 from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
@@ -330,13 +330,5 @@ class MaterialManagementModel(QObject):
         """
         Opens the window to sync all materials.
         """
-        self._material_sync.reset()
+        self._material_sync.openSyncAllWindow()
 
-        if self._material_sync.sync_all_dialog is None:
-            qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences", "Materials", "MaterialsSyncDialog.qml")
-            self._material_sync.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(qml_path, {})
-        if self._material_sync.sync_all_dialog is None:  # Failed to load QML file.
-            return
-        self._material_sync.sync_all_dialog.setProperty("syncModel", self._material_sync)
-        self._material_sync.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
-        self._material_sync.sync_all_dialog.show()
