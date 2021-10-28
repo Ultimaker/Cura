@@ -66,6 +66,30 @@ Window
                     text: catalog.i18nc("@header", "Install Plugins")
                 }
             }
+
+            Item
+            {
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: childrenRect.height
+
+                TabBar //Page selection.
+                {
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                    TabButton
+                    {
+                        width: implicitWidth
+                        text: catalog.i18nc("@button", "Plug-ins")
+                    }
+                    TabButton
+                    {
+                        width: implicitWidth
+                        text: catalog.i18nc("@button", "Materials")
+                    }
+                }
+            }
+
             Rectangle //Page contents.
             {
                 Layout.preferredWidth: parent.width
