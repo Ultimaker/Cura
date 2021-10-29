@@ -63,7 +63,7 @@ Window
 
                     font: UM.Theme.getFont("large")
                     color: UM.Theme.getColor("text")
-                    text: catalog.i18nc("@header", "Install Plugins")
+                    text: pageSelectionTabBar.currentItem.pageTitle
                 }
             }
 
@@ -84,12 +84,14 @@ Window
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Plug-ins")
+                        pageTitle: catalog.i18nc("@header", "Install Plugins")
                         onClicked: content.source = "Plugins.qml"
                     }
                     PackageTypeTab
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Materials")
+                        pageTitle: catalog.i18nc("@header", "Install Materials")
                         onClicked: content.source = "Materials.qml"
                     }
                 }

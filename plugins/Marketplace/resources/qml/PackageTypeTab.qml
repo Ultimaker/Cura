@@ -7,6 +7,8 @@ import UM 1.0 as UM
 
 TabButton
 {
+    property string pageTitle
+
     background: Rectangle
     {
         anchors.fill: parent
