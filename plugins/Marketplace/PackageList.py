@@ -172,7 +172,7 @@ class PackageList(ListModel):
         :param error: The error status of the request.
         """
         if error == QNetworkReply.NetworkError.OperationCanceledError:
-            Logger.error("Cancelled request for packages.")
+            Logger.debug("Cancelled request for packages.")
             self._ongoing_request = None
             return  # Don't show an error about this to the user.
         Logger.error("Could not reach Marketplace server.")
