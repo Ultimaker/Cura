@@ -682,12 +682,22 @@ Window
                     }
                     Cura.PrimaryButton
                     {
+                        id: exportUsbButton
                         anchors.right: parent.right
-                        text: catalog.i18nc("@button", "Export material archive")
+
+                        property bool hasExported: false
+                        text: hasExported ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
                         onClicked:
                         {
-                            exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
-                            exportUsbDialog.open();
+                            if(!hasExported)
+                            {
+                                exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.open();
+                            }
+                            else
+                            {
+                                materialsSyncDialog.close();
+                            }
                         }
                     }
                 }
@@ -719,6 +729,7 @@ Window
         {
             syncModel.exportAll(fileUrl);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
+            exportUsbButton.hasExported = true;
         }
     }
 }
