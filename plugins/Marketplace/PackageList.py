@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
+from PyQt5.QtNetwork import QNetworkReply
 from typing import Optional, TYPE_CHECKING
 
 from cura.CuraApplication import CuraApplication
@@ -9,7 +10,7 @@ from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To ma
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager, HttpRequestData  # To request the package list from the API.
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
 
 from . import Marketplace   # To get the list of packages. Imported this way to prevent circular imports.
@@ -17,7 +18,6 @@ from .PackageModel import PackageModel  # The contents of this list.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
-    from PyQt5.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 
@@ -37,7 +37,7 @@ class PackageList(ListModel):
     def __init__(self, parent: "QObject" = None) -> None:
         super().__init__(parent)
 
-        self._is_loading = True
+        self._ongoing_request: Optional[HttpRequestData] = None
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._error_message = ""
 
@@ -46,6 +46,13 @@ class PackageList(ListModel):
 
         self.addRoleName(self.PackageRole, "package")
 
+    def __del__(self) -> None:
+        """
+        When deleting this object, abort the request so that we don't get a callback from it later on a deleted C++
+        object.
+        """
+        self.abortRequest()
+
     @pyqtSlot()
     def request(self) -> None:
         """
@@ -53,16 +60,21 @@ class PackageList(ListModel):
 
         When the request is done, the list will get updated with the new package models.
         """
-        self.setIsLoading(True)
         self.setErrorMessage("")  # Clear any previous errors.
 
         http = HttpRequestManager.getInstance()
-        http.get(
+        self._ongoing_request = http.get(
             self._request_url,
             scope = self._scope,
             callback = self._parseResponse,
             error_callback = self._onError
         )
+        self.isLoadingChanged.emit()
+
+    @pyqtSlot()
+    def abortRequest(self) -> None:
+        HttpRequestManager.getInstance().abortRequest(self._ongoing_request)
+        self._ongoing_request = None
 
     def reset(self) -> None:
         self.clear()
@@ -70,18 +82,13 @@ class PackageList(ListModel):
 
     isLoadingChanged = pyqtSignal()
 
-    def setIsLoading(self, is_loading: bool) -> None:
-        if is_loading != self._is_loading:
-            self._is_loading = is_loading
-            self.isLoadingChanged.emit()
-
-    @pyqtProperty(bool, notify = isLoadingChanged, fset = setIsLoading)
+    @pyqtProperty(bool, notify = isLoadingChanged)
     def isLoading(self) -> bool:
         """
         Gives whether the list is currently loading the first page or loading more pages.
         :return: ``True`` if the list is downloading, or ``False`` if not downloading.
         """
-        return self._is_loading
+        return self._ongoing_request is not None
 
     hasMoreChanged = pyqtSignal()
 
@@ -155,13 +162,20 @@ class PackageList(ListModel):
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
         self.hasMoreChanged.emit()
-        self.setIsLoading(False)
+        self._ongoing_request = None
+        self.isLoadingChanged.emit()
 
-    def _onError(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"]) -> None:
+    def _onError(self, reply: "QNetworkReply", error: Optional[QNetworkReply.NetworkError]) -> None:
         """
         Handles networking and server errors when requesting the list of packages.
         :param reply: The reply with packages. This will most likely be incomplete and should be ignored.
         :param error: The error status of the request.
         """
-        Logger.error(f"Could not reach Marketplace server.")
+        if error == QNetworkReply.NetworkError.OperationCanceledError:
+            Logger.error("Cancelled request for packages.")
+            self._ongoing_request = None
+            return  # Don't show an error about this to the user.
+        Logger.error("Could not reach Marketplace server.")
         self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))
+        self._ongoing_request = None
+        self.isLoadingChanged.emit()

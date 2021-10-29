@@ -14,6 +14,7 @@ ScrollView
     property alias model: pluginColumn.model
 
     Component.onCompleted: model.request()
+    Component.onDestruction: model.abortRequest()
 
     ListView
     {
