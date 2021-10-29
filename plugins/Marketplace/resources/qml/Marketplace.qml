@@ -66,6 +66,35 @@ Window
                     text: catalog.i18nc("@header", "Install Plugins")
                 }
             }
+
+            Item
+            {
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: childrenRect.height
+
+                TabBar //Page selection.
+                {
+                    id: pageSelectionTabBar
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                    spacing: 0
+
+                    PackageTypeTab
+                    {
+                        width: implicitWidth
+                        text: catalog.i18nc("@button", "Plug-ins")
+                        onClicked: content.source = "Plugins.qml"
+                    }
+                    PackageTypeTab
+                    {
+                        width: implicitWidth
+                        text: catalog.i18nc("@button", "Materials")
+                        onClicked: content.source = "Materials.qml"
+                    }
+                }
+            }
+
             Rectangle //Page contents.
             {
                 Layout.preferredWidth: parent.width
