@@ -11,21 +11,21 @@ ScrollView
     clip: true
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-    property alias model: pluginColumn.model
+    property alias model: packagesListview.model
 
     Component.onCompleted: model.request()
     Component.onDestruction: model.abortRequest()
 
     ListView
     {
-        id: pluginColumn
+        id: packagesListview
         width: parent.width
 
         spacing: UM.Theme.getSize("default_margin").height
 
         delegate: Rectangle
         {
-            width: pluginColumn.width
+            width: packagesListview.width
             height: UM.Theme.getSize("card").height
 
             color: UM.Theme.getColor("main_background")
@@ -46,7 +46,7 @@ ScrollView
         footer: Item //Wrapper item to add spacing between content and footer.
         {
             width: parent.width
-            height: UM.Theme.getSize("card").height + pluginColumn.spacing
+            height: UM.Theme.getSize("card").height + packagesListview.spacing
             Button
             {
                 id: loadMoreButton
@@ -89,7 +89,7 @@ ScrollView
                             PropertyChanges
                             {
                                 target: loadMoreLabel
-                                text: catalog.i18nc("@button", "Failed to load plug-ins:") + " " + packages.model.errorMessage + "\n" + catalog.i18nc("@button", "Retry?")
+                                text: catalog.i18nc("@button", "Failed to load packages:") + " " + packages.model.errorMessage + "\n" + catalog.i18nc("@button", "Retry?")
                             }
                         },
                         State
