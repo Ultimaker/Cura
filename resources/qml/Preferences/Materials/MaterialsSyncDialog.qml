@@ -279,6 +279,7 @@ Window
                         delegate: Rectangle
                         {
                             id: delegateContainer
+                            color: "transparent"
                             border.color: UM.Theme.getColor("lining")
                             border.width: UM.Theme.getSize("default_lining").width
                             width: printerListScrollView.width
@@ -384,10 +385,12 @@ Window
                             visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0
                             Rectangle
                             {
-                                border.color: UM.Theme.getColor("lining")
-                                border.width: UM.Theme.getSize("default_lining").width
                                 anchors.fill: parent
                                 anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+                                border.color: UM.Theme.getColor("lining")
+                                border.width: UM.Theme.getSize("default_lining").width
+                                color: "transparent"
 
                                 RowLayout
                                 {
@@ -415,6 +418,7 @@ Window
                                           + "\n"
                                           + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
                                         font: UM.Theme.getFont("medium")
+                                        color: UM.Theme.getColor("text")
                                         elide: Text.ElideRight
 
                                         Layout.alignment: Qt.AlignVCenter
