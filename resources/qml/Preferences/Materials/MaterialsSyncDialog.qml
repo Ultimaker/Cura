@@ -24,6 +24,7 @@ Window
     property variant syncModel
     property alias pageIndex: swipeView.currentIndex
     property alias syncStatusText: syncStatusLabel.text
+    property bool hasExportedUsb: false
 
     SwipeView
     {
@@ -686,10 +687,10 @@ Window
                         anchors.right: parent.right
 
                         property bool hasExported: false
-                        text: hasExported ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
+                        text: materialsSyncDialog.hasExportedUsb ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
                         onClicked:
                         {
-                            if(!hasExported)
+                            if(!materialsSyncDialog.hasExportedUsb)
                             {
                                 exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
                                 exportUsbDialog.open();
@@ -729,7 +730,7 @@ Window
         {
             syncModel.exportAll(fileUrl);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
-            exportUsbButton.hasExported = true;
+            materialsSyncDialog.hasExportedUsb = true;
         }
     }
 }
