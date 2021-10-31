@@ -75,7 +75,8 @@ Item
     // Change the contentItem close behaviour
     property alias contentClosePolicy : content.closePolicy
 
-    property int popupOffset: 2
+    // Distance between the header and the content.
+    property int popupOffset: 2 * UM.Theme.getSize("default_lining").height
 
     onEnabledChanged:
     {

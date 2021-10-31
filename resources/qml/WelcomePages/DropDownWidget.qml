@@ -56,7 +56,7 @@ Item
     Cura.RoundedRectangle
     {
         id: contentRectangle
-        // Move up a bit (exaclty the width of the border) to avoid double line
+        // Move up a bit (exactly the width of the border) to avoid double line
         y: header.height - UM.Theme.getSize("default_lining").width
         anchors.left: header.left
         anchors.right: header.right

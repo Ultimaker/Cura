@@ -428,7 +428,7 @@ class FlavorParser:
 
             G = self._getInt(line, "G")
             if G is not None:
-                # When find a movement, the new posistion is calculated and added to the current_path, but
+                # When find a movement, the new position is calculated and added to the current_path, but
                 # don't need to create a polygon until the end of the layer
                 current_position = self.processGCode(G, line, current_position, current_path)
                 continue

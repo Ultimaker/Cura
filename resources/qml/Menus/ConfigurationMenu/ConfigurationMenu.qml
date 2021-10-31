@@ -79,9 +79,9 @@ Cura.ExpandablePopup
                         // Label for the brand of the material
                         Label
                         {
-                            id: materialBrandColorTypeLabel
+                            id: materialBrandNameLabel
 
-                            text: model.material_brand == model.color_name ? model.color_name + " " + model.material_type : model.material_brand + " " + model.color_name + " " + model.material_type
+                            text:  model.material_brand + " " + model.material_name
                             elide: Text.ElideRight
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
@@ -92,15 +92,15 @@ Cura.ExpandablePopup
 
                         Label
                         {
-                            id: materialColorTypeLabel
+                            id: materialNameLabel
 
-                            text: model.color_name + " " + model.material_type
+                            text: model.material_name
                             elide: Text.ElideRight
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                             width: parent.width
-                            visible: !materialBrandColorTypeLabel.visible && !truncated
+                            visible: !materialBrandNameLabel.visible && !truncated
                         }
 
                         Label
@@ -113,7 +113,7 @@ Cura.ExpandablePopup
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                             width: parent.width
-                            visible: !materialBrandColorTypeLabel.visible && !materialColorTypeLabel.visible
+                            visible: !materialBrandNameLabel.visible && !materialNameLabel.visible
                         }
                         // Label that shows the name of the variant
                         Label

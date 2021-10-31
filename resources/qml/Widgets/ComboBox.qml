@@ -15,12 +15,6 @@ ComboBox
 {
     id: control
 
-    UM.I18nCatalog
-    {
-        id: catalog
-        name: "cura"
-    }
-
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
     enabled: delegateModel.count > 0

@@ -107,7 +107,7 @@ class IntentCategoryModel(ListModel):
             qualities = IntentModel()
             qualities.setIntentCategory(category)
             result.append({
-                "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
+                "name": IntentCategoryModel.translation(category, "name", category),
                 "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
                 "weight": list(IntentCategoryModel._get_translations().keys()).index(category),

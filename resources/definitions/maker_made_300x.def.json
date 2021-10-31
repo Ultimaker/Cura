@@ -101,7 +101,7 @@
         "acceleration_enabled": {"value": false },
         "acceleration_roofing":  {"value": 3000 },
         "jerk_enabled":  {"value": false },
-        "retraction_combing":  {"value": "'within infill'" },
+        "retraction_combing":  {"value": "'infill'" },
         "travel_retract_before_outer_wall": {"value": false },
         "travel_avoid_other_parts": {"value": true },
         "retraction_hop_enabled": {"value": false },

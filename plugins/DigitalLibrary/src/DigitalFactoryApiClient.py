@@ -67,10 +67,12 @@ class DigitalFactoryApiClient:
         def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
             if (response is not None and isinstance(response, DigitalFactoryFeatureBudgetResponse) and
                     response.library_max_private_projects is not None):
-                callback(
-                    response.library_max_private_projects == -1 or  # Note: -1 is unlimited
-                    response.library_max_private_projects > 0)
+                # A user has DF access when library_max_private_projects is either -1 (unlimited) or bigger then 0
+                has_access = response.library_max_private_projects == -1 or response.library_max_private_projects > 0
+                callback(has_access)
                 self._library_max_private_projects = response.library_max_private_projects
+                # update the account with the additional user rights
+                self._account.updateAdditionalRight(df_access = has_access)
             else:
                 Logger.warning(f"Digital Factory: Response is not a feature budget, likely an error: {str(response)}")
                 callback(False)

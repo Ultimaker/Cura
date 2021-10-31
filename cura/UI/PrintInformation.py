@@ -449,7 +449,4 @@ class PrintInformation(QObject):
         if isinstance(output_device, ProjectOutputDevice):
             new_name = output_device.getLastOutputName()
             if new_name is not None:
-                if len(os.path.dirname(new_name)) > 0:
-                    self.setProjectName(new_name)
-                else:
-                    self.setJobName(new_name)
+                self.setJobName(os.path.splitext(os.path.basename(new_name))[0])

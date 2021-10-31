@@ -200,7 +200,7 @@ UM.MainWindow
                 }
             }
 
-            // This is a placehoder for adding a pattern in the header
+            // This is a placeholder for adding a pattern in the header
             Image
             {
                 id: backgroundPattern
@@ -311,8 +311,8 @@ UM.MainWindow
 
             Toolbar
             {
-                // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
-                // plugins)
+                // The toolbar is the left bar that is populated by all the tools
+                // (which are dynamically populated by plugins)
                 id: toolbar
 
                 property int mouseX: base.mouseX
