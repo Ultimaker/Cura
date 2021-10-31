@@ -61,7 +61,7 @@ class LayerPolygon:
         for i in range(0, len(self._cumulative_type_change_counts)):
             if last_type != self.types[i]:
                 current_type_count += 1
-            last_type = self.types[i]
+                last_type = self.types[i]
             self._cumulative_type_change_counts[i] = current_type_count
         self._mesh_line_count = len(self._types) - self._jump_count
         self._vertex_count = self._mesh_line_count + numpy.sum(self._types[1:] == self._types[:-1])

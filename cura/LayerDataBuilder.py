@@ -63,7 +63,7 @@ class LayerDataBuilder(MeshBuilder):
         feedrates = numpy.empty((vertex_count), numpy.float32)
         extruders = numpy.empty((vertex_count), numpy.float32)
         line_types = numpy.empty((vertex_count), numpy.float32)
-        vertex_indices = numpy.arange(0, vertex_count, 1, dtype=numpy.float32)
+        vertex_indices = numpy.arange(0, vertex_count, 1, dtype = numpy.float32)
 
         vertex_offset = 0
         index_offset = 0
