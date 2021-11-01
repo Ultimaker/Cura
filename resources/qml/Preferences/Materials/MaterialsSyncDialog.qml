@@ -198,7 +198,7 @@ Window
                             name: "idle"
                             when: typeof syncModel === "undefined" || syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles:") }
-                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL }
+                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL; width: 0 }
                         },
                         State
                         {
