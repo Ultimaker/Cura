@@ -75,44 +75,12 @@ Window
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height
 
-                Button
+                ManagePackagesButton
                 {
                     id: managePackagesButton
 
-                    hoverEnabled: true
-
-                    width: childrenRect.width
-                    height: childrenRect.height
-
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                    background: Rectangle
-                    {
-                        color: UM.Theme.getColor("action_button")
-                        border.color: "transparent"
-                        border.width: UM.Theme.getSize("default_lining").width
-                    }
-
-                    Cura.ToolTip
-                    {
-                        id: managePackagesTooltip
-
-                        tooltipText: catalog.i18nc("@info:tooltip", "Manage packages")
-                        arrowSize: 0
-                        visible: managePackagesButton.hovered
-                    }
-
-                    UM.RecolorImage
-                    {
-                        id: managePackagesIcon
-
-                        width: UM.Theme.getSize("section_icon").width
-                        height: UM.Theme.getSize("section_icon").height
-
-                        color: UM.Theme.getColor("icon")
-                        source: UM.Theme.getIcon("Settings")
-                    }
 
                     onClicked:
                     {
