@@ -182,7 +182,7 @@ class CloudMaterialSync(QObject):
             return
         if job_result == UploadMaterialsJob.Result.FAILED:
             if isinstance(job_error, UploadMaterialsError):
-                self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Error sending materials to the Digital Factory:") + " " + str(job_error))
+                self.sync_all_dialog.setProperty("syncStatusText", str(job_error))
             else:  # Could be "None"
                 self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Unknown error."))
             self._export_upload_status = "error"
