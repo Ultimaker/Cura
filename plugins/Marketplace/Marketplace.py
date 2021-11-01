@@ -13,7 +13,8 @@ from UM.Extension import Extension  # We are implementing the main object of an 
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
 
-from .PackageList import PackageList  # To register this type with QML.
+from .RemotePackageList import RemotePackageList  # To register this type with QML.
+from .LocalPackageList import LocalPackageList  # To register this type with QML.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -31,7 +32,8 @@ class Marketplace(Extension):
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
 
-        qmlRegisterType(PackageList, "Marketplace", 1, 0, "PackageList")
+        qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
+        qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
 
     @pyqtSlot()
     def show(self) -> None:

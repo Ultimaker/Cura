@@ -5,7 +5,8 @@ import Marketplace 1.0 as Marketplace
 
 Packages
 {
-    model: Marketplace.PackageList
+    pageTitle: catalog.i18nc("@header", "Install Plugins")
+    model: Marketplace.RemotePackageList
     {
         packageTypeFilter: "plugin"
     }

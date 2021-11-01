@@ -12,9 +12,10 @@ ScrollView
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
     property alias model: packagesListview.model
+    property string pageTitle
 
-    Component.onCompleted: model.request()
-    Component.onDestruction: model.abortRequest()
+    Component.onCompleted: model.updatePackages()
+    Component.onDestruction: model.abortUpdating()
 
     ListView
     {
@@ -43,7 +44,8 @@ ScrollView
             }
         }
 
-        footer: Item //Wrapper item to add spacing between content and footer.
+        //Wrapper item to add spacing between content and footer.
+        footer: Item
         {
             width: parent.width
             height: UM.Theme.getSize("card").height + packagesListview.spacing
@@ -55,7 +57,7 @@ ScrollView
                 anchors.bottom: parent.bottom
 
                 enabled: packages.model.hasMore && !packages.model.isLoading || packages.model.errorMessage != ""
-                onClicked: packages.model.request()  //Load next page in plug-in list.
+                onClicked: packages.model.updatePackages()  //Load next page in plug-in list.
 
                 background: Rectangle
                 {
