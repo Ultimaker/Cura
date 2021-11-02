@@ -24,6 +24,29 @@ ScrollView
 
         spacing: UM.Theme.getSize("default_margin").height
 
+        section.property: "package.sectionTitle"
+        section.criteria: ViewSection.FullString
+        section.delegate: Rectangle
+        {
+            width: packagesListview.width
+            height: sectionHeaderText.implicitHeight + UM.Theme.getSize("default_margin").height
+
+            color: UM.Theme.getColor("detail_background")
+
+            required property string section
+
+            Label
+            {
+                id: sectionHeaderText
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+
+                text: parent.section
+                font: UM.Theme.getFont("large")
+                color: UM.Theme.getColor("text")
+            }
+        }
+
         delegate: Rectangle
         {
             width: packagesListview.width

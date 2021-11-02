@@ -41,8 +41,11 @@ class LocalPackageList(PackageList):
 
         bundled = plugin_registry.getInstalledPlugins()
         for b in bundled:
-            package = PackageModel({"package_id": b, "display_name": b}, parent = self)
+            package = PackageModel({"package_id": b, "display_name": b, "section_title": "bundled"}, parent = self)
             self.appendItem({"package": package})
         packages = package_manager.getInstalledPackageIDs()
+        for p in packages:
+            package = PackageModel({"package_id": p, "display_name": p, "section_title": "package"}, parent = self)
+            self.appendItem({"package": package})
         self.setIsLoading(False)
         self.setHasMore(False)

@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, QObject
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 
@@ -25,6 +25,7 @@ class PackageModel(QObject):
         super().__init__(parent)
         self._package_id = package_data.get("package_id", "UnknownPackageId")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
+        self._section_title = package_data.get("section_title", None)
 
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
@@ -33,3 +34,7 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant = True)
     def displayName(self) -> str:
         return self._display_name
+
+    @pyqtProperty(str, constant = True)
+    def sectionTitle(self) -> Optional[str]:
+        return self._section_title
