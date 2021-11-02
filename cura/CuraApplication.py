@@ -162,6 +162,7 @@ class CuraApplication(QtApplication):
         self.default_theme = "cura-light"
 
         self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
+        self.beta_change_log_url = "https://ultimaker.com/ultimaker-cura-beta-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
 
         self._boot_loading_time = time.time()
 
