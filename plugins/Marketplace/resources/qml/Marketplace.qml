@@ -100,7 +100,7 @@ Window
                     PackageTypeTab
                     {
                         width: implicitWidth
-                        text: catalog.i18nc("@button", "Plug-ins")
+                        text: catalog.i18nc("@button", "Plugins")
                         onClicked: content.source = "Plugins.qml"
                     }
                     PackageTypeTab
