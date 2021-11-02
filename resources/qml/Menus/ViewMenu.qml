@@ -51,7 +51,6 @@ Menu
             onTriggered:
             {
                 UM.Preferences.setValue("general/camera_perspective_mode", "perspective")
-                checked = cameraViewMenu.cameraMode == "perspective"
             }
             exclusiveGroup: group
         }
@@ -63,7 +62,6 @@ Menu
             onTriggered:
             {
                 UM.Preferences.setValue("general/camera_perspective_mode", "orthographic")
-                checked = cameraViewMenu.cameraMode == "orthographic"
             }
             exclusiveGroup: group
         }
