@@ -20,6 +20,18 @@ catalog = i18nCatalog("cura")
 
 class LocalPackageList(PackageList):
     PackageRole = Qt.UserRole + 1
+    PACKAGE_SECTION_HEADER = {
+        "installed":
+            {
+                "plugin": catalog.i18nc("@label:property", "Installed Cura Plugins"),
+                "material": catalog.i18nc("@label:property", "Installed Materials")
+            },
+        "bundled":
+            {
+                "plugin": catalog.i18nc("@label:property", "Bundled Plugins"),
+                "material": catalog.i18nc("@label:property", "Bundled Materials")
+            }
+        }
 
     def __init__(self, parent: "QObject" = None) -> None:
         super().__init__(parent)
@@ -38,16 +50,29 @@ class LocalPackageList(PackageList):
         self._getLocalPackages()
 
     def _getLocalPackages(self) -> None:
-        plugin_registry = self._application.getPluginRegistry()
-        package_manager = self._application.getPackageManager()
+        sorted_sections = {}
+        for section in self._getSections():
+            packages = filter(lambda p: p["section_title"] == section, self._allPackageInfo())
+            sorted_sections[section] = sorted(packages, key = lambda p: p["display_name"])
 
-        bundled = plugin_registry.getInstalledPlugins()
-        for b in bundled:
-            package = PackageModel({"package_id": b, "display_name": b, "section_title": "bundled"}, parent = self)
-            self.appendItem({"package": package})
-        packages = package_manager.getInstalledPackageIDs()
-        for p in packages:
-            package = PackageModel({"package_id": p, "display_name": p, "section_title": "package"}, parent = self)
-            self.appendItem({"package": package})
+        for section in sorted_sections.values():
+            for package_data in section:
+                package = PackageModel(package_data, parent = self)
+                self.appendItem({"package": package})
+
         self.setIsLoading(False)
         self.setHasMore(False)
+
+    def _getSections(self):
+        for package_type in self.PACKAGE_SECTION_HEADER.values():
+            for section in package_type.values():
+                yield section
+
+    def _allPackageInfo(self):
+        manager = self._application.getPackageManager()
+        for package_id in manager.getAllInstalledPackageIDs():
+            package_data = manager.getInstalledPackageInfo(package_id)
+            bundled_or_installed = "bundled" if package_data["is_bundled"] else "installed"
+            package_type = package_data["package_type"]
+            package_data["section_title"] = self.PACKAGE_SECTION_HEADER[bundled_or_installed][package_type]
+            yield package_data
