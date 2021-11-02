@@ -42,8 +42,7 @@
 # Added support for outputting changes to LCD (untested). Added type hints to most functions and variables. Added more comments. Created GCodeCommand
 # class for better detection of G1 vs G10 or G11 commands, and accessing arguments. Moved most GCode methods to GCodeCommand class. Improved wording
 # of Single Layer vs Keep Layer to better reflect what was happening.
-# V5.2.2    Alex Jaxon, Added option to modify Build Volume Temperature keeping current format
-#           updated from "Experimental" to "Beta"
+# V5.3.0    Alex Jaxon, Added option to modify Build Volume Temperature keeping current format
 #
 
 
@@ -65,11 +64,11 @@ import re
 
 # this was broken up into a separate class so the main ChangeAtZ script could be debugged outside of Cura
 class ChangeAtZ(Script):
-    version = "5.2.2"
+    version = "5.3.0"
 
     def getSettingDataString(self):
         return """{
-            "name": "ChangeAtZ """ + self.version + """(Beta)",
+            "name": "ChangeAtZ """ + self.version + """(Experimental)",
             "key": "ChangeAtZ",
             "metadata": {},
             "version": 2,
@@ -229,22 +228,22 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "120",
                     "enabled": "h1_Change_bedTemp"
                 },
-                                        "h1_Change_BuildVolumeTemperature": {
-                                        "label": "Change Build Volume Temperature",
-                                        "description": "Select if Build Volume Temperature has to be changed",
-                                        "type": "bool",
-                                        "default_value": false
+                "h1_Change_buildVolumeTemperature": {
+                    "label": "Change Build Volume Temperature",
+                    "description": "Select if Build Volume Temperature has to be changed",
+                    "type": "bool",
+                    "default_value": false
                 },
-                                    "h2_BuildVolumeTemperature": {
-                                        "label": "Build Volume Temperature",
-                                        "description": "New Build Volume Temperature",
-                                        "unit": "C",
-                                        "type": "float",
-                                        "default_value": 20,
-                                        "minimum_value": "0",
-                                        "minimum_value_warning": "10",
-                                        "maximum_value_warning": "50",
-                                        "enabled": "h1_Change_BuildVolumeTemperature"
+                "h2_buildVolumeTemperature": {
+                    "label": "Build Volume Temperature",
+                    "description": "New Build Volume Temperature",
+                    "unit": "C",
+                    "type": "float",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "10",
+                    "maximum_value_warning": "50",
+                    "enabled": "h1_Change_buildVolumeTemperature"
                 },
                 "i1_Change_extruderOne": {
                     "label": "Change Extruder 1 Temp",
@@ -348,7 +347,7 @@ class ChangeAtZ(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "20",
-                    "enabled": "caz_change_retractlength"    
+                    "enabled": "caz_change_retractlength"
                 }      
             }
         }"""
@@ -369,7 +368,7 @@ class ChangeAtZ(Script):
         self.setIntSettingIfEnabled(caz_instance, "g3_Change_flowrateOne", "flowrateOne", "g4_flowrateOne")
         self.setIntSettingIfEnabled(caz_instance, "g5_Change_flowrateTwo", "flowrateTwo", "g6_flowrateTwo")
         self.setFloatSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
-        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_BuildVolumeTemperature", "BuildVolumeTemperature", "h2_BuildVolumeTemperature")
+        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_buildVolumeTemperature", "buildVolumeTemperature", "h2_buildVolumeTemperature")
         self.setFloatSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
         self.setFloatSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
         self.setIntSettingIfEnabled(caz_instance, "j1_Change_fanSpeed", "fanSpeed", "j2_fanSpeed")
@@ -802,8 +801,8 @@ class ChangeAtZProcessor:
             codes.append("BedTemp: " + str(round(values["bedTemp"])))
 
         # looking for wait for Build Volume Temperature
-        if "BuildVolumeTemperature" in values:
-            codes.append("BuildVolumeTemperature: " + str(round(values["BuildVolumeTemperature"])))
+        if "buildVolumeTemperature" in values:
+            codes.append("buildVolumeTemperature: " + str(round(values["buildVolumeTemperature"])))
 
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
@@ -875,7 +874,7 @@ class ChangeAtZProcessor:
             return ""
 
         # return our default block for this layer
-        return ";[ChangeAtZ:\n" + "\n".join(codes) + "\n;ChangeAtZ]"
+        return ";[CAZD:\n" + "\n".join(codes) + "\n;:CAZD]"
 
     # Builds the relevant GCODE lines from the given collection of values
     def getCodeLinesFromValues(self, values: Dict[str, any]) -> List[str]:
@@ -888,8 +887,8 @@ class ChangeAtZProcessor:
             codes.append("M140 S" + str(values["bedTemp"]))
 
         # looking for wait for Build Volume Temperature
-        if "BuildVolumeTemperature" in values:
-            codes.append("M141 S" + str(values["BuildVolumeTemperature"]))
+        if "buildVolumeTemperature" in values:
+            codes.append("M141 S" + str(values["buildVolumeTemperature"]))
 
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
@@ -980,8 +979,8 @@ class ChangeAtZProcessor:
     @staticmethod
     def getOriginalLine(line: str) -> str:
 
-        # get the change at z original (ChangeAtZ) details
-        original_line = re.search(r"\[ChangeAtZ:(.*?):ChangeAtZ\]", line)
+        # get the change at z original (cazo) details
+        original_line = re.search(r"\[CAZO:(.*?):CAZO\]", line)
 
         # if we didn't get a hit, this is the original line
         if original_line is None:
@@ -1026,7 +1025,7 @@ class ChangeAtZProcessor:
     # Marks any current ChangeAtZ layer defaults in the layer for deletion
     @staticmethod
     def markChangesForDeletion(layer: str):
-        return re.sub(r";\[ChangeAtZ:", ";[ChangeAtZ:DELETE:", layer)
+        return re.sub(r";\[CAZD:", ";[CAZD:DELETE:", layer)
 
     # Grabs the current height
     def processLayerHeight(self, line: str):
@@ -1099,8 +1098,8 @@ class ChangeAtZProcessor:
                 self.processSetting(line)
 
             # if we haven't hit our target yet, leave the defaults as is (unmark them for deletion)
-            if "[ChangeAtZ:DELETE:" in line:
-                line = line.replace("[ChangeAtZ:DELETE:", "[ChangeAtZ:")
+            if "[CAZD:DELETE:" in line:
+                line = line.replace("[CAZD:DELETE:", "[CAZD:")
 
         # if we're targeting by Z, we want to add our values before the first linear move
         if "G1 " in line or "G0 " in line:
@@ -1324,7 +1323,7 @@ class ChangeAtZProcessor:
     # Removes all the ChangeAtZ layer defaults from the given layer
     @staticmethod
     def removeMarkedChanges(layer: str) -> str:
-        return re.sub(r";\[ChangeAtZ:DELETE:[\s\S]+?:ChangeAtZ\](\n|$)", "", layer)
+        return re.sub(r";\[CAZD:DELETE:[\s\S]+?:CAZD\](\n|$)", "", layer)
 
     # Resets the class contents to defaults
     def reset(self):
@@ -1349,7 +1348,7 @@ class ChangeAtZProcessor:
     # Sets the original GCODE line in a given GCODE command
     @staticmethod
     def setOriginalLine(line, original) -> str:
-        return line + ";[ChangeAtZ:" + original + ":ChangeAtZ]"
+        return line + ";[CAZO:" + original + ":CAZO]"
 
     # Tracks the change in gcode values we're interested in
     def trackChangeableValues(self, line: str):
@@ -1402,7 +1401,7 @@ class ChangeAtZProcessor:
 
             # get our bed temp if provided
             if "S" in command.arguments:
-                self.lastValues["BuildVolumeTemperature"] = command.getArgumentAsFloat("S")
+                self.lastValues["buildVolumeTemperature"] = command.getArgumentAsFloat("S")
 
             # move to the next command
             return
