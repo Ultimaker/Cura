@@ -157,8 +157,13 @@ class PackageList(ListModel):
             return
 
         for package_data in response_data["data"]:
-            package = PackageModel(package_data, parent = self)
-            self.appendItem({"package": package})  # Add it to this list model.
+            try:
+                package = PackageModel(package_data, parent = self)
+                self.appendItem({"package": package})  # Add it to this list model.
+            except RuntimeError:
+                # I've tried setting the ownership of this object to not qml, but unfortunately that didn't prevent
+                # the issue that the wrapped C++ object was deleted when it was still parsing the response
+                return
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
         self.hasMoreChanged.emit()
