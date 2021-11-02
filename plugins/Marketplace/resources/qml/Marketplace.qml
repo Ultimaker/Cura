@@ -130,7 +130,7 @@ Window
                     Connections
                     {
                         target: content
-                        onLoaded: function()
+                        function onLoaded()
                         {
                             pageTitle.text = content.item.pageTitle
                         }
