@@ -71,7 +71,8 @@ ScrollView
         footer: Item
         {
             width: parent.width
-            height: UM.Theme.getSize("card").height + packagesListview.spacing
+            height: model.hasFooter || packages.model.errorMessage != "" ? UM.Theme.getSize("card").height + packagesListview.spacing : 0
+            visible: model.hasFooter || packages.model.errorMessage != ""
             Button
             {
                 id: loadMoreButton

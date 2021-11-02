@@ -22,6 +22,7 @@ class PackageList(ListModel):
         self.addRoleName(self.PackageRole, "package")
         self._is_loading = False
         self._has_more = False
+        self._has_footer = True
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -85,3 +86,7 @@ class PackageList(ListModel):
         :return: An error message, if any, or an empty string if everything went okay.
         """
         return self._error_message
+
+    @pyqtProperty(bool, constant = True)
+    def hasFooter(self) -> bool:
+        return self._has_footer

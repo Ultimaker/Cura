@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from typing import TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 
@@ -23,6 +24,7 @@ class LocalPackageList(PackageList):
     def __init__(self, parent: "QObject" = None) -> None:
         super().__init__(parent)
         self._application = CuraApplication.getInstance()
+        self._has_footer = False
 
     @pyqtSlot()
     def updatePackages(self) -> None:
