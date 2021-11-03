@@ -90,5 +90,4 @@ class PackageList(ListModel):
     def hasFooter(self) -> bool:
         """ Indicating if the PackageList should have a Footer visible. For paginated PackageLists
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise
-        """
         return self._has_footer
