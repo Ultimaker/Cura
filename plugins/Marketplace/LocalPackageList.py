@@ -18,7 +18,6 @@ catalog = i18nCatalog("cura")
 
 
 class LocalPackageList(PackageList):
-    PackageRole = Qt.UserRole + 1
     PACKAGE_SECTION_HEADER = {
         "installed":
             {
@@ -46,7 +45,7 @@ class LocalPackageList(PackageList):
         self.setErrorMessage("")  # Clear any previous errors.
         self.setIsLoading(True)
         self._getLocalPackages()
-        self.setIsLoading(True)
+        self.setIsLoading(False)
 
     def _getLocalPackages(self) -> None:
         """ Obtain the local packages.

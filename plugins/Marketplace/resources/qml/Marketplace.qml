@@ -66,7 +66,7 @@ Window
 
                     font: UM.Theme.getFont("large")
                     color: UM.Theme.getColor("text")
-                    text: ""
+                    text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
                 }
             }
 

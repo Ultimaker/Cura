@@ -42,7 +42,7 @@ class PackageList(ListModel):
         """ Resets and clears the list"""
         self.clear()
 
-    isLoadingChanged = pyqtSignal()  # The signal for isLoading property
+    isLoadingChanged = pyqtSignal() 
 
     def setIsLoading(self, value: bool) -> None:
         if self._is_loading != value:
