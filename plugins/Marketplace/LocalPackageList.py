@@ -70,9 +70,11 @@ class LocalPackageList(PackageList):
 
     def _allPackageInfo(self):
         manager = self._application.getPackageManager()
-        for package_id in manager.getAllInstalledPackageIDs():
-            package_data = manager.getInstalledPackageInfo(package_id)
-            bundled_or_installed = "bundled" if package_data["is_bundled"] else "installed"
-            package_type = package_data["package_type"]
-            package_data["section_title"] = self.PACKAGE_SECTION_HEADER[bundled_or_installed][package_type]
-            yield package_data
+        for package_type, packages in manager.getAllInstalledPackagesInfo().items():
+            for package_data in packages:
+                bundled_or_installed = "installed" if manager.isUserInstalledPackage(package_data["package_id"]) else "bundled"
+                package_data["section_title"] = self.PACKAGE_SECTION_HEADER[bundled_or_installed][package_type]
+                yield package_data
+
+        for package_data in manager.getPackagesToRemove().values():
+            yield package_data["package_info"]
