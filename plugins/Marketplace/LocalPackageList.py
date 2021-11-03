@@ -62,8 +62,8 @@ class LocalPackageList(PackageList):
             sorted_sections[section] = sorted(packages, key = lambda p: p.displayName)
 
         # Append the order PackageModels to the list
-        for section in sorted_sections.values():
-            for package_data in section:
+        for sorted_section in sorted_sections.values():
+            for package_data in sorted_section:
                 self.appendItem({"package": package_data})
 
         self.setIsLoading(False)
