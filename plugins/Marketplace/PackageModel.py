@@ -16,16 +16,17 @@ class PackageModel(QObject):
     QML. The model can also be constructed directly from a response received by the API.
     """
 
-    def __init__(self, package_data: Dict[str, Any], parent: QObject = None) -> None:
+    def __init__(self, package_data: Dict[str, Any], section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
         """
         Constructs a new model for a single package.
         :param package_data: The data received from the Marketplace API about the package to create.
+        :param section_title: If the packages are to be categorized per section provide the section_title
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
         super().__init__(parent)
         self._package_id = package_data.get("package_id", "UnknownPackageId")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
-        self._section_title = package_data.get("section_title", None)
+        self._section_title = section_title
 
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
