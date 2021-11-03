@@ -78,3 +78,9 @@ class LocalPackageList(PackageList):
 
         for package_data in manager.getPackagesToRemove().values():
             yield package_data["package_info"]
+
+        for package_data in manager.getPackagesToInstall().values():
+            package_info = package_data["package_info"]
+            package_type = package_info["package_type"]
+            package_info["section_title"] = self.PACKAGE_SECTION_HEADER["installed"][package_type]
+            yield package_info
