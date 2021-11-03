@@ -23,7 +23,7 @@ class LocalPackageList(PackageList):
     PACKAGE_SECTION_HEADER = {
         "installed":
             {
-                "plugin": catalog.i18nc("@label:property", "Installed Cura Plugins"),
+                "plugin": catalog.i18nc("@label:property", "Installed Plugins"),
                 "material": catalog.i18nc("@label:property", "Installed Materials")
             },
         "bundled":
