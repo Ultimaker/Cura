@@ -385,14 +385,10 @@ Window
                                 {
                                     return 0;
                                 }
-                                let h = UM.Theme.getSize("card").height + UM.Theme.getSize("default_margin").height; //1 margin between content and footer.
-                                if(printerListTroubleshooting.visible)
-                                {
-                                    h += printerListTroubleshooting.height + UM.Theme.getSize("default_margin").height; //Height increases if there's a troubleshooting link.
-                                }
+                                let h = UM.Theme.getSize("card").height + printerListTroubleshooting.height + UM.Theme.getSize("default_margin").height * 2; //1 margin between content and footer, 1 for troubleshooting link.
                                 return h;
                             }
-                            visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0
+                            visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && typeof syncModel !== "undefined" && syncModel.exportUploadStatus === "idle"
                             Rectangle
                             {
                                 anchors.fill: parent
@@ -445,7 +441,6 @@ Window
                                             id: printerListTroubleshooting
 
                                             text: catalog.i18nc("@button", "Troubleshooting")
-                                            visible: typeof syncModel !== "undefined" && syncModel.exportUploadStatus !== "error"
                                             iconSource: UM.Theme.getIcon("LinkExternal")
                                             onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                                         }
