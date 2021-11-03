@@ -24,6 +24,7 @@ Window
     property variant syncModel
     property alias pageIndex: swipeView.currentIndex
     property alias syncStatusText: syncStatusLabel.text
+    property bool hasExportedUsb: false
 
     SwipeView
     {
@@ -197,7 +198,7 @@ Window
                             name: "idle"
                             when: typeof syncModel === "undefined" || syncModel.exportUploadStatus == "idle" || syncModel.exportUploadStatus == "uploading"
                             PropertyChanges { target: printerListHeader; text: catalog.i18nc("@title:header", "The following printers will receive the new material profiles:") }
-                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL }
+                            PropertyChanges { target: printerListHeaderIcon; status: UM.StatusIcon.Status.NEUTRAL; width: 0 }
                         },
                         State
                         {
@@ -241,8 +242,8 @@ Window
                         id: syncStatusLabel
 
                         width: parent.width - UM.Theme.getSize("default_margin").width - troubleshootingLink.width
-                        anchors.verticalCenter: troubleshootingLink.verticalCenter
 
+                        wrapMode: Text.Wrap
                         elide: Text.ElideRight
                         visible: text !== ""
                         text: ""
@@ -255,7 +256,6 @@ Window
                         text: catalog.i18nc("@button", "Troubleshooting")
                         visible: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
                         iconSource: UM.Theme.getIcon("LinkExternal")
-                        Layout.preferredHeight: height
                         onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                     }
                 }
@@ -278,6 +278,7 @@ Window
                         delegate: Rectangle
                         {
                             id: delegateContainer
+                            color: "transparent"
                             border.color: UM.Theme.getColor("lining")
                             border.width: UM.Theme.getSize("default_lining").width
                             width: printerListScrollView.width
@@ -379,22 +380,30 @@ Window
                         footer: Item
                         {
                             width: printerListScrollView.width
-                            height: visible ? UM.Theme.getSize("card").height + UM.Theme.getSize("default_margin").height : 0
-                            visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0
+                            height: {
+                                if(!visible)
+                                {
+                                    return 0;
+                                }
+                                let h = UM.Theme.getSize("card").height + printerListTroubleshooting.height + UM.Theme.getSize("default_margin").height * 2; //1 margin between content and footer, 1 for troubleshooting link.
+                                return h;
+                            }
+                            visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && typeof syncModel !== "undefined" && syncModel.exportUploadStatus === "idle"
                             Rectangle
                             {
-                                border.color: UM.Theme.getColor("lining")
-                                border.width: UM.Theme.getSize("default_lining").width
                                 anchors.fill: parent
                                 anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-                                RowLayout
+                                border.color: UM.Theme.getColor("lining")
+                                border.width: UM.Theme.getSize("default_lining").width
+                                color: "transparent"
+
+                                Row
                                 {
                                     anchors
                                     {
                                         fill: parent
-                                        leftMargin: (parent.height - infoIcon.height) / 2 //Same margin on the left as top and bottom.
-                                        rightMargin: (parent.height - infoIcon.height) / 2
+                                        margins: Math.round(UM.Theme.getSize("card").height - UM.Theme.getSize("machine_selector_icon").width) / 2 //Same margin as in other cards.
                                     }
                                     spacing: UM.Theme.getSize("default_margin").width
 
@@ -403,32 +412,50 @@ Window
                                         id: infoIcon
                                         width: UM.Theme.getSize("section_icon").width
                                         height: width
-                                        Layout.alignment: Qt.AlignVCenter
+                                        //Fake anchor.verticalCenter: printersMissingText.verticalCenter, since we can't anchor to things that aren't siblings.
+                                        anchors.top: parent.top
+                                        anchors.topMargin: Math.round(printersMissingText.height / 2 - height / 2)
 
                                         status: UM.StatusIcon.Status.WARNING
                                     }
 
-                                    Label
+                                    Column
                                     {
-                                        text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
-                                          + "\n"
-                                          + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
-                                        font: UM.Theme.getFont("medium")
-                                        elide: Text.ElideRight
+                                        //Fill the total width. Can't use layouts because we need the anchors for vertical alignment.
+                                        width: parent.width - infoIcon.width - refreshListButton.width - parent.spacing * 2
 
-                                        Layout.alignment: Qt.AlignVCenter
-                                        Layout.fillWidth: true
+                                        spacing: UM.Theme.getSize("default_margin").height
+
+                                        Label
+                                        {
+                                            id: printersMissingText
+                                            text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
+                                              + "\n"
+                                              + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
+                                            font: UM.Theme.getFont("medium")
+                                            color: UM.Theme.getColor("text")
+                                            elide: Text.ElideRight
+                                        }
+                                        Cura.TertiaryButton
+                                        {
+                                            id: printerListTroubleshooting
+                                            leftPadding: 0  //Want to visually align this to the text.
+
+                                            text: catalog.i18nc("@button", "Troubleshooting")
+                                            iconSource: UM.Theme.getIcon("LinkExternal")
+                                            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
+                                        }
                                     }
 
                                     Cura.SecondaryButton
                                     {
                                         id: refreshListButton
+                                        //Fake anchor.verticalCenter: printersMissingText.verticalCenter, since we can't anchor to things that aren't siblings.
+                                        anchors.top: parent.top
+                                        anchors.topMargin: Math.round(printersMissingText.height / 2 - height / 2)
+
                                         text: catalog.i18nc("@button", "Refresh List")
                                         iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
-
-                                        Layout.alignment: Qt.AlignVCenter
-                                        Layout.preferredWidth: width
-
                                         onClicked: Cura.API.account.sync(true)
                                     }
                                 }
@@ -682,12 +709,22 @@ Window
                     }
                     Cura.PrimaryButton
                     {
+                        id: exportUsbButton
                         anchors.right: parent.right
-                        text: catalog.i18nc("@button", "Export material archive")
+
+                        property bool hasExported: false
+                        text: materialsSyncDialog.hasExportedUsb ? catalog.i18nc("@button", "Done") : catalog.i18nc("@button", "Export material archive")
                         onClicked:
                         {
-                            exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
-                            exportUsbDialog.open();
+                            if(!materialsSyncDialog.hasExportedUsb)
+                            {
+                                exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.open();
+                            }
+                            else
+                            {
+                                materialsSyncDialog.close();
+                            }
                         }
                     }
                 }
@@ -719,6 +756,7 @@ Window
         {
             syncModel.exportAll(fileUrl);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
+            materialsSyncDialog.hasExportedUsb = true;
         }
     }
 }
