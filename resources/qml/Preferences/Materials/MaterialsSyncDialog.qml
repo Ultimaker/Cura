@@ -439,6 +439,7 @@ Window
                                         Cura.TertiaryButton
                                         {
                                             id: printerListTroubleshooting
+                                            leftPadding: 0  //Want to visually align this to the text.
 
                                             text: catalog.i18nc("@button", "Troubleshooting")
                                             iconSource: UM.Theme.getIcon("LinkExternal")
