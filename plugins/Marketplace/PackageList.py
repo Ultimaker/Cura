@@ -14,6 +14,9 @@ catalog = i18nCatalog("cura")
 
 
 class PackageList(ListModel):
+    """ A List model for Packages, this class serves as parent class for more detailed implementations.
+    such as Packages obtained from Remote or Local source
+    """
     PackageRole = Qt.UserRole + 1
 
     def __init__(self, parent: "QObject" = None) -> None:
@@ -26,20 +29,20 @@ class PackageList(ListModel):
 
     @pyqtSlot()
     def updatePackages(self) -> None:
-        """
-        Initialize the first page of packages
-        """
-        self.setErrorMessage("")  # Clear any previous errors.
-        self.isLoadingChanged.emit()
+        """ A Qt slot which will update the List from a source. Actual implementation should be done in the child class"""
+        pass
 
     @pyqtSlot()
     def abortUpdating(self) -> None:
+        """ A Qt slot which allows the update process to be aborted. Override this for child classes with async/callback
+        updatePackges methods"""
         pass
 
     def reset(self) -> None:
+        """ Resets and clears the list"""
         self.clear()
 
-    isLoadingChanged = pyqtSignal()
+    isLoadingChanged = pyqtSignal()  # The signal for isLoading property
 
     def setIsLoading(self, value: bool) -> None:
         if self._is_loading != value:
@@ -48,13 +51,12 @@ class PackageList(ListModel):
 
     @pyqtProperty(bool, fset = setIsLoading, notify = isLoadingChanged)
     def isLoading(self) -> bool:
-        """
-        Gives whether the list is currently loading the first page or loading more pages.
-        :return: ``True`` if the list is being gathered, or ``False`` if .
+        """ Indicating if the the packages are loading
+        :return" ``True`` if the list is being obtained, otherwise ``False``
         """
         return self._is_loading
 
-    hasMoreChanged = pyqtSignal()
+    hasMoreChanged = pyqtSignal()  # The signal for hasMore property
 
     def setHasMore(self, value: bool) -> None:
         if self._has_more != value:
@@ -63,24 +65,21 @@ class PackageList(ListModel):
 
     @pyqtProperty(bool, fset = setHasMore, notify = hasMoreChanged)
     def hasMore(self) -> bool:
-        """
-        Returns whether there are more packages to load.
-        :return: ``True`` if there are more packages to load, or ``False`` if we've reached the last page of the
-        pagination.
+        """ Indicating if there are more packages available to load.
+        :return: ``True`` if there are more packages to load, or ``False``.
         """
         return self._has_more
+
+    errorMessageChanged = pyqtSignal()  # The signal for errorMessage property
 
     def setErrorMessage(self, error_message: str) -> None:
         if self._error_message != error_message:
             self._error_message = error_message
             self.errorMessageChanged.emit()
 
-    errorMessageChanged = pyqtSignal()
-
     @pyqtProperty(str, notify = errorMessageChanged, fset = setErrorMessage)
     def errorMessage(self) -> str:
-        """
-        If an error occurred getting the list of packages, an error message will be held here.
+        """ If an error occurred getting the list of packages, an error message will be held here.
 
         If no error occurred (yet), this will be an empty string.
         :return: An error message, if any, or an empty string if everything went okay.
@@ -89,4 +88,7 @@ class PackageList(ListModel):
 
     @pyqtProperty(bool, constant = True)
     def hasFooter(self) -> bool:
+        """ Indicating if the PackageList should have a Footer visible. For paginated PackageLists
+        :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise
+        """
         return self._has_footer

@@ -9,8 +9,8 @@ from typing import Optional, TYPE_CHECKING
 from cura.ApplicationMetadata import CuraSDKVersion
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
 from cura.UltimakerCloud import UltimakerCloudConstants
+
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
-from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
 
 from .RemotePackageList import RemotePackageList  # To register this type with QML.
