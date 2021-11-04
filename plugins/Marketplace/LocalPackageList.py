@@ -1,8 +1,8 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, Dict, Generator, TYPE_CHECKING
-from PyQt5.QtCore import pyqtSlot, Qt
+from typing import Any, Dict, Generator, List, Optional, TYPE_CHECKING
+from PyQt5.QtCore import pyqtSlot, QObject
 
 from UM.i18n import i18nCatalog
 
@@ -10,9 +10,6 @@ from cura.CuraApplication import CuraApplication
 
 from .PackageList import PackageList
 from .PackageModel import PackageModel  # The contents of this list.
-
-if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
 
 catalog = i18nCatalog("cura")
 
@@ -31,7 +28,7 @@ class LocalPackageList(PackageList):
             }
     }  # The section headers to be used for the different package categories
 
-    def __init__(self, parent: "QObject" = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._manager = CuraApplication.getInstance().getPackageManager()
         self._has_footer = False
@@ -51,22 +48,14 @@ class LocalPackageList(PackageList):
         """ Obtain the local packages.
 
         The list is sorted per category as in  the order of the PACKAGE_SECTION_HEADER dictionary, whereas the packages
-        for the sections are sorted alphabetically on the display name
+        for the sections are sorted alphabetically on the display name. These sorted sections are then added to the items
         """
-
-        sorted_sections = {}
-        # Filter the packages per section title and sort these alphabetically
+        package_info = list(self._allPackageInfo())
+        sorted_sections: List[Dict[str, PackageModel]] = []
         for section in self._getSections():
-            packages = filter(lambda p: p.sectionTitle == section, self._allPackageInfo())
-            sorted_sections[section] = sorted(packages, key = lambda p: p.displayName)
-
-        # Append the order PackageModels to the list
-        for sorted_section in sorted_sections.values():
-            for package_data in sorted_section:
-                self.appendItem({"package": package_data})
-
-        self.setIsLoading(False)
-        self.setHasMore(False)  # All packages should have been loaded at this time
+            packages = filter(lambda p: p.sectionTitle == section, package_info)
+            sorted_sections.extend([{"package": p} for p in sorted(packages, key = lambda p: p.displayName)])
+        self.setItems(sorted_sections)
 
     def _getSections(self) -> Generator[str, None, None]:
         """ Flatten and order the PACKAGE_SECTION_HEADER such that it can be used in obtaining the packages in the
