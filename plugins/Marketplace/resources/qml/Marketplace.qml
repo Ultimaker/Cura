@@ -100,7 +100,7 @@ Window
                     PackageTypeTab
                     {
                         width: implicitWidth
-                        padding:UM.Theme.getSize("default_margin").width/2
+                        padding: UM.Theme.getSize("default_margin").width/2
                         text: catalog.i18nc("@button", "Plugins")
                         onClicked: content.source = "Plugins.qml"
                     }
