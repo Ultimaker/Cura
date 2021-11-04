@@ -14,11 +14,13 @@ Button
     height: childrenRect.height
 
     hoverEnabled: true
+    property color borderColor: hovered ? UM.Theme.getColor("primary") : "transparent"
+    property color backgroundColor: hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
 
     background: Rectangle
     {
-        color: UM.Theme.getColor("action_button")
-        border.color: "transparent"
+        color: backgroundColor
+        border.color: borderColor
         border.width: UM.Theme.getSize("default_lining").width
     }
 
