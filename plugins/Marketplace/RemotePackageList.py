@@ -107,8 +107,14 @@ class RemotePackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
-            package = PackageModel(package_data, parent = self)
-            self.appendItem({"package": package})  # Add it to this list model.
+            try:
+                package = PackageModel(package_data, parent = self)
+                self.appendItem({"package": package})  # Add it to this list model.
+            except RuntimeError:
+                # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
+                # between de-/constructing RemotePackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
+                # was deleted when it was still parsing the response
+                return
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
         self._ongoing_request = None
