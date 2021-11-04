@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -19,7 +19,7 @@ class PackageList(ListModel):
     """
     PackageRole = Qt.UserRole + 1
 
-    def __init__(self, parent: "QObject" = None) -> None:
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._error_message = ""
         self.addRoleName(self.PackageRole, "package")
@@ -56,7 +56,7 @@ class PackageList(ListModel):
         """
         return self._is_loading
 
-    hasMoreChanged = pyqtSignal()  # The signal for hasMore property
+    hasMoreChanged = pyqtSignal()
 
     def setHasMore(self, value: bool) -> None:
         if self._has_more != value:
@@ -70,7 +70,7 @@ class PackageList(ListModel):
         """
         return self._has_more
 
-    errorMessageChanged = pyqtSignal()  # The signal for errorMessage property
+    errorMessageChanged = pyqtSignal()
 
     def setErrorMessage(self, error_message: str) -> None:
         if self._error_message != error_message:

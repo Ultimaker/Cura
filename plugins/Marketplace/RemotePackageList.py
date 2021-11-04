@@ -18,7 +18,6 @@ from .PackageModel import PackageModel  # The contents of this list.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
-    from PyQt5.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 
@@ -26,7 +25,7 @@ catalog = i18nCatalog("cura")
 class RemotePackageList(PackageList):
     ITEMS_PER_PAGE = 20  # Pagination of number of elements to download at once.
 
-    def __init__(self, parent: "QObject" = None) -> None:
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self._ongoing_request: Optional[HttpRequestData] = None

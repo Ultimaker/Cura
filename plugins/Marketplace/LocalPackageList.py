@@ -4,6 +4,9 @@
 from typing import Any, Dict, Generator, List, Optional, TYPE_CHECKING
 from PyQt5.QtCore import pyqtSlot, QObject
 
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
+
 from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
@@ -28,7 +31,7 @@ class LocalPackageList(PackageList):
             }
     }  # The section headers to be used for the different package categories
 
-    def __init__(self, parent: Optional[QObject] = None) -> None:
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._manager = CuraApplication.getInstance().getPackageManager()
         self._has_footer = False
@@ -43,6 +46,7 @@ class LocalPackageList(PackageList):
         self.setIsLoading(True)
         self._getLocalPackages()
         self.setIsLoading(False)
+        self.setHasMore(False)  # All packages should have been loaded at this time
 
     def _getLocalPackages(self) -> None:
         """ Obtain the local packages.
