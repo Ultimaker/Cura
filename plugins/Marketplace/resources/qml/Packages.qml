@@ -12,9 +12,10 @@ ScrollView
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
     property alias model: packagesListview.model
+    property string pageTitle
 
-    Component.onCompleted: model.request()
-    Component.onDestruction: model.abortRequest()
+    Component.onCompleted: model.updatePackages()
+    Component.onDestruction: model.abortUpdating()
 
     ListView
     {
@@ -22,6 +23,28 @@ ScrollView
         width: parent.width
 
         spacing: UM.Theme.getSize("default_margin").height
+
+        section.property: "package.sectionTitle"
+        section.delegate: Rectangle
+        {
+            width: packagesListview.width
+            height: sectionHeaderText.height + UM.Theme.getSize("default_margin").height
+
+            color: UM.Theme.getColor("detail_background")
+
+            required property string section
+
+            Label
+            {
+                id: sectionHeaderText
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+
+                text: parent.section
+                font: UM.Theme.getFont("large")
+                color: UM.Theme.getColor("text")
+            }
+        }
 
         delegate: Rectangle
         {
@@ -43,10 +66,12 @@ ScrollView
             }
         }
 
-        footer: Item //Wrapper item to add spacing between content and footer.
+        //Wrapper item to add spacing between content and footer.
+        footer: Item
         {
             width: parent.width
-            height: UM.Theme.getSize("card").height + packagesListview.spacing
+            height: model.hasFooter || packages.model.errorMessage != "" ? UM.Theme.getSize("card").height + packagesListview.spacing : 0
+            visible: model.hasFooter || packages.model.errorMessage != ""
             Button
             {
                 id: loadMoreButton
@@ -55,7 +80,7 @@ ScrollView
                 anchors.bottom: parent.bottom
 
                 enabled: packages.model.hasMore && !packages.model.isLoading || packages.model.errorMessage != ""
-                onClicked: packages.model.request()  //Load next page in plug-in list.
+                onClicked: packages.model.updatePackages()  //Load next page in plug-in list.
 
                 background: Rectangle
                 {

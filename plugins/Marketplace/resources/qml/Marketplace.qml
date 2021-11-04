@@ -34,7 +34,8 @@ Window
     title: "Marketplace" //Seen by Ultimaker as a brand name, so this doesn't get translated.
     modality: Qt.NonModal
 
-    Rectangle //Background color.
+    // Background color
+    Rectangle
     {
         anchors.fill: parent
         color: UM.Theme.getColor("main_background")
@@ -45,13 +46,15 @@ Window
 
             spacing: UM.Theme.getSize("default_margin").height
 
-            Item //Page title.
+            // Page title.
+            Item
             {
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
 
                 Label
                 {
+                    id: pageTitle
                     anchors
                     {
                         left: parent.left
@@ -63,7 +66,7 @@ Window
 
                     font: UM.Theme.getFont("large")
                     color: UM.Theme.getColor("text")
-                    text: pageSelectionTabBar.currentItem.pageTitle
+                    text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
                 }
             }
 
@@ -72,10 +75,24 @@ Window
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height
 
-                TabBar //Page selection.
+                ManagePackagesButton
+                {
+                    id: managePackagesButton
+
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                    onClicked:
+                    {
+                        content.source = "ManagedPackages.qml"
+                    }
+                }
+
+                // Page selection.
+                TabBar
                 {
                     id: pageSelectionTabBar
-                    anchors.right: parent.right
+                    anchors.right: managePackagesButton.left
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
                     spacing: 0
@@ -83,32 +100,41 @@ Window
                     PackageTypeTab
                     {
                         width: implicitWidth
-                        text: catalog.i18nc("@button", "Plug-ins")
-                        pageTitle: catalog.i18nc("@header", "Install Plugins")
+                        text: catalog.i18nc("@button", "Plugins")
                         onClicked: content.source = "Plugins.qml"
                     }
                     PackageTypeTab
                     {
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Materials")
-                        pageTitle: catalog.i18nc("@header", "Install Materials")
                         onClicked: content.source = "Materials.qml"
                     }
                 }
             }
 
-            Rectangle //Page contents.
+            // Page contents.
+            Rectangle
             {
                 Layout.preferredWidth: parent.width
                 Layout.fillHeight: true
                 color: UM.Theme.getColor("detail_background")
 
-                Loader //Page contents.
+                // Page contents.
+                Loader
                 {
                     id: content
                     anchors.fill: parent
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     source: "Plugins.qml"
+
+                    Connections
+                    {
+                        target: content
+                        function onLoaded()
+                        {
+                            pageTitle.text = content.item.pageTitle
+                        }
+                    }
                 }
             }
         }
