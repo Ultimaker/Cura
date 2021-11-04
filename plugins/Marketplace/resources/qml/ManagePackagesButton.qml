@@ -10,18 +10,18 @@ import QtQuick.Controls 2.15
 Button
 {
     id: root
-    width: childrenRect.width
-    height: childrenRect.height
+    width: UM.Theme.getSize("button_icon").width
+    height: UM.Theme.getSize("button_icon").height
 
     hoverEnabled: true
-    property color borderColor: hovered ? UM.Theme.getColor("primary") : "transparent"
     property color backgroundColor: hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
 
     background: Rectangle
     {
         color: backgroundColor
-        border.color: borderColor
-        border.width: UM.Theme.getSize("default_lining").width
+        border.color: transparent
+        radius: Math.round(width * 0.5)
+
     }
 
     Cura.ToolTip
@@ -38,8 +38,10 @@ Button
 
         width: UM.Theme.getSize("section_icon").width
         height: UM.Theme.getSize("section_icon").height
-
+  
         color: UM.Theme.getColor("icon")
         source: UM.Theme.getIcon("Settings")
+        anchors.centerIn: parent
+
     }
 }
