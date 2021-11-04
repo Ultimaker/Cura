@@ -29,7 +29,6 @@ Button
         id: tooltip
 
         tooltipText: catalog.i18nc("@info:tooltip", "Manage packages")
-        arrowSize: 0
         visible: root.hovered
     }
 
