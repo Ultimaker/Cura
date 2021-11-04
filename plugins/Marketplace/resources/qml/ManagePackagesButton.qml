@@ -12,7 +12,6 @@ Button
     id: root
     width: UM.Theme.getSize("button_icon").width
     height: UM.Theme.getSize("button_icon").height
-
     hoverEnabled: true
     property color backgroundColor: hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
 
