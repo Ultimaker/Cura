@@ -94,7 +94,7 @@ Window
                     id: pageSelectionTabBar
                     anchors.right: managePackagesButton.left
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    height:UM.Theme.getSize("button_icon").height
+                    height: UM.Theme.getSize("button_icon").height
                     spacing: 0
 
                     PackageTypeTab
