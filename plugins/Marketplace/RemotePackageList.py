@@ -33,6 +33,7 @@ class RemotePackageList(PackageList):
 
         self._package_type_filter = ""
         self._request_url = self._initialRequestUrl()
+        self.isLoadingChanged.emit()
 
     def __del__(self) -> None:
         """
