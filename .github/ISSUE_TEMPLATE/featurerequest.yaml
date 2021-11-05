@@ -1,0 +1,44 @@
+name: Feature Request
+description: Suggest an idea for this project.
+labels: "Type: New Feature"
+body:
+- type: markdown
+  attributes:
+    value: |
+      **Thank you for using Cura and wanting to suggest a new feature.**
+      
+      Before filing, please check if the feature request already exists (either open or closed) by using the search bar on the issues page. If it does, comment there. Even if it's closed, we can reopen it based on your comment. 
+      
+      Please do not write things like **Request** or **BUG** in the title, this is what labels are for.
+- type: textarea
+  attributes:
+    label: Is your feature request related to a problem?
+    description: Please describe a clear and concise description of what the problem is.
+    placeholder: I'm always frustrated when...
+  validations:
+    required: true 
+- type: textarea
+  attributes:
+    label: Describe the solution you'd like
+    description: A clear and concise description of what you want to happen. If possible, describe why you think this is a good solution. 
+    placeholder: I believe this will solve...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Describe alternatives you've considered
+    description: A clear and concise description of any alternative solutions or features you've considered. If possible, think about why these alternatives are not working out.
+    placeholder: The alternatives I've considered are...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Affected users and/or printers
+    description: Who do you think will benefit from this? Is everyone going to benefit from these changes? Or specific kinds of users?
+    placeholder: It will affect...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional information & file uploads
+    description: You can add pictures or files to visualize your feature request in the comments below.

@@ -6,7 +6,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4 as Controls1
 
-import UM 1.3 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 
@@ -57,16 +57,34 @@ Column
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
     }
-
-    Cura.IconWithText
+    Item
     {
         id: unableToSliceMessage
         width: parent.width
         visible: widget.backendState == UM.Backend.Error
 
-        text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
-        source: UM.Theme.getIcon("warning")
-        iconColor: UM.Theme.getColor("warning")
+        height: warningIcon.height
+        UM.StatusIcon
+        {
+            id: warningIcon
+            anchors.verticalCenter: parent.verticalCenter
+            width: visible ? UM.Theme.getSize("section_icon").width : 0
+            height: width
+            status: UM.StatusIcon.Status.WARNING
+        }
+        Label
+        {
+            id: label
+            anchors.left: warningIcon.right
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
+            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
+            wrapMode: Text.WordWrap
+        }
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
@@ -127,7 +145,7 @@ Column
     Connections
     {
         target: UM.Preferences
-        onPreferenceChanged:
+        function onPreferenceChanged(preference)
         {
             if (preference !== "general/auto_slice")
             {

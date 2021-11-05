@@ -1,0 +1,179 @@
+{
+    "version": 2,
+    "name": "Liquid",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Liquid 3D",
+        "manufacturer": "Liquid 3D",
+        "file_formats": "text/x-gcode",
+        "icon": "icon_ultimaker2",
+        "platform": "liquid_platform.stl",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variant_buildplates": false,
+        "has_variants": true,
+        "exclude_materials": [ "generic_hips", "generic_pva", "structur3d_dap100silicone" ],
+        "preferred_variant_name": "VO 0.4",
+        "preferred_quality_type": "normal",
+        "variants_name": "Extruder",
+        "supports_usb_connection": true,
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "weight": -1,
+        "machine_extruder_trains":
+        {
+            "0": "liquid_extruder"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Liquid" },
+        "machine_width": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_heated_bed": { "default_value": true },        
+        "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
+        "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
+        "machine_start_gcode": {
+            "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM83 ; relative extrusion mode\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG32 ; mesh bed leveling\nG92 E0.0 ; reset extruder distance position\nG1 X0 Y-2 Z0.3 F4000.0 ; go outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X110.0 E15.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM106 S0 ; turn off fan\nG91 ; relative positioning\nG1 Z1 F360 ; lift Z by 1mm\nG90 ; absolute positioning\nG1 X10 Y200 F3200; home X axis and push Y forward\nG1 Z200 F1200; home Z axis\nM84 ; disable motors"
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value":
+            [
+                [ -65.0, -45.0 ],
+                [ -65.0, 30.0 ],
+                [ 50.0, 30.0 ],
+                [ 50.0, -45.0 ]
+            ]
+        },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_max_feedrate_e": {
+            "default_value": 45
+        },
+        "machine_acceleration": { "default_value": 3000 },
+        "gantry_height": { "value": "67" },
+        
+        "material_diameter": { "default_value": 1.75 },
+         "material_print_temperature": {
+            "minimum_value": "0"
+        },
+        "material_bed_temperature": {
+            "minimum_value": "0",
+            "maximum_value_warning": "125"
+        },
+        "material_bed_temperature_layer_0":
+        {
+            "maximum_value_warning": "125"
+        },
+        "material_standby_temperature": {
+            "minimum_value": "0"
+        },
+        
+        "speed_travel":
+        {
+            "maximum_value": "150",
+            "value": "150"
+        },
+        
+        "relative_extrusion":
+        {
+            "value": true,
+            "enabled": true
+        },
+        
+        "acceleration_enabled": { "value": "True" },
+        "acceleration_layer_0": { "value": "acceleration_topbottom" },
+        "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
+        "acceleration_print": { "value": "4000" },
+        "line_width": { "value": "machine_nozzle_size * 0.875" },
+        "machine_min_cool_heat_time_window": { "value": "15" },
+        "default_material_print_temperature": { "value": "200" },
+        "multiple_mesh_overlap": { "value": "0" },
+        "acceleration_support_interface": { "value": "acceleration_topbottom" },
+        "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 500 / 4000)" },
+        "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 4000)" },
+        "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 500 / 1000)" },
+        "brim_width": { "value": "3" },
+        "cool_fan_full_at_height": { "value": "layer_height_0 + 4 * layer_height" },
+        "cool_fan_speed": { "value": "70" },
+        "cool_fan_speed_max": { "value": "100" },
+        "cool_min_speed": { "value": "30" },
+        "infill_line_width": { "value": "round(line_width * 0.5 / 0.35, 2)" },
+        "infill_overlap": { "value": "0" },
+        "infill_pattern": { "value": "'triangles'" },
+        "infill_wipe_dist": { "value": "0" },
+        "jerk_enabled": { "value": "True" },
+        "jerk_layer_0": { "value": "jerk_topbottom" },
+        "jerk_prime_tower": { "value": "math.ceil(jerk_print * 15 / 15)" },
+        "jerk_print": { "value": "15" },
+        "jerk_support": { "value": "math.ceil(jerk_print * 15 / 15)" },
+        "jerk_support_interface": { "value": "jerk_topbottom" },
+        "jerk_topbottom": { "value": "math.ceil(jerk_print * 5 / 15)" },
+        "jerk_wall": { "value": "math.ceil(jerk_print * 10 / 15)" },
+        "jerk_wall_0": { "value": "math.ceil(jerk_wall * 5 / 10)" },
+        "layer_height_0": { "value": "0.2" },
+        
+        "raft_airgap": { "value": "0" },
+        "raft_base_speed": { "value": "20" },
+        "raft_base_thickness": { "value": "0.3" },
+        "raft_interface_line_spacing": { "value": "0.5" },
+        "raft_interface_line_width": { "value": "0.5" },
+        "raft_interface_speed": { "value": "20" },
+        "raft_interface_thickness": { "value": "0.2" },
+        "raft_jerk": { "value": "jerk_layer_0" },
+        "raft_margin": { "value": "10" },
+        "raft_speed": { "value": "25" },
+        "raft_surface_layers": { "value": "1" },
+        
+        "retraction_amount": { "value": "3" },
+        "retraction_count_max": { "value": "10" },
+        "retraction_extrusion_window": { "value": "1" },
+        "retraction_hop": { "value": "2" },
+        "retraction_hop_enabled": { "value": "True"  },
+        "retraction_hop_only_when_collides": { "value": "True" },
+        "retraction_min_travel": { "value": "5" },
+        "retraction_speed": { "value": "35" },
+        "retraction_retract_speed": { "value": "35" },
+        "retraction_prime_speed": { "value": "35" },
+        
+        "skin_overlap": { "value": "10" },
+        "speed_equalize_flow_enabled": { "value": "True" },
+        "speed_layer_0": { "value": "20" },
+        "speed_prime_tower": { "value": "speed_topbottom" },
+        "speed_print": { "value": "35" },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_topbottom": { "value": "math.ceil(speed_print * 20 / 35)" },
+        "speed_wall": { "value": "math.ceil(speed_print * 30 / 35)" },
+        "speed_wall_0": { "value": "math.ceil(speed_wall * 20 / 30)" },
+        "speed_wall_x": { "value": "speed_wall" },
+        
+        "support_angle": { "value": "45" },
+        "support_pattern": { "value": "'triangles'" },
+        "support_use_towers": { "value": "False" },
+        "support_xy_distance": { "value": "wall_line_width_0 * 2.5" },
+        "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+        "support_z_distance": { "value": "0" },
+        
+        "top_bottom_thickness": { "value": "1" },
+        "travel_avoid_supports": { "value": "True" },
+        "travel_avoid_distance": { "value": "machine_nozzle_tip_outer_diameter / 2 * 1.5" },
+        
+        "wall_0_inset": { "value": "0" },
+        "wall_line_width_x": { "value": "round(line_width * 0.3 / 0.35, 2)" },
+        "wall_thickness": { "value": "1" },
+        "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 100" },
+        "meshfix_maximum_deviation": { "value": "layer_height / 4" },
+        "optimize_wall_printing_order": { "value": "True" },
+        "retraction_combing": { "value": "'all'" },
+        "initial_layer_line_width_factor": { "value": "120" },
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
+    }
+}

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -87,8 +87,12 @@ class SliceInfo(QObject, Extension):
                 return None
             file_path = os.path.join(plugin_path, "example_data.html")
             if file_path:
-                with open(file_path, "r", encoding = "utf-8") as f:
-                    self._example_data_content = f.read()
+                try:
+                    with open(file_path, "r", encoding = "utf-8") as f:
+                        self._example_data_content = f.read()
+                except EnvironmentError as e:
+                    Logger.error(f"Unable to read example slice info data to show to the user: {e}")
+                    self._example_data_content = "<i>" + catalog.i18nc("@text", "Unable to read example data file.") + "</i>"
         return self._example_data_content
 
     @pyqtSlot(bool)
@@ -116,6 +120,7 @@ class SliceInfo(QObject, Extension):
 
             machine_manager = self._application.getMachineManager()
             print_information = self._application.getPrintInformation()
+            user_profile = self._application.getCuraAPI().account.userProfile
 
             global_stack = machine_manager.activeMachine
 
@@ -124,6 +129,10 @@ class SliceInfo(QObject, Extension):
             data["schema_version"] = 0
             data["cura_version"] = self._application.getVersion()
             data["cura_build_type"] = ApplicationMetadata.CuraBuildType
+            org_id = user_profile.get("organization_id", None) if user_profile else None
+            data["is_logged_in"] = self._application.getCuraAPI().account.isLoggedIn
+            data["organization_id"] = org_id if org_id else None
+            data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
 
             active_mode = self._application.getPreferences().getValue("cura/active_mode")
             if active_mode == 0:
@@ -224,6 +233,11 @@ class SliceInfo(QObject, Extension):
                         model_settings["gradual_infill_steps"] = model_stack.getProperty("gradual_infill_steps", "value")
 
                     model["model_settings"] = model_settings
+
+                    if node.source_mime_type is None:
+                        model["mime_type"] = ""
+                    else:
+                        model["mime_type"] = node.source_mime_type.name
 
                     data["models"].append(model)
 

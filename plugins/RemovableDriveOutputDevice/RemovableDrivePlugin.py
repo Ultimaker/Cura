@@ -48,7 +48,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
             result = False
 
         if result:
-            Logger.log("i", "Succesfully ejected the device")
+            Logger.log("i", "Successfully ejected the device")
         return result
 
     def performEjectDevice(self, device):

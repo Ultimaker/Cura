@@ -12,7 +12,7 @@ Button {
         color: UM.Theme.getColor("monitor_context_menu_hover")
     }
     contentItem: Label {
-        color: enabled ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled");
+        color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled");
         text: parent.text
         horizontalAlignment: Text.AlignLeft;
         verticalAlignment: Text.AlignVCenter;

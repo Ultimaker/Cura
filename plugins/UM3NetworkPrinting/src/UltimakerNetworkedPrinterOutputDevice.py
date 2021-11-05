@@ -85,6 +85,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         self._timeout_time = 30
 
+        self._num_is_host_check_failed = 0
+
     @pyqtProperty(str, constant=True)
     def address(self) -> str:
         """The IP address of the printer."""
@@ -293,8 +295,16 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkIfClusterHost(self):
         """Check is this device is a cluster host and takes the needed actions when it is not."""
-
         if len(self._printers) < 1 and self.isConnected():
+            self._num_is_host_check_failed += 1
+        else:
+            self._num_is_host_check_failed = 0
+
+        # Since we request the status of the cluster itself way less frequent in the cloud, it can happen that a cloud
+        # printer reports having 0 printers (since they are offline!) but we haven't asked if the entire cluster is
+        # offline. (See CURA-7360)
+        # So by just counting a number of subsequent times that this has happened fixes the incorrect display.
+        if self._num_is_host_check_failed >= 6:
             NotClusterHostMessage(self).show()
             self.close()
             CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)

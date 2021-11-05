@@ -4,8 +4,8 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "typeamachines",
-        "manufacturer": "typeamachines",
+        "author": "TypeAMachines",
+        "manufacturer": "TypeAMachines",
         "file_formats": "text/x-gcode",
         "platform": "tam_series1.3mf",
         "platform_offset": [-580.0, -6.23, 253.5],

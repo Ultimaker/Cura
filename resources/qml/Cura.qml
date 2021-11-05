@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -88,7 +88,7 @@ UM.MainWindow
     {
         // This connection is used when there is no ActiveMachine and the user is logged in
         target: CuraApplication
-        onShowAddPrintersUncancellableDialog:
+        function onShowAddPrintersUncancellableDialog()
         {
             Cura.Actions.parent = backgroundItem
 
@@ -102,7 +102,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onInitializationFinished:
+        function onInitializationFinished()
         {
             // Workaround silly issues with QML Action's shortcut property.
             //
@@ -148,15 +148,6 @@ UM.MainWindow
     {
         id: backgroundItem
         anchors.fill: parent
-
-        signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
-        function getMeshName(path)
-        {
-            //takes the path the complete path of the meshname and returns only the filebase
-            var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.indexOf("."))
-            return fileBase
-        }
 
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
@@ -209,7 +200,7 @@ UM.MainWindow
                 }
             }
 
-            // This is a placehoder for adding a pattern in the header
+            // This is a placeholder for adding a pattern in the header
             Image
             {
                 id: backgroundPattern
@@ -320,8 +311,8 @@ UM.MainWindow
 
             Toolbar
             {
-                // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
-                // plugins)
+                // The toolbar is the left bar that is populated by all the tools
+                // (which are dynamically populated by plugins)
                 id: toolbar
 
                 property int mouseX: base.mouseX
@@ -426,6 +417,7 @@ UM.MainWindow
                     Cura.PrimaryButton
                     {
                         text: model.name
+                        iconSource: UM.Theme.getIcon(model.icon)
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
@@ -435,6 +427,23 @@ UM.MainWindow
                     Cura.SecondaryButton
                     {
                         text: model.name
+                        iconSource: UM.Theme.getIcon(model.icon)
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+                }
+                link: Component
+                {
+                    Cura.TertiaryButton
+                    {
+                        text: model.name
+                        iconSource:
+                        {
+                            if (model.icon == null || model.icon == "")
+                            {
+                                return UM.Theme.getIcon("LinkExternal")
+                            }
+                            return UM.Theme.getIcon(model.icon)
+                        }
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
@@ -466,15 +475,13 @@ UM.MainWindow
             insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/Materials/MaterialsPage.qml"));
 
             insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
-
-            //Force refresh
-            setPage(0);
+            currentPage = 0;
         }
 
         onVisibleChanged:
         {
             // When the dialog closes, switch to the General page.
-            // This prevents us from having a heavy page like Setting Visiblity active in the background.
+            // This prevents us from having a heavy page like Setting Visibility active in the background.
             setPage(0);
         }
     }
@@ -482,19 +489,19 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.preferences
-        onTriggered: preferences.visible = true
+        function onTriggered() { preferences.visible = true }
     }
 
     Connections
     {
         target: CuraApplication
-        onShowPreferencesWindow: preferences.visible = true
+        function onShowPreferencesWindow() { preferences.visible = true }
     }
 
     Connections
     {
         target: Cura.Actions.addProfile
-        onTriggered:
+        function onTriggered()
         {
             preferences.show();
             preferences.setPage(4);
@@ -506,7 +513,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.configureMachines
-        onTriggered:
+        function onTriggered()
         {
             preferences.visible = true;
             preferences.setPage(2);
@@ -516,7 +523,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.manageProfiles
-        onTriggered:
+        function onTriggered()
         {
             preferences.visible = true;
             preferences.setPage(4);
@@ -526,7 +533,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.manageMaterials
-        onTriggered:
+        function onTriggered()
         {
             preferences.visible = true;
             preferences.setPage(3)
@@ -536,7 +543,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.configureSettingVisibility
-        onTriggered:
+        function onTriggered(source)
         {
             preferences.visible = true;
             preferences.setPage(1);
@@ -561,7 +568,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.MachineManager
-        onBlurSettings:
+        function onBlurSettings()
         {
             contentItem.forceActiveFocus()
         }
@@ -605,7 +612,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onShowConfirmExitDialog:
+        function onShowConfirmExitDialog(message)
         {
             exitConfirmationDialog.text = message;
             exitConfirmationDialog.open();
@@ -615,19 +622,19 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: CuraApplication.checkAndExitApplication();
+        function onTriggered() { CuraApplication.checkAndExitApplication(); }
     }
 
     Connections
     {
         target: Cura.Actions.toggleFullScreen
-        onTriggered: base.toggleFullscreen()
+        function onTriggered() { base.toggleFullscreen() }
     }
 
     Connections
     {
         target: Cura.Actions.exitFullScreen
-        onTriggered: base.exitFullscreen()
+        function onTriggered() { base.exitFullscreen() }
     }
 
     FileDialog
@@ -702,6 +709,9 @@ UM.MainWindow
 
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
+            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+            openFilesIncludingProjectsDialog.addToRecent = true;
+
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
             {
@@ -728,6 +738,7 @@ UM.MainWindow
                 {
                     // ask whether to open as project or as models
                     askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.addToRecent = true;
                     askOpenAsProjectOrModelsDialog.show();
                 }
             }
@@ -768,7 +779,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.open
-        onTriggered: openDialog.open()
+        function onTriggered() { openDialog.open() }
     }
 
     OpenFilesIncludingProjectsDialog
@@ -784,9 +795,10 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onOpenProjectFile:
+        function onOpenProjectFile(project_file, add_to_recent_files)
         {
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
             askOpenAsProjectOrModelsDialog.show();
         }
     }
@@ -794,7 +806,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.showProfileFolder
-        onTriggered:
+        function onTriggered()
         {
             var path = UM.Resources.getPath(UM.Resources.Preferences, "");
             if(Qt.platform.os == "windows")
@@ -826,7 +838,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onShowMessageBox:
+        function onShowMessageBox(title, text, informativeText, detailedText, buttons, icon)
         {
             messageDialog.title = title
             messageDialog.text = text
@@ -838,17 +850,22 @@ UM.MainWindow
         }
     }
 
-    DiscardOrKeepProfileChangesDialog
+    Component
     {
-        id: discardOrKeepProfileChangesDialog
+        id: discardOrKeepProfileChangesDialogComponent
+        DiscardOrKeepProfileChangesDialog { }
     }
-
+    Loader
+    {
+        id: discardOrKeepProfileChangesDialogLoader
+    }
     Connections
     {
         target: CuraApplication
-        onShowDiscardOrKeepProfileChanges:
+        function onShowDiscardOrKeepProfileChanges()
         {
-            discardOrKeepProfileChangesDialog.show()
+            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
+            discardOrKeepProfileChangesDialogLoader.item.show()
         }
     }
 
@@ -864,6 +881,8 @@ UM.MainWindow
     {
         id: whatsNewDialog
         title: catalog.i18nc("@title:window", "What's New")
+        minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
+        minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
         visible: false
@@ -872,13 +891,13 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.whatsNew
-        onTriggered: whatsNewDialog.show()
+        function onTriggered() { whatsNewDialog.show() }
     }
 
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered:
+        function onTriggered()
         {
             // Make sure to show from the first page when the dialog shows up.
             addMachineDialog.resetModelState()
@@ -894,7 +913,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.about
-        onTriggered: aboutDialog.visible = true;
+        function onTriggered() { aboutDialog.visible = true; }
     }
 
     Timer

@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -80,7 +80,7 @@ Item
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                iconSource: UM.Theme.getIcon("pos_normal");
+                iconSource: UM.Theme.getIcon("Infill0");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
@@ -92,7 +92,7 @@ Item
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                iconSource: UM.Theme.getIcon("pos_print_as_support");
+                iconSource: UM.Theme.getIcon("MeshTypeSupport");
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
@@ -104,7 +104,7 @@ Item
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                iconSource: UM.Theme.getIcon("pos_modify_overlaps");
+                iconSource: UM.Theme.getIcon("MeshTypeIntersect");
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
@@ -116,7 +116,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
@@ -136,10 +136,12 @@ Item
         }
 
 
-        ComboBox
+        Cura.ComboBox
         {
             id: infillOnlyComboBox
             width: parent.width / 2 - UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("setting_control").height
+            textRole: "text"
 
             model: ListModel
             {
@@ -237,7 +239,7 @@ Item
                             id: settingLoader
                             width: UM.Theme.getSize("setting").width
                             height: UM.Theme.getSize("section").height
-
+                            enabled: provider.properties.enabled === "True"
                             property var definition: model
                             property var settingDefinitionsModel: addedSettingsModel
                             property var propertyProvider: provider
@@ -304,13 +306,13 @@ Item
                                         height: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                        source: UM.Theme.getIcon("minus")
+                                        source: UM.Theme.getIcon("Minus")
                                     }
                                 }
                             }
                         }
 
-                        // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                        // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
                         // so we bypass that to make a dedicated provider).
                         UM.SettingPropertyProvider
                         {
@@ -334,13 +336,13 @@ Item
                         Connections
                         {
                             target: inheritStackProvider
-                            onPropertiesChanged: provider.forcePropertiesChanged()
+                            function onPropertiesChanged() { provider.forcePropertiesChanged() }
                         }
 
                         Connections
                         {
                             target: UM.ActiveTool
-                            onPropertiesChanged:
+                            function onPropertiesChanged()
                             {
                                 // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
                                 // so here we connect to the signal and update the those values.

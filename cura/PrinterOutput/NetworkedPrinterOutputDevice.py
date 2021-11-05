@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.FileHandler.FileHandler import FileHandler #For typing.
@@ -114,6 +114,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         return b"".join(file_data_bytes_list)
 
     def _update(self) -> None:
+        """
+        Update the connection state of this device.
+
+        This is called on regular intervals.
+        """
         if self._last_response_time:
             time_since_last_response = time() - self._last_response_time
         else:
@@ -127,11 +132,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if time_since_last_response > self._timeout_time >= time_since_last_request:
             # Go (or stay) into timeout.
             if self._connection_state_before_timeout is None:
-                self._connection_state_before_timeout = self._connection_state
+                self._connection_state_before_timeout = self.connectionState
 
             self.setConnectionState(ConnectionState.Closed)
 
-        elif self._connection_state == ConnectionState.Closed:
+        elif self.connectionState == ConnectionState.Closed:
             # Go out of timeout.
             if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
                 self.setConnectionState(self._connection_state_before_timeout)
@@ -361,7 +366,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._last_response_time = time()
 
-        if self._connection_state == ConnectionState.Connecting:
+        if self.connectionState == ConnectionState.Connecting:
             self.setConnectionState(ConnectionState.Connected)
 
         callback_key = reply.url().toString() + str(reply.operation())
@@ -414,6 +419,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def ipAddress(self) -> str:
-        """IP adress of this printer"""
+        """IP address of this printer"""
 
         return self._address

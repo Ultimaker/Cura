@@ -1,0 +1,88 @@
+{
+    "version": 2,
+    "name": "Ultimaker 2+ Connect",
+    "inherits": "ultimaker2",
+    "metadata": {
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "weight": 1,
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker3_platform.obj",
+        "platform_texture": "Ultimaker2PlusConnectbackplate.png",
+        "preferred_variant_name": "0.4 mm",
+        "has_variants": true,
+        "has_materials": true,
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
+        "first_start_actions": [],
+        "supported_actions": [],
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker2_plus_connect_extruder_0"
+        },
+        "supports_usb_connection": false,
+        "supports_network_connection": true
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2+ Connect" },
+        "machine_gcode_flavor": { "default_value": "Griffin" },
+        "machine_width": { "default_value": 223 },
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 205 },
+        "machine_show_variants": { "default_value": true },
+        "gantry_height": { "value": "52" },
+        "machine_nozzle_head_distance": { "default_value": 5 },
+        "machine_heat_zone_length": { "default_value": 20 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -44, 14 ],
+                [ -44, -34 ],
+                [ 64, 14 ],
+                [ 64, -34 ]
+            ]
+        },
+        "machine_disallowed_areas": 
+        {
+            "default_value": [
+                [[-115,  112.5], [ -83,  112.5], [ -85,  104.0], [-115,  104.0]],
+                [[ 115,  112.5], [ 115,  104.0], [ 104,  104.0], [ 102,  112.5]],
+                [[-115, -112.5], [-115, -104.0], [ -87, -104.0], [ -85, -112.5]],
+                [[ 115, -112.5], [ 104, -112.5], [ 106, -104.0], [ 115, -104.0]]
+            ]
+        },
+        "infill_wipe_dist": { "value": "0" },
+        "infill_overlap": { "value": "0" },
+        "infill_pattern": { "value": "'grid'" },
+        "speed_infill": { "value": "speed_print" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
+        "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
+        "optimize_wall_printing_order": { "value": "True" },
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
+        "speed_support": { "value": "speed_wall_0" },
+        "material_initial_print_temperature": {
+            "value": "material_print_temperature",
+            "maximum_value": 260
+        },
+        "material_final_print_temperature": {
+            "value": "material_print_temperature",
+            "maximum_value": 260
+        },
+        "material_print_temperature_layer_0": {
+            "value": "material_print_temperature",
+            "maximum_value": 260
+        },
+        "machine_start_gcode": { "value": "''" },
+        "machine_end_gcode": { "value": "''" },
+        "material_bed_temperature": { "maximum_value": 110 },
+        "material_bed_temperature_layer_0": { "maximum_value": 110 },
+        "material_print_temperature": { "maximum_value": 260 },
+        "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
+        "meshfix_maximum_deviation": { "value": "layer_height / 4" },		
+        "meshfix_maximum_travel_resolution": { "value": 0.5 },
+        "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" }
+    }
+}

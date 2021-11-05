@@ -59,7 +59,7 @@
         },
         "machine_end_gcode":
         {
-            "default_value": "M117 Cooling down...\nM104 S0 ; turn off extruder\nM84 ; disable motors\nM107 ; Fan off\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 ;X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 ;move X to min endstops, so the head is out of the way\nG90 ;Absolute positionning\nG1 Y200 F3000 ;Present print\nM84 ;steppers off\nM300 P300 S4000\nM117 Finished.\n"
+            "default_value": "M117 Cooling down...\nM104 S0 ; turn off extruder\nM84 ; disable motors\nM107 ; Fan off\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 ;X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 ;move X to min endstops, so the head is out of the way\nG90 ;Absolute positioning\nG1 Y200 F3000 ;Present print\nM84 ;steppers off\nM300 P300 S4000\nM117 Finished.\n"
         },
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
@@ -92,7 +92,7 @@
 
         "retraction_hop_enabled": { "value": "True" },
         "retraction_hop": { "value": 0.2 },
-        "retraction_combing": { "default_value": "noskin" },
+        "retraction_combing": { "value": "'noskin'" },
         "retraction_combing_max_distance": { "value": 30 },
 
         "travel_avoid_other_parts": { "value": true },

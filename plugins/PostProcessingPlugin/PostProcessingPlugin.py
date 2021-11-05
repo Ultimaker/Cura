@@ -142,7 +142,9 @@ class PostProcessingPlugin(QObject, Extension):
         # The PostProcessingPlugin path is for built-in scripts.
         # The Resources path is where the user should store custom scripts.
         # The Preferences path is legacy, where the user may previously have stored scripts.
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
+        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
+        for root in resource_folders:
             if root is None:
                 continue
             path = os.path.join(root, "scripts")
@@ -261,7 +263,11 @@ class PostProcessingPlugin(QObject, Extension):
             script_str = script_str.replace(r"\\\n", "\n").replace(r"\\\\", "\\\\")  # Unescape escape sequences.
             script_parser = configparser.ConfigParser(interpolation=None)
             script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
-            script_parser.read_string(script_str)
+            try:
+                script_parser.read_string(script_str)
+            except configparser.Error as e:
+                Logger.error("Stored post-processing scripts have syntax errors: {err}".format(err = str(e)))
+                continue
             for script_name, settings in script_parser.items():  # There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
                 if script_name == "DEFAULT":  # ConfigParser always has a DEFAULT section, but we don't fill it. Ignore this one.
                     continue

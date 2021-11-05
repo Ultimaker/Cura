@@ -16,7 +16,7 @@ Item
 {
     id: base
 
-    // The print job which all other information is dervied from
+    // The print job which all other information is derived from
     property var printJob: null
 
     width: childrenRect.width
@@ -44,7 +44,7 @@ Item
             verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
-        color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
+        color: printJob && printJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
         font: UM.Theme.getFont("default") // 12pt, regular
 
@@ -62,7 +62,7 @@ Item
             leftMargin: UM.Theme.getSize("monitor_margin").width
             verticalCenter: parent.verticalCenter
         }
-        color: UM.Theme.getColor("monitor_text_primary")
+        color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("default")
         text:
         {

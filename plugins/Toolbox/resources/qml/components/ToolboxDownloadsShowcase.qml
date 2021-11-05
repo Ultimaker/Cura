@@ -8,7 +8,7 @@ import UM 1.1 as UM
 
 Rectangle
 {
-    color: UM.Theme.getColor("secondary")
+    color: UM.Theme.getColor("toolbox_premium_packages_background")
     height: childrenRect.height
     width: parent.width
     Column
@@ -39,7 +39,7 @@ Rectangle
                 text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
                 Label
                 {
-                    text: "<a href='%2'>".arg(toolbox.getWebMarketplaceUrl("materials")) + catalog.i18nc("@label", "Search materials") + "</a>"
+                    text: "<a href='%2'>".arg(toolbox.getWebMarketplaceUrl("materials") + "?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search") + catalog.i18nc("@label", "Search materials") + "</a>"
                     width: contentWidth
                     height: contentHeight
                     horizontalAlignment: Text.AlignRight

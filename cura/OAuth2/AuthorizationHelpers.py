@@ -1,12 +1,12 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime
 import json
-import random
+import secrets
 from hashlib import sha512
 from base64 import b64encode
 from typing import Optional
-
 import requests
 
 from UM.i18n import i18nCatalog
@@ -15,6 +15,7 @@ from UM.Logger import Logger
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 catalog = i18nCatalog("cura")
 TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 
 class AuthorizationHelpers:
     """Class containing several helpers to deal with the authorization flow."""
@@ -47,8 +48,8 @@ class AuthorizationHelpers:
             }
         try:
             return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
+        except requests.exceptions.ConnectionError as connection_error:
+            return AuthenticationResponse(success = False, err_message = f"Unable to connect to remote server: {connection_error}")
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
         """Request the access token from the authorization server using a refresh token.
@@ -57,7 +58,7 @@ class AuthorizationHelpers:
         :return: An AuthenticationResponse object.
         """
 
-        Logger.log("d", "Refreshing the access token.")
+        Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -68,7 +69,9 @@ class AuthorizationHelpers:
         try:
             return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
         except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success=False, err_message="Unable to connect to remote server")
+            return AuthenticationResponse(success = False, err_message = "Unable to connect to remote server")
+        except OSError as e:
+            return AuthenticationResponse(success = False, err_message = "Operating system is unable to set up a secure connection: {err}".format(err = str(e)))
 
     @staticmethod
     def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":
@@ -107,10 +110,12 @@ class AuthorizationHelpers:
         """
 
         try:
-            token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
+            check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
+            Logger.log("d", "Checking the access token for [%s]", check_token_url)
+            token_request = requests.get(check_token_url, headers = {
                 "Authorization": "Bearer {}".format(access_token)
             })
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
             # Connection was suddenly dropped. Nothing we can do about that.
             Logger.logException("w", "Something failed while attempting to parse the JWT token")
             return None
@@ -121,21 +126,24 @@ class AuthorizationHelpers:
         if not user_data or not isinstance(user_data, dict):
             Logger.log("w", "Could not parse user data from token: %s", user_data)
             return None
+
         return UserProfile(
             user_id = user_data["user_id"],
             username = user_data["username"],
-            profile_image_url = user_data.get("profile_image_url", "")
+            profile_image_url = user_data.get("profile_image_url", ""),
+            organization_id = user_data.get("organization", {}).get("organization_id"),
+            subscriptions = user_data.get("subscriptions", [])
         )
 
     @staticmethod
     def generateVerificationCode(code_length: int = 32) -> str:
         """Generate a verification code of arbitrary length.
 
-        :param code_length:: How long should the code be? This should never be lower than 16, but it's probably
+        :param code_length:: How long should the code be in bytes? This should never be lower than 16, but it's probably
         better to leave it at 32
         """
 
-        return "".join(random.choice("0123456789ABCDEF") for i in range(code_length))
+        return secrets.token_hex(code_length)
 
     @staticmethod
     def generateVerificationCodeChallenge(verification_code: str) -> str:

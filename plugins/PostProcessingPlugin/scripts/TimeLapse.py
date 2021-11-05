@@ -66,6 +66,22 @@ class TimeLapse(Script):
                     "type": "float",
                     "default_value": 9000,
                     "enabled": "park_print_head"
+                },
+                "retract":
+                {
+                    "label": "Retraction Distance",
+                    "description": "Filament retraction distance for camera trigger.",
+                    "unit": "mm",
+                    "type": "int",
+                    "default_value": 0
+                },
+                "zhop":
+                {
+                    "label": "Z-Hop Height When Parking",
+                    "description": "Z-hop length before parking",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0
                 }
             }
         }"""
@@ -77,9 +93,12 @@ class TimeLapse(Script):
         y_park = self.getSettingValueByKey("head_park_y")
         trigger_command = self.getSettingValueByKey("trigger_command")
         pause_length = self.getSettingValueByKey("pause_length")
+        retract = int(self.getSettingValueByKey("retract"))
+        zhop = self.getSettingValueByKey("zhop")
         gcode_to_append = ";TimeLapse Begin\n"
         last_x = 0
         last_y = 0
+        last_z = 0
 
         if park_print_head:
             gcode_to_append += self.putValue(G=1, F=feed_rate,
@@ -90,16 +109,35 @@ class TimeLapse(Script):
 
         for idx, layer in enumerate(data):
             for line in layer.split("\n"):
-                if self.getValue(line, "G") in {0, 1}:  # Track X,Y location.
+                if self.getValue(line, "G") in {0, 1}:  # Track X,Y,Z location.
                     last_x = self.getValue(line, "X", last_x)
                     last_y = self.getValue(line, "Y", last_y)
+                    last_z = self.getValue(line, "Z", last_z)
             # Check that a layer is being printed
             lines = layer.split("\n")
             for line in lines:
                 if ";LAYER:" in line:
+                    if retract != 0: # Retract the filament so no stringing happens
+                        layer += self.putValue(M=83) + " ;Extrude Relative\n"
+                        layer += self.putValue(G=1, E=-retract, F=3000) + " ;Retract filament\n"
+                        layer += self.putValue(M=82) + " ;Extrude Absolute\n"
+                        layer += self.putValue(M=400) + " ;Wait for moves to finish\n" # Wait to fully retract before hopping
+
+                    if zhop != 0:
+                        layer += self.putValue(G=1, Z=last_z+zhop, F=3000) + " ;Z-Hop\n"
+
                     layer += gcode_to_append
 
-                    layer += "G0 X%s Y%s\n" % (last_x, last_y)
+                    if zhop != 0:
+                        layer += self.putValue(G=0, X=last_x, Y=last_y, Z=last_z) + "; Restore position \n"
+                    else:
+                        layer += self.putValue(G=0, X=last_x, Y=last_y) + "; Restore position \n"
+
+                    if retract != 0:
+                        layer += self.putValue(M=400) + " ;Wait for moves to finish\n"
+                        layer += self.putValue(M=83) + " ;Extrude Relative\n"
+                        layer += self.putValue(G=1, E=retract, F=3000) + " ;Retract filament\n"
+                        layer += self.putValue(M=82) + " ;Extrude Absolute\n"
 
                     data[idx] = layer
                     break

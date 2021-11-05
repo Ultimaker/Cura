@@ -75,6 +75,6 @@
     "adhesion_type": { "default_value": "skirt" },
     "brim_outside_only": { "default_value": false },
 
-    "meshfix_maximum_resolution": { "default_value": 0.05 }
+    "meshfix_maximum_resolution": { "default_value": 0.25 }
     }
 }
