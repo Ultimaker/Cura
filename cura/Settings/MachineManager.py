@@ -1191,7 +1191,7 @@ class MachineManager(QObject):
 
         self.setIntentByCategory(quality_changes_group.intent_category)
         self._reCalculateNumUserSettings()
-
+        self.correctExtruderSettings()
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
