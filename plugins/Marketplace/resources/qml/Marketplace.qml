@@ -94,18 +94,20 @@ Window
                     id: pageSelectionTabBar
                     anchors.right: managePackagesButton.left
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
+                    height: UM.Theme.getSize("button_icon").height
                     spacing: 0
 
                     PackageTypeTab
                     {
                         width: implicitWidth
+                        padding: UM.Theme.getSize("default_margin").width/2
                         text: catalog.i18nc("@button", "Plugins")
                         onClicked: content.source = "Plugins.qml"
                     }
                     PackageTypeTab
                     {
                         width: implicitWidth
+                        padding: Math.round(UM.Theme.getSize("default_margin").width / 2)
                         text: catalog.i18nc("@button", "Materials")
                         onClicked: content.source = "Materials.qml"
                     }
