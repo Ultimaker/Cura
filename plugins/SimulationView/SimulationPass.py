@@ -166,7 +166,12 @@ class SimulationPass(RenderPass):
                         if layer < self._layer_view._minimum_layer_num:
                             start = end
 
-                    # Calculate the range of paths in the last layer
+                    # Calculate the range of paths in the last layer. -- The type-change count is needed to keep the
+                    # vertex-indices aligned between the two different ways we represent polygons here.
+                    # Since there is one type per line, that could give a vertex two different types, if it's a vertex
+                    # where a type-chage occurs. However, the shader expects vertices to have only one type. In order to
+                    # fix this, those vertices are duplicated. This introduces a discrepancy that we have to take into
+                    # account, which is done by the type-change-count.
                     type_change_count = layer_data.getLayer(self._layer_view._current_layer_num).lineMeshCumulativeTypeChangeCount(max(self._layer_view._current_path_num - 1, 0))
                     current_layer_start = end
                     current_layer_end = current_layer_start + self._layer_view._current_path_num + current_polygon_offset + type_change_count

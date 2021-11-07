@@ -55,7 +55,7 @@ class LayerPolygon:
 
         self._jump_mask = self.__jump_map[self._types]
         self._jump_count = numpy.sum(self._jump_mask)
-        self._cumulative_type_change_counts = numpy.zeros(len(self._types))
+        self._cumulative_type_change_counts = numpy.zeros(len(self._types))  # See the comment on the 'cumulativeTypeChangeCounts' property below.
         last_type = self.types[0]
         current_type_count = 0
         for i in range(0, len(self._cumulative_type_change_counts)):
@@ -221,6 +221,13 @@ class LayerPolygon:
 
     @property
     def cumulativeTypeChangeCounts(self):
+        """ This polygon class stores with a vertex the type of the line to the next vertex. However, in other contexts,
+        other ways of representing this might be more suited to the task (for example, when a vertex can possibly only
+        have _one_ type, it's unavoidable to duplicate vertices when the type is changed). In such situations it's might
+        be useful to know how many times the type has changed, in order to keep the various vertex-indices aligned.
+
+        :return: The total times the line-type changes from one type to another within this LayerPolygon.
+        """
         return self._cumulative_type_change_counts
 
     def getNormals(self) -> numpy.ndarray:

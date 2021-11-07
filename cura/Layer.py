@@ -57,6 +57,12 @@ class Layer:
         return result
 
     def lineMeshCumulativeTypeChangeCount(self, path: int) -> int:
+        """ The number of line-type changes in this layer up until #path.
+        See also LayerPolygon::cumulativeTypeChangeCounts.
+
+        :param path: The path-index up until which the cumulative changes are counted.
+        :return: The cumulative number of line-type changes up until this path.
+        """
         result = 0
         for polygon in self._polygons:
             num_counts = len(polygon.cumulativeTypeChangeCounts)
