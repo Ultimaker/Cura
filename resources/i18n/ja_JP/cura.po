@@ -94,17 +94,17 @@ msgstr "ドラフトプロファイルは、プリント時間の大幅短縮を
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:53
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
-msgstr ""
+msgstr "プリントを開始する前に、材料プロファイルをプリンターと同期させてください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:54
 msgctxt "@action:button"
 msgid "New materials installed"
-msgstr ""
+msgstr "新しい材料がインストールされました"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:61
 msgctxt "@action:button"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "材料をプリンターと同期"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:69
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:80
@@ -126,12 +126,12 @@ msgstr "カスタム"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:356
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
-msgstr ""
+msgstr "材料アーカイブを{}に保存できませんでした："
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:357
 msgctxt "@message:title"
 msgid "Failed to save material archive"
-msgstr ""
+msgstr "材料アーカイブの保存に失敗しました"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
 msgctxt "@label"
@@ -1545,12 +1545,12 @@ msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
 " Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr ""
+msgstr "プリンター<b>{printer_name}</b>をクラウド経由で接続できました。\nプリンターをDigital Factoryに接続することで、どこからでもプリントキューの管理とプリントのモニタリングを行えます。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
-msgstr ""
+msgstr "クラウドプリンティングの準備はできていますか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:30
 msgctxt "@action"
@@ -1560,7 +1560,7 @@ msgstr "はじめに"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:31
 msgctxt "@action"
 msgid "Learn more"
-msgstr ""
+msgstr "詳しく見る"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
@@ -3120,7 +3120,7 @@ msgstr "キューをリモートで管理するには、プリンターのファ
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:288
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr ""
+msgstr "クラウドプリンターのウェブカムフィードをUltimaker Curaから見ることができません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカムを見ます。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
@@ -3642,72 +3642,72 @@ msgstr "&マーケットプレース"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:32
 msgctxt "@label:button"
 msgid "My printers"
-msgstr ""
+msgstr "マイプリンター"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
 msgid "Monitor printers in Ultimaker Digital Factory."
-msgstr ""
+msgstr "Ultimaker Digital Factoryでプリンターをモニタリングします。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
-msgstr ""
+msgstr "Digital Libraryでプリントプロジェクトを作成します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:46
 msgctxt "@label:button"
 msgid "Print jobs"
-msgstr ""
+msgstr "プリントジョブ"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:48
 msgctxt "@tooltip:button"
 msgid "Monitor print jobs and reprint from your print history."
-msgstr ""
+msgstr "プリントジョブをモニタリングしてプリント履歴から再プリントします。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
 msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr ""
+msgstr "Ultimaker Curaをプラグインと材料プロファイルで拡張します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
 msgid "Become a 3D printing expert with Ultimaker e-learning."
-msgstr ""
+msgstr "Ultimaker eラーニングで3Dプリンティングのエキスパートになります。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
 msgid "Ultimaker support"
-msgstr ""
+msgstr "Ultimakerのサポート"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
 msgid "Learn how to get started with Ultimaker Cura."
-msgstr ""
+msgstr "Ultimaker Curaの使用を開始する方法を確認します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
 msgctxt "@label:button"
 msgid "Ask a question"
-msgstr ""
+msgstr "質問をする"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
 msgid "Consult the Ultimaker Community."
-msgstr ""
+msgstr "Ultimaker Communityをご参照ください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
 msgctxt "@label:button"
 msgid "Report a bug"
-msgstr ""
+msgstr "バグを報告"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:83
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
-msgstr ""
+msgstr "問題が発生していることを開発者にお知らせください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
 msgid "Visit the Ultimaker website."
-msgstr ""
+msgstr "Ultimakerウェブサイトをご確認ください。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:257
 msgctxt "@label"
@@ -4585,12 +4585,12 @@ msgstr "Curaの単一インスタンスを使用"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:576
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
-msgstr ""
+msgstr "Curaの単一インスタンスに新しいモデルをロードする前に、ビルドプレートをクリアする必要はありますか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr ""
+msgstr "モデルを単一のインスタンスにロードする前にビルドプレートをクリア"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:592
 msgctxt "@info:tooltip"
@@ -6158,12 +6158,12 @@ msgstr "4.0 から 4.1 にバージョンアップグレート"
 #: VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr ""
+msgstr "Cura 4.11からCura 4.12に設定をアップグレードします。"
 
 #: VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
-msgstr ""
+msgstr "バージョン4.11から4.12へのアップグレード"
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"

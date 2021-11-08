@@ -54,12 +54,8 @@ msgstr "Стартовый G-код"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
-"."
-msgstr ""
-"Команды в G-коде, которые будут выполнены в самом начале, разделенные с помощью \n"
-"."
+msgid "G-code commands to be executed at the very start - separated by \\n."
+msgstr "Команды в G-коде, которые будут выполнены в самом начале, разделенные с помощью \\n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -68,12 +64,8 @@ msgstr "Завершающий G-код"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
-"."
-msgstr ""
-"Команды в G-коде, которые будут выполнены в самом конце, разделенные с помощью \n"
-"."
+msgid "G-code commands to be executed at the very end - separated by \\n."
+msgstr "Команды в G-коде, которые будут выполнены в самом конце, разделенные с помощью \\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1733,7 +1725,11 @@ msgstr "Шаблон заполнения"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgstr "Шаблон заполняющего материала печати. Линейное и зигзагообразное заполнение меняет направление на чередующихся слоях, снижая расходы на материал. Шаблоны"
+" «сетка», «треугольник», «шестигранник из треугольников», «куб», «восьмигранник», «четверть куба», «крестовое», «концентрическое» полностью печатаются"
+" в каждом слое. Шаблоны заполнения «гироид», «куб», «четверть куба» и «восьмигранник» меняются в каждом слое, чтобы обеспечить более равномерное распределение"
+" прочности в каждом направлении. Шаблон заполнения «молния» пытается минимизировать заполнение, поддерживая только (внутренние) верхние части объекта."
+" Таким образом, процент заполнения «действует» только на один слой ниже того, который требуется для поддержки модели."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1803,7 +1799,7 @@ msgstr "Гироид"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Молния"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2022,42 +2018,44 @@ msgstr "Количество слоев, которые поддерживают
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "Угол поддержки шаблона заполнения «молния»"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Определяет, когда слой шаблона заполнения «молния» должен поддерживать что-либо над ним. Измеряется под углом с учетом толщины слоя."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "Угол выступа шаблона заполнения «молния»"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Определяет, когда слой шаблона заполнения «молния» должен поддерживать модель над ним. Измеряется под углом с учетом толщины."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "Угол обрезки шаблона заполнения «молния»"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Разность, которая может возникать между слоем шаблона заполнения «молния» и слоем, расположенным непосредственно над ним, при обрезке внешних оконечностей"
+" деревьев. Измеряется под углом с учетом толщины."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "Угол выпрямления шаблона заполнения «молния»"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Разность, которая может возникать между слоем шаблона заполнения «молния» и слоем, расположенным непосредственно над ним, при выравнивании деревьев. Измеряется"
+" под углом с учетом толщины."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3252,7 +3250,7 @@ msgstr "Везде"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "Не на внешней поверхности"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5206,7 +5204,7 @@ msgstr "Минимальная ширина формы"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "Минимальное расстояние между внешними сторонами формы и модели."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
