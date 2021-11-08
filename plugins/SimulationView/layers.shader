@@ -13,9 +13,11 @@ vertex =
     attribute highp vec4 a_vertex;
     attribute lowp vec4 a_color;
     attribute lowp vec4 a_material_color;
+    attribute highp float a_vertex_index;
 
     varying lowp vec4 v_color;
     varying float v_line_type;
+    varying highp float v_vertex_index;
 
     void main()
     {
@@ -28,6 +30,7 @@ vertex =
         }
 
         v_line_type = a_line_type;
+        v_vertex_index = a_vertex_index;
     }
 
 fragment =
@@ -40,14 +43,21 @@ fragment =
     #endif // GL_ES
     varying lowp vec4 v_color;
     varying float v_line_type;
+    varying highp float v_vertex_index;
 
     uniform int u_show_travel_moves;
     uniform int u_show_helpers;
     uniform int u_show_skin;
     uniform int u_show_infill;
 
+    uniform highp vec2 u_drawRange;
+
     void main()
     {
+        if (u_drawRange.x >= 0 && u_drawRange.y >= 0 && (v_vertex_index < u_drawRange.x || v_vertex_index > u_drawRange.y))
+        {
+            discard;
+        }
         if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5)) {  // actually, 8 and 9
             // discard movements
             discard;
@@ -88,10 +98,13 @@ u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
 
+u_drawRange = [-1, -1]
+
 [bindings]
 u_modelMatrix = model_matrix
 u_viewMatrix = view_matrix
 u_projectionMatrix = projection_matrix
+u_drawRange = draw_range
 
 [attributes]
 a_vertex = vertex
@@ -99,3 +112,4 @@ a_color = color
 a_extruder = extruder
 a_line_type = line_type
 a_material_color = material_color
+a_vertex_index = vertex_index
