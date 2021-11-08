@@ -53,12 +53,8 @@ msgstr "Codice G avvio"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
-"."
-msgstr ""
-"I comandi codice G da eseguire all’avvio, separati da \n"
-"."
+msgid "G-code commands to be executed at the very start - separated by \\n."
+msgstr "I comandi codice G da eseguire all’avvio, separati da \\n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -67,12 +63,8 @@ msgstr "Codice G fine"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
-"."
-msgstr ""
-"I comandi codice G da eseguire alla fine, separati da \n"
-"."
+msgid "G-code commands to be executed at the very end - separated by \\n."
+msgstr "I comandi codice G da eseguire alla fine, separati da \\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1732,7 +1724,11 @@ msgstr "Configurazione di riempimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgstr "Configurazione del materiale di riempimento della stampa. Il riempimento a linea e a zig zag cambia direzione su strati alternati, riducendo il costo del"
+" materiale. Le configurazioni a griglia, a triangolo, tri-esagonali, cubiche, ottagonali, a quarto di cubo, incrociate e concentriche sono stampate completamente"
+" su ogni strato. Le configurazioni gyroid, cubiche, a quarto di cubo e ottagonali variano per ciascuno strato per garantire una più uniforme distribuzione"
+" della forza in ogni direzione. Il riempimento fulmine cerca di minimizzare il riempimento, supportando solo le parti superiori (interne) dell'oggetto."
+" Come tale, la percentuale di riempimento è 'valida' solo uno strato al di sotto di ciò che è necessario per supportare il modello."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1802,7 +1798,7 @@ msgstr "Gyroid"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Fulmine"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2021,42 +2017,44 @@ msgstr "Numero di layer di riempimento che supportano i bordi del rivestimento."
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "Angolo di supporto riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Determina quando uno strato di riempimento fulmine deve supportare il materiale sopra di esso. Misurato nell'angolo dato lo stesso di uno strato."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "Angolo di sbalzo riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Determina quando uno strato di riempimento fulmine deve supportare il modello sopra di esso. Misurato nell'angolo dato lo spessore."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "Angolo eliminazione riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "La differenza tra uno strato di riempimento fulmine con quello immediatamente sopra rispetto alla potatura delle estremità esterne degli alberi. Misurato"
+" nell'angolo dato lo spessore."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "Angolo di raddrizzatura riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "La differenza tra uno strato di riempimento fulmine con quello immediatamente sopra rispetto alla levigatura degli alberi. Misurato nell'angolo dato lo"
+" spessore."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3251,7 +3249,7 @@ msgstr "Tutto"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "Non su superficie esterna"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5205,7 +5203,7 @@ msgstr "Larghezza minimo dello stampo"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "Distanza minima tra l'esterno dello stampo e l'esterno del modello."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
