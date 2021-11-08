@@ -94,17 +94,17 @@ msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:53
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
-msgstr ""
+msgstr "请在开始打印之前将材料配置文件与您的打印机同步。"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:54
 msgctxt "@action:button"
 msgid "New materials installed"
-msgstr ""
+msgstr "新材料已装载"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:61
 msgctxt "@action:button"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "同步材料与打印机"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:69
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:80
@@ -126,12 +126,12 @@ msgstr "自定义"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:356
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
-msgstr ""
+msgstr "未能将材料存档保存到 {}："
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:357
 msgctxt "@message:title"
 msgid "Failed to save material archive"
-msgstr ""
+msgstr "未能保存材料存档"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
 msgctxt "@label"
@@ -1545,12 +1545,12 @@ msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
 " Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr ""
+msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。\n只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
-msgstr ""
+msgstr "是否进行云打印？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:30
 msgctxt "@action"
@@ -1560,7 +1560,7 @@ msgstr "开始"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:31
 msgctxt "@action"
 msgid "Learn more"
-msgstr ""
+msgstr "了解详情"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
@@ -3117,7 +3117,7 @@ msgstr "请及时更新打印机固件以远程管理打印队列。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:288
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr ""
+msgstr "无法从 Ultimaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
@@ -3639,72 +3639,72 @@ msgstr "市场(&M)"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:32
 msgctxt "@label:button"
 msgid "My printers"
-msgstr ""
+msgstr "我的打印机"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
 msgid "Monitor printers in Ultimaker Digital Factory."
-msgstr ""
+msgstr "在 Ultimaker Digital Factory 中监控打印机。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
-msgstr ""
+msgstr "在 Digital Library 中创建打印项目。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:46
 msgctxt "@label:button"
 msgid "Print jobs"
-msgstr ""
+msgstr "打印作业"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:48
 msgctxt "@tooltip:button"
 msgid "Monitor print jobs and reprint from your print history."
-msgstr ""
+msgstr "监控打印作业并从打印历史记录重新打印。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
 msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr ""
+msgstr "用插件和材料配置文件扩展 Ultimaker Cura。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
 msgid "Become a 3D printing expert with Ultimaker e-learning."
-msgstr ""
+msgstr "通过 Ultimaker 线上课程教学，成为 3D 打印专家。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
 msgid "Ultimaker support"
-msgstr ""
+msgstr "Ultimaker 支持"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
 msgid "Learn how to get started with Ultimaker Cura."
-msgstr ""
+msgstr "了解如何开始使用 Ultimaker Cura。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
 msgctxt "@label:button"
 msgid "Ask a question"
-msgstr ""
+msgstr "提问"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
 msgid "Consult the Ultimaker Community."
-msgstr ""
+msgstr "咨询 Ultimaker 社区。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
 msgctxt "@label:button"
 msgid "Report a bug"
-msgstr ""
+msgstr "报告错误"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:83
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
-msgstr ""
+msgstr "向开发人员报错。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
 msgid "Visit the Ultimaker website."
-msgstr ""
+msgstr "访问 Ultimaker 网站。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:257
 msgctxt "@label"
@@ -4581,12 +4581,12 @@ msgstr "使用单个 Cura 实例"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:576
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
-msgstr ""
+msgstr "是否应在清理构建板后再将新模型加载到单个 Cura 实例中？"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr ""
+msgstr "在清理构建板后再将模型加载到单个实例中"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:592
 msgctxt "@info:tooltip"
@@ -6158,12 +6158,12 @@ msgstr "版本自 4.0 升级到 4.1"
 #: VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr ""
+msgstr "将配置从 Cura 4.11 升级到 Cura 4.12。"
 
 #: VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
-msgstr ""
+msgstr "版本从 4.11 升级到 4.12"
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"

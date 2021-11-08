@@ -94,17 +94,17 @@ msgstr "Il profilo bozza è destinato alla stampa dei prototipi iniziali e alla 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:53
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
-msgstr ""
+msgstr "Sincronizzare i profili del materiale con le stampanti prima di iniziare a stampare."
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:54
 msgctxt "@action:button"
 msgid "New materials installed"
-msgstr ""
+msgstr "Nuovi materiali installati"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:61
 msgctxt "@action:button"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "Sincronizza materiali con stampanti"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:69
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SolidView/SolidView.py:80
@@ -126,12 +126,12 @@ msgstr "Personalizzata"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:356
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
-msgstr ""
+msgstr "Impossibile salvare archivio materiali in {}:"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:357
 msgctxt "@message:title"
 msgid "Failed to save material archive"
-msgstr ""
+msgstr "Impossibile salvare archivio materiali"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:383
 msgctxt "@label"
@@ -1552,12 +1552,13 @@ msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
 " Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr ""
+msgstr "Impossibile connettere la stampante <b>{printer_name}</b> tramite cloud.\n Gestisci la coda di stampa e monitora le stampe da qualsiasi posizione collegando"
+" la stampante a Digital Factory"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
-msgstr ""
+msgstr "Pronto per la stampa tramite cloud?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:30
 msgctxt "@action"
@@ -1567,7 +1568,7 @@ msgstr "Per iniziare"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:31
 msgctxt "@action"
 msgid "Learn more"
-msgstr ""
+msgstr "Ulteriori informazioni"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
@@ -3128,7 +3129,8 @@ msgstr "Aggiornare il firmware della stampante per gestire la coda da remoto."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:288
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr ""
+msgstr "Impossibile visualizzare feed della Webcam per stampanti cloud da Ultimaker Cura. Fare clic su \"Gestione stampanti\" per visitare Ultimaker Digital Factory"
+" e visualizzare questa Webcam."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
@@ -3650,72 +3652,72 @@ msgstr "&Mercato"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:32
 msgctxt "@label:button"
 msgid "My printers"
-msgstr ""
+msgstr "Le mie stampanti"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:34
 msgctxt "@tooltip:button"
 msgid "Monitor printers in Ultimaker Digital Factory."
-msgstr ""
+msgstr "Monitora le stampanti in Ultimaker Digital Factory."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:41
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
-msgstr ""
+msgstr "Crea progetti di stampa in Digital Library."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:46
 msgctxt "@label:button"
 msgid "Print jobs"
-msgstr ""
+msgstr "Processi di stampa"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:48
 msgctxt "@tooltip:button"
 msgid "Monitor print jobs and reprint from your print history."
-msgstr ""
+msgstr "Monitora i processi di stampa dalla cronologia di stampa."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:55
 msgctxt "@tooltip:button"
 msgid "Extend Ultimaker Cura with plugins and material profiles."
-msgstr ""
+msgstr "Estendi Ultimaker Cura con plugin e profili del materiale."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:62
 msgctxt "@tooltip:button"
 msgid "Become a 3D printing expert with Ultimaker e-learning."
-msgstr ""
+msgstr "Diventa un esperto di stampa 3D con e-learning Ultimaker."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:67
 msgctxt "@label:button"
 msgid "Ultimaker support"
-msgstr ""
+msgstr "Supporto Ultimaker"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:69
 msgctxt "@tooltip:button"
 msgid "Learn how to get started with Ultimaker Cura."
-msgstr ""
+msgstr "Scopri come iniziare a utilizzare Ultimaker Cura."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:74
 msgctxt "@label:button"
 msgid "Ask a question"
-msgstr ""
+msgstr "Fai una domanda"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:76
 msgctxt "@tooltip:button"
 msgid "Consult the Ultimaker Community."
-msgstr ""
+msgstr "Consulta la community di Ultimaker."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:81
 msgctxt "@label:button"
 msgid "Report a bug"
-msgstr ""
+msgstr "Segnala un errore"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:83
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
-msgstr ""
+msgstr "Informa gli sviluppatori che si è verificato un errore."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/ApplicationSwitcher/ApplicationSwitcherPopup.qml:90
 msgctxt "@tooltip:button"
 msgid "Visit the Ultimaker website."
-msgstr ""
+msgstr "Visita il sito Web Ultimaker."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:257
 msgctxt "@label"
@@ -4596,12 +4598,12 @@ msgstr "Utilizzare una singola istanza di Cura"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:576
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
-msgstr ""
+msgstr "È necessario pulire il piano di stampa prima di caricare un nuovo modello nella singola istanza di Cura?"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr ""
+msgstr "Pulire il piano di stampa prima di caricare il modello nella singola istanza"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:592
 msgctxt "@info:tooltip"
@@ -6174,12 +6176,12 @@ msgstr "Aggiornamento della versione da 4.0 a 4.1"
 #: VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr ""
+msgstr "Aggiorna le configurazioni da Cura 4.11 a Cura 4.12."
 
 #: VersionUpgrade/VersionUpgrade411to412/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
-msgstr ""
+msgstr "Aggiornamento della versione da 4.11 a 4.12"
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"
