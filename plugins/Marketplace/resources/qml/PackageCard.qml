@@ -69,7 +69,7 @@ Rectangle
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
 
-                        color: UM.Theme.getColor("icon")
+                        color: UM.Theme.getColor("primary")
                         visible: packageData.isVerified
                         source: UM.Theme.getIcon("CheckCircle")
 
