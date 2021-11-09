@@ -97,7 +97,7 @@ Rectangle
                     Layout.alignment: Qt.AlignTop
 
                     color: UM.Theme.getColor("icon")
-                    source: UM.Theme.getIcon("Link")
+                    source: UM.Theme.getIcon("LinkExternal")
 
                     // TODO: on clicked url
                 }
