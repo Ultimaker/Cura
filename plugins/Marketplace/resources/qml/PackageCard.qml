@@ -123,8 +123,15 @@ Rectangle
                     {
                         if(truncated && line.isLast)
                         {
-                            line.width = Math.min(line.implicitWidth,
-                                parent.width - readMoreButton.width - fontMetrics.advanceWidth("… "));
+                            let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ");
+                            if(line.implicitWidth > max_line_width)
+                            {
+                                line.width = max_line_width;
+                            }
+                            else
+                            {
+                                line.width = line.implicitWidth - fontMetrics.advanceWidth("…"); //Truncate the ellipsis. We're adding this ourselves.
+                            }
                             descriptionLabel.lastLineWidth = line.implicitWidth;
                         }
                     }
@@ -150,7 +157,7 @@ Rectangle
 
                 Label
                 {
-                    text: "... "
+                    text: "… "
                     visible: descriptionLabel.truncated
                     anchors.left: parent.left
                     anchors.leftMargin: descriptionLabel.lastLineWidth
