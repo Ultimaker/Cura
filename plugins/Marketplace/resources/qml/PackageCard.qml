@@ -31,6 +31,7 @@ Rectangle
         {
             Layout.preferredWidth: UM.Theme.getSize("card_icon").width
             Layout.preferredHeight: UM.Theme.getSize("card_icon").height
+            Layout.alignment: Qt.AlignTop
 
             source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
         }
@@ -39,6 +40,7 @@ Rectangle
         {
             Layout.fillWidth: true
             Layout.preferredHeight: childrenRect.height
+            Layout.alignment: Qt.AlignTop
 
             spacing: UM.Theme.getSize("default_margin").height
 
@@ -50,6 +52,8 @@ Rectangle
 
                 Label
                 {
+                    Layout.alignment: Qt.AlignTop
+
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
 
@@ -60,6 +64,7 @@ Rectangle
                 {
                     Layout.preferredWidth: visible ? UM.Theme.getSize("section_icon").width : 0
                     Layout.preferredHeight: visible ? UM.Theme.getSize("section_icon").height : 0
+                    Layout.alignment: Qt.AlignTop
 
                     color: UM.Theme.getColor("icon")
                     visible: packageData.isVerified
@@ -72,6 +77,7 @@ Rectangle
                 {   // placeholder for 'certified material' icon+link whenever we implement the materials part of this card
                     Layout.preferredWidth: visible ? UM.Theme.getSize("section_icon").width : 0
                     Layout.preferredHeight: visible ? UM.Theme.getSize("section_icon").height : 0
+                    Layout.alignment: Qt.AlignTop
 
                     // TODO: on hover
                 }
@@ -79,6 +85,7 @@ Rectangle
                 Label
                 {
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
 
                     text: packageData.packageVersion
                 }
@@ -87,6 +94,7 @@ Rectangle
                 {
                     Layout.preferredWidth: UM.Theme.getSize("section_icon").width
                     Layout.preferredHeight: UM.Theme.getSize("section_icon").height
+                    Layout.alignment: Qt.AlignTop
 
                     color: UM.Theme.getColor("icon")
                     source: UM.Theme.getIcon("Link")
@@ -119,12 +127,15 @@ Rectangle
 
                 Label
                 {
+                    Layout.alignment: Qt.AlignTop
+
                     text: catalog.i18nc("@label", "By")
                 }
 
                 Cura.TertiaryButton
                 {
                     Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignTop
 
                     text: packageData.authorName
 
