@@ -103,24 +103,44 @@ Rectangle
                 }
             }
 
-            Label
+            Item
             {
                 width: parent.width
+                height: descriptionLabel.height
 
-                text: packageData.description
-                maximumLineCount: 2
-                wrapMode: Text.Wrap
-                elide: Text.ElideRight //TODO: Make space for Read More button.
+                Label
+                {
+                    id: descriptionLabel
+                    width: parent.width
+
+                    text: packageData.description
+                    maximumLineCount: 2
+                    wrapMode: Text.Wrap
+                    elide: Text.ElideRight
+
+                    onLineLaidOut:
+                    {
+                        if(line.isLast)
+                        {
+                            line.width = Math.min(line.width, parent.width - readMoreButton.width)
+                        }
+                    }
+                }
+
+                Cura.TertiaryButton
+                {
+                    id: readMoreButton
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: authorBy.height //Height of a single line.
+
+                    leftPadding: UM.Theme.getSize("default_margin").width
+                    rightPadding: 0
+                    textFont: descriptionLabel.font
+
+                    text: catalog.i18nc("@info", "Read more")
+                }
             }
-            /*Cura.TertiaryButton
-            {
-                //TODO: Inline in description.
-
-                visible: descriptionLabel.text.length > parent.charLimitSmall
-                text: catalog.i18nc("@info", "Read more")
-
-                // TODO: overlaps elided text, is this ok?
-            }*/
 
             RowLayout //Author and action buttons.
             {
@@ -128,6 +148,7 @@ Rectangle
 
                 Label
                 {
+                    id: authorBy
                     Layout.alignment: Qt.AlignTop
 
                     text: catalog.i18nc("@label", "By")
