@@ -12,7 +12,7 @@ Rectangle
 {
     property var packageData
 
-    width: parent.width
+    width: parent ? parent.width : 0
     height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
 
     color: UM.Theme.getColor("main_background")
