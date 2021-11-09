@@ -553,7 +553,9 @@
 
         "standard_list_lineheight": [1.5, 1.5],
         "standard_arrow": [1.0, 1.0],
+
         "card": [25.0, 8.75],
+        "card_icon": [6.0, 6.0],
 
         "button": [4, 4],
         "button_icon": [2.5, 2.5],

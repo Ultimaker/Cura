@@ -24,10 +24,10 @@ Rectangle
         {
             top: parent.top
             left: parent.left
-            margins: UM.Theme.getSize("thin_margin").width
+            margins: UM.Theme.getSize("default_margin").width
         }
-        width: UM.Theme.getSize("section_icon").width * 3
-        height: UM.Theme.getSize("section_icon").height * 3
+        width: UM.Theme.getSize("card_icon").width
+        height: UM.Theme.getSize("card_icon").height
 
         source: packageData.iconUrl != "" ? packageData.iconUrl : UM.Theme.getImage("CicleOutline")
     }
