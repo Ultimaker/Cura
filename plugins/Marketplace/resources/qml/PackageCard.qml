@@ -112,6 +112,7 @@ Rectangle
                 {
                     id: descriptionLabel
                     width: parent.width
+                    property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
                     text: packageData.description
                     maximumLineCount: 2
@@ -122,7 +123,9 @@ Rectangle
                     {
                         if(truncated && line.isLast)
                         {
-                            line.width = Math.min(line.width, parent.width - readMoreButton.width);
+                            line.width = Math.min(line.implicitWidth,
+                                parent.width - readMoreButton.width - fontMetrics.advanceWidth("… "));
+                            descriptionLabel.lastLineWidth = line.implicitWidth;
                         }
                     }
                 }
@@ -132,15 +135,26 @@ Rectangle
                     id: readMoreButton
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    height: authorBy.height //Height of a single line.
+                    height: fontMetrics.height //Height of a single line.
+
+                    text: catalog.i18nc("@info", "Read more")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
 
                     visible: descriptionLabel.truncated
                     enabled: visible
                     leftPadding: UM.Theme.getSize("default_margin").width
-                    rightPadding: 0
+                    rightPadding: UM.Theme.getSize("wide_margin").width
                     textFont: descriptionLabel.font
+                    isIconOnRightSide: true
+                }
 
-                    text: catalog.i18nc("@info", "Read more")
+                Label
+                {
+                    text: "... "
+                    visible: descriptionLabel.truncated
+                    anchors.left: parent.left
+                    anchors.leftMargin: descriptionLabel.lastLineWidth
+                    anchors.bottom: readMoreButton.bottom
                 }
             }
 
@@ -185,5 +199,11 @@ Rectangle
                 }
             }
         }
+    }
+
+    FontMetrics
+    {
+        id: fontMetrics
+        font: UM.Theme.getFont("default")
     }
 }
