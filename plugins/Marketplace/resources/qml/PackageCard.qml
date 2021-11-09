@@ -88,6 +88,7 @@ Rectangle
 
                     text: packageData.packageVersion
                     font: UM.Theme.getFont("small")
+                    color: UM.Theme.getColor("text")
                 }
 
                 UM.RecolorImage
@@ -116,6 +117,7 @@ Rectangle
 
                     text: packageData.description
                     font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
                     maximumLineCount: 2
                     wrapMode: Text.Wrap
                     elide: Text.ElideRight
@@ -164,6 +166,7 @@ Rectangle
 
                     text: "… "
                     font: descriptionLabel.font
+                    color: descriptionLabel.color
                     visible: descriptionLabel.truncated
                 }
             }
@@ -181,6 +184,7 @@ Rectangle
 
                     text: catalog.i18nc("@label", "By")
                     font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
                 }
 
                 Cura.TertiaryButton
