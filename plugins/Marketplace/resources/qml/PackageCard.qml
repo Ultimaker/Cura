@@ -107,8 +107,9 @@ Rectangle
             {
                 width: parent.width
 
-                maximumLineCount: 2
                 text: packageData.description
+                maximumLineCount: 2
+                wrapMode: Text.Wrap
                 elide: Text.ElideRight //TODO: Make space for Read More button.
             }
             /*Cura.TertiaryButton
