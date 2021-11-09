@@ -59,6 +59,39 @@
         },
         "machine_end_gcode": {
             "value": "'M104 S0 ;extruder heater off' + ('\\nM140 S0 ;heated bed heater off' if machine_heated_bed else '') + '\\nG91 ;relative positioning\\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\\nM84 ;steppers off\\nG90 ;absolute positioning'"
+        },
+               "infill_before_walls": {
+            "value": "False"
+        },
+        "speed_equalize_flow_width_factor": {
+            "value": "1.1"
+        },
+        "wall_distribution_count": {
+            "value": "1"
+        },
+        "wall_transition_threshold": {
+            "value": 90
+        },
+        "wall_add_middle_threshold": {
+            "value": "wall_transition_threshold * 8/9"
+        },
+        "retraction_combing": {
+            "value": "'no_outer_surfaces'"
+        },
+        "skin_monotonic" : {
+            "value": true
+        },
+        "fill_outline_gaps": {
+            "value": "True"
+        },
+        "min_feature_size": {
+            "value": "wall_line_width_0 / 4"
+        },
+        "min_bead_width": {
+            "value": "wall_line_width_0 * (100.0 + wall_split_middle_threshold)/200"
+        },
+        "meshfix_maximum_extrusion_area_deviation": {
+            "value": "50000"
         }
     }
 }
