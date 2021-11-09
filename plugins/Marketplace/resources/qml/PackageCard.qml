@@ -54,10 +54,9 @@ Rectangle
                 {
                     Layout.alignment: Qt.AlignTop
 
+                    text: packageData.displayName
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
-
-                    text: packageData.displayName
                 }
 
                 UM.RecolorImage
@@ -88,6 +87,7 @@ Rectangle
                     Layout.alignment: Qt.AlignTop
 
                     text: packageData.packageVersion
+                    font: UM.Theme.getFont("small")
                 }
 
                 UM.RecolorImage
@@ -115,6 +115,7 @@ Rectangle
                     property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
                     text: packageData.description
+                    font: UM.Theme.getFont("default")
                     maximumLineCount: 2
                     wrapMode: Text.Wrap
                     elide: Text.ElideRight
@@ -157,11 +158,13 @@ Rectangle
 
                 Label
                 {
-                    text: "… "
-                    visible: descriptionLabel.truncated
                     anchors.left: parent.left
                     anchors.leftMargin: descriptionLabel.lastLineWidth
                     anchors.bottom: readMoreButton.bottom
+
+                    text: "… "
+                    font: descriptionLabel.font
+                    visible: descriptionLabel.truncated
                 }
             }
 
@@ -175,6 +178,7 @@ Rectangle
                     Layout.alignment: Qt.AlignTop
 
                     text: catalog.i18nc("@label", "By")
+                    font: UM.Theme.getFont("default")
                 }
 
                 Cura.TertiaryButton
@@ -183,6 +187,7 @@ Rectangle
                     Layout.alignment: Qt.AlignTop
 
                     text: packageData.authorName
+                    textFont: UM.Theme.getFont("default")
 
                     // TODO on clicked (is link) -> MouseArea?
                 }
