@@ -32,7 +32,7 @@ Rectangle
             Layout.preferredWidth: UM.Theme.getSize("card_icon").width
             Layout.preferredHeight: UM.Theme.getSize("card_icon").height
 
-            source: packageData.iconUrl != "" ? packageData.iconUrl : UM.Theme.getImage("CicleOutline")
+            source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
         }
 
         Column
