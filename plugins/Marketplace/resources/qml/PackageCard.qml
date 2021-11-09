@@ -92,7 +92,7 @@ Rectangle
                     Layout.alignment: Qt.AlignTop
 
                     text: packageData.packageVersion
-                    font: UM.Theme.getFont("small")
+                    font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                 }
 
@@ -121,7 +121,7 @@ Rectangle
                     property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
                     text: packageData.description
-                    font: UM.Theme.getFont("default")
+                    font: UM.Theme.getFont("medium")
                     color: UM.Theme.getColor("text")
                     maximumLineCount: 2
                     wrapMode: Text.Wrap
@@ -131,7 +131,7 @@ Rectangle
                     {
                         if(truncated && line.isLast)
                         {
-                            let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ");
+                            let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ") - UM.Theme.getSize("default_margin").width;
                             if(line.implicitWidth > max_line_width)
                             {
                                 line.width = max_line_width;
@@ -232,6 +232,6 @@ Rectangle
     FontMetrics
     {
         id: fontMetrics
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("medium")
     }
 }
