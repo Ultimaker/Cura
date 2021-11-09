@@ -120,9 +120,9 @@ Rectangle
 
                     onLineLaidOut:
                     {
-                        if(line.isLast)
+                        if(truncated && line.isLast)
                         {
-                            line.width = Math.min(line.width, parent.width - readMoreButton.width)
+                            line.width = Math.min(line.width, parent.width - readMoreButton.width);
                         }
                     }
                 }
@@ -134,6 +134,8 @@ Rectangle
                     anchors.bottom: parent.bottom
                     height: authorBy.height //Height of a single line.
 
+                    visible: descriptionLabel.truncated
+                    enabled: visible
                     leftPadding: UM.Theme.getSize("default_margin").width
                     rightPadding: 0
                     textFont: descriptionLabel.font
