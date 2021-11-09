@@ -8,6 +8,8 @@ from UM.Logger import Logger
 from UM.OutputDevice import OutputDeviceError
 from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 from UM.Scene.SceneNode import SceneNode
+from UM.Version import Version
+from cura import ApplicationMetadata
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from .DigitalFactoryController import DigitalFactoryController
@@ -45,7 +47,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         self._writing = False
 
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
-        self._account.loginStateChanged.connect(self._onLoginStateChanged)
+        self._controller.userAccessStateChanged.connect(self._onUserAccessStateChanged)
         self.enabled = self._account.isLoggedIn and self._controller.userAccountHasLibraryAccess()
 
         self._current_workspace_information = CuraApplication.getInstance().getCurrentWorkspaceInformation()
@@ -97,7 +99,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         if not self._dialog:
             Logger.log("e", "Unable to create the Digital Library Save dialog.")
 
-    def _onLoginStateChanged(self, logged_in: bool) -> None:
+    def _onUserAccessStateChanged(self, logged_in: bool) -> None:
         """
         Sets the enabled status of the DigitalFactoryOutputDevice according to the account's login status
         :param logged_in: The new login status
@@ -105,8 +107,11 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         self.enabled = logged_in and self._controller.userAccountHasLibraryAccess()
         self.enabledChanged.emit()
 
-    def _onWriteStarted(self) -> None:
+    def _onWriteStarted(self, new_name: Optional[str] = None) -> None:
         self._writing = True
+        if new_name and Version(ApplicationMetadata.CuraSDKVersion) >= Version("7.8.0"):
+            # setLastOutputName is only supported in sdk version 7.8.0 and up
+            self.setLastOutputName(new_name) # On saving, the user can change the name, this should propagate.
         self.writeStarted.emit(self)
 
     def _onWriteFinished(self) -> None:

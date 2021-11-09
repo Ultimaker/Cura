@@ -93,7 +93,7 @@ class Snapshot:
             pixel_output = preview_pass.getOutput()
             try:
                 min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
-            except ValueError:
+            except (ValueError, AttributeError):
                 return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)

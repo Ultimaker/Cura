@@ -22,6 +22,7 @@ from .DFFileUploader import DFFileUploader
 from .DFLibraryFileUploadRequest import DFLibraryFileUploadRequest
 from .DFLibraryFileUploadResponse import DFLibraryFileUploadResponse
 from .DFPrintJobUploadRequest import DFPrintJobUploadRequest
+from .DigitalFactoryFeatureBudgetResponse import DigitalFactoryFeatureBudgetResponse
 from .DigitalFactoryFileResponse import DigitalFactoryFileResponse
 from .DigitalFactoryProjectResponse import DigitalFactoryProjectResponse
 from .PaginationLinks import PaginationLinks
@@ -54,8 +55,68 @@ class DigitalFactoryApiClient:
         self._http = HttpRequestManager.getInstance()
         self._on_error = on_error
         self._file_uploader = None  # type: Optional[DFFileUploader]
+        self._library_max_private_projects: Optional[int] = None
 
         self._projects_pagination_mgr = PaginationManager(limit = projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
+
+    def checkUserHasAccess(self, callback: Callable) -> None:
+        """Checks if the user has any sort of access to the digital library.
+           A user is considered to have access if the max-# of private projects is greater then 0 (or -1 for unlimited).
+        """
+
+        def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
+            if (response is not None and isinstance(response, DigitalFactoryFeatureBudgetResponse) and
+                    response.library_max_private_projects is not None):
+                # A user has DF access when library_max_private_projects is either -1 (unlimited) or bigger then 0
+                has_access = response.library_max_private_projects == -1 or response.library_max_private_projects > 0
+                callback(has_access)
+                self._library_max_private_projects = response.library_max_private_projects
+                # update the account with the additional user rights
+                self._account.updateAdditionalRight(df_access = has_access)
+            else:
+                Logger.warning(f"Digital Factory: Response is not a feature budget, likely an error: {str(response)}")
+                callback(False)
+
+        self._http.get(f"{self.CURA_API_ROOT}/feature_budgets",
+                       scope = self._scope,
+                       callback = self._parseCallback(callbackWrap, DigitalFactoryFeatureBudgetResponse, callbackWrap),
+                       error_callback = callbackWrap,
+                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+
+    def checkUserCanCreateNewLibraryProject(self, callback: Callable) -> None:
+        """
+        Checks if the user is allowed to create new library projects.
+        A user is allowed to create new library projects if the haven't reached their maximum allowed private projects.
+        """
+
+        def callbackWrap(response: Optional[Any] = None, *args, **kwargs) -> None:
+            if response is not None:
+                if isinstance(response, DigitalFactoryProjectResponse):  # The user has only one private project
+                    callback(True)
+                elif isinstance(response, list) and all(isinstance(r, DigitalFactoryProjectResponse) for r in response):
+                    callback(len(response) < cast(int, self._library_max_private_projects))
+                else:
+                    Logger.warning(f"Digital Factory: Incorrect response type received when requesting private projects: {str(response)}")
+                    callback(False)
+            else:
+                Logger.warning(f"Digital Factory: Response is empty, likely an error: {str(response)}")
+                callback(False)
+
+        if self._library_max_private_projects is not None and self._library_max_private_projects > 0:
+            # The user has a limit in the number of private projects they can create. Check whether they have already
+            # reached that limit.
+            # Note: Set the pagination manager to None when doing this get request, or else the next/previous links
+            #       of the pagination will become corrupted
+            url = f"{self.CURA_API_ROOT}/projects?shared=false&limit={self._library_max_private_projects}"
+            self._http.get(url,
+                           scope = self._scope,
+                           callback = self._parseCallback(callbackWrap, DigitalFactoryProjectResponse, callbackWrap, pagination_manager = None),
+                           error_callback = callbackWrap,
+                           timeout = self.DEFAULT_REQUEST_TIMEOUT)
+        else:
+            # If the limit is -1, then the user is allowed unlimited projects. If its 0 then they are not allowed to
+            # create any projects
+            callback(self._library_max_private_projects == -1)
 
     def getProject(self, library_project_id: str, on_finished: Callable[[DigitalFactoryProjectResponse], Any], failed: Callable) -> None:
         """
@@ -73,7 +134,7 @@ class DigitalFactoryApiClient:
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
-    def getProjectsFirstPage(self, on_finished: Callable[[List[DigitalFactoryProjectResponse]], Any], failed: Callable) -> None:
+    def getProjectsFirstPage(self, search_filter: str, on_finished: Callable[[List[DigitalFactoryProjectResponse]], Any], failed: Callable) -> None:
         """
         Retrieves digital factory projects for the user that is currently logged in.
 
@@ -81,13 +142,18 @@ class DigitalFactoryApiClient:
         according to the limit set in the pagination manager. If there is no projects pagination manager, this function
         leaves the project limit to the default set on the server side (999999).
 
+        :param search_filter: Text to filter the search results. If given an empty string, results are not filtered.
         :param on_finished: The function to be called after the result is parsed.
         :param failed: The function to be called if the request fails.
         """
-        url = "{}/projects".format(self.CURA_API_ROOT)
+        url = f"{self.CURA_API_ROOT}/projects"
+        query_character = "?"
         if self._projects_pagination_mgr:
             self._projects_pagination_mgr.reset()  # reset to clear all the links and response metadata
-            url += "?limit={}".format(self._projects_pagination_mgr.limit)
+            url += f"{query_character}limit={self._projects_pagination_mgr.limit}"
+            query_character = "&"
+        if search_filter != "":
+            url += f"{query_character}search={search_filter}"
 
         self._http.get(url,
                        scope = self._scope,
@@ -301,12 +367,10 @@ class DigitalFactoryApiClient:
         :param on_finished: The function to be called after the result is parsed.
         :param on_error: The function to be called if anything goes wrong.
         """
-
-        display_name = re.sub(r"[^a-zA-Z0-9- ./™®ö+']", " ", project_name)
-        Logger.log("i", "Attempt to create new DF project '{}'.".format(display_name))
+        Logger.log("i", "Attempt to create new DF project '{}'.".format(project_name))
 
         url = "{}/projects".format(self.CURA_API_ROOT)
-        data = json.dumps({"data": {"display_name": display_name}}).encode()
+        data = json.dumps({"data": {"display_name": project_name}}).encode()
         self._http.put(url,
                        scope = self._scope,
                        data = data,

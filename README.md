@@ -2,7 +2,7 @@ Cura
 ====
 Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
 
-![Screenshot](screenshot.png)
+![Screenshot](cura-logo.PNG)
 
 Logging Issues
 ------------
@@ -10,9 +10,9 @@ For crashes and similar issues, please attach the following information:
 
 * (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
 * The Cura GUI log file, located at
-  * `%APPDATA%\cura\<Cura version>\cura.log` (Windows), or usually `C:\Users\\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
-  * `$USER/Library/Application Support/cura/<Cura version>/cura.log` (OSX)
-  * `$USER/.local/share/cura/<Cura version>/cura.log` (Ubuntu/Linux)
+  * `%APPDATA%\cura\<Cura version>\cura.log` (Windows), or usually `C:\Users\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
+  * `$HOME/Library/Application Support/cura/<Cura version>/cura.log` (OSX)
+  * `$HOME/.local/share/cura/<Cura version>/cura.log` (Ubuntu/Linux)
 
 If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder
 

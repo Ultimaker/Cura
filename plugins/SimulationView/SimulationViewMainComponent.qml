@@ -78,7 +78,7 @@ Item
     UM.SimpleButton
     {
         id: playButton
-        iconSource: !isSimulationPlaying ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
+        iconSource: !isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg"
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("slider_handle_active")
@@ -190,11 +190,11 @@ Item
         }
     }
 
-    // Scrolls trough Z layers
+    // Scrolls through Z layers
     LayerSlider
     {
         property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
-        property double heightMargin: UM.Theme.getSize("default_margin").height * 3 // extra margin to accomodate layer number tooltips
+        property double heightMargin: UM.Theme.getSize("default_margin").height * 3 // extra margin to accommodate layer number tooltips
         property double layerSliderSafeHeight: layerSliderSafeYMax - layerSliderSafeYMin
 
         id: layerSlider

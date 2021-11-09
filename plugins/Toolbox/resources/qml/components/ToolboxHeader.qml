@@ -91,11 +91,11 @@ Item
             verticalCenter: parent.verticalCenter
         }
         acceptedButtons: Qt.LeftButton
-        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins"))
+        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins") + "?utm_source=cura&utm_medium=software&utm_campaign=marketplace-button")
         UM.RecolorImage
         {
             id: cloudMarketplaceButton
-            source: "../../images/shop.svg"
+            source: "../../images/Shop.svg"
             color: UM.Theme.getColor(webMarketplaceButtonTooltipArea.containsMouse ? "primary" : "text")
             height: parent.height / 2
             width: height

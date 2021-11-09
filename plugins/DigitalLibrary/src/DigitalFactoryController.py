@@ -1,4 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import math
 import os
@@ -8,7 +10,7 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional, List, Dict, Any, cast
 
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QUrl
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
 from PyQt5.QtNetwork import QNetworkReply
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType
 
@@ -21,6 +23,7 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
+from .BackwardsCompatibleMessage import getBackwardsCompatibleMessage
 from .DFFileExportAndUploadManager import DFFileExportAndUploadManager
 from .DigitalFactoryApiClient import DigitalFactoryApiClient
 from .DigitalFactoryFileModel import DigitalFactoryFileModel
@@ -89,6 +92,12 @@ class DigitalFactoryController(QObject):
     uploadFileError = Signal()
     uploadFileFinished = Signal()
 
+    """Signal to inform about the state of user access."""
+    userAccessStateChanged = pyqtSignal(bool)
+
+    """Signal to inform whether the user is allowed to create more Library projects."""
+    userCanCreateNewLibraryProjectChanged = pyqtSignal(bool)
+
     def __init__(self, application: CuraApplication) -> None:
         super().__init__(parent = None)
 
@@ -106,12 +115,18 @@ class DigitalFactoryController(QObject):
         self._has_more_projects_to_load = False
 
         self._account = self._application.getInstance().getCuraAPI().account  # type: Account
+        self._account.loginStateChanged.connect(self._onLoginStateChanged)
         self._current_workspace_information = CuraApplication.getInstance().getCurrentWorkspaceInformation()
 
         # Initialize the project model
         self._project_model = DigitalFactoryProjectModel()
         self._selected_project_idx = -1
         self._project_creation_error_text = "Something went wrong while creating a new project. Please try again."
+        self._project_filter = ""
+        self._project_filter_change_timer = QTimer()
+        self._project_filter_change_timer.setInterval(200)
+        self._project_filter_change_timer.setSingleShot(True)
+        self._project_filter_change_timer.timeout.connect(self._applyProjectFilter)
 
         # Initialize the file model
         self._file_model = DigitalFactoryFileModel()
@@ -131,6 +146,9 @@ class DigitalFactoryController(QObject):
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
         self._application.initializationFinished.connect(self._applicationInitializationFinished)
 
+        self._user_has_access = False
+        self._user_account_can_create_new_project = False
+
     def clear(self) -> None:
         self._project_model.clearProjects()
         self._api.clear()
@@ -143,16 +161,22 @@ class DigitalFactoryController(QObject):
 
         self.setSelectedProjectIndex(-1)
 
+    def _onLoginStateChanged(self, logged_in: bool) -> None:
+        def callback(has_access, **kwargs):
+            self._user_has_access = has_access
+            self.userAccessStateChanged.emit(logged_in)
+
+        self._api.checkUserHasAccess(callback)
+
     def userAccountHasLibraryAccess(self) -> bool:
         """
         Checks whether the currently logged in user account has access to the Digital Library
 
         :return: True if the user account has Digital Library access, else False
         """
-        subscriptions = []  # type: List[Dict[str, Any]]
-        if self._account.userProfile:
-            subscriptions = self._account.userProfile.get("subscriptions", [])
-        return len(subscriptions) > 0
+        if self._user_has_access:
+            self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
+        return self._user_has_access
 
     def initialize(self, preselected_project_id: Optional[str] = None) -> None:
         self.clear()
@@ -162,7 +186,7 @@ class DigitalFactoryController(QObject):
             if preselected_project_id:
                 self._api.getProject(preselected_project_id, on_finished = self.setProjectAsPreselected, failed = self._onGetProjectFailed)
             else:
-                self._api.getProjectsFirstPage(on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+                self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
     def setProjectAsPreselected(self, df_project: DigitalFactoryProjectResponse) -> None:
         """
@@ -287,6 +311,38 @@ class DigitalFactoryController(QObject):
         if file_indices != self._selected_file_indices:
             self._selected_file_indices = file_indices
             self.selectedFileIndicesChanged.emit(file_indices)
+
+    def setProjectFilter(self, new_filter: str) -> None:
+        """
+        Called when the user wants to change the search filter for projects.
+
+        The filter is not immediately applied. There is some delay to allow the user to finish typing.
+        :param new_filter: The new filter that the user wants to apply.
+        """
+        self._project_filter = new_filter
+        self._project_filter_change_timer.start()
+
+    """
+    Signal to notify Qt that the applied filter has changed.
+    """
+    projectFilterChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = projectFilterChanged, fset = setProjectFilter)
+    def projectFilter(self) -> str:
+        """
+        The current search filter being applied to the project list.
+        :return: The current search filter being applied to the project list.
+        """
+        return self._project_filter
+
+    def _applyProjectFilter(self) -> None:
+        """
+        Actually apply the current filter to search for projects with the user-defined search string.
+        :return:
+        """
+        self.clear()
+        self.projectFilterChanged.emit()
+        self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
 
     @pyqtProperty(QObject, constant = True)
     def digitalFactoryProjectModel(self) -> "DigitalFactoryProjectModel":
@@ -472,9 +528,10 @@ class DigitalFactoryController(QObject):
             except IOError as ex:
                 Logger.logException("e", "Can't write Digital Library file {0}/{1} download to temp-directory {2}.",
                                     ex, project_name, file_name, temp_dir)
-                Message(
+                getBackwardsCompatibleMessage(
                         text = "Failed to write to temporary file for '{}'.".format(file_name),
                         title = "File-system error",
+                        message_type_str="ERROR",
                         lifetime = 10
                 ).show()
                 return
@@ -486,9 +543,10 @@ class DigitalFactoryController(QObject):
                           f = file_name) -> None:
             progress_message.hide()
             Logger.error("An error {0} {1} occurred while downloading {2}/{3}".format(str(error), str(reply), p, f))
-            Message(
+            getBackwardsCompatibleMessage(
                     text = "Failed Digital Library download for '{}'.".format(f),
                     title = "Network error {}".format(error),
+                    message_type_str="ERROR",
                     lifetime = 10
             ).show()
 
@@ -502,7 +560,8 @@ class DigitalFactoryController(QObject):
             # false, we also need to clean it from the projects model
             self._project_model.clearProjects()
             self.setSelectedProjectIndex(-1)
-            self._api.getProjectsFirstPage(on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+            self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+            self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
             self.setRetrievingProjectsStatus(RetrievalStatus.InProgress)
         self._has_preselected_project = new_has_preselected_project
         self.preselectedProjectChanged.emit()
@@ -510,6 +569,14 @@ class DigitalFactoryController(QObject):
     @pyqtProperty(bool, fset = setHasPreselectedProject, notify = preselectedProjectChanged)
     def hasPreselectedProject(self) -> bool:
         return self._has_preselected_project
+
+    def setCanCreateNewLibraryProject(self, can_create_new_library_project: bool) -> None:
+        self._user_account_can_create_new_project = can_create_new_library_project
+        self.userCanCreateNewLibraryProjectChanged.emit(self._user_account_can_create_new_project)
+
+    @pyqtProperty(bool, fset = setCanCreateNewLibraryProject, notify = userCanCreateNewLibraryProjectChanged)
+    def userAccountCanCreateNewLibraryProject(self) -> bool:
+        return self._user_account_can_create_new_project
 
     @pyqtSlot(str, "QStringList")
     def saveFileToSelectedProject(self, filename: str, formats: List[str]) -> None:
@@ -525,14 +592,19 @@ class DigitalFactoryController(QObject):
 
         if filename == "":
             Logger.log("w", "The file name cannot be empty.")
-            Message(text = "Cannot upload file with an empty name to the Digital Library", title = "Empty file name provided", lifetime = 0).show()
+            getBackwardsCompatibleMessage(
+                    text = "Cannot upload file with an empty name to the Digital Library",
+                    title = "Empty file name provided",
+                    message_type_str = "ERROR",
+                    lifetime = 0
+            ).show()
             return
 
         self._saveFileToSelectedProjectHelper(filename, formats)
 
     def _saveFileToSelectedProjectHelper(self, filename: str, formats: List[str]) -> None:
-        # Indicate we have started sending a job.
-        self.uploadStarted.emit()
+        # Indicate we have started sending a job (and propagate any user file name changes back to the open project)
+        self.uploadStarted.emit(filename if "3mf" in formats else None)
 
         library_project_id = self._project_model.items[self._selected_project_idx]["libraryProjectId"]
         library_project_name = self._project_model.items[self._selected_project_idx]["displayName"]

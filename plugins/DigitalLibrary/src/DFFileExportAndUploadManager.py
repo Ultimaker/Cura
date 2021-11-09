@@ -14,6 +14,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
+from .BackwardsCompatibleMessage import getBackwardsCompatibleMessage
 from .DFLibraryFileUploadRequest import DFLibraryFileUploadRequest
 from .DFLibraryFileUploadResponse import DFLibraryFileUploadResponse
 from .DFPrintJobUploadRequest import DFPrintJobUploadRequest
@@ -69,10 +70,11 @@ class DFFileExportAndUploadManager:
                 use_inactivity_timer = False
         )
 
-        self._generic_success_message = Message(
+        self._generic_success_message = getBackwardsCompatibleMessage(
                 text = "Your {} uploaded to '{}'.".format("file was" if len(self._file_upload_job_metadata) <= 1 else "files were", self._library_project_name),
                 title = "Upload successful",
-                lifetime = 0,
+                lifetime = 30,
+                message_type_str = "POSITIVE"
         )
         self._generic_success_message.addAction(
                 "open_df_project",
@@ -80,8 +82,6 @@ class DFFileExportAndUploadManager:
                 "open-folder", "Open the project containing the file in Digital Library"
         )
         self._generic_success_message.actionTriggered.connect(self._onMessageActionTriggered)
-
-
 
     def _onCuraProjectFileExported(self, job: ExportFileJob) -> None:
         """Handler for when the DF Library workspace file (3MF) has been created locally.
@@ -218,10 +218,11 @@ class DFFileExportAndUploadManager:
             # Set the progress to 100% when the upload job fails, to avoid having the progress message stuck
             self._file_upload_job_metadata[filename]["upload_status"] = "failed"
             self._file_upload_job_metadata[filename]["upload_progress"] = 100
-            self._file_upload_job_metadata[filename]["file_upload_failed_message"] = Message(
+            self._file_upload_job_metadata[filename]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     text = "Failed to export the file '{}'. The upload process is aborted.".format(filename),
                     title = "Export error",
-                    lifetime = 0
+                    message_type_str = "ERROR",
+                    lifetime = 30
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename)
@@ -240,10 +241,11 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename_3mf]["upload_progress"] = 100
 
             human_readable_error = self.extractErrorTitle(reply_string)
-            self._file_upload_job_metadata[filename_3mf]["file_upload_failed_message"] = Message(
+            self._file_upload_job_metadata[filename_3mf]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'. {}".format(filename_3mf, self._library_project_name, human_readable_error),
                     title = "File upload error",
-                    lifetime = 0
+                    message_type_str = "ERROR",
+                    lifetime = 30
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename_3mf)
@@ -262,10 +264,11 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename_ufp]["upload_progress"] = 100
 
             human_readable_error = self.extractErrorTitle(reply_string)
-            self._file_upload_job_metadata[filename_ufp]["file_upload_failed_message"] = Message(
+            self._file_upload_job_metadata[filename_ufp]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     title = "File upload error",
                     text = "Failed to upload the file '{}' to '{}'. {}".format(filename_ufp, self._library_project_name, human_readable_error),
-                    lifetime = 0
+                    message_type_str = "ERROR",
+                    lifetime = 30
             )
         self._on_upload_error()
         self._onFileUploadFinished(filename_ufp)
@@ -298,10 +301,11 @@ class DFFileExportAndUploadManager:
             self._file_upload_job_metadata[filename]["upload_status"] = "failed"
             self._file_upload_job_metadata[filename]["upload_progress"] = 100
             human_readable_error = self.extractErrorTitle(reply_string)
-            self._file_upload_job_metadata[filename]["file_upload_failed_message"] = Message(
+            self._file_upload_job_metadata[filename]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     title = "File upload error",
                     text = "Failed to upload the file '{}' to '{}'. {}".format(self._file_name, self._library_project_name, human_readable_error),
-                    lifetime = 0
+                    message_type_str = "ERROR",
+                    lifetime = 30
             )
 
         self._on_upload_error()
@@ -316,7 +320,7 @@ class DFFileExportAndUploadManager:
 
     def _onMessageActionTriggered(self, message, action):
         if action == "open_df_project":
-            project_url = "{}/app/library/project/{}?wait_for_new_files=true".format(CuraApplication.getInstance().ultimakerDigitalFactoryUrl, self._library_project_id)
+            project_url = "{}/app/library/project/{}?wait_for_new_files=true&utm_source=cura&utm_medium=software&utm_campaign=saved-library-file-message".format(CuraApplication.getInstance().ultimakerDigitalFactoryUrl, self._library_project_id)
             QDesktopServices.openUrl(QUrl(project_url))
             message.hide()
 
@@ -334,15 +338,17 @@ class DFFileExportAndUploadManager:
                 "upload_progress"     : -1,
                 "upload_status"       : "",
                 "file_upload_response": None,
-                "file_upload_success_message": Message(
+                "file_upload_success_message": getBackwardsCompatibleMessage(
                     text = "'{}' was uploaded to '{}'.".format(filename_3mf, self._library_project_name),
                     title = "Upload successful",
-                    lifetime = 0,
+                    message_type_str = "POSITIVE",
+                    lifetime = 30
                 ),
-                "file_upload_failed_message": Message(
+                "file_upload_failed_message": getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'.".format(filename_3mf, self._library_project_name),
                     title = "File upload error",
-                    lifetime = 0
+                    message_type_str = "ERROR",
+                    lifetime = 30
                 )
             }
             job_3mf = ExportFileJob(self._file_handlers["3mf"], self._nodes, self._file_name, "3mf")
@@ -356,15 +362,17 @@ class DFFileExportAndUploadManager:
                 "upload_progress"     : -1,
                 "upload_status"       : "",
                 "file_upload_response": None,
-                "file_upload_success_message": Message(
+                "file_upload_success_message": getBackwardsCompatibleMessage(
                     text = "'{}' was uploaded to '{}'.".format(filename_ufp, self._library_project_name),
                     title = "Upload successful",
-                    lifetime = 0,
+                    message_type_str = "POSITIVE",
+                    lifetime = 30,
                 ),
-                "file_upload_failed_message": Message(
+                "file_upload_failed_message": getBackwardsCompatibleMessage(
                     text = "Failed to upload the file '{}' to '{}'.".format(filename_ufp, self._library_project_name),
                     title = "File upload error",
-                    lifetime = 0
+                    message_type_str = "ERROR",
+                    lifetime = 30
                 )
             }
             job_ufp = ExportFileJob(self._file_handlers["ufp"], self._nodes, self._file_name, "ufp")

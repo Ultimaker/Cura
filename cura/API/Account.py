@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
-from typing import Optional, Dict, TYPE_CHECKING, Callable
+from typing import Any, Optional, Dict, TYPE_CHECKING, Callable
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 
@@ -46,6 +46,9 @@ class Account(QObject):
     loginStateChanged = pyqtSignal(bool)
     """Signal emitted when user logged in or out"""
 
+    additionalRightsChanged = pyqtSignal("QVariantMap")
+    """Signal emitted when a users additional rights change"""
+
     accessTokenChanged = pyqtSignal()
     syncRequested = pyqtSignal()
     """Sync services may connect to this signal to receive sync triggers.
@@ -59,7 +62,7 @@ class Account(QObject):
     updatePackagesEnabledChanged = pyqtSignal(bool)
 
     CLIENT_SCOPES = "account.user.read drive.backup.read drive.backup.write packages.download " \
-                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write " \
+                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write connect.material.write " \
                     "library.project.read library.project.write cura.printjob.read cura.printjob.write " \
                     "cura.mesh.read cura.mesh.write"
 
@@ -70,6 +73,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
+        self._additional_rights: Dict[str, Any] = {}
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
@@ -108,7 +112,6 @@ class Account(QObject):
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
-
 
     @pyqtProperty(int, notify=syncStateChanged)
     def syncState(self):
@@ -178,7 +181,10 @@ class Account(QObject):
         if error_message:
             if self._error_message:
                 self._error_message.hide()
-            self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
+            Logger.log("w", "Failed to login: %s", error_message)
+            self._error_message = Message(error_message,
+                                          title = i18n_catalog.i18nc("@info:title", "Login failed"),
+                                          message_type = Message.MessageType.ERROR)
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)
@@ -209,7 +215,7 @@ class Account(QObject):
         if self._update_timer.isActive():
             self._update_timer.stop()
         elif self._sync_state == SyncState.SYNCING:
-            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+            Logger.debug("Starting a new sync while previous sync was not completed")
 
         self.syncRequested.emit()
 
@@ -299,3 +305,14 @@ class Account(QObject):
             return  # Nothing to do, user isn't logged in.
 
         self._authorization_service.deleteAuthData()
+
+    def updateAdditionalRight(self, **kwargs) -> None:
+        """Update the additional rights of the account.
+        The argument(s) are the rights that need to be set"""
+        self._additional_rights.update(kwargs)
+        self.additionalRightsChanged.emit(self._additional_rights)
+
+    @pyqtProperty("QVariantMap", notify = additionalRightsChanged)
+    def additionalRights(self) -> Dict[str, Any]:
+        """A dictionary which can be queried for additional account rights."""
+        return self._additional_rights

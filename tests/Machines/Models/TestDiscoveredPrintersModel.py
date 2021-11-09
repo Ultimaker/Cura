@@ -14,7 +14,7 @@ def discovered_printer() -> DiscoveredPrinter:
     return DiscoveredPrinter("127.0.0.1", "zomg", "yay", None, "bleep", MagicMock())
 
 
-@pytest.mark.skip  # TODO: This has some unknown dependency on the applicaiton / registry, which is hard to patch out. (which doesn't mean we shouldn't fix it!)
+@pytest.mark.skip  # TODO: This has some unknown dependency on the application / registry, which is hard to patch out. (which doesn't mean we shouldn't fix it!)
 def test_discoveredPrinters(discovered_printer_model):
     mocked_device = MagicMock()
     cluster_size = PropertyMock(return_value = 1)

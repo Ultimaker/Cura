@@ -154,7 +154,7 @@ UM.Dialog
                                     height: Math.round(control.height / 2.7)
                                     sourceSize.height: width
                                     color: palette.text
-                                    source: UM.Theme.getIcon("cross1")
+                                    source: UM.Theme.getIcon("Cancel")
                                 }
                             }
                         }
@@ -188,7 +188,7 @@ UM.Dialog
                                     height: Math.round(control.height / 2.5)
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
-                                    source: UM.Theme.getIcon("arrow_bottom")
+                                    source: UM.Theme.getIcon("ChevronSingleDown")
                                 }
                             }
                         }
@@ -222,7 +222,7 @@ UM.Dialog
                                     height: Math.round(control.height / 2.5)
                                     sourceSize.height: width
                                     color: control.enabled ? palette.text : disabledPalette.text
-                                    source: UM.Theme.getIcon("arrow_top")
+                                    source: UM.Theme.getIcon("ChevronSingleUp")
                                 }
                             }
                         }
@@ -403,7 +403,7 @@ UM.Dialog
                             storeIndex: 0
                         }
 
-                        // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                        // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
                         // so we bypass that to make a dedicated provider).
                         UM.SettingPropertyProvider
                         {
@@ -517,7 +517,7 @@ UM.Dialog
             }
             toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-            iconSource: "postprocessing.svg"
+            iconSource: "Script.svg"
             fixedWidthMode: false
         }
 

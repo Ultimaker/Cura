@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -183,11 +183,14 @@ class Toolbox(QObject, Extension):
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
 
+        preferences = CuraApplication.getInstance().getPreferences()
+
+        preferences.addPreference("info/automatic_plugin_update_check", True)
+
         # On boot we check which packages have updates.
-        if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
+        if preferences.getValue("info/automatic_plugin_update_check") and len(installed_package_ids_with_versions) > 0:
             # Request the latest and greatest!
             self._makeRequestByType("updates")
-
 
     def _fetchPackageData(self) -> None:
         self._makeRequestByType("packages")
@@ -539,7 +542,7 @@ class Toolbox(QObject, Extension):
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
-        Logger.log("d", "Requesting [%s] metadata from server.", request_type)
+        Logger.debug(f"Requesting {request_type} metadata from server.")
         url = self._request_urls[request_type]
 
         callback = lambda r, rt = request_type: self._onDataRequestFinished(rt, r)
@@ -551,7 +554,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def startDownload(self, url: str) -> None:
-        Logger.log("i", "Attempting to download & install package from %s.", url)
+        Logger.info(f"Attempting to download & install package from {url}.")
 
         callback = lambda r: self._onDownloadFinished(r)
         error_callback = lambda r, e: self._onDownloadFailed(r, e)
@@ -569,7 +572,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def cancelDownload(self) -> None:
-        Logger.log("i", "User cancelled the download of a package. request %s", self._download_request_data)
+        Logger.info(f"User cancelled the download of a package. request {self._download_request_data}")
         if self._download_request_data is not None:
             self._application.getHttpRequestManager().abortRequest(self._download_request_data)
             self._download_request_data = None
@@ -582,7 +585,7 @@ class Toolbox(QObject, Extension):
     # Handlers for Network Events
     # --------------------------------------------------------------------------
     def _onDataRequestError(self, request_type: str, reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:
-        Logger.log("e", "Request [%s] failed due to error [%s]: %s", request_type, error, reply.errorString())
+        Logger.error(f"Request {request_type} failed due to error {error}: {reply.errorString()}")
         self.setViewPage("errored")
 
     def _onDataRequestFinished(self, request_type: str, reply: "QNetworkReply") -> None:
@@ -648,8 +651,11 @@ class Toolbox(QObject, Extension):
         self.resetDownload()
 
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-            Logger.log("w", "Failed to download package. The following error was returned: %s",
-                       json.loads(reply.readAll().data().decode("utf-8")))
+            try:
+                reply_error = json.loads(reply.readAll().data().decode("utf-8"))
+            except Exception as e:
+                reply_error = str(e)
+            Logger.log("w", "Failed to download package. The following error was returned: %s", reply_error)
             return
         # Must not delete the temporary file on Windows
         self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
@@ -676,9 +682,13 @@ class Toolbox(QObject, Extension):
         if not package_info:
             Logger.log("w", "Package file [%s] was not a valid CuraPackage.", file_path)
             return
-
-        license_content = self._package_manager.getPackageLicense(file_path)
         package_id = package_info["package_id"]
+
+        try:
+            license_content = self._package_manager.getPackageLicense(file_path)
+        except EnvironmentError as e:
+            Logger.error(f"Could not open downloaded package {package_id} to read license file! {type(e)} - {e}")
+            return
         if license_content is not None:
             # get the icon url for package_id, make sure the result is a string, never None
             icon_url = next((x["icon_url"] for x in self.packagesModel.items if x["id"] == package_id), None) or ""

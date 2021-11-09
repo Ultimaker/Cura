@@ -143,7 +143,7 @@ Item
                             sourceSize.width: width
                             sourceSize.height: height
                             color: UM.Theme.getColor("text")
-                            source: base.currentSection == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
+                            source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
                         }
 
                         Label
@@ -174,10 +174,14 @@ Item
                 Cura.RadioButton
                 {
                     id: radioButton
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("standard_list_lineheight").width
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    anchors
+                    {
+                        left:  parent !== null ? parent.left: undefined
+                        leftMargin: UM.Theme.getSize("standard_list_lineheight").width
+
+                        right: parent !== null ? parent.right: undefined
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                    }
                     height: visible ? UM.Theme.getSize("standard_list_lineheight").height : 0
 
                     checked: ListView.view.currentIndex == index

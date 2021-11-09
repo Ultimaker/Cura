@@ -93,7 +93,7 @@ class DriveApiService:
     def _onRestoreFinished(self, job: "RestoreBackupJob") -> None:
         if job.restore_backup_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.restoringStateChanged.emit(is_restoring=False)
+            self.restoringStateChanged.emit(is_restoring = False)
         else:
             self.restoringStateChanged.emit(is_restoring = False, error_message = job.restore_backup_error_message)
 

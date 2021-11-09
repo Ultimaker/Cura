@@ -72,7 +72,8 @@ class SolidView(View):
             lifetime = 60 * 5, # leave message for 5 minutes
             title = catalog.i18nc("@info:title", "Model Errors"),
             option_text = catalog.i18nc("@info:option_text", "Do not show this message again"),
-            option_state = False
+            option_state = False,
+            message_type=Message.MessageType.WARNING
         )
         self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         application.getPreferences().addPreference(self._show_xray_warning_preference, True)

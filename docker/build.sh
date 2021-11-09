@@ -50,7 +50,7 @@ do
     echo "Found Uranium branch [${URANIUM_BRANCH}]."
     break
   else
-    echo "Could not find Uranium banch [${URANIUM_BRANCH}], try next."
+    echo "Could not find Uranium branch [${URANIUM_BRANCH}], try next."
   fi
 done
 

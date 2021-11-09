@@ -12,6 +12,9 @@
         "machine_name": { "default_value": "Anycubic i3 Mega X" },
         "machine_width": { "default_value": 300 },
         "machine_height": { "default_value": 305 },
-        "machine_depth": { "default_value": 300 }
+        "machine_depth": { "default_value": 300 },
+
+        "acceleration_print": { "value": 400 },
+        "acceleration_travel": { "value": 400 }
 	}
 }

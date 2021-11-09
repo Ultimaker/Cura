@@ -201,7 +201,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                exportAllMaterialsDialog.open();
+                base.materialManagementModel.openSyncAllWindow();
             }
             visible: Cura.MachineManager.activeMachine.supportsMaterialExport
         }
@@ -378,20 +378,6 @@ Item
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
                 messageDialog.open();
             }
-            CuraApplication.setDefaultPath("dialog_material_path", folder);
-        }
-    }
-
-    FileDialog
-    {
-        id: exportAllMaterialsDialog
-        title: catalog.i18nc("@title:window", "Export All Materials")
-        selectExisting: false
-        nameFilters: ["Material archives (*.umm)", "All files (*)"]
-        folder: base.materialManagementModel.preferredExportAllPath
-        onAccepted:
-        {
-            base.materialManagementModel.exportAll(fileUrl);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
         }
     }
