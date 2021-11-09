@@ -59,26 +59,31 @@ Rectangle
                     color: UM.Theme.getColor("text")
                 }
 
-                UM.RecolorImage
+                Row //Row inside row, but the non-layout version skips invisible elements.
                 {
-                    Layout.preferredWidth: visible ? UM.Theme.getSize("section_icon").width : 0
-                    Layout.preferredHeight: visible ? UM.Theme.getSize("section_icon").height : 0
+                    spacing: parent.spacing
                     Layout.alignment: Qt.AlignTop
 
-                    color: UM.Theme.getColor("icon")
-                    visible: packageData.isVerified
-                    source: UM.Theme.getIcon("CheckCircle")
+                    UM.RecolorImage
+                    {
+                        width: UM.Theme.getSize("section_icon").width
+                        height: UM.Theme.getSize("section_icon").height
 
-                    // TODO: on hover
-                }
+                        color: UM.Theme.getColor("icon")
+                        visible: packageData.isVerified
+                        source: UM.Theme.getIcon("CheckCircle")
 
-                Rectangle
-                {   // placeholder for 'certified material' icon+link whenever we implement the materials part of this card
-                    Layout.preferredWidth: visible ? UM.Theme.getSize("section_icon").width : 0
-                    Layout.preferredHeight: visible ? UM.Theme.getSize("section_icon").height : 0
-                    Layout.alignment: Qt.AlignTop
+                        // TODO: on hover
+                    }
 
-                    // TODO: on hover
+                    Rectangle
+                    {   // placeholder for 'certified material' icon+link whenever we implement the materials part of this card
+                        width: UM.Theme.getSize("section_icon").width
+                        height: UM.Theme.getSize("section_icon").height
+
+                        visible: false
+                        // TODO: on hover
+                    }
                 }
 
                 Label
