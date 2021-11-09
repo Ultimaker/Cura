@@ -717,6 +717,7 @@ class CuraApplication(QtApplication):
             for extruder in global_stack.extruderList:
                 extruder.userChanges.clear()
             global_stack.userChanges.clear()
+            self.getMachineManager().correctExtruderSettings()
 
         # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
         # before slicing. To ensure that slicer uses right settings values
