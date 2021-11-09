@@ -108,9 +108,6 @@
         "skin_monotonic" : {
             "value": true
         },
-        "top_bottom_pattern" : {
-            "value":  "'lines'"
-        },
         "fill_outline_gaps": {
             "value": "True"
         },
