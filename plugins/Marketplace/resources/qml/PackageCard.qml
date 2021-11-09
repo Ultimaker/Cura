@@ -172,6 +172,8 @@ Rectangle
             {
                 width: parent.width
 
+                spacing: UM.Theme.getSize("default_margin").width
+
                 Label
                 {
                     id: authorBy
@@ -184,10 +186,15 @@ Rectangle
                 Cura.TertiaryButton
                 {
                     Layout.fillWidth: true
+                    Layout.preferredHeight: authorBy.height
                     Layout.alignment: Qt.AlignTop
 
                     text: packageData.authorName
-                    textFont: UM.Theme.getFont("default")
+                    textFont: UM.Theme.getFont("default_bold")
+                    leftPadding: 0
+                    rightPadding: 0
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
 
                     // TODO on clicked (is link) -> MouseArea?
                 }
