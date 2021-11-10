@@ -2,8 +2,6 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import UM 1.5 as UM
 
 Item
@@ -44,7 +42,7 @@ Item
             topPadding: UM.Theme.getSize("narrow_margin").height
             property var color: model.type === "plugin" && !isEnabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("text")
             width: Math.floor(tileRow.width - (authorInfo.width + pluginActions.width + 2 * tileRow.spacing + ((disableButton.visible) ? disableButton.width + tileRow.spacing : 0)))
-            Label
+            UM.Label
             {
                 text: model.name
                 width: parent.width
@@ -53,9 +51,8 @@ Item
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("large_bold")
                 color: pluginInfo.color
-                renderType: Text.NativeRendering
             }
-            Label
+            UM.Label
             {
                 text: model.description
                 font: UM.Theme.getFont("default")
@@ -64,7 +61,6 @@ Item
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: pluginInfo.color
-                renderType: Text.NativeRendering
             }
         }
         Column

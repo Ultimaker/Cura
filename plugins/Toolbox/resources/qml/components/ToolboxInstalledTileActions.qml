@@ -2,9 +2,7 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 import Cura 1.1 as Cura
 
@@ -16,15 +14,13 @@ Column
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
 
-    Label
+    UM.Label
     {
         visible: !model.is_installed
         text: catalog.i18nc("@label", "Will install upon restarting")
         color: UM.Theme.getColor("lining")
-        font: UM.Theme.getFont("default")
         wrapMode: Text.WordWrap
         width: parent.width
-        renderType: Text.NativeRendering
     }
 
     ToolboxProgressButton
@@ -47,16 +43,12 @@ Column
         visible: canUpdate
     }
 
-    Label
+    UM.Label
     {
         wrapMode: Text.WordWrap
         text: catalog.i18nc("@label:The string between <a href=> and </a> is the highlighted link", "<a href='%1'>Log in</a> is required to update")
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        linkColor: UM.Theme.getColor("text_link")
         visible: loginRequired
         width: updateButton.width
-        renderType: Text.NativeRendering
 
         MouseArea
         {

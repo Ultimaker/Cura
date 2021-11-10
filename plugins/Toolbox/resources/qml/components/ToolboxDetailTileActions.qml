@@ -1,9 +1,7 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 
@@ -50,16 +48,12 @@ Column
         }
     }
 
-    Label
+    UM.Label
     {
         wrapMode: Text.WordWrap
         text: catalog.i18nc("@label:The string between <a href=> and </a> is the highlighted link", "<a href='%1'>Log in</a> is required to install or update")
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        linkColor: UM.Theme.getColor("text_link")
         visible: loginRequired
         width: installButton.width
-        renderType: Text.NativeRendering
 
         MouseArea
         {
@@ -68,7 +62,7 @@ Column
         }
     }
 
-    Label
+    UM.Label
     {
         property var whereToBuyUrl:
         {
@@ -76,12 +70,8 @@ Column
             return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
         }
 
-        renderType: Text.NativeRendering
         text: catalog.i18nc("@label:The string between <a href=> and </a> is the highlighted link", "<a href='%1'>Buy material spools</a>")
-        linkColor: UM.Theme.getColor("text_link")
         visible: whereToBuyUrl != undefined
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
         MouseArea
         {
             anchors.fill: parent

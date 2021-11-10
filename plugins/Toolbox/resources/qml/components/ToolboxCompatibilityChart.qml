@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -58,14 +58,12 @@ Item
             {
                 color: UM.Theme.getColor("main_background")
                 height: UM.Theme.getSize("toolbox_chart_row").height
-                Label
+                UM.Label
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     elide: Text.ElideRight
                     text: styleData.value || ""
-                    color: UM.Theme.getColor("text")
                     font: UM.Theme.getFont("default_bold")
-                    renderType: Text.NativeRendering
                 }
                 Rectangle
                 {
@@ -78,14 +76,12 @@ Item
             rowDelegate: Item
             {
                 height: UM.Theme.getSize("toolbox_chart_row").height
-                Label
+                UM.Label
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     elide: Text.ElideRight
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text_medium")
-                    font: UM.Theme.getFont("default")
-                    renderType: Text.NativeRendering
                 }
             }
             itemDelegate: Item
