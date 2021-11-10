@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 import QtGraphicalEffects 1.0
 
-import UM 1.0 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -187,7 +187,7 @@ Cura.ExpandableComponent
         {
             model: CuraApplication.getExtrudersModel()
 
-            CheckBox
+            UM.CheckBox
             {
                 id: extrudersModelCheckBox
                 checked: viewSettings.extruder_opacities[index] > 0.5 || viewSettings.extruder_opacities[index] == undefined || viewSettings.extruder_opacities[index] == ""
@@ -200,8 +200,6 @@ Cura.ExpandableComponent
                     viewSettings.extruder_opacities[index] = checked ? 1.0 : 0.0
                     UM.Preferences.setValue("layerview/extruder_opacities", viewSettings.extruder_opacities.join("|"));
                 }
-
-                style: UM.Theme.styles.checkbox
 
                 Rectangle
                 {
@@ -277,15 +275,13 @@ Cura.ExpandableComponent
                 }
             }
 
-            CheckBox
+            UM.CheckBox
             {
                 id: legendModelCheckBox
                 checked: model.initialValue
                 onClicked: UM.Preferences.setValue(model.preference, checked)
                 height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                 width: parent.width
-
-                style: UM.Theme.styles.checkbox
 
                 Rectangle
                 {
@@ -315,24 +311,22 @@ Cura.ExpandableComponent
             }
         }
 
-        CheckBox
+        UM.CheckBox
         {
             checked: viewSettings.only_show_top_layers
             onClicked: UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0)
             text: catalog.i18nc("@label", "Only Show Top Layers")
             visible: UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.checkbox
             width: parent.width
         }
 
-        CheckBox
+        UM.CheckBox
         {
             checked: viewSettings.top_layer_count == 5
             onClicked: UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1)
             text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
             width: parent.width
             visible: UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.checkbox
         }
 
         Repeater

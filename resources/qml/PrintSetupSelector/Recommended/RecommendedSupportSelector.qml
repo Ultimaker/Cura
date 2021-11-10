@@ -6,7 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.3 as Controls2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -45,14 +45,13 @@ Item
             verticalCenter: enableSupportRowTitle.verticalCenter
         }
 
-        CheckBox
+        UM.CheckBox
         {
             id: enableSupportCheckBox
             anchors.verticalCenter: parent.verticalCenter
 
             property alias _hovered: enableSupportMouseArea.containsMouse
 
-            style: UM.Theme.styles.checkbox
             enabled: recommendedPrintSetup.settingsEnabled
 
             visible: supportEnabled.properties.enabled == "True"

@@ -6,7 +6,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls 1.1 as OldControls
 
 import Cura 1.0 as Cura
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 Item
 {
@@ -219,12 +219,11 @@ Item
                     renderType: Text.NativeRendering
                 }
 
-                OldControls.CheckBox
+                UM.CheckBox
                 {
                     id: enabledCheckbox
                     enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: parent.height
-                    style: UM.Theme.styles.checkbox
 
                     Binding
                     {

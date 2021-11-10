@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 Item
 {
@@ -28,7 +28,7 @@ Item
         spacing: UM.Theme.getSize("default_margin").width
         topPadding: UM.Theme.getSize("default_margin").height
 
-        CheckBox
+        UM.CheckBox
         {
             id: disableButton
             anchors.verticalCenter: pluginInfo.verticalCenter
@@ -36,7 +36,6 @@ Item
             visible: model.type == "plugin"
             width: visible ? UM.Theme.getSize("checkbox").width : 0
             enabled: !toolbox.isDownloading
-            style: UM.Theme.styles.checkbox
             onClicked: toolbox.isEnabled(model.id) ? toolbox.disable(model.id) : toolbox.enable(model.id)
         }
         Column

@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -184,7 +184,7 @@ Item
     }
 
     //  Gradual Support Infill Checkbox
-    CheckBox
+    UM.CheckBox
     {
         id: enableGradualInfillCheckBox
         property alias _hovered: enableGradualInfillMouseArea.containsMouse
@@ -194,7 +194,6 @@ Item
         anchors.left: infillSliderContainer.left
 
         text: catalog.i18nc("@label", "Gradual infill")
-        style: UM.Theme.styles.checkbox
         enabled: recommendedPrintSetup.settingsEnabled
         visible: infillSteps.properties.enabled == "True"
         checked: parseInt(infillSteps.properties.value) > 0
