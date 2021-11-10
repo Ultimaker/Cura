@@ -1110,7 +1110,6 @@
                             "value": "wall_transition_threshold",
                             "minimum_value": "1",
                             "minimum_value_warning": "min_bead_width / line_width * 100",
-                            "maximum_value_warning": "90",
                             "maximum_value": "99"
                         },
                         "wall_add_middle_threshold": {
@@ -1119,10 +1118,9 @@
                             "type": "float",
                             "unit": "%",
                             "default_value": 50,
-                            "value": "wall_transition_threshold",
+                            "value": "wall_transition_threshold * 8/9",
                             "minimum_value": "1",
                             "minimum_value_warning": "min_bead_width / line_width * 100",
-                            "maximum_value_warning": "90",
                             "maximum_value": "99"
                         }
                     }
