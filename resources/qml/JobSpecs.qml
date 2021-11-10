@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -41,34 +41,20 @@ Item
         anchors.left: parent.left
         height: UM.Theme.getSize("jobspecs_line").height
 
-        Button
+        UM.SimpleButton
         {
             id: printJobPencilIcon
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("save_button_specs_icons").width
             height: UM.Theme.getSize("save_button_specs_icons").height
-
+            iconSource: UM.Theme.getIcon("Pen")
+            hoverColor: UM.Theme.getColor("small_button_text_hover")
+            color:  UM.Theme.getColor("small_button_text")
             onClicked:
             {
                 printJobTextfield.selectAll()
                 printJobTextfield.focus = true
-            }
-
-            style: ButtonStyle
-            {
-                background: Item
-                {
-                    UM.RecolorImage
-                    {
-                        width: UM.Theme.getSize("save_button_specs_icons").width
-                        height: UM.Theme.getSize("save_button_specs_icons").height
-                        sourceSize.width: width
-                        sourceSize.height: width
-                        color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                        source: UM.Theme.getIcon("Pen")
-                    }
-                }
             }
         }
 
