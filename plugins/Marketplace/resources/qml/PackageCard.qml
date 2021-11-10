@@ -13,19 +13,18 @@ Rectangle
     property var packageData
 
     width: parent ? parent.width : 0
-    height: childrenRect.height + UM.Theme.getSize("default_margin").height * 2
+    height: childrenRect.height
 
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
 
     RowLayout
     {
-        width: parent.width - UM.Theme.getSize("default_margin").width * 2
-        height: childrenRect.height
-        x: UM.Theme.getSize("default_margin").width
-        y: UM.Theme.getSize("default_margin").height
+        width: parent.width - UM.Theme.getSize("thin_margin").width * 2
+        x: UM.Theme.getSize("thin_margin").width
+        y: UM.Theme.getSize("thin_margin").height
 
-        spacing: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("thin_margin").width
 
         Image //Separate column for icon on the left.
         {
@@ -42,13 +41,10 @@ Rectangle
             Layout.preferredHeight: childrenRect.height
             Layout.alignment: Qt.AlignTop
 
-            spacing: UM.Theme.getSize("default_margin").height
-
             RowLayout //Title row.
             {
+                Layout.alignment: Qt.AlignTop
                 width: parent.width
-
-                spacing: UM.Theme.getSize("default_margin").width
 
                 Label
                 {
@@ -64,25 +60,59 @@ Rectangle
                     spacing: parent.spacing
                     Layout.alignment: Qt.AlignTop
 
-                    UM.RecolorImage
+                    Control
                     {
-                        width: UM.Theme.getSize("section_icon").width
-                        height: UM.Theme.getSize("section_icon").height
+                        width: UM.Theme.getSize("card_tiny_icon").width
+                        height: UM.Theme.getSize("card_tiny_icon").height
+                        Layout.alignment: Qt.AlignTop
 
-                        color: UM.Theme.getColor("primary")
-                        visible: packageData.isVerified
-                        source: UM.Theme.getIcon("CheckCircle")
+                        enabled: packageData.isVerified
 
-                        // TODO: on hover
+                        Cura.ToolTip
+                        {
+                            tooltipText: catalog.i18nc("@info", "Verified")
+                            visible: parent.hovered
+                        }
+
+                        UM.RecolorImage
+                        {
+                            anchors.fill: parent
+
+                            color: UM.Theme.getColor("primary")
+                            visible: packageData.isVerified
+                            source: UM.Theme.getIcon("CheckCircle")
+                        }
+
+                        //NOTE: Can we link to something here? (Probably a static link explaining what verified is):
+                        // onClicked: Qt.openUrlExternally( XXXXXX )
                     }
 
-                    Rectangle
-                    {   // placeholder for 'certified material' icon+link whenever we implement the materials part of this card
-                        width: UM.Theme.getSize("section_icon").width
-                        height: UM.Theme.getSize("section_icon").height
+                    Control
+                    {
+                        width: UM.Theme.getSize("card_tiny_icon").width
+                        height: UM.Theme.getSize("card_tiny_icon").height
+                        Layout.alignment: Qt.AlignTop
 
-                        visible: false
-                        // TODO: on hover
+                        enabled: false  // remove!
+                        visible: false  // replace packageInfo.XXXXXX
+                        // TODO: waiting for materials card implementation
+
+                        Cura.ToolTip
+                        {
+                            tooltipText: "" // TODO
+                            visible: parent.hovered
+                        }
+
+                        UM.RecolorImage
+                        {
+                            anchors.fill: parent
+
+                            color: UM.Theme.getColor("primary")
+                            visible: packageData.isVerified
+                            source: UM.Theme.getIcon("CheckCircle") // TODO
+                        }
+
+                        // onClicked: Qt.openUrlExternally( XXXXXX )  // TODO
                     }
                 }
 
@@ -96,16 +126,52 @@ Rectangle
                     color: UM.Theme.getColor("text")
                 }
 
-                UM.RecolorImage
+                Button
                 {
-                    Layout.preferredWidth: UM.Theme.getSize("section_icon").width
-                    Layout.preferredHeight: UM.Theme.getSize("section_icon").height
+                    Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
+                    Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
                     Layout.alignment: Qt.AlignTop
 
-                    color: UM.Theme.getColor("icon")
-                    source: UM.Theme.getIcon("LinkExternal")
+                    UM.RecolorImage
+                    {
+                        anchors.fill: parent
+                        color: UM.Theme.getColor("icon")
+                        source: UM.Theme.getIcon("LinkExternal")
+                    }
 
-                    // TODO: on clicked url
+                    onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+                }
+            }
+
+            RowLayout
+            {
+                width: parent.width - UM.Theme.getSize("thin_margin").width * 2
+                height: childrenRect.height
+                x: UM.Theme.getSize("thin_margin").width
+                y: UM.Theme.getSize("thin_margin").height
+
+                spacing: UM.Theme.getSize("thin_margin").width
+
+                enabled: false  // remove
+                visible: false  // replace w state?
+                // TODO: hide/unhide on states (folded versus header state)
+
+                UM.RecolorImage
+                {
+                    id: downloadCountIcon
+                    width: UM.Theme.getSize("card_tiny_icon").height
+                    height: UM.Theme.getSize("card_tiny_icon").height
+                    color: UM.Theme.getColor("icon")
+
+                    source: UM.Theme.getIcon("Download")
+                }
+
+                Label
+                {
+                    id: downloadCountLabel
+                    anchors.left: downloadCountIcon.right
+
+                    text: packageData.downloadCount
                 }
             }
 
@@ -161,6 +227,9 @@ Rectangle
                     rightPadding: UM.Theme.getSize("wide_margin").width
                     textFont: descriptionLabel.font
                     isIconOnRightSide: true
+
+                    // NOTE: Is this the right URL for this action?
+                    onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
                 }
 
                 Label
@@ -179,13 +248,13 @@ Rectangle
             RowLayout //Author and action buttons.
             {
                 width: parent.width
-
-                spacing: UM.Theme.getSize("default_margin").width
+                Layout.alignment: Qt.AlignBottom
+                spacing: UM.Theme.getSize("thin_margin").width
 
                 Label
                 {
                     id: authorBy
-                    Layout.alignment: Qt.AlignTop
+                    Layout.alignment: Qt.AlignBottom
 
                     text: catalog.i18nc("@label", "By")
                     font: UM.Theme.getFont("default")
@@ -196,32 +265,39 @@ Rectangle
                 {
                     Layout.fillWidth: true
                     Layout.preferredHeight: authorBy.height
-                    Layout.alignment: Qt.AlignTop
+                    Layout.alignment: Qt.AlignBottom
 
                     text: packageData.authorName
                     textFont: UM.Theme.getFont("default_bold")
+                    textColor: UM.Theme.getColor("text") // override normal link color
                     leftPadding: 0
                     rightPadding: 0
                     iconSource: UM.Theme.getIcon("LinkExternal")
                     isIconOnRightSide: true
 
-                    // TODO on clicked (is link) -> MouseArea?
+                    onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
                 }
 
                 Cura.SecondaryButton
                 {
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: authorBy.height
                     text: catalog.i18nc("@button", "Disable")
                     // not functional right now
                 }
 
                 Cura.SecondaryButton
                 {
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: authorBy.height
                     text: catalog.i18nc("@button", "Uninstall")
                     // not functional right now
                 }
 
                 Cura.PrimaryButton
                 {
+                    Layout.alignment: Qt.AlignBottom
+                    Layout.preferredHeight: authorBy.height
                     text: catalog.i18nc("@button", "Update")
                     // not functional right now
                 }
