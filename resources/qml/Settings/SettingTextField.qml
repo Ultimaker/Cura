@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 SettingItem
 {
@@ -90,7 +90,7 @@ SettingItem
             opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35
         }
 
-        Label
+        UM.Label
         {
             anchors
             {
@@ -105,9 +105,7 @@ SettingItem
             //However the setting value is aligned, align the unit opposite. That way it stays readable with right-to-left languages.
             horizontalAlignment: (input.effectiveHorizontalAlignment == Text.AlignLeft) ? Text.AlignRight : Text.AlignLeft
             textFormat: Text.PlainText
-            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
-            font: UM.Theme.getFont("default")
         }
 
         TextInput

@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
 import Cura 1.1 as Cura
-import UM 1.4 as UM
+import UM 1.5 as UM
 
 Window
 {
@@ -42,17 +42,15 @@ Window
                 anchors.fill: parent
                 anchors.margins: UM.Theme.getSize("default_margin").width
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@title:header", "Sync materials with printers")
                     font: UM.Theme.getFont("large_bold")
-                    color: UM.Theme.getColor("text")
                 }
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@text", "Following a few simple steps, you will be able to synchronize all your material profiles with your printers.")
                     font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text")
                     wrapMode: Text.Wrap
                     width: parent.width
                 }
@@ -125,18 +123,16 @@ Window
                 anchors.fill: parent
                 anchors.margins: UM.Theme.getSize("default_margin").width
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@title:header", "Sign in")
                     font: UM.Theme.getFont("large_bold")
-                    color: UM.Theme.getColor("text")
                     Layout.preferredHeight: height
                 }
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@text", "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura.")
                     font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text")
                     wrapMode: Text.Wrap
                     width: parent.width
                     Layout.maximumWidth: width
@@ -223,13 +219,12 @@ Window
                         height: width
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    Label
+                    UM.Label
                     {
                         id: printerListHeader
                         anchors.verticalCenter: parent.verticalCenter
                         //Text is always defined by the states above.
                         font: UM.Theme.getFont("large_bold")
-                        color: UM.Theme.getColor("text")
                     }
                 }
                 Row
@@ -237,7 +232,7 @@ Window
                     Layout.preferredWidth: parent.width
                     Layout.preferredHeight: childrenRect.height
 
-                    Label
+                    UM.Label
                     {
                         id: syncStatusLabel
 
@@ -247,7 +242,6 @@ Window
                         elide: Text.ElideRight
                         visible: text !== ""
                         text: ""
-                        color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("medium")
                     }
                     Cura.TertiaryButton
@@ -426,14 +420,13 @@ Window
 
                                         spacing: UM.Theme.getSize("default_margin").height
 
-                                        Label
+                                        UM.Label
                                         {
                                             id: printersMissingText
                                             text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
                                               + "\n"
                                               + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
                                             font: UM.Theme.getFont("medium")
-                                            color: UM.Theme.getColor("text")
                                             elide: Text.ElideRight
                                         }
                                         Cura.TertiaryButton
@@ -540,7 +533,7 @@ Window
                                 running: true
                             }
                         }
-                        Label
+                        UM.Label
                         {
                             id: syncingLabel
                             anchors.left: syncingIcon.right
@@ -561,11 +554,10 @@ Window
                 anchors.margins: UM.Theme.getSize("default_margin").width
                 visible: cloudPrinterList.count == 0
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@title:header", "No printers found")
                     font: UM.Theme.getFont("large_bold")
-                    color: UM.Theme.getColor("text")
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                 }
@@ -577,7 +569,7 @@ Window
                     Layout.alignment: Qt.AlignHCenter
                     Layout.preferredWidth: parent.width / 3
                 }
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@text", "It seems like you don't have access to any printers connected to Digital Factory.")
                     width: parent.width
@@ -642,18 +634,16 @@ Window
                 anchors.fill: parent
                 anchors.margins: UM.Theme.getSize("default_margin").width
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@title:header", "Sync material profiles via USB")
                     font: UM.Theme.getFont("large_bold")
-                    color: UM.Theme.getColor("text")
                     Layout.preferredHeight: height
                 }
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@text In the UI this is followed by a list of steps the user needs to take.", "Follow the following steps to load the new material profiles to your printer.")
                     font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text")
                     wrapMode: Text.Wrap
                     width: parent.width
                     Layout.maximumWidth: width
@@ -674,13 +664,12 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                         sourceSize.width: width
                     }
-                    Label
+                    UM.Label
                     {
                         text: "1. " + catalog.i18nc("@text", "Click the export material archive button.")
                           + "\n2. " + catalog.i18nc("@text", "Save the .umm file on a USB stick.")
                           + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
                         font: UM.Theme.getFont("medium")
-                        color: UM.Theme.getColor("text")
                         wrapMode: Text.Wrap
                         width: parent.width * 2 / 3 - UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter

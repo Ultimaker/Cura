@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.1
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -72,7 +72,7 @@ UM.ManagementPage
         visible: base.currentItem != null
         anchors.fill: parent
 
-        Label
+        UM.Label
         {
             id: machineName
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""

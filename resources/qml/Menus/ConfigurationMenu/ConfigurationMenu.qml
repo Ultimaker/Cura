@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -77,46 +77,37 @@ Cura.ExpandablePopup
                             rightMargin:  UM.Theme.getSize("default_margin").width
                         }
                         // Label for the brand of the material
-                        Label
+                        UM.Label
                         {
                             id: materialBrandNameLabel
 
                             text:  model.material_brand + " " + model.material_name
                             elide: Text.ElideRight
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             width: parent.width
                             visible: !truncated
                         }
 
-                        Label
+                        UM.Label
                         {
                             id: materialNameLabel
 
                             text: model.material_name
                             elide: Text.ElideRight
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             width: parent.width
                             visible: !materialBrandNameLabel.visible && !truncated
                         }
 
-                        Label
+                        UM.Label
                         {
                             id: materialTypeLabel
 
                             text: model.material_type
                             elide: Text.ElideRight
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             width: parent.width
                             visible: !materialBrandNameLabel.visible && !materialNameLabel.visible
                         }
                         // Label that shows the name of the variant
-                        Label
+                        UM.Label
                         {
                             id: variantLabel
 
@@ -125,8 +116,6 @@ Cura.ExpandablePopup
                             text: model.variant
                             elide: Text.ElideRight
                             font: UM.Theme.getFont("default_bold")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             Layout.preferredWidth: parent.width
                         }
                     }
@@ -135,13 +124,11 @@ Cura.ExpandablePopup
         }
 
         // Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Select configuration")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
 
             visible: Cura.MachineManager.activeMachine ? !Cura.MachineManager.activeMachine.hasMaterials && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates) : false
 
