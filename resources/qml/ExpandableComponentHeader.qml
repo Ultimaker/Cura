@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // Header of the popup
@@ -22,13 +22,11 @@ Cura.RoundedRectangle
     border.color: UM.Theme.getColor("lining")
     radius: UM.Theme.getSize("default_radius").width
 
-    Label
+    UM.Label
     {
         id: headerLabel
         text: ""
         font: UM.Theme.getFont("medium")
-        renderType: Text.NativeRendering
-        verticalAlignment: Text.AlignVCenter
         color: UM.Theme.getColor("small_button_text")
         height: parent.height
 

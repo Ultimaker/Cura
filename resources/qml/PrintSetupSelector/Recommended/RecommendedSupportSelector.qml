@@ -201,7 +201,7 @@ Item
                 }
             }
 
-            contentItem: Controls2.Label
+            contentItem:UM.Label
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -211,12 +211,10 @@ Item
 
                 text: supportExtruderCombobox.currentText
                 textFormat: Text.PlainText
-                renderType: Text.NativeRendering
-                font: UM.Theme.getFont("default")
                 color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
 
                 elide: Text.ElideLeft
-                verticalAlignment: Text.AlignVCenter
+
 
                 background: Rectangle
                 {
@@ -262,28 +260,16 @@ Item
                 height: supportExtruderCombobox.height
                 highlighted: supportExtruderCombobox.highlightedIndex == index
 
-                contentItem: Controls2.Label
+                contentItem: UM.Label
                 {
                     anchors.fill: parent
                     anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                     anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
                     text: model.name
-                    renderType: Text.NativeRendering
-                    color:
-                    {
-                        if (model.enabled)
-                        {
-                            UM.Theme.getColor("setting_control_text")
-                        }
-                        else
-                        {
-                            UM.Theme.getColor("action_button_disabled_text");
-                        }
-                    }
-                    font: UM.Theme.getFont("default")
+                    color: model.enabled ? UM.Theme.getColor("setting_control_text"): UM.Theme.getColor("action_button_disabled_text")
+
                     elide: Text.ElideRight
-                    verticalAlignment: Text.AlignVCenter
                     rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
                     background: Rectangle

@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 //
@@ -34,16 +34,13 @@ Item
         anchors.right: parent.right
         anchors.top: parent.top
 
-        Label
+        UM.Label
         {
             id: noPrinterLabel
             height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "There is no printer found over your network.")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
             visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.
         }
 
@@ -107,16 +104,13 @@ Item
                 {
                     id: sectionHeading
 
-                    Label
+                    UM.Label
                     {
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         height: UM.Theme.getSize("setting_control").height
                         text: section
-                        font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("small_button_text")
-                        verticalAlignment: Text.AlignVCenter
-                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -233,7 +227,7 @@ Item
                 source: UM.Theme.getIcon("LinkExternal")
             }
 
-            Label
+            UM.Label
             {
                 id: troubleshootingLabel
                 anchors.right: parent.right
@@ -241,8 +235,6 @@ Item
                 text: catalog.i18nc("@label", "Troubleshooting")
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_link")
-                linkColor: UM.Theme.getColor("text_link")
-                renderType: Text.NativeRendering
             }
 
             MouseArea

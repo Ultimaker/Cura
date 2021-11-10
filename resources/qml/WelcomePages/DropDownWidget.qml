@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -88,14 +88,12 @@ Item
         {
             id: emptyComponent
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Empty")
                 height: UM.Theme.getSize("action_button").height
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 font: UM.Theme.getFont("medium")
-                renderType: Text.NativeRendering
             }
         }
     }

@@ -4,7 +4,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.1
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 /**
@@ -100,10 +100,9 @@ Item
                     width: parent.width
                     radius: 2 * screenScaleFactor // TODO: Theme!
 
-                    Label
+                    UM.Label
                     {
                         text: printer && printer.name ? printer.name : ""
-                        color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("large") // 16pt, bold
                         width: parent.width
@@ -111,8 +110,6 @@ Item
 
                         // FIXED-LINE-HEIGHT:
                         height: parent.height
-                        verticalAlignment: Text.AlignVCenter
-                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -138,21 +135,20 @@ Item
                 Item
                 {
                     id: managePrinterLink
-                    anchors {
+                    anchors
+                    {
                         top: printerFamilyPill.bottom
                         topMargin: UM.Theme.getSize("narrow_margin").height
                     }
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: childrenRect.width
   
-                    Label
+                    UM.Label
                     {
                         id: managePrinterText
                         anchors.verticalCenter: managePrinterLink.verticalCenter
                         color: UM.Theme.getColor("text_link")
-                        font: UM.Theme.getFont("default")
                         text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
-                        renderType: Text.NativeRendering
                     }
                     UM.RecolorImage
                     {
@@ -334,7 +330,7 @@ Item
             height: childrenRect.height
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
-            Label
+            UM.Label
             {
                 id: printerStatus
                 anchors
@@ -371,7 +367,6 @@ Item
                     return ""
                 }
                 visible: text !== ""
-                renderType: Text.NativeRendering
             }
 
             Item
@@ -401,7 +396,7 @@ Item
                 height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
                 visible: printer && printer.activePrintJob && !printerStatus.visible
 
-                Label
+                UM.Label
                 {
                     id: printerJobNameLabel
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
@@ -412,11 +407,9 @@ Item
 
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
 
-                Label
+                UM.Label
                 {
                     id: printerJobOwnerLabel
                     anchors
@@ -427,14 +420,11 @@ Item
                     }
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
-                    font: UM.Theme.getFont("default") // 12pt, regular
                     text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
                     width: parent.width
 
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
             }
 
@@ -448,21 +438,17 @@ Item
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length === 0 && !printerStatus.visible
             }
 
-            Label
+            UM.Label
             {
                 anchors
                 {
                     verticalCenter: parent.verticalCenter
                 }
-                font: UM.Theme.getFont("default")
                 text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
-                color: UM.Theme.getColor("text")
 
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
             }
         }
 
@@ -487,17 +473,15 @@ Item
                     radius: 2 * screenScaleFactor // Todo: Theme!
                 }
             }
-            contentItem: Label
+            contentItem: UM.Label
             {
                 anchors.fill: parent
                 anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
                 color: UM.Theme.getColor("monitor_secondary_button_text")
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 text: catalog.i18nc("@action:button", "Details");
-                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                renderType: Text.NativeRendering
             }
             implicitHeight: 32 * screenScaleFactor // TODO: Theme!
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!

@@ -1,10 +1,10 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -64,14 +64,11 @@ CheckBox
         }
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         id: textLabel
         leftPadding: control.indicator.width + control.spacing
         text: control.text
         font: control.font
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
-        verticalAlignment: Text.AlignVCenter
     }
 }

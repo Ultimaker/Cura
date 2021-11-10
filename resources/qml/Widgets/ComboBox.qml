@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -65,7 +65,7 @@ ComboBox
         color: UM.Theme.getColor("setting_control_button")
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         id: contentLabel
         anchors.left: parent.left
@@ -86,11 +86,8 @@ ComboBox
         }
 
         textFormat: Text.PlainText
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("default")
         color: control.currentIndex == -1 ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
         elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
     }
 
     popup: Popup
@@ -140,7 +137,7 @@ ComboBox
             return (typeof _val !== 'undefined') ? _val : ""
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             id: delegateLabel
             // FIXME: Somehow the top/bottom anchoring is not correct on Linux and it results in invisible texts.
@@ -150,11 +147,8 @@ ComboBox
 
             text: delegateItem.text
             textFormat: Text.PlainText
-            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_control_text")
-            font: UM.Theme.getFont("default")
             elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
         }
 
         background: UM.TooltipArea

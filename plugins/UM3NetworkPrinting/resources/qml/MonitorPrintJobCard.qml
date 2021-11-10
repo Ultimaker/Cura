@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 import QtQuick 2.2
 import QtQuick.Controls 2.0
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 /**
@@ -55,10 +55,9 @@ Item
                     visible: !printJob
                     radius: 2 * screenScaleFactor // TODO: Theme!
                 }
-                Label
+                UM.Label
                 {
                     text: printJob && printJob.name ? printJob.name : ""
-                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
@@ -66,8 +65,6 @@ Item
                     // FIXED-LINE-HEIGHT:
                     width: parent.width
                     height: parent.height
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
             }
 
@@ -86,18 +83,15 @@ Item
                     radius: 2 * screenScaleFactor // TODO: Theme!
                 }
 
-                Label
+                UM.Label
                 {
                     text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     visible: printJob
 
                     // FIXED-LINE-HEIGHT:
                     height: Math.round(18 * screenScaleFactor) // TODO: Theme!
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
             }
 
@@ -116,11 +110,10 @@ Item
                     radius: 2 * screenScaleFactor // TODO: Theme!
                 }
 
-                Label
+                UM.Label
                 {
                     id: printerAssignmentLabel
                     anchors.verticalCenter: parent.verticalCenter
-                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
@@ -143,8 +136,6 @@ Item
 
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                 }
 
                 Row
@@ -186,17 +177,15 @@ Item
                 height: Math.round(72 * screenScaleFactor) // TODO: Theme!
             }
 
-            Label {
+            UM.Label
+            {
                 text: printJob && printJob.owner ? printJob.owner : ""
-                color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.top: printerConfiguration.top
 
                 // FIXED-LINE-HEIGHT:
                 height: Math.round(18 * screenScaleFactor) // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
             }
         }
     }

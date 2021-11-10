@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Item
@@ -98,27 +98,23 @@ Item
             bottom: parent.bottom
         }
 
-        Label
+        UM.Label
         {
             id: name
             text: model.name
             width: parent.width
             elide: Text.ElideRight
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default_bold")
         }
-        Label
+        UM.Label
         {
             id: info
             text: model.description
             elide: Text.ElideRight
             width: parent.width
             wrapMode: Text.WordWrap
-            color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("default")
             anchors.top: name.bottom
             anchors.bottom: parent.bottom
-            verticalAlignment: Text.AlignVCenter
             maximumLineCount: 2
         }
     }

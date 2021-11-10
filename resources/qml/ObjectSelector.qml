@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -51,15 +51,13 @@ Item
                 source: objectSelector.opened ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleUp")
             }
 
-            Label
+            UM.Label
             {
                 id: label
                 anchors.left: openCloseIcon.right
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@label", "Object list")
-                font: UM.Theme.getFont("default")
                 color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                renderType: Text.NativeRendering
                 elide: Text.ElideRight
             }
         }

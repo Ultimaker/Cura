@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 Rectangle
 {
@@ -34,7 +34,7 @@ Rectangle
             horizontalCenter: parent.horizontalCenter
         }
     }
-    Label
+    UM.Label
     {
         id: packageName
         text: model.name
@@ -43,15 +43,12 @@ Rectangle
             horizontalCenter: parent.horizontalCenter
             top: thumbnail.bottom
         }
-        verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-        renderType: Text.NativeRendering
         height: UM.Theme.getSize("toolbox_heading_label").height
         width: parent.width - UM.Theme.getSize("default_margin").width
         wrapMode: Text.WordWrap
         elide: Text.ElideRight
         font: UM.Theme.getFont("medium_bold")
-        color: UM.Theme.getColor("text")
     }
     UM.RecolorImage
     {

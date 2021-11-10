@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 import ".."
 
@@ -126,13 +126,10 @@ Item
 
         }
 
-        Label
+        UM.Label
         {
             id: meshTypeLabel
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
             height: UM.Theme.getSize("setting").height
-            verticalAlignment: Text.AlignVCenter
         }
 
 

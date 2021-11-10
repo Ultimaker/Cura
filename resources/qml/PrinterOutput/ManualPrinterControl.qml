@@ -6,7 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "."
@@ -62,15 +62,13 @@ Item
 
             spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Jog Position")
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
 
                 width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
                 height: UM.Theme.getSize("setting_control").height
-                verticalAlignment: Text.AlignVCenter
             }
 
             GridLayout
@@ -80,14 +78,12 @@ Item
                 rowSpacing: UM.Theme.getSize("default_lining").width
                 columnSpacing: UM.Theme.getSize("default_lining").height
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@label", "X/Y")
                     color: UM.Theme.getColor("setting_control_text")
-                    font: UM.Theme.getFont("default")
                     width: height
                     height: UM.Theme.getSize("setting_control").height
-                    verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
 
                     Layout.row: 0
@@ -187,14 +183,12 @@ Item
             {
                 spacing: UM.Theme.getSize("default_lining").height
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@label", "Z")
                     color: UM.Theme.getColor("setting_control_text")
-                    font: UM.Theme.getFont("default")
                     width: UM.Theme.getSize("section").height
                     height: UM.Theme.getSize("setting_control").height
-                    verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                 }
 
@@ -252,15 +246,13 @@ Item
 
             property real currentDistance: 10
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Jog Distance")
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
 
                 width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
                 height: UM.Theme.getSize("setting_control").height
-                verticalAlignment: Text.AlignVCenter
             }
 
             Row
@@ -296,15 +288,13 @@ Item
 
             spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Send G-code")
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
 
                 width: Math.floor(parent.width * 0.4) - UM.Theme.getSize("default_margin").width
                 height: UM.Theme.getSize("setting_control").height
-                verticalAlignment: Text.AlignVCenter
             }
 
             Row

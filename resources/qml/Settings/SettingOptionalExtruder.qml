@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 SettingItem
@@ -144,7 +144,7 @@ SettingItem
             }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -154,12 +154,9 @@ SettingItem
 
             text: control.currentText
             textFormat: Text.PlainText
-            renderType: Text.NativeRendering
-            font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
 
             elide: Text.ElideRight
-            verticalAlignment: Text.AlignVCenter
 
             background: Rectangle
             {
@@ -175,13 +172,15 @@ SettingItem
             }
         }
 
-        popup: Popup {
+        popup: Popup
+        {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
             implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
-            contentItem: ListView {
+            contentItem: ListView
+            {
                 clip: true
                 implicitHeight: contentHeight
                 model: control.popup.visible ? control.delegateModel : null
@@ -202,7 +201,7 @@ SettingItem
             height: control.height
             highlighted: control.highlightedIndex == index
 
-            contentItem: Label
+            contentItem: UM.Label
             {
                 anchors.fill: parent
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
@@ -210,7 +209,6 @@ SettingItem
 
                 text: model.name
                 textFormat: Text.PlainText
-                renderType: Text.NativeRendering
                 color:
                 {
                     if (model.enabled) {
@@ -219,9 +217,7 @@ SettingItem
                         UM.Theme.getColor("action_button_disabled_text");
                     }
                 }
-                font: UM.Theme.getFont("default")
                 elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
                 rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
                 background: Rectangle

@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -222,7 +222,7 @@ UM.TooltipArea
             }
         }
 
-        Label
+        UM.Label
         {
             id: unitLabel
             anchors.right: parent.right
@@ -230,10 +230,7 @@ UM.TooltipArea
             anchors.verticalCenter: parent.verticalCenter
             text: unitText
             textFormat: Text.PlainText
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
-            font: UM.Theme.getFont("default")
         }
     }
 }

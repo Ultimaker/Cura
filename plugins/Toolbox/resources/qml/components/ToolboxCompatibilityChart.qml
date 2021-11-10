@@ -27,7 +27,7 @@ Item
         // This is a bit of a hack, but the whole QML is pretty messy right now. This needs a big overhaul.
         height: visible ? heading.height + table.height: 0
 
-        Label
+        UM.Label
         {
             id: heading
             width: parent.width
@@ -35,7 +35,6 @@ Item
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
         }
 
         TableView
@@ -92,29 +91,25 @@ Item
             itemDelegate: Item
             {
                 height: UM.Theme.getSize("toolbox_chart_row").height
-                Label
+                UM.Label
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     elide: Text.ElideRight
                     text: styleData.value || ""
                     color: UM.Theme.getColor("text_medium")
-                    font: UM.Theme.getFont("default")
-                    renderType: Text.NativeRendering
                 }
             }
 
             Component
             {
                 id: columnTextDelegate
-                Label
+                UM.Label
                 {
                     anchors.fill: parent
-                    verticalAlignment: Text.AlignVCenter
+
                     text: styleData.value || ""
                     elide: Text.ElideRight
                     color: UM.Theme.getColor("text_medium")
-                    font: UM.Theme.getFont("default")
-                    renderType: Text.NativeRendering
                 }
             }
 
@@ -152,7 +147,7 @@ Item
         }
     }
 
-    Label
+    UM.Label
     {
         id: dataSheetLinks
         anchors.top: compatibilityItem.bottom
@@ -200,10 +195,6 @@ Item
 
             return result
         }
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        linkColor: UM.Theme.getColor("text_link")
         onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
-        renderType: Text.NativeRendering
     }
 }

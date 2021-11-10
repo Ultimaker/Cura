@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Item
@@ -46,15 +46,12 @@ Item
             }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             id: label
             text: signInButton.text
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("primary_text")
             width: contentWidth
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
         }
     }
 
@@ -113,7 +110,7 @@ Item
                 }
             }
 
-            Label
+            UM.Label
             {
                 id: initialLabel
                 anchors.verticalCenter: parent.verticalCenter
@@ -121,9 +118,7 @@ Item
                 text: accountWidget.text
                 font: UM.Theme.getFont("large_bold")
                 color: UM.Theme.getColor("primary_text")
-                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                renderType: Text.NativeRendering
             }
         }
 

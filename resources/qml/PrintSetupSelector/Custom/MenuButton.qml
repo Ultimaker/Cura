@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 Button
@@ -40,14 +40,11 @@ Button
         return txt
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         id: textLabel
         text: button.text != "" ? replaceText(button.text) : replaceText(button.labelText)
         height: contentHeight
-        verticalAlignment: Text.AlignVCenter
-        renderType: Text.NativeRendering
-        font: UM.Theme.getFont("default")
         color: button.enabled ? UM.Theme.getColor("text") :UM.Theme.getColor("text_inactive")
     }
 }

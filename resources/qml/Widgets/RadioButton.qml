@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -43,13 +43,10 @@ RadioButton
         }
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
-        verticalAlignment: Text.AlignVCenter
         leftPadding: radioButton.indicator.width + radioButton.spacing
         text: radioButton.text
         font: radioButton.font
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
     }
 }

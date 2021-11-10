@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 CheckBox
 {
@@ -38,7 +38,7 @@ CheckBox
         }
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         anchors
         {
@@ -47,10 +47,7 @@ CheckBox
         }
         text: checkbox.text
         color: UM.Theme.getColor("checkbox_text")
-        font: UM.Theme.getFont("default")
-        renderType: Text.NativeRendering
         elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
     }
 
     ToolTip

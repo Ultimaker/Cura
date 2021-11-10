@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.4
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "../Account"
@@ -96,7 +96,7 @@ Item
                     }
                 }
 
-                contentItem:  Label
+                contentItem: UM.Label
                 {
                     id: buttonLabel
                     text: stageSelectorButton.text
@@ -158,15 +158,12 @@ Item
             }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             id: label
             text: marketplaceButton.text
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("primary_text")
             width: contentWidth
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
         }
 
         anchors

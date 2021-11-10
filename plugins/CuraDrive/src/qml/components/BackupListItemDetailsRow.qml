@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 RowLayout
 {
@@ -26,27 +26,21 @@ RowLayout
         color: UM.Theme.getColor("text")
     }
 
-    Label
+    UM.Label
     {
         id: detailName
-        color: UM.Theme.getColor("text")
         elide: Text.ElideRight
         Layout.minimumWidth: 50 * screenScaleFactor
         Layout.maximumWidth: 100 * screenScaleFactor
         Layout.fillWidth: true
-        font: UM.Theme.getFont("default")
-        renderType: Text.NativeRendering
     }
 
-    Label
+    UM.Label
     {
         id: detailValue
-        color: UM.Theme.getColor("text")
         elide: Text.ElideRight
         Layout.minimumWidth: 50 * screenScaleFactor
         Layout.maximumWidth: 100 * screenScaleFactor
         Layout.fillWidth: true
-        font: UM.Theme.getFont("default")
-        renderType: Text.NativeRendering
     }
 }

@@ -6,7 +6,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.1
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -42,28 +42,22 @@ Item
             onClicked: backupListItem.showDetails = !backupListItem.showDetails
         }
 
-        Label
+        UM.Label
         {
             text: new Date(modelData.generated_time).toLocaleString(UM.Preferences.getValue("general/language"))
-            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             Layout.minimumWidth: 100 * screenScaleFactor
             Layout.maximumWidth: 500 * screenScaleFactor
             Layout.fillWidth: true
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
         }
 
-        Label
+        UM.Label
         {
             text: modelData.metadata.description
-            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
             Layout.minimumWidth: 100 * screenScaleFactor
             Layout.maximumWidth: 500 * screenScaleFactor
             Layout.fillWidth: true
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
         }
 
         Cura.SecondaryButton

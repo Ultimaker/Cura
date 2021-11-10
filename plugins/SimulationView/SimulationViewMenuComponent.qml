@@ -43,22 +43,19 @@ Cura.ExpandableComponent
 
     headerItem: Item
     {
-        Label
+        UM.Label
         {
             id: colorSchemeLabel
             text: catalog.i18nc("@label", "Color scheme")
-            verticalAlignment: Text.AlignVCenter
             height: parent.height
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text_medium")
-            renderType: Text.NativeRendering
         }
 
-        Label
+        UM.Label
         {
             text: layerTypeCombobox.currentText
-            verticalAlignment: Text.AlignVCenter
             anchors
             {
                 left: colorSchemeLabel.right
@@ -68,8 +65,6 @@ Cura.ExpandableComponent
             height: parent.height
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
         }
     }
 
@@ -165,16 +160,13 @@ Cura.ExpandableComponent
             }
         }
 
-        Label
+        UM.Label
         {
             id: compatibilityModeLabel
             text: catalog.i18nc("@label", "Compatibility Mode")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
             visible: UM.SimulationView.compatibilityMode
             height: UM.Theme.getSize("layerview_row").height
             width: parent.width
-            renderType: Text.NativeRendering
         }
 
         Item  // Spacer
@@ -213,12 +205,11 @@ Cura.ExpandableComponent
                     border.color: UM.Theme.getColor("lining")
                 }
 
-                Label
+                UM.Label
                 {
                     text: model.name
                     elide: Text.ElideRight
                     color: UM.Theme.getColor("setting_control_text")
-                    font: UM.Theme.getFont("default")
                     anchors
                     {
                         verticalCenter: parent.verticalCenter
@@ -227,7 +218,6 @@ Cura.ExpandableComponent
                         leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
                         rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
-                    renderType: Text.NativeRendering
                 }
             }
         }
@@ -347,7 +337,7 @@ Cura.ExpandableComponent
                 }
             }
 
-            Label
+            UM.Label
             {
                 text: label
                 visible: viewSettings.show_legend
@@ -356,8 +346,6 @@ Cura.ExpandableComponent
                 height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                 width: parent.width
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
                 Rectangle
                 {
                     anchors.verticalCenter: parent.verticalCenter
@@ -382,7 +370,7 @@ Cura.ExpandableComponent
             width: parent.width
             height: UM.Theme.getSize("layerview_row").height
 
-            Label //Minimum value.
+            UM.Label //Minimum value.
             {
                 text:
                 {
@@ -413,12 +401,9 @@ Cura.ExpandableComponent
                     return catalog.i18nc("@label","min")
                 }
                 anchors.left: parent.left
-                color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
             }
 
-            Label //Unit in the middle.
+            UM.Label //Unit in the middle.
             {
                 text:
                 {
@@ -450,10 +435,9 @@ Cura.ExpandableComponent
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
             }
 
-            Label //Maximum value.
+            UM.Label //Maximum value.
             {
                 text: {
                     if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
@@ -484,7 +468,6 @@ Cura.ExpandableComponent
 
                 anchors.right: parent.right
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
             }
         }
 

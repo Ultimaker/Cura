@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // Reusable component that holds an (re-colorable) icon on the left with some text on the right.
@@ -49,15 +49,10 @@ Item
         }
     }
 
-    Label
+    UM.Label
     {
         id: label
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
         elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
-
         anchors
         {
             left: icon.right

@@ -4,7 +4,7 @@
 import QtQuick 2.3
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.4
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 /**
  * NOTE: For most labels, a fixed height with vertical alignment is used to make
@@ -34,7 +34,7 @@ Item
         width: UM.Theme.getSize("monitor_progress_bar").width
     }
 
-    Label
+    UM.Label
     {
         id: percentLabel
         anchors
@@ -46,14 +46,11 @@ Item
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
-        font: UM.Theme.getFont("default") // 12pt, regular
 
         // FIXED-LINE-HEIGHT:
         height: UM.Theme.getSize("monitor_text_line").height
-        verticalAlignment: Text.AlignVCenter
-        renderType: Text.NativeRendering
     }
-    Label
+    UM.Label
     {
         id: statusLabel
         anchors
@@ -62,8 +59,6 @@ Item
             leftMargin: UM.Theme.getSize("monitor_margin").width
             verticalCenter: parent.verticalCenter
         }
-        color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("default")
         text:
         {
             if (!printJob)
@@ -104,7 +99,5 @@ Item
 
         // FIXED-LINE-HEIGHT:
         height: UM.Theme.getSize("monitor_text_line").height
-        verticalAlignment: Text.AlignVCenter
-        renderType: Text.NativeRendering
     }
 }

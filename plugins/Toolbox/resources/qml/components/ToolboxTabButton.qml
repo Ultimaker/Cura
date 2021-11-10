@@ -3,7 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 Button
 {
@@ -28,17 +28,14 @@ Button
         }
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         id: label
         text: control.text
         color: UM.Theme.getColor("toolbox_header_button_text_inactive")
         font: UM.Theme.getFont("medium")
 
-        verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
-
-        renderType: Text.NativeRendering
     }
 
     states:

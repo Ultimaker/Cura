@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 Popup
@@ -66,12 +66,11 @@ Popup
                         height: childrenRect.height
                         width: popup.contentWidth
 
-                        Label
+                        UM.Label
                         {
                             id: headerLabel
                             text: model.name
                             color: UM.Theme.getColor("text_inactive")
-                            renderType: Text.NativeRendering
                             width: parent.width
                             height: visible ? contentHeight: 0
                             visible: qualitiesList.visibleChildren.length > 0
@@ -140,11 +139,10 @@ Popup
                     height: childrenRect.height
                     width: popup.contentWidth
 
-                    Label
+                    UM.Label
                     {
                         id: customProfileHeader
                         text: catalog.i18nc("@label:header", "Custom profiles")
-                        renderType: Text.NativeRendering
                         height: visible ? contentHeight: 0
                         enabled: false
                         visible: profilesList.visibleChildren.length > 1
@@ -280,29 +278,21 @@ Popup
                 width: parent.width
                 height: childrenRect.height
 
-                Label
+                UM.Label
                 {
                     id: textLabel
                     text: manageProfilesButton.text
                     height: contentHeight
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                 }
-                Label
+                UM.Label
                 {
                     id: shortcutLabel
                     text: Cura.Actions.manageProfiles.shortcut
                     height: contentHeight
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                 }
             }
             onClicked:

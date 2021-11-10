@@ -4,7 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 ButtonStyle
 {
@@ -19,11 +19,9 @@ ButtonStyle
             color: UM.Theme.getColor("lining")
         }
     }
-    label: Label
+    label: UM.Label
     {
         text: control.text
-        color: UM.Theme.getColor("text")
-        verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
     }
 }

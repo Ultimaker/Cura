@@ -5,7 +5,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 UM.Dialog
 {
@@ -63,7 +63,7 @@ UM.Dialog
         }
     ]
 
-    Label
+    UM.Label
     {
         anchors
         {
@@ -72,7 +72,6 @@ UM.Dialog
             bottomMargin: 56 * screenScaleFactor // TODO: Theme!
         }
         wrapMode: Text.WordWrap
-        renderType: Text.NativeRendering
         text:
         {
             if (!printer || !printer.activePrintJob)

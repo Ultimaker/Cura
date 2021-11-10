@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // The expandable component has 2 major sub components:
@@ -120,16 +120,12 @@ Item
         color: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
         anchors.fill: parent
 
-        Label
+        UM.Label
         {
             id: disabledLabel
             visible: !base.enabled
             leftPadding: background.padding
             text: ""
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
-            color: UM.Theme.getColor("text")
             height: parent.height
         }
 

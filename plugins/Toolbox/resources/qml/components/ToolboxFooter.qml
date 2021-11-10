@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -14,12 +14,10 @@ Item
     anchors.bottom: parent.bottom
     height: visible ? UM.Theme.getSize("toolbox_footer").height : 0
 
-    Label
+    UM.Label
     {
         text: catalog.i18nc("@info", "You will need to restart Cura before changes in packages have effect.")
-        color: UM.Theme.getColor("text")
         height: UM.Theme.getSize("toolbox_footer_button").height
-        verticalAlignment: Text.AlignVCenter
         wrapMode: Text.WordWrap
         anchors
         {
@@ -29,7 +27,6 @@ Item
             right: restartButton.left
             rightMargin: UM.Theme.getSize("default_margin").width
         }
-        renderType: Text.NativeRendering
     }
 
     Cura.PrimaryButton

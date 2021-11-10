@@ -6,7 +6,7 @@ import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQ
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 
 
 OldControls.TableView
@@ -15,7 +15,7 @@ OldControls.TableView
     {
         height: tableCellLabel.implicitHeight
 
-        Label
+        UM.Label
         {
             id: tableCellLabel
             color: styleData.selected ? UM.Theme.getColor("primary_button_text") : UM.Theme.getColor("text")
@@ -23,7 +23,6 @@ OldControls.TableView
             text: styleData.value
             anchors.fill: parent
             anchors.leftMargin: 10 * screenScaleFactor
-            verticalAlignment: Text.AlignVCenter
         }
     }
 

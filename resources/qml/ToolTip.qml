@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.0 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 ToolTip
@@ -62,7 +62,7 @@ ToolTip
         visible: tooltip.height != 0
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
         id: label
         text: tooltip.text
@@ -70,7 +70,6 @@ ToolTip
         wrapMode: Text.Wrap
         textFormat: Text.RichText
         color: UM.Theme.getColor("tooltip_text")
-        renderType: Text.NativeRendering
     }
 
     function show() {

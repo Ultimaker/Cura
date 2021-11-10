@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -146,16 +146,13 @@ Item
                             source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
                         }
 
-                        Label
+                        UM.Label
                         {
                             id: label
                             anchors.left: arrow.right
                             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                            verticalAlignment: Text.AlignVCenter
                             text: button.text
                             font: UM.Theme.getFont("default_bold")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                         }
                     }
 
@@ -210,7 +207,7 @@ Item
             spacing: UM.Theme.getSize("default_margin").width
             padding: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 width: parent.width - (2 * UM.Theme.getSize("default_margin").width)
                 wrapMode: Text.Wrap
@@ -228,48 +225,33 @@ Item
 
                 verticalItemAlignment: Grid.AlignVCenter
 
-                Label
+                UM.Label
                 {
                     id: manufacturerLabel
                     text: catalog.i18nc("@label", "Manufacturer")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                 }
-                Label
+                UM.Label
                 {
                     text: base.getMachineMetaDataEntry("manufacturer")
                     width: parent.width - manufacturerLabel.width
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                     wrapMode: Text.WordWrap
                 }
-                Label
+                UM.Label
                 {
                     id: profileAuthorLabel
                     text: catalog.i18nc("@label", "Profile author")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                 }
-                Label
+                UM.Label
                 {
                     text: base.getMachineMetaDataEntry("author")
                     width: parent.width - profileAuthorLabel.width
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                     wrapMode: Text.WordWrap
                 }
 
-                Label
+                UM.Label
                 {
                     id: printerNameLabel
                     text: catalog.i18nc("@label", "Printer name")
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
                 }
 
                 Cura.TextField
@@ -286,7 +268,5 @@ Item
                 }
             }
         }
-
-
     }
 }

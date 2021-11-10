@@ -19,14 +19,13 @@ Item
     width: parent.width
     height: childrenRect.height
 
-    Label
+    UM.Label
     {
         id: header
         text: catalog.i18nc("@header", "Custom")
         font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("small_button_text")
         height: contentHeight
-        renderType: Text.NativeRendering
 
         anchors
         {
@@ -56,13 +55,11 @@ Item
             topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Printer")
             width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
             height: contentHeight
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
             anchors.verticalCenter: printerTypeSelector.verticalCenter
             anchors.left: parent.left
         }
@@ -208,15 +205,11 @@ Item
                 height: visible ? UM.Theme.getSize("setting_control").height : 0
                 visible: extrudersModel.count > 1  // If there is only one extruder, there is no point to enable/disable that.
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@label", "Enabled")
-                    verticalAlignment: Text.AlignVCenter
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    renderType: Text.NativeRendering
                 }
 
                 UM.CheckBox
@@ -261,15 +254,11 @@ Item
                 height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
                 visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials : false
 
-                Label
+                UM.Label
                 {
                     text: catalog.i18nc("@label", "Material")
-                    verticalAlignment: Text.AlignVCenter
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    renderType: Text.NativeRendering
                 }
 
                 OldControls.ToolButton
@@ -327,15 +316,11 @@ Item
                 height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
                 visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
 
-                Label
+                UM.Label
                 {
                     text: Cura.MachineManager.activeDefinitionVariantsName
-                    verticalAlignment: Text.AlignVCenter
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                     height: parent.height
                     width: selectors.textWidth
-                    renderType: Text.NativeRendering
                 }
 
                 OldControls.ToolButton
@@ -371,11 +356,10 @@ Item
                 property bool buildplateCompatibilityWarning: Cura.MachineManager.variantBuildplateUsable
 
                 // This is a space holder aligning the warning messages.
-                Label
+                UM.Label
                 {
                     text: ""
                     width: selectors.textWidth
-                    renderType: Text.NativeRendering
                 }
 
                 Item
@@ -396,19 +380,15 @@ Item
                         visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                     }
 
-                    Label
+                    UM.Label
                     {
                         id: materialCompatibilityLabel
                         anchors.left: warningImage.right
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        verticalAlignment: Text.AlignVCenter
                         width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
                         text: catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
                         visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                         wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
                     }
                 }
             }

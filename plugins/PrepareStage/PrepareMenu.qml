@@ -5,7 +5,7 @@ import QtQuick 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -131,14 +131,10 @@ Item
                             height: UM.Theme.getSize("action_button").height
                             hoverEnabled: true
 
-                            contentItem: Label
+                            contentItem: UM.Label
                             {
                                 text: model.displayText
-                                color: UM.Theme.getColor("text")
                                 font: UM.Theme.getFont("medium")
-                                renderType: Text.NativeRendering
-                                verticalAlignment: Text.AlignVCenter
-
                                 width: contentWidth
                                 height: parent.height
                             }

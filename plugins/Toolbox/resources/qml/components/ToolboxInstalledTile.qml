@@ -72,7 +72,7 @@ Item
             id: authorInfo
             width: Math.floor(UM.Theme.getSize("toolbox_action_button").width * 1.25)
 
-            Label
+            UM.Label
             {
                 text:
                 {
@@ -89,24 +89,18 @@ Item
                 width: parent.width
                 height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
                 wrapMode: Text.WordWrap
-                verticalAlignment: Text.AlignVCenter
+
                 horizontalAlignment: Text.AlignLeft
                 onLinkActivated: Qt.openUrlExternally("mailto:" + model.author_email + "?Subject=Cura: " + model.name + " Plugin")
                 color: model.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("lining")
-                linkColor: UM.Theme.getColor("text_link")
-                renderType: Text.NativeRendering
             }
 
-            Label
+            UM.Label
             {
                 text: model.version
-                font: UM.Theme.getFont("default")
                 width: parent.width
                 height: UM.Theme.getSize("toolbox_property_label").height
-                color: UM.Theme.getColor("text")
-                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignLeft
-                renderType: Text.NativeRendering
             }
         }
         ToolboxInstalledTileActions

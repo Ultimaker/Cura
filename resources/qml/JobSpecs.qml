@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -119,15 +119,13 @@ Item
         }
     }
 
-    Label
+    UM.Label
     {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
         anchors.left: parent.left
 
         height: UM.Theme.getSize("jobspecs_line").height
-        verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text_scene")
         text: CuraApplication.getSceneBoundingBoxString
     }

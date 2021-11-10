@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 import ".."
 
@@ -34,7 +34,7 @@ Item
             rightMargin: parent.padding
         }
 
-        Label
+        UM.Label
         {
             id: profileLabel
             anchors
@@ -46,9 +46,6 @@ Item
             }
             text: catalog.i18nc("@label", "Profile")
             font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-            color: UM.Theme.getColor("text")
-            verticalAlignment: Text.AlignVCenter
         }
 
         NoIntentIcon
@@ -80,21 +77,17 @@ Item
                 anchors.right: customisedSettings.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-                Label
+                UM.Label
                 {
                     id: textLabel
                     text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                     Layout.margins: 0
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
                 }
 
-                Label
+                UM.Label
                 {
                     text: activeQualityDetailText()
                     font: UM.Theme.getFont("default")
@@ -103,8 +96,6 @@ Item
                     Layout.fillWidth: true
 
                     height: contentHeight
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
                     elide: Text.ElideRight
 
                     function activeQualityDetailText()
