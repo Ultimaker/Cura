@@ -1798,7 +1798,7 @@ msgstr "Giroide"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr "Lightning (Iluminación)"
+msgstr "Iluminación"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
