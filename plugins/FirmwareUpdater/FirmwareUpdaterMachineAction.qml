@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Dialogs 1.2 // For filedialog
@@ -160,9 +160,7 @@ Cura.MachineAction
             ProgressBar
             {
                 id: prog
-                value: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareProgress : 0
-                minimumValue: 0
-                maximumValue: 100
+                value: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareProgress / 100 : 0
                 indeterminate:
                 {
                     if(manager.firmwareUpdater == null)
