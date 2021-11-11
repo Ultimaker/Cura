@@ -18,6 +18,30 @@ Rectangle
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
 
+    states:
+    [
+        State
+        {
+            name: "Folded"
+            when: true  // TODO
+            PropertyChanges
+            {
+                target: downloadCountRow
+                visible: false
+            }
+        },
+        State
+        {
+            name: "Header"
+            when: false  // TODO
+            PropertyChanges
+            {
+                target: downloadCountRow
+                visible: true
+            }
+        }
+    ]
+
     RowLayout
     {
         width: parent.width - UM.Theme.getSize("thin_margin").width * 2
@@ -128,15 +152,23 @@ Rectangle
 
                 Button
                 {
+                    id: externalLinkButton
+
                     Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
                     Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
                     Layout.alignment: Qt.AlignTop
 
-                    UM.RecolorImage
+                    Rectangle
                     {
                         anchors.fill: parent
-                        color: UM.Theme.getColor("icon")
-                        source: UM.Theme.getIcon("LinkExternal")
+                        color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
+
+                        UM.RecolorImage
+                        {
+                            anchors.fill: parent
+                            color: externalLinkButton.hovered ? UM.Theme.getColor("text_link") : UM.Theme.getColor("text")
+                            source: UM.Theme.getIcon("LinkExternal")
+                        }
                     }
 
                     onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
@@ -145,21 +177,21 @@ Rectangle
 
             RowLayout
             {
-                width: parent.width - UM.Theme.getSize("thin_margin").width * 2
+                id: downloadCountRow
+
+                width: childrenRect.width
                 height: childrenRect.height
                 x: UM.Theme.getSize("thin_margin").width
                 y: UM.Theme.getSize("thin_margin").height
 
                 spacing: UM.Theme.getSize("thin_margin").width
 
-                enabled: false  // remove
-                visible: false  // replace w state?
-                // TODO: hide/unhide on states (folded versus header state)
+                visible: false  // start up invisible (see states)
 
                 UM.RecolorImage
                 {
                     id: downloadCountIcon
-                    width: UM.Theme.getSize("card_tiny_icon").height
+                    width: UM.Theme.getSize("card_tiny_icon").width
                     height: UM.Theme.getSize("card_tiny_icon").height
                     color: UM.Theme.getColor("icon")
 
@@ -278,23 +310,26 @@ Rectangle
 
                 Cura.SecondaryButton
                 {
+                    id: disableButton
                     Layout.alignment: Qt.AlignTop
                     text: catalog.i18nc("@button", "Disable")
-                    // not functional right now
+                    visible: false  // not functional right now, also only when unfolding and required
                 }
 
                 Cura.SecondaryButton
                 {
+                    id: uninstallButton
                     Layout.alignment: Qt.AlignTop
                     text: catalog.i18nc("@button", "Uninstall")
-                    // not functional right now
+                    visible: false  // not functional right now, also only when unfolding and required
                 }
 
                 Cura.PrimaryButton
                 {
+                    id: installButton
                     Layout.alignment: Qt.AlignTop
-                    text: catalog.i18nc("@button", "Update")
-                    // not functional right now
+                    text: catalog.i18nc("@button", "Update") // OR Download, if new!
+                    visible: false  // not functional right now, also only when unfolding and required
                 }
             }
         }
