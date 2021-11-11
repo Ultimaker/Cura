@@ -5,7 +5,7 @@ import UM 1.2 as UM
 import Cura 1.5 as Cura
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Dialogs 1.2
@@ -112,17 +112,10 @@ Cura.MachineAction
                 ScrollView
                 {
                     id: objectListContainer
-                    frameVisible: true
+
                     width: parent.width
                     height: base.height - contentRow.y - discoveryTip.height
-
-                    Rectangle
-                    {
-                        parent: viewport
-                        anchors.fill: parent
-                        color: palette.light
-                    }
-
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
                     ListView
                     {
                         id: listview
@@ -138,11 +131,13 @@ Cura.MachineAction
                         Component.onCompleted: manager.startDiscovery()
                         delegate: Rectangle
                         {
-                            height: childrenRect.height
+                            height: printNameLabel.height
                             color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
-                            width: parent.width
+                            width: listview.width
                             Label
                             {
+                                id: printNameLabel
+                                height: contentHeight
                                 anchors.left: parent.left
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.right: parent.right
@@ -385,7 +380,6 @@ Cura.MachineAction
                     manualPrinterDialog.hide()
                 }
                 enabled: manualPrinterDialog.addressText.trim() != ""
-                isDefault: true
             }
         ]
     }
