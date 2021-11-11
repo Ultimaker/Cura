@@ -2,8 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls 2.0 as Controls2
+import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
@@ -82,7 +81,6 @@ UM.Dialog
                 bottom: controls.top
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
-            style: UM.Theme.styles.scrollview
             ColumnLayout
             {
                 spacing: UM.Theme.getSize("default_margin").height
@@ -282,7 +280,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:label", "Don't show project summary on save again")
                 checked: dontShowAgain
             }
-            Controls2.Button
+            Button
             {
                 id: cancel_button
                 anchors
@@ -294,7 +292,7 @@ UM.Dialog
                 enabled: true
                 onClicked: close()
             }
-            Controls2.Button
+            Button
             {
                 id: ok_button
                 anchors.right: parent.right
