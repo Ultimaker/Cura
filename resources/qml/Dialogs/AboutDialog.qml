@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.9
 import QtQuick.Window 2.1
 
 import UM 1.1 as UM
@@ -97,7 +97,7 @@ UM.Dialog
 
         width: parent.width
         height: base.height - y - (2 * UM.Theme.getSize("default_margin").height + closeButton.height)
-
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ListView
         {
             id: projectsList
