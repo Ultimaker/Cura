@@ -12,7 +12,7 @@ Rectangle
 {
     property var packageData
 
-    width: parent ? parent.width : 0
+    width: parent ? parent.width - UM.Theme.getSize("default_margin").width : 0
     height: childrenRect.height
 
     color: UM.Theme.getColor("main_background")
@@ -21,10 +21,11 @@ Rectangle
     RowLayout
     {
         width: parent.width - UM.Theme.getSize("thin_margin").width * 2
+        height: childrenRect.height + UM.Theme.getSize("thin_margin").height * 2
         x: UM.Theme.getSize("thin_margin").width
         y: UM.Theme.getSize("thin_margin").height
 
-        spacing: UM.Theme.getSize("thin_margin").width
+        spacing: UM.Theme.getSize("default_margin").width
 
         Image //Separate column for icon on the left.
         {
@@ -38,7 +39,6 @@ Rectangle
         Column
         {
             Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height
             Layout.alignment: Qt.AlignTop
 
             RowLayout //Title row.
@@ -169,8 +169,6 @@ Rectangle
                 Label
                 {
                     id: downloadCountLabel
-                    anchors.left: downloadCountIcon.right
-
                     text: packageData.downloadCount
                 }
             }
@@ -248,13 +246,13 @@ Rectangle
             RowLayout //Author and action buttons.
             {
                 width: parent.width
-                Layout.alignment: Qt.AlignBottom
+                Layout.alignment: Qt.AlignTop
                 spacing: UM.Theme.getSize("thin_margin").width
 
                 Label
                 {
                     id: authorBy
-                    Layout.alignment: Qt.AlignBottom
+                    Layout.alignment: Qt.AlignTop
 
                     text: catalog.i18nc("@label", "By")
                     font: UM.Theme.getFont("default")
@@ -265,7 +263,7 @@ Rectangle
                 {
                     Layout.fillWidth: true
                     Layout.preferredHeight: authorBy.height
-                    Layout.alignment: Qt.AlignBottom
+                    Layout.alignment: Qt.AlignTop
 
                     text: packageData.authorName
                     textFont: UM.Theme.getFont("default_bold")
@@ -280,24 +278,21 @@ Rectangle
 
                 Cura.SecondaryButton
                 {
-                    Layout.alignment: Qt.AlignBottom
-                    Layout.preferredHeight: authorBy.height
+                    Layout.alignment: Qt.AlignTop
                     text: catalog.i18nc("@button", "Disable")
                     // not functional right now
                 }
 
                 Cura.SecondaryButton
                 {
-                    Layout.alignment: Qt.AlignBottom
-                    Layout.preferredHeight: authorBy.height
+                    Layout.alignment: Qt.AlignTop
                     text: catalog.i18nc("@button", "Uninstall")
                     // not functional right now
                 }
 
                 Cura.PrimaryButton
                 {
-                    Layout.alignment: Qt.AlignBottom
-                    Layout.preferredHeight: authorBy.height
+                    Layout.alignment: Qt.AlignTop
                     text: catalog.i18nc("@button", "Update")
                     // not functional right now
                 }
