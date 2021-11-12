@@ -101,6 +101,7 @@ Rectangle
                         Layout.alignment: Qt.AlignTop
 
                         enabled: packageData.isVerified
+                        visible: packageData.isVerified
 
                         Cura.ToolTip
                         {
@@ -113,7 +114,6 @@ Rectangle
                             anchors.fill: parent
 
                             color: UM.Theme.getColor("primary")
-                            visible: packageData.isVerified
                             source: UM.Theme.getIcon("CheckCircle")
                         }
 
@@ -142,7 +142,6 @@ Rectangle
                             anchors.fill: parent
 
                             color: UM.Theme.getColor("primary")
-                            visible: packageData.isVerified
                             source: UM.Theme.getIcon("CheckCircle") // TODO
                         }
 
