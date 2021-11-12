@@ -70,46 +70,79 @@ Window
                 }
             }
 
+            // Search & Top-Level Tabs
             Item
             {
-                Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height
-
-                ManagePackagesButton
+                Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
+                RowLayout
                 {
-                    id: managePackagesButton
+                    width: parent.width
+                    height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
+                    spacing: UM.Theme.getSize("thin_margin").width
 
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                    onClicked:
+                    Rectangle
                     {
-                        content.source = "ManagedPackages.qml"
+                        Layout.preferredHeight: parent.height
+                        Layout.preferredWidth: UM.Theme.getSize("thin_margin").width
                     }
-                }
 
-                // Page selection.
-                TabBar
-                {
-                    id: pageSelectionTabBar
-                    anchors.right: managePackagesButton.left
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    height: UM.Theme.getSize("button_icon").height
-                    spacing: 0
-
-                    PackageTypeTab
+                    Cura.SearchBar
                     {
-                        width: implicitWidth
-                        padding: UM.Theme.getSize("default_margin").width/2
-                        text: catalog.i18nc("@button", "Plugins")
-                        onClicked: content.source = "Plugins.qml"
+                        id: searchBar
+                        Layout.preferredHeight: parent.height
+                        Layout.fillWidth: true
+                        //onTextEdited: // TODO!
                     }
-                    PackageTypeTab
+
+                    // Page selection.
+                    TabBar
                     {
+                        id: pageSelectionTabBar
+                        height: parent.height
                         width: implicitWidth
-                        padding: Math.round(UM.Theme.getSize("default_margin").width / 2)
-                        text: catalog.i18nc("@button", "Materials")
-                        onClicked: content.source = "Materials.qml"
+                        spacing: 0
+
+                        PackageTypeTab
+                        {
+                            id: pluginTabText
+                            width: implicitWidth
+                            padding: UM.Theme.getSize("thin_margin").width
+                            text: catalog.i18nc("@button", "Plugins")
+                            onClicked: content.source = "Plugins.qml"
+                        }
+                        PackageTypeTab
+                        {
+                            id: materialsTabText
+                            width: implicitWidth
+                            padding: UM.Theme.getSize("thin_margin").width
+                            text: catalog.i18nc("@button", "Materials")
+                            onClicked: content.source = "Materials.qml"
+                        }
+                    }
+                    TextMetrics
+                    {
+                        id: pluginTabTextMetrics
+                        text: pluginTabText.text
+                        font: pluginTabText.font
+                    }
+                    TextMetrics
+                    {
+                        id: materialsTabTextMetrics
+                        text: materialsTabText.text
+                        font: materialsTabText.font
+                    }
+
+                    ManagePackagesButton
+                    {
+                        id: managePackagesButton
+                        height: parent.height
+                        width: UM.Theme.getSize("button_icon").width
+
+                        onClicked:
+                        {
+                            content.source = "ManagedPackages.qml"
+                        }
                     }
                 }
             }
