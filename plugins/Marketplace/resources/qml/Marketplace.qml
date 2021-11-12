@@ -14,6 +14,8 @@ Window
     id: marketplaceDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
 
+    signal searchStringChanged(string new_search)
+
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
@@ -92,7 +94,7 @@ Window
                         id: searchBar
                         Layout.preferredHeight: parent.height
                         Layout.fillWidth: true
-                        //onTextEdited: // TODO!
+                        onTextEdited: marketplaceDialog.searchStringChanged(text)
                     }
 
                     // Page selection.
@@ -168,6 +170,11 @@ Window
                         function onLoaded()
                         {
                             pageTitle.text = content.item.pageTitle
+                            searchStringChanged.connect(onSearchStringChanged)
+                        }
+                        function onSearchStringChanged(new_search)
+                        {
+                            content.item.model.searchString = new_search
                         }
                     }
                 }

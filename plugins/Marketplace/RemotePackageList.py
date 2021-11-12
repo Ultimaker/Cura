@@ -32,6 +32,7 @@ class RemotePackageList(PackageList):
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
         self._package_type_filter = ""
+        self._search_string = ""
         self._request_url = self._initialRequestUrl()
         self.isLoadingChanged.emit()
 
@@ -69,12 +70,19 @@ class RemotePackageList(PackageList):
         self._request_url = self._initialRequestUrl()
 
     packageTypeFilterChanged = pyqtSignal()
+    searchStringChanged = pyqtSignal()
 
     def setPackageTypeFilter(self, new_filter: str) -> None:
         if new_filter != self._package_type_filter:
             self._package_type_filter = new_filter
             self.reset()
             self.packageTypeFilterChanged.emit()
+
+    def setSearchString(self, new_search: str) -> None:
+        if new_search != self._search_string:
+            self._search_string = new_search
+            self.reset()
+            self.searchStringChanged.emit()
 
     @pyqtProperty(str, fset = setPackageTypeFilter, notify = packageTypeFilterChanged)
     def packageTypeFilter(self) -> str:
@@ -84,14 +92,26 @@ class RemotePackageList(PackageList):
         """
         return self._package_type_filter
 
+    @pyqtProperty(str, fset = setSearchString, notify = searchStringChanged)
+    def searchString(self) -> str:
+        """
+        Get the string the user is currently searching for within the packages, or an empty string if no extra search
+        filter has to be applied. Does not override package-type filter!
+        :return: String the user is searching for. Empty denotes 'no search filter'.
+        """
+        return self._search_string
+
     def _initialRequestUrl(self) -> str:
         """
         Get the URL to request the first paginated page with.
         :return: A URL to request.
         """
+        request_url = f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
         if self._package_type_filter != "":
-            return f"{Marketplace.PACKAGES_URL}?package_type={self._package_type_filter}&limit={self.ITEMS_PER_PAGE}"
-        return f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
+            request_url += f"&package_type={self._package_type_filter}"
+        if self._search_string != "":
+            request_url += f""  # TODO
+        return request_url
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:
         """
