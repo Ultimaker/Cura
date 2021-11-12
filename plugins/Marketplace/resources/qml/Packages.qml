@@ -46,24 +46,9 @@ ScrollView
             }
         }
 
-        delegate: Rectangle
+        delegate: PackageCard
         {
-            width: packagesListview.width
-            height: UM.Theme.getSize("card").height
-
-            color: UM.Theme.getColor("main_background")
-            radius: UM.Theme.getSize("default_radius").width
-
-            Label
-            {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: Math.round((parent.height - height) / 2)
-
-                text: model.package.displayName
-                font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
-            }
+            packageData: model.package
         }
 
         //Wrapper item to add spacing between content and footer.
