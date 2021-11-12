@@ -3227,8 +3227,8 @@
                 },
                 "speed_equalize_flow_width_factor":
                 {
-                    "label": "Flow Equalization Width Factor",
-                    "description": "Extrusion width based correction factor on the equalized flow. The target flow (in mm³/s) is reduced by the percentual difference in line width multiplied by this factor. A factor above zero means that thin lines are adjusted to be even faster than simple flow equalization would speed them up to. Conversely, wider lines are slowed down more. A positive value can help to compensate for the width depended back pressure the previous layer exterts on the line.",
+                    "label": "Flow Equalization Ratio",
+                    "description": "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines.",
                     "type": "float",
                     "unit": "%",
                     "default_value": 0.0,
