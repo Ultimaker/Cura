@@ -1146,8 +1146,8 @@
                     "label": "Wall Distribution Count",
                     "description": "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width.",
                     "type": "int",
-                    "default_value": 2,
-                    "minimum_value": "1",
+                    "default_value": 3,
+                    "minimum_value": "2",
                     "enabled": "beading_strategy_type == 'inward_distributed'"
                 },
                 "wall_transition_angle":
