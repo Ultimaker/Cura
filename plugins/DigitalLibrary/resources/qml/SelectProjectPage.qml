@@ -47,6 +47,8 @@ Item
         Cura.SearchBar
         {
             id: searchBar
+            Layout.fillWidth: true
+            implicitHeight: createNewProjectButton.height
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
         }
 

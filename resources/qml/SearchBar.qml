@@ -12,8 +12,6 @@ Cura.TextField
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    Layout.fillWidth: true
-    implicitHeight: createNewProjectButton.height
     leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
 
     placeholderText: catalog.i18nc("@placeholder", "Search")
@@ -28,7 +26,7 @@ Cura.TextField
             left: parent.left
             leftMargin: UM.Theme.getSize("default_margin").width
         }
-        source: UM.Theme.getIcon("search")
+        source: UM.Theme.getIcon("Magnifier")
         height: UM.Theme.getSize("small_button_icon").height
         width: height
         color: UM.Theme.getColor("text")
