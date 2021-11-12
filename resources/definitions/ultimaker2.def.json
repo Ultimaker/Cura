@@ -91,7 +91,7 @@
             "value": "False"
         },
         "speed_equalize_flow_width_factor": {
-            "value": "0.5"
+            "value": "50.0"
         },
         "retraction_combing": {
             "value": "'no_outer_surfaces'"
