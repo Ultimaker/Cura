@@ -162,6 +162,7 @@ class CuraApplication(QtApplication):
         self.default_theme = "cura-light"
 
         self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
+        self.beta_change_log_url = "https://ultimaker.com/ultimaker-cura-beta-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
 
         self._boot_loading_time = time.time()
 
@@ -716,6 +717,7 @@ class CuraApplication(QtApplication):
             for extruder in global_stack.extruderList:
                 extruder.userChanges.clear()
             global_stack.userChanges.clear()
+            self.getMachineManager().correctExtruderSettings()
 
         # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
         # before slicing. To ensure that slicer uses right settings values

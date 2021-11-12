@@ -1,7 +1,8 @@
-from unittest.mock import MagicMock
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
@@ -33,7 +34,8 @@ def test_getAndSet(data, printer_output_device):
     setattr(model, data["attribute"] + "Changed", MagicMock())
 
     # Attempt to set the value
-    getattr(model, "set" + attribute)(data["value"])
+    with patch("cura.CuraApplication.CuraApplication.getInstance"):
+        getattr(model, "set" + attribute)(data["value"])
 
     # Check if signal fired.
     signal = getattr(model, data["attribute"] + "Changed")

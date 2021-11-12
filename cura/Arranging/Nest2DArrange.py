@@ -159,4 +159,4 @@ def arrange(nodes_to_arrange: List["SceneNode"],
 
     grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes, factor, add_new_nodes_in_scene)
     grouped_operation.push()
-    return not_fit_count != 0
+    return not_fit_count == 0

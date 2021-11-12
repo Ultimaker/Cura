@@ -62,7 +62,7 @@ class Account(QObject):
     updatePackagesEnabledChanged = pyqtSignal(bool)
 
     CLIENT_SCOPES = "account.user.read drive.backup.read drive.backup.write packages.download " \
-                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write " \
+                    "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write connect.material.write " \
                     "library.project.read library.project.write cura.printjob.read cura.printjob.write " \
                     "cura.mesh.read cura.mesh.write"
 

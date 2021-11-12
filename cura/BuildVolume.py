@@ -6,6 +6,7 @@ import math
 
 from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
+from UM.Logger import Logger
 from UM.Mesh.MeshData import MeshData
 from UM.Mesh.MeshBuilder import MeshBuilder
 
@@ -289,7 +290,7 @@ class BuildVolume(SceneNode):
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
                 try:
-                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled and not node.callDecoration("isGroup"):
                         node.setOutsideBuildArea(True)
                         continue
                 except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
@@ -1078,7 +1079,11 @@ class BuildVolume(SceneNode):
         # setting does *not* have a limit_to_extruder setting (which means that we can't ask the global extruder what
         # the value is.
         adhesion_extruder = self._global_container_stack.getProperty("adhesion_extruder_nr", "value")
-        adhesion_stack = self._global_container_stack.extruderList[int(adhesion_extruder)]
+        try:
+            adhesion_stack = self._global_container_stack.extruderList[int(adhesion_extruder)]
+        except IndexError:
+            Logger.warning(f"Couldn't find extruder with index '{adhesion_extruder}', defaulting to 0 instead.")
+            adhesion_stack = self._global_container_stack.extruderList[0]
         skirt_brim_line_width = adhesion_stack.getProperty("skirt_brim_line_width", "value")
 
         initial_layer_line_width_factor = adhesion_stack.getProperty("initial_layer_line_width_factor", "value")
