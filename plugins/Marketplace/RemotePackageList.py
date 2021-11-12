@@ -110,7 +110,7 @@ class RemotePackageList(PackageList):
         if self._package_type_filter != "":
             request_url += f"&package_type={self._package_type_filter}"
         if self._search_string != "":
-            request_url += f""  # TODO
+            request_url += f"&search={self._search_string}"
         return request_url
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:

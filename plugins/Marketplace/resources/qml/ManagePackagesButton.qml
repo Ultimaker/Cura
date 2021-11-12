@@ -18,7 +18,7 @@ Button
     background: Rectangle
     {
         color: backgroundColor
-        border.color: transparent
+        border.color: "transparent"
         radius: Math.round(width * 0.5)
 
     }

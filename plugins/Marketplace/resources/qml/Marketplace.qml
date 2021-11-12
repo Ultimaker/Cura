@@ -170,9 +170,9 @@ Window
                         function onLoaded()
                         {
                             pageTitle.text = content.item.pageTitle
-                            searchStringChanged.connect(onSearchStringChanged)
+                            searchStringChanged.connect(handleSearchStringChanged)
                         }
-                        function onSearchStringChanged(new_search)
+                        function handleSearchStringChanged(new_search)
                         {
                             content.item.model.searchString = new_search
                         }
