@@ -86,7 +86,8 @@ Window
                     Rectangle
                     {
                         Layout.preferredHeight: parent.height
-                        Layout.preferredWidth: UM.Theme.getSize("thin_margin").width
+                        Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
+                        Layout.fillWidth: ! searchBar.visible
                     }
 
                     Cura.SearchBar
@@ -94,7 +95,7 @@ Window
                         id: searchBar
                         Layout.preferredHeight: parent.height
                         Layout.fillWidth: true
-                        onTextEdited: marketplaceDialog.searchStringChanged(text)
+                        onTextEdited: searchStringChanged(text)
                     }
 
                     // Page selection.
@@ -111,7 +112,12 @@ Window
                             width: implicitWidth
                             padding: UM.Theme.getSize("thin_margin").width
                             text: catalog.i18nc("@button", "Plugins")
-                            onClicked: content.source = "Plugins.qml"
+                            onClicked:
+                            {
+                                searchBar.text = ""
+                                searchBar.visible = true
+                                content.source = "Plugins.qml"
+                            }
                         }
                         PackageTypeTab
                         {
@@ -119,7 +125,12 @@ Window
                             width: implicitWidth
                             padding: UM.Theme.getSize("thin_margin").width
                             text: catalog.i18nc("@button", "Materials")
-                            onClicked: content.source = "Materials.qml"
+                            onClicked:
+                            {
+                                searchBar.text = ""
+                                searchBar.visible = true
+                                content.source = "Materials.qml"
+                            }
                         }
                     }
                     TextMetrics
@@ -143,6 +154,8 @@ Window
 
                         onClicked:
                         {
+                            searchBar.text = ""
+                            searchBar.visible = false
                             content.source = "ManagedPackages.qml"
                         }
                     }
