@@ -29,6 +29,11 @@ Rectangle
                 target: downloadCountRow
                 visible: false
             }
+            PropertyChanges
+            {
+                target: descriptionArea
+                visible: true
+            }
         },
         State
         {
@@ -38,6 +43,11 @@ Rectangle
             {
                 target: downloadCountRow
                 visible: true
+            }
+            PropertyChanges
+            {
+                target: descriptionArea
+                visible: false
             }
         }
     ]
@@ -186,8 +196,6 @@ Rectangle
 
                 spacing: UM.Theme.getSize("thin_margin").width
 
-                visible: false  // start up invisible (see states)
-
                 UM.RecolorImage
                 {
                     id: downloadCountIcon
@@ -207,6 +215,7 @@ Rectangle
 
             Item
             {
+                id: descriptionArea
                 width: parent.width
                 height: descriptionLabel.height
 
