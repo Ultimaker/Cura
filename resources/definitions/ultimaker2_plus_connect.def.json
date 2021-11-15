@@ -55,7 +55,7 @@
         },
         "infill_wipe_dist": { "value": "0" },
         "infill_overlap": { "value": "0" },
-        "infill_pattern": { "value": "'grid'" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
         "speed_infill": { "value": "speed_print" },
         "speed_wall_x": { "value": "speed_wall" },
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
