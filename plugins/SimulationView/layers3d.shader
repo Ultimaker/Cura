@@ -237,7 +237,7 @@ geometry41core =
         float size_x;
         float size_y;
 
-        if (u_drawRange[0] >= 0 && u_drawRange[1] >= 0 && (v_index[0] < u_drawRange[0] || v_index[0] >= u_drawRange[1]))
+        if (u_drawRange[0] >= 0.0 && u_drawRange[1] >= 0.0 && (v_index[0] < u_drawRange[0] || v_index[0] >= u_drawRange[1]))
         {
              return;
         }
@@ -437,7 +437,7 @@ u_max_feedrate = 1
 u_min_thickness = 0
 u_max_thickness = 1
 
-u_drawRange = [-1, -1]
+u_drawRange = [-1.0, -1.0]
 
 [bindings]
 u_modelMatrix = model_matrix

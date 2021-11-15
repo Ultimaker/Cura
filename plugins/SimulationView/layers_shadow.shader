@@ -54,7 +54,7 @@ fragment =
 
     void main()
     {
-        if (u_drawRange.x >= 0 && u_drawRange.y >= 0 && (v_vertex_index < u_drawRange.x || v_vertex_index > u_drawRange.y))
+        if (u_drawRange.x >= 0.0 && u_drawRange.y >= 0.0 && (v_vertex_index < u_drawRange.x || v_vertex_index > u_drawRange.y))
         {
             discard;
         }
@@ -102,7 +102,7 @@ u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
 
-u_drawRange = [-1, -1]
+u_drawRange = [-1.0, -1.0]
 
 [bindings]
 u_modelMatrix = model_matrix
