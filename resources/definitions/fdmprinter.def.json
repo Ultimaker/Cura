@@ -1095,10 +1095,8 @@
                     "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space the wall needs to occupy. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
                     "type": "float",
                     "unit": "%",
-                    "default_value": 50,
+                    "default_value": 90,
                     "minimum_value": "1",
-                    "minimum_value_warning": "min_bead_width / line_width * 100",
-                    "maximum_value_warning": "75",
                     "maximum_value": "99",
                     "children":
                     {
@@ -1110,8 +1108,6 @@
                             "default_value": 50,
                             "value": "wall_transition_threshold",
                             "minimum_value": "1",
-                            "minimum_value_warning": "min_bead_width / line_width * 100",
-                            "maximum_value_warning": "75",
                             "maximum_value": "99"
                         },
                         "wall_add_middle_threshold": {
@@ -1120,10 +1116,8 @@
                             "type": "float",
                             "unit": "%",
                             "default_value": 50,
-                            "value": "wall_transition_threshold",
+                            "value": "wall_transition_threshold * 8 / 9",
                             "minimum_value": "1",
-                            "minimum_value_warning": "min_bead_width / line_width * 100",
-                            "maximum_value_warning": "75",
                             "maximum_value": "99"
                         }
                     }
@@ -1146,8 +1140,8 @@
                     "label": "Wall Distribution Count",
                     "description": "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width.",
                     "type": "int",
-                    "default_value": 3,
-                    "minimum_value": "2",
+                    "default_value": 1,
+                    "minimum_value": "1",
                     "enabled": "beading_strategy_type == 'inward_distributed'"
                 },
                 "wall_transition_angle":
@@ -1243,7 +1237,7 @@
                     "label": "Print Thin Walls",
                     "description": "Print pieces of the model which are horizontally thinner than the nozzle size.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1252,7 +1246,7 @@
                     "label": "Minimum Feature Size",
                     "description": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width.",
                     "unit": "mm",
-                    "default_value": 0,
+                    "value": "wall_line_width_0 / 4",
                     "minimum_value": "0",
                     "maximum_value": "wall_line_width_0",
                     "type": "float",
@@ -1264,7 +1258,7 @@
                     "label": "Minimum Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "wall_line_width_0 / 2",
+                    "value": "wall_line_width_0 * (100.0 + wall_split_middle_threshold)/200",
                     "default_value": "0.2",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
@@ -3231,8 +3225,8 @@
                     "description": "Extrusion width based correction factor on the speed. At 0% the movement speed is kept constant at the Print Speed. At 100% the movement speed is adjusted so that the flow (in mm³/s) is kept constant, i.e. lines half the normal Line Width are printed twice as fast and lines twice as wide are printed half as fast. A value larger than 100% can help to compensate for the higher pressure required to extrude wide lines.",
                     "type": "float",
                     "unit": "%",
-                    "default_value": 0.0,
-                    "minimum_value": "0",
+                    "default_value": 100.0,
+                    "minimum_value": "0.0",
                     "maximum_value_warning": "200.0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -6305,7 +6299,7 @@
                     "default_value": 2000,
                     "minimum_value": "0",
                     "minimum_value_warning": "500",
-                    "maximum_value_warning": "5000",
+                    "maximum_value_warning": "50000",
                     "settable_per_mesh": true
                 }
             }
@@ -7485,7 +7479,8 @@
                     "unit": "%",
                     "default_value": 100,
                     "type": "float",
-                    "minimum_value": "0.001",
+                    "minimum_value": "5",
+                    "maximum_value": "100",
                     "minimum_value_warning": "20",
                     "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled",
