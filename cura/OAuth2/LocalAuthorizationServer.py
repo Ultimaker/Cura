@@ -1,10 +1,11 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import sys
+
 import threading
 from typing import Any, Callable, Optional, TYPE_CHECKING
 
 from UM.Logger import Logger
+from UM.Platform import Platform
 
 got_server_type = False
 try:
@@ -100,7 +101,7 @@ class LocalAuthorizationServer:
         """
         Logger.log("d", "Local web server for authorization has started")
         if self._web_server:
-            if sys.platform == "win32":
+            if Platform.isWindows():
                 try:
                     self._web_server.serve_forever()
                 except OSError:
