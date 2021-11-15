@@ -7,7 +7,8 @@
         "manufacturer": "Cubicon",
         "visible": true,
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": false,
+        "supports_usb_connection": true,
+        "supports_network_connection": true,
         "machine_extruder_trains": {
             "0": "cubicon_style_plus_a15_extruder_0"
         },
@@ -32,9 +33,6 @@
         },
         "machine_height": {
             "default_value": 150
-        },
-        "material_bed_temp_wait":{
-            "default_value": false
         }
     }
 }
