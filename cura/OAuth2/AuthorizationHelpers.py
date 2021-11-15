@@ -1,18 +1,22 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from datetime import datetime
-import json
-import secrets
-from hashlib import sha512
 from base64 import b64encode
+from datetime import datetime
+from hashlib import sha512
+import json
+from PyQt5.QtNetwork import QNetworkReply
+import secrets
 from typing import Optional
+import urllib.parse
 import requests
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request log-in server for a token.
 
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
+
 catalog = i18nCatalog("cura")
 TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -30,7 +34,7 @@ class AuthorizationHelpers:
 
         return self._settings
 
-    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str) -> "AuthenticationResponse":
+    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str, response_callback) -> None:
         """Request the access token from the authorization server.
 
         :param authorization_code: The authorization code from the 1st step.
@@ -46,12 +50,9 @@ class AuthorizationHelpers:
             "code_verifier": verification_code,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
-        try:
-            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError as connection_error:
-            return AuthenticationResponse(success = False, err_message = f"Unable to connect to remote server: {connection_error}")
+        HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), callback = lambda reply: self.parseTokenResponse(reply, response_callback))
 
-    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
+    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> None:
         """Request the access token from the authorization server using a refresh token.
 
         :param refresh_token:
@@ -66,41 +67,34 @@ class AuthorizationHelpers:
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
-        try:
-            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success = False, err_message = "Unable to connect to remote server")
-        except OSError as e:
-            return AuthenticationResponse(success = False, err_message = "Operating system is unable to set up a secure connection: {err}".format(err = str(e)))
+        HttpRequestManager.getInstance().post(self._token_url, data = json.dumps(data).encode("UTF-8"), callback = self.parseTokenResponse)
 
     @staticmethod
-    def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":
+    def parseTokenResponse(token_response: QNetworkReply, response_callback) -> None:
         """Parse the token response from the authorization server into an AuthenticationResponse object.
 
-        :param token_response: The JSON string data response from the authorization server.
+        :param token_response: The reply to the authentication request.
         :return: An AuthenticationResponse object.
         """
-
-        token_data = None
-
-        try:
-            token_data = json.loads(token_response.text)
-        except ValueError:
-            Logger.log("w", "Could not parse token response data: %s", token_response.text)
+        http = HttpRequestManager.getInstance()
+        token_data = http.readJSON(token_response)
+        if token_data is None:
+            Logger.warning(f"Could not parse token response data: {http.readText(token_response)}")
 
         if not token_data:
-            return AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
+            response_callback(AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response.")))
+        if token_response.error() != QNetworkReply.NetworkError.NoError:
+            response_callback(AuthenticationResponse(success = False, err_message = token_data["error_description"]))
 
-        if token_response.status_code not in (200, 201):
-            return AuthenticationResponse(success = False, err_message = token_data["error_description"])
-
-        return AuthenticationResponse(success=True,
-                                      token_type=token_data["token_type"],
-                                      access_token=token_data["access_token"],
-                                      refresh_token=token_data["refresh_token"],
-                                      expires_in=token_data["expires_in"],
-                                      scope=token_data["scope"],
-                                      received_at=datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
+        response_callback(AuthenticationResponse(
+            success = True,
+            token_type = token_data["token_type"],
+            access_token = token_data["access_token"],
+            refresh_token = token_data["refresh_token"],
+            expires_in = token_data["expires_in"],
+            scope = token_data["scope"],
+            received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)
+        ))
 
     def parseJWT(self, access_token: str) -> Optional["UserProfile"]:
         """Calls the authentication API endpoint to get the token data.
