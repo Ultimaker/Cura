@@ -74,11 +74,16 @@ Cura.ExpandablePopup
 
                         visible: valueWarning || valueError
 
-                        anchors.left: extruderIcon.right
-                        anchors.leftMargin: visible ? UM.Theme.getSize("thin_margin").width : 0
-                        anchors.verticalCenter: parent.verticalCenter
+                        anchors
+                        {
+                            top: extruderIcon.top
+                            topMargin: - Math.round(height * 1 / 6)
+                            left: extruderIcon.left
+                            leftMargin: extruderIcon.width - Math.round(width * 5 / 6)
+                        }
 
-                        width: visible ? UM.Theme.getSize("section_icon").width : 0
+                        // width is set to draw the same size as the MachineSelector connectionStatusImage, which is drawn as an image instead of a statusicon
+                        width: UM.Theme.getSize("icon_indicator").width + 2 * UM.Theme.getSize("default_lining").width
                         height: width
 
                         status:
@@ -102,7 +107,7 @@ Cura.ExpandablePopup
                         visible: width > 0
                         anchors
                         {
-                            left: configurationWarning.visible ? configurationWarning.right : extruderIcon.right
+                            left: extruderIcon.right
                             leftMargin: UM.Theme.getSize("default_margin").width
                             verticalCenter: parent.verticalCenter
                             right: parent.right
