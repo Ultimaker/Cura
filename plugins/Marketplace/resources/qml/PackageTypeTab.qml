@@ -9,11 +9,15 @@ TabButton
 {
     property string pageTitle
     padding: UM.Theme.getSize("narrow_margin").width
+    hoverEnabled: true
+    property color inactiveBackgroundColor : hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
+    property color activeBackgroundColor : UM.Theme.getColor("main_background")
+
 
     background: Rectangle
     {
         anchors.fill: parent
-        color: parent.checked ? UM.Theme.getColor("main_background") : UM.Theme.getColor("detail_background")
+        color: parent.checked ? activeBackgroundColor : inactiveBackgroundColor
         border.color: UM.Theme.getColor("detail_background")
         border.width: UM.Theme.getSize("thick_lining").width
     }
