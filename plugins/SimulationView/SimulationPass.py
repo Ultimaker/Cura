@@ -172,7 +172,8 @@ class SimulationPass(RenderPass):
                     # where a type-chage occurs. However, the shader expects vertices to have only one type. In order to
                     # fix this, those vertices are duplicated. This introduces a discrepancy that we have to take into
                     # account, which is done by the type-change-count.
-                    type_change_count = layer_data.getLayer(self._layer_view._current_layer_num).lineMeshCumulativeTypeChangeCount(max(self._layer_view._current_path_num - 1, 0))
+                    layer = layer_data.getLayer(self._layer_view._current_layer_num)
+                    type_change_count = 0 if layer is None else layer.lineMeshCumulativeTypeChangeCount(max(self._layer_view._current_path_num - 1, 0))
                     current_layer_start = end
                     current_layer_end = current_layer_start + self._layer_view._current_path_num + current_polygon_offset + type_change_count
 
