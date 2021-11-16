@@ -12,7 +12,7 @@ Rectangle
 {
     property var packageData
 
-    width: parent ? parent.width - UM.Theme.getSize("default_margin").width : 0
+    width: parent ? parent.width - UM.Theme.getSize("thin_margin").width : 0
     height: childrenRect.height
 
     color: UM.Theme.getColor("main_background")
@@ -109,12 +109,17 @@ Rectangle
                             visible: parent.hovered
                         }
 
-                        UM.RecolorImage
+                        Rectangle
                         {
                             anchors.fill: parent
-
-                            color: UM.Theme.getColor("primary")
-                            source: UM.Theme.getIcon("CheckCircle")
+                            color: UM.Theme.getColor("action_button_hovered")
+                            radius: width
+                            UM.RecolorImage
+                            {
+                                anchors.fill: parent
+                                color: UM.Theme.getColor("primary")
+                                source: UM.Theme.getIcon("CheckCircle")
+                            }
                         }
 
                         //NOTE: Can we link to something here? (Probably a static link explaining what verified is):
@@ -170,12 +175,13 @@ Rectangle
                     Rectangle
                     {
                         anchors.fill: parent
-                        color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
+                        radius: width
+                        color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
 
                         UM.RecolorImage
                         {
                             anchors.fill: parent
-                            color: externalLinkButton.hovered ? UM.Theme.getColor("text_link") : UM.Theme.getColor("text")
+                            color: UM.Theme.getColor("text")
                             source: UM.Theme.getIcon("LinkExternal")
                         }
                     }
