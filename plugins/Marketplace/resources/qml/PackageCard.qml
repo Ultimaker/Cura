@@ -164,7 +164,7 @@ Rectangle
                     color: UM.Theme.getColor("text")
                 }
 
-                Button
+                UM.SimpleButton
                 {
                     id: externalLinkButton
 
@@ -172,20 +172,10 @@ Rectangle
                     Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
                     Layout.alignment: Qt.AlignTop
 
-                    Rectangle
-                    {
-                        anchors.fill: parent
-                        radius: width
-                        color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
-
-                        UM.RecolorImage
-                        {
-                            anchors.fill: parent
-                            color: UM.Theme.getColor("text")
-                            source: UM.Theme.getIcon("LinkExternal")
-                        }
-                    }
-
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    hoverColor: UM.Theme.getColor("text_link")
+                    backgroundColor: UM.Theme.getColor("detail_background")
+                    hoverBackgroundColor: UM.Theme.getColor("action_button_hovered")
                     onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
                 }
             }
