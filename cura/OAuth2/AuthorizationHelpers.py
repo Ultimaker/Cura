@@ -50,7 +50,8 @@ class AuthorizationHelpers:
             "code_verifier": verification_code,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
-        HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), callback = lambda reply: self.parseTokenResponse(reply, response_callback))
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), headers_dict = headers, callback = lambda reply: self.parseTokenResponse(reply, response_callback))
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> None:
         """Request the access token from the authorization server using a refresh token.
