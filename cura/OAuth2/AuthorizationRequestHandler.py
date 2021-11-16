@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from http.server import BaseHTTPRequestHandler
+from threading import Lock
 from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
 
@@ -21,6 +22,8 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     """
 
     def __init__(self, request, client_address, server) -> None:
+        self._do_get_lock = Lock()  # Used to make do_GET block the thread until the sub-requests are complete.
+
         super().__init__(request, client_address, server)
 
         # These values will be injected by the HTTPServer that this handler belongs to.
@@ -35,15 +38,20 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.do_GET()
 
     def do_GET(self) -> None:
+        self._do_get_lock.acquire()  # Only run one do_GET at a time, even if the browser makes multiple calls.
         # Extract values from the query string.
         parsed_url = urlparse(self.path)
         query = parse_qs(parsed_url.query)
 
         # Handle the possible requests
+        # Once these are handled, the lock gets released.
         if parsed_url.path == "/callback":
             self._handleCallback(query)
         else:
             self._handleNotFound()
+
+        self._do_get_lock.acquire(timeout = 30)  # Block for a maximum of 30 seconds before closing the connection to the browser.
+        self._do_get_lock.release()
 
     def _handleCallback(self, query: Dict[Any, List]):
         """Handler for the callback URL redirect.
@@ -63,7 +71,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         if state != self.state:
             token_response = AuthenticationResponse(
                 success = False,
-                err_message=catalog.i18nc("@message", "The provided state is not correct.")
+                err_message = catalog.i18nc("@message", "The provided state is not correct.")
             )
             self._responseCallback(server_response, token_response)
         elif code and self.authorization_helpers is not None and self.verification_code is not None:
@@ -90,6 +98,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     def _handleNotFound(self) -> None:
         """Handle all other non-existing server calls."""
         self._responseCallback(ResponseData(status = HTTP_STATUS["NOT_FOUND"], content_type = "text/html", data_stream = "Not found".encode("UTF-8")))
+        self._do_get_lock.release()
 
     def _responseCallback(self, server_response: ResponseData, token_response: Optional[AuthenticationResponse] = None) -> None:
         # Send the data to the browser.
@@ -103,6 +112,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # Trigger the callback if we got a response.
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
+        self._do_get_lock.release()
 
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
         self.send_response(status.code, status.message)
