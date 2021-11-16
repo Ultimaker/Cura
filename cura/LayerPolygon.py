@@ -55,11 +55,19 @@ class LayerPolygon:
 
         self._jump_mask = self.__jump_map[self._types]
         self._jump_count = numpy.sum(self._jump_mask)
+        self._cumulative_type_change_counts = numpy.zeros(len(self._types))  # See the comment on the 'cumulativeTypeChangeCounts' property below.
+        last_type = self.types[0]
+        current_type_count = 0
+        for i in range(0, len(self._cumulative_type_change_counts)):
+            if last_type != self.types[i]:
+                current_type_count += 1
+                last_type = self.types[i]
+            self._cumulative_type_change_counts[i] = current_type_count
         self._mesh_line_count = len(self._types) - self._jump_count
         self._vertex_count = self._mesh_line_count + numpy.sum(self._types[1:] == self._types[:-1])
 
         # Buffering the colors shouldn't be necessary as it is not 
-        # re-used and can save alot of memory usage.
+        # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
         self._colors = self._color_map[self._types]  # type: numpy.ndarray
 
@@ -146,7 +154,7 @@ class LayerPolygon:
         # When the line type changes the index needs to be increased by 2.
         indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype = numpy.int32).reshape((-1, 1))
         # Each line segment goes from it's starting point p to p+1, offset by the vertex index. 
-        # The -1 is to compensate for the neccecarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
+        # The -1 is to compensate for the necessarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
         indices[self._index_begin:self._index_end, :] += numpy.array([self._vertex_begin - 1, self._vertex_begin])
 
         self._build_cache_line_mesh_mask = None
@@ -180,6 +188,10 @@ class LayerPolygon:
         return self._data
 
     @property
+    def vertexCount(self):
+        return self._vertex_end - self._vertex_begin
+
+    @property
     def elementCount(self):
         return (self._index_end - self._index_begin) * 2  # The range of vertices multiplied by 2 since each vertex is used twice
 
@@ -206,6 +218,17 @@ class LayerPolygon:
     @property
     def jumpCount(self):
         return self._jump_count
+
+    @property
+    def cumulativeTypeChangeCounts(self):
+        """ This polygon class stores with a vertex the type of the line to the next vertex. However, in other contexts,
+        other ways of representing this might be more suited to the task (for example, when a vertex can possibly only
+        have _one_ type, it's unavoidable to duplicate vertices when the type is changed). In such situations it's might
+        be useful to know how many times the type has changed, in order to keep the various vertex-indices aligned.
+
+        :return: The total times the line-type changes from one type to another within this LayerPolygon.
+        """
+        return self._cumulative_type_change_counts
 
     def getNormals(self) -> numpy.ndarray:
         """Calculate normals for the entire polygon using numpy.

@@ -202,7 +202,7 @@ Button
             Cura.IconWithText
             {
                 id: buildplateLabel
-                source: UM.Theme.getIcon("buildplate")
+                source: UM.Theme.getIcon("Buildplate")
                 text:
                 {
                     if (configuration === null)

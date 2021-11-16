@@ -17,7 +17,7 @@ Item
     height: UM.Theme.getSize("section").height
     anchors.left: parent.left
     anchors.right: parent.right
-    // To avoid overlaping with the scrollBars
+    // To avoid overlapping with the scrollBars
     anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
 
     property alias contents: controlContainer.children
@@ -269,7 +269,7 @@ Item
                     }
 
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
-                    if (globalPropertyProvider.properties.limit_to_extruder === null || String(globalPropertyProvider.properties.limit_to_extruder) === "-1")
+                    if (globalPropertyProvider.properties.limit_to_extruder === null || globalPropertyProvider.properties.limit_to_extruder === "-1")
                     {
                         return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
                     }
@@ -283,7 +283,7 @@ Item
                     {
                         return false
                     }
-                    return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, String(globalPropertyProvider.properties.limit_to_extruder)).indexOf(definition.key) >= 0
+                    return Cura.SettingInheritanceManager.hasOverrides(definition.key, globalPropertyProvider.properties.limit_to_extruder)
                 }
 
                 anchors.top: parent.top

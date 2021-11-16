@@ -183,7 +183,7 @@ Item
         borderColor: UM.Theme.getColor("lining")
         borderWidth: UM.Theme.getSize("default_lining").width
 
-        MouseArea //Catch all mouse events (so scene doesnt handle them)
+        MouseArea //Catch all mouse events (so scene doesn't handle them)
         {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons

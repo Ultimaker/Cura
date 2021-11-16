@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -16,6 +16,7 @@ from UM.Util import parseBool
 from cura.API import Account
 from cura.API.Account import SyncState
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To update printer metadata with information received about cloud printers.
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
@@ -129,6 +130,8 @@ class CloudOutputDeviceManager:
                     self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
         self._onDevicesDiscovered(new_clusters)
 
+        self._updateOnlinePrinters(all_clusters)
+
         # Hide the current removed_printers_message, if there is any
         if self._removed_printers_message:
             self._removed_printers_message.actionTriggered.disconnect(self._onRemovedPrintersMessageActionTriggered)
@@ -153,6 +156,8 @@ class CloudOutputDeviceManager:
 
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
+
+        Logger.debug("Synced cloud printers with account.")
 
     def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         self._syncing = False
@@ -216,11 +221,6 @@ class CloudOutputDeviceManager:
         online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
         new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
-        image_path = os.path.join(
-            CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
-            "resources", "svg", "cloud-flow-completed.svg"
-        )
-
         message = Message(
             title = self.i18n_catalog.i18ncp(
                 "info:status",
@@ -230,7 +230,6 @@ class CloudOutputDeviceManager:
             ),
             progress = 0,
             lifetime = 0,
-            image_source = image_path,
             message_type = Message.MessageType.POSITIVE
         )
         message.show()
@@ -260,6 +259,16 @@ class CloudOutputDeviceManager:
 
         message_text = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:") + "<ul>" + device_names + "</ul>"
         message.setText(message_text)
+
+    def _updateOnlinePrinters(self, printer_responses: Dict[str, CloudClusterResponse]) -> None:
+        """
+        Update the metadata of the printers to store whether they are online or not.
+        :param printer_responses: The responses received from the API about the printer statuses.
+        """
+        for container_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "machine"):
+            cluster_id = container_stack.getMetaDataEntry("um_cloud_cluster_id", "")
+            if cluster_id in printer_responses:
+                container_stack.setMetaDataEntry("is_online", printer_responses[cluster_id].is_online)
 
     def _updateOutdatedMachine(self, outdated_machine: GlobalStack, new_cloud_output_device: CloudOutputDevice) -> None:
         """

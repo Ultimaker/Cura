@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Extrusor E2",
+    "name": "Extruder E2",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "hellbot_hidra",

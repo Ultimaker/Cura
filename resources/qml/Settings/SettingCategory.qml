@@ -12,7 +12,7 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    // To avoid overlaping with the scrollBars
+    // To avoid overlapping with the scrollBars
     anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
     hoverEnabled: true
 

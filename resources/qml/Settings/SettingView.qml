@@ -19,26 +19,9 @@ Item
     property Action configureSettings
     property bool findingSettings
 
-    Rectangle
+    Item
     {
         id: filterContainer
-        visible: true
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color:
-        {
-            if (hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
-            {
-                return UM.Theme.getColor("setting_control_border_highlight")
-            }
-            else
-            {
-                return UM.Theme.getColor("setting_control_border")
-            }
-        }
-
-        color: UM.Theme.getColor("setting_control")
 
         anchors
         {
@@ -48,6 +31,7 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         height: UM.Theme.getSize("print_setup_big_item").height
+
         Timer
         {
             id: settingsSearchTimer
@@ -57,32 +41,34 @@ Item
             repeat: false
         }
 
-        TextField
+        Cura.TextField
         {
             id: filter
             height: parent.height
             anchors.left: parent.left
-            anchors.right: clearFilterButton.left
-            anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
-
-            placeholderText:
-            {
-                var imageSize = "width='" + UM.Theme.getSize("small_button_icon").width + "' height='" + UM.Theme.getSize("small_button_icon").height
-                var imageSource = "' src='"+ UM.Theme.getIcon("Magnifier")
-                var searchPlaceholder = catalog.i18nc("@label:textbox", "Search settings")
-                return "<img align='middle' " + imageSize + imageSource +"'>" +  "<div vertical-align=bottom>" + searchPlaceholder
-            }
-
-            style: TextFieldStyle
-            {
-                textColor: UM.Theme.getColor("setting_control_text")
-                placeholderTextColor: UM.Theme.getColor("setting_filter_field")
-                font: UM.Theme.getFont("default_italic")
-                background: Item {}
-            }
+            anchors.right: parent.right
+            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
+            placeholderText:  catalog.i18nc("@label:textbox", "Search settings")
+            font.italic: true
 
             property var expandedCategories
             property bool lastFindingSettings: false
+
+            UM.RecolorImage
+            {
+                id: searchIcon
+
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
+                source: UM.Theme.getIcon("search")
+                height: UM.Theme.getSize("small_button_icon").height
+                width: height
+                color: UM.Theme.getColor("text")
+            }
 
             onTextChanged:
             {
@@ -125,15 +111,6 @@ Item
                     definitionsModel.showAll = false
                 }
             }
-        }
-
-        MouseArea
-        {
-            id: hoverMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.NoButton
-            cursorShape: Qt.IBeamCursor
         }
 
         UM.SimpleButton
@@ -251,7 +228,7 @@ Item
                 id: definitionsModel
                 containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id: ""
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
-                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
+                exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settings are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
                 onExpandedChanged:
                 {
@@ -325,7 +302,7 @@ Item
                 {
                     target: provider
                     property: "containerStackId"
-                    when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0);
+                    when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
                         // Associate this binding with Cura.MachineManager.activeMachine.id in the beginning so this
@@ -338,10 +315,10 @@ Item
                             //Not settable per extruder or there only is global, so we must pick global.
                             return contents.activeMachineId
                         }
-                        if (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                        if (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
-                            return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                            return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder];
                         }
                         if (Cura.ExtruderManager.activeExtruderStackId)
                         {
@@ -353,7 +330,7 @@ Item
                     }
                 }
 
-                // Specialty provider that only watches global_inherits (we cant filter on what property changed we get events
+                // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
                 // so we bypass that to make a dedicated provider).
                 UM.SettingPropertyProvider
                 {
