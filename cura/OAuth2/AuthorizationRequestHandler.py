@@ -68,6 +68,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             self._responseCallback(server_response, token_response)
         elif code and self.authorization_helpers is not None and self.verification_code is not None:
             # If the code was returned we get the access token.
+            server_response.redirect_uri = self.authorization_helpers.settings.AUTH_SUCCESS_REDIRECT
             self.authorization_helpers.getAccessTokenUsingAuthorizationCode(code, self.verification_code, lambda token: self._responseCallback(server_response, token))
 
         elif self._queryGet(query, "error_code") == "user_denied":
