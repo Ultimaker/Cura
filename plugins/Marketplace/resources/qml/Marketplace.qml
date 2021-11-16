@@ -75,24 +75,11 @@ Window
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height
 
-                ManagePackagesButton
-                {
-                    id: managePackagesButton
-
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                    onClicked:
-                    {
-                        content.source = "ManagedPackages.qml"
-                    }
-                }
-
                 // Page selection.
                 TabBar
                 {
                     id: pageSelectionTabBar
-                    anchors.right: managePackagesButton.left
+                    anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     height: UM.Theme.getSize("button_icon").height
                     spacing: 0
@@ -108,6 +95,10 @@ Window
                         width: implicitWidth
                         text: catalog.i18nc("@button", "Materials")
                         onClicked: content.source = "Materials.qml"
+                    }
+                    ManagePackagesButton
+                    {
+                        onClicked: content.source = "ManagedPackages.qml"
                     }
                 }
             }

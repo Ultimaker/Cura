@@ -7,18 +7,21 @@ import Cura 1.6 as Cura
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-Button
+TabButton
 {
     id: root
-    width: UM.Theme.getSize("button_icon").width
+    width: UM.Theme.getSize("button_icon").width+UM.Theme.getSize("narrow_margin").width
     height: UM.Theme.getSize("button_icon").height
     hoverEnabled: true
-    property color backgroundColor: hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
+    property color inactiveBackgroundColor : hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
+    property color activeBackgroundColor : UM.Theme.getColor("main_background")
+    leftInset: UM.Theme.getSize("narrow_margin").width
 
     background: Rectangle
     {
-        color: backgroundColor
-        border.color: transparent
+        color: parent.checked ? activeBackgroundColor : inactiveBackgroundColor
+        border.color: parent.checked ? UM.Theme.getColor("detail_background") : "transparent"
+        border.width: UM.Theme.getSize("thick_lining").width
         radius: Math.round(width * 0.5)
     }
 
@@ -39,7 +42,8 @@ Button
   
         color: UM.Theme.getColor("icon")
         source: UM.Theme.getIcon("Settings")
-        anchors.centerIn: parent
-
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: Math.round(UM.Theme.getSize("narrow_margin").width /2) 
+        anchors.verticalCenter: parent.verticalCenter
     }
 }
