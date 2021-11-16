@@ -53,7 +53,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self._do_get_lock.acquire(timeout = 30)  # Block for a maximum of 30 seconds before closing the connection to the browser.
         self._do_get_lock.release()
 
-    def _handleCallback(self, query: Dict[Any, List]):
+    def _handleCallback(self, query: Dict[Any, List]) -> None:
         """Handler for the callback URL redirect.
 
         :param query: Dict containing the HTTP query parameters.
@@ -101,6 +101,12 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self._do_get_lock.release()
 
     def _responseCallback(self, server_response: ResponseData, token_response: Optional[AuthenticationResponse] = None) -> None:
+        """
+        Response callback for when the server successfully or unsuccessfully obtained a log-in token.
+        :param server_response: The HTTP response that the server should give to the browser.
+        :param token_response: An object containing a log-in token or an error message as to why it failed to obtain the
+        log-in token. This is given to the callback that wanted to obtain authorization.
+        """
         # Send the data to the browser.
         self._sendHeaders(server_response.status, server_response.content_type, server_response.redirect_uri)
 
@@ -112,9 +118,15 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # Trigger the callback if we got a response.
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
-        self._do_get_lock.release()
+        self._do_get_lock.release()  # Unlock the do_GET function, causing it to return.
 
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
+        """
+        Send request headers to the browser.
+        :param status: HTTP status code to respond with.
+        :param content_type: The MIME type of the content we're sending.
+        :param redirect_uri: If the page we're responding with is a redirect page, which URI to redirect to.
+        """
         self.send_response(status.code, status.message)
         self.send_header("Content-type", content_type)
         if redirect_uri:
@@ -122,6 +134,10 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def _sendData(self, data: bytes) -> None:
+        """
+        Send the content of a page back to the browser.
+        :param data: The content to send.
+        """
         self.wfile.write(data)
 
     @staticmethod
