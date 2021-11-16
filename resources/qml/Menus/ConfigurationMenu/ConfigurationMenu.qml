@@ -54,6 +54,10 @@ Cura.ExpandablePopup
                     Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
 
+                    property var extruderStack: Cura.MachineManager.activeMachine.extruders[model.index]
+                    property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
+                    property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
+
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon
                     {
@@ -63,16 +67,48 @@ Cura.ExpandablePopup
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
+                    MouseArea // Connection status tooltip hover area
+                    {
+                        id: tooltipHoverArea
+                        anchors.fill: parent
+                        hoverEnabled: true //getConnectionStatusMessage() !== ""
+                        acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                        onEntered:
+                        {
+                            base.mouseArea.entered() // we want both this and the outer area to be entered
+                            tooltip.show()
+                        }
+                        onExited: { tooltip.hide() }
+                    }
+
+                    Cura.ToolTip
+                    {
+                        id: tooltip
+                        x: 0
+                        y: parent.height + UM.Theme.getSize("default_margin").height
+                        width: UM.Theme.getSize("tooltip").width
+                        targetPoint: Qt.point(Math.round(extruderIcon.width / 2), 0)
+                        text:
+                        {
+                            if (parent.valueError)
+                            {
+                                return catalog.i18nc("@tooltip", "The configuration of this extruder is not allowed, and prohibits slicing.")
+                            }
+                            if (parent.valueWarning)
+                            {
+                                return catalog.i18nc("@tooltip", "There are no profiles matching the configuration of this extruder.")
+                            }
+                            return ""
+                        }
+                    }
+
                     // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
                     UM.StatusIcon
                     {
                         id: configurationWarning
 
-                        property var extruderStack: Cura.MachineManager.activeMachine.extruders[model.index]
-                        property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
-                        property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
-
-                        visible: valueWarning || valueError
+                        visible: parent.valueWarning || parent.valueError
 
                         anchors
                         {
@@ -88,11 +124,11 @@ Cura.ExpandablePopup
 
                         status:
                         {
-                            if (valueError)
+                            if (parent.valueError)
                             {
                                 return UM.StatusIcon.Status.ERROR
                             }
-                            if (valueWarning)
+                            if (parent.valueWarning)
                             {
                                 return UM.StatusIcon.Status.WARNING
                             }
