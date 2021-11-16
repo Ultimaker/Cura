@@ -20,7 +20,6 @@ Button
         color: backgroundColor
         border.color: transparent
         radius: Math.round(width * 0.5)
-
     }
 
     Cura.ToolTip

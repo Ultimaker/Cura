@@ -8,6 +8,7 @@ import UM 1.0 as UM
 TabButton
 {
     property string pageTitle
+    padding: UM.Theme.getSize("narrow_margin").width
 
     background: Rectangle
     {
