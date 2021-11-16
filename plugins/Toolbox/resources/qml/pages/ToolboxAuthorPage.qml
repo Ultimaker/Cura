@@ -2,8 +2,7 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.1
 import UM 1.5 as UM
 
 import "../components"
@@ -44,7 +43,7 @@ Item
             }
         }
 
-        Label
+        UM.Label
         {
             id: title
             anchors
@@ -62,13 +61,11 @@ Item
             wrapMode: Text.WordWrap
             width: parent.width
             height: UM.Theme.getSize("toolbox_property_label").height
-            renderType: Text.NativeRendering
         }
-        Label
+        UM.Label
         {
             id: description
             text: details && details.description ? details.description : ""
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_medium")
             anchors
             {
@@ -76,7 +73,6 @@ Item
                 left: title.left
                 topMargin: UM.Theme.getSize("default_margin").height
             }
-            renderType: Text.NativeRendering
         }
         Column
         {
@@ -90,19 +86,17 @@ Item
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
             width: childrenRect.width
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Website") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
-                renderType: Text.NativeRendering
             }
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Email") + ":"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
-                renderType: Text.NativeRendering
             }
         }
         Column
@@ -119,7 +113,7 @@ Item
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
 
-            Label
+            UM.Label
             {
                 text:
                 {
@@ -131,14 +125,10 @@ Item
                 }
                 width: parent.width
                 elide: Text.ElideRight
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: UM.UrlUtil.openUrl(link, ["https", "http"])
-                renderType: Text.NativeRendering
             }
 
-            Label
+            UM.Label
             {
                 text:
                 {
@@ -148,11 +138,7 @@ Item
                     }
                     return ""
                 }
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
-                renderType: Text.NativeRendering
             }
         }
         Rectangle

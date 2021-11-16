@@ -2,8 +2,7 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.1
 import UM 1.5 as UM
 
 import Cura 1.1 as Cura
@@ -120,6 +119,7 @@ Item
             {
                 text: details === null ? "" : (details.version || catalog.i18nc("@label", "Unknown"))
             }
+
             UM.Label
             {
                 text:
@@ -134,17 +134,7 @@ Item
             }
             UM.Label
             {
-                text:
-                {
-                    if (details === null)
-                    {
-                        return ""
-                    }
-                    else
-                    {
-                        return "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
-                    }
-                }
+                text: details === null ? "" : "<a href=\"" + details.website + "\">" + details.author_name + "</a>"
                 onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
             }
             UM.Label
