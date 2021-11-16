@@ -4,7 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 /**
@@ -18,7 +18,7 @@ Item
     // they might not need to though.
     property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
 
-    Label
+    UM.Label
     {
         id: queuedLabel
         anchors
@@ -26,10 +26,8 @@ Item
             left: queuedPrintJobs.left
             top: parent.top
         }
-        color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
-        renderType: Text.NativeRendering
     }
 
     Item
@@ -52,7 +50,7 @@ Item
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
         }
-        Label
+        UM.Label
         {
             id: manageQueueText
             anchors
@@ -64,7 +62,6 @@ Item
             color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium") // 14pt, regular
             text: catalog.i18nc("@label link to connect manager", "Manage in browser")
-            renderType: Text.NativeRendering
         }
     }
 
@@ -72,14 +69,9 @@ Item
     {
         anchors.fill: manageQueueLabel
         onClicked: OutputDevice.openPrintJobControlPanel()
-        onEntered:
-        {
-            manageQueueText.font.underline = true
-        }
-        onExited:
-        {
-            manageQueueText.font.underline = false
-        }
+        onEntered: manageQueueText.font.underline = true
+
+        onExited: manageQueueText.font.underline = false
     }
 
     Row
@@ -94,50 +86,38 @@ Item
         }
         spacing: 18 * screenScaleFactor // TODO: Theme!
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "There are no print jobs in the queue. Slice and send a job to add one.")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             anchors.verticalCenter: parent.verticalCenter
-
-            renderType: Text.NativeRendering
             visible: printJobList.count === 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: 284 * screenScaleFactor // TODO: Theme! (Should match column size)
-
-            renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
-
-            renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
-
-            renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
     }

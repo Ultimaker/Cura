@@ -3,7 +3,6 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Styles 1.4
 import UM 1.5 as UM
 
 Button
