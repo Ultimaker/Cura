@@ -9,7 +9,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
-import Cura 1.6 as Cura
+import Cura 1.7 as Cura
 
 import DigitalFactory 1.0 as DF
 
@@ -44,32 +44,12 @@ Item
         height: childrenRect.height
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.TextField
+        Cura.SearchBar
         {
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
-            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
-
-            placeholderText: "Search"
-
-            UM.RecolorImage
-            {
-                id: searchIcon
-
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
-                source: UM.Theme.getIcon("search")
-                height: UM.Theme.getSize("small_button_icon").height
-                width: height
-                color: UM.Theme.getColor("text")
-            }
         }
 
         Cura.SecondaryButton
