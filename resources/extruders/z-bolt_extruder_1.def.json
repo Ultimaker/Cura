@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Toolhead2",
+    "name": "Toolhead 2",
     "inherits": "fdmextruder",
     "metadata":
     {
@@ -10,7 +10,7 @@
 
     "overrides":
     {
-        "extruder_nr":              { "default_value": 1, "maximum_value": 1 },
+        "extruder_nr":              { "default_value": 1 },
         "material_diameter":        { "default_value": 1.75 }
     }
 }
