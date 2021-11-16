@@ -13,7 +13,6 @@ TabButton
     property color inactiveBackgroundColor : hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
     property color activeBackgroundColor : UM.Theme.getColor("main_background")
 
-
     background: Rectangle
     {
         anchors.fill: parent
@@ -25,7 +24,7 @@ TabButton
     contentItem: Label
     {
         text: parent.text
-        font: UM.Theme.getFont("medium")
+        font: UM.Theme.getFont("medium_bold")
         color: UM.Theme.getColor("text")
         width: contentWidth
         anchors.centerIn: parent
