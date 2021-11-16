@@ -159,6 +159,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_height":
+                {
+                    "label": "Machine Height",
+                    "description": "The height (Z-direction) of the printable area.",
+                    "default_value": 100,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_shape":
                 {
                     "label": "Build Plate Shape",
@@ -185,16 +195,6 @@
                         "glass": "Glass",
                         "aluminum": "Aluminum"
                     },
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "machine_height":
-                {
-                    "label": "Machine Height",
-                    "description": "The height (Z-direction) of the printable area.",
-                    "default_value": 100,
-                    "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -571,7 +571,7 @@
                 },
                 "machine_max_feedrate_e":
                 {
-                    "label": "Maximum Feedrate",
+                    "label": "Maximum Speed E",
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
                     "type": "float",
