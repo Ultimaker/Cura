@@ -151,7 +151,7 @@ Item
         }
     }
 
-    ToolButton
+    UM.SimpleButton
     {
         id: settingVisibilityMenu
 
@@ -164,25 +164,9 @@ Item
         }
         width: UM.Theme.getSize("medium_button_icon").width
         height: UM.Theme.getSize("medium_button_icon").height
-
-        style: ButtonStyle
-        {
-            background: Item
-            {
-                UM.RecolorImage
-                {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: UM.Theme.getSize("medium_button_icon").width
-                    height: UM.Theme.getSize("medium_button_icon").height
-                    sourceSize.width: width
-                    sourceSize.height: height
-                    color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                    source: UM.Theme.getIcon("Hamburger")
-                }
-            }
-            label: Label {}
-        }
+        iconSource: UM.Theme.getIcon("Hamburger")
+        hoverColor: UM.Theme.getColor("small_button_text_hover")
+        color: UM.Theme.getColor("small_button_text")
 
         onClicked:
         {
