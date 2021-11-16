@@ -2,9 +2,7 @@
 // The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls 2.15 as QQC2
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.15
 import QtQml.Models 2.15 as Models
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
@@ -42,7 +40,7 @@ UM.Dialog
         SystemPalette{ id: disabledPalette; colorGroup: SystemPalette.Disabled }
         anchors.fill: parent
 
-        ExclusiveGroup
+        ButtonGroup
         {
             id: selectedScriptGroup
         }
@@ -90,7 +88,7 @@ UM.Dialog
                     {
                         id: activeScriptButton
                         text: manager.getScriptLabelByKey(modelData.toString())
-                        exclusiveGroup: selectedScriptGroup
+                        ButtonGroup.group: selectedScriptGroup
                         width: parent.width
                         height: UM.Theme.getSize("setting").height
                         checkable: true
@@ -114,22 +112,18 @@ UM.Dialog
                             base.activeScriptName = manager.getScriptLabelByKey(modelData.toString())
                         }
 
-                        style: ButtonStyle
+                        background: Rectangle
                         {
-                            background: Rectangle
-                            {
-                                color: activeScriptButton.checked ? palette.highlight : "transparent"
-                                width: parent.width
-                                height: parent.height
-                            }
-                            label: Label
-                            {
-                                wrapMode: Text.Wrap
-                                text: control.text
-                                elide: Text.ElideRight
-                                color: activeScriptButton.checked ? palette.highlightedText : palette.text
-                            }
+                            color: activeScriptButton.checked ? palette.highlight : "transparent"
                         }
+                        contentItem: Label
+                        {
+                            wrapMode: Text.Wrap
+                            text: activeScriptButton.text
+                            elide: Text.ElideRight
+                            color: activeScriptButton.checked ? palette.highlightedText : palette.text
+                        }
+
                     }
 
                     Button
@@ -142,22 +136,20 @@ UM.Dialog
                         anchors.rightMargin: base.textMargin
                         anchors.verticalCenter: parent.verticalCenter
                         onClicked: manager.removeScriptByIndex(index)
-                        style: ButtonStyle
+                        contentItem: Item
                         {
-                            label: Item
+                            UM.RecolorImage
                             {
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    width: Math.round(control.width / 2.7)
-                                    height: Math.round(control.height / 2.7)
-                                    sourceSize.height: width
-                                    color: palette.text
-                                    source: UM.Theme.getIcon("Cancel")
-                                }
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: Math.round(removeButton.width / 2.7)
+                                height: Math.round(removeButton.height / 2.7)
+                                sourceSize.height: width
+                                color: palette.text
+                                source: UM.Theme.getIcon("Cancel")
                             }
                         }
+
                     }
                     Button
                     {
@@ -176,20 +168,17 @@ UM.Dialog
                             }
                             return manager.moveScript(index, index + 1)
                         }
-                        style: ButtonStyle
+                        contentItem: Item
                         {
-                            label: Item
+                            UM.RecolorImage
                             {
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    width: Math.round(control.width / 2.5)
-                                    height: Math.round(control.height / 2.5)
-                                    sourceSize.height: width
-                                    color: control.enabled ? palette.text : disabledPalette.text
-                                    source: UM.Theme.getIcon("ChevronSingleDown")
-                                }
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: Math.round(downButton.width / 2.5)
+                                height: Math.round(downButton.height / 2.5)
+                                sourceSize.height: width
+                                color: downButton.enabled ? palette.text : disabledPalette.text
+                                source: UM.Theme.getIcon("ChevronSingleDown")
                             }
                         }
                     }
@@ -210,20 +199,17 @@ UM.Dialog
                             }
                             return manager.moveScript(index, index - 1)
                         }
-                        style: ButtonStyle
+                        contentItem: Item
                         {
-                            label: Item
-                             {
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    width: Math.round(control.width / 2.5)
-                                    height: Math.round(control.height / 2.5)
-                                    sourceSize.height: width
-                                    color: control.enabled ? palette.text : disabledPalette.text
-                                    source: UM.Theme.getIcon("ChevronSingleUp")
-                                }
+                            UM.RecolorImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: Math.round(upButton.width / 2.5)
+                                height: Math.round(upButton.height / 2.5)
+                                sourceSize.height: width
+                                color: upButton.enabled ? palette.text : disabledPalette.text
+                                source: UM.Theme.getIcon("ChevronSingleUp")
                             }
                         }
                     }
@@ -238,15 +224,8 @@ UM.Dialog
                 anchors.top: activeScriptsList.bottom
                 anchors.topMargin: base.textMargin
                 onClicked: scriptsMenu.open()
-                style: ButtonStyle
-                {
-                    label: Label
-                    {
-                        text: control.text
-                    }
-                }
             }
-            QQC2.Menu
+            Menu
             {
                 id: scriptsMenu
                 width: parent.width
@@ -255,7 +234,7 @@ UM.Dialog
                 {
                     model: manager.loadedScriptList
 
-                    QQC2.MenuItem
+                    MenuItem
                     {
                         text: manager.getScriptLabelByKey(modelData.toString())
                         onTriggered: manager.addScriptToList(modelData.toString())
@@ -310,7 +289,6 @@ UM.Dialog
                 }
 
                 visible: manager.selectedScriptDefinitionId != ""
-                style: UM.Theme.styles.scrollview;
 
                 ListView
                 {
@@ -483,7 +461,6 @@ UM.Dialog
     rightButtons: Button
     {
         text: catalog.i18nc("@action:button", "Close")
-        iconName: "dialog-close"
         onClicked: dialog.accept()
     }
 
