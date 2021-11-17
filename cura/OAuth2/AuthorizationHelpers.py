@@ -53,7 +53,12 @@ class AuthorizationHelpers:
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
         headers = {"Content-type": "application/x-www-form-urlencoded"}
-        HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), headers_dict = headers, callback = lambda reply: self.parseTokenResponse(reply, response_callback))
+        HttpRequestManager.getInstance().post(
+            self._token_url,
+            data = urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict = headers,
+            callback = lambda reply: self.parseTokenResponse(reply, response_callback)
+        )
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str, response_callback: Callable[[AuthenticationResponse], None]) -> None:
         """
@@ -71,7 +76,12 @@ class AuthorizationHelpers:
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
         headers = {"Content-type": "application/x-www-form-urlencoded"}
-        HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), headers_dict = headers, callback = lambda reply: self.parseTokenResponse(reply, response_callback))
+        HttpRequestManager.getInstance().post(
+            self._token_url,
+            data = urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict = headers,
+            callback = lambda reply: self.parseTokenResponse(reply, response_callback)
+        )
 
     @staticmethod
     def parseTokenResponse(token_response: QNetworkReply, response_callback: Callable[[AuthenticationResponse], None]) -> None:
