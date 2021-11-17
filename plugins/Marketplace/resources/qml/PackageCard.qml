@@ -12,7 +12,7 @@ Rectangle
 {
     property var packageData
 
-    width: parent ? parent.width - UM.Theme.getSize("default_margin").width : 0
+    width: parent ? parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width: 0
     height: UM.Theme.getSize("card").height
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
