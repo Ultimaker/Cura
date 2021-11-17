@@ -145,17 +145,33 @@ Rectangle
             Layout.fillWidth: true
         }
 
-        UM.SimpleButton
+        Button
         {
             id: externalLinkButton
 
-            Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
-            Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
-            Layout.alignment: Qt.AlignTop
-            iconSource: UM.Theme.getIcon("LinkExternal")
-            hoverColor: UM.Theme.getColor("text_link")
-            onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+            // For some reason if i set padding, they don't match up. If i set all of them explicitly, it does work?
+            leftPadding: UM.Theme.getSize("narrow_margin").width
+            rightPadding: UM.Theme.getSize("narrow_margin").width
+            topPadding: UM.Theme.getSize("narrow_margin").width
+            bottomPadding: UM.Theme.getSize("narrow_margin").width
+
+            Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+            Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+            contentItem: UM.RecolorImage
+            {
+                source: UM.Theme.getIcon("LinkExternal")
+                color: UM.Theme.getColor("icon")
+                implicitWidth: UM.Theme.getSize("card_tiny_icon").width
+                implicitHeight: UM.Theme.getSize("card_tiny_icon").height
+            }
+
+            background: Rectangle
+            {
+                color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered"): "transparent"
+                radius: externalLinkButton.width / 2
+            }
         }
+
     }
 
     Item
