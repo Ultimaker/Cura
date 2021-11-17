@@ -12,7 +12,7 @@ Rectangle
 {
     property var packageData
 
-    width: parent ? parent.width - UM.Theme.getSize("default_margin").width : 0
+    width: parent ? parent.width - UM.Theme.getSize("thin_margin").width : 0
     height: childrenRect.height
 
     color: UM.Theme.getColor("main_background")
@@ -109,12 +109,17 @@ Rectangle
                             visible: parent.hovered
                         }
 
-                        UM.RecolorImage
+                        Rectangle
                         {
                             anchors.fill: parent
-
-                            color: UM.Theme.getColor("primary")
-                            source: UM.Theme.getIcon("CheckCircle")
+                            color: UM.Theme.getColor("action_button_hovered")
+                            radius: width
+                            UM.RecolorImage
+                            {
+                                anchors.fill: parent
+                                color: UM.Theme.getColor("primary")
+                                source: UM.Theme.getIcon("CheckCircle")
+                            }
                         }
 
                         //NOTE: Can we link to something here? (Probably a static link explaining what verified is):
@@ -159,7 +164,7 @@ Rectangle
                     color: UM.Theme.getColor("text")
                 }
 
-                Button
+                UM.SimpleButton
                 {
                     id: externalLinkButton
 
@@ -167,19 +172,10 @@ Rectangle
                     Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
                     Layout.alignment: Qt.AlignTop
 
-                    Rectangle
-                    {
-                        anchors.fill: parent
-                        color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
-
-                        UM.RecolorImage
-                        {
-                            anchors.fill: parent
-                            color: externalLinkButton.hovered ? UM.Theme.getColor("text_link") : UM.Theme.getColor("text")
-                            source: UM.Theme.getIcon("LinkExternal")
-                        }
-                    }
-
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    hoverColor: UM.Theme.getColor("text_link")
+                    backgroundColor: UM.Theme.getColor("detail_background")
+                    hoverBackgroundColor: UM.Theme.getColor("action_button_hovered")
                     onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
                 }
             }

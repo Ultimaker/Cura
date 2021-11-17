@@ -14,6 +14,8 @@ Window
     id: marketplaceDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
 
+    signal searchStringChanged(string new_search)
+
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
@@ -70,36 +72,82 @@ Window
                 }
             }
 
+            // Search & Top-Level Tabs
             Item
             {
-                Layout.preferredWidth: parent.width
                 Layout.preferredHeight: childrenRect.height
-
-                // Page selection.
-                TabBar
+                Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
+                RowLayout
                 {
-                    id: pageSelectionTabBar
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    height: UM.Theme.getSize("button_icon").height
-                    spacing: 0
+                    width: parent.width
+                    height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
+                    spacing: UM.Theme.getSize("thin_margin").width
 
-                    PackageTypeTab
+                    Rectangle
                     {
-                        width: implicitWidth
-                        text: catalog.i18nc("@button", "Plugins")
-                        onClicked: content.source = "Plugins.qml"
+                        Layout.preferredHeight: parent.height
+                        Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
+                        Layout.fillWidth: ! searchBar.visible
                     }
-                    PackageTypeTab
+
+                    Cura.SearchBar
                     {
-                        width: implicitWidth
-                        text: catalog.i18nc("@button", "Materials")
-                        onClicked: content.source = "Materials.qml"
+                        id: searchBar
+                        Layout.preferredHeight: parent.height
+                        Layout.fillWidth: true
+                        onTextEdited: searchStringChanged(text)
                     }
-                    ManagePackagesButton
+
+                    // Page selection.
+                    TabBar
                     {
-                        onClicked: content.source = "ManagedPackages.qml"
+                        id: pageSelectionTabBar
+                        anchors.right: parent.right
+                        height: UM.Theme.getSize("button_icon").height
+                        spacing: 0
+
+                        PackageTypeTab
+                        {
+                            id: pluginTabText
+                            width: implicitWidth
+                            text: catalog.i18nc("@button", "Plugins")
+                            onClicked:
+                            {
+                                searchBar.text = ""
+                                searchBar.visible = true
+                                content.source = "Plugins.qml"
+                            }
+                        }
+                        PackageTypeTab
+                        {
+                            id: materialsTabText
+                            width: implicitWidth
+                            text: catalog.i18nc("@button", "Materials")
+                            onClicked:
+                            {
+                                searchBar.text = ""
+                                searchBar.visible = true
+                                content.source = "Materials.qml"
+                            }
+                        }
+                        ManagePackagesButton
+                        {
+                            onClicked: content.source = "ManagedPackages.qml"
+                        }
                     }
+
+                    TextMetrics
+                    {
+                        id: pluginTabTextMetrics
+                        text: pluginTabText.text
+                        font: pluginTabText.font
+                    }
+                    TextMetrics
+                    {
+                        id: materialsTabTextMetrics
+                        text: materialsTabText.text
+                        font: materialsTabText.font
+                    }                   
                 }
             }
 
@@ -124,6 +172,11 @@ Window
                         function onLoaded()
                         {
                             pageTitle.text = content.item.pageTitle
+                            searchStringChanged.connect(handleSearchStringChanged)
+                        }
+                        function handleSearchStringChanged(new_search)
+                        {
+                            content.item.model.searchString = new_search
                         }
                     }
                 }
