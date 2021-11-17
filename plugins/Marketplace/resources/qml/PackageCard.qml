@@ -170,6 +170,7 @@ Rectangle
                 color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered"): "transparent"
                 radius: externalLinkButton.width / 2
             }
+            onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
         }
 
     }
@@ -245,7 +246,6 @@ Rectangle
             textFont: descriptionLabel.font
             isIconOnRightSide: true
 
-            // NOTE: Is this the right URL for this action?
             onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
         }
     }

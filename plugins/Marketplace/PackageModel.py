@@ -27,7 +27,6 @@ class PackageModel(QObject):
         """
         super().__init__(parent)
         self._package_id = package_data.get("package_id", "UnknownPackageId")
-
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
         self._is_verified = "verified" in package_data.get("tags", [])
