@@ -102,15 +102,14 @@ Window
                     TabBar
                     {
                         id: pageSelectionTabBar
-                        height: parent.height
-                        width: implicitWidth
+                        anchors.right: parent.right
+                        height: UM.Theme.getSize("button_icon").height
                         spacing: 0
 
                         PackageTypeTab
                         {
                             id: pluginTabText
                             width: implicitWidth
-                            padding: UM.Theme.getSize("thin_margin").width
                             text: catalog.i18nc("@button", "Plugins")
                             onClicked:
                             {
@@ -123,7 +122,6 @@ Window
                         {
                             id: materialsTabText
                             width: implicitWidth
-                            padding: UM.Theme.getSize("thin_margin").width
                             text: catalog.i18nc("@button", "Materials")
                             onClicked:
                             {
@@ -132,7 +130,12 @@ Window
                                 content.source = "Materials.qml"
                             }
                         }
+                        ManagePackagesButton
+                        {
+                            onClicked: content.source = "ManagedPackages.qml"
+                        }
                     }
+
                     TextMetrics
                     {
                         id: pluginTabTextMetrics
@@ -144,21 +147,7 @@ Window
                         id: materialsTabTextMetrics
                         text: materialsTabText.text
                         font: materialsTabText.font
-                    }
-
-                    ManagePackagesButton
-                    {
-                        id: managePackagesButton
-                        height: parent.height
-                        width: UM.Theme.getSize("button_icon").width
-
-                        onClicked:
-                        {
-                            searchBar.text = ""
-                            searchBar.visible = false
-                            content.source = "ManagedPackages.qml"
-                        }
-                    }
+                    }                   
                 }
             }
 
