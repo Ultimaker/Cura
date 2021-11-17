@@ -90,6 +90,7 @@ Rectangle
             {
                 tooltipText: catalog.i18nc("@info", "Verified")
                 visible: parent.hovered
+                targetPoint: Qt.point(0, Math.round(parent.y + parent.height / 2))
             }
 
             Rectangle
