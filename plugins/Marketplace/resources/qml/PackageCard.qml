@@ -52,8 +52,6 @@ Rectangle
         }
     ]
 
-
-
     Image //Separate column for icon on the left.
     {
         id: packageItem
@@ -169,8 +167,6 @@ Rectangle
 
                 iconSource: UM.Theme.getIcon("LinkExternal")
                 hoverColor: UM.Theme.getColor("text_link")
-                backgroundColor: UM.Theme.getColor("detail_background")
-                hoverBackgroundColor: UM.Theme.getColor("action_button_hovered")
                 onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
             }
         }
