@@ -12,9 +12,8 @@ Rectangle
 {
     property var packageData
 
-    width: parent ? parent.width - UM.Theme.getSize("thin_margin").width : 0
-    height: childrenRect.height + UM.Theme.getSize("thin_margin").height * 2
-
+    width: parent ? parent.width - UM.Theme.getSize("default_margin").width : 0
+    height: UM.Theme.getSize("card").height
     color: UM.Theme.getColor("main_background")
     radius: UM.Theme.getSize("default_radius").width
 
@@ -26,11 +25,6 @@ Rectangle
             when: true  // TODO
             PropertyChanges
             {
-                target: downloadCountRow
-                visible: false
-            }
-            PropertyChanges
-            {
                 target: descriptionArea
                 visible: true
             }
@@ -39,11 +33,6 @@ Rectangle
         {
             name: "Header"
             when: false  // TODO
-            PropertyChanges
-            {
-                target: downloadCountRow
-                visible: true
-            }
             PropertyChanges
             {
                 target: descriptionArea
@@ -59,7 +48,7 @@ Rectangle
         {
             top: parent.top
             left: parent.left
-            margins: UM.Theme.getSize("thin_margin").width
+            margins: UM.Theme.getSize("default_margin").width
         }
         width: UM.Theme.getSize("card_icon").width
         height: width
@@ -67,263 +56,244 @@ Rectangle
         source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
     }
 
-    Column
+    RowLayout //Title row.
     {
+        id: titleBar
         anchors
         {
-            top: parent.top
             left: packageItem.right
             right: parent.right
-            margins: UM.Theme.getSize("thin_margin").width
+            top: parent.top
+            topMargin: UM.Theme.getSize("default_margin").height
+            leftMargin: UM.Theme.getSize("default_margin").width
+            rightMargin:UM.Theme.getSize("thick_margin").width
         }
 
-        RowLayout //Title row.
+        Label
         {
-            width: parent.width
-            spacing: UM.Theme.getSize("thin_margin").width
-            Label
-            {
+            text: packageData.displayName
+            font: UM.Theme.getFont("large_bold")
+            color: UM.Theme.getColor("text")
+            verticalAlignment: Text.AlignTop
+        }
 
-                text: packageData.displayName
-                font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("text")
-                verticalAlignment: Text.AlignTop
+        Control
+        {
+            Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
+            Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
+
+
+            enabled: packageData.isVerified
+            visible: packageData.isVerified
+
+            Cura.ToolTip
+            {
+                tooltipText: catalog.i18nc("@info", "Verified")
+                visible: parent.hovered
             }
 
-            Control
+            Rectangle
             {
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
-                //width: UM.Theme.getSize("card_tiny_icon").width
-                //height: UM.Theme.getSize("card_tiny_icon").height
-
-                enabled: packageData.isVerified
-                visible: packageData.isVerified
-
-                Cura.ToolTip
-                {
-                    tooltipText: catalog.i18nc("@info", "Verified")
-                    visible: parent.hovered
-                }
-
-                Rectangle
-                {
-                    anchors.fill: parent
-                    color: UM.Theme.getColor("action_button_hovered")
-                    radius: width
-                    UM.RecolorImage
-                    {
-                        anchors.fill: parent
-                        color: UM.Theme.getColor("primary")
-                        source: UM.Theme.getIcon("CheckCircle")
-                    }
-                }
-
-                //NOTE: Can we link to something here? (Probably a static link explaining what verified is):
-                // onClicked: Qt.openUrlExternally( XXXXXX )
-            }
-
-            Control
-            {
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
-                Layout.alignment: Qt.AlignCenter
-                enabled: false  // remove!
-                visible: false  // replace packageInfo.XXXXXX
-                // TODO: waiting for materials card implementation
-
-                Cura.ToolTip
-                {
-                    tooltipText: "" // TODO
-                    visible: parent.hovered
-                }
-
+                anchors.fill: parent
+                color: UM.Theme.getColor("action_button_hovered")
+                radius: width
                 UM.RecolorImage
                 {
                     anchors.fill: parent
-
                     color: UM.Theme.getColor("primary")
-                    source: UM.Theme.getIcon("CheckCircle") // TODO
+                    source: UM.Theme.getIcon("CheckCircle")
                 }
-
-                // onClicked: Qt.openUrlExternally( XXXXXX )  // TODO
             }
 
-            Label
-            {
-                text: packageData.packageVersion
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                Layout.fillWidth: true
-            }
-
-            UM.SimpleButton
-            {
-                id: externalLinkButton
-
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
-                Layout.alignment: Qt.AlignTop
-
-                iconSource: UM.Theme.getIcon("LinkExternal")
-                hoverColor: UM.Theme.getColor("text_link")
-                onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
-            }
+            //NOTE: Can we link to something here? (Probably a static link explaining what verified is):
+            // onClicked: Qt.openUrlExternally( XXXXXX )
         }
 
-        RowLayout
+        Control
         {
-            id: downloadCountRow
+            Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
+            Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
+            Layout.alignment: Qt.AlignCenter
+            enabled: false  // remove!
+            visible: false  // replace packageInfo.XXXXXX
+            // TODO: waiting for materials card implementation
 
-            x: UM.Theme.getSize("thin_margin").width
-            y: UM.Theme.getSize("thin_margin").height
-
-            spacing: UM.Theme.getSize("thin_margin").width
+            Cura.ToolTip
+            {
+                tooltipText: "" // TODO
+                visible: parent.hovered
+            }
 
             UM.RecolorImage
             {
-                id: downloadCountIcon
-                width: UM.Theme.getSize("card_tiny_icon").width
-                height: UM.Theme.getSize("card_tiny_icon").height
-                color: UM.Theme.getColor("icon")
+                anchors.fill: parent
 
-                source: UM.Theme.getIcon("Download")
+                color: UM.Theme.getColor("primary")
+                source: UM.Theme.getIcon("CheckCircle") // TODO
             }
 
-            Label
-            {
-                id: downloadCountLabel
-                text: packageData.downloadCount
-            }
+            // onClicked: Qt.openUrlExternally( XXXXXX )  // TODO
         }
 
-        Item
+        Label
         {
-            id: descriptionArea
+            id: packageVersionLabel
+            text: packageData.packageVersion
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            Layout.fillWidth: true
+        }
+
+        UM.SimpleButton
+        {
+            id: externalLinkButton
+
+            Layout.preferredWidth: packageVersionLabel.height
+            Layout.preferredHeight: packageVersionLabel.height
+            Layout.alignment: Qt.AlignTop
+            iconSource: UM.Theme.getIcon("LinkExternal")
+            hoverColor: UM.Theme.getColor("text_link")
+            onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+        }
+    }
+
+    Item
+    {
+        id: descriptionArea
+        height: descriptionLabel.height
+        anchors
+        {
+            top: titleBar.bottom
+            left: packageItem.right
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+            leftMargin: UM.Theme.getSize("default_margin").width
+        }
+        Label
+        {
+            id: descriptionLabel
             width: parent.width
-            height: descriptionLabel.height
+            property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
-            Label
+            text: packageData.description
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
+            maximumLineCount: 2
+            wrapMode: Text.Wrap
+            elide: Text.ElideRight
+
+            onLineLaidOut:
             {
-                id: descriptionLabel
-                width: parent.width
-                property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
-
-                text: packageData.description
-                font: UM.Theme.getFont("medium")
-                color: UM.Theme.getColor("text")
-                maximumLineCount: 2
-                wrapMode: Text.Wrap
-                elide: Text.ElideRight
-
-                onLineLaidOut:
+                if(truncated && line.isLast)
                 {
-                    if(truncated && line.isLast)
+                    let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ") - 2 * UM.Theme.getSize("default_margin").width;
+                    if(line.implicitWidth > max_line_width)
                     {
-                        let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ") - UM.Theme.getSize("default_margin").width;
-                        if(line.implicitWidth > max_line_width)
-                        {
-                            line.width = max_line_width;
-                        }
-                        else
-                        {
-                            line.width = line.implicitWidth - fontMetrics.advanceWidth("…"); //Truncate the ellipsis. We're adding this ourselves.
-                        }
-                        descriptionLabel.lastLineWidth = line.implicitWidth;
+                        line.width = max_line_width;
                     }
+                    else
+                    {
+                        line.width = line.implicitWidth - fontMetrics.advanceWidth("…"); //Truncate the ellipsis. We're adding this ourselves.
+                    }
+                    descriptionLabel.lastLineWidth = line.implicitWidth;
                 }
             }
+        }
+        Label
+        {
+            id: tripleDotLabel
+            anchors.left: parent.left
+            anchors.leftMargin: descriptionLabel.lastLineWidth
+            anchors.bottom: readMoreButton.bottom
 
-            Cura.TertiaryButton
-            {
-                id: readMoreButton
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-                height: fontMetrics.height //Height of a single line.
+            text: "… "
+            font: descriptionLabel.font
+            color: descriptionLabel.color
+            visible: descriptionLabel.truncated
+        }
+        Cura.TertiaryButton
+        {
+            id: readMoreButton
+            anchors.left: tripleDotLabel.right
+            anchors.bottom: parent.bottom
+            height: fontMetrics.height //Height of a single line.
 
-                text: catalog.i18nc("@info", "Read more")
-                iconSource: UM.Theme.getIcon("LinkExternal")
+            text: catalog.i18nc("@info", "Read more")
+            iconSource: UM.Theme.getIcon("LinkExternal")
 
-                visible: descriptionLabel.truncated
-                enabled: visible
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("wide_margin").width
-                textFont: descriptionLabel.font
-                isIconOnRightSide: true
+            visible: descriptionLabel.truncated
+            enabled: visible
+            leftPadding: UM.Theme.getSize("default_margin").width
+            rightPadding: UM.Theme.getSize("wide_margin").width
+            textFont: descriptionLabel.font
+            isIconOnRightSide: true
 
-                // NOTE: Is this the right URL for this action?
-                onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
-            }
+            // NOTE: Is this the right URL for this action?
+            onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+        }
+    }
 
-            Label
-            {
-                anchors.left: parent.left
-                anchors.leftMargin: descriptionLabel.lastLineWidth
-                anchors.bottom: readMoreButton.bottom
+    RowLayout //Author and action buttons.
+    {
+        id: authorAndACtionButton
+        width: parent.width
+        anchors
+        {
+            bottom: parent.bottom
+            left: packageItem.right
+            margins: UM.Theme.getSize("default_margin").height
+        }
+        spacing: UM.Theme.getSize("narrow_margin").width
 
-                text: "… "
-                font: descriptionLabel.font
-                color: descriptionLabel.color
-                visible: descriptionLabel.truncated
-            }
+        Label
+        {
+            id: authorBy
+            Layout.alignment: Qt.AlignTop
+
+            text: catalog.i18nc("@label", "By")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
         }
 
-        RowLayout //Author and action buttons.
+        Cura.TertiaryButton
         {
-            width: parent.width
+            Layout.fillWidth: true
+            Layout.preferredHeight: authorBy.height
             Layout.alignment: Qt.AlignTop
-            spacing: UM.Theme.getSize("thin_margin").width
 
-            Label
-            {
-                id: authorBy
-                Layout.alignment: Qt.AlignTop
+            text: packageData.authorName
+            textFont: UM.Theme.getFont("default_bold")
+            textColor: UM.Theme.getColor("text") // override normal link color
+            leftPadding: 0
+            rightPadding: 0
+            iconSource: UM.Theme.getIcon("LinkExternal")
+            isIconOnRightSide: true
 
-                text: catalog.i18nc("@label", "By")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-            }
+            onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
+        }
 
-            Cura.TertiaryButton
-            {
-                Layout.fillWidth: true
-                Layout.preferredHeight: authorBy.height
-                Layout.alignment: Qt.AlignTop
+        Cura.SecondaryButton
+        {
+            id: disableButton
+            Layout.alignment: Qt.AlignTop
+            text: catalog.i18nc("@button", "Disable")
+            visible: false  // not functional right now, also only when unfolding and required
+        }
 
-                text: packageData.authorName
-                textFont: UM.Theme.getFont("default_bold")
-                textColor: UM.Theme.getColor("text") // override normal link color
-                leftPadding: 0
-                rightPadding: 0
-                iconSource: UM.Theme.getIcon("LinkExternal")
-                isIconOnRightSide: true
+        Cura.SecondaryButton
+        {
+            id: uninstallButton
+            Layout.alignment: Qt.AlignTop
+            text: catalog.i18nc("@button", "Uninstall")
+            visible: false  // not functional right now, also only when unfolding and required
+        }
 
-                onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
-            }
-
-            Cura.SecondaryButton
-            {
-                id: disableButton
-                Layout.alignment: Qt.AlignTop
-                text: catalog.i18nc("@button", "Disable")
-                visible: false  // not functional right now, also only when unfolding and required
-            }
-
-            Cura.SecondaryButton
-            {
-                id: uninstallButton
-                Layout.alignment: Qt.AlignTop
-                text: catalog.i18nc("@button", "Uninstall")
-                visible: false  // not functional right now, also only when unfolding and required
-            }
-
-            Cura.PrimaryButton
-            {
-                id: installButton
-                Layout.alignment: Qt.AlignTop
-                text: catalog.i18nc("@button", "Update") // OR Download, if new!
-                visible: false  // not functional right now, also only when unfolding and required
-            }
+        Cura.PrimaryButton
+        {
+            id: installButton
+            Layout.alignment: Qt.AlignTop
+            text: catalog.i18nc("@button", "Update") // OR Download, if new!
+            visible: false  // not functional right now, also only when unfolding and required
         }
     }
 
