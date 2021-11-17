@@ -1,16 +1,19 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from datetime import datetime
-import json
-import secrets
-from hashlib import sha512
 from base64 import b64encode
+from datetime import datetime
+from hashlib import sha512
+from PyQt5.QtNetwork import QNetworkReply
+import secrets
+from threading import Lock
 from typing import Optional
 import requests
+import urllib.parse
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To download log-in tokens.
 
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 catalog = i18nCatalog("cura")
@@ -23,6 +26,8 @@ class AuthorizationHelpers:
     def __init__(self, settings: "OAuth2Settings") -> None:
         self._settings = settings
         self._token_url = "{}/token".format(self._settings.OAUTH_SERVER_URL)
+        self._request_lock = Lock()
+        self._auth_response = None  # type: Optional[AuthenticationResponse]
 
     @property
     def settings(self) -> "OAuth2Settings":
@@ -46,10 +51,19 @@ class AuthorizationHelpers:
             "code_verifier": verification_code,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
-        try:
-            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError as connection_error:
-            return AuthenticationResponse(success = False, err_message = f"Unable to connect to remote server: {connection_error}")
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        self._request_lock.acquire()
+        HttpRequestManager.getInstance().post(
+            self._token_url,
+            data = urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict = headers,
+            callback = self.parseTokenResponse
+        )
+        self._request_lock.acquire(timeout = 60)  # Block until the request is completed. 1 minute timeout.
+        response = self._auth_response
+        self._auth_response = None
+        self._request_lock.release()
+        return response
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
         """Request the access token from the authorization server using a refresh token.
@@ -66,15 +80,21 @@ class AuthorizationHelpers:
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
-        try:
-            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success = False, err_message = "Unable to connect to remote server")
-        except OSError as e:
-            return AuthenticationResponse(success = False, err_message = "Operating system is unable to set up a secure connection: {err}".format(err = str(e)))
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        self._request_lock.acquire()
+        HttpRequestManager.getInstance().post(
+            self._token_url,
+            data = urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict = headers,
+            callback = self.parseTokenResponse
+        )
+        self._request_lock.acquire(timeout = 60)  # Block until the request is completed. 1 minute timeout.
+        response = self._auth_response
+        self._auth_response = None
+        self._request_lock.release()
+        return response
 
-    @staticmethod
-    def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":
+    def parseTokenResponse(self, token_response: QNetworkReply) -> None:
         """Parse the token response from the authorization server into an AuthenticationResponse object.
 
         :param token_response: The JSON string data response from the authorization server.
@@ -82,25 +102,32 @@ class AuthorizationHelpers:
         """
 
         token_data = None
+        http = HttpRequestManager.getInstance()
 
         try:
-            token_data = json.loads(token_response.text)
+            token_data = http.readJSON(token_response)
         except ValueError:
-            Logger.log("w", "Could not parse token response data: %s", token_response.text)
+            Logger.log("w", "Could not parse token response data: %s", http.readText(token_response))
 
         if not token_data:
-            return AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
+            self._auth_response = AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
+            self._request_lock.release()
+            return
 
-        if token_response.status_code not in (200, 201):
-            return AuthenticationResponse(success = False, err_message = token_data["error_description"])
+        if token_response.error() != QNetworkReply.NetworkError.NoError:
+            self._auth_response = AuthenticationResponse(success = False, err_message = token_data["error_description"])
+            self._request_lock.release()
+            return
 
-        return AuthenticationResponse(success=True,
-                                      token_type=token_data["token_type"],
-                                      access_token=token_data["access_token"],
-                                      refresh_token=token_data["refresh_token"],
-                                      expires_in=token_data["expires_in"],
-                                      scope=token_data["scope"],
-                                      received_at=datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
+        self._auth_response = AuthenticationResponse(success = True,
+            token_type = token_data["token_type"],
+            access_token = token_data["access_token"],
+            refresh_token = token_data["refresh_token"],
+            expires_in = token_data["expires_in"],
+            scope = token_data["scope"],
+            received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
+        self._request_lock.release()
+        return
 
     def parseJWT(self, access_token: str) -> Optional["UserProfile"]:
         """Calls the authentication API endpoint to get the token data.
