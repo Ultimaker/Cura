@@ -70,7 +70,8 @@ class AuthorizationHelpers:
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
-        HttpRequestManager.getInstance().post(self._token_url, data = json.dumps(data).encode("UTF-8"), callback = lambda reply: self.parseTokenResponse(reply, response_callback))
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), headers_dict = headers, callback = lambda reply: self.parseTokenResponse(reply, response_callback))
 
     @staticmethod
     def parseTokenResponse(token_response: QNetworkReply, response_callback: Callable[[AuthenticationResponse], None]) -> None:
