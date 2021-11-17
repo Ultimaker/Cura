@@ -114,14 +114,17 @@ class AuthorizationService:
         if self._auth_data.refresh_token is None:
             Logger.log("w", "There was no refresh token in the auth data.")
             return None
-        self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
+        self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, self._parseJWTCallback)
+
+    def _parseJWTCallback(self, auth_data: AuthenticationResponse) -> None:
+        self._auth_data = auth_data
         if not self._auth_data or self._auth_data.access_token is None:
             Logger.log("w", "Unable to use the refresh token to get a new access token.")
             # The token could not be refreshed using the refresh token. We should login again.
             return None
-        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
-        # from the server already. Do not store the auth_data if we could not get new auth_data (eg due to a
-        # network error), since this would cause an infinite loop trying to get new auth-data
+        # Ensure it gets stored on disk as otherwise we only have it in memory. The stored refresh token has been
+        # deleted from the server already. Do not store the auth_data if we could not get new auth_data (e.g. due to a
+        # network error), since this would cause an infinite loop trying to get new auth-data.
         if self._auth_data.success:
             self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
@@ -149,13 +152,7 @@ class AuthorizationService:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
-        response = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
-        if response.success:
-            self._storeAuthData(response)
-            self.onAuthStateChanged.emit(logged_in = True)
-        else:
-            Logger.log("w", "Failed to get a new access token from the server.")
-            self.onAuthStateChanged.emit(logged_in = False)
+        self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, self._parseJWTCallback)
 
     def deleteAuthData(self) -> None:
         """Delete the authentication data that we have stored locally (eg; logout)"""

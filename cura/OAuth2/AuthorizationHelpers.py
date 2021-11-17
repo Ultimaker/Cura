@@ -55,12 +55,13 @@ class AuthorizationHelpers:
         headers = {"Content-type": "application/x-www-form-urlencoded"}
         HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), headers_dict = headers, callback = lambda reply: self.parseTokenResponse(reply, response_callback))
 
-    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> None:
+    def getAccessTokenUsingRefreshToken(self, refresh_token: str, response_callback: Callable[[AuthenticationResponse], None]) -> None:
         """
         Request the access token from the authorization server using a refresh token.
         :param refresh_token: A valid encoded refresh key to get new access with.
+        :param response_callback: When the token has been obtained, call this function to communicate the token to the
+        caller. This will be responding asynchronously.
         """
-
         Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
@@ -69,7 +70,7 @@ class AuthorizationHelpers:
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
-        HttpRequestManager.getInstance().post(self._token_url, data = json.dumps(data).encode("UTF-8"), callback = self.parseTokenResponse)
+        HttpRequestManager.getInstance().post(self._token_url, data = json.dumps(data).encode("UTF-8"), callback = lambda reply: self.parseTokenResponse(reply, response_callback))
 
     @staticmethod
     def parseTokenResponse(token_response: QNetworkReply, response_callback: Callable[[AuthenticationResponse], None]) -> None:
