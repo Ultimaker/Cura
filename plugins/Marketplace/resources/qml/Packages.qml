@@ -70,7 +70,7 @@ ListView
     //Wrapper item to add spacing between content and footer.
     footer: Item
     {
-        width: parent.width
+        width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
         height: model.hasFooter || packages.model.errorMessage != "" ? UM.Theme.getSize("card").height + packages.spacing : 0
         visible: model.hasFooter || packages.model.errorMessage != ""
         Button
