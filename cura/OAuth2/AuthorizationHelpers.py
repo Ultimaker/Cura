@@ -7,7 +7,7 @@ from hashlib import sha512
 import json
 from PyQt5.QtNetwork import QNetworkReply
 import secrets
-from typing import Optional
+from typing import Callable, Optional
 import urllib.parse
 import requests
 
@@ -34,11 +34,13 @@ class AuthorizationHelpers:
 
         return self._settings
 
-    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str, response_callback) -> None:
+    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str, response_callback: Callable[[AuthenticationResponse], None]) -> None:
         """Request the access token from the authorization server.
 
         :param authorization_code: The authorization code from the 1st step.
         :param verification_code: The verification code needed for the PKCE extension.
+        :param response_callback: When the token has been obtained, call this function to communicate the token to the
+        caller. This will be responding asynchronously.
         :return: An AuthenticationResponse object.
         """
 
@@ -54,10 +56,9 @@ class AuthorizationHelpers:
         HttpRequestManager.getInstance().post(self._token_url, data = urllib.parse.urlencode(data).encode("UTF-8"), headers_dict = headers, callback = lambda reply: self.parseTokenResponse(reply, response_callback))
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> None:
-        """Request the access token from the authorization server using a refresh token.
-
-        :param refresh_token:
-        :return: An AuthenticationResponse object.
+        """
+        Request the access token from the authorization server using a refresh token.
+        :param refresh_token: A valid encoded refresh key to get new access with.
         """
 
         Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
@@ -71,11 +72,12 @@ class AuthorizationHelpers:
         HttpRequestManager.getInstance().post(self._token_url, data = json.dumps(data).encode("UTF-8"), callback = self.parseTokenResponse)
 
     @staticmethod
-    def parseTokenResponse(token_response: QNetworkReply, response_callback) -> None:
-        """Parse the token response from the authorization server into an AuthenticationResponse object.
-
+    def parseTokenResponse(token_response: QNetworkReply, response_callback: Callable[[AuthenticationResponse], None]) -> None:
+        """
+        Parse the token response from the authorization server into an AuthenticationResponse object.
         :param token_response: The reply to the authentication request.
-        :return: An AuthenticationResponse object.
+        :param response_callback: When the token has been obtained, call this function to communicate the token to the
+        caller. This will be responding asynchronously.
         """
         http = HttpRequestManager.getInstance()
         token_data = http.readJSON(token_response)
