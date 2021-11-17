@@ -148,8 +148,8 @@ Rectangle
         {
             id: externalLinkButton
 
-            Layout.preferredWidth: packageVersionLabel.height
-            Layout.preferredHeight: packageVersionLabel.height
+            Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
+            Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
             Layout.alignment: Qt.AlignTop
             iconSource: UM.Theme.getIcon("LinkExternal")
             hoverColor: UM.Theme.getColor("text_link")
