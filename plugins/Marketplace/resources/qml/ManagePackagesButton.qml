@@ -10,7 +10,7 @@ import QtQuick.Controls 2.15
 TabButton
 {
     id: root
-    width: UM.Theme.getSize("button_icon").width+UM.Theme.getSize("narrow_margin").width
+    width: UM.Theme.getSize("button_icon").width + UM.Theme.getSize("narrow_margin").width
     height: UM.Theme.getSize("button_icon").height
     hoverEnabled: true
     property color inactiveBackgroundColor : hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("detail_background")
