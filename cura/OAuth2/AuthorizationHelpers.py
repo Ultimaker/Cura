@@ -121,13 +121,14 @@ class AuthorizationHelpers:
         self._request_lock.release()
         return
 
-    def checkToken(self, access_token: str, callback: Optional[Callable[[UserProfile], None]] = None) -> None:
+    def checkToken(self, access_token: str, success_callback: Optional[Callable[[UserProfile], None]] = None, failed_callback: Optional[Callable[[], None]] = None) -> None:
         """Calls the authentication API endpoint to get the token data.
 
         The API is called asynchronously. When a response is given, the callback is called with the user's profile.
         :param access_token: The encoded JWT token.
-        :param callback: When a response is given, this function will be called with a user profile. If None, there will
-        not be a callback. If the token failed to give/parse a user profile, the callback will not be called either.
+        :param success_callback: When a response is given, this function will be called with a user profile. If None,
+        there will not be a callback.
+        :param failed_callback: When the request failed or the response didn't parse, this function will be called.
         """
         self._user_profile = None
         check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
@@ -138,33 +139,38 @@ class AuthorizationHelpers:
         HttpRequestManager.getInstance().get(
             check_token_url,
             headers_dict = headers,
-            callback = lambda reply: self._parseUserProfile(reply, callback)
+            callback = lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
+            error_callback = lambda _: failed_callback()
         )
 
-    def _parseUserProfile(self, reply: QNetworkReply, callback: Optional[Callable[[UserProfile], None]]) -> None:
+    def _parseUserProfile(self, reply: QNetworkReply, success_callback: Optional[Callable[[UserProfile], None]], failed_callback: Optional[Callable[[], None]] = None) -> None:
         """
         Parses the user profile from a reply to /check-token.
 
         If the response is valid, the callback will be called to return the user profile to the caller.
         :param reply: A network reply to a request to the /check-token URL.
-        :param callback: A function to call once a user profile was successfully obtained.
+        :param success_callback: A function to call once a user profile was successfully obtained.
+        :param failed_callback: A function to call if parsing the profile failed.
         """
         if reply.error() != QNetworkReply.NetworkError.NoError:
             Logger.warning(f"Could not access account information. QNetworkError {reply.errorString()}")
+            failed_callback()
             return
 
         profile_data = HttpRequestManager.getInstance().readJSON(reply)
         if profile_data is None or "data" not in profile_data:
             Logger.warning("Could not parse user data from token.")
+            failed_callback()
             return
         profile_data = profile_data["data"]
 
         required_fields = {"user_id", "username"}
         if "user_id" not in profile_data or "username" not in profile_data:
             Logger.warning(f"User data missing required field(s): {required_fields - set(profile_data.keys())}")
+            failed_callback()
             return
 
-        callback(UserProfile(
+        success_callback(UserProfile(
             user_id = profile_data["user_id"],
             username = profile_data["username"],
             profile_image_url = profile_data.get("profile_image_url", ""),
