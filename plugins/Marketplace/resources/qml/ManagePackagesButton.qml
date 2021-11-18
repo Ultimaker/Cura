@@ -43,7 +43,7 @@ TabButton
         color: UM.Theme.getColor("icon")
         source: UM.Theme.getIcon("Settings")
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: Math.round(UM.Theme.getSize("narrow_margin").width /2) 
+        anchors.horizontalCenterOffset: Math.round(UM.Theme.getSize("narrow_margin").width /2)
         anchors.verticalCenter: parent.verticalCenter
     }
 }

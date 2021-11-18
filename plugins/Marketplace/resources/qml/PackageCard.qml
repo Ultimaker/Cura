@@ -252,7 +252,7 @@ Rectangle
 
     RowLayout //Author and action buttons.
     {
-        id: authorAndACtionButton
+        id: authorAndActionButton
         width: parent.width
         anchors
         {
