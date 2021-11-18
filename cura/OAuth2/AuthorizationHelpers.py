@@ -7,7 +7,7 @@ from hashlib import sha512
 from PyQt5.QtNetwork import QNetworkReply
 import secrets
 from threading import Lock
-from typing import Optional
+from typing import Callable, Optional
 import requests
 import urllib.parse
 
@@ -100,15 +100,7 @@ class AuthorizationHelpers:
         :param token_response: The JSON string data response from the authorization server.
         :return: An AuthenticationResponse object.
         """
-
-        token_data = None
-        http = HttpRequestManager.getInstance()
-
-        try:
-            token_data = http.readJSON(token_response)
-        except ValueError:
-            Logger.log("w", "Could not parse token response data: %s", http.readText(token_response))
-
+        token_data = HttpRequestManager.readJSON(token_response)
         if not token_data:
             self._auth_response = AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
             self._request_lock.release()
@@ -129,38 +121,56 @@ class AuthorizationHelpers:
         self._request_lock.release()
         return
 
-    def parseJWT(self, access_token: str) -> Optional["UserProfile"]:
+    def checkToken(self, access_token: str, callback: Optional[Callable[[UserProfile], None]] = None) -> None:
         """Calls the authentication API endpoint to get the token data.
 
+        The API is called asynchronously. When a response is given, the callback is called with the user's profile.
         :param access_token: The encoded JWT token.
-        :return: Dict containing some profile data.
+        :param callback: When a response is given, this function will be called with a user profile. If None, there will
+        not be a callback. If the token failed to give/parse a user profile, the callback will not be called either.
         """
-
-        try:
-            check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
-            Logger.log("d", "Checking the access token for [%s]", check_token_url)
-            token_request = requests.get(check_token_url, headers = {
-                "Authorization": "Bearer {}".format(access_token)
-            })
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            # Connection was suddenly dropped. Nothing we can do about that.
-            Logger.logException("w", "Something failed while attempting to parse the JWT token")
-            return None
-        if token_request.status_code not in (200, 201):
-            Logger.log("w", "Could not retrieve token data from auth server: %s", token_request.text)
-            return None
-        user_data = token_request.json().get("data")
-        if not user_data or not isinstance(user_data, dict):
-            Logger.log("w", "Could not parse user data from token: %s", user_data)
-            return None
-
-        return UserProfile(
-            user_id = user_data["user_id"],
-            username = user_data["username"],
-            profile_image_url = user_data.get("profile_image_url", ""),
-            organization_id = user_data.get("organization", {}).get("organization_id"),
-            subscriptions = user_data.get("subscriptions", [])
+        self._user_profile = None
+        check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
+        Logger.log("d", "Checking the access token for [%s]", check_token_url)
+        headers = {
+            "Authorization": f"Bearer {access_token}"
+        }
+        HttpRequestManager.getInstance().get(
+            check_token_url,
+            headers_dict = headers,
+            callback = lambda reply: self._parseUserProfile(reply, callback)
         )
+
+    def _parseUserProfile(self, reply: QNetworkReply, callback: Optional[Callable[[UserProfile], None]]) -> None:
+        """
+        Parses the user profile from a reply to /check-token.
+
+        If the response is valid, the callback will be called to return the user profile to the caller.
+        :param reply: A network reply to a request to the /check-token URL.
+        :param callback: A function to call once a user profile was successfully obtained.
+        """
+        if reply.error() != QNetworkReply.NetworkError.NoError:
+            Logger.warning(f"Could not access account information. QNetworkError {reply.errorString()}")
+            return
+
+        profile_data = HttpRequestManager.getInstance().readJSON(reply)
+        if profile_data is None or "data" not in profile_data:
+            Logger.warning("Could not parse user data from token.")
+            return
+        profile_data = profile_data["data"]
+
+        required_fields = {"user_id", "username"}
+        if "user_id" not in profile_data or "username" not in profile_data:
+            Logger.warning(f"User data missing required field(s): {required_fields - set(profile_data.keys())}")
+            return
+
+        callback(UserProfile(
+            user_id = profile_data["user_id"],
+            username = profile_data["username"],
+            profile_image_url = profile_data.get("profile_image_url", ""),
+            organization_id = profile_data.get("organization", {}).get("organization_id"),
+            subscriptions = profile_data.get("subscriptions", [])
+        ))
 
     @staticmethod
     def generateVerificationCode(code_length: int = 32) -> str:
