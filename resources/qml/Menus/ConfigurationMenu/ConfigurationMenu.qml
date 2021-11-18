@@ -50,6 +50,8 @@ Cura.ExpandablePopup
                 model: extrudersModel
                 delegate: Item
                 {
+                    id: extruderItem
+
                     Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
@@ -91,11 +93,11 @@ Cura.ExpandablePopup
                         targetPoint: Qt.point(Math.round(extruderIcon.width / 2), 0)
                         text:
                         {
-                            if (parent.valueError)
+                            if (extruderItem.valueError)
                             {
                                 return catalog.i18nc("@tooltip", "The configuration of this extruder is not allowed, and prohibits slicing.")
                             }
-                            if (parent.valueWarning)
+                            if (extruderItem.valueWarning)
                             {
                                 return catalog.i18nc("@tooltip", "There are no profiles matching the configuration of this extruder.")
                             }
@@ -104,35 +106,69 @@ Cura.ExpandablePopup
                     }
 
                     // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
-                    UM.StatusIcon
+                    UM.RecolorImage
                     {
-                        id: configurationWarning
-
-                        visible: parent.valueWarning || parent.valueError
-
+                        id: badge
                         anchors
                         {
-                            top: extruderIcon.top
+                            top: parent.top
                             topMargin: - Math.round(height * 1 / 6)
-                            left: extruderIcon.left
+                            left: parent.left
                             leftMargin: extruderIcon.width - Math.round(width * 5 / 6)
                         }
 
-                        // width is set to draw the same size as the MachineSelector connectionStatusImage, which is drawn as an image instead of a statusicon
-                        width: UM.Theme.getSize("icon_indicator").width + 2 * UM.Theme.getSize("default_lining").width
-                        height: width
+                        width: UM.Theme.getSize("icon_indicator").width
+                        height: UM.Theme.getSize("icon_indicator").height
 
-                        status:
+                        visible: extruderItem.valueError || extruderItem.valueWarning
+
+                        source:
                         {
-                            if (parent.valueError)
+                            if (extruderItem.valueError)
                             {
-                                return UM.StatusIcon.Status.ERROR
+                                return UM.Theme.getIcon("ErrorBadge", "low")
                             }
-                            if (parent.valueWarning)
+                            if (extruderItem.valueWarning)
                             {
-                                return UM.StatusIcon.Status.WARNING
+                                return UM.Theme.getIcon("WarningBadge", "low")
                             }
-                            return UM.StatusIcon.Status.NEUTRAL
+                            return ""
+                        }
+
+                        color:
+                        {
+                            if (extruderItem.valueError)
+                            {
+                                return UM.Theme.getColor("error")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return UM.Theme.getColor("warning")
+                            }
+                            return "transparent"
+                        }
+
+                        // Make a themable circle in the background so we can change it in other themes
+                        Rectangle
+                        {
+                            id: iconBackground
+                            anchors.centerIn: parent
+                            width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                            height: parent.height - 1.5
+                            radius: width / 2
+                            z: parent.z - 1
+                            color:
+                            {
+                                if (extruderItem.valueError)
+                                {
+                                    return UM.Theme.getColor("error_badge_background")
+                                }
+                                if (extruderItem.valueWarning)
+                                {
+                                    return UM.Theme.getColor("warning_badge_background")
+                                }
+                                return "transparent"
+                            }
                         }
                     }
 
