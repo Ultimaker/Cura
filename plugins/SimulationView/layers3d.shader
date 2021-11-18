@@ -111,7 +111,7 @@ vertex41core =
 
     float clamp(float v)
     {
-        float t = v < 0 ? 0 : v;
+        float t = v < 0.0 ? 0.0 : v;
         return t > 1.0 ? 1.0 : t;
     }
 
