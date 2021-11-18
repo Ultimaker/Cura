@@ -22,7 +22,7 @@
         "machine_depth": { "default_value": 180 },
         "machine_center_is_zero": { "default_value": false },
 	"machine_head_with_fans_polygon": { "default_value": [[0,0],[0,0],[0,0],[0,0]] },
-        "gantry_height": { "default_value": 180 },
+        "gantry_height": { "value": 180 },
         "retraction_amount": { "default_value": 5.5 },
         "retraction_speed": { "default_value": 60 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
