@@ -72,8 +72,8 @@ class PickingPass(RenderPass):
 
         window_size = self._renderer.getWindowSize()
 
-        px = (0.5 + x / 2.0) * window_size[0]
-        py = (0.5 + y / 2.0) * window_size[1]
+        px = int((0.5 + x / 2.0) * window_size[0])
+        py = int((0.5 + y / 2.0) * window_size[1])
 
         if px < 0 or px > (output.width() - 1) or py < 0 or py > (output.height() - 1):
             return -1
