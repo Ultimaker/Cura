@@ -90,7 +90,7 @@ Rectangle
 
             Cura.ToolTip
             {
-                tooltipText: packageData.packageType == "plugin" ? catalog.i18nc("@info", "Verified") : catalog.i18nc("@info", "Ultimaker Certified Materials")
+                tooltipText: packageData.packageType == "plugin" ? catalog.i18nc("@info", "Ultimaker Verified Plugin") : catalog.i18nc("@info", "Ultimaker Certified Material")
                 visible: parent.hovered
                 targetPoint: Qt.point(0, Math.round(parent.y + parent.height / 2))
             }
