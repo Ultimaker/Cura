@@ -5,6 +5,8 @@ import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.3 as Controls2
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.15
+
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
@@ -22,13 +24,63 @@ Item
 
     Column
     {
+    spacing: 30
+
         anchors
         {
             left: parent.left
             right: parent.right
         }
 
-        spacing: UM.Theme.getSize("default_margin").height
+
+        Controls2.TabBar 
+        {
+            id: intentSelection
+            width: parent.width
+            
+            Repeater
+            {
+
+                model: Cura.IntentCategoryModel{}
+                Controls2.TabButton{
+                    text : model.name
+                }
+            }
+        }
+
+        StackLayout{
+            width: parent.width
+            currentIndex:intentSelection.currentIndex
+            
+            Repeater
+            {
+
+                model: Cura.IntentCategoryModel{}
+                Item
+                {
+                    property var intentModel: model["qualities"]                    
+                    height:300
+                    
+                    ColumnLayout
+                    {
+                        Layout.fillWidth:true
+
+                        property var intentModel: model["qualities"]
+                        Repeater
+                        {
+                            model: parent.intentModel                      
+                            Text{ text: model.name}
+                        }
+
+                    } 
+                    
+                }               
+            }
+        }
+         
+
+       
+
 
         Controls2.ButtonGroup
         {
@@ -99,6 +151,7 @@ Item
                 modelKey: "layer_height"
             }
         }
+
 
 
         Repeater
