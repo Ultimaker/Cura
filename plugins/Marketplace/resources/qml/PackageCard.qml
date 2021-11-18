@@ -41,7 +41,8 @@ Rectangle
         }
     ]
 
-    Image //Separate column for icon on the left.
+    // Separate column for icon on the left.
+    Image
     {
         id: packageItem
         anchors
@@ -56,7 +57,8 @@ Rectangle
         source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
     }
 
-    RowLayout //Title row.
+    // Title row.
+    RowLayout
     {
         id: titleBar
         anchors
@@ -250,7 +252,8 @@ Rectangle
         }
     }
 
-    RowLayout //Author and action buttons.
+    // Author and action buttons.
+    RowLayout
     {
         id: authorAndActionButton
         width: parent.width
