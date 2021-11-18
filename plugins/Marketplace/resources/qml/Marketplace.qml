@@ -85,6 +85,7 @@ Window
 
                     Rectangle
                     {
+                        color: "transparent"
                         Layout.preferredHeight: parent.height
                         Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
                         Layout.fillWidth: ! searchBar.visible
@@ -93,7 +94,7 @@ Window
                     Cura.SearchBar
                     {
                         id: searchBar
-                        Layout.preferredHeight: parent.height
+                        Layout.preferredHeight: UM.Theme.getSize("button_icon").height
                         Layout.fillWidth: true
                         onTextEdited: searchStringChanged(text)
                     }
@@ -105,6 +106,7 @@ Window
                         anchors.right: parent.right
                         height: UM.Theme.getSize("button_icon").height
                         spacing: 0
+                        background: Rectangle { color: "transparent" }
 
                         PackageTypeTab
                         {
