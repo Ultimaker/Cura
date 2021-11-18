@@ -3,7 +3,7 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Optional, TYPE_CHECKING, Dict
+from typing import Callable, Dict, Optional, TYPE_CHECKING
 from urllib.parse import urlencode, quote_plus
 
 import requests.exceptions
@@ -89,42 +89,42 @@ class AuthorizationService:
 
         return self._user_profile
 
-    def _parseJWT(self) -> Optional["UserProfile"]:
-        """Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
-
-        :return: UserProfile if it was able to parse, None otherwise.
+    def _parseJWT(self, callback: Callable[[Optional[UserProfile]], None]) -> None:
+        """
+        Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
+        :param callback: A function to call asynchronously once the user profile has been obtained. It will be called
+        with `None` if it failed to obtain a user profile.
         """
 
         if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
-            Logger.log("d", "There was no auth data or access token")
-            return None
+            Logger.debug("There was no auth data or access token")
+            callback(None)
 
-        try:
-            user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
-        except AttributeError:
-            # THis might seem a bit double, but we get crash reports about this (CURA-2N2 in sentry)
-            Logger.log("d", "There was no auth data or access token")
-            return None
+        # When we checked the token we may get a user profile. This callback checks if that is a valid one and tries to refresh the token if it's not.
+        def check_user_profile(user_profile):
+            if user_profile:
+                # If the profile was found, we call it back immediately.
+                callback(user_profile)
+                return
+            # The JWT was expired or invalid and we should request a new one.
+            if self._auth_data.refresh_token is None:
+                Logger.warning("There was no refresh token in the auth data.")
+                callback(None)
+                return
+            self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)  # TODO: Blocks main thread, preventing HttpRequestManager from functioning?
+            if not self._auth_data or self._auth_data.access_token is None:
+                Logger.warning("Unable to use the refresh token to get a new access token.")
+                callback(None)
+                return
+            # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
+            # from the server already. Do not store the auth_data if we could not get new auth_data (e.g. due to a
+            # network error), since this would cause an infinite loop trying to get new auth-data.
+            if self._auth_data.success:
+                self._storeAuthData(self._auth_data)
+            self._auth_helpers.checkToken(self._auth_data.access_token, callback, lambda: callback(None))
 
-        if user_data:
-            # If the profile was found, we return it immediately.
-            return user_data
-        # The JWT was expired or invalid and we should request a new one.
-        if self._auth_data.refresh_token is None:
-            Logger.log("w", "There was no refresh token in the auth data.")
-            return None
-        self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
-        if not self._auth_data or self._auth_data.access_token is None:
-            Logger.log("w", "Unable to use the refresh token to get a new access token.")
-            # The token could not be refreshed using the refresh token. We should login again.
-            return None
-        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
-        # from the server already. Do not store the auth_data if we could not get new auth_data (eg due to a
-        # network error), since this would cause an infinite loop trying to get new auth-data
-        if self._auth_data.success:
-            self._storeAuthData(self._auth_data)
-        return self._auth_helpers.parseJWT(self._auth_data.access_token)
+        self._auth_helpers.checkToken(self._auth_data.access_token, check_user_profile)
 
     def getAccessToken(self) -> Optional[str]:
         """Get the access token as provided by the response data."""
