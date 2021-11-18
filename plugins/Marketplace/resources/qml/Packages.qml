@@ -147,7 +147,7 @@ ListView
                         PropertyChanges
                         {
                             target: loadMoreLabel
-                            text: catalog.i18nc("@button", "No more results to load")
+                            text: packages.model.count > 0 ? catalog.i18nc("@message", "No more results to load") : catalog.i18nc("@message", "No results found with current filter")
                             color: UM.Theme.getColor("action_button_disabled_text")
                         }
                     }
