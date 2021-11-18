@@ -27,9 +27,11 @@ class PackageModel(QObject):
         """
         super().__init__(parent)
         self._package_id = package_data.get("package_id", "UnknownPackageId")
+        self._package_type = package_data.get("package_type", "")
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
-        self._is_verified = "verified" in package_data.get("tags", [])
+        tags = package_data.get("tags", [])
+        self._is_checked_by_ultimaker = "verified" in tags and self._package_type == "plugin" or "certified" in tags and self._package_type == "material"
         self._package_version = package_data.get("package_version", "")  # Display purpose, no need for 'UM.Version'.
         self._package_info_url = package_data.get("website", "")  # Not to be confused with 'download_url'.
         self._download_count = package_data.get("download_count", 0)
@@ -49,6 +51,10 @@ class PackageModel(QObject):
     def packageId(self) -> str:
         return self._package_id
 
+    @pyqtProperty(str, constant = True)
+    def packageType(self) -> str:
+        return self._package_type
+
     @pyqtProperty(str, constant=True)
     def iconUrl(self):
         return self._icon_url
@@ -57,9 +63,9 @@ class PackageModel(QObject):
     def displayName(self) -> str:
         return self._display_name
 
-    @pyqtProperty(bool, constant=True)
-    def isVerified(self):
-        return self._is_verified
+    @pyqtProperty(bool, constant = True)
+    def isCheckedByUltimaker(self):
+        return self._is_checked_by_ultimaker
 
     @pyqtProperty(str, constant=True)
     def packageVersion(self):

@@ -85,12 +85,12 @@ Rectangle
             Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
 
 
-            enabled: packageData.isVerified
-            visible: packageData.isVerified
+            enabled: packageData.isCheckedByUltimaker
+            visible: packageData.isCheckedByUltimaker
 
             Cura.ToolTip
             {
-                tooltipText: catalog.i18nc("@info", "Verified")
+                tooltipText: packageData.packageType == "plugin" ? catalog.i18nc("@info", "Verified") : catalog.i18nc("@info", "Ultimaker Certified Materials")
                 visible: parent.hovered
                 targetPoint: Qt.point(0, Math.round(parent.y + parent.height / 2))
             }
@@ -104,7 +104,7 @@ Rectangle
                 {
                     anchors.fill: parent
                     color: UM.Theme.getColor("primary")
-                    source: UM.Theme.getIcon("CheckCircle")
+                    source: packageData.packageType == "plugin" ? UM.Theme.getIcon("CheckCircle") : UM.Theme.getIcon("Certified")
                 }
             }
 
