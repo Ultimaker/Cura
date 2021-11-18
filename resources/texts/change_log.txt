@@ -1,3 +1,8 @@
+[4.12.1]
+* Bug fixes 
+- Updated Shapely to version 1.8.0 which, among other things, fixes multiplying objects on MacOS Monterey 
+- Fixed a bug in Lightning infill where the infill was printed multiple times under certain circumstances
+
 [4.12.0]
 <i>For an overview of the new features in Cura 4.12, please watch <a href="https://youtu.be/CjFRT6Txn3U">our video</a>.</i>
 
