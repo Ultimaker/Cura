@@ -91,7 +91,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
         if hull_polygon is not None and hull_polygon.getPoints() is not None and len(hull_polygon.getPoints()) > 2:  # numpy array has to be explicitly checked against None
             for point in hull_polygon.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
+                converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
             item = Item(converted_points)
             item.markAsFixedInBin(0)
             node_items.append(item)
