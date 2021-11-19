@@ -12,6 +12,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
+from cura.Machines.ContainerTree import ContainerTree
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -402,6 +403,32 @@ class ExtruderManager(QObject):
                 Logger.logException("e", msg)
                 raise IndexError(msg)
             extruder_stack_0.definition = extruder_definition
+
+    @pyqtSlot("QVariant", result = bool)
+    def getExtruderHasQualityForMaterial(self, extruder_stack: "ExtruderStack") -> bool:
+        """Checks if quality nodes exist for the variant/material combination."""
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        global_stack = application.getGlobalContainerStack()
+        if not global_stack or not extruder_stack:
+            return False
+
+        if not global_stack.getMetaDataEntry("has_materials"):
+            return True
+
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+
+        active_variant_name = extruder_stack.variant.getMetaDataEntry("name")
+        if active_variant_name not in machine_node.variants:
+            Logger.log("w", "Could not find the variant %s", active_variant_name)
+            return True
+        active_variant_node = machine_node.variants[active_variant_name]
+        active_material_node = active_variant_node.materials[extruder_stack.material.getMetaDataEntry("base_file")]
+
+        active_material_node_qualities = active_material_node.qualities
+        if not active_material_node_qualities:
+            return False
+        return list(active_material_node_qualities.keys())[0] != "empty_quality"
+
 
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:
