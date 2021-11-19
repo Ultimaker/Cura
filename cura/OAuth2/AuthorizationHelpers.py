@@ -118,7 +118,7 @@ class AuthorizationHelpers:
             check_token_url,
             headers_dict = headers,
             callback = lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
-            error_callback = lambda _: failed_callback()
+            error_callback = lambda _, _2: failed_callback() if failed_callback is not None else None
         )
 
     def _parseUserProfile(self, reply: QNetworkReply, success_callback: Optional[Callable[[UserProfile], None]], failed_callback: Optional[Callable[[], None]] = None) -> None:
