@@ -115,17 +115,20 @@ class AuthorizationService:
                 Logger.warning("There was no refresh token in the auth data.")
                 callback(None)
                 return
-            self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)  # TODO: Blocks main thread, preventing HttpRequestManager from functioning?
-            if not self._auth_data or self._auth_data.access_token is None:
-                Logger.warning("Unable to use the refresh token to get a new access token.")
-                callback(None)
-                return
-            # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
-            # from the server already. Do not store the auth_data if we could not get new auth_data (e.g. due to a
-            # network error), since this would cause an infinite loop trying to get new auth-data.
-            if self._auth_data.success:
-                self._storeAuthData(self._auth_data)
-            self._auth_helpers.checkToken(self._auth_data.access_token, callback, lambda: callback(None))
+
+            def process_auth_data(auth_data: AuthenticationResponse):
+                if auth_data.access_token is None:
+                    Logger.warning("Unable to use the refresh token to get a new access token.")
+                    callback(None)
+                    return
+                # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been
+                # deleted from the server already. Do not store the auth_data if we could not get new auth_data (e.g.
+                # due to a network error), since this would cause an infinite loop trying to get new auth-data.
+                if auth_data.success:
+                    self._storeAuthData(auth_data)
+                self._auth_helpers.checkToken(auth_data.access_token, callback, lambda: callback(None))
+
+            self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
 
         self._auth_helpers.checkToken(self._auth_data.access_token, check_user_profile)
 
@@ -152,13 +155,16 @@ class AuthorizationService:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
-        response = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
-        if response.success:
-            self._storeAuthData(response)
-            self.onAuthStateChanged.emit(logged_in = True)
-        else:
-            Logger.log("w", "Failed to get a new access token from the server.")
-            self.onAuthStateChanged.emit(logged_in = False)
+
+        def process_auth_data(response: AuthenticationResponse):
+            if response.success:
+                self._storeAuthData(response)
+                self.onAuthStateChanged.emit(logged_in = True)
+            else:
+                Logger.warning("Failed to get a new access token from the server.")
+                self.onAuthStateChanged.emit(logged_in = False)
+
+        self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
 
     def deleteAuthData(self) -> None:
         """Delete the authentication data that we have stored locally (eg; logout)"""
