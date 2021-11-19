@@ -93,6 +93,10 @@ Cura.ExpandablePopup
                         targetPoint: Qt.point(Math.round(extruderIcon.width / 2), 0)
                         text:
                         {
+                            if (!model.enabled)
+                            {
+                                return ""
+                            }
                             if (extruderItem.valueError)
                             {
                                 return catalog.i18nc("@tooltip", "The configuration of this extruder is not allowed, and prohibits slicing.")
@@ -120,7 +124,7 @@ Cura.ExpandablePopup
                         width: UM.Theme.getSize("icon_indicator").width
                         height: UM.Theme.getSize("icon_indicator").height
 
-                        visible: extruderItem.valueError || extruderItem.valueWarning
+                        visible: model.enabled && (extruderItem.valueError || extruderItem.valueWarning)
 
                         source:
                         {
