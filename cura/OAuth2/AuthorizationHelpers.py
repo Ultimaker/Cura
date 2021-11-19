@@ -8,7 +8,6 @@ from PyQt5.QtNetwork import QNetworkReply
 import secrets
 from threading import Lock
 from typing import Callable, Optional
-import requests
 import urllib.parse
 
 from UM.i18n import i18nCatalog
