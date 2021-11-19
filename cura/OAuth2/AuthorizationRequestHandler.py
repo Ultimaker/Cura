@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from http.server import BaseHTTPRequestHandler
+from threading import Lock  # To turn an asynchronous call synchronous.
 from typing import Optional, Callable, Tuple, Dict, Any, List, TYPE_CHECKING
 from urllib.parse import parse_qs, urlparse
 
@@ -70,13 +71,23 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         if state != self.state:
             token_response = AuthenticationResponse(
                 success = False,
-                err_message=catalog.i18nc("@message",
-                                          "The provided state is not correct.")
+                err_message = catalog.i18nc("@message", "The provided state is not correct.")
             )
         elif code and self.authorization_helpers is not None and self.verification_code is not None:
+            token_response = AuthenticationResponse(
+                success = False,
+                err_message = catalog.i18nc("@message", "Timeout when authenticating with the account server.")
+            )
             # If the code was returned we get the access token.
-            token_response = self.authorization_helpers.getAccessTokenUsingAuthorizationCode(
-                code, self.verification_code)
+            lock = Lock()
+            lock.acquire()
+
+            def callback(response: AuthenticationResponse) -> None:
+                nonlocal token_response
+                token_response = response
+                lock.release()
+            self.authorization_helpers.getAccessTokenUsingAuthorizationCode(code, self.verification_code, callback)
+            lock.acquire(timeout = 60)  # Block thread until request is completed (which releases the lock). If not acquired, the timeout message stays.
 
         elif self._queryGet(query, "error_code") == "user_denied":
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).

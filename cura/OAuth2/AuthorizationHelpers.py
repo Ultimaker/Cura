@@ -6,15 +6,14 @@ from datetime import datetime
 from hashlib import sha512
 from PyQt5.QtNetwork import QNetworkReply
 import secrets
-from threading import Lock
 from typing import Callable, Optional
 import urllib.parse
 
+from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To download log-in tokens.
 
-from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
 catalog = i18nCatalog("cura")
 TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -25,8 +24,6 @@ class AuthorizationHelpers:
     def __init__(self, settings: "OAuth2Settings") -> None:
         self._settings = settings
         self._token_url = "{}/token".format(self._settings.OAUTH_SERVER_URL)
-        self._request_lock = Lock()
-        self._auth_response = None  # type: Optional[AuthenticationResponse]
 
     @property
     def settings(self) -> "OAuth2Settings":
@@ -34,14 +31,13 @@ class AuthorizationHelpers:
 
         return self._settings
 
-    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str) -> "AuthenticationResponse":
-        """Request the access token from the authorization server.
-
+    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str, callback: Callable[[AuthenticationResponse], None]) -> None:
+        """
+        Request the access token from the authorization server.
         :param authorization_code: The authorization code from the 1st step.
         :param verification_code: The verification code needed for the PKCE extension.
-        :return: An AuthenticationResponse object.
+        :param callback: Once the token has been obtained, this function will be called with the response.
         """
-
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -51,26 +47,19 @@ class AuthorizationHelpers:
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
         headers = {"Content-type": "application/x-www-form-urlencoded"}
-        self._request_lock.acquire()
         HttpRequestManager.getInstance().post(
             self._token_url,
             data = urllib.parse.urlencode(data).encode("UTF-8"),
             headers_dict = headers,
-            callback = self.parseTokenResponse
+            callback = lambda response: self.parseTokenResponse(response, callback)
         )
-        self._request_lock.acquire(timeout = 60)  # Block until the request is completed. 1 minute timeout.
-        response = self._auth_response
-        self._auth_response = None
-        self._request_lock.release()
-        return response
 
-    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
-        """Request the access token from the authorization server using a refresh token.
-
-        :param refresh_token:
-        :return: An AuthenticationResponse object.
+    def getAccessTokenUsingRefreshToken(self, refresh_token: str, callback: Callable[[AuthenticationResponse], None]) -> None:
         """
-
+        Request the access token from the authorization server using a refresh token.
+        :param refresh_token: A long-lived token used to refresh the authentication token.
+        :param callback: Once the token has been obtained, this function will be called with the response.
+        """
         Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
@@ -80,20 +69,14 @@ class AuthorizationHelpers:
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
         headers = {"Content-type": "application/x-www-form-urlencoded"}
-        self._request_lock.acquire()
         HttpRequestManager.getInstance().post(
             self._token_url,
             data = urllib.parse.urlencode(data).encode("UTF-8"),
             headers_dict = headers,
-            callback = self.parseTokenResponse
+            callback = lambda response: self.parseTokenResponse(response, callback)
         )
-        self._request_lock.acquire(timeout = 60)  # Block until the request is completed. 1 minute timeout.
-        response = self._auth_response
-        self._auth_response = None
-        self._request_lock.release()
-        return response
 
-    def parseTokenResponse(self, token_response: QNetworkReply) -> None:
+    def parseTokenResponse(self, token_response: QNetworkReply, callback: Callable[[AuthenticationResponse], None]) -> None:
         """Parse the token response from the authorization server into an AuthenticationResponse object.
 
         :param token_response: The JSON string data response from the authorization server.
@@ -101,23 +84,20 @@ class AuthorizationHelpers:
         """
         token_data = HttpRequestManager.readJSON(token_response)
         if not token_data:
-            self._auth_response = AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
-            self._request_lock.release()
+            callback(AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response.")))
             return
 
         if token_response.error() != QNetworkReply.NetworkError.NoError:
-            self._auth_response = AuthenticationResponse(success = False, err_message = token_data["error_description"])
-            self._request_lock.release()
+            callback(AuthenticationResponse(success = False, err_message = token_data["error_description"]))
             return
 
-        self._auth_response = AuthenticationResponse(success = True,
+        callback(AuthenticationResponse(success = True,
             token_type = token_data["token_type"],
             access_token = token_data["access_token"],
             refresh_token = token_data["refresh_token"],
             expires_in = token_data["expires_in"],
             scope = token_data["scope"],
-            received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
-        self._request_lock.release()
+            received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)))
         return
 
     def checkToken(self, access_token: str, success_callback: Optional[Callable[[UserProfile], None]] = None, failed_callback: Optional[Callable[[], None]] = None) -> None:
@@ -129,7 +109,6 @@ class AuthorizationHelpers:
         there will not be a callback.
         :param failed_callback: When the request failed or the response didn't parse, this function will be called.
         """
-        self._user_profile = None
         check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
         Logger.log("d", "Checking the access token for [%s]", check_token_url)
         headers = {

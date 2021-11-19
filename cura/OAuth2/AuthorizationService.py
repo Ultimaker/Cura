@@ -249,7 +249,7 @@ class AuthorizationService:
                 self._auth_data = AuthenticationResponse(**preferences_data)
 
                 # Also check if we can actually get the user profile information.
-                def callback(profile: Optional[UserProfile]):
+                def callback(profile: Optional["UserProfile"]):
                     if profile is not None:
                         self.onAuthStateChanged.emit(logged_in = True)
                         Logger.debug("Auth data was successfully loaded")
