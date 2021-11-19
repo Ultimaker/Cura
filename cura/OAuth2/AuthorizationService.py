@@ -74,19 +74,22 @@ class AuthorizationService:
         """
         if self._user_profile:
             # We already obtained the profile. No need to make another request for it.
-            callback(self._user_profile)
+            if callback is not None:
+                callback(self._user_profile)
             return
 
         # If no user profile was stored locally, we try to get it from JWT.
         def store_profile(profile: Optional["UserProfile"]):
             if profile is not None:
                 self._user_profile = profile
-                callback(profile)
+                if callback is not None:
+                    callback(profile)
             elif self._auth_data:
                 # If there is no user profile from the JWT, we have to log in again.
                 Logger.warning("The user profile could not be loaded. The user must log in again!")
                 self.deleteAuthData()
-                callback(None)
+                if callback is not None:
+                    callback(None)
 
         self._parseJWT(callback = store_profile)
 
