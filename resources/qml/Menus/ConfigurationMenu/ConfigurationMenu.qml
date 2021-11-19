@@ -73,7 +73,7 @@ Cura.ExpandablePopup
                     {
                         id: tooltipHoverArea
                         anchors.fill: parent
-                        hoverEnabled: true //getConnectionStatusMessage() !== ""
+                        hoverEnabled: tooltip.text != ""
                         acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
                         onEntered:
