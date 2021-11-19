@@ -62,34 +62,34 @@ class AuthorizationService:
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
-    def getUserProfile(self) -> Optional["UserProfile"]:
-        """Get the user profile as obtained from the JWT (JSON Web Token).
+    def getUserProfile(self, callback: Callable[["UserProfile"], None]) -> None:
+        """
+        Get the user profile as obtained from the JWT (JSON Web Token).
 
-        If the JWT is not yet parsed, calling this will take care of that.
-
-        :return: UserProfile if a user is logged in, None otherwise.
+        If the JWT is not yet checked and parsed, calling this will take care of that.
+        :param callback: Once the user profile is obtained, this function will be called with the given user profile. If
+        the profile fails to be obtained, this will never be called.
 
         See also: :py:method:`cura.OAuth2.AuthorizationService.AuthorizationService._parseJWT`
         """
+        if self._user_profile:
+            # We already obtained the profile. No need to make another request for it.
+            callback(self._user_profile)
+            return
 
-        if not self._user_profile:
-            # If no user profile was stored locally, we try to get it from JWT.
-            try:
-                self._user_profile = self._parseJWT()
-            except requests.exceptions.ConnectionError:
-                # Unable to get connection, can't login.
-                Logger.logException("w", "Unable to validate user data with the remote server.")
-                return None
+        # If no user profile was stored locally, we try to get it from JWT.
+        def store_profile(profile: Optional["UserProfile"]):
+            if profile is not None:
+                self._user_profile = profile
+                callback(profile)
+            elif self._auth_data:
+                # If there is no user profile from the JWT, we have to log in again.
+                Logger.warning("The user profile could not be loaded. The user must log in again!")
+                self.deleteAuthData()
 
-        if not self._user_profile and self._auth_data:
-            # If there is still no user profile from the JWT, we have to log in again.
-            Logger.log("w", "The user profile could not be loaded. The user must log in again!")
-            self.deleteAuthData()
-            return None
+        self._parseJWT(callback = store_profile)
 
-        return self._user_profile
-
-    def _parseJWT(self, callback: Callable[[Optional[UserProfile]], None]) -> None:
+    def _parseJWT(self, callback: Callable[[Optional["UserProfile"]], None]) -> None:
         """
         Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
         :param callback: A function to call asynchronously once the user profile has been obtained. It will be called
