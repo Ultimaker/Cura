@@ -209,7 +209,7 @@ class Account(QObject):
 
     def _onProfileChanged(self, profile: UserProfile):
         self._user_profile = profile
-        self.userProfileChanged.emit(profile)
+        self.userProfileChanged.emit()
 
     def _sync(self) -> None:
         """Signals all sync services to start syncing
