@@ -62,13 +62,13 @@ class AuthorizationService:
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
-    def getUserProfile(self, callback: Callable[["UserProfile"], None]) -> None:
+    def getUserProfile(self, callback: Callable[[Optional["UserProfile"]], None] = None) -> None:
         """
         Get the user profile as obtained from the JWT (JSON Web Token).
 
         If the JWT is not yet checked and parsed, calling this will take care of that.
         :param callback: Once the user profile is obtained, this function will be called with the given user profile. If
-        the profile fails to be obtained, this will never be called.
+        the profile fails to be obtained, this function will be called with None.
 
         See also: :py:method:`cura.OAuth2.AuthorizationService.AuthorizationService._parseJWT`
         """
@@ -86,6 +86,7 @@ class AuthorizationService:
                 # If there is no user profile from the JWT, we have to log in again.
                 Logger.warning("The user profile could not be loaded. The user must log in again!")
                 self.deleteAuthData()
+                callback(None)
 
         self._parseJWT(callback = store_profile)
 
@@ -244,21 +245,22 @@ class AuthorizationService:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
-                # Also check if we can actually get the user profile information.
-                user_profile = self.getUserProfile()
-                if user_profile is not None:
-                    self.onAuthStateChanged.emit(logged_in = True)
-                    Logger.log("d", "Auth data was successfully loaded")
-                else:
-                    if self._unable_to_get_data_message is not None:
-                        self._unable_to_get_data_message.hide()
 
-                    self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
-                                                                                  "Unable to reach the Ultimaker account server."),
-                                                               title = i18n_catalog.i18nc("@info:title", "Warning"),
-                                                               message_type = Message.MessageType.ERROR)
-                    Logger.log("w", "Unable to load auth data from preferences")
-                    self._unable_to_get_data_message.show()
+                # Also check if we can actually get the user profile information.
+                def callback(profile: Optional[UserProfile]):
+                    if profile is not None:
+                        self.onAuthStateChanged.emit(logged_in = True)
+                        Logger.debug("Auth data was successfully loaded")
+                    else:
+                        if self._unable_to_get_data_message is not None:
+                            self._unable_to_get_data_message.show()
+                        else:
+                            self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."),
+                                                                       title = i18n_catalog.i18nc("@info:title", "Log-in failed"),
+                                                                       message_type = Message.MessageType.ERROR)
+                            Logger.warning("Unable to get user profile using auth data from preferences.")
+                            self._unable_to_get_data_message.show()
+                self.getUserProfile(callback)
         except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
 
@@ -272,7 +274,7 @@ class AuthorizationService:
 
         self._auth_data = auth_data
         if auth_data:
-            self._user_profile = self.getUserProfile()
+            self.getUserProfile()
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             Logger.log("d", "Clearing the user profile")
