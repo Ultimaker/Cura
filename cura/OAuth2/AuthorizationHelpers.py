@@ -153,13 +153,14 @@ class AuthorizationHelpers:
                 failed_callback()
             return
 
-        success_callback(UserProfile(
-            user_id = profile_data["user_id"],
-            username = profile_data["username"],
-            profile_image_url = profile_data.get("profile_image_url", ""),
-            organization_id = profile_data.get("organization", {}).get("organization_id"),
-            subscriptions = profile_data.get("subscriptions", [])
-        ))
+        if success_callback is not None:
+            success_callback(UserProfile(
+                user_id = profile_data["user_id"],
+                username = profile_data["username"],
+                profile_image_url = profile_data.get("profile_image_url", ""),
+                organization_id = profile_data.get("organization", {}).get("organization_id"),
+                subscriptions = profile_data.get("subscriptions", [])
+            ))
 
     @staticmethod
     def generateVerificationCode(code_length: int = 32) -> str:
