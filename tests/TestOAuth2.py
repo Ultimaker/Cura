@@ -217,7 +217,7 @@ def test_failedLogin() -> None:
     assert authorization_service.getUserProfile() is None
     assert authorization_service.getAccessToken() is None
 
-@patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile())
+@patch.object(AuthorizationService, "getUserProfile")
 def test_storeAuthData(get_user_profile) -> None:
     preferences = Preferences()
     authorization_service = AuthorizationService(OAUTH_SETTINGS, preferences)
