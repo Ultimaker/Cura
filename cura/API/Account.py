@@ -76,7 +76,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
-        self._user_profile = None
+        self._user_profile = None  # type: Optional[UserProfile]
         self._additional_rights: Dict[str, Any] = {}
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
@@ -207,7 +207,7 @@ class Account(QObject):
                 if self._update_timer.isActive():
                     self._update_timer.stop()
 
-    def _onProfileChanged(self, profile: UserProfile):
+    def _onProfileChanged(self, profile: UserProfile) -> None:
         self._user_profile = profile
         self.userProfileChanged.emit()
 
