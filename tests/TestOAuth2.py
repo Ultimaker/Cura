@@ -1,5 +1,5 @@
 from datetime import datetime
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import requests
 
@@ -53,7 +53,11 @@ def test_cleanAuthService() -> None:
     # Ensure that when setting up an AuthorizationService, no data is set.
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
-    assert authorization_service.getUserProfile() is None
+
+    mock_callback = Mock()
+    authorization_service.getUserProfile(mock_callback)
+    mock_callback.assert_called_once_with(None)
+
     assert authorization_service.getAccessToken() is None
 
 
