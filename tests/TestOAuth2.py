@@ -170,14 +170,27 @@ def test_initialize():
     original_preference.addPreference.assert_not_called()
 
 def test_refreshAccessTokenFailed():
+    """
+    Test if the authentication is reset once the refresh token fails to refresh access.
+    """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
-    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
-        authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
-    authorization_service.onAuthStateChanged.emit = MagicMock()
-    with patch.object(AuthorizationHelpers, "getAccessTokenUsingRefreshToken", return_value=FAILED_AUTH_RESPONSE):
-        authorization_service.refreshAccessToken()
-        assert authorization_service.onAuthStateChanged.emit.called_with(False)
+
+    def mock_refresh(self, refresh_token, callback):  # Refreshing gives a valid token.
+        callback(FAILED_AUTH_RESPONSE)
+    mock_reply = Mock()  # The response that the request should give, containing an error about it failing to authenticate.
+    mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.AuthenticationRequiredError)  # The reply is 403: Authentication required, meaning the server responded with a "Can't do that, Dave".
+    http_mock = Mock()
+    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.post = lambda url, data, headers_dict, callback, error_callback: callback(mock_reply)
+
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.readJSON", Mock(return_value = {"error_description": "Mock a failed request!"})):
+        with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+            authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
+            authorization_service.onAuthStateChanged.emit = MagicMock()
+            with patch("cura.OAuth2.AuthorizationHelpers.AuthorizationHelpers.getAccessTokenUsingRefreshToken", mock_refresh):
+                authorization_service.refreshAccessToken()
+                assert authorization_service.onAuthStateChanged.emit.called_with(False)
 
 def test_refreshAccesTokenWithoutData():
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
