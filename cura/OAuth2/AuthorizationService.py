@@ -46,6 +46,7 @@ class AuthorizationService:
         self._user_profile = None  # type: Optional["UserProfile"]
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
+        self._currently_refreshing_token = False  # Whether we are currently in the process of refreshing auth. Don't make new requests while busy.
 
         self._unable_to_get_data_message = None  # type: Optional[Message]
 
@@ -168,6 +169,10 @@ class AuthorizationService:
                 Logger.warning("Failed to get a new access token from the server.")
                 self.onAuthStateChanged.emit(logged_in = False)
 
+        if self._currently_refreshing_token:
+            Logger.debug("Was already busy refreshing token. Do not start a new request.")
+            return
+        self._currently_refreshing_token = True
         self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
 
     def deleteAuthData(self) -> None:
@@ -285,6 +290,7 @@ class AuthorizationService:
             return
 
         self._auth_data = auth_data
+        self._currently_refreshing_token = False
         if auth_data:
             self.getUserProfile()
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
