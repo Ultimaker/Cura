@@ -31,7 +31,7 @@ class PackageModel(QObject):
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
         tags = package_data.get("tags", [])
-        self._is_checked_by_ultimaker = "verified" in tags and self._package_type == "plugin" or "certified" in tags and self._package_type == "material"
+        self._is_checked_by_ultimaker = (self._package_type == "plugin" and "verified" in tags) or (self._package_type == "material" and "certified" in tags)
         self._package_version = package_data.get("package_version", "")  # Display purpose, no need for 'UM.Version'.
         self._package_info_url = package_data.get("website", "")  # Not to be confused with 'download_url'.
         self._download_count = package_data.get("download_count", 0)
