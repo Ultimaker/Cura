@@ -1,7 +1,8 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime
 from unittest.mock import MagicMock, Mock, patch
-
-import requests
 
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtNetwork import QNetworkReply
