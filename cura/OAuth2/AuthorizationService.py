@@ -103,6 +103,7 @@ class AuthorizationService:
             # If no auth data exists, we should always log in again.
             Logger.debug("There was no auth data or access token")
             callback(None)
+            return
 
         # When we checked the token we may get a user profile. This callback checks if that is a valid one and tries to refresh the token if it's not.
         def check_user_profile(user_profile):
