@@ -297,9 +297,11 @@ def test_loginAndLogout() -> None:
 def test_wrongServerResponses() -> None:
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
-    with patch.object(AuthorizationHelpers, "parseJWT", return_value=UserProfile()):
-        authorization_service._onAuthStateChanged(MALFORMED_AUTH_RESPONSE)
-    assert authorization_service.getUserProfile() is None
+    authorization_service._onAuthStateChanged(MALFORMED_AUTH_RESPONSE)
+
+    def callback(profile):
+        assert profile is None
+    authorization_service.getUserProfile(callback)
 
 def test__generate_auth_url() -> None:
     preferences = Preferences()
