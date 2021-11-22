@@ -24,7 +24,7 @@
     "overrides": {
 	    "machine_name": { "default_value": "XYZprinting da Vinci Jr. 1.0A Pro" },
         "machine_shape": { "default_value": "rectangular"},
-        "machine_heated_bed": { "default_value": true },
+        "machine_heated_bed": { "default_value": false },
         "machine_width": { "default_value": 175.00 },
         "machine_depth": { "default_value": 175.00 },
         "machine_height": { "default_value":175.00 },
