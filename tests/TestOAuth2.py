@@ -199,12 +199,6 @@ def test_refreshAccesTokenWithoutData():
     authorization_service.refreshAccessToken()
     authorization_service.onAuthStateChanged.emit.assert_not_called()
 
-def test_userProfileException():
-    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
-    authorization_service.initialize()
-    authorization_service._parseJWT = MagicMock(side_effect=requests.exceptions.ConnectionError)
-    assert authorization_service.getUserProfile() is None
-
 def test_failedLogin() -> None:
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.onAuthenticationError.emit = MagicMock()
