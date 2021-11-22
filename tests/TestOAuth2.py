@@ -40,6 +40,14 @@ SUCCESSFUL_AUTH_RESPONSE = AuthenticationResponse(
     success = True
 )
 
+EXPIRED_AUTH_RESPONSE = AuthenticationResponse(
+    access_token = "expired",
+    refresh_token = "beep?",
+    received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT),
+    expires_in = 300,  # 5 minutes should be more than enough for testing
+    success = True
+)
+
 NO_REFRESH_AUTH_RESPONSE = AuthenticationResponse(
     access_token = "beep",
     received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT),
@@ -124,17 +132,27 @@ def test__parseJWTSucceedOnRefresh():
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
     with patch.object(AuthorizationService, "getUserProfile", return_value = UserProfile()):
-        authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
+        authorization_service._storeAuthData(EXPIRED_AUTH_RESPONSE)
 
     mock_callback = Mock()  # To log the final profile response.
-    mock_reply = Mock()  # The response that the request should give, containing an error about it failing to authenticate.
-    mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
+    mock_reply_success = Mock()  # The reply should be a failure when using the expired access token, but succeed when using the refresh token.
+    mock_reply_success.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
+    mock_reply_failure = Mock()
+    mock_reply_failure.error = Mock(return_value = QNetworkReply.NetworkError.AuthenticationRequiredError)
     http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    def mock_get(url, headers_dict, callback, error_callback):
+        if(headers_dict == {"Authorization": "Bearer beep"}):
+            callback(mock_reply_success)
+        else:
+            callback(mock_reply_failure)
+    http_mock.get = mock_get
     http_mock.readJSON = Mock(return_value = {"data": {"user_id": "user_idea", "username": "Ghostkeeper"}})
+    def mock_refresh(self, refresh_token, callback):  # Refreshing gives a valid token.
+        callback(SUCCESSFUL_AUTH_RESPONSE)
 
-    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
-        authorization_service._parseJWT(mock_callback)
+    with patch("cura.OAuth2.AuthorizationHelpers.AuthorizationHelpers.getAccessTokenUsingRefreshToken", mock_refresh):
+        with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+            authorization_service._parseJWT(mock_callback)
 
     mock_callback.assert_called_once()
     profile_reply = mock_callback.call_args_list[0][0][0]
