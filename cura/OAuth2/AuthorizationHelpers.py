@@ -132,20 +132,23 @@ class AuthorizationHelpers:
         """
         if reply.error() != QNetworkReply.NetworkError.NoError:
             Logger.warning(f"Could not access account information. QNetworkError {reply.errorString()}")
-            failed_callback()
+            if failed_callback is not None:
+                failed_callback()
             return
 
         profile_data = HttpRequestManager.getInstance().readJSON(reply)
         if profile_data is None or "data" not in profile_data:
             Logger.warning("Could not parse user data from token.")
-            failed_callback()
+            if failed_callback is not None:
+                failed_callback()
             return
         profile_data = profile_data["data"]
 
         required_fields = {"user_id", "username"}
         if "user_id" not in profile_data or "username" not in profile_data:
             Logger.warning(f"User data missing required field(s): {required_fields - set(profile_data.keys())}")
-            failed_callback()
+            if failed_callback is not None:
+                failed_callback()
             return
 
         success_callback(UserProfile(
