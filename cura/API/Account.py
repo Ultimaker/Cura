@@ -207,7 +207,7 @@ class Account(QObject):
                 if self._update_timer.isActive():
                     self._update_timer.stop()
 
-    def _onProfileChanged(self, profile: UserProfile) -> None:
+    def _onProfileChanged(self, profile: Optional[UserProfile]) -> None:
         self._user_profile = profile
         self.userProfileChanged.emit()
 
