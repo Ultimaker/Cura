@@ -50,7 +50,9 @@ MALFORMED_AUTH_RESPONSE = AuthenticationResponse(success=False)
 
 
 def test_cleanAuthService() -> None:
-    # Ensure that when setting up an AuthorizationService, no data is set.
+    """
+    Ensure that when setting up an AuthorizationService, no data is set.
+    """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
 
