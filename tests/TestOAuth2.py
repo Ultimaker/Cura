@@ -81,7 +81,7 @@ def test__parseJWTNoRefreshToken():
     The request for the user profile using the authentication token should still work normally.
     """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
-    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+    with patch.object(AuthorizationService, "getUserProfile", return_value = UserProfile()):
         authorization_service._storeAuthData(NO_REFRESH_AUTH_RESPONSE)
 
     mock_callback = Mock()  # To log the final profile response.
@@ -104,7 +104,7 @@ def test__parseJWTFailOnRefresh():
     Tries to refresh the authentication token using an invalid refresh token. The request should fail.
     """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
-    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+    with patch.object(AuthorizationService, "getUserProfile", return_value = UserProfile()):
         authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
 
     mock_callback = Mock()  # To log the final profile response.
@@ -118,15 +118,28 @@ def test__parseJWTFailOnRefresh():
     mock_callback.assert_called_once_with(None)
 
 def test__parseJWTSucceedOnRefresh():
+    """
+    Tries to refresh the authentication token using a valid refresh token. The request should succeed.
+    """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
-    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+    with patch.object(AuthorizationService, "getUserProfile", return_value = UserProfile()):
         authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
 
-    with patch.object(AuthorizationHelpers, "getAccessTokenUsingRefreshToken", return_value=SUCCESSFUL_AUTH_RESPONSE):
-        with patch.object(AuthorizationHelpers, "parseJWT", MagicMock(return_value = None)) as mocked_parseJWT:
-            authorization_service._parseJWT()
-            mocked_parseJWT.assert_called_with("beep")
+    mock_callback = Mock()  # To log the final profile response.
+    mock_reply = Mock()  # The response that the request should give, containing an error about it failing to authenticate.
+    mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
+    http_mock = Mock()
+    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.readJSON = Mock(return_value = {"data": {"user_id": "user_idea", "username": "Ghostkeeper"}})
+
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+        authorization_service._parseJWT(mock_callback)
+
+    mock_callback.assert_called_once()
+    profile_reply = mock_callback.call_args_list[0][0][0]
+    assert profile_reply.user_id == "user_idea"
+    assert profile_reply.username == "Ghostkeeper"
 
 def test_initialize():
     original_preference = MagicMock()
