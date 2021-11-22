@@ -95,7 +95,6 @@ def test__parseJWTNoRefreshToken():
     mock_callback = Mock()  # To log the final profile response.
     mock_reply = Mock()  # The user profile that the service should respond with.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
-
     http_mock = Mock()
     http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
     http_mock.readJSON = Mock(return_value = {"data": {"user_id": "id_ego_or_superego", "username": "Ghostkeeper"}})
@@ -260,8 +259,14 @@ def test_loginAndLogout() -> None:
     authorization_service.onAuthStateChanged.emit = MagicMock()
     authorization_service.initialize()
 
+    mock_reply = Mock()  # The user profile that the service should respond with.
+    mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
+    http_mock = Mock()
+    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.readJSON = Mock(return_value = {"data": {"user_id": "di_resu", "username": "Emanresu"}})
+
     # Let the service think there was a successful response
-    with patch.object(AuthorizationHelpers, "parseJWT", return_value=UserProfile()):
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
         authorization_service._onAuthStateChanged(SUCCESSFUL_AUTH_RESPONSE)
 
     # Ensure that the error signal was not triggered
@@ -269,7 +274,10 @@ def test_loginAndLogout() -> None:
 
     # Since we said that it went right this time, validate that we got a signal.
     assert authorization_service.onAuthStateChanged.emit.call_count == 1
-    assert authorization_service.getUserProfile() is not None
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+        def callback(profile):
+            assert profile is not None
+        authorization_service.getUserProfile(callback)
     assert authorization_service.getAccessToken() == "beep"
 
     # Check that we stored the authentication data, so next time the user won't have to log in again.
@@ -278,7 +286,10 @@ def test_loginAndLogout() -> None:
     # We're logged in now, also check if logging out works
     authorization_service.deleteAuthData()
     assert authorization_service.onAuthStateChanged.emit.call_count == 2
-    assert authorization_service.getUserProfile() is None
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+        def callback(profile):
+            assert profile is None
+        authorization_service.getUserProfile(callback)
 
     # Ensure the data is gone after we logged out.
     assert preferences.getValue("test/auth_data") == "{}"
