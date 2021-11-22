@@ -134,7 +134,7 @@ class AuthorizationService:
 
             self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
 
-        self._auth_helpers.checkToken(self._auth_data.access_token, check_user_profile, lambda: callback(None))
+        self._auth_helpers.checkToken(self._auth_data.access_token, check_user_profile, lambda: check_user_profile(None))
 
     def getAccessToken(self) -> Optional[str]:
         """Get the access token as provided by the response data."""

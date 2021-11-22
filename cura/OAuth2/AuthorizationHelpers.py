@@ -73,7 +73,8 @@ class AuthorizationHelpers:
             self._token_url,
             data = urllib.parse.urlencode(data).encode("UTF-8"),
             headers_dict = headers,
-            callback = lambda response: self.parseTokenResponse(response, callback)
+            callback = lambda response: self.parseTokenResponse(response, callback),
+            error_callback = lambda response: self.parseTokenResponse(response, callback)
         )
 
     def parseTokenResponse(self, token_response: QNetworkReply, callback: Callable[[AuthenticationResponse], None]) -> None:
