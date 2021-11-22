@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 import requests
 
 from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtNetwork import QNetworkReply
 
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
@@ -76,10 +77,32 @@ def test_refreshAccessTokenSuccess():
 
 
 def test__parseJWTNoRefreshToken():
+    """
+    Tests parsing the user profile if there is no refresh token stored, but there is a normal authentication token.
+
+    The request for the user profile using the authentication token should still work normally.
+    """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
         authorization_service._storeAuthData(NO_REFRESH_AUTH_RESPONSE)
-    assert authorization_service._parseJWT() is None
+
+    mock_callback = Mock()  # To log the final profile response.
+    mock_reply = Mock()  # The user profile that the service should respond with.
+    mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
+
+    http_mock = Mock()
+    def mock_get(url, headers_dict, callback, error_callback):
+        nonlocal mock_reply
+        callback(mock_reply)
+    http_mock.get = mock_get
+    http_mock.readJSON = Mock(return_value = {"data": {"user_id": "id_ego_or_superego", "username": "Ghostkeeper"}})
+
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+        authorization_service._parseJWT(mock_callback)
+    mock_callback.assert_called_once()
+    profile_reply = mock_callback.call_args_list[0][0][0]
+    assert profile_reply.user_id == "id_ego_or_superego"
+    assert profile_reply.username == "Ghostkeeper"
 
 
 def test__parseJWTFailOnRefresh():
