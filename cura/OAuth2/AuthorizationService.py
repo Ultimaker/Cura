@@ -89,6 +89,9 @@ class AuthorizationService:
                 self.deleteAuthData()
                 if callback is not None:
                     callback(None)
+            else:
+                if callback is not None:
+                    callback(None)
 
         self._parseJWT(callback = store_profile)
 
