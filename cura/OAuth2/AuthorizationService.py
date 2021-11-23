@@ -3,10 +3,9 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Optional, TYPE_CHECKING, Dict
+from typing import Callable, Dict, Optional, TYPE_CHECKING, Union
 from urllib.parse import urlencode, quote_plus
 
-import requests.exceptions
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
@@ -16,7 +15,7 @@ from UM.Signal import Signal
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
-from cura.OAuth2.Models import AuthenticationResponse
+from cura.OAuth2.Models import AuthenticationResponse, BaseModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -25,6 +24,7 @@ if TYPE_CHECKING:
     from UM.Preferences import Preferences
 
 MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff?utm_source=cura&utm_medium=software&utm_campaign=change-account-before-adding-printers"
+
 
 class AuthorizationService:
     """The authorization service is responsible for handling the login flow, storing user credentials and providing
@@ -43,12 +43,13 @@ class AuthorizationService:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
-        self._auth_data = None  # type: Optional[AuthenticationResponse]
-        self._user_profile = None  # type: Optional["UserProfile"]
+        self._auth_data: Optional[AuthenticationResponse] = None
+        self._user_profile: Optional["UserProfile"] = None
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
+        self._currently_refreshing_token = False  # Whether we are currently in the process of refreshing auth. Don't make new requests while busy.
 
-        self._unable_to_get_data_message = None  # type: Optional[Message]
+        self._unable_to_get_data_message: Optional[Message] = None
 
         self.onAuthStateChanged.connect(self._authChanged)
 
@@ -62,69 +63,80 @@ class AuthorizationService:
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
-    def getUserProfile(self) -> Optional["UserProfile"]:
-        """Get the user profile as obtained from the JWT (JSON Web Token).
+    def getUserProfile(self, callback: Optional[Callable[[Optional["UserProfile"]], None]] = None) -> None:
+        """
+        Get the user profile as obtained from the JWT (JSON Web Token).
 
-        If the JWT is not yet parsed, calling this will take care of that.
-
-        :return: UserProfile if a user is logged in, None otherwise.
+        If the JWT is not yet checked and parsed, calling this will take care of that.
+        :param callback: Once the user profile is obtained, this function will be called with the given user profile. If
+        the profile fails to be obtained, this function will be called with None.
 
         See also: :py:method:`cura.OAuth2.AuthorizationService.AuthorizationService._parseJWT`
         """
+        if self._user_profile:
+            # We already obtained the profile. No need to make another request for it.
+            if callback is not None:
+                callback(self._user_profile)
+            return
 
-        if not self._user_profile:
-            # If no user profile was stored locally, we try to get it from JWT.
-            try:
-                self._user_profile = self._parseJWT()
-            except requests.exceptions.ConnectionError:
-                # Unable to get connection, can't login.
-                Logger.logException("w", "Unable to validate user data with the remote server.")
-                return None
+        # If no user profile was stored locally, we try to get it from JWT.
+        def store_profile(profile: Optional["UserProfile"]) -> None:
+            if profile is not None:
+                self._user_profile = profile
+                if callback is not None:
+                    callback(profile)
+            elif self._auth_data:
+                # If there is no user profile from the JWT, we have to log in again.
+                Logger.warning("The user profile could not be loaded. The user must log in again!")
+                self.deleteAuthData()
+                if callback is not None:
+                    callback(None)
+            else:
+                if callback is not None:
+                    callback(None)
 
-        if not self._user_profile and self._auth_data:
-            # If there is still no user profile from the JWT, we have to log in again.
-            Logger.log("w", "The user profile could not be loaded. The user must log in again!")
-            self.deleteAuthData()
-            return None
+        self._parseJWT(callback = store_profile)
 
-        return self._user_profile
-
-    def _parseJWT(self) -> Optional["UserProfile"]:
-        """Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
-
-        :return: UserProfile if it was able to parse, None otherwise.
+    def _parseJWT(self, callback: Callable[[Optional["UserProfile"]], None]) -> None:
+        """
+        Tries to parse the JWT (JSON Web Token) data, which it does if all the needed data is there.
+        :param callback: A function to call asynchronously once the user profile has been obtained. It will be called
+        with `None` if it failed to obtain a user profile.
         """
 
         if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
-            Logger.log("d", "There was no auth data or access token")
-            return None
+            Logger.debug("There was no auth data or access token")
+            callback(None)
+            return
 
-        try:
-            user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
-        except AttributeError:
-            # THis might seem a bit double, but we get crash reports about this (CURA-2N2 in sentry)
-            Logger.log("d", "There was no auth data or access token")
-            return None
+        # When we checked the token we may get a user profile. This callback checks if that is a valid one and tries to refresh the token if it's not.
+        def check_user_profile(user_profile: Optional["UserProfile"]) -> None:
+            if user_profile:
+                # If the profile was found, we call it back immediately.
+                callback(user_profile)
+                return
+            # The JWT was expired or invalid and we should request a new one.
+            if self._auth_data is None or self._auth_data.refresh_token is None:
+                Logger.warning("There was no refresh token in the auth data.")
+                callback(None)
+                return
 
-        if user_data:
-            # If the profile was found, we return it immediately.
-            return user_data
-        # The JWT was expired or invalid and we should request a new one.
-        if self._auth_data.refresh_token is None:
-            Logger.log("w", "There was no refresh token in the auth data.")
-            return None
-        self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
-        if not self._auth_data or self._auth_data.access_token is None:
-            Logger.log("w", "Unable to use the refresh token to get a new access token.")
-            # The token could not be refreshed using the refresh token. We should login again.
-            return None
-        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
-        # from the server already. Do not store the auth_data if we could not get new auth_data (eg due to a
-        # network error), since this would cause an infinite loop trying to get new auth-data
-        if self._auth_data.success:
-            self._storeAuthData(self._auth_data)
-        return self._auth_helpers.parseJWT(self._auth_data.access_token)
+            def process_auth_data(auth_data: AuthenticationResponse) -> None:
+                if auth_data.access_token is None:
+                    Logger.warning("Unable to use the refresh token to get a new access token.")
+                    callback(None)
+                    return
+                # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been
+                # deleted from the server already. Do not store the auth_data if we could not get new auth_data (e.g.
+                # due to a network error), since this would cause an infinite loop trying to get new auth-data.
+                if auth_data.success:
+                    self._storeAuthData(auth_data)
+                self._auth_helpers.checkToken(auth_data.access_token, callback, lambda: callback(None))
+
+            self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
+
+        self._auth_helpers.checkToken(self._auth_data.access_token, check_user_profile, lambda: check_user_profile(None))
 
     def getAccessToken(self) -> Optional[str]:
         """Get the access token as provided by the response data."""
@@ -149,13 +161,20 @@ class AuthorizationService:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
-        response = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
-        if response.success:
-            self._storeAuthData(response)
-            self.onAuthStateChanged.emit(logged_in = True)
-        else:
-            Logger.log("w", "Failed to get a new access token from the server.")
-            self.onAuthStateChanged.emit(logged_in = False)
+
+        def process_auth_data(response: AuthenticationResponse) -> None:
+            if response.success:
+                self._storeAuthData(response)
+                self.onAuthStateChanged.emit(logged_in = True)
+            else:
+                Logger.warning("Failed to get a new access token from the server.")
+                self.onAuthStateChanged.emit(logged_in = False)
+
+        if self._currently_refreshing_token:
+            Logger.debug("Was already busy refreshing token. Do not start a new request.")
+            return
+        self._currently_refreshing_token = True
+        self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
 
     def deleteAuthData(self) -> None:
         """Delete the authentication data that we have stored locally (eg; logout)"""
@@ -244,21 +263,23 @@ class AuthorizationService:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
-                # Also check if we can actually get the user profile information.
-                user_profile = self.getUserProfile()
-                if user_profile is not None:
-                    self.onAuthStateChanged.emit(logged_in = True)
-                    Logger.log("d", "Auth data was successfully loaded")
-                else:
-                    if self._unable_to_get_data_message is not None:
-                        self._unable_to_get_data_message.hide()
 
-                    self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
-                                                                                  "Unable to reach the Ultimaker account server."),
-                                                               title = i18n_catalog.i18nc("@info:title", "Warning"),
-                                                               message_type = Message.MessageType.ERROR)
-                    Logger.log("w", "Unable to load auth data from preferences")
-                    self._unable_to_get_data_message.show()
+                # Also check if we can actually get the user profile information.
+                def callback(profile: Optional["UserProfile"]) -> None:
+                    if profile is not None:
+                        self.onAuthStateChanged.emit(logged_in = True)
+                        Logger.debug("Auth data was successfully loaded")
+                    else:
+                        if self._unable_to_get_data_message is not None:
+                            self._unable_to_get_data_message.show()
+                        else:
+                            self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
+                                                                                          "Unable to reach the Ultimaker account server."),
+                                                                       title = i18n_catalog.i18nc("@info:title", "Log-in failed"),
+                                                                       message_type = Message.MessageType.ERROR)
+                            Logger.warning("Unable to get user profile using auth data from preferences.")
+                            self._unable_to_get_data_message.show()
+                self.getUserProfile(callback)
         except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
 
@@ -271,8 +292,9 @@ class AuthorizationService:
             return
 
         self._auth_data = auth_data
+        self._currently_refreshing_token = False
         if auth_data:
-            self._user_profile = self.getUserProfile()
+            self.getUserProfile()
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             Logger.log("d", "Clearing the user profile")
