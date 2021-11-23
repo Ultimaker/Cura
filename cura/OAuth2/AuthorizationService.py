@@ -3,7 +3,7 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Callable, Dict, Optional, TYPE_CHECKING
+from typing import Callable, Dict, Optional, TYPE_CHECKING, Union
 from urllib.parse import urlencode, quote_plus
 
 from PyQt5.QtCore import QUrl
@@ -15,7 +15,7 @@ from UM.Signal import Signal
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
-from cura.OAuth2.Models import AuthenticationResponse
+from cura.OAuth2.Models import AuthenticationResponse, BaseModel
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -117,7 +117,7 @@ class AuthorizationService:
                 callback(user_profile)
                 return
             # The JWT was expired or invalid and we should request a new one.
-            if self._auth_data.refresh_token is None:
+            if self._auth_data is None or self._auth_data.refresh_token is None:
                 Logger.warning("There was no refresh token in the auth data.")
                 callback(None)
                 return
