@@ -43,6 +43,8 @@ class PackageModel(QObject):
         author_data = package_data.get("author", {})
         self._author_name = author_data.get("display_name", catalog.i18nc("@label:property", "Unknown Author"))
         self._author_info_url = author_data.get("website", "")
+        if not self._icon_url or self._icon_url == "":
+            self._icon_url = author_data.get("icon_url", "")
 
         self._section_title = section_title
         # Note that there's a lot more info in the package_data than just these specified here.
