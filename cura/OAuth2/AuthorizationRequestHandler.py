@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
+
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     """This handler handles all HTTP requests on the local web server.
 

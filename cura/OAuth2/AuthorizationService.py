@@ -25,6 +25,7 @@ if TYPE_CHECKING:
 
 MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff?utm_source=cura&utm_medium=software&utm_campaign=change-account-before-adding-printers"
 
+
 class AuthorizationService:
     """The authorization service is responsible for handling the login flow, storing user credentials and providing
     account information.
@@ -62,7 +63,7 @@ class AuthorizationService:
         if self._preferences:
             self._preferences.addPreference(self._settings.AUTH_DATA_PREFERENCE_KEY, "{}")
 
-    def getUserProfile(self, callback: Callable[[Optional["UserProfile"]], None] = None) -> None:
+    def getUserProfile(self, callback: Optional[Callable[[Optional["UserProfile"]], None]] = None) -> None:
         """
         Get the user profile as obtained from the JWT (JSON Web Token).
 
@@ -79,7 +80,7 @@ class AuthorizationService:
             return
 
         # If no user profile was stored locally, we try to get it from JWT.
-        def store_profile(profile: Optional["UserProfile"]):
+        def store_profile(profile: Optional["UserProfile"]) -> None:
             if profile is not None:
                 self._user_profile = profile
                 if callback is not None:
@@ -110,7 +111,7 @@ class AuthorizationService:
             return
 
         # When we checked the token we may get a user profile. This callback checks if that is a valid one and tries to refresh the token if it's not.
-        def check_user_profile(user_profile):
+        def check_user_profile(user_profile: Optional["UserProfile"]) -> None:
             if user_profile:
                 # If the profile was found, we call it back immediately.
                 callback(user_profile)
@@ -121,7 +122,7 @@ class AuthorizationService:
                 callback(None)
                 return
 
-            def process_auth_data(auth_data: AuthenticationResponse):
+            def process_auth_data(auth_data: AuthenticationResponse) -> None:
                 if auth_data.access_token is None:
                     Logger.warning("Unable to use the refresh token to get a new access token.")
                     callback(None)
@@ -161,7 +162,7 @@ class AuthorizationService:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
 
-        def process_auth_data(response: AuthenticationResponse):
+        def process_auth_data(response: AuthenticationResponse) -> None:
             if response.success:
                 self._storeAuthData(response)
                 self.onAuthStateChanged.emit(logged_in = True)
@@ -264,7 +265,7 @@ class AuthorizationService:
                 self._auth_data = AuthenticationResponse(**preferences_data)
 
                 # Also check if we can actually get the user profile information.
-                def callback(profile: Optional["UserProfile"]):
+                def callback(profile: Optional["UserProfile"]) -> None:
                     if profile is not None:
                         self.onAuthStateChanged.emit(logged_in = True)
                         Logger.debug("Auth data was successfully loaded")
@@ -272,7 +273,8 @@ class AuthorizationService:
                         if self._unable_to_get_data_message is not None:
                             self._unable_to_get_data_message.show()
                         else:
-                            self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."),
+                            self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
+                                                                                          "Unable to reach the Ultimaker account server."),
                                                                        title = i18n_catalog.i18nc("@info:title", "Log-in failed"),
                                                                        message_type = Message.MessageType.ERROR)
                             Logger.warning("Unable to get user profile using auth data from preferences.")

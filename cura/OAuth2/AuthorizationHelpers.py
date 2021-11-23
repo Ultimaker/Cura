@@ -94,12 +94,12 @@ class AuthorizationHelpers:
             return
 
         callback(AuthenticationResponse(success = True,
-            token_type = token_data["token_type"],
-            access_token = token_data["access_token"],
-            refresh_token = token_data["refresh_token"],
-            expires_in = token_data["expires_in"],
-            scope = token_data["scope"],
-            received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)))
+                                        token_type = token_data["token_type"],
+                                        access_token = token_data["access_token"],
+                                        refresh_token = token_data["refresh_token"],
+                                        expires_in = token_data["expires_in"],
+                                        scope = token_data["scope"],
+                                        received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)))
         return
 
     def checkToken(self, access_token: str, success_callback: Optional[Callable[[UserProfile], None]] = None, failed_callback: Optional[Callable[[], None]] = None) -> None:
