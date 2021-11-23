@@ -42,13 +42,13 @@ class AuthorizationService:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
-        self._auth_data = None  # type: Optional[AuthenticationResponse]
-        self._user_profile = None  # type: Optional["UserProfile"]
+        self._auth_data: Optional[AuthenticationResponse] = None
+        self._user_profile: Optional["UserProfile"] = None
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
         self._currently_refreshing_token = False  # Whether we are currently in the process of refreshing auth. Don't make new requests while busy.
 
-        self._unable_to_get_data_message = None  # type: Optional[Message]
+        self._unable_to_get_data_message: Optional[Message] = None
 
         self.onAuthStateChanged.connect(self._authChanged)
 

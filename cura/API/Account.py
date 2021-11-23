@@ -74,14 +74,14 @@ class Account(QObject):
         self._application = application
         self._new_cloud_printers_detected = False
 
-        self._error_message = None  # type: Optional[Message]
+        self._error_message: Optional[Message] = None
         self._logged_in = False
-        self._user_profile = None  # type: Optional[UserProfile]
+        self._user_profile: Optional[UserProfile] = None
         self._additional_rights: Dict[str, Any] = {}
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
-        self._update_packages_action = None  # type: Optional[Callable]
+        self._update_packages_action: Optional[Callable] = None
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -107,7 +107,7 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.sync)
 
-        self._sync_services = {}  # type: Dict[str, int]
+        self._sync_services: Dict[str, int] = {}
         """contains entries "service_name" : SyncState"""
 
     def initialize(self) -> None:

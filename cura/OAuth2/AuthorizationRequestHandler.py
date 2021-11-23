@@ -25,11 +25,11 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         super().__init__(request, client_address, server)
 
         # These values will be injected by the HTTPServer that this handler belongs to.
-        self.authorization_helpers = None  # type: Optional[AuthorizationHelpers]
-        self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
-        self.verification_code = None  # type: Optional[str]
+        self.authorization_helpers: Optional[AuthorizationHelpers] = None
+        self.authorization_callback: Optional[Callable[[AuthenticationResponse], None]] = None
+        self.verification_code: Optional[str] = None
 
-        self.state = None  # type: Optional[str]
+        self.state: Optional[str] = None
 
     # CURA-6609: Some browser seems to issue a HEAD instead of GET request as the callback.
     def do_HEAD(self) -> None:
