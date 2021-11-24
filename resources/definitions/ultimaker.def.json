@@ -41,6 +41,9 @@
             "value": false,
             "enabled": false
         },
+        "skin_angles": {
+            "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]"
+        },
         "line_width": {
             "value": "machine_nozzle_size"
         },
@@ -54,7 +57,7 @@
             "value": true
         },
         "speed_equalize_flow_width_factor": {
-            "value": "1.1"
+            "value": "110.0"
         },
         "meshfix_maximum_extrusion_area_deviation": {
             "value": "50000"
