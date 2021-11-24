@@ -58,22 +58,31 @@ Item
                 model: Cura.IntentCategoryModel{}
                 Item
                 {
-                    property var intentModel: model["qualities"]                    
                     height:300
-                    
-                    ColumnLayout
+            
+                    RowLayout
                     {
-                        Layout.fillWidth:true
-
+                        anchors.fill: parent
+                        spacing: 6
                         property var intentModel: model["qualities"]
                         Repeater
                         {
-                            model: parent.intentModel                      
-                            Text{ text: model.name}
+                            model: parent.intentModel
+                            Button{
+                                Layout.fillWidth: true
+                                visible: model.available
+                                onClicked: Cura.IntentManager.selectIntent(parent.intentModel.intent_category, model.quality_type)
+                                
+                                ColumnLayout{
+                                    spacing: 2
+                                    Text{ text: model.name}
+                                    Text{ text: model.layer_height}
+                                }
+                            }
+                                                  
                         }
 
-                    } 
-                    
+                    }                     
                 }               
             }
         }
