@@ -75,6 +75,15 @@ Item
                                 
                                 ColumnLayout{
                                     spacing: 2
+                                    UM.RecolorImage
+                                    {
+                                        id: buttonIconLeft
+                                        source: UM.Theme.getIcon("Check")
+                                        height: UM.Theme.getSize("action_button_icon").height
+                                        width: UM.Theme.getSize("action_button_icon").height
+                                        color: UM.Theme.getColor("small_button_text")
+
+                                    }
                                     Text{ text: model.name}
                                     Text{ text: model.layer_height}
                                 }
