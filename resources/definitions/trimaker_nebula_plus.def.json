@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Trimaker Nebula",
+    "name": "Trimaker Nebula Plus",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
