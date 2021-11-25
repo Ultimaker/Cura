@@ -65,15 +65,6 @@
         "gantry_height": { 
             "value": 30
         },
-        "machine_max_feedrate_x": {
-            "value": 300
-        },
-        "machine_max_feedrate_y": {
-            "value": 300
-        },
-        "machine_max_feedrate_z": {
-            "value": 35
-        },
         "layer_height": {
             "value": 0.2
         },
