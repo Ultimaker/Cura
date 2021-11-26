@@ -572,6 +572,10 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("general/accepted_user_agreement", False)
 
+        preferences.addPreference("cura/market_place_show_plugin_banner", True)
+        preferences.addPreference("cura/market_place_show_material_banner", True)
+        preferences.addPreference("cura/market_place_show_manage_packages_banner", True)
+
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",
@@ -2010,6 +2014,33 @@ class CuraApplication(QtApplication):
         # Only show the what's new dialog if there's no machine and we have just upgraded
         show_whatsnew_only = has_active_machine and has_app_just_upgraded
         return show_whatsnew_only
+
+    @pyqtSlot(result = bool)
+    def shouldShowMarketPlacePluginBanner(self) -> bool:
+        return self._preferences.getValue("cura/market_place_show_plugin_banner")
+
+    @pyqtSlot(result = bool)
+    def shouldShowMarketPlaceMaterialBanner(self) -> bool:
+        return self._preferences.getValue("cura/market_place_show_material_banner")
+
+    @pyqtSlot(result = bool)
+    def shouldShowMarketPlaceManagePackagesBanner(self) -> bool:
+        return self._preferences.getValue("cura/market_place_show_manage_packages_banner")
+
+    @pyqtSlot()
+    def closeMarketPlacePluginBanner(self) -> None:
+        Logger.log("i", "Close market place plugin banner")
+        self._preferences.setValue("cura/market_place_show_plugin_banner", False)
+
+    @pyqtSlot()
+    def closeMarketPlaceMaterialBanner(self) -> None:
+        Logger.log("i", "Close market place material banner")
+        self._preferences.setValue("cura/market_place_show_material_banner", False)
+
+    @pyqtSlot()
+    def closeMarketPlaceManagePackagesBanner(self) -> None:
+        Logger.log("i", "Close market place manage packages banner")
+        self._preferences.setValue("cura/market_place_show_manage_packages_banner", False)
 
     @pyqtSlot(result = int)
     def appWidth(self) -> int:

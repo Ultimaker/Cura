@@ -50,7 +50,10 @@ Window
 
             OnboardBanner
             {
-                bannerType: content.item && content.item.bannerType
+                bannerVisible: content.item && content.item.bannerVisible
+                bannerBody: content.item && content.item.bannerBody
+                bannerIcon: content.item && content.item.bannerIcon
+                onRemoveBanner: content.item && content.item.onRemoveBanner
             }
 
             // Page title.

@@ -11,7 +11,10 @@ ListView
     id: packages
 
     property string pageTitle
-    property string bannerType
+    property bool bannerVisible
+    property string bannerIcon
+    property string bannerBody
+    property var onRemoveBanner
 
     width: parent.width
 

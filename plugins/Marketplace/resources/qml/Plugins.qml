@@ -6,7 +6,15 @@ import Marketplace 1.0 as Marketplace
 Packages
 {
     pageTitle: catalog.i18nc("@header", "Install Plugins")
-    bannerType: "__PLUGINS__"
+
+    bannerVisible: CuraApplication.shouldShowMarketPlacePluginBanner()
+    bannerIcon: "Shop"
+    bannerBody: catalog.i18nc("@text", "Select and install material profiles optimised for your Ultimaker 3D printers.")
+    onRemoveBanner: function() {
+        CuraApplication.closeMarketPlacePluginBanner();
+        bannerVisible = false;
+    }
+
     model: Marketplace.RemotePackageList
     {
         packageTypeFilter: "plugin"
