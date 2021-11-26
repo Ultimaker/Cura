@@ -53,12 +53,8 @@ msgstr "G-code’u Başlat"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
-"."
-msgstr ""
-"ile ayrılan, başlangıçta yürütülecek G-code komutları\n"
-"."
+msgid "G-code commands to be executed at the very start - separated by \\n."
+msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları \\n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -67,12 +63,8 @@ msgstr "G-code’u Sonlandır"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
-"."
-msgstr ""
-"ile ayrılan, bitişte yürütülecek G-code komutları\n"
-"."
+msgid "G-code commands to be executed at the very end - separated by \\n."
+msgstr "ile ayrılan, bitişte yürütülecek G-code komutları \\n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1732,7 +1724,10 @@ msgstr "Dolgu Şekli"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgstr "Baskının dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, üçlü altıgen,"
+" kübik, sekizlik, çeyrek kübik, çapraz ve eşmerkezli şekiller her katmana tam olarak basılır. Gyroid, kübik, çeyrek kübik ve sekizlik dolgu, her yönde"
+" daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir. Yıldırım dolgu, objenin yalnızca (iç) çatılarını destekleyerek dolgu miktarını en aza"
+" indirmeye çalışır. Bu durumda dolgu yüzdesi yalnızca bir katmanın altında 'geçerli' olur ve modeli destekler."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1802,7 +1797,7 @@ msgstr "Gyroid"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Yıldırım"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2021,42 +2016,43 @@ msgstr "Kaplamanın kenarlarını destekleyen dolgu katmanının kalınlığı."
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "Yıldırım Dolgu Destek Açısı"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Bir yıldırım dolgu tabakasının üstünde kalanları ne zaman desteklenmesi gerektiğini belirler. Bir katmanın kalınlığı verilen açıyla ölçülür."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "Yıldırım Dolgu Çıkıntı Açısı"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Bir yıldırım dolgu tabakasının üstündeki modeli ne zaman desteklemesi gerektiğini belirler. Dalların açısı olarak ölçülür."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "Yıldırım Dolgu Budama Açısı"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Bir yıldırım dolgu katmanının hemen üstündeki katmanla ağaçların dış uzantılarının budanması şeklinde sahip olabileceği farktır. Dalların açısı olarak"
+" ölçülür."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "Yıldırım Dolgu Düzleştirme Açısı"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Bir yıldırım dolgu katmanının hemen üstündeki katmanla ağaçların düzlenmesi şeklinde sahip olabileceği farktır. Dalların açısı olarak ölçülür."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3251,7 +3247,7 @@ msgstr "Tümü"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "Dış Yüzeyde Değil"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5205,7 +5201,7 @@ msgstr "Minimum Kalıp Genişliği"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "Kalıbın dış tarafı ile modelin dış tarafı arasındaki minimum mesafedir."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"

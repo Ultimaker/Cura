@@ -4,7 +4,7 @@
     "metadata":
     {
         "type": "machine",
-        "author": "Ultimaker",
+        "author": "Unknown",
         "manufacturer": "Unknown",
         "setting_version": 19,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
@@ -159,6 +159,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_height":
+                {
+                    "label": "Machine Height",
+                    "description": "The height (Z-direction) of the printable area.",
+                    "default_value": 100,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_shape":
                 {
                     "label": "Build Plate Shape",
@@ -185,16 +195,6 @@
                         "glass": "Glass",
                         "aluminum": "Aluminum"
                     },
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "machine_height":
-                {
-                    "label": "Machine Height",
-                    "description": "The height (Z-direction) of the printable area.",
-                    "default_value": 100,
-                    "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -571,7 +571,7 @@
                 },
                 "machine_max_feedrate_e":
                 {
-                    "label": "Maximum Feedrate",
+                    "label": "Maximum Speed E",
                     "description": "The maximum speed of the filament.",
                     "unit": "mm/s",
                     "type": "float",
@@ -1056,6 +1056,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
                     "maximum_value_warning": "10 * line_width",
+                    "maximum_value": "999999 * line_width",
                     "type": "float",
                     "limit_to_extruder": "wall_x_extruder_nr",
                     "settable_per_mesh": true,
@@ -1069,6 +1070,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "10",
+                            "maximum_value": "999999",
                             "type": "int",
                             "value": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1) if wall_thickness != 0 else 0",
                             "limit_to_extruder": "wall_x_extruder_nr",
@@ -1557,6 +1559,7 @@
                     "default_value": 1,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
+                    "maximum_value": "999999",
                     "type": "int",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric' or (roofing_layer_count > 0 and roofing_pattern != 'concentric'))",
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -1943,7 +1946,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern != 'concentric' and infill_sparse_density > 0",
+                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'gyroid', 'lightning') and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1999,6 +2002,7 @@
                     "default_value": 0,
                     "type": "int",
                     "minimum_value": "0",
+                    "maximum_value": "999999",
                     "enabled": "infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
@@ -4446,6 +4450,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
                     "maximum_value_warning": "0 if (support_skip_some_zags and support_pattern == 'zigzag') else 3",
+                    "maximum_value": "999999",
                     "type": "int",
                     "value": "1 if support_enable and support_structure == 'tree' else (1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0)",
                     "enabled": "support_enable or support_meshes_present",
@@ -4556,6 +4561,7 @@
                     "default_value": 8.0,
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
+                    "maximum_value": "0.5 * min(machine_width, machine_depth)",
                     "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -4570,6 +4576,7 @@
                             "default_value": 20,
                             "minimum_value": "0",
                             "maximum_value_warning": "50 / skirt_brim_line_width",
+                            "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                             "value": "math.ceil(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
                             "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
                             "settable_per_mesh": false,
@@ -4602,7 +4609,7 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable or support_meshes_present",
-                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
+                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)",
                             "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -5333,6 +5340,7 @@
                     "default_value": 1,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
+                    "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -7421,9 +7429,9 @@
                     "unit": "%",
                     "default_value": 100,
                     "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "100",
+                    "minimum_value": "0.001",
                     "minimum_value_warning": "20",
+                    "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -7469,8 +7477,7 @@
                     "unit": "%",
                     "default_value": 100,
                     "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "500",
+                    "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
@@ -7483,9 +7490,9 @@
                     "unit": "%",
                     "default_value": 75,
                     "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "100",
+                    "minimum_value": "0",
                     "minimum_value_warning": "20",
+                    "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
@@ -7522,8 +7529,7 @@
                     "unit": "%",
                     "default_value": 110,
                     "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "500",
+                    "minimum_value": "0.001",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
@@ -7536,9 +7542,9 @@
                     "unit": "%",
                     "default_value": 80,
                     "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "100",
+                    "minimum_value": "0",
                     "minimum_value_warning": "20",
+                    "maximum_value_warning": "100",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },

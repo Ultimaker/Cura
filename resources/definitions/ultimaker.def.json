@@ -40,6 +40,9 @@
         {
             "value": false,
             "enabled": false
+        },
+        "skin_angles": {
+            "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]"
         }
     }
 }

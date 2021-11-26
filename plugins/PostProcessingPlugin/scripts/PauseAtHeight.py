@@ -489,18 +489,17 @@ class PauseAtHeight(Script):
                         # Set extruder resume temperature
                         prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
 
-                    # Push the filament back,
-                    if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
+                    if extrude_amount != 0:  # Need to prime after the pause.
+                        # Push the filament back.
+                        if retraction_amount != 0:
+                            prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
 
-                    # Optionally extrude material
-                    if extrude_amount != 0:
+                        # Prime the material.
                         prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "; Extra extrude after the unpause\n"
 
-                    # and retract again, the properly primes the nozzle
-                    # when changing filament.
-                    if retraction_amount != 0:
-                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
+                        # And retract again to make the movements back to the starting position.
+                        if retraction_amount != 0:
+                            prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head back
                     if park_enabled:

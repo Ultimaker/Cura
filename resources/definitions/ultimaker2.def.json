@@ -95,9 +95,6 @@
         },
         "skin_monotonic" : {
             "value": true
-        },
-        "top_bottom_pattern" : {
-            "value":  "'zigzag'"
         }
     }
 }

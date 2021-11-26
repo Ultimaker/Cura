@@ -29,7 +29,7 @@ pywin32==301
 requests==2.22.0
 scipy==1.6.2
 sentry-sdk==0.13.5
-shapely[vectorized]==1.7.1
+shapely[vectorized]==1.8.0
 six==1.12.0
 trimesh==3.2.33
 twisted==21.2.0
