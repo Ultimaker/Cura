@@ -1,10 +1,10 @@
 [Arachne engine second beta]
 
 <h1>Arachne engine beta 2</h1>
-Our new Ultimaker Cura engine allows you to create parts with ground-breaking quality, strength, and speed. This is made possible by fundamentally redefining how the inside of a model is generated – through adaptive line widths and optimized line positioning.
+Our new Ultimaker Cura engine allows you to create parts with ground-breaking quality, strength, and speed. This is made possible by fundamentally redefining how the inside of a model is generated – through adaptive line widths and optimized line positioning. <br>
 Earlier this year, we released the first beta of Ultimaker Cura Arachne engine. Which received an overwhelmingly positive response, thank you for all your feedback! 
-Since the first beta release we've been working on improving the Arachne engine. 
-Join <a href="https://github.com/Ultimaker/Cura/discussions/10931">our discussion</a> on Github to provide us with all your feedback.
+Since the first beta release we've been working on improving the Arachne engine. <br>
+Join <a href="https://github.com/Ultimaker/Cura/discussions/10931">our discussion</a> on GitHub to provide us with all your feedback.
 
 * Back pressure compensation
 Print quality is improved through dynamically adjusting print head velocity, which slows down or speeds up depending on the pressure of the material through the Bowden tube.
@@ -43,7 +43,7 @@ All print quality improvements from Ultimaker Cura 4.12 have been added.
 - Printer pauses at certain layer creating dripping spots
 - Retracted unnecessary travel moves
 
-<i>Note: This is _not_ based on a specific stable version of the front-end of Cura (like '4.12.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the variable line width feature-set!</i>
+*<i>Note: This is _not_ based on a specific stable version of the front-end of Cura (like '4.12.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the variable line width feature-set!</i>
 
 <h1>Arachne engine beta 1 </h1>
 This is the beta release of Ultimaker Cura's "Arachne" engine. The objective is to fill the available space better with walls, reduce variability in flow rate, preventing gaps and overextrusion and improving path planning by implementing variable line widths. This allows for a more consistent print and better fit to the specifications of the original 3D model.
