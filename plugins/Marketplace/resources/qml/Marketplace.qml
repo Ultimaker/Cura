@@ -48,6 +48,10 @@ Window
 
             spacing: UM.Theme.getSize("default_margin").height
 
+            OnboardBanner
+            {
+            }
+
             // Page title.
             Item
             {
