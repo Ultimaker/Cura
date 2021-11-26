@@ -10,7 +10,15 @@ import UM 1.4 as UM
 Packages
 {
     pageTitle: catalog.i18nc("@header", "Manage packages")
-    bannerType: "__MANAGE_PACKAGES__"
+
+    bannerVisible: CuraApplication.shouldShowMarketPlaceManagePackagesBanner()
+    bannerIcon: "ArrowDoubleCircleRight"
+    bannerBody: catalog.i18nc("@text", "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly.")
+    onRemoveBanner: function() {
+        CuraApplication.closeMarketPlaceManagePackagesBanner();
+        bannerVisible = false;
+    }
+
     model: Marketplace.LocalPackageList
     {
     }

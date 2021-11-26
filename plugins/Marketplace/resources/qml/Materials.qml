@@ -6,7 +6,15 @@ import Marketplace 1.0 as Marketplace
 Packages
 {
     pageTitle: catalog.i18nc("@header", "Install Materials")
-    bannerType: "__MATERIALS__"
+
+    bannerVisible: CuraApplication.shouldShowMarketPlaceMaterialBanner()
+    bannerIcon: "Spool"
+    bannerBody: catalog.i18nc("@text", "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users.")
+    onRemoveBanner: function() {
+        CuraApplication.closeMarketPlaceMaterialBanner();
+        bannerVisible = false;
+    }
+
     model: Marketplace.RemotePackageList
     {
         packageTypeFilter: "material"
