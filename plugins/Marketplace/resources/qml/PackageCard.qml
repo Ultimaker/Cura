@@ -204,7 +204,7 @@ Rectangle
             property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
             text: packageData.description
-            font: UM.Theme.getFont("medium")
+            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             maximumLineCount: 2
             wrapMode: Text.Wrap
@@ -328,6 +328,6 @@ Rectangle
     FontMetrics
     {
         id: fontMetrics
-        font: UM.Theme.getFont("medium")
+        font: UM.Theme.getFont("default")
     }
 }
