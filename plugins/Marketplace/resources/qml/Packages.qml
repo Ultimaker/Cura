@@ -62,9 +62,20 @@ ListView
         }
     }
 
-    delegate: PackageCard
+    delegate: MouseArea
     {
-        packageData: model.package
+        width: parent.width
+        height: childrenRect.height
+
+        onClicked:
+        {
+            contextStack.push(Qt.resolvedUrl("PackageDetails.qml"))
+        }
+
+        PackageCard
+        {
+            packageData: model.package
+        }
     }
 
     //Wrapper item to add spacing between content and footer.
