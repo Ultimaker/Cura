@@ -6,6 +6,7 @@ import Marketplace 1.0 as Marketplace
 Packages
 {
     pageTitle: catalog.i18nc("@header", "Install Materials")
+    bannerType: "__MATERIALS__"
     model: Marketplace.RemotePackageList
     {
         packageTypeFilter: "material"

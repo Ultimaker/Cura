@@ -10,6 +10,7 @@ import UM 1.4 as UM
 Packages
 {
     pageTitle: catalog.i18nc("@header", "Manage packages")
+    bannerType: "__MANAGE_PACKAGES__"
     model: Marketplace.LocalPackageList
     {
     }

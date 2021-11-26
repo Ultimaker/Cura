@@ -11,6 +11,8 @@ ListView
     id: packages
 
     property string pageTitle
+    property string bannerType
+
     width: parent.width
 
     clip: true

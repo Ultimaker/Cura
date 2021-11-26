@@ -50,6 +50,7 @@ Window
 
             OnboardBanner
             {
+                bannerType: content.item && content.item.bannerType
             }
 
             // Page title.
