@@ -11,6 +11,8 @@ import Cura 1.6 as Cura
 // Onboarding banner.
 Rectangle
 {
+    property var bannerType
+
     Layout.preferredHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
     anchors
     {
@@ -39,7 +41,14 @@ Rectangle
         {
             anchors.fill: parent
             color: UM.Theme.getColor("primary_text")
-            source: UM.Theme.getIcon("Shop")
+            source: {
+                switch (bannerType) {
+                    case "__PLUGINS__" : return UM.Theme.getIcon("Shop");
+                    case "__MATERIALS__" : return UM.Theme.getIcon("Spool");
+                    case "__MANAGE_PACKAGES__" : return UM.Theme.getIcon("ArrowDoubleCircleRight");
+                    default: return "";
+                }
+            }
         }
     }
 
@@ -74,6 +83,13 @@ Rectangle
         font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("primary_text")
         wrapMode: Text.WordWrap
-        text: catalog.i18nc("@text", "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users.")
+        text: {
+            switch (bannerType) {
+                case "__PLUGINS__" : return catalog.i18nc("@text", "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users.");
+                case "__MATERIALS__" : return catalog.i18nc("@text", "Select and install material profiles optimised for your Ultimaker 3D printers.");
+                case "__MANAGE_PACKAGES__" : return catalog.i18nc("@text", "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly.");
+                default: return "";
+            }
+        }
     }
 }
