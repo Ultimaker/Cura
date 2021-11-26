@@ -24,6 +24,7 @@ Item
 
     Column
     {
+
     spacing: 30
 
         anchors
@@ -32,74 +33,128 @@ Item
             right: parent.right
         }
 
-
-        Controls2.TabBar 
-        {
-            id: intentSelection
+        Column{
+            //height: 600
             width: parent.width
-            
-            Repeater
+            spacing:0
+
+            Controls2.TabBar 
             {
+                id: intentSelection
+                width: parent.width
+                height: UM.Theme.getSize("recomended_quality_tab").height
+                spacing:UM.Theme.getSize("narrow_margin").width
+
+            
+                Repeater
+                {
 
                 model: Cura.IntentCategoryModel{}
                 Controls2.TabButton{
-                    text : model.name
-                }
-            }
-        }
-
-        StackLayout{
-            width: parent.width
-            currentIndex:intentSelection.currentIndex
-            
-            Repeater
-            {
-
-                model: Cura.IntentCategoryModel{}
-                Item
-                {
-                    height:300
-            
-                    RowLayout
-                    {
-                        anchors.fill: parent
-                        spacing: 6
-                        property var intentModel: model["qualities"]
-                        Repeater
-                        {
-                            model: parent.intentModel
-                            Button{
-                                Layout.fillWidth: true
-                                visible: model.available
-                                onClicked: Cura.IntentManager.selectIntent(parent.intentModel.intent_category, model.quality_type)
-                                
-                                ColumnLayout{
-                                    spacing: 2
-                                    UM.RecolorImage
-                                    {
-                                        id: buttonIconLeft
-                                        source: UM.Theme.getIcon("Check")
-                                        height: UM.Theme.getSize("action_button_icon").height
-                                        width: UM.Theme.getSize("action_button_icon").height
-                                        color: UM.Theme.getColor("small_button_text")
-
+                    anchors.verticalCenter:parent.verticalCenter
+                    height: parent.height
+                    background: Rectangle{
+                        color: (intentSelection.currentIndex==index) ? UM.Theme.getColor("setting_category_hover") : UM.Theme.getColor("main_background")
+                    }
+                    
+                         ColumnLayout{
+                            spacing: 2
+                            anchors.fill: parent
+                            UM.RecolorImage
+                            {
+                                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                                id: buttonIconLeft
+                                source: {      
+                                    switch (model.name) {
+                                        case "Default":
+                                            UM.Theme.getIcon("Placeholder", "high")
+                                            break
+                                        case "Visual":
+                                            UM.Theme.getIcon("Art", "high")
+                                            break
+                                        case "Engineering":
+                                            UM.Theme.getIcon("Machine", "high")
+                                            break
+                                        case "Draft":
+                                            UM.Theme.getIcon("Easy", "high")
+                                            break
+                                        default:
+                                            UM.Theme.getIcon("Placeholder", "high")
+                                            break    
                                     }
-                                    Text{ text: model.name}
-                                    Text{ text: model.layer_height}
                                 }
+                                height: UM.Theme.getSize("high_resolution_icon").width/2
+                                width: UM.Theme.getSize("high_resolution_icon").height/2
+                                color: UM.Theme.getColor("small_button_text")
                             }
-                                                  
+                            Text{ 
+                                text: model.name
+                                horizontalAlignment: Text.AlignHCenter
+                                Layout.fillWidth:true                        
+                            }
                         }
-
-                    }                     
-                }               
+                    
+                    } 
+                }
+                
             }
+
+             StackLayout{
+                width: parent.width
+                currentIndex:intentSelection.currentIndex
+                height:200
+                
+                Repeater
+                {
+
+                    model: Cura.IntentCategoryModel{}
+                    Rectangle{
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        color:'blue'
+
+                        RowLayout
+                        {
+
+                            anchors.fill:parent
+                            spacing: 6
+                            property var intentModel: model["qualities"]
+                            Repeater
+                            {
+                                model: parent.intentModel
+                                Button{
+                                    Layout.fillWidth: true
+                                    visible: model.available
+                                    onClicked: Cura.IntentManager.selectIntent(parent.intentModel.intent_category, model.quality_type)
+                                    
+                                    ColumnLayout{
+                                        spacing: 2
+                                        UM.RecolorImage
+                                        {
+                                            id: buttonIconLeft
+                                            source: UM.Theme.getIcon("Check")
+                                            height: UM.Theme.getSize("action_button_icon").height
+                                            width: UM.Theme.getSize("action_button_icon").height
+                                            color: UM.Theme.getColor("small_button_text")
+
+                                        }
+                                        Text{ text: model.name}
+                                        Text{ text: model.layer_height}
+                                    }
+                                }
+                                                        
+                            }
+
+                        } 
+                    }                    
+                                
+                }
+            } 
         }
          
 
        
-
-
         Controls2.ButtonGroup
         {
             id: activeProfileButtonGroup

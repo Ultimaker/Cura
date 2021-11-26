@@ -528,12 +528,15 @@
         "logo": [16, 3.5],
 
         "wide_margin": [2.0, 2.0],
-        "thick_margin": [1.71, 1.43],
+        "thick_margin": [1.5, 1.5],
         "default_margin": [1.0, 1.0],
         "thin_margin": [0.71, 0.71],
         "narrow_margin": [0.5, 0.5],
 
         "extruder_icon": [2.5, 2.5],
+
+        "high_resolution_icon": [4,4],
+        "recomended_quality_tab":[5,5 ],
 
         "section": [0.0, 2],
         "section_control": [0, 1],
