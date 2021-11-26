@@ -42,143 +42,153 @@ Window
         anchors.fill: parent
         color: UM.Theme.getColor("main_background")
 
-        ColumnLayout
+        //The Marketplace can have a page in front of everything with package details. The stack view controls its visibility.
+        StackView
         {
+            id: contextStack
             anchors.fill: parent
 
-            spacing: UM.Theme.getSize("default_margin").height
+            initialItem: packageBrowse
 
-            // Page title.
-            Item
+            ColumnLayout
             {
-                Layout.preferredWidth: parent.width
-                Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
+                id: packageBrowse
+                anchors.fill: parent
 
-                Label
+                spacing: UM.Theme.getSize("default_margin").height
+
+                // Page title.
+                Item
                 {
-                    id: pageTitle
-                    anchors
+                    Layout.preferredWidth: parent.width
+                    Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
+
+                    Label
                     {
-                        left: parent.left
-                        leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                        bottom: parent.bottom
-                    }
-
-                    font: UM.Theme.getFont("large")
-                    color: UM.Theme.getColor("text")
-                    text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
-                }
-            }
-
-            // Search & Top-Level Tabs
-            Item
-            {
-                Layout.preferredHeight: childrenRect.height
-                Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
-                RowLayout
-                {
-                    width: parent.width
-                    height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
-                    spacing: UM.Theme.getSize("thin_margin").width
-
-                    Rectangle
-                    {
-                        color: "transparent"
-                        Layout.preferredHeight: parent.height
-                        Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
-                        Layout.fillWidth: ! searchBar.visible
-                    }
-
-                    Cura.SearchBar
-                    {
-                        id: searchBar
-                        Layout.preferredHeight: UM.Theme.getSize("button_icon").height
-                        Layout.fillWidth: true
-                        onTextEdited: searchStringChanged(text)
-                    }
-
-                    // Page selection.
-                    TabBar
-                    {
-                        id: pageSelectionTabBar
-                        anchors.right: parent.right
-                        height: UM.Theme.getSize("button_icon").height
-                        spacing: 0
-                        background: Rectangle { color: "transparent" }
-
-                        PackageTypeTab
+                        id: pageTitle
+                        anchors
                         {
-                            id: pluginTabText
-                            width: implicitWidth
-                            text: catalog.i18nc("@button", "Plugins")
-                            onClicked:
+                            left: parent.left
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("default_margin").width
+                            bottom: parent.bottom
+                        }
+
+                        font: UM.Theme.getFont("large")
+                        color: UM.Theme.getColor("text")
+                        text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
+                    }
+                }
+
+                // Search & Top-Level Tabs
+                Item
+                {
+                    Layout.preferredHeight: childrenRect.height
+                    Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
+                    RowLayout
+                    {
+                        width: parent.width
+                        height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
+                        spacing: UM.Theme.getSize("thin_margin").width
+
+                        Rectangle
+                        {
+                            color: "transparent"
+                            Layout.preferredHeight: parent.height
+                            Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
+                            Layout.fillWidth: ! searchBar.visible
+                        }
+
+                        Cura.SearchBar
+                        {
+                            id: searchBar
+                            Layout.preferredHeight: UM.Theme.getSize("button_icon").height
+                            Layout.fillWidth: true
+                            onTextEdited: searchStringChanged(text)
+                        }
+
+                        // Page selection.
+                        TabBar
+                        {
+                            id: pageSelectionTabBar
+                            anchors.right: parent.right
+                            height: UM.Theme.getSize("button_icon").height
+                            spacing: 0
+                            background: Rectangle { color: "transparent" }
+
+                            PackageTypeTab
                             {
-                                searchBar.text = ""
-                                searchBar.visible = true
-                                content.source = "Plugins.qml"
+                                id: pluginTabText
+                                width: implicitWidth
+                                text: catalog.i18nc("@button", "Plugins")
+                                onClicked:
+                                {
+                                    searchBar.text = ""
+                                    searchBar.visible = true
+                                    content.source = "Plugins.qml"
+                                }
+                            }
+                            PackageTypeTab
+                            {
+                                id: materialsTabText
+                                width: implicitWidth
+                                text: catalog.i18nc("@button", "Materials")
+                                onClicked:
+                                {
+                                    searchBar.text = ""
+                                    searchBar.visible = true
+                                    content.source = "Materials.qml"
+                                }
+                            }
+                            ManagePackagesButton
+                            {
+                                onClicked: content.source = "ManagedPackages.qml"
                             }
                         }
-                        PackageTypeTab
-                        {
-                            id: materialsTabText
-                            width: implicitWidth
-                            text: catalog.i18nc("@button", "Materials")
-                            onClicked:
-                            {
-                                searchBar.text = ""
-                                searchBar.visible = true
-                                content.source = "Materials.qml"
-                            }
-                        }
-                        ManagePackagesButton
-                        {
-                            onClicked: content.source = "ManagedPackages.qml"
-                        }
-                    }
 
-                    TextMetrics
-                    {
-                        id: pluginTabTextMetrics
-                        text: pluginTabText.text
-                        font: pluginTabText.font
+                        TextMetrics
+                        {
+                            id: pluginTabTextMetrics
+                            text: pluginTabText.text
+                            font: pluginTabText.font
+                        }
+                        TextMetrics
+                        {
+                            id: materialsTabTextMetrics
+                            text: materialsTabText.text
+                            font: materialsTabText.font
+                        }
                     }
-                    TextMetrics
-                    {
-                        id: materialsTabTextMetrics
-                        text: materialsTabText.text
-                        font: materialsTabText.font
-                    }                   
                 }
-            }
-
-            // Page contents.
-            Rectangle
-            {
-                Layout.preferredWidth: parent.width
-                Layout.fillHeight: true
-                color: UM.Theme.getColor("detail_background")
 
                 // Page contents.
-                Loader
+                Rectangle
                 {
-                    id: content
-                    anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_margin").width
-                    source: "Plugins.qml"
+                    Layout.preferredWidth: parent.width
+                    Layout.fillHeight: true
+                    color: UM.Theme.getColor("detail_background")
 
-                    Connections
+                    // Page contents.
+                    Loader
                     {
-                        target: content
-                        function onLoaded()
+                        id: content
+                        anchors.fill: parent
+                        anchors.margins: UM.Theme.getSize("default_margin").width
+                        source: "Plugins.qml"
+
+                        Connections
                         {
-                            pageTitle.text = content.item.pageTitle
-                            searchStringChanged.connect(handleSearchStringChanged)
-                        }
-                        function handleSearchStringChanged(new_search)
-                        {
-                            content.item.model.searchString = new_search
+                            target: content
+                            function onLoaded()
+                            {
+                                pageTitle.text = content.item.pageTitle
+                                searchStringChanged.connect(handleSearchStringChanged)
+                            }
+                            function handleSearchStringChanged(new_search)
+                            {
+                                content.item.model.searchString = new_search
+                            }
                         }
                     }
                 }
