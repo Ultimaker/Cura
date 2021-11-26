@@ -66,7 +66,7 @@ Rectangle
             left: packageItem.right
             right: parent.right
             top: parent.top
-            topMargin: UM.Theme.getSize("default_margin").height
+            topMargin: UM.Theme.getSize("narrow_margin").height
             leftMargin: UM.Theme.getSize("default_margin").width
             rightMargin:UM.Theme.getSize("thick_margin").width
         }
@@ -74,7 +74,7 @@ Rectangle
         Label
         {
             text: packageData.displayName
-            font: UM.Theme.getFont("large_bold")
+            font: UM.Theme.getFont("medium_bold")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignTop
         }
