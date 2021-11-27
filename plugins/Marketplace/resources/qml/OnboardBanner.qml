@@ -80,7 +80,7 @@ Rectangle
             margins: UM.Theme.getSize("default_margin").width
         }
 
-        font: UM.Theme.getFont("medium")
+        font: UM.Theme.getFont("default")
         text: bannerBody
 
         renderType: Text.NativeRendering
