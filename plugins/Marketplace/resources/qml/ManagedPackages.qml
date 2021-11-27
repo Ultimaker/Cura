@@ -14,6 +14,7 @@ Packages
     bannerVisible: CuraApplication.shouldShowMarketPlaceManagePackagesBanner()
     bannerIcon: "ArrowDoubleCircleRight"
     bannerBody: catalog.i18nc("@text", "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly.")
+    readMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {
         CuraApplication.closeMarketPlaceManagePackagesBanner();
         bannerVisible = false;
