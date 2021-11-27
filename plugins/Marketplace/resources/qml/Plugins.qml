@@ -10,6 +10,7 @@ Packages
     bannerVisible: CuraApplication.shouldShowMarketPlacePluginBanner()
     bannerIcon: "Shop"
     bannerBody: catalog.i18nc("@text", "Select and install material profiles optimised for your Ultimaker 3D printers.")
+    readMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {
         CuraApplication.closeMarketPlacePluginBanner();
         bannerVisible = false;

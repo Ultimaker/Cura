@@ -15,6 +15,7 @@ Rectangle
     property string bannerIcon
     property string bannerBody
     property var onRemoveBanner
+    property string readMoreUrl
 
     visible: bannerVisible
 
@@ -121,6 +122,7 @@ Rectangle
 
     Cura.TertiaryButton
     {
+        visible: readMoreUrl !== ""
         id: readMoreButton
         text: "Learn More"
         textFont: UM.Theme.getFont("default")
@@ -131,6 +133,6 @@ Rectangle
         isIconOnRightSide: true
         height: fontMetrics.height
 
-        onClicked: print("TODO")
+        onClicked: Qt.openUrlExternally(readMoreUrl)
     }
 }

@@ -10,6 +10,7 @@ Packages
     bannerVisible: CuraApplication.shouldShowMarketPlaceMaterialBanner()
     bannerIcon: "Spool"
     bannerBody: catalog.i18nc("@text", "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users.")
+    readMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {
         CuraApplication.closeMarketPlaceMaterialBanner();
         bannerVisible = false;
