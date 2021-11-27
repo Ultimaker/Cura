@@ -70,7 +70,8 @@ Rectangle
     }
 
     // Body
-    Text {
+    Label {
+        id: infoText
         anchors
         {
             top: parent.top
@@ -80,8 +81,56 @@ Rectangle
         }
 
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("primary_text")
-        wrapMode: Text.WordWrap
         text: bannerBody
+
+        renderType: Text.NativeRendering
+        color: "white"
+        wrapMode: Text.Wrap
+        elide: Text.ElideRight
+
+        onLineLaidOut:
+        {
+            if(line.isLast)
+            {
+                // Check if read more button still fits after the body text
+                if (line.implicitWidth + readMoreButton.width + UM.Theme.getSize("default_margin").width > width)
+                {
+                    // If it does place it after the body text
+                    readMoreButton.anchors.left = infoText.left;
+                    readMoreButton.anchors.bottom = infoText.bottom;
+                    readMoreButton.anchors.bottomMargin = -(fontMetrics.height + UM.Theme.getSize("thin_margin").height);
+                    readMoreButton.anchors.leftMargin = 0;
+                }
+                else
+                {
+                    // Otherwise place it under the text
+                    readMoreButton.anchors.left = infoText.left;
+                    readMoreButton.anchors.bottom = infoText.bottom;
+                    readMoreButton.anchors.leftMargin = line.implicitWidth + UM.Theme.getSize("default_margin").width;
+                    readMoreButton.anchors.bottomMargin = 0;
+                }
+            }
+        }
+    }
+
+    FontMetrics
+    {
+        id: fontMetrics
+        font: UM.Theme.getFont("default")
+    }
+
+    Cura.TertiaryButton
+    {
+        id: readMoreButton
+        text: "Learn More"
+        textFont: UM.Theme.getFont("default")
+        textColor: infoText.color
+        leftPadding: 0
+        rightPadding: 0
+        iconSource: UM.Theme.getIcon("LinkExternal")
+        isIconOnRightSide: true
+        height: fontMetrics.height
+
+        onClicked: print("TODO")
     }
 }
