@@ -404,7 +404,11 @@ Rectangle
                 text: packageData.description
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
                 wrapMode: Text.Wrap
+                textFormat: Text.RichText
+
+                onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
             }
 
             Cura.SecondaryButton

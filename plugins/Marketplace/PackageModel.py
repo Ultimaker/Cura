@@ -2,9 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, QObject
+import re
 from typing import Any, Dict, Optional
-
-from UM.Util import parseBool
 
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 catalog = i18nCatalog("cura")
@@ -35,9 +34,9 @@ class PackageModel(QObject):
         self._package_version = package_data.get("package_version", "")  # Display purpose, no need for 'UM.Version'.
         self._package_info_url = package_data.get("website", "")  # Not to be confused with 'download_url'.
         self._download_count = package_data.get("download_count", 0)
-        self._description = package_data.get("description", "")
+        self._description = self._format(package_data.get("description", ""))
 
-        self._download_url = package_data.get("download_url", "")  # Not used yet, will be.
+        self._download_url = package_data.get("download_url", "")
         self._release_notes = package_data.get("release_notes", "")  # Not used yet, propose to add to description?
 
         author_data = package_data.get("author", {})
@@ -48,6 +47,17 @@ class PackageModel(QObject):
 
         self._section_title = section_title
         # Note that there's a lot more info in the package_data than just these specified here.
+
+    def _format(self, text):
+        """
+        Formats a user-readable block of text for display.
+        :return: A block of rich text with formatting embedded.
+        """
+        # Turn all in-line hyperlinks into actual links.
+        url_regex = re.compile(r"(((http|https)://)[a-zA-Z0-9@:%._+~#?&/=]{2,256}\.[a-z]{2,12}(/[a-zA-Z0-9@:%.-_+~#?&/=]*)?)")
+        text = re.sub(url_regex, r'<a href="\1">\1</a>', text)
+
+        return text
 
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
