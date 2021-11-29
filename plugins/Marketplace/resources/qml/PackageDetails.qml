@@ -29,9 +29,10 @@ Item
 
                 tooltip: catalog.i18nc("@button:tooltip", "Back")
                 toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
-                iconSource: UM.Theme.getIcon("ArrowLeft")
                 leftPadding: UM.Theme.getSize("narrow_margin").width
                 rightPadding: leftPadding
+                iconSource: UM.Theme.getIcon("ArrowLeft")
+                iconSize: height - leftPadding * 2
             }
 
             Label
