@@ -239,6 +239,7 @@ Rectangle
                         maximumLineCount: 2
                         wrapMode: Text.Wrap
                         elide: Text.ElideRight
+                        visible: text !== ""
 
                         onLineLaidOut:
                         {
@@ -267,7 +268,7 @@ Rectangle
                         text: "… "
                         font: descriptionLabel.font
                         color: descriptionLabel.color
-                        visible: descriptionLabel.truncated
+                        visible: descriptionLabel.truncated && descriptionLabel.text !== ""
                     }
                     Cura.TertiaryButton
                     {
@@ -279,7 +280,7 @@ Rectangle
                         text: catalog.i18nc("@info", "Read more")
                         iconSource: UM.Theme.getIcon("LinkExternal")
 
-                        visible: descriptionLabel.truncated
+                        visible: descriptionLabel.truncated && descriptionLabel.text !== ""
                         enabled: visible
                         leftPadding: UM.Theme.getSize("default_margin").width
                         rightPadding: UM.Theme.getSize("wide_margin").width
