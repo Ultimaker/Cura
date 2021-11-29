@@ -185,10 +185,11 @@ Rectangle
 
     }
 
+    // Description area
     Item
     {
         id: descriptionArea
-        height: descriptionLabel.height
+        height: childrenRect.height > descriptionLabel.height ? childrenRect.height : descriptionLabel.height
         anchors
         {
             top: titleBar.bottom
@@ -269,6 +270,7 @@ Rectangle
         {
             bottom: parent.bottom
             left: packageItem.right
+            right: parent.right
             margins: UM.Theme.getSize("default_margin").height
         }
         spacing: UM.Theme.getSize("narrow_margin").width
@@ -276,7 +278,7 @@ Rectangle
         Label
         {
             id: authorBy
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignVCenter
 
             text: catalog.i18nc("@label", "By")
             font: UM.Theme.getFont("default")
@@ -287,7 +289,7 @@ Rectangle
         {
             Layout.fillWidth: true
             Layout.preferredHeight: authorBy.height
-            Layout.alignment: Qt.AlignTop
+            Layout.alignment: Qt.AlignVCenter
 
             text: packageData.authorName
             textFont: UM.Theme.getFont("default_bold")
