@@ -2,17 +2,18 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import Marketplace 1.0 as Marketplace
+import UM 1.4 as UM
 
 Packages
 {
     pageTitle: catalog.i18nc("@header", "Install Plugins")
 
-    bannerVisible: CuraApplication.shouldShowMarketPlacePluginBanner()
+    bannerVisible: UM.Preferences.getValue("cura/market_place_show_plugin_banner")
     bannerIcon: "Shop"
     bannerBody: catalog.i18nc("@text", "Select and install material profiles optimised for your Ultimaker 3D printers.")
     readMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {
-        CuraApplication.closeMarketPlacePluginBanner();
+        UM.Preferences.setValue("cura/market_place_show_plugin_banner", false)
         bannerVisible = false;
     }
 
