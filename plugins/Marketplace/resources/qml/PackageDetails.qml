@@ -67,20 +67,30 @@ Item
         }
         color: UM.Theme.getColor("detail_background")
 
-        PackageCard
+        ScrollView
         {
-            anchors
-            {
-                left: parent.left
-                leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
-                rightMargin: anchors.leftMargin
-                top: parent.top
-                topMargin: UM.Theme.getSize("default_margin").height
-            }
+            anchors.fill: parent
 
-            packageData: detailPage.packageData
-            expanded: true
+            clip: true //Need to clip, not for the bottom (which is off the window) but for the top (which would overlap the header).
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            contentHeight: expandedPackageCard.height + UM.Theme.getSize("default_margin").height * 2
+
+            PackageCard
+            {
+                id: expandedPackageCard
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    right: parent.right
+                    rightMargin: anchors.leftMargin
+                    top: parent.top
+                    topMargin: UM.Theme.getSize("default_margin").height
+                }
+
+                packageData: detailPage.packageData
+                expanded: true
+            }
         }
     }
 }
