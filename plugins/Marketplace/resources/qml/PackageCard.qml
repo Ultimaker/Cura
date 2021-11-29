@@ -11,6 +11,7 @@ import Cura 1.6 as Cura
 Rectangle
 {
     property var packageData
+    property bool expanded: false
 
     height: UM.Theme.getSize("card").height
     color: UM.Theme.getColor("main_background")
@@ -21,7 +22,7 @@ Rectangle
         State
         {
             name: "Folded"
-            when: true  // TODO
+            when: !expanded
             PropertyChanges
             {
                 target: descriptionArea
@@ -30,8 +31,8 @@ Rectangle
         },
         State
         {
-            name: "Header"
-            when: false  // TODO
+            name: "Expanded"
+            when: expanded
             PropertyChanges
             {
                 target: descriptionArea
