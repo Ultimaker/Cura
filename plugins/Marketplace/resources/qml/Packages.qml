@@ -9,9 +9,10 @@ import UM 1.4 as UM
 ListView
 {
     id: packages
+    width: parent.width
 
     property string pageTitle
-    width: parent.width
+    property var selectedPackage
 
     clip: true
 
@@ -69,12 +70,23 @@ ListView
 
         onClicked:
         {
-            contextStack.push(Qt.resolvedUrl("PackageDetails.qml"))
+            packages.selectedPackage = model.package;
+            contextStack.push(packageDetailsComponent);
         }
 
         PackageCard
         {
             packageData: model.package
+        }
+    }
+
+    Component
+    {
+        id: packageDetailsComponent
+
+        PackageDetails
+        {
+            packageData: packages.selectedPackage
         }
     }
 
