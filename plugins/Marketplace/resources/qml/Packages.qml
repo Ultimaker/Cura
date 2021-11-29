@@ -65,7 +65,7 @@ ListView
 
     delegate: MouseArea
     {
-        width: parent.width
+        width: parent ? parent.width : 0
         height: childrenRect.height
 
         onClicked:
