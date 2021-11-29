@@ -406,6 +406,16 @@ Rectangle
                 color: UM.Theme.getColor("text")
                 wrapMode: Text.Wrap
             }
+
+            Cura.SecondaryButton
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                text: catalog.i18nc("@button", "Visit plug-in website")
+                iconSource: UM.Theme.getIcon("Globe")
+                outlineColor: "transparent"
+                onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+            }
         }
     }
 
