@@ -28,7 +28,7 @@ Rectangle
     color: UM.Theme.getColor("action_panel_secondary")
 
     // Icon
-    Rectangle
+    Item
     {
         id: onboardingIcon
         anchors
@@ -39,7 +39,6 @@ Rectangle
         }
         width: UM.Theme.getSize("button_icon").width
         height: UM.Theme.getSize("button_icon").height
-        color: "transparent"
         UM.RecolorImage
         {
             anchors.fill: parent
