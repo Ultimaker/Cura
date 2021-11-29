@@ -110,7 +110,7 @@ Button
         {
             id: buttonIconLeft
             source: ""
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
