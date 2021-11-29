@@ -40,6 +40,7 @@ Window
     Rectangle
     {
         anchors.fill: parent
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         color: UM.Theme.getColor("main_background")
 
         ColumnLayout
@@ -61,7 +62,7 @@ Window
             Item
             {
                 Layout.preferredWidth: parent.width
-                Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
+                Layout.preferredHeight: childrenRect.height
 
                 Label
                 {
@@ -72,7 +73,6 @@ Window
                         leftMargin: UM.Theme.getSize("default_margin").width
                         right: parent.right
                         rightMargin: UM.Theme.getSize("default_margin").width
-                        bottom: parent.bottom
                     }
 
                     font: UM.Theme.getFont("large")

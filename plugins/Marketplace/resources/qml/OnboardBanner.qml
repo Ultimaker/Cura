@@ -22,7 +22,6 @@ Rectangle
         margins: UM.Theme.getSize("default_margin").width
         left: parent.left
         right: parent.right
-        top: parent.top
     }
 
     color: UM.Theme.getColor("action_panel_secondary")
