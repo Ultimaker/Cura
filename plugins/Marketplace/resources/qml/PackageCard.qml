@@ -291,7 +291,7 @@ Rectangle
 
                 color: UM.Theme.getColor("text")
                 font: UM.Theme.getFont("default")
-                text: "123456789"
+                text: packageData.downloadCount
             }
         }
 
