@@ -231,7 +231,7 @@ Rectangle
                 id: tripleDotLabel
                 anchors.left: parent.left
                 anchors.leftMargin: descriptionLabel.lastLineWidth
-                anchors.bottom: readMoreButton.bottom
+                anchors.bottom: descriptionLabel.bottom
 
                 text: "… "
                 font: descriptionLabel.font
