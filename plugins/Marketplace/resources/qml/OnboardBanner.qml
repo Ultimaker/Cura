@@ -75,7 +75,7 @@ Rectangle
         text: bannerText
 
         renderType: Text.NativeRendering
-        color: "white"
+        color: UM.Theme.getColor("primary_text")
         wrapMode: Text.Wrap
         elide: Text.ElideRight
 
