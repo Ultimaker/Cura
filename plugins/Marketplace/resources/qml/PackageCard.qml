@@ -381,14 +381,30 @@ Rectangle
         Column
         {
             id: extendedDescription
+            width: parent.width
+
             padding: UM.Theme.getSize("default_margin").width
             topPadding: 0
+            spacing: UM.Theme.getSize("default_margin").height
 
             Label
             {
+                width: parent.width - parent.padding * 2
+
                 text: catalog.i18nc("@header", "Description")
-                font: UM.Theme.getFont("medium_bold")
+                font: UM.Theme.getFont("default_bold")
                 color: UM.Theme.getColor("text")
+                elide: Text.ElideRight
+            }
+
+            Label
+            {
+                width: parent.width - parent.padding * 2
+
+                text: packageData.description
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+                wrapMode: Text.Wrap
             }
         }
     }
