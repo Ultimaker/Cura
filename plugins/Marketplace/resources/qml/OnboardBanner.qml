@@ -87,16 +87,12 @@ Rectangle
                 if (line.implicitWidth + readMoreButton.width + UM.Theme.getSize("default_margin").width > width)
                 {
                     // If it does place it after the body text
-                    readMoreButton.anchors.left = infoText.left;
-                    readMoreButton.anchors.bottom = infoText.bottom;
                     readMoreButton.anchors.bottomMargin = -(fontMetrics.height + UM.Theme.getSize("thin_margin").height);
                     readMoreButton.anchors.leftMargin = 0;
                 }
                 else
                 {
                     // Otherwise place it under the text
-                    readMoreButton.anchors.left = infoText.left;
-                    readMoreButton.anchors.bottom = infoText.bottom;
                     readMoreButton.anchors.leftMargin = line.implicitWidth + UM.Theme.getSize("default_margin").width;
                     readMoreButton.anchors.bottomMargin = 0;
                 }
@@ -114,6 +110,8 @@ Rectangle
     {
         visible: readMoreUrl !== ""
         id: readMoreButton
+        anchors.left: infoText.left
+        anchors.bottom: infoText.bottom
         text: "Learn More"
         textFont: UM.Theme.getFont("default")
         textColor: infoText.color
