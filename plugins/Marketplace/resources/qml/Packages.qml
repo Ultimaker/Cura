@@ -13,7 +13,7 @@ ListView
     property string pageTitle
     property bool bannerVisible
     property string bannerIcon
-    property string bannerBody
+    property string bannerText
     property string readMoreUrl
     property var onRemoveBanner
 

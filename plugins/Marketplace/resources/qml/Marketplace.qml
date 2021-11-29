@@ -51,7 +51,7 @@ Window
             OnboardBanner
             {
                 bannerVisible: content.item && content.item.bannerVisible
-                bannerBody: content.item && content.item.bannerBody
+                bannerText: content.item && content.item.bannerText
                 bannerIcon: content.item && content.item.bannerIcon
                 onRemoveBanner: content.item && content.item.onRemoveBanner
                 readMoreUrl: content.item.readMoreUrl && content.item.readMoreUrl

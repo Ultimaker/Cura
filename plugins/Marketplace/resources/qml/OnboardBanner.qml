@@ -13,7 +13,7 @@ Rectangle
 {
     property bool bannerVisible
     property string bannerIcon
-    property string bannerBody
+    property string bannerText
     property var onRemoveBanner
     property string readMoreUrl
 
@@ -82,7 +82,7 @@ Rectangle
         }
 
         font: UM.Theme.getFont("default")
-        text: bannerBody
+        text: bannerText
 
         renderType: Text.NativeRendering
         color: "white"
