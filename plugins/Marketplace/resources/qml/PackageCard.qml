@@ -302,7 +302,6 @@ Rectangle
                         width: UM.Theme.getSize("card_tiny_icon").width
                         height: UM.Theme.getSize("card_tiny_icon").height
 
-                        visible: packageData.installationStatus !== "bundled" //Don't show download count for packages that are bundled. It'll usually be 0.
                         source: UM.Theme.getIcon("Download")
                         color: UM.Theme.getColor("text")
                     }
@@ -311,7 +310,6 @@ Rectangle
                     {
                         anchors.verticalCenter: downloadsIcon.verticalCenter
 
-                        visible: packageData.installationStatus !== "bundled" //Don't show download count for packages that are bundled. It'll usually be 0.
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         text: packageData.downloadCount
@@ -354,28 +352,80 @@ Rectangle
                         onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
                     }
 
-                    Cura.SecondaryButton
+                    ManageButton
                     {
-                        id: disableButton
+                        id: enableManageButton
                         Layout.alignment: Qt.AlignTop
-                        text: catalog.i18nc("@button", "Disable")
-                        visible: false  // not functional right now, also only when unfolding and required
+                        primaryText: catalog.i18nc("@button", "Enable")
+                        busyPrimaryText: catalog.i18nc("@button", "enabling...")
+                        secondaryText: catalog.i18nc("@button", "Disable")
+                        busySecondaryText: catalog.i18nc("@button", "disabling...")
+                        mainState: packageData.manageEnableState
+                        enabled: !(installManageButton.busy || updateManageButton.busy)
+                    }
+                    Connections
+                    {
+                        target: enableManageButton
+                        function onClicked(primary_action)
+                        {
+                            if (primary_action)
+                            {
+                                packageData.enablePackageTriggered(packageData.packageId)
+                            }
+                            else
+                            {
+                                packageData.disablePackageTriggered(packageData.packageId)
+                            }
+                        }
                     }
 
-                    Cura.SecondaryButton
+                    ManageButton
                     {
-                        id: uninstallButton
+                        id: installManageButton
                         Layout.alignment: Qt.AlignTop
-                        text: catalog.i18nc("@button", "Uninstall")
-                        visible: false  // not functional right now, also only when unfolding and required
+                        primaryText: catalog.i18nc("@button", "Install")
+                        busyPrimaryText: catalog.i18nc("@button", "installing...")
+                        secondaryText: catalog.i18nc("@button", "Uninstall")
+                        busySecondaryText: catalog.i18nc("@button", "uninstalling...")
+                        mainState: packageData.manageInstallState
+                        busy: packageData.isInstalling
+                        enabled: !(enableManageButton.busy || updateManageButton.busy)
+                    }
+                    Connections
+                    {
+                        target: installManageButton
+                        function onClicked(primary_action)
+                        {
+                            packageData.isInstalling = true
+                            if (primary_action)
+                            {
+                                packageData.installPackageTriggered(packageData.packageId)
+                            }
+                            else
+                            {
+                                packageData.uninstallPackageTriggered(packageData.packageId)
+                            }
+                        }
                     }
 
-                    Cura.PrimaryButton
+                    ManageButton
                     {
-                        id: installButton
+                        id: updateManageButton
                         Layout.alignment: Qt.AlignTop
-                        text: catalog.i18nc("@button", "Update") // OR Download, if new!
-                        visible: false  // not functional right now, also only when unfolding and required
+                        primaryText: catalog.i18nc("@button", "Update")
+                        busyPrimaryText: catalog.i18nc("@button", "updating...")
+                        mainState: packageData.manageUpdateState
+                        busy: packageData.isUpdating
+                        enabled: !(installManageButton.busy || enableManageButton.busy)
+                    }
+                    Connections
+                    {
+                        target: updateManageButton
+                        function onClicked(primary_action)
+                        {
+                            packageData.isUpdating = true
+                            packageData.updatePackageTriggered(packageData.packageId)
+                        }
                     }
                 }
             }

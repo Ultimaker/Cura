@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.Logger import Logger
@@ -20,11 +20,10 @@ class PackageModel(QObject):
     QML. The model can also be constructed directly from a response received by the API.
     """
 
-    def __init__(self, package_data: Dict[str, Any], installation_status: str, section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
+    def __init__(self, package_data: Dict[str, Any], section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
         """
         Constructs a new model for a single package.
         :param package_data: The data received from the Marketplace API about the package to create.
-        :param installation_status: Whether the package is `not_installed`, `installed` or `bundled`.
         :param section_title: If the packages are to be categorized per section provide the section_title
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
@@ -44,7 +43,7 @@ class PackageModel(QObject):
         self._description = package_data.get("description", "")
         self._formatted_description = self._format(self._description)
 
-        self._download_url = package_data.get("download_url", "")
+        self.download_url = package_data.get("download_url", "")
         self._release_notes = package_data.get("release_notes", "")  # Not used yet, propose to add to description?
 
         subdata = package_data.get("data", {})
@@ -62,9 +61,20 @@ class PackageModel(QObject):
         if not self._icon_url or self._icon_url == "":
             self._icon_url = author_data.get("icon_url", "")
 
-        self._installation_status = installation_status
+        self._can_update = False
+        self._is_installing = False
+        self._is_updating = False
         self._section_title = section_title
         # Note that there's a lot more info in the package_data than just these specified here.
+
+    def __eq__(self, other: Union[str, "PackageModel"]):
+        if isinstance(other, PackageModel):
+            return other == self
+        else:
+            return other == self._package_id
+
+    def __repr__(self):
+        return f"<{self._package_id} : {self._package_version} : {self._section_title}>"
 
     def _findLink(self, subdata: Dict[str, Any], link_type: str) -> str:
         """
@@ -220,10 +230,6 @@ class PackageModel(QObject):
         return self._author_info_url
 
     @pyqtProperty(str, constant = True)
-    def installationStatus(self) -> str:
-        return self._installation_status
-
-    @pyqtProperty(str, constant = True)
     def sectionTitle(self) -> Optional[str]:
         return self._section_title
 
@@ -255,6 +261,28 @@ class PackageModel(QObject):
     def isCompatibleAirManager(self) -> bool:
         return self._is_compatible_air_manager
 
+    isInstallingChanged = pyqtSignal()
+
+    def setIsInstalling(self, value: bool) -> None:
+        if value != self._is_installing:
+            self._is_installing = value
+            self.isInstallingChanged.emit()
+
+    @pyqtProperty(bool, fset = setIsInstalling, notify = isInstallingChanged)
+    def isInstalling(self) -> bool:
+        return self._is_installing
+
+    isUpdatingChanged = pyqtSignal()
+
+    def setIsUpdating(self, value: bool) -> None:
+        if value != self._is_updating:
+            self._is_updating = value
+            self.isUpdatingChanged.emit()
+
+    @pyqtProperty(bool, fset = setIsUpdating, notify = isUpdatingChanged)
+    def isUpdating(self) -> bool:
+        return self._is_updating
+
     isInstalledChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isInstalledChanged)
@@ -282,8 +310,13 @@ class PackageModel(QObject):
 
     manageInstallStateChanged = pyqtSignal()
 
+    def setManageInstallState(self, value: bool) -> None:
+        if value != self._is_installed:
+            self._is_installed = value
+            self.manageInstallStateChanged.emit()
+
     @pyqtProperty(str, notify = manageInstallStateChanged)
-    def manageInstallState(self):
+    def manageInstallState(self) -> str:
         if self._is_installed:
             if self._is_bundled:
                 return "hidden"
@@ -296,4 +329,26 @@ class PackageModel(QObject):
 
     @pyqtProperty(str, notify = manageUpdateStateChanged)
     def manageUpdateState(self):
-        return "hidden"  # TODO: implement
+        if self._can_update:
+            return "primary"
+        return "hidden"
+
+    @property
+    def canUpdate(self):
+        return self._can_update
+
+    @canUpdate.setter
+    def canUpdate(self, value):
+        if value != self._can_update:
+            self._can_update = value
+            self.manageUpdateStateChanged.emit()
+
+    installPackageTriggered = pyqtSignal(str)
+
+    uninstallPackageTriggered = pyqtSignal(str)
+
+    updatePackageTriggered = pyqtSignal(str)
+
+    enablePackageTriggered = pyqtSignal(str)
+
+    disablePackageTriggered = pyqtSignal(str)
