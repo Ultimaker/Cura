@@ -34,7 +34,8 @@ class PackageModel(QObject):
         self._package_version = package_data.get("package_version", "")  # Display purpose, no need for 'UM.Version'.
         self._package_info_url = package_data.get("website", "")  # Not to be confused with 'download_url'.
         self._download_count = package_data.get("download_count", 0)
-        self._description = self._format(package_data.get("description", ""))
+        self._description = package_data.get("description", "")
+        self._formatted_description = self._format(self._description)
 
         self._download_url = package_data.get("download_url", "")
         self._release_notes = package_data.get("release_notes", "")  # Not used yet, propose to add to description?
@@ -48,7 +49,7 @@ class PackageModel(QObject):
         self._section_title = section_title
         # Note that there's a lot more info in the package_data than just these specified here.
 
-    def _format(self, text):
+    def _format(self, text: str) -> str:
         """
         Formats a user-readable block of text for display.
         :return: A block of rich text with formatting embedded.
@@ -94,6 +95,10 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant=True)
     def description(self):
         return self._description
+
+    @pyqtProperty(str, constant = True)
+    def formattedDescription(self) -> str:
+        return self._formatted_description
 
     @pyqtProperty(str, constant=True)
     def authorName(self):

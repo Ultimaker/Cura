@@ -233,6 +233,7 @@ Rectangle
                         property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
                         text: packageData.description
+                        textFormat: Text.PlainText //Must be plain text, or we won't get onLineLaidOut signals. Don't auto-detect!
                         font: UM.Theme.getFont("default")
                         color: UM.Theme.getColor("text")
                         maximumLineCount: 2
@@ -401,7 +402,7 @@ Rectangle
             {
                 width: parent.width - parent.padding * 2
 
-                text: packageData.description
+                text: packageData.formattedDescription
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
