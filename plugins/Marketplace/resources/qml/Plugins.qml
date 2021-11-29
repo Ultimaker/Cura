@@ -9,7 +9,7 @@ Packages
     pageTitle: catalog.i18nc("@header", "Install Plugins")
 
     bannerVisible: UM.Preferences.getValue("cura/market_place_show_plugin_banner")
-    bannerIcon: "Shop"
+    bannerIcon: UM.Theme.getIcon("Shop")
     bannerText: catalog.i18nc("@text", "Select and install material profiles optimised for your Ultimaker 3D printers.")
     readMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {

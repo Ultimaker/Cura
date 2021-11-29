@@ -11,7 +11,7 @@ import Cura 1.6 as Cura
 // Onboarding banner.
 Rectangle
 {
-    property string bannerIcon
+    property alias bannerIcon: onboardingIcon.source;
     property string bannerText
     property var onRemoveBanner
     property string readMoreUrl
@@ -28,7 +28,7 @@ Rectangle
     color: UM.Theme.getColor("action_panel_secondary")
 
     // Icon
-    Item
+    UM.RecolorImage
     {
         id: onboardingIcon
         anchors
@@ -39,12 +39,6 @@ Rectangle
         }
         width: UM.Theme.getSize("button_icon").width
         height: UM.Theme.getSize("button_icon").height
-        UM.RecolorImage
-        {
-            anchors.fill: parent
-            color: UM.Theme.getColor("primary_text")
-            source: UM.Theme.getIcon(bannerIcon)
-        }
     }
 
     // Close button
