@@ -25,8 +25,13 @@ Rectangle
             when: !expanded
             PropertyChanges
             {
-                target: descriptionArea
+                target: shortDescription
                 visible: true
+            }
+            PropertyChanges
+            {
+                target: downloadCount
+                visible: false
             }
         },
         State
@@ -35,8 +40,13 @@ Rectangle
             when: expanded
             PropertyChanges
             {
-                target: descriptionArea
+                target: shortDescription
                 visible: false
+            }
+            PropertyChanges
+            {
+                target: downloadCount
+                visible: true
             }
         }
     ]
@@ -192,7 +202,7 @@ Rectangle
 
         Item
         {
-            id: descriptionArea
+            id: shortDescription
             Layout.preferredWidth: parent.width
             Layout.fillHeight: true
 
@@ -256,6 +266,32 @@ Rectangle
                 isIconOnRightSide: true
 
                 onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+            }
+        }
+
+        Row
+        {
+            id: downloadCount
+            Layout.preferredWidth: parent.width
+            Layout.fillHeight: true
+
+            UM.RecolorImage
+            {
+                id: downloadsIcon
+                width: UM.Theme.getSize("card_tiny_icon").width
+                height: UM.Theme.getSize("card_tiny_icon").height
+
+                source: UM.Theme.getIcon("Download")
+                color: UM.Theme.getColor("text")
+            }
+
+            Label
+            {
+                anchors.verticalCenter: downloadsIcon.verticalCenter
+
+                color: UM.Theme.getColor("text")
+                font: UM.Theme.getFont("default")
+                text: "123456789"
             }
         }
 
