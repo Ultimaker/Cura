@@ -1,11 +1,10 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, QObject
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 from typing import Any, Dict, Optional
 
-from UM.Util import parseBool
-
+from UM.Logger import Logger
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 catalog = i18nCatalog("cura")
 
@@ -28,6 +27,9 @@ class PackageModel(QObject):
         super().__init__(parent)
         self._package_id = package_data.get("package_id", "UnknownPackageId")
         self._package_type = package_data.get("package_type", "")
+        self._is_installed = package_data.get("is_installed", False)
+        self._is_active = package_data.get("is_active", False)
+        self._is_bundled = package_data.get("is_bundled", False)
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
         tags = package_data.get("tags", [])
@@ -96,3 +98,35 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant = True)
     def sectionTitle(self) -> Optional[str]:
         return self._section_title
+
+    enableManageButtonChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = enableManageButtonChanged)
+    def enableManageButtonText(self):
+        if self._is_active:
+            return catalog.i18nc("@button", "Disable")
+        else:
+            return catalog.i18nc("@button", "Enable")
+
+    @pyqtProperty(bool, notify = enableManageButtonChanged)
+    def enableManageButtonVisible(self):
+        return self._is_installed
+
+    installManageButtonChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = installManageButtonChanged)
+    def installManageButtonText(self):
+        if self._is_installed:
+            return catalog.i18nc("@button", "Uninstall")
+        else:
+            return catalog.i18nc("@button", "Install")
+
+    @pyqtProperty(bool, notify = installManageButtonChanged)
+    def installManageButtonVisible(self):
+        return not self._is_bundled
+
+    updateManageButtonChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = updateManageButtonChanged)
+    def updateManageButtonVisible(self):
+        return False  #  Todo: implement

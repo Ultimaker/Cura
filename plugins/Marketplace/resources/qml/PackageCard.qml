@@ -302,26 +302,26 @@ Rectangle
 
         Cura.SecondaryButton
         {
-            id: disableButton
+            id: enableManageButton
             Layout.alignment: Qt.AlignTop
-            text: catalog.i18nc("@button", "Disable")
-            visible: false  // not functional right now, also only when unfolding and required
+            text: packageData.enableManageButtonText
+            visible: packageData.enableManageButtonVisible
         }
 
         Cura.SecondaryButton
         {
-            id: uninstallButton
+            id: installManageButton
             Layout.alignment: Qt.AlignTop
-            text: catalog.i18nc("@button", "Uninstall")
-            visible: false  // not functional right now, also only when unfolding and required
+            text: packageData.installManageButtonText
+            visible: packageData.installManageButtonVisible
         }
 
         Cura.PrimaryButton
         {
-            id: installButton
+            id: updateManageButton
             Layout.alignment: Qt.AlignTop
             text: catalog.i18nc("@button", "Update") // OR Download, if new!
-            visible: false  // not functional right now, also only when unfolding and required
+            visible: packageData.updateManageButtonVisible
         }
     }
 
