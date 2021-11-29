@@ -11,13 +11,10 @@ import Cura 1.6 as Cura
 // Onboarding banner.
 Rectangle
 {
-    property bool bannerVisible
     property string bannerIcon
     property string bannerText
     property var onRemoveBanner
     property string readMoreUrl
-
-    visible: bannerVisible
 
     Layout.preferredHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
     anchors
