@@ -50,7 +50,7 @@ Window
 
             OnboardBanner
             {
-                bannerVisible: content.item && content.item.bannerVisible
+                visible: content.item && content.item.bannerVisible
                 bannerText: content.item && content.item.bannerText
                 bannerIcon: content.item && content.item.bannerIcon
                 onRemoveBanner: content.item && content.item.onRemoveBanner
