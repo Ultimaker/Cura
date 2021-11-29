@@ -13,7 +13,7 @@ Packages
 
     bannerVisible: UM.Preferences.getValue("cura/market_place_show_manage_packages_banner");
     bannerIcon: "ArrowDoubleCircleRight"
-    bannerBody: catalog.i18nc("@text", "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly.")
+    bannerText: catalog.i18nc("@text", "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly.")
     readMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {
         UM.Preferences.setValue("cura/market_place_show_manage_packages_banner", false);
