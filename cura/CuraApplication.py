@@ -2015,33 +2015,6 @@ class CuraApplication(QtApplication):
         show_whatsnew_only = has_active_machine and has_app_just_upgraded
         return show_whatsnew_only
 
-    @pyqtSlot(result = bool)
-    def shouldShowMarketPlacePluginBanner(self) -> bool:
-        return self._preferences.getValue("cura/market_place_show_plugin_banner")
-
-    @pyqtSlot(result = bool)
-    def shouldShowMarketPlaceMaterialBanner(self) -> bool:
-        return self._preferences.getValue("cura/market_place_show_material_banner")
-
-    @pyqtSlot(result = bool)
-    def shouldShowMarketPlaceManagePackagesBanner(self) -> bool:
-        return self._preferences.getValue("cura/market_place_show_manage_packages_banner")
-
-    @pyqtSlot()
-    def closeMarketPlacePluginBanner(self) -> None:
-        Logger.log("i", "Close market place plugin banner")
-        self._preferences.setValue("cura/market_place_show_plugin_banner", False)
-
-    @pyqtSlot()
-    def closeMarketPlaceMaterialBanner(self) -> None:
-        Logger.log("i", "Close market place material banner")
-        self._preferences.setValue("cura/market_place_show_material_banner", False)
-
-    @pyqtSlot()
-    def closeMarketPlaceManagePackagesBanner(self) -> None:
-        Logger.log("i", "Close market place manage packages banner")
-        self._preferences.setValue("cura/market_place_show_manage_packages_banner", False)
-
     @pyqtSlot(result = int)
     def appWidth(self) -> int:
         main_window = QtApplication.getInstance().getMainWindow()
