@@ -10,39 +10,58 @@ import UM 1.0 as UM
 
 Item
 {
-    Column
+    RowLayout
     {
-        anchors.fill: parent
-        anchors.margins: UM.Theme.getSize("default_margin").width
-
-        RowLayout
+        id: header
+        anchors
         {
-            spacing: UM.Theme.getSize("default_margin").width
-
-            Cura.SecondaryButton
-            {
-                Layout.alignment: Qt.AlignVCenter
-                Layout.preferredHeight: UM.Theme.getSize("action_button").height
-                Layout.preferredWidth: height
-
-                onClicked: contextStack.pop() //Remove this page, returning to the main package list or whichever thing is beneath it.
-
-                tooltip: catalog.i18nc("@button:tooltip", "Back")
-                toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
-                leftPadding: UM.Theme.getSize("narrow_margin").width
-                rightPadding: leftPadding
-                iconSource: UM.Theme.getIcon("ArrowLeft")
-                iconSize: height - leftPadding * 2
-            }
-
-            Label
-            {
-                Layout.alignment: Qt.AlignVCenter
-
-                text: "Install Plug-ins" //TODO: Depend on package type, and translate.
-                font: UM.Theme.getFont("large")
-                color: UM.Theme.getColor("text")
-            }
+            top: parent.top
+            topMargin: UM.Theme.getSize("default_margin").height
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: anchors.leftMargin
         }
+
+        spacing: UM.Theme.getSize("default_margin").width
+
+        Cura.SecondaryButton
+        {
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredHeight: UM.Theme.getSize("action_button").height
+            Layout.preferredWidth: height
+
+            onClicked: contextStack.pop() //Remove this page, returning to the main package list or whichever thing is beneath it.
+
+            tooltip: catalog.i18nc("@button:tooltip", "Back")
+            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
+            leftPadding: UM.Theme.getSize("narrow_margin").width
+            rightPadding: leftPadding
+            iconSource: UM.Theme.getIcon("ArrowLeft")
+            iconSize: height - leftPadding * 2
+        }
+
+        Label
+        {
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+
+            text: "Install Plug-ins" //TODO: Depend on package type, and translate.
+            font: UM.Theme.getFont("large")
+            color: UM.Theme.getColor("text")
+        }
+    }
+
+    Rectangle
+    {
+        anchors
+        {
+            top: header.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        color: UM.Theme.getColor("detail_background")
     }
 }
