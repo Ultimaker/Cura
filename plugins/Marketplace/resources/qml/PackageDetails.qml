@@ -70,6 +70,15 @@ Item
         PackageCard
         {
             packageData: detailPage.packageData
+            anchors
+            {
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+                rightMargin: anchors.leftMargin
+                top: parent.top
+                topMargin: UM.Theme.getSize("default_margin").height
+            }
         }
     }
 }

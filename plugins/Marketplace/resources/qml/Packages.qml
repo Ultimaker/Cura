@@ -77,6 +77,7 @@ ListView
         PackageCard
         {
             packageData: model.package
+            width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
         }
     }
 
