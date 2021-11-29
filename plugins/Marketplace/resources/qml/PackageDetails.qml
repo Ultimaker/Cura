@@ -10,6 +10,9 @@ import UM 1.0 as UM
 
 Item
 {
+    id: detailPage
+    property var packageData: packages.selectedPackage
+
     RowLayout
     {
         id: header
@@ -63,5 +66,10 @@ Item
             bottom: parent.bottom
         }
         color: UM.Theme.getColor("detail_background")
+
+        PackageCard
+        {
+            packageData: detailPage.packageData
+        }
     }
 }
