@@ -12,6 +12,7 @@ Item
 {
     id: detailPage
     property var packageData: packages.selectedPackage
+    property string title: catalog.i18nc("@header", "Package details")
 
     RowLayout
     {
@@ -49,7 +50,7 @@ Item
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
 
-            text: "Install Plug-ins" //TODO: Depend on package type, and translate.
+            text: detailPage.title
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
         }

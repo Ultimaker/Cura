@@ -19,8 +19,6 @@ ListView
     Component.onCompleted: model.updatePackages()
     Component.onDestruction: model.abortUpdating()
 
-    //ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-
     spacing: UM.Theme.getSize("default_margin").height
 
     section.property: "package.sectionTitle"
@@ -88,6 +86,7 @@ ListView
         PackageDetails
         {
             packageData: packages.selectedPackage
+            title: packages.pageTitle
         }
     }
 
