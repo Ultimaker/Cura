@@ -52,10 +52,10 @@ Window
             OnboardBanner
             {
                 visible: content.item && content.item.bannerVisible
-                bannerText: content.item && content.item.bannerText
-                bannerIcon: content.item && content.item.bannerIcon
-                onRemoveBanner: content.item && content.item.onRemoveBanner
-                readMoreUrl: content.item.readMoreUrl && content.item.readMoreUrl
+                text: content.item && content.item.bannerText
+                icon: content.item && content.item.bannerIcon
+                onRemove: content.item && content.item.onRemoveBanner
+                readMoreUrl: content.item && content.item.bannerReadMoreUrl
             }
 
             // Page title.

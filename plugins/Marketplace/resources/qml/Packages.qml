@@ -14,7 +14,7 @@ ListView
     property bool bannerVisible
     property var bannerIcon
     property string bannerText
-    property string readMoreUrl
+    property string bannerReadMoreUrl
     property var onRemoveBanner
 
     width: parent.width

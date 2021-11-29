@@ -11,9 +11,9 @@ import Cura 1.6 as Cura
 // Onboarding banner.
 Rectangle
 {
-    property alias bannerIcon: onboardingIcon.source;
-    property string bannerText
-    property var onRemoveBanner
+    property alias icon: onboardingIcon.source
+    property alias text: infoText.text
+    property var onRemove
     property string readMoreUrl
 
     Layout.preferredHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
@@ -56,7 +56,7 @@ Rectangle
         hoverColor: UM.Theme.getColor("primary_text_hover")
         iconSource: UM.Theme.getIcon("Cancel")
 
-        onClicked: onRemoveBanner()
+        onClicked: onRemove()
     }
 
     // Body
@@ -71,7 +71,6 @@ Rectangle
         }
 
         font: UM.Theme.getFont("default")
-        text: bannerText
 
         renderType: Text.NativeRendering
         color: UM.Theme.getColor("primary_text")
