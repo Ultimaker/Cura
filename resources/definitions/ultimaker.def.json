@@ -43,6 +43,12 @@
         },
         "skin_angles": {
             "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]"
+        },
+        "top_layers": {
+            "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))"
+        },
+        "bottom_layers": {
+            "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"
         }
     }
 }
