@@ -69,7 +69,6 @@ Item
 
         PackageCard
         {
-            packageData: detailPage.packageData
             anchors
             {
                 left: parent.left
@@ -79,6 +78,9 @@ Item
                 top: parent.top
                 topMargin: UM.Theme.getSize("default_margin").height
             }
+
+            packageData: detailPage.packageData
+            expanded: true
         }
     }
 }
