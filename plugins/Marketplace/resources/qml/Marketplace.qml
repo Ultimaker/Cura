@@ -53,7 +53,6 @@ Window
             ColumnLayout
             {
                 id: packageBrowse
-                anchors.fill: parent
 
                 spacing: UM.Theme.getSize("default_margin").height
 
