@@ -106,7 +106,6 @@ Rectangle
 
     Cura.TertiaryButton
     {
-        visible: readMoreUrl !== ""
         id: readMoreButton
         anchors.left: infoText.left
         anchors.bottom: infoText.bottom
