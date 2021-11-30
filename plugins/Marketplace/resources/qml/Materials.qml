@@ -16,6 +16,7 @@ Packages
         UM.Preferences.setValue("cura/market_place_show_material_banner", false);
         bannerVisible = false;
     }
+    searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/materials?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-materials-browser"
 
     model: Marketplace.RemotePackageList
     {

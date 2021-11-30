@@ -11,6 +11,7 @@ ListView
     id: packages
 
     property string pageTitle
+    property string searchInBrowserUrl
     property bool bannerVisible
     property var bannerIcon
     property string bannerText

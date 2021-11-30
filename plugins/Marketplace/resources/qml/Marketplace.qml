@@ -89,7 +89,7 @@ Window
                 RowLayout
                 {
                     width: parent.width
-                    height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
+                    height: UM.Theme.getSize("button_icon").height
                     spacing: UM.Theme.getSize("thin_margin").width
 
                     Rectangle
@@ -160,6 +160,17 @@ Window
                         font: materialsTabText.font
                     }                   
                 }
+            }
+
+            Cura.TertiaryButton
+            {
+                text: catalog.i18nc("@info", "Search in the browser")
+                iconSource: UM.Theme.getIcon("LinkExternal")
+
+                isIconOnRightSide: true
+                font: UM.Theme.getFont("default")
+
+                onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
             }
 
             // Page contents.
