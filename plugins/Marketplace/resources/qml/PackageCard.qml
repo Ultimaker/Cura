@@ -539,14 +539,45 @@ Rectangle
                 }
             }
 
-            Cura.SecondaryButton
+            Row
             {
+                id: externalButtonRow
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                text: catalog.i18nc("@button", "Visit plug-in website")
-                iconSource: UM.Theme.getIcon("Globe")
-                outlineColor: "transparent"
-                onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+                Cura.SecondaryButton
+                {
+                    text: packageData.packageType === "plugin" ? catalog.i18nc("@button", "Visit plug-in website") : catalog.i18nc("@button", "Website")
+                    iconSource: UM.Theme.getIcon("Globe")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+                }
+
+                Cura.SecondaryButton
+                {
+                    visible: packageData.packageType === "material"
+                    text: catalog.i18nc("@button", "Buy spool")
+                    iconSource: UM.Theme.getIcon("ShoppingCart")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.whereToBuy)
+                }
+
+                Cura.SecondaryButton
+                {
+                    visible: packageData.packageType === "material"
+                    text: catalog.i18nc("@button", "Safety datasheet")
+                    iconSource: UM.Theme.getIcon("Warning")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.safetyDataSheet)
+                }
+
+                Cura.SecondaryButton
+                {
+                    visible: packageData.packageType === "material"
+                    text: catalog.i18nc("@button", "Technical datasheet")
+                    iconSource: UM.Theme.getIcon("DocumentFilled")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.technicalDataSheet)
+                }
             }
         }
     }
