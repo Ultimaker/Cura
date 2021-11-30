@@ -150,7 +150,7 @@ class PackageModel(QObject):
         :return: Whether this package provides any material that is compatible with the material station.
         """
         for material in subdata.get("materials", []):
-            for compatibility in material.get("compatibilities", []):
+            for compatibility in material.get("compatibility", []):
                 if compatibility.get("material_station_optimized", False):
                     return True
         return False
@@ -162,7 +162,7 @@ class PackageModel(QObject):
         :return: Whether this package provides any material that is compatible with the air manager.
         """
         for material in subdata.get("materials", []):
-            for compatibility in material.get("compatibilities", []):
+            for compatibility in material.get("compatibility", []):
                 if compatibility.get("air_manager_optimized", False):
                     return True
         return False
