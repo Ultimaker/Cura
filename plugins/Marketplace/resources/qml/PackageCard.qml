@@ -544,6 +544,8 @@ Rectangle
                 id: externalButtonRow
                 anchors.horizontalCenter: parent.horizontalCenter
 
+                spacing: UM.Theme.getSize("narrow_margin").width
+
                 Cura.SecondaryButton
                 {
                     text: packageData.packageType === "plugin" ? catalog.i18nc("@button", "Visit plug-in website") : catalog.i18nc("@button", "Website")
