@@ -47,7 +47,7 @@ Window
         {
             anchors.fill: parent
 
-            spacing: UM.Theme.getSize("thin_margin").height
+            spacing: UM.Theme.getSize("default_margin").height
 
             OnboardBanner
             {
@@ -89,7 +89,7 @@ Window
                 RowLayout
                 {
                     width: parent.width
-                    height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("thin_margin").height
+                    height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
                     spacing: UM.Theme.getSize("thin_margin").width
 
                     Rectangle
