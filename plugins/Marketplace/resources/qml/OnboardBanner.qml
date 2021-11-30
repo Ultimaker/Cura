@@ -36,8 +36,8 @@ Rectangle
             left: parent.left
             margins: UM.Theme.getSize("default_margin").width
         }
-        width: UM.Theme.getSize("button_icon").width
-        height: UM.Theme.getSize("button_icon").height
+        width: UM.Theme.getSize("banner_icon_size").width
+        height: UM.Theme.getSize("banner_icon_size").height
     }
 
     // Close button
