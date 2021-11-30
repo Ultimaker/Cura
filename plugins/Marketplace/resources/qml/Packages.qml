@@ -63,9 +63,11 @@ ListView
 
     delegate: MouseArea
     {
+        id: cardMouseArea
         width: parent ? parent.width : 0
         height: childrenRect.height
 
+        hoverEnabled: true
         onClicked:
         {
             packages.selectedPackage = model.package;
@@ -76,6 +78,7 @@ ListView
         {
             packageData: model.package
             width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
+            color: cardMouseArea.containsMouse ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("main_background")
         }
     }
 
