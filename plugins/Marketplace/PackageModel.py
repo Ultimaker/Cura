@@ -99,34 +99,45 @@ class PackageModel(QObject):
     def sectionTitle(self) -> Optional[str]:
         return self._section_title
 
-    enableManageButtonChanged = pyqtSignal()
+    isInstalledChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = enableManageButtonChanged)
-    def enableManageButtonText(self):
-        if self._is_active:
-            return catalog.i18nc("@button", "Disable")
-        else:
-            return catalog.i18nc("@button", "Enable")
-
-    @pyqtProperty(bool, notify = enableManageButtonChanged)
-    def enableManageButtonVisible(self):
+    @pyqtProperty(bool, notify = isInstalledChanged)
+    def isInstalled(self):
         return self._is_installed
 
-    installManageButtonChanged = pyqtSignal()
+    isEnabledChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = installManageButtonChanged)
-    def installManageButtonText(self):
+    @pyqtProperty(bool, notify = isEnabledChanged)
+    def isEnabled(self):
+        return self._is_active
+
+    manageEnableStateChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = manageEnableStateChanged)
+    def manageEnableState(self):
+        # TODO: Handle manual installed packages
         if self._is_installed:
-            return catalog.i18nc("@button", "Uninstall")
+            if self._is_active:
+                return "secondary"
+            else:
+                return "primary"
         else:
-            return catalog.i18nc("@button", "Install")
+            return "hidden"
 
-    @pyqtProperty(bool, notify = installManageButtonChanged)
-    def installManageButtonVisible(self):
-        return not self._is_bundled
+    manageInstallStateChanged = pyqtSignal()
 
-    updateManageButtonChanged = pyqtSignal()
+    @pyqtProperty(str, notify = manageInstallStateChanged)
+    def manageInstallState(self):
+        if self._is_installed:
+            if self._is_bundled:
+                return "hidden"
+            else:
+                return "secondary"
+        else:
+            return "primary"
 
-    @pyqtProperty(bool, notify = updateManageButtonChanged)
-    def updateManageButtonVisible(self):
-        return False  #  Todo: implement
+    manageUpdateStateChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = manageUpdateStateChanged)
+    def manageUpdateState(self):
+        return "hidden"  # TODO: implement
