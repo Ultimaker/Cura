@@ -17,7 +17,7 @@
         "preferred_variant_name": "E3DV6 0.40mm",
         "machine_extruder_trains":
         {
-        "0": "z-bolt_extruder_0"
+        "0": "z-bolt_extruder_1"
         }
     },
 
@@ -42,6 +42,7 @@
         "infill_line_width":                            { "value": "line_width * 1.1 if machine_nozzle_size <= 0.6 else machine_nozzle_size" },
         "support_interface_line_width":                 { "value": "line_width * 0.9" },
 
+		"skin_monotonic":								{ "value": true },
         "optimize_wall_printing_order":                 { "default_value": true },
         "travel_compensate_overlapping_walls_enabled":  { "default_value": true },
         "fill_perimeter_gaps":                          { "default_value": "everywhere" },
@@ -80,8 +81,9 @@
         "retraction_enable":                            { "value": true },
         "retract_at_layer_change":                      { "value": true },
         "retraction_min_travel":                        { "value": 2 },
-        "retraction_combing":                           { "value": "'within_infill'" },
-        "retraction_combing_max_distance":              { "value": 8 },
+		"retraction_count_max":							{ "value": 20 },
+        "retraction_combing":                           { "value": "'infill'" },
+        "retraction_combing_max_distance":              { "value": 6 },
         "travel_retract_before_outer_wall":             { "value": true },
         "travel_avoid_other_parts":                     { "value": true },
 
