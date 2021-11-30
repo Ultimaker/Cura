@@ -99,7 +99,7 @@
         "infill_before_walls": { "value": false },
         "infill_line_width": { "value": "round(line_width * 0.5 / 0.35, 2)" },
         "infill_overlap": { "value": "0" },
-        "infill_pattern": { "value": "'triangles'" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "initial_layer_line_width_factor": { "value": "120" },
         "jerk_enabled": { "value": "True" },
