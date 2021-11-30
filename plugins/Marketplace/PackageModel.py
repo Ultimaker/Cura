@@ -49,6 +49,8 @@ class PackageModel(QObject):
         self._where_to_buy = self._findLink(subdata, "where_to_buy")
         self._compatible_printers = self._getCompatiblePrinters(subdata)
         self._compatible_support_materials = self._getCompatibleSupportMaterials(subdata)
+        self._is_compatible_material_station = self._isCompatibleMaterialStation(subdata)
+        self._is_compatible_air_manager = self._isCompatibleAirManager(subdata)
 
         author_data = package_data.get("author", {})
         self._author_name = author_data.get("display_name", catalog.i18nc("@label:property", "Unknown Author"))
@@ -141,6 +143,30 @@ class PackageModel(QObject):
 
         return list(sorted(result))
 
+    def _isCompatibleMaterialStation(self, subdata: Dict[str, Any]) -> bool:
+        """
+        Finds out if this package provides any material that is compatible with the material station.
+        :param subdata: The "data" element in the package data, which should contain this compatibility information.
+        :return: Whether this package provides any material that is compatible with the material station.
+        """
+        for material in subdata.get("materials", []):
+            for compatibility in material.get("compatibilities", []):
+                if compatibility.get("material_station_optimized", False):
+                    return True
+        return False
+
+    def _isCompatibleAirManager(self, subdata: Dict[str, Any]) -> bool:
+        """
+        Finds out if this package provides any material that is compatible with the air manager.
+        :param subdata: The "data" element in the package data, which should contain this compatibility information.
+        :return: Whether this package provides any material that is compatible with the air manager.
+        """
+        for material in subdata.get("materials", []):
+            for compatibility in material.get("compatibilities", []):
+                if compatibility.get("air_manager_optimized", False):
+                    return True
+        return False
+
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
         return self._package_id
@@ -216,3 +242,11 @@ class PackageModel(QObject):
     @pyqtProperty("QVariantList", constant = True)
     def compatibleSupportMaterials(self) -> List[str]:
         return self._compatible_support_materials
+
+    @pyqtProperty(bool, constant = True)
+    def isCompatibleMaterialStation(self) -> bool:
+        return self._is_compatible_material_station
+
+    @pyqtProperty(bool, constant = True)
+    def isCompatibleAirManager(self) -> bool:
+        return self._is_compatible_air_manager
