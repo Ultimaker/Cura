@@ -17,10 +17,11 @@ class PackageModel(QObject):
     QML. The model can also be constructed directly from a response received by the API.
     """
 
-    def __init__(self, package_data: Dict[str, Any], section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
+    def __init__(self, package_data: Dict[str, Any], installation_status: str, section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
         """
         Constructs a new model for a single package.
         :param package_data: The data received from the Marketplace API about the package to create.
+        :param installation_status: Whether the package is `not_installed`, `installed` or `bundled`.
         :param section_title: If the packages are to be categorized per section provide the section_title
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
@@ -46,6 +47,7 @@ class PackageModel(QObject):
         if not self._icon_url or self._icon_url == "":
             self._icon_url = author_data.get("icon_url", "")
 
+        self._installation_status = installation_status
         self._section_title = section_title
         # Note that there's a lot more info in the package_data than just these specified here.
 
@@ -107,6 +109,10 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant=True)
     def authorInfoUrl(self):
         return self._author_info_url
+
+    @pyqtProperty(str, constant = True)
+    def installationStatus(self) -> str:
+        return self._installation_status
 
     @pyqtProperty(str, constant = True)
     def sectionTitle(self) -> Optional[str]:

@@ -90,4 +90,4 @@ class LocalPackageList(PackageList):
         bundled_or_installed = "installed" if self._manager.isUserInstalledPackage(package_info["package_id"]) else "bundled"
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_SECTION_HEADER[bundled_or_installed][package_type]
-        return PackageModel(package_info, section_title = section_title, parent = self)
+        return PackageModel(package_info, installation_status = bundled_or_installed, section_title = section_title, parent = self)

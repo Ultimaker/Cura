@@ -303,6 +303,7 @@ Rectangle
                         width: UM.Theme.getSize("card_tiny_icon").width
                         height: UM.Theme.getSize("card_tiny_icon").height
 
+                        visible: packageData.installationStatus !== "bundled" //Don't show download count for packages that are bundled. It'll usually be 0.
                         source: UM.Theme.getIcon("Download")
                         color: UM.Theme.getColor("text")
                     }
@@ -311,6 +312,7 @@ Rectangle
                     {
                         anchors.verticalCenter: downloadsIcon.verticalCenter
 
+                        visible: packageData.installationStatus !== "bundled" //Don't show download count for packages that are bundled. It'll usually be 0.
                         color: UM.Theme.getColor("text")
                         font: UM.Theme.getFont("default")
                         text: packageData.downloadCount
