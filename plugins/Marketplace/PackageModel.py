@@ -60,6 +60,9 @@ class PackageModel(QObject):
         url_regex = re.compile(r"(((http|https)://)[a-zA-Z0-9@:%._+~#?&/=]{2,256}\.[a-z]{2,12}(/[a-zA-Z0-9@:%.-_+~#?&/=]*)?)")
         text = re.sub(url_regex, r'<a href="\1">\1</a>', text)
 
+        # Turn newlines into <br> so that they get displayed as newlines when rendering as rich text.
+        text = text.replace("\n", "<br>")
+
         return text
 
     @pyqtProperty(str, constant = True)
