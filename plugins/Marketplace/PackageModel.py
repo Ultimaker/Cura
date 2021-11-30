@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import pyqtProperty, QObject
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 catalog = i18nCatalog("cura")
@@ -45,6 +45,7 @@ class PackageModel(QObject):
         self._technical_data_sheet = self._findLink(subdata, "technical_data_sheet")
         self._safety_data_sheet = self._findLink(subdata, "safety_data_sheet")
         self._where_to_buy = self._findLink(subdata, "where_to_buy")
+        self._compatible_printers = self._getCompatiblePrinters(subdata)
 
         author_data = package_data.get("author", {})
         self._author_name = author_data.get("display_name", catalog.i18nc("@label:property", "Unknown Author"))
@@ -85,6 +86,28 @@ class PackageModel(QObject):
         text = text.replace("\n", "<br>")
 
         return text
+
+    def _getCompatiblePrinters(self, subdata: Dict[str, Any]) -> List[str]:
+        """
+        Gets the list of printers that this package provides material compatibility with.
+
+        Any printer is listed, even if it's only for a single nozzle on a single material in the package.
+        :param subdata: The "data" element in the package data, which should contain this compatibility information.
+        :return: A list of printer names that this package provides material compatibility with.
+        """
+        result = set()
+
+        for material in subdata.get("materials", []):
+            for compatibility in material.get("compatibility", []):
+                printer_name = compatibility.get("machine_name")
+                if printer_name is None:
+                    continue  # Missing printer name information. Skip this one.
+                for subcompatibility in compatibility.get("compatibilities", []):
+                    if subcompatibility.get("hardware_compatible", False):
+                        result.add(printer_name)
+                        break
+
+        return list(sorted(result))
 
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
@@ -153,3 +176,7 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant = True)
     def whereToBuy(self) -> str:
         return self._where_to_buy
+
+    @pyqtProperty("QVariantList", constant = True)
+    def compatiblePrinters(self) -> List[str]:
+        return self._compatible_printers
