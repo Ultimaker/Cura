@@ -36,8 +36,8 @@ Rectangle
             left: parent.left
             margins: UM.Theme.getSize("default_margin").width
         }
-        width: UM.Theme.getSize("button_icon").width
-        height: UM.Theme.getSize("button_icon").height
+        width: UM.Theme.getSize("banner_icon_size").width
+        height: UM.Theme.getSize("banner_icon_size").height
     }
 
     // Close button
@@ -85,8 +85,8 @@ Rectangle
                 if (line.implicitWidth + readMoreButton.width + UM.Theme.getSize("default_margin").width > width)
                 {
                     // If it does place it after the body text
-                    readMoreButton.anchors.bottomMargin = -(fontMetrics.height + UM.Theme.getSize("thin_margin").height);
-                    readMoreButton.anchors.leftMargin = 0;
+                    readMoreButton.anchors.bottomMargin = -(fontMetrics.height);
+                    readMoreButton.anchors.leftMargin = UM.Theme.getSize("thin_margin").width;
                 }
                 else
                 {
@@ -106,7 +106,6 @@ Rectangle
 
     Cura.TertiaryButton
     {
-        visible: readMoreUrl !== ""
         id: readMoreButton
         anchors.left: infoText.left
         anchors.bottom: infoText.bottom
