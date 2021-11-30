@@ -41,6 +41,11 @@ class PackageModel(QObject):
         self._download_url = package_data.get("download_url", "")
         self._release_notes = package_data.get("release_notes", "")  # Not used yet, propose to add to description?
 
+        subdata = package_data.get("data", {})
+        self._technical_data_sheet = self._findLink(subdata, "technical_data_sheet")
+        self._safety_data_sheet = self._findLink(subdata, "safety_data_sheet")
+        self._where_to_buy = self._findLink(subdata, "where_to_buy")
+
         author_data = package_data.get("author", {})
         self._author_name = author_data.get("display_name", catalog.i18nc("@label:property", "Unknown Author"))
         self._author_info_url = author_data.get("website", "")
@@ -50,6 +55,22 @@ class PackageModel(QObject):
         self._installation_status = installation_status
         self._section_title = section_title
         # Note that there's a lot more info in the package_data than just these specified here.
+
+    def _findLink(self, subdata: Dict[str, Any], link_type: str) -> str:
+        """
+        Searches the package data for a link of a certain type.
+
+        The links are not in a fixed path in the package data. We need to iterate over the available links to find them.
+        :param subdata: The "data" element in the package data, which should contain links.
+        :param link_type: The type of link to find.
+        :return: A URL of where the link leads, or an empty string if there is no link of that type in the package data.
+        """
+        links = subdata.get("links", [])
+        for link in links:
+            if link.get("type", "") == link_type:
+                return link.get("url", "")
+        else:
+            return ""  # No link with the correct type was found.
 
     def _format(self, text: str) -> str:
         """
@@ -120,3 +141,15 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant = True)
     def sectionTitle(self) -> Optional[str]:
         return self._section_title
+
+    @pyqtProperty(str, constant = True)
+    def technicalDataSheet(self) -> str:
+        return self._technical_data_sheet
+
+    @pyqtProperty(str, constant = True)
+    def safetyDataSheet(self) -> str:
+        return self._safety_data_sheet
+
+    @pyqtProperty(str, constant = True)
+    def whereToBuy(self) -> str:
+        return self._where_to_buy
