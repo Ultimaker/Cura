@@ -447,6 +447,17 @@ Rectangle
                         elide: Text.ElideRight
                     }
                 }
+
+                Label
+                {
+                    width: parent.width
+
+                    visible: packageData.compatiblePrinters.length == 0
+                    text: "(" + catalog.i18nc("@info", "No compatibility information") + ")"
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
             }
 
             Column
@@ -480,6 +491,17 @@ Rectangle
                         color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
+                }
+
+                Label
+                {
+                    width: parent.width
+
+                    visible: packageData.compatibleSupportMaterials.length == 0
+                    text: "(" + catalog.i18nc("@info No materials", "None") + ")"
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
                 }
             }
 
