@@ -162,6 +162,17 @@ Window
                 }
             }
 
+            Cura.TertiaryButton
+            {
+                text: catalog.i18nc("@info", "Search in the browser")
+                iconSource: UM.Theme.getIcon("LinkExternal")
+
+                isIconOnRightSide: true
+                font: UM.Theme.getFont("default")
+
+                onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
+            }
+
             // Page contents.
             Rectangle
             {
