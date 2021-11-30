@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "zonestar_z9m4",
+        "machine": "zonestar_z9e4",
         "position": "0"
     },
 
@@ -14,8 +14,8 @@
         "machine_nozzle_offset_x": { "default_value": 0.0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "machine_extruder_start_code": 
-           {"default_value": ";start gcode of Extruder 1 \nM163 S0 P100\nM163 S1 P0\nM163 S2 P0\nM163 S3 P0"},
+           {"default_value": ";start gcode of Extruder 1 \nG91 ; relative coordinates\nG1 E35 F1800; push filament 35mm\nG90 ;absolute coordinates\nG92 E0 ;reset extrusion distance\n"},
         "machine_extruder_end_code":
-           {"default_value": ";end gcode of Extruder 1"}
+           {"default_value": ";end gcode of Extruder 1 \nG91 ; relative coordinates\nG1 E-35 F1800; pull filament 35mm\nG90 ;absolute coordinates\nG92 E0 ;reset extrusion distance\n"}
     }
 }

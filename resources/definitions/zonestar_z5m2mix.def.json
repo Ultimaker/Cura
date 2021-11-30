@@ -25,6 +25,7 @@
         "machine_name": { "default_value": "ZONESTAR Z5M2-mix" },
         "layer_height": { "default_value": 0.2 },
         "machine_extruder_count": { "default_value": 8 },
+        "machine_extruders_share_heater": { "default_value": true },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "machine_height": { "default_value": 230 },
