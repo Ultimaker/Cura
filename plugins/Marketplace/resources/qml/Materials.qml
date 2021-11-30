@@ -10,7 +10,7 @@ Packages
 
     bannerVisible:  UM.Preferences.getValue("cura/market_place_show_material_banner")
     bannerIcon: UM.Theme.getIcon("Spool")
-    bannerText: catalog.i18nc("@text", "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users.")
+    bannerText: catalog.i18nc("@text", "Select and install material profiles optimised for your Ultimaker 3D printers.")
     bannerReadMoreUrl: "" // TODO add when support page is ready
     onRemoveBanner: function() {
         UM.Preferences.setValue("cura/market_place_show_material_banner", false);
