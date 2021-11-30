@@ -463,7 +463,7 @@ Rectangle
 
                     text: catalog.i18nc("@header", "Compatible support materials")
                     font: UM.Theme.getFont("medium_bold")
-                    color: UM.THeme.getColor("text")
+                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
 
@@ -480,6 +480,34 @@ Rectangle
                         color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
                     }
+                }
+            }
+
+            Column
+            {
+                width: parent.width - parent.padding * 2
+
+                visible: packageData.packageType === "material"
+                spacing: 0
+
+                Label
+                {
+                    width: parent.width
+
+                    text: catalog.i18nc("@header", "Compatible with material station")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+
+                Label
+                {
+                    width: parent.width
+
+                    text: packageData.isCompatibleMaterialStation ? catalog.i18nc("@info", "Yes") : catalog.i18nc("@info", "No")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
                 }
             }
 
