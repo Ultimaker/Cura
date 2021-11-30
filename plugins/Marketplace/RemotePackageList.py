@@ -5,12 +5,9 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkReply
 from typing import Optional, TYPE_CHECKING
 
-from cura.CuraApplication import CuraApplication
-from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.TaskManagement.HttpRequestManager import HttpRequestManager, HttpRequestData  # To request the package list from the API.
-from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 
 from . import Marketplace   # To get the list of packages. Imported this way to prevent circular imports.
 from .PackageList import PackageList
@@ -27,9 +24,6 @@ class RemotePackageList(PackageList):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
-
-        self._ongoing_request: Optional[HttpRequestData] = None
-        self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
         self._package_type_filter = ""
         self._requested_search_string = ""

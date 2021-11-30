@@ -8,11 +8,14 @@ if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
 
 from UM.i18n import i18nCatalog
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager
+from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 
 from .PackageList import PackageList
-from .PackageModel import PackageModel  # The contents of this list.
+from .PackageModel import PackageModel
+from . import Marketplace
 
 catalog = i18nCatalog("cura")
 
@@ -55,6 +58,7 @@ class LocalPackageList(PackageList):
         for the sections are sorted alphabetically on the display name. These sorted sections are then added to the items
         """
         package_info = list(self._allPackageInfo())
+        self.checkForUpdates(package_info)
         sorted_sections: List[Dict[str, PackageModel]] = []
         for section in self._getSections():
             packages = filter(lambda p: p.sectionTitle == section, package_info)
@@ -91,3 +95,30 @@ class LocalPackageList(PackageList):
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_SECTION_HEADER[bundled_or_installed][package_type]
         return PackageModel(package_info, section_title = section_title, parent = self)
+
+    def checkForUpdates(self, packages: List[PackageModel]):
+        installed_packages = "installed_packages=".join([f"{package.packageId}:{package.packageVersion}&" for package in packages])
+        request_url = f"{Marketplace.PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
+
+        self._ongoing_request = HttpRequestManager.getInstance().get(
+            request_url,
+            scope = self._scope,
+            callback = self._parseResponse
+        )
+        return []
+
+    def _parseResponse(self, reply: "QNetworkReply") -> None:
+        """
+        Parse the response from the package list API request which can update.
+
+        :param reply: A reply containing information about a number of packages.
+        """
+        response_data = HttpRequestManager.readJSON(reply)
+        if "data" not in response_data:
+            Logger.error(f"Could not interpret the server's response. Missing 'data' or 'links' from response data. Keys in response: {response_data.keys()}")
+            self.setErrorMessage(catalog.i18nc("@info:error", "Could not interpret the server's response."))
+            return
+
+        for package_data in response_data["data"]:
+            index = self.find("package", package_data["package_id"])
+            self.getItem(index)["package"].canUpdate = True

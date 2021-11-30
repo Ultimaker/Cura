@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 
 ROOT_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}"  # Root of all Marketplace API requests.
 PACKAGES_URL = f"{ROOT_URL}/packages"  # URL to use for requesting the list of packages.
+PACKAGE_UPDATES_URL = f"{PACKAGES_URL}/package-updates"  # URL to use for requesting the list of packages that can be updated.
 
 
 class Marketplace(Extension):

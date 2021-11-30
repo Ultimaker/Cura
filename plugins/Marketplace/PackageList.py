@@ -6,6 +6,11 @@ from typing import Optional, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
+from UM.TaskManagement.HttpRequestManager import HttpRequestData  # To request the package list from the API.
+
+from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -26,6 +31,9 @@ class PackageList(ListModel):
         self._is_loading = False
         self._has_more = False
         self._has_footer = True
+
+        self._ongoing_request: Optional[HttpRequestData] = None
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
     @pyqtSlot()
     def updatePackages(self) -> None:
