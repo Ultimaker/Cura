@@ -86,6 +86,15 @@ Window
                     }
                 }
 
+                OnboardBanner
+                {
+                    visible: content.item && content.item.bannerVisible
+                    text: content.item && content.item.bannerText
+                    icon: content.item && content.item.bannerIcon
+                    onRemove: content.item && content.item.onRemoveBanner
+                    readMoreUrl: content.item && content.item.bannerReadMoreUrl
+                }
+
                 // Search & Top-Level Tabs
                 Item
                 {
@@ -165,6 +174,17 @@ Window
                             font: materialsTabText.font
                         }
                     }
+                }
+
+                Cura.TertiaryButton
+                {
+                    text: catalog.i18nc("@info", "Search in the browser")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+
+                    isIconOnRightSide: true
+                    font: UM.Theme.getFont("default")
+
+                    onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
                 }
 
                 // Page contents.

@@ -572,6 +572,10 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("general/accepted_user_agreement", False)
 
+        preferences.addPreference("cura/market_place_show_plugin_banner", True)
+        preferences.addPreference("cura/market_place_show_material_banner", True)
+        preferences.addPreference("cura/market_place_show_manage_packages_banner", True)
+
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
             "dialog_profile_path",

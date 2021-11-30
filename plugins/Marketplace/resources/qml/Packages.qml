@@ -13,6 +13,12 @@ ListView
 
     property string pageTitle
     property var selectedPackage
+    property string searchInBrowserUrl
+    property bool bannerVisible
+    property var bannerIcon
+    property string bannerText
+    property string bannerReadMoreUrl
+    property var onRemoveBanner
 
     clip: true
 
