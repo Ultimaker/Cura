@@ -415,6 +415,40 @@ Rectangle
                 onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
             }
 
+            Column //Separate column to have no spacing between compatible printers.
+            {
+                id: compatiblePrinterColumn
+                width: parent.width - parent.padding * 2
+
+                visible: packageData.packageType === "material"
+                spacing: 0
+
+                Label
+                {
+                    width: parent.width
+
+                    text: catalog.i18nc("@header", "Compatible printers")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+
+                Repeater
+                {
+                    model: packageData.compatiblePrinters
+
+                    Label
+                    {
+                        width: compatiblePrinterColumn.width
+
+                        text: modelData
+                        font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
+                    }
+                }
+            }
+
             Cura.SecondaryButton
             {
                 anchors.horizontalCenter: parent.horizontalCenter
