@@ -19,7 +19,7 @@ Packages
         UM.Preferences.setValue("cura/market_place_show_manage_packages_banner", false);
         bannerVisible = false;
     }
-    searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins"
+    searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
 
     model: Marketplace.LocalPackageList
     {
