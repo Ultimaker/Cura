@@ -683,6 +683,8 @@
         "table_row": [2.0, 2.0],
 
         "welcome_wizard_content_image_big": [18, 15],
-        "welcome_wizard_cloud_content_image": [4, 4]
+        "welcome_wizard_cloud_content_image": [4, 4],
+
+        "banner_icon_size": [2.0, 2.0]
     }
 }
