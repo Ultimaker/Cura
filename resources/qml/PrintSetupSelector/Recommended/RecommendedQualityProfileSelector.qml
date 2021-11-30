@@ -27,8 +27,7 @@ Item
 
     spacing: 30
 
-        anchors
-        {
+        anchors{
             left: parent.left
             right: parent.right
         }
@@ -43,7 +42,7 @@ Item
                 id: intentSelection
                 width: parent.width
                 height: UM.Theme.getSize("recomended_quality_tab").height
-                spacing:UM.Theme.getSize("narrow_margin").width
+                spacing: UM.Theme.getSize("narrow_margin").width
 
             
                 Repeater
@@ -85,12 +84,14 @@ Item
                                 }
                                 height: UM.Theme.getSize("high_resolution_icon").width/2
                                 width: UM.Theme.getSize("high_resolution_icon").height/2
-                                color: UM.Theme.getColor("small_button_text")
+                                color: UM.Theme.getColor("text")
                             }
                             Text{ 
                                 text: model.name
                                 horizontalAlignment: Text.AlignHCenter
-                                Layout.fillWidth:true                        
+                                Layout.fillWidth:true
+                                color: UM.Theme.getColor("text")
+                        
                             }
                         }
                     
@@ -112,35 +113,94 @@ Item
 
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        color:'blue'
 
                         RowLayout
                         {
-
                             anchors.fill:parent
-                            spacing: 6
+                            spacing: UM.Theme.getSize("narrow_margin").width
+                            property var intentCategory: model.intent_category
                             property var intentModel: model["qualities"]
                             Repeater
                             {
                                 model: parent.intentModel
-                                Button{
-                                    Layout.fillWidth: true
-                                    visible: model.available
-                                    onClicked: Cura.IntentManager.selectIntent(parent.intentModel.intent_category, model.quality_type)
-                                    
-                                    ColumnLayout{
-                                        spacing: 2
-                                        UM.RecolorImage
-                                        {
-                                            id: buttonIconLeft
-                                            source: UM.Theme.getIcon("Check")
-                                            height: UM.Theme.getSize("action_button_icon").height
-                                            width: UM.Theme.getSize("action_button_icon").height
-                                            color: UM.Theme.getColor("small_button_text")
+                                
+                                Controls2.Button{
+                                    property var intentCategoryLabel: parent.intentModel
 
+                                    visible: model.available
+                                    Layout.fillWidth: true
+                                    checkable:true
+
+                                    // background: Rectangle{
+                                    //     color: parent.checked ? UM.Theme.getColor("setting_category_hover") : UM.Theme.getColor("main_background")
+                                    // }
+                                    
+                                    property var modelData: {
+                                        "intent_category": parent.intentCategory,
+                                        "quality_type": model.quality_type
+                                    }
+
+                                    function checkedFunction(modelItem)
+                                    {
+                                        if(Cura.MachineManager.hasCustomQuality)
+                                        {
+                                            // When user created profile is active, no quality tickbox should be active.
+                                            return false
                                         }
-                                        Text{ text: model.name}
-                                        Text{ text: model.layer_height}
+
+                                        if(modelItem === null)
+                                        {
+                                            return false
+                                        }
+                                        return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
+                                    }
+
+                                    checked: checkedFunction(modelData)
+
+
+                                    Controls2.ButtonGroup.group: activeProfileButtonGroup
+                                    
+                                   
+                                    Row{
+                                        padding: UM.Theme.getSize("narrow_margin").width
+                                        spacing: UM.Theme.getSize("narrow_margin").width
+
+                                        UM.RecolorImage
+                                            {
+                                                id: buttonIconLeft
+                                                source: {      
+                                                        switch (model.layer_height) {
+                                                            case 0.06:
+                                                                UM.Theme.getIcon("ResolutionExtrafine", "high")
+                                                                break
+                                                            case 0.1:
+                                                                UM.Theme.getIcon("ResolutionFine", "high")
+                                                                break
+                                                            case 0.15:
+                                                                UM.Theme.getIcon("ResolutionNormal", "high")
+                                                                break
+                                                            case 0.2:
+                                                                UM.Theme.getIcon("ResolutionFast", "high")
+                                                                break
+                                                            case 0.3:
+                                                                UM.Theme.getIcon("ResolutionExtrFast", "high")
+                                                                break
+                                                            case 0.4:
+                                                                UM.Theme.getIcon("ResolutionSprint", "high")
+                                                                break
+                                                            default:
+                                                                UM.Theme.getIcon("ResolutionNormal", "high")
+                                                                break    
+                                                        }
+                                                    }                                                
+                                                height: UM.Theme.getSize("high_resolution_icon").width/2
+                                                width: UM.Theme.getSize("high_resolution_icon").height/2
+                                                color: UM.Theme.getColor("text")
+                                            }
+                                        Column{                                        
+                                            Text{ text: model.name}
+                                            Text{ text: model.layer_height}
+                                        }
                                     }
                                 }
                                                         
@@ -154,176 +214,175 @@ Item
         }
          
 
-       
-        Controls2.ButtonGroup
-        {
+        Controls2.ButtonGroup{
             id: activeProfileButtonGroup
             exclusive: true
             onClicked: Cura.IntentManager.selectIntent(button.modelData.intent_category, button.modelData.quality_type)
         }
 
-        Item
-        {
-            height: childrenRect.height
-            anchors
-            {
-                left: parent.left
-                right: parent.right
-            }
-            Cura.IconWithText
-            {
-                id: profileLabel
-                source: UM.Theme.getIcon("PrintQuality")
-                text: catalog.i18nc("@label", "Profiles")
-                font: UM.Theme.getFont("medium")
-                width: labelColumnWidth
-                iconSize: UM.Theme.getSize("medium_button_icon").width
-            }
-            UM.SimpleButton
-            {
-                id: resetToDefaultQualityButton
+       
+        // Item
+        // {
+        //     height: childrenRect.height
+        //     anchors
+        //     {
+        //         left: parent.left
+        //         right: parent.right
+        //     }
+        //     Cura.IconWithText
+        //     {
+        //         id: profileLabel
+        //         source: UM.Theme.getIcon("PrintQuality")
+        //         text: catalog.i18nc("@label", "Profiles")
+        //         font: UM.Theme.getFont("medium")
+        //         width: labelColumnWidth
+        //         iconSize: UM.Theme.getSize("medium_button_icon").width
+        //     }
+        //     UM.SimpleButton
+        //     {
+        //         id: resetToDefaultQualityButton
 
-                visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
-                height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
-                width: height
-                anchors
-                {
-                    right: profileLabel.right
-                    rightMargin: UM.Theme.getSize("default_margin").width
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                    verticalCenter: parent.verticalCenter
-                }
+        //         visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
+        //         height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
+        //         width: height
+        //         anchors
+        //         {
+        //             right: profileLabel.right
+        //             rightMargin: UM.Theme.getSize("default_margin").width
+        //             leftMargin: UM.Theme.getSize("default_margin").width
+        //             verticalCenter: parent.verticalCenter
+        //         }
 
-                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                iconSource: UM.Theme.getIcon("ArrowReset")
+        //         color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+        //         iconSource: UM.Theme.getIcon("ArrowReset")
 
-                onClicked:
-                {
-                    // if the current profile is user-created, switch to a built-in quality
-                    Cura.MachineManager.resetToUseDefaultQuality()
-                }
-                onEntered:
-                {
-                    var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-                    base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, 0),  tooltipContent)
-                }
-                onExited: base.hideTooltip()
-            }
+        //         onClicked:
+        //         {
+        //             // if the current profile is user-created, switch to a built-in quality
+        //             Cura.MachineManager.resetToUseDefaultQuality()
+        //         }
+        //         onEntered:
+        //         {
+        //             var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
+        //             base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, 0),  tooltipContent)
+        //         }
+        //         onExited: base.hideTooltip()
+        //     }
 
-            Cura.LabelBar
-            {
-                id: labelbar
-                anchors
-                {
-                    left: profileLabel.right
-                    right: parent.right
-                    verticalCenter: profileLabel.verticalCenter
-                }
+        //     Cura.LabelBar
+        //     {
+        //         id: labelbar
+        //         anchors
+        //         {
+        //             left: profileLabel.right
+        //             right: parent.right
+        //             verticalCenter: profileLabel.verticalCenter
+        //         }
 
-                model: Cura.QualityProfilesDropDownMenuModel
-                modelKey: "layer_height"
-            }
-        }
-
-
-
-        Repeater
-        {
-            model: Cura.IntentCategoryModel {}
-            Item
-            {
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                }
-                height: intentCategoryLabel.height
-
-                Label
-                {
-                    id: intentCategoryLabel
-                    text: model.name
-                    width: labelColumnWidth - UM.Theme.getSize("section_icon").width
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("section_icon").width + UM.Theme.getSize("narrow_margin").width
-                    font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
-                    elide: Text.ElideRight
-                }
-
-                Cura.RadioCheckbar
-                {
-                    anchors
-                    {
-                        left: intentCategoryLabel.right
-                        right: parent.right
-                    }
-                    dataModel: model["qualities"]
-                    buttonGroup: activeProfileButtonGroup
-
-                    function checkedFunction(modelItem)
-                    {
-                        if(Cura.MachineManager.hasCustomQuality)
-                        {
-                            // When user created profile is active, no quality tickbox should be active.
-                            return false
-                        }
-
-                        if(modelItem === null)
-                        {
-                            return false
-                        }
-                        return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
-                    }
-
-                    isCheckedFunction: checkedFunction
-                }
-
-                MouseArea // Intent description tooltip hover area
-                {
-                    id: intentDescriptionHoverArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    enabled: model.description !== undefined
-                    acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
-
-                    Timer
-                    {
-                        id: intentTooltipTimer
-                        interval: 500
-                        running: false
-                        repeat: false
-                        onTriggered: base.showTooltip(
-                            intentCategoryLabel,
-                            Qt.point(-(intentCategoryLabel.x - qualityRow.x) - UM.Theme.getSize("thick_margin").width, 0),
-                            model.description
-                        )
-                    }
-
-                    onEntered: intentTooltipTimer.start()
-                    onExited:
-                    {
-                        base.hideTooltip()
-                        intentTooltipTimer.stop()
-                    }
-                }
-
-                NoIntentIcon // This icon has hover priority over intentDescriptionHoverArea, so draw it above it.
-                {
-                    affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
-                    intent_type: model.name
-                    anchors.right: intentCategoryLabel.right
-                    anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-                    width: intentCategoryLabel.height * 0.75
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: width
-                    visible: Cura.MachineManager.activeIntentCategory == model.intent_category && affected_extruders.length
-                }
+        //         model: Cura.QualityProfilesDropDownMenuModel
+        //         modelKey: "layer_height"
+        //     }
+        // }
 
 
-            }
 
-        }
+        // Repeater
+        // {
+        //     model: Cura.IntentCategoryModel {}
+        //     Item
+        //     {
+        //         anchors
+        //         {
+        //             left: parent.left
+        //             right: parent.right
+        //         }
+        //         height: intentCategoryLabel.height
+
+        //         Label
+        //         {
+        //             id: intentCategoryLabel
+        //             text: model.name
+        //             width: labelColumnWidth - UM.Theme.getSize("section_icon").width
+        //             anchors.left: parent.left
+        //             anchors.leftMargin: UM.Theme.getSize("section_icon").width + UM.Theme.getSize("narrow_margin").width
+        //             font: UM.Theme.getFont("medium")
+        //             color: UM.Theme.getColor("text")
+        //             renderType: Text.NativeRendering
+        //             elide: Text.ElideRight
+        //         }
+
+        //         Cura.RadioCheckbar
+        //         {
+        //             anchors
+        //             {
+        //                 left: intentCategoryLabel.right
+        //                 right: parent.right
+        //             }
+        //             dataModel: model["qualities"]
+        //             buttonGroup: activeProfileButtonGroup
+
+        //             function checkedFunction(modelItem)
+        //             {
+        //                 if(Cura.MachineManager.hasCustomQuality)
+        //                 {
+        //                     // When user created profile is active, no quality tickbox should be active.
+        //                     return false
+        //                 }
+
+        //                 if(modelItem === null)
+        //                 {
+        //                     return false
+        //                 }
+        //                 return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
+        //             }
+
+        //             isCheckedFunction: checkedFunction
+        //         }
+
+        //         MouseArea // Intent description tooltip hover area
+        //         {
+        //             id: intentDescriptionHoverArea
+        //             anchors.fill: parent
+        //             hoverEnabled: true
+        //             enabled: model.description !== undefined
+        //             acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+        //             Timer
+        //             {
+        //                 id: intentTooltipTimer
+        //                 interval: 500
+        //                 running: false
+        //                 repeat: false
+        //                 onTriggered: base.showTooltip(
+        //                     intentCategoryLabel,
+        //                     Qt.point(-(intentCategoryLabel.x - qualityRow.x) - UM.Theme.getSize("thick_margin").width, 0),
+        //                     model.description
+        //                 )
+        //             }
+
+        //             onEntered: intentTooltipTimer.start()
+        //             onExited:
+        //             {
+        //                 base.hideTooltip()
+        //                 intentTooltipTimer.stop()
+        //             }
+        //         }
+
+        //         NoIntentIcon // This icon has hover priority over intentDescriptionHoverArea, so draw it above it.
+        //         {
+        //             affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
+        //             intent_type: model.name
+        //             anchors.right: intentCategoryLabel.right
+        //             anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+        //             width: intentCategoryLabel.height * 0.75
+        //             anchors.verticalCenter: parent.verticalCenter
+        //             height: width
+        //             visible: Cura.MachineManager.activeIntentCategory == model.intent_category && affected_extruders.length
+        //         }
+
+
+        //     }
+
+        // }
     }
 }
