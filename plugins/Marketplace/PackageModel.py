@@ -5,7 +5,9 @@ from PyQt5.QtCore import pyqtProperty, QObject
 import re
 from typing import Any, Dict, List, Optional
 
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
+
 catalog = i18nCatalog("cura")
 
 
@@ -46,6 +48,7 @@ class PackageModel(QObject):
         self._safety_data_sheet = self._findLink(subdata, "safety_data_sheet")
         self._where_to_buy = self._findLink(subdata, "where_to_buy")
         self._compatible_printers = self._getCompatiblePrinters(subdata)
+        self._compatible_support_materials = self._getCompatibleSupportMaterials(subdata)
 
         author_data = package_data.get("author", {})
         self._author_name = author_data.get("display_name", catalog.i18nc("@label:property", "Unknown Author"))
@@ -106,6 +109,35 @@ class PackageModel(QObject):
                     if subcompatibility.get("hardware_compatible", False):
                         result.add(printer_name)
                         break
+
+        return list(sorted(result))
+
+    def _getCompatibleSupportMaterials(self, subdata: Dict[str, Any]) -> List[str]:
+        """
+        Gets the list of support materials that the materials in this package are compatible with.
+
+        Since the materials are individually encoded as keys in the API response, only PVA and Breakaway are currently
+        supported.
+        :param subdata: The "data" element in the package data, which should contain this compatibility information.
+        :return: A list of support materials that the materials in this package are compatible with.
+        """
+        result = set()
+
+        container_registry = CuraContainerRegistry.getInstance()
+        try:
+            pva_name = container_registry.findContainersMetadata(id = "ultimaker_pva")[0].get("name", "Ultimaker PVA")
+        except IndexError:
+            pva_name = "Ultimaker PVA"
+        try:
+            breakaway_name = container_registry.findContainersMetadata(id = "ultimaker_bam")[0].get("name", "Ultimaker Breakaway")
+        except IndexError:
+            breakaway_name = "Ultimaker Breakaway"
+
+        for material in subdata.get("materials", []):
+            if material.get("pva_compatible", False):
+                result.add(pva_name)
+            if material.get("breakaway_compatible", False):
+                result.add(breakaway_name)
 
         return list(sorted(result))
 
@@ -180,3 +212,7 @@ class PackageModel(QObject):
     @pyqtProperty("QVariantList", constant = True)
     def compatiblePrinters(self) -> List[str]:
         return self._compatible_printers
+
+    @pyqtProperty("QVariantList", constant = True)
+    def compatibleSupportMaterials(self) -> List[str]:
+        return self._compatible_support_materials
