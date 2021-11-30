@@ -394,7 +394,7 @@ Rectangle
                 width: parent.width - parent.padding * 2
 
                 text: catalog.i18nc("@header", "Description")
-                font: UM.Theme.getFont("default_bold")
+                font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("text")
                 elide: Text.ElideRight
             }
@@ -404,7 +404,7 @@ Rectangle
                 width: parent.width - parent.padding * 2
 
                 text: packageData.formattedDescription
-                font: UM.Theme.getFont("default")
+                font: UM.Theme.getFont("medium")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 wrapMode: Text.Wrap
