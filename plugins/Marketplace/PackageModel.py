@@ -235,11 +235,11 @@ class PackageModel(QObject):
     def whereToBuy(self) -> str:
         return self._where_to_buy
 
-    @pyqtProperty("QVariantList", constant = True)
+    @pyqtProperty("QStringList", constant = True)
     def compatiblePrinters(self) -> List[str]:
         return self._compatible_printers
 
-    @pyqtProperty("QVariantList", constant = True)
+    @pyqtProperty("QStringList", constant = True)
     def compatibleSupportMaterials(self) -> List[str]:
         return self._compatible_support_materials
 
