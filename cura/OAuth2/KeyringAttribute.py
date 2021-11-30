@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Type, TYPE_CHECKING, Optional, List
 
+from io import BlockingIOError
 import keyring
 from keyring.backend import KeyringBackend
 from keyring.errors import NoKeyringError, PasswordSetError, KeyringLocked
@@ -44,7 +45,7 @@ class KeyringAttribute:
                 self._store_secure = False
                 Logger.logException("w", "No keyring backend present")
                 return getattr(instance, self._name)
-            except KeyringLocked:
+            except (KeyringLocked, BlockingIOError):
                 self._store_secure = False
                 Logger.log("i", "Access to the keyring was denied.")
                 return getattr(instance, self._name)
