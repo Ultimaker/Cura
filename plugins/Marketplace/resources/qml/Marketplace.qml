@@ -126,7 +126,7 @@ Window
                         TabBar
                         {
                             id: pageSelectionTabBar
-                            anchors.right: parent.right
+                            Layout.alignment: Qt.AlignRight
                             height: UM.Theme.getSize("button_icon").height
                             spacing: 0
                             background: Rectangle { color: "transparent" }

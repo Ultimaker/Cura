@@ -17,12 +17,8 @@ Rectangle
     property string readMoreUrl
 
     Layout.preferredHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
-    anchors
-    {
-        margins: UM.Theme.getSize("default_margin").width
-        left: parent.left
-        right: parent.right
-    }
+    Layout.fillWidth: true
+    Layout.margins: UM.Theme.getSize("default_margin").width
 
     color: UM.Theme.getColor("action_panel_secondary")
 
