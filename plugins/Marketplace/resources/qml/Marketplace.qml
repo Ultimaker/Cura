@@ -21,8 +21,14 @@ Window
     width: minimumWidth
     height: minimumHeight
 
-    // Set and unset the content. No need to keep things in memory if it's not visible.
-    onVisibleChanged: content.source = visible ? "Plugins.qml" : ""
+    onVisibleChanged:
+    {
+        pageSelectionTabBar.currentIndex = 0; //Go back to the initial tab.
+        while(contextStack.depth > 1)
+        {
+            contextStack.pop(); //Do NOT use the StackView.Immediate transition here, since it causes the window to stay empty. Seemingly a Qt bug: https://bugreports.qt.io/browse/QTBUG-60670?
+        }
+    }
 
     Connections
     {
@@ -40,173 +46,182 @@ Window
     Rectangle
     {
         anchors.fill: parent
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
         color: UM.Theme.getColor("main_background")
 
-        ColumnLayout
+        //The Marketplace can have a page in front of everything with package details. The stack view controls its visibility.
+        StackView
         {
+            id: contextStack
             anchors.fill: parent
 
-            spacing: UM.Theme.getSize("default_margin").height
+            initialItem: packageBrowse
 
-            // Page title.
-            Item
+            ColumnLayout
             {
-                Layout.preferredWidth: parent.width
-                Layout.preferredHeight: childrenRect.height
+                id: packageBrowse
 
-                Label
+                spacing: UM.Theme.getSize("default_margin").height
+
+                // Page title.
+                Item
                 {
-                    id: pageTitle
-                    anchors
+                    Layout.preferredWidth: parent.width
+                    Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
+
+                    Label
                     {
-                        left: parent.left
-                        leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                    }
-
-                    font: UM.Theme.getFont("large")
-                    color: UM.Theme.getColor("text")
-                    text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
-                }
-            }
-
-            OnboardBanner
-            {
-                visible: content.item && content.item.bannerVisible
-                text: content.item && content.item.bannerText
-                icon: content.item && content.item.bannerIcon
-                onRemove: content.item && content.item.onRemoveBanner
-                readMoreUrl: content.item && content.item.bannerReadMoreUrl
-            }
-
-            // Search & Top-Level Tabs
-            Item
-            {
-                Layout.preferredHeight: childrenRect.height
-                Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
-                RowLayout
-                {
-                    width: parent.width
-                    height: UM.Theme.getSize("button_icon").height
-                    spacing: UM.Theme.getSize("thin_margin").width
-
-                    Rectangle
-                    {
-                        color: "transparent"
-                        Layout.preferredHeight: parent.height
-                        Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
-                        Layout.fillWidth: ! searchBar.visible
-                    }
-
-                    Cura.SearchBar
-                    {
-                        id: searchBar
-                        Layout.preferredHeight: UM.Theme.getSize("button_icon").height
-                        Layout.fillWidth: true
-                        onTextEdited: searchStringChanged(text)
-                    }
-
-                    // Page selection.
-                    TabBar
-                    {
-                        id: pageSelectionTabBar
-                        anchors.right: parent.right
-                        height: UM.Theme.getSize("button_icon").height
-                        spacing: 0
-                        background: Rectangle { color: "transparent" }
-
-                        PackageTypeTab
+                        id: pageTitle
+                        anchors
                         {
-                            id: pluginTabText
-                            width: implicitWidth
-                            text: catalog.i18nc("@button", "Plugins")
-                            onClicked:
+                            left: parent.left
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("default_margin").width
+                            bottom: parent.bottom
+                        }
+
+                        font: UM.Theme.getFont("large")
+                        color: UM.Theme.getColor("text")
+                        text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
+                    }
+                }
+
+                OnboardBanner
+                {
+                    visible: content.item && content.item.bannerVisible
+                    text: content.item && content.item.bannerText
+                    icon: content.item && content.item.bannerIcon
+                    onRemove: content.item && content.item.onRemoveBanner
+                    readMoreUrl: content.item && content.item.bannerReadMoreUrl
+                }
+
+                // Search & Top-Level Tabs
+                Item
+                {
+                    Layout.preferredHeight: childrenRect.height
+                    Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
+                    RowLayout
+                    {
+                        width: parent.width
+                        height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
+                        spacing: UM.Theme.getSize("thin_margin").width
+
+                        Rectangle
+                        {
+                            color: "transparent"
+                            Layout.preferredHeight: parent.height
+                            Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
+                            Layout.fillWidth: ! searchBar.visible
+                        }
+
+                        Cura.SearchBar
+                        {
+                            id: searchBar
+                            Layout.preferredHeight: UM.Theme.getSize("button_icon").height
+                            Layout.fillWidth: true
+                            onTextEdited: searchStringChanged(text)
+                        }
+
+                        // Page selection.
+                        TabBar
+                        {
+                            id: pageSelectionTabBar
+                            Layout.alignment: Qt.AlignRight
+                            height: UM.Theme.getSize("button_icon").height
+                            spacing: 0
+                            background: Rectangle { color: "transparent" }
+
+                            onCurrentIndexChanged:
                             {
-                                searchBar.text = ""
-                                searchBar.visible = true
-                                content.source = "Plugins.qml"
+                                searchBar.text = "";
+                                searchBar.visible = currentItem.hasSearch;
+                                content.source = currentItem.sourcePage;
+                            }
+
+                            PackageTypeTab
+                            {
+                                id: pluginTabText
+                                width: implicitWidth
+                                text: catalog.i18nc("@button", "Plugins")
+                                property string sourcePage: "Plugins.qml"
+                                property bool hasSearch: true
+                            }
+                            PackageTypeTab
+                            {
+                                id: materialsTabText
+                                width: implicitWidth
+                                text: catalog.i18nc("@button", "Materials")
+                                property string sourcePage: "Materials.qml"
+                                property bool hasSearch: true
+                            }
+                            ManagePackagesButton
+                            {
+                                property string sourcePage: "ManagedPackages.qml"
+                                property bool hasSearch: false
                             }
                         }
-                        PackageTypeTab
-                        {
-                            id: materialsTabText
-                            width: implicitWidth
-                            text: catalog.i18nc("@button", "Materials")
-                            onClicked:
-                            {
-                                searchBar.text = ""
-                                searchBar.visible = true
-                                content.source = "Materials.qml"
-                            }
-                        }
-                        ManagePackagesButton
-                        {
-                            onClicked: content.source = "ManagedPackages.qml"
-                        }
-                    }
 
-                    TextMetrics
-                    {
-                        id: pluginTabTextMetrics
-                        text: pluginTabText.text
-                        font: pluginTabText.font
+                        TextMetrics
+                        {
+                            id: pluginTabTextMetrics
+                            text: pluginTabText.text
+                            font: pluginTabText.font
+                        }
+                        TextMetrics
+                        {
+                            id: materialsTabTextMetrics
+                            text: materialsTabText.text
+                            font: materialsTabText.font
+                        }
                     }
-                    TextMetrics
-                    {
-                        id: materialsTabTextMetrics
-                        text: materialsTabText.text
-                        font: materialsTabText.font
-                    }                   
                 }
-            }
 
-            FontMetrics
-            {
-                id: fontMetrics
-                font: UM.Theme.getFont("default")
-            }
+                FontMetrics
+                {
+                    id: fontMetrics
+                    font: UM.Theme.getFont("default")
+                }
 
-            Cura.TertiaryButton
-            {
-                text: catalog.i18nc("@info", "Search in the browser")
-                iconSource: UM.Theme.getIcon("LinkExternal")
+                Cura.TertiaryButton
+                {
+                    text: catalog.i18nc("@info", "Search in the browser")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    visible: pageSelectionTabBar.currentItem.hasSearch
+                    isIconOnRightSide: true
+                    height: fontMetrics.height
+                    textFont: fontMetrics.font
+                    textColor: UM.Theme.getColor("text")
 
-                isIconOnRightSide: true
-                height: fontMetrics.height
-                textFont: fontMetrics.font
-                textColor: UM.Theme.getColor("text")
-
-                onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
-            }
-
-            // Page contents.
-            Rectangle
-            {
-                Layout.preferredWidth: parent.width
-                Layout.fillHeight: true
-                color: UM.Theme.getColor("detail_background")
+                    onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
+                }
 
                 // Page contents.
-                Loader
+                Rectangle
                 {
-                    id: content
-                    anchors.fill: parent
-                    anchors.margins: UM.Theme.getSize("default_margin").width
-                    source: "Plugins.qml"
+                    Layout.preferredWidth: parent.width
+                    Layout.fillHeight: true
+                    color: UM.Theme.getColor("detail_background")
 
-                    Connections
+                    // Page contents.
+                    Loader
                     {
-                        target: content
-                        function onLoaded()
+                        id: content
+                        anchors.fill: parent
+                        anchors.margins: UM.Theme.getSize("default_margin").width
+                        source: "Plugins.qml"
+
+                        Connections
                         {
-                            pageTitle.text = content.item.pageTitle
-                            searchStringChanged.connect(handleSearchStringChanged)
-                        }
-                        function handleSearchStringChanged(new_search)
-                        {
-                            content.item.model.searchString = new_search
+                            target: content
+                            function onLoaded()
+                            {
+                                pageTitle.text = content.item.pageTitle
+                                searchStringChanged.connect(handleSearchStringChanged)
+                            }
+                            function handleSearchStringChanged(new_search)
+                            {
+                                content.item.model.searchString = new_search
+                            }
                         }
                     }
                 }

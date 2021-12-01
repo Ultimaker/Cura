@@ -134,8 +134,9 @@ class RemotePackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
+            installation_status = "installed" if CuraApplication.getInstance().getPackageManager().isUserInstalledPackage(package_data["package_id"]) else "not_installed"
             try:
-                package = PackageModel(package_data, parent = self)
+                package = PackageModel(package_data, installation_status, parent = self)
                 self.appendItem({"package": package})  # Add it to this list model.
             except RuntimeError:
                 # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling

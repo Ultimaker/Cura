@@ -15,6 +15,7 @@ Button
     property bool isIconOnRightSide: false
 
     property alias iconSource: buttonIconLeft.source
+    property real iconSize: UM.Theme.getSize("action_button_icon").height
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.tooltipText
@@ -109,7 +110,7 @@ Button
         {
             id: buttonIconLeft
             source: ""
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
@@ -158,7 +159,7 @@ Button
         {
             id: buttonIconRight
             source: buttonIconLeft.source
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
