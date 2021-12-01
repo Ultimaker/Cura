@@ -180,7 +180,7 @@ Window
                 {
                     text: catalog.i18nc("@info", "Search in the browser")
                     iconSource: UM.Theme.getIcon("LinkExternal")
-
+                    visible: pageSelectionTabBar.currentItem.hasSearch
                     isIconOnRightSide: true
                     font: UM.Theme.getFont("default")
 
