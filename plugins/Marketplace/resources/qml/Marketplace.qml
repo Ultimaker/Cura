@@ -168,7 +168,10 @@ Window
                 iconSource: UM.Theme.getIcon("LinkExternal")
 
                 isIconOnRightSide: true
-                font: UM.Theme.getFont("default")
+                height: UM.theme.getSize("standard_list_lineheight").height
+
+                textFont: UM.Theme.getFont("default")
+                textColor: UM.Theme.getColor("text")
 
                 onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
             }
