@@ -17,6 +17,8 @@ RowLayout
     property string busySecondaryText: busyMessageText.text
     property string mainState: "primary"
 
+    signal clicked
+
     state: mainState
 
     Cura.PrimaryButton
@@ -26,6 +28,7 @@ RowLayout
 
         onClicked:
         {
+            manageButton.clicked()
             manageButton.state = "busy"
         }
     }
@@ -37,6 +40,7 @@ RowLayout
 
         onClicked:
         {
+            manageButton.clicked()
             manageButton.state = "busy"
         }
     }

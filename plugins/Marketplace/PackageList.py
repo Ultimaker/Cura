@@ -7,7 +7,8 @@ from typing import Optional, TYPE_CHECKING
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
-from UM.TaskManagement.HttpRequestManager import HttpRequestData  # To request the package list from the API.
+from UM.TaskManagement.HttpRequestManager import HttpRequestData  # To request the package list from the API
+from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.

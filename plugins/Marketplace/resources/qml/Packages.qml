@@ -38,7 +38,6 @@ ListView
             text: section
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
-            onTextChanged: print(text)
         }
     }
 
