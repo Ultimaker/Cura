@@ -16,7 +16,7 @@
         "has_variants": true,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
-        "preferred_material": "generic_pla",
+        "preferred_material": "xyzprinting_antibact_pla",
         "variants_name": "Nozzle Type"
     },
     "overrides": {

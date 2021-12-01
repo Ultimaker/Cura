@@ -13,7 +13,7 @@
         "supports_usb_connection": true,
         "preferred_quality_type": "normal",
 		"quality_definition": "xyzprinting_da_vinci_jr_w_pro",
-		"preferred_variant_name": "Hardened Steel 0.4mm Nozzle",
+		"preferred_variant_name": "Stainless Steel 0.4mm Nozzle",
         "variants_name": "Nozzle Type",
 		"machine_extruder_trains": {
             "0": "xyzprinting_da_vinci_jr_w_pro_extruder_0"
