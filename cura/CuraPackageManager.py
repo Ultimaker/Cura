@@ -1,8 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, Dict, List, Tuple, TYPE_CHECKING, Optional
-from collections import Generator
+from typing import Any, Dict, List, Tuple, TYPE_CHECKING, Optional, Generator
 
 from cura.CuraApplication import CuraApplication #To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
@@ -63,7 +62,7 @@ class CuraPackageManager(PackageManager):
 
         return machine_with_materials, machine_with_qualities
 
-    def iterateAllLocalPackages(self) -> Generator[Dict[str, Any]]:
+    def iterateAllLocalPackages(self) -> Generator[Dict[str, Any], None, None]:
         """ A generator which returns an unordered list of all the PackageModels"""
 
         # Get all the installed packages, add a section_title depending on package_type and user installed

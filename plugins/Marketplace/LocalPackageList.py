@@ -13,8 +13,6 @@ from UM.i18n import i18nCatalog
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.Logger import Logger
 
-from cura.CuraApplication import CuraApplication
-
 from .PackageList import PackageList
 from .PackageModel import PackageModel
 from . import Marketplace
@@ -38,7 +36,6 @@ class LocalPackageList(PackageList):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
-        self._manager = CuraApplication.getInstance().getPackageManager()
         self._has_footer = False
 
     @pyqtSlot()

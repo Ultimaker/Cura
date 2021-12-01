@@ -31,6 +31,7 @@ class RemotePackageList(PackageList):
         self._request_url = self._initialRequestUrl()
         self.isLoadingChanged.connect(self._onLoadingChanged)
         self.isLoadingChanged.emit()
+        self._locally_installed = { p["package_id"] for p in self._manager.locally_installed_packages }
 
     def __del__(self) -> None:
         """
@@ -128,6 +129,8 @@ class RemotePackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
+            if package_data["package_id"] in self._locally_installed:
+                continue  # We should only show packages which are not already installed
             try:
                 package = PackageModel(package_data, parent = self)
                 self.appendItem({"package": package})  # Add it to this list model.

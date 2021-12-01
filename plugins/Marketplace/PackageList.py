@@ -26,6 +26,7 @@ class PackageList(ListModel):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
+        self._manager = CuraApplication.getInstance().getPackageManager()
         self._error_message = ""
         self.addRoleName(self.PackageRole, "package")
         self._is_loading = False
