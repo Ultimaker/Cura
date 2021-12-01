@@ -229,14 +229,14 @@ class WelcomePagesModel(ListModel):
         self._initialize()
 
     def _initialize(self, update_should_show_flag: bool = True) -> None:
-        show_whatsnew_only = False
+        show_whats_new_only = False
         if update_should_show_flag:
             has_active_machine = self._application.getMachineManager().activeMachine is not None
             has_app_just_upgraded = self._application.hasJustUpdatedFromOldVersion()
 
             # Only show the what's new dialog if there's no machine and we have just upgraded
             show_complete_flow = not has_active_machine
-            show_whatsnew_only = has_active_machine and has_app_just_upgraded
+            show_whats_new_only = has_active_machine and has_app_just_upgraded
 
             # FIXME: This is a hack. Because of the circular dependency between MachineManager, ExtruderManager, and
             # possibly some others, setting the initial active machine is not done when the MachineManager gets
@@ -244,7 +244,7 @@ class WelcomePagesModel(ListModel):
             # the active machine files are corrupted so we cannot rely on Preferences either. This makes sure that once
             # the active machine gets changed, this model updates the flags, so it can decide whether to show the
             # welcome flow or not.
-            should_show_welcome_flow = show_complete_flow or show_whatsnew_only
+            should_show_welcome_flow = show_complete_flow or show_whats_new_only
             if should_show_welcome_flow != self._should_show_welcome_flow:
                 self._should_show_welcome_flow = should_show_welcome_flow
                 self.shouldShowWelcomeFlowChanged.emit()
@@ -291,7 +291,7 @@ class WelcomePagesModel(ListModel):
                           ]
 
         pages_to_show = all_pages_list
-        if show_whatsnew_only:
+        if show_whats_new_only:
             pages_to_show = list(filter(lambda x: x["id"] == "whats_new", all_pages_list))
 
         self._pages = pages_to_show
