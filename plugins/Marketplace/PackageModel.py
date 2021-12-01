@@ -84,7 +84,7 @@ class PackageModel(QObject):
         :return: A block of rich text with formatting embedded.
         """
         # Turn all in-line hyperlinks into actual links.
-        url_regex = re.compile(r"(((http|https)://)[a-zA-Z0-9@:%._+~#?&/=]{2,256}\.[a-z]{2,12}(/[a-zA-Z0-9@:%.-_+~#?&/=]*)?)")
+        url_regex = re.compile(r"(((http|https)://)[a-zA-Z0-9@:%.\-_+~#?&/=]{2,256}\.[a-z]{2,12}(/[a-zA-Z0-9@:%.\-_+~#?&/=]*)?)")
         text = re.sub(url_regex, r'<a href="\1">\1</a>', text)
 
         # Turn newlines into <br> so that they get displayed as newlines when rendering as rich text.
