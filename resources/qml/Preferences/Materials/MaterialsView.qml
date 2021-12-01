@@ -261,7 +261,7 @@ TabView
                 {
                     id: spoolCostSpinBox
                     width: scrollView.columnWidth
-                    value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
+                    value: base.getMaterialPreferenceValue(properties.guid, "spool_cost", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/cost"))
                     prefix: base.currency + " "
                     decimals: 2
                     maximumValue: 100000000
