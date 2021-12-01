@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from typing import Optional, Dict, List, Tuple
+from typing import Optional, Dict, List, Tuple, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtProperty, pyqtSlot
 
@@ -10,6 +10,10 @@ from UM.Logger import Logger
 from UM.Resources import Resources
 
 from cura.UI.WelcomePagesModel import WelcomePagesModel
+
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
+    from cura.CuraApplication import CuraApplication
 
 
 class WhatsNewPagesModel(WelcomePagesModel):
@@ -22,6 +26,10 @@ class WhatsNewPagesModel(WelcomePagesModel):
     text_formats = [".txt", ".htm", ".html"]
     image_key = "image"
     text_key = "text"
+
+    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
+        super().__init__(application, parent)
+        self._subpages: List[Dict[str, Optional[str]]] = []
 
     @staticmethod
     def _collectOrdinalFiles(resource_type: int, include: List[str]) -> Tuple[Dict[int, str], int]:
@@ -69,7 +77,7 @@ class WhatsNewPagesModel(WelcomePagesModel):
         texts, max_text = WhatsNewPagesModel._collectOrdinalFiles(Resources.Texts, WhatsNewPagesModel.text_formats)
         highest = max(max_image, max_text)
 
-        self._subpages = []  #type: List[Dict[str, Optional[str]]]
+        self._subpages = []
         for n in range(0, highest + 1):
             self._subpages.append({
                 WhatsNewPagesModel.image_key: None if n not in images else images[n],
@@ -97,5 +105,3 @@ class WhatsNewPagesModel(WelcomePagesModel):
     def getSubpageText(self, page: int) -> str:
         result = self._getSubpageItem(page, WhatsNewPagesModel.text_key)
         return result if result else "* * *"
-
-__all__ = ["WhatsNewPagesModel"]
