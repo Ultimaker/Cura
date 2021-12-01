@@ -5,8 +5,6 @@ import configparser
 from io import StringIO
 import zipfile
 
-from PyQt5.QtCore import QBuffer
-
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Preferences import Preferences
@@ -16,7 +14,7 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 from cura.Utils.Threading import call_on_qt_thread
-from cura.Snapshot import Snapshot
+
 
 class ThreeMFWorkspaceWriter(WorkspaceWriter):
     def __init__(self):
@@ -88,23 +86,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
             self._writePluginMetadataToArchive(archive)
 
-            # Attempt to add a thumbnail
-            Logger.log("d", "Creating thumbnail image...")
-            try:
-                snapshot = Snapshot.snapshot(width = 300, height = 300)
-            except Exception:
-                snapshot = None
-                Logger.logException("w", "Failed to create snapshot image")
-
-            if snapshot:
-                thumbnail_file = zipfile.ZipInfo("Metadata/thumbnail.png")
-
-                thumbnail_buffer = QBuffer()
-                thumbnail_buffer.open(QBuffer.ReadWrite)
-                snapshot.save(thumbnail_buffer, "PNG")
-                archive.writestr(thumbnail_file, thumbnail_buffer.data())
-
-            # Close the archive & reset states
+            # Close the archive & reset states.
             archive.close()
         except PermissionError:
             self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
