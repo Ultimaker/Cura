@@ -1,13 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List, Tuple, TYPE_CHECKING, Optional
+from typing import Any, Dict, List, Tuple, TYPE_CHECKING, Optional
+from collections import Generator
 
 from cura.CuraApplication import CuraApplication #To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
 from UM.PackageManager import PackageManager #The class we're extending.
 from UM.Resources import Resources #To find storage paths for some resource types.
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from UM.Qt.QtApplication import QtApplication
@@ -17,6 +20,18 @@ if TYPE_CHECKING:
 class CuraPackageManager(PackageManager):
     def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
+        self._locally_installed_packages = None
+
+    @property
+    def locally_installed_packages(self):
+        """locally installed packages, lazy execution"""
+        if self._locally_installed_packages is None:
+            self._locally_installed_packages = list(self.iterateAllLocalPackages())
+        return self._locally_installed_packages
+
+    @locally_installed_packages.setter
+    def locally_installed_packages(self, value):
+        self._locally_installed_packages = value
 
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
@@ -47,3 +62,20 @@ class CuraPackageManager(PackageManager):
                         machine_with_qualities.append((global_stack, str(extruder_nr), container_id))
 
         return machine_with_materials, machine_with_qualities
+
+    def iterateAllLocalPackages(self) -> Generator[Dict[str, Any]]:
+        """ A generator which returns an unordered list of all the PackageModels"""
+
+        # Get all the installed packages, add a section_title depending on package_type and user installed
+        for packages in self.getAllInstalledPackagesInfo().values():
+            for package_info in packages:
+                yield package_info
+
+        # Get all to be removed package_info's. These packages are still used in the current session so the user might
+        # still want to interact with these.
+        for package_data in self.getPackagesToRemove().values():
+            yield package_data["package_info"]
+
+        # Get all to be installed package_info's. Since the user might want to interact with these
+        for package_data in self.getPackagesToInstall().values():
+            yield package_data["package_info"]
