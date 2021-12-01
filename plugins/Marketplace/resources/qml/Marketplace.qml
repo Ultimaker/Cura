@@ -162,15 +162,20 @@ Window
                 }
             }
 
+            FontMetrics
+            {
+                id: fontMetrics
+                font: UM.Theme.getFont("default")
+            }
+
             Cura.TertiaryButton
             {
                 text: catalog.i18nc("@info", "Search in the browser")
                 iconSource: UM.Theme.getIcon("LinkExternal")
 
                 isIconOnRightSide: true
-                height: UM.theme.getSize("standard_list_lineheight").height
-
-                textFont: UM.Theme.getFont("default")
+                height: fontMetrics.height
+                textFont: fontMetrics.font
                 textColor: UM.Theme.getColor("text")
 
                 onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
