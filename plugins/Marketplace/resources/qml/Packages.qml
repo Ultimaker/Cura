@@ -29,17 +29,16 @@ ListView
 
         color: UM.Theme.getColor("detail_background")
 
-        required property string section
-
         Label
         {
             id: sectionHeaderText
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
 
-            text: parent.section
+            text: section
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
+            onTextChanged: print(text)
         }
     }
 
@@ -221,4 +220,3 @@ ListView
         }
     }
 }
-
