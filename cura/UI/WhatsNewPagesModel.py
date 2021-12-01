@@ -1,18 +1,22 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from .WelcomePagesModel import WelcomePagesModel
 
 import os
 from typing import Optional, Dict, List, Tuple
+
 from PyQt5.QtCore import pyqtProperty, pyqtSlot
+
 from UM.Logger import Logger
 from UM.Resources import Resources
 
-#
-# This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for showing the
-# "what's new" page. This is also used in the "Help" menu to show the changes log.
-#
+from cura.UI.WelcomePagesModel import WelcomePagesModel
+
+
 class WhatsNewPagesModel(WelcomePagesModel):
+    """
+    This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for showing the
+    "what's new" page. This is also used in the "Help" menu to show the changes log.
+    """
 
     image_formats = [".png", ".jpg", ".jpeg", ".gif", ".svg"]
     text_formats = [".txt", ".htm", ".html"]
@@ -21,7 +25,7 @@ class WhatsNewPagesModel(WelcomePagesModel):
 
     @staticmethod
     def _collectOrdinalFiles(resource_type: int, include: List[str]) -> Tuple[Dict[int, str], int]:
-        result = {}  #type: Dict[int, str]
+        result = {}  # type: Dict[int, str]
         highest = -1
         try:
             folder_path = Resources.getPath(resource_type, "whats_new")
