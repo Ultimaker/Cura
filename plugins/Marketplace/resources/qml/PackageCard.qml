@@ -120,7 +120,6 @@ Rectangle
                         Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
                         Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
 
-
                         enabled: packageData.isCheckedByUltimaker
                         visible: packageData.isCheckedByUltimaker
 
@@ -136,7 +135,7 @@ Rectangle
                                 }
                             }
                             visible: parent.hovered
-                            targetPoint: Qt.point(0, Math.round(parent.y + parent.height / 2))
+                            targetPoint: Qt.point(0, Math.round(parent.y + parent.height / 4))
                         }
 
                         Rectangle
