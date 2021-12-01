@@ -213,7 +213,8 @@ class WelcomePagesModel(ListModel):
                 break
         return page_idx
 
-    def _getBuiltinWelcomePagePath(self, page_filename: str) -> "QUrl":
+    @staticmethod
+    def _getBuiltinWelcomePagePath(page_filename: str) -> QUrl:
         """Convenience function to get QUrl path to pages that's located in "resources/qml/WelcomePages"."""
         from cura.CuraApplication import CuraApplication
         return QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
