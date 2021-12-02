@@ -16,6 +16,8 @@ RowLayout
     property string busyPrimaryText: busyMessageText.text
     property string busySecondaryText: busyMessageText.text
     property string mainState: "primary"
+    property bool enabled: true
+    readonly property bool busy: state == "busy"
 
     signal clicked(bool primary_action)
 
@@ -25,6 +27,7 @@ RowLayout
     {
         id: primaryButton
         visible: false
+        enabled: manageButton.enabled
 
         onClicked:
         {
@@ -37,6 +40,7 @@ RowLayout
     {
         id: secondaryButton
         visible: false
+        enabled: manageButton.enabled
 
         onClicked:
         {
