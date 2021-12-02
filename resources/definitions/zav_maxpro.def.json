@@ -1,0 +1,13 @@
+{
+    "name":      "Zav Pro",
+    "version":   2,
+    "inherits":  "zav_base",
+    "metadata":  {
+                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
+                  "visible": true,
+                  "quality_definition": "zav_base"
+                 },
+    "overrides": {
+                  "machine_name":   {"default_value": "zav_maxpro"}
+                 }
+}

@@ -6,7 +6,7 @@
         "type": "extruder",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 16,
+        "setting_version": 19,
         "visible": false,
         "position": "0"
     },
@@ -197,7 +197,7 @@
         {
             "label": "Build Plate Adhesion",
             "type": "category",
-            "icon": "category_adhesion",
+            "icon": "Adhesion",
             "description": "Adhesion",
             "children":
             {
@@ -232,7 +232,7 @@
         "material":
         {
             "label": "Material",
-            "icon": "category_material",
+            "icon": "Spool",
             "description": "Material",
             "type": "category",
             "children":

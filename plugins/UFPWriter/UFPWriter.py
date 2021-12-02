@@ -1,22 +1,23 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import cast, List, Dict
 
 from Charon.VirtualFile import VirtualFile  # To open UFP files.
 from Charon.OpenMode import OpenMode  # To indicate that we want to write to UFP files.
+from Charon.filetypes.OpenPackagingConvention import OPCError
 from io import StringIO  # For converting g-code to bytes.
+
+from PyQt5.QtCore import QBuffer
 
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry  # To get the g-code writer.
-from PyQt5.QtCore import QBuffer
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
-from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 
 from UM.i18n import i18nCatalog
@@ -38,17 +39,6 @@ class UFPWriter(MeshWriter):
             )
         )
 
-        self._snapshot = None
-
-    def _createSnapshot(self, *args):
-        # must be called from the main thread because of OpenGL
-        Logger.log("d", "Creating thumbnail image...")
-        try:
-            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
-        except Exception:
-            Logger.logException("w", "Failed to create snapshot image")
-            self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
-
     # This needs to be called on the main thread (Qt thread) because the serialization of material containers can
     # trigger loading other containers. Because those loaded containers are QtObjects, they must be created on the
     # Qt thread. The File read/write operations right now are executed on separated threads because they are scheduled
@@ -58,38 +48,55 @@ class UFPWriter(MeshWriter):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
 
-        self._writeObjectList(archive)
+        try:
+            self._writeObjectList(archive)
 
-        # Store the g-code from the scene.
-        archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
+            # Store the g-code from the scene.
+            archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
+        except EnvironmentError as e:
+            error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
+            self.setInformation(error_msg)
+            Logger.error(error_msg)
+            return False
         gcode_textio = StringIO()  # We have to convert the g-code into bytes.
         gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
         success = gcode_writer.write(gcode_textio, None)
         if not success:  # Writing the g-code failed. Then I can also not write the gzipped g-code.
             self.setInformation(gcode_writer.getInformation())
             return False
-        gcode = archive.getStream("/3D/model.gcode")
-        gcode.write(gcode_textio.getvalue().encode("UTF-8"))
-        archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
+        try:
+            gcode = archive.getStream("/3D/model.gcode")
+            gcode.write(gcode_textio.getvalue().encode("UTF-8"))
+            archive.addRelation(virtual_path = "/3D/model.gcode", relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
+        except EnvironmentError as e:
+            error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
+            self.setInformation(error_msg)
+            Logger.error(error_msg)
+            return False
 
-        self._createSnapshot()
+        # Attempt to store the thumbnail, if any:
+        backend = CuraApplication.getInstance().getBackend()
+        snapshot = None if getattr(backend, "getLatestSnapshot", None) is None else backend.getLatestSnapshot()
+        if snapshot:
+            try:
+                archive.addContentType(extension = "png", mime_type = "image/png")
+                thumbnail = archive.getStream("/Metadata/thumbnail.png")
 
-        # Store the thumbnail.
-        if self._snapshot:
-            archive.addContentType(extension = "png", mime_type = "image/png")
-            thumbnail = archive.getStream("/Metadata/thumbnail.png")
+                thumbnail_buffer = QBuffer()
+                thumbnail_buffer.open(QBuffer.ReadWrite)
+                snapshot.save(thumbnail_buffer, "PNG")
 
-            thumbnail_buffer = QBuffer()
-            thumbnail_buffer.open(QBuffer.ReadWrite)
-            thumbnail_image = self._snapshot
-            thumbnail_image.save(thumbnail_buffer, "PNG")
-
-            thumbnail.write(thumbnail_buffer.data())
-            archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
-                                relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
-                                origin = "/3D/model.gcode")
+                thumbnail.write(thumbnail_buffer.data())
+                archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
+                                    relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+                                    origin = "/3D/model.gcode")
+            except EnvironmentError as e:
+                error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
+                self.setInformation(error_msg)
+                Logger.error(error_msg)
+                return False
         else:
-            Logger.log("d", "Thumbnail not created, cannot save it")
+            Logger.log("w", "Thumbnail not created, cannot save it")
 
         # Store the material.
         application = CuraApplication.getInstance()
@@ -102,7 +109,7 @@ class UFPWriter(MeshWriter):
 
         try:
             archive.addContentType(extension = material_extension, mime_type = material_mime_type)
-        except:
+        except OPCError:
             Logger.log("w", "The material extension: %s was already added", material_extension)
 
         added_materials = []
@@ -132,17 +139,23 @@ class UFPWriter(MeshWriter):
                 Logger.log("e", "Unable serialize material container with root id: %s", material_root_id)
                 return False
 
-            material_file = archive.getStream(material_file_name)
-            material_file.write(serialized_material.encode("UTF-8"))
-            archive.addRelation(virtual_path = material_file_name,
-                                relation_type = "http://schemas.ultimaker.org/package/2018/relationships/material",
-                                origin = "/3D/model.gcode")
+            try:
+                material_file = archive.getStream(material_file_name)
+                material_file.write(serialized_material.encode("UTF-8"))
+                archive.addRelation(virtual_path = material_file_name,
+                                    relation_type = "http://schemas.ultimaker.org/package/2018/relationships/material",
+                                    origin = "/3D/model.gcode")
+            except EnvironmentError as e:
+                error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
+                self.setInformation(error_msg)
+                Logger.error(error_msg)
+                return False
 
             added_materials.append(material_file_name)
 
         try:
             archive.close()
-        except OSError as e:
+        except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
             Logger.error(error_msg)

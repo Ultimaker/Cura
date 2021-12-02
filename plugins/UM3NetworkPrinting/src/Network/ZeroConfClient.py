@@ -129,20 +129,20 @@ class ZeroConfClient:
 
         for record in zero_conf.cache.entries_with_name(info.server):
             info.update_record(zero_conf, time(), record)
-            if info.address:
+            if hasattr(info, "addresses") and info.addresses:
                 break
 
         # Request more data if info is not complete
-        if not info.address:
+        if not hasattr(info, "addresses") or not info.addresses:
             new_info = zero_conf.get_service_info(service_type, name)
             if new_info is not None:
                 info = new_info
 
-        if info and info.address:
+        if info and hasattr(info, "addresses") and info.addresses:
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":
-                    address = '.'.join(map(str, info.address))
+                    address = '.'.join(map(str, info.addresses[0]))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
                     Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)

@@ -6,7 +6,7 @@
         "visible": true,
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
-        "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
+        "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj",
         "platform": "makerstarter_platform.3mf",
         "preferred_quality_type": "draft",
         "machine_extruder_trains":

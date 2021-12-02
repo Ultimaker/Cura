@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Math.Color import Color
@@ -15,9 +15,10 @@ from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
-
+from cura.LayerPolygon import LayerPolygon
 
 import os.path
+import numpy
 
 ## RenderPass used to display g-code paths.
 from .NozzleNode import NozzleNode
@@ -35,13 +36,15 @@ class SimulationPass(RenderPass):
         self._disabled_shader = None
         self._old_current_layer = 0
         self._old_current_path = 0
-        self._switching_layers = True # It tracks when the user is moving the layers' slider
+        self._switching_layers = True  # Tracking whether the user is moving across layers (True) or across paths (False). If false, lower layers render as shadowy.
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
         self._extruder_manager = ExtruderManager.getInstance()
 
         self._layer_view = None
         self._compatibility_mode = None
+
+        self._scene.sceneChanged.connect(self._onSceneChanged)
 
     def setSimulationView(self, layerview):
         self._layer_view = layerview
@@ -60,29 +63,42 @@ class SimulationPass(RenderPass):
             self._current_shader = self._layer_shader
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+        if not self._compatibility_mode:
+            self._layer_shader.setUniformValue("u_starts_color", Color(*Application.getInstance().getTheme().getColor("layerview_starts").getRgb()))
+
         if self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
             self._layer_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
             self._layer_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
+            self._layer_shader.setUniformValue("u_max_line_width", self._layer_view.getMaxLineWidth())
+            self._layer_shader.setUniformValue("u_min_line_width", self._layer_view.getMinLineWidth())
+            self._layer_shader.setUniformValue("u_max_flow_rate", self._layer_view.getMaxFlowRate())
+            self._layer_shader.setUniformValue("u_min_flow_rate", self._layer_view.getMinFlowRate())
             self._layer_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
             self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
             self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+            self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
             self._layer_shader.setUniformValue("u_min_feedrate", 0)
             self._layer_shader.setUniformValue("u_max_thickness", 1)
             self._layer_shader.setUniformValue("u_min_thickness", 0)
+            self._layer_shader.setUniformValue("u_max_flow_rate", 1)
+            self._layer_shader.setUniformValue("u_min_flow_rate", 0)
+            self._layer_shader.setUniformValue("u_max_line_width", 1)
+            self._layer_shader.setUniformValue("u_min_line_width", 0)
             self._layer_shader.setUniformValue("u_layer_view_type", 1)
             self._layer_shader.setUniformValue("u_extruder_opacity", [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
             self._layer_shader.setUniformValue("u_show_travel_moves", 0)
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
+            self._layer_shader.setUniformValue("u_show_starts", 1)
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
@@ -112,9 +128,9 @@ class SimulationPass(RenderPass):
 
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
-                nozzle_node.setVisible(False)
+                nozzle_node.setVisible(False)  # Don't set to true, we render it separately!
 
-            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
+            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh"):
                 disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
 
             elif isinstance(node, SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():
@@ -126,6 +142,7 @@ class SimulationPass(RenderPass):
                 if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
+                    current_polygon_offset = 0
                     element_counts = layer_data.getElementCounts()
                     for layer in sorted(element_counts.keys()):
                         # In the current layer, we show just the indicated paths
@@ -139,18 +156,26 @@ class SimulationPass(RenderPass):
                                 if index >= polygon.data.size // 3 - offset:
                                     index -= polygon.data.size // 3 - offset
                                     offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
+                                    current_polygon_offset += 1
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
                                 break
                             break
-                        if self._layer_view._minimum_layer_num > layer:
-                            start += element_counts[layer]
-                        end += element_counts[layer]
+                        end += layer_data.getLayer(layer).vertexCount
+                        if layer < self._layer_view._minimum_layer_num:
+                            start = end
 
-                    # Calculate the range of paths in the last layer
+                    # Calculate the range of paths in the last layer. -- The type-change count is needed to keep the
+                    # vertex-indices aligned between the two different ways we represent polygons here.
+                    # Since there is one type per line, that could give a vertex two different types, if it's a vertex
+                    # where a type-chage occurs. However, the shader expects vertices to have only one type. In order to
+                    # fix this, those vertices are duplicated. This introduces a discrepancy that we have to take into
+                    # account, which is done by the type-change-count.
+                    layer = layer_data.getLayer(self._layer_view._current_layer_num)
+                    type_change_count = 0 if layer is None else layer.lineMeshCumulativeTypeChangeCount(max(self._layer_view._current_path_num - 1, 0))
                     current_layer_start = end
-                    current_layer_end = end + self._layer_view._current_path_num * 2 # Because each point is used twice
+                    current_layer_end = current_layer_start + self._layer_view._current_path_num + current_polygon_offset + type_change_count
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     # All the layers but the current selected layer are rendered first
@@ -160,6 +185,13 @@ class SimulationPass(RenderPass):
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
+
+                    # The first line does not have a previous line: add a MoveCombingType in front for start detection
+                    # this way the first start of the layer can also be drawn
+                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
+                    # Remove the last element
+                    prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
+                    layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)
@@ -189,7 +221,6 @@ class SimulationPass(RenderPass):
         # but the user is not using the layer slider, and the compatibility mode is not enabled
         if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
-                nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
@@ -203,3 +234,9 @@ class SimulationPass(RenderPass):
             tool_handle_batch.render(self._scene.getActiveCamera())
 
         self.release()
+
+    def _onSceneChanged(self, changed_object: SceneNode):
+        if changed_object.callDecoration("getLayerData"):  # Any layer data has changed.
+            self._switching_layers = True
+            self._old_current_layer = 0
+            self._old_current_path = 0

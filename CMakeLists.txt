@@ -28,12 +28,12 @@ set(CURA_CLOUD_ACCOUNT_API_ROOT "" CACHE STRING "Alternative Cura cloud account 
 set(CURA_MARKETPLACE_ROOT "" CACHE STRING "Alternative Marketplace location")
 set(CURA_DIGITAL_FACTORY_URL "" CACHE STRING "Alternative Digital Factory location")
 
-configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/com.ultimaker.cura.desktop.in ${CMAKE_BINARY_DIR}/com.ultimaker.cura.desktop @ONLY)
 
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 
-# FIXME: The new FindPython3 finds the system's Python3.6 reather than the Python3.5 that we built for Cura's environment.
+# FIXME: The new FindPython3 finds the system's Python3.6 rather than the Python3.5 that we built for Cura's environment.
 # So we're using the old method here, with FindPythonInterp for now.
 find_package(PythonInterp 3 REQUIRED)
 
@@ -82,11 +82,11 @@ if(NOT APPLE AND NOT WIN32)
         install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
             DESTINATION lib${LIB_SUFFIX}/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/cura)
     endif()
-    install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
+    install(FILES ${CMAKE_BINARY_DIR}/com.ultimaker.cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES ${CMAKE_SOURCE_DIR}/resources/images/cura-icon.png
             DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps/)
-    install(FILES cura.appdata.xml
+    install(FILES com.ultimaker.cura.appdata.xml
             DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/

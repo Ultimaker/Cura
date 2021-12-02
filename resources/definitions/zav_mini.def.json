@@ -1,0 +1,17 @@
+{
+    "name":      "Zav Mini",
+    "version":   2,
+    "inherits":  "zav_base",
+    "metadata":  {
+                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
+                  "visible": true,
+                  "quality_definition": "zav_base",
+                  "platform": "zav_mini.stl"
+                 },
+    "overrides": {
+                  "machine_name":   {"default_value": "zav_mini"},
+                  "machine_width":  {"default_value": 100},
+                  "machine_depth":  {"default_value": 100},
+                  "machine_height": {"default_value": 110}
+                 }
+}

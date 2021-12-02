@@ -78,7 +78,7 @@ Item
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
                 color: "black"
-                source: material_type_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                source: material_type_section.expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
             }
 
         }
@@ -124,7 +124,7 @@ Item
     Connections
     {
         target: UM.Preferences
-        onPreferenceChanged:
+        function onPreferenceChanged(preference)
         {
             if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
             {

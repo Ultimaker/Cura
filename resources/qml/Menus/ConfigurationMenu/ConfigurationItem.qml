@@ -93,7 +93,7 @@ Button
                     id: icon
                     anchors.verticalCenter: unknownMaterialMessage.verticalCenter
 
-                    source: UM.Theme.getIcon("warning")
+                    source: UM.Theme.getIcon("Warning")
                     color: UM.Theme.getColor("warning")
                     width: UM.Theme.getSize("section_icon").width
                     height: width
@@ -202,7 +202,7 @@ Button
             Cura.IconWithText
             {
                 id: buildplateLabel
-                source: UM.Theme.getIcon("buildplate")
+                source: UM.Theme.getIcon("Buildplate")
                 text:
                 {
                     if (configuration === null)
@@ -219,7 +219,7 @@ Button
     Connections
     {
         target: Cura.MachineManager
-        onCurrentConfigurationChanged:
+        function onCurrentConfigurationChanged()
         {
             configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
         }

@@ -1,0 +1,11 @@
+# YAML 1.2
+---
+authors: 
+cff-version: "1.1.0"
+date-released: 2021-06-28
+license: "LGPL-3.0"
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/ultimaker/cura/"
+title: "Ultimaker Cura"
+version: "4.12.0"
+...

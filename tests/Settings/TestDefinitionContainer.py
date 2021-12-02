@@ -44,7 +44,7 @@ def test_definitionIds(file_path):
     :param file_path: The path of the machine definition to test.
     """
     definition_id = os.path.basename(file_path).split(".")[0]
-    assert " " not in definition_id  # Definition IDs are not allowed to have spaces.
+    assert " " not in definition_id, "Definition located at [%s] contains spaces, this is now allowed!" % file_path # Definition IDs are not allowed to have spaces.
 
 
 @pytest.mark.parametrize("file_path", definition_filepaths)
@@ -57,7 +57,7 @@ def test_noCategory(file_path):
     with open(file_path, encoding = "utf-8") as f:
         json = f.read()
         metadata = DefinitionContainer.deserializeMetadata(json, "test_container_id")
-        assert "category" not in metadata[0]
+        assert "category" not in metadata[0], "Definition located at [%s] referenced a category, which is no longer allowed" % file_path
 
 
 @pytest.mark.parametrize("file_path", machine_filepaths)
@@ -78,15 +78,15 @@ def assertIsDefinitionValid(definition_container, file_path):
     with open(file_path, encoding = "utf-8") as data:
         json = data.read()
         parser, is_valid = definition_container.readAndValidateSerialized(json)
-        assert is_valid #The definition has invalid JSON structure.
+        assert is_valid  # The definition has invalid JSON structure.
         metadata = DefinitionContainer.deserializeMetadata(json, "whatever")
 
         # If the definition defines a platform file, it should be in /resources/meshes/
         if "platform" in metadata[0]:
-            assert metadata[0]["platform"] in all_meshes
+            assert metadata[0]["platform"] in all_meshes, "Definition located at [%s] references a platform that could not be found" % file_path
 
         if "platform_texture" in metadata[0]:
-            assert metadata[0]["platform_texture"] in all_images
+            assert metadata[0]["platform_texture"] in all_images, "Definition located at [%s] references a platform_texture that could not be found" % file_path
 
 
 @pytest.mark.parametrize("file_path", definition_filepaths)
@@ -228,3 +228,19 @@ def test_extruderMatch(file_path: str):
     if "overrides" not in doc or "extruder_nr" not in doc["overrides"] or "default_value" not in doc["overrides"]["extruder_nr"]:
         assert position == "0"  # Default to 0 is allowed.
     assert doc["overrides"]["extruder_nr"]["default_value"] == int(position)
+
+@pytest.mark.parametrize("file_path", definition_filepaths)
+def test_noNewSettings(file_path: str):
+    """
+    Tests that a printer definition doesn't define any new settings.
+
+    Settings that are not common to all printers can cause Cura to crash, for instance when the setting is saved in a
+    profile and that profile is then used in a different printer.
+    :param file_path: A path to a definition file to test.
+    """
+    filename = os.path.basename(file_path)
+    if filename == "fdmprinter.def.json" or filename == "fdmextruder.def.json":
+        return  # FDMPrinter and FDMExtruder, being the basis for all printers and extruders, are allowed to define new settings since they will be available for all printers then.
+    with open(file_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+    assert "settings" not in doc

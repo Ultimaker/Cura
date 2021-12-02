@@ -15,10 +15,9 @@ class RestartApplicationPresenter:
     def present(self) -> None:
         app_name = self._app.getApplicationDisplayName()
 
-        message = Message(self._i18n_catalog.i18nc(
-            "@info:generic",
-            "You need to quit and restart {} before changes have effect.", app_name
-        ))
+        message = Message(self._i18n_catalog.i18nc("@info:generic",
+                                                   "You need to quit and restart {} before changes have effect.",
+                                                   app_name))
 
         message.addAction("quit",
                           name="Quit " + app_name,

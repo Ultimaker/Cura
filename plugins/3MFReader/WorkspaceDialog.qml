@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
 import UM 1.1 as UM
+import Cura 1.1 as Cura
 
 UM.Dialog
 {
@@ -110,13 +111,14 @@ UM.Dialog
                     height: visible ? comboboxHeight : 0
                     visible: base.visible && machineResolveComboBox.model.count > 1
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
-                    ComboBox
+                    Cura.ComboBox
                     {
                         id: machineResolveComboBox
                         model: manager.updatableMachinesModel
                         visible: machineResolveStrategyTooltip.visible
                         textRole: "displayName"
                         width: parent.width
+                        height: UM.Theme.getSize("button").height
                         onCurrentIndexChanged:
                         {
                             if (model.getItem(currentIndex).id == "new"
@@ -217,12 +219,13 @@ UM.Dialog
                     height: visible ? comboboxHeight : 0
                     visible: manager.qualityChangesConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the profile be resolved?")
-                    ComboBox
+                    Cura.ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: qualityChangesResolveComboBox
                         width: parent.width
+                        height: UM.Theme.getSize("button").height
                         onActivated:
                         {
                             manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(index).key)
@@ -323,12 +326,13 @@ UM.Dialog
                     height: visible ? comboboxHeight : 0
                     visible: manager.materialConflict
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the material be resolved?")
-                    ComboBox
+                    Cura.ComboBox
                     {
                         model: resolveStrategiesModel
                         textRole: "label"
                         id: materialResolveComboBox
                         width: parent.width
+                        height: UM.Theme.getSize("button").height
                         onActivated:
                         {
                             manager.setResolveStrategy("material", resolveStrategiesModel.get(index).key)
@@ -415,7 +419,7 @@ UM.Dialog
                     width: warningLabel.height
                     height: width
 
-                    source: UM.Theme.getIcon("notice")
+                    source: UM.Theme.getIcon("Information")
                     color: palette.text
 
                 }
