@@ -89,7 +89,8 @@ class LocalPackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
-            index = self.find("package", package_data["package_id"])
-            self.getItem(index)["package"].canUpdate = True
+            package = self._getPackageModel(package_data["package_id"])
+            package.download_url = package_data.get("download_url", "")
+            package.canUpdate = True
 
         self.sort(attrgetter("sectionTitle", "canUpdate", "displayName"), key = "package", reverse = True)

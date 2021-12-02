@@ -20,12 +20,16 @@ class CuraPackageManager(PackageManager):
     def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
         self._locally_installed_packages = None
+        self.installedPackagesChanged.connect(self._updateLocallyInstalledPackages)
+
+    def _updateLocallyInstalledPackages(self):
+        self._locally_installed_packages = list(self.iterateAllLocalPackages())
 
     @property
     def locally_installed_packages(self):
         """locally installed packages, lazy execution"""
         if self._locally_installed_packages is None:
-            self._locally_installed_packages = list(self.iterateAllLocalPackages())
+            self._updateLocallyInstalledPackages()
         return self._locally_installed_packages
 
     @locally_installed_packages.setter

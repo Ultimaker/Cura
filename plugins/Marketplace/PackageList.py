@@ -1,17 +1,20 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import tempfile
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import Optional, TYPE_CHECKING
+from typing import Dict, Optional, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
-from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
-from UM.TaskManagement.HttpRequestManager import HttpRequestData  # To request the package list from the API
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
+from UM.TaskManagement.HttpRequestManager import HttpRequestData , HttpRequestManager
 from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
+
+from .PackageModel import PackageModel
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -24,6 +27,7 @@ class PackageList(ListModel):
     such as Packages obtained from Remote or Local source
     """
     PackageRole = Qt.UserRole + 1
+    DISK_WRITE_BUFFER_SIZE = 256 * 1024  # 256 KB
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -33,6 +37,8 @@ class PackageList(ListModel):
         self._is_loading = False
         self._has_more = False
         self._has_footer = True
+        self._to_install: Dict[str, str] = {}
+        self.canInstallChanged.connect(self._install)
 
         self._ongoing_request: Optional[HttpRequestData] = None
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
@@ -105,13 +111,60 @@ class PackageList(ListModel):
     def _connectManageButtonSignals(self, package):
         package.installPackageTriggered.connect(self.installPackage)
         package.uninstallPackageTriggered.connect(self.uninstallPackage)
-        package.updatePackageTriggered.connect(self.updatePackage)
+        package.updatePackageTriggered.connect(self.installPackage)
         package.enablePackageTriggered.connect(self.enablePackage)
         package.disablePackageTriggered.connect(self.disablePackage)
 
+    def _getPackageModel(self, package_id: str) -> PackageModel:
+        index = self.find("package", package_id)
+        return self.getItem(index)["package"]
+
+    canInstallChanged = pyqtSignal(str, bool)
+
+    def download(self, package_id, url, update: bool = False):
+
+        def downloadFinished(reply: "QNetworkReply") -> None:
+            self._downloadFinished(package_id, reply, update)
+
+        HttpRequestManager.getInstance().get(
+            url,
+            scope = self._scope,
+            callback = downloadFinished
+        )
+
+    def _downloadFinished(self, package_id: str, reply: "QNetworkReply", update: bool = False) -> None:
+        try:
+            with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
+                bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                while bytes_read:
+                    temp_file.write(bytes_read)
+                    bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                Logger.debug(f"Finished downloading {package_id} and stored it as {temp_file.name}")
+                self._to_install[package_id] = temp_file.name
+                self.canInstallChanged.emit(package_id, update)
+        except IOError as e:
+            Logger.logException("e", "Failed to write downloaded package to temp file", e)
+            temp_file.close()
+
     @pyqtSlot(str)
-    def installPackage(self, package_id):
+    def installPackage(self, package_id: str) -> None:
+        package = self._getPackageModel(package_id)
+        url = package.download_url
+        Logger.debug(f"Trying to download and install {package_id} from {url}")
+        self.download(package_id, url)
+
+    def _install(self, package_id: str, update: bool = False) -> None:
+        package_path = self._to_install.pop(package_id)
         Logger.debug(f"Installing {package_id}")
+        to_be_installed = self._manager.installPackage(package_path) != None
+        package = self._getPackageModel(package_id)
+        if package.canUpdate and to_be_installed:
+            package.canUpdate = False
+        package.setManageInstallState(to_be_installed)
+        if update:
+            package.setIsUpdating(False)
+        else:
+            package.setIsInstalling(False)
 
     @pyqtSlot(str)
     def uninstallPackage(self, package_id):
@@ -119,7 +172,10 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def updatePackage(self, package_id):
-        Logger.debug(f"Updating {package_id}")
+        package = self._getPackageModel(package_id)
+        url = package.download_url
+        Logger.debug(f"Trying to download and update {package_id} from {url}")
+        self.download(package_id, url, True)
 
     @pyqtSlot(str)
     def enablePackage(self, package_id):
