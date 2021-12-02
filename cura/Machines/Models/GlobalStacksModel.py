@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QTimer, pyqtProperty, pyqtSignal
-from typing import Optional
+from typing import List, Optional
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
@@ -11,6 +11,7 @@ from UM.Util import parseBool
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
+from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES  # To filter on the printer's capabilities.
 
 
 class GlobalStacksModel(ListModel):
@@ -42,6 +43,7 @@ class GlobalStacksModel(ListModel):
 
         self._filter_connection_type = None  # type: Optional[ConnectionType]
         self._filter_online_only = False
+        self._filter_capabilities: List[str] = []  # Required capabilities that all listed printers must have.
 
         # Listen to changes
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
@@ -76,6 +78,19 @@ class GlobalStacksModel(ListModel):
         """
         return self._filter_online_only
 
+    filterCapabilitiesChanged = pyqtSignal()
+    def setFilterCapabilities(self, new_filter: List[str]) -> None:
+        self._filter_capabilities = new_filter
+
+    @pyqtProperty("QStringList", fset = setFilterCapabilities, notify = filterCapabilitiesChanged)
+    def filterCapabilities(self) -> List[str]:
+        """
+        Capabilities to require on the list of printers.
+
+        Only printers that have all of these capabilities will be shown in this model.
+        """
+        return self._filter_capabilities
+
     def _onContainerChanged(self, container) -> None:
         """Handler for container added/removed events from registry"""
 
@@ -106,6 +121,10 @@ class GlobalStacksModel(ListModel):
 
             is_online = container_stack.getMetaDataEntry("is_online", False)
             if self._filter_online_only and not is_online:
+                continue
+
+            capabilities = set(container_stack.getMetaDataEntry(META_CAPABILITIES, set()))
+            if set(self._filter_capabilities) - capabilities:  # Not all required capabilities are met.
                 continue
 
             device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
