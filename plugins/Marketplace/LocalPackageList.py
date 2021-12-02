@@ -60,7 +60,9 @@ class LocalPackageList(PackageList):
         bundled_or_installed = "installed" if self._manager.isUserInstalledPackage(package_info["package_id"]) else "bundled"
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_CATEGORIES[bundled_or_installed][package_type]
-        return PackageModel(package_info, section_title = section_title, parent = self)
+        package = PackageModel(package_info, section_title = section_title, parent = self)
+        self._connectManageButtonSignals(package)
+        return package
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]):
         installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])

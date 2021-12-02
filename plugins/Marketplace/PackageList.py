@@ -101,3 +101,30 @@ class PackageList(ListModel):
         """ Indicating if the PackageList should have a Footer visible. For paginated PackageLists
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise"""
         return self._has_footer
+
+    def _connectManageButtonSignals(self, package):
+        package.installPackageTriggered.connect(self.installPackage)
+        package.uninstallPackageTriggered.connect(self.uninstallPackage)
+        package.updatePackageTriggered.connect(self.updatePackage)
+        package.enablePackageTriggered.connect(self.enablePackage)
+        package.disablePackageTriggered.connect(self.disablePackage)
+
+    @pyqtSlot(str)
+    def installPackage(self, package_id):
+        Logger.debug(f"Installing {package_id}")
+
+    @pyqtSlot(str)
+    def uninstallPackage(self, package_id):
+        Logger.debug(f"Uninstalling {package_id}")
+
+    @pyqtSlot(str)
+    def updatePackage(self, package_id):
+        Logger.debug(f"Updating {package_id}")
+
+    @pyqtSlot(str)
+    def enablePackage(self, package_id):
+        Logger.debug(f"Enabling {package_id}")
+
+    @pyqtSlot(str)
+    def disablePackage(self, package_id):
+        Logger.debug(f"Disabling {package_id}")

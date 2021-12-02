@@ -17,7 +17,7 @@ RowLayout
     property string busySecondaryText: busyMessageText.text
     property string mainState: "primary"
 
-    signal clicked
+    signal clicked(bool primary_action)
 
     state: mainState
 
@@ -28,7 +28,7 @@ RowLayout
 
         onClicked:
         {
-            manageButton.clicked()
+            manageButton.clicked(true)
             manageButton.state = "busy"
         }
     }
@@ -40,7 +40,7 @@ RowLayout
 
         onClicked:
         {
-            manageButton.clicked()
+            manageButton.clicked(false)
             manageButton.state = "busy"
         }
     }
