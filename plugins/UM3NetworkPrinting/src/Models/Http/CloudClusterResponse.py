@@ -37,7 +37,7 @@ class CloudClusterResponse(BaseModel):
         self.friendly_name = friendly_name
         self.printer_type = printer_type
         self.printer_count = printer_count
-        self.capabilities = capabilities
+        self.capabilities = capabilities if capabilities is not None else []
         super().__init__(**kwargs)
 
     # Validates the model, raising an exception if the model is invalid.
