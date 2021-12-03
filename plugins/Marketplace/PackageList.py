@@ -129,10 +129,14 @@ class PackageList(ListModel):
         def downloadFinished(reply: "QNetworkReply") -> None:
             self._downloadFinished(package_id, reply, update)
 
-        self._ongoing_request = HttpRequestManager.getInstance().get(
+        def downloadError(reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:
+            self._downloadError(package_id, update, reply, error)
+
+        HttpRequestManager.getInstance().get(
             url,
             scope = self._scope,
-            callback = downloadFinished
+            callback = downloadFinished,
+            error_callback = downloadError
         )
 
     def _downloadFinished(self, package_id: str, reply: "QNetworkReply", update: bool = False) -> None:
@@ -146,8 +150,19 @@ class PackageList(ListModel):
                 self._to_install[package_id] = temp_file.name
                 self.canInstallChanged.emit(package_id, update)
         except IOError as e:
-            Logger.logException("e", "Failed to write downloaded package to temp file", e)
+            Logger.error(f"Failed to write downloaded package to temp file {e}")
             temp_file.close()
+            self._downloadError(package_id, update)
+
+    def _downloadError(self, package_id: str, update: bool = False, reply: Optional["QNetworkReply"] = None, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
+        if reply:
+            reply_string = bytes(reply.readAll()).decode()
+            Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
+        package = self._getPackageModel(package_id)
+        if update:
+            package.setIsUpdating(False)
+        else:
+            package.setIsInstalling(False)
 
     @pyqtSlot(str)
     def installPackage(self, package_id: str) -> None:
@@ -168,7 +183,7 @@ class PackageList(ListModel):
             package.setIsUpdating(False)
         else:
             package.setIsInstalling(False)
-        #self._subscribe(package_id)
+        # self._subscribe(package_id)
 
     def _subscribe(self, package_id: str) -> None:
         if self._account.isLoggedIn:
