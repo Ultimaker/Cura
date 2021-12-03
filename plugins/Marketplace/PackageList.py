@@ -1,6 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import tempfile
+import json
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
 from typing import Dict, Optional, TYPE_CHECKING
@@ -17,6 +18,7 @@ from cura import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
 from .PackageModel import PackageModel
+from .Constants import USER_PACKAGES_URL
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -183,14 +185,14 @@ class PackageList(ListModel):
             package.setIsUpdating(False)
         else:
             package.setIsInstalling(False)
-        # self._subscribe(package_id)
+        self._subscribe(package_id, str(package.sdk_version))
 
-    def _subscribe(self, package_id: str) -> None:
+    def _subscribe(self, package_id: str, sdk_version: str) -> None:
         if self._account.isLoggedIn:
             Logger.debug(f"Subscribing the user for package: {package_id}")
-            self._ongoing_request = HttpRequestManager.getInstance().put(
-                url = "",
-                data = {},
+            HttpRequestManager.getInstance().put(
+                url = USER_PACKAGES_URL,
+                data = json.dumps({"data": {"package_id": package_id, "sdk_version": sdk_version}}).encode(),
                 scope = self._scope
             )
 
@@ -201,12 +203,12 @@ class PackageList(ListModel):
         self._manager.removePackage(package_id)
         package.setIsInstalling(False)
         package.setManageInstallState(False)
-        #self._unsunscribe(package_id)
+        self._unsunscribe(package_id)
 
     def _unsunscribe(self, package_id: str) -> None:
         if self._account.isLoggedIn:
             Logger.debug(f"Unsubscribing the user for package: {package_id}")
-            self._ongoing_request = HttpRequestManager.getInstance().delete(url = "", scope = self._scope)
+            HttpRequestManager.getInstance().delete(url = f"{USER_PACKAGES_URL}/{package_id}", scope = self._scope)
 
     @pyqtSlot(str)
     def updatePackage(self, package_id):

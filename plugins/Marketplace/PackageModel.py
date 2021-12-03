@@ -65,6 +65,7 @@ class PackageModel(QObject):
         self._is_installing = False
         self._is_updating = False
         self._section_title = section_title
+        self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
 
     def __eq__(self, other: Union[str, "PackageModel"]):

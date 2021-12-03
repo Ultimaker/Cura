@@ -15,7 +15,7 @@ from UM.Logger import Logger
 
 from .PackageList import PackageList
 from .PackageModel import PackageModel
-from . import Marketplace
+from .Constants import PACKAGE_UPDATES_URL
 
 catalog = i18nCatalog("cura")
 
@@ -66,7 +66,7 @@ class LocalPackageList(PackageList):
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]):
         installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
-        request_url = f"{Marketplace.PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
+        request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
 
         self._ongoing_request = HttpRequestManager.getInstance().get(
             request_url,

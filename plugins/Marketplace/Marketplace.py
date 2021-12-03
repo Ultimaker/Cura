@@ -6,9 +6,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtQml import qmlRegisterType
 from typing import Optional, TYPE_CHECKING
 
-from cura.ApplicationMetadata import CuraSDKVersion
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
-from cura.UltimakerCloud import UltimakerCloudConstants
 
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
@@ -18,10 +16,6 @@ from .LocalPackageList import LocalPackageList  # To register this type with QML
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
-
-ROOT_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}"  # Root of all Marketplace API requests.
-PACKAGES_URL = f"{ROOT_URL}/packages"  # URL to use for requesting the list of packages.
-PACKAGE_UPDATES_URL = f"{PACKAGES_URL}/package-updates"  # URL to use for requesting the list of packages that can be updated.
 
 
 class Marketplace(Extension):

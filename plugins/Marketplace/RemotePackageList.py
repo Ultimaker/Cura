@@ -9,7 +9,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 
-from . import Marketplace   # To get the list of packages. Imported this way to prevent circular imports.
+from .Constants import PACKAGES_URL   # To get the list of packages. Imported this way to prevent circular imports.
 from .PackageList import PackageList
 from .PackageModel import PackageModel  # The contents of this list.
 
@@ -108,7 +108,7 @@ class RemotePackageList(PackageList):
         Get the URL to request the first paginated page with.
         :return: A URL to request.
         """
-        request_url = f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
+        request_url = f"{PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
         if self._package_type_filter != "":
             request_url += f"&package_type={self._package_type_filter}"
         if self._current_search_string != "":
