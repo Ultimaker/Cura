@@ -737,7 +737,7 @@ Window
         id: cloudPrinterList
         filterConnectionType: 3 //Only show cloud connections.
         filterOnlineOnly: true //Only show printers that are online.
-        filterCapabilities: ["import_materials"] //Only show printers that can receive the material profiles.
+        filterCapabilities: ["import_material"] //Only show printers that can receive the material profiles.
     }
     Cura.GlobalStacksModel
     {
