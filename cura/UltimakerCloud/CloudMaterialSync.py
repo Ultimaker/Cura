@@ -57,6 +57,7 @@ class CloudMaterialSync(QObject):
         self.sync_all_dialog.setProperty("syncModel", self)
         self.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
         self.sync_all_dialog.setProperty("hasExportedUsb", False)  # If the user exported USB before, reset that page.
+        self.sync_all_dialog.setProperty("syncStatusText", "")  # Reset any previous error messages.
         self.sync_all_dialog.show()
 
     def _showSyncNewMaterialsMessage(self) -> None:
