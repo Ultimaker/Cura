@@ -579,7 +579,7 @@ Window
                 }
                 Label
                 {
-                    text: catalog.i18nc("@text", "It seems like you don't have access to any printers connected to Digital Factory.")
+                    text: catalog.i18nc("@text", "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware.")
                     width: parent.width
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.Wrap
