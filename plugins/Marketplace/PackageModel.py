@@ -315,6 +315,7 @@ class PackageModel(QObject):
         if value != self._is_installed:
             self._is_installed = value
             self.manageInstallStateChanged.emit()
+            self.manageEnableStateChanged.emit()
 
     @pyqtProperty(str, notify = manageInstallStateChanged)
     def manageInstallState(self) -> str:
