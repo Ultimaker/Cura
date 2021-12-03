@@ -69,7 +69,6 @@ class CuraPackageManager(PackageManager):
     def iterateAllLocalPackages(self) -> Generator[Dict[str, Any], None, None]:
         """ A generator which returns an unordered list of all the PackageModels"""
 
-        # Get all the installed packages, add a section_title depending on package_type and user installed
         for packages in self.getAllInstalledPackagesInfo().values():
             for package_info in packages:
                 yield package_info

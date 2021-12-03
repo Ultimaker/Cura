@@ -12,6 +12,8 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestData , HttpRequestMa
 from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
+from cura.API.Account import Account
+from cura import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
 from .PackageModel import PackageModel
@@ -31,7 +33,8 @@ class PackageList(ListModel):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
-        self._manager = CuraApplication.getInstance().getPackageManager()
+        self._manager: CuraPackageManager = CuraApplication.getInstance().getPackageManager()
+        self._account: Account = CuraApplication.getInstance().getCuraAPI().account
         self._error_message = ""
         self.addRoleName(self.PackageRole, "package")
         self._is_loading = False
@@ -126,7 +129,7 @@ class PackageList(ListModel):
         def downloadFinished(reply: "QNetworkReply") -> None:
             self._downloadFinished(package_id, reply, update)
 
-        HttpRequestManager.getInstance().get(
+        self._ongoing_request = HttpRequestManager.getInstance().get(
             url,
             scope = self._scope,
             callback = downloadFinished
@@ -165,13 +168,34 @@ class PackageList(ListModel):
             package.setIsUpdating(False)
         else:
             package.setIsInstalling(False)
+        #self._subscribe(package_id)
+
+    def _subscribe(self, package_id: str) -> None:
+        if self._account.isLoggedIn:
+            Logger.debug(f"Subscribing the user for package: {package_id}")
+            self._ongoing_request = HttpRequestManager.getInstance().put(
+                url = "",
+                data = {},
+                scope = self._scope
+            )
 
     @pyqtSlot(str)
     def uninstallPackage(self, package_id):
         Logger.debug(f"Uninstalling {package_id}")
+        package = self._getPackageModel(package_id)
+        self._manager.removePackage(package_id)
+        package.setIsInstalling(False)
+        package.setManageInstallState(False)
+        #self._unsunscribe(package_id)
+
+    def _unsunscribe(self, package_id: str) -> None:
+        if self._account.isLoggedIn:
+            Logger.debug(f"Unsubscribing the user for package: {package_id}")
+            self._ongoing_request = HttpRequestManager.getInstance().delete(url = "", scope = self._scope)
 
     @pyqtSlot(str)
     def updatePackage(self, package_id):
+        self._manager.removePackage(package_id, force_add = True)
         package = self._getPackageModel(package_id)
         url = package.download_url
         Logger.debug(f"Trying to download and update {package_id} from {url}")
