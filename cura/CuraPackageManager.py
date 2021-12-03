@@ -68,24 +68,22 @@ class CuraPackageManager(PackageManager):
 
     def iterateAllLocalPackages(self) -> Generator[Dict[str, Any], None, None]:
         """ A generator which returns an unordered list of all the PackageModels"""
-        handled_packages = set()
+        handled_packages = {}
 
         for packages in self.getAllInstalledPackagesInfo().values():
             for package_info in packages:
-                if not handled_packages.__contains__(package_info["package_id"]):
-                    handled_packages.add(package_info["package_id"])
-                    yield package_info
+                handled_packages.add(package_info["package_id"])
+                yield package_info
 
         # Get all to be removed package_info's. These packages are still used in the current session so the user might
         # still want to interact with these.
         for package_data in self.getPackagesToRemove().values():
-        for package_data in self.getPackagesToRemove().values():
-            if not handled_packages.__contains__(package_data["package_info"]["package_id"]):
+            if not package_data["package_info"]["package_id"] in handled_packages:
                 handled_packages.add(package_data["package_info"]["package_id"])
                 yield package_data["package_info"]
 
         # Get all to be installed package_info's. Since the user might want to interact with these
         for package_data in self.getPackagesToInstall().values():
-            if not handled_packages.__contains__(package_data["package_info"]["package_id"]):
+            if not package_data["package_info"]["package_id"] in handled_packages:
                 handled_packages.add(package_data["package_info"]["package_id"])
                 yield package_data["package_info"]
