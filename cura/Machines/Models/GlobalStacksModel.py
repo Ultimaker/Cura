@@ -123,7 +123,7 @@ class GlobalStacksModel(ListModel):
             if self._filter_online_only and not is_online:
                 continue
 
-            capabilities = set(container_stack.getMetaDataEntry(META_CAPABILITIES, set()))
+            capabilities = set(container_stack.getMetaDataEntry(META_CAPABILITIES, "").split(","))
             if set(self._filter_capabilities) - capabilities:  # Not all required capabilities are met.
                 continue
 

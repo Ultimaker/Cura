@@ -129,7 +129,7 @@ class CloudOutputDeviceManager:
                 if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                     self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
                 if not self._um_cloud_printers[device_id].getMetaDataEntry(META_CAPABILITIES, None):
-                    self._um_cloud_printers[device_id].setMetaDataEntry(META_CAPABILITIES, cluster_data.capabilities)
+                    self._um_cloud_printers[device_id].setMetaDataEntry(META_CAPABILITIES, ",".join(cluster_data.capabilities))
         self._onDevicesDiscovered(new_clusters)
 
         self._updateOnlinePrinters(all_clusters)
