@@ -45,3 +45,10 @@ class CloudClusterResponse(BaseModel):
         super().validate()
         if not self.cluster_id:
             raise ValueError("cluster_id is required on CloudCluster")
+
+    def __repr__(self) -> str:
+        """
+        Convenience function for printing when debugging.
+        :return: A human-readable representation of the data in this object.
+        """
+        return str({k: v for k, v in self.__dict__.items() if k in {"cluster_id", "host_guid", "host_name", "status", "is_online", "host_version", "host_internal_ip", "friendly_name", "printer_type", "printer_count", "capabilities"}})
