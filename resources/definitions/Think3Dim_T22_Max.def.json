@@ -1,5 +1,5 @@
 {
-    "name": "Think3Dim_T22",
+    "name": "Think3Dim_T22_Max",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -7,7 +7,7 @@
         "author": "kiwifu",
         "manufacturer": "Think3Dim",
         "file_formats": "text/x-gcode",
-        "platform": "T22pro.3mf",
+        "platform": "T22Max.3mf",
         "has_materials": true,
         "machine_extruder_trains":
         {
@@ -15,9 +15,9 @@
         }
     },
     "overrides": {
-        "machine_name": { "default_value": "Think3Dim_T22" },
-        "machine_width": { "default_value": 220 },
-        "machine_depth": { "default_value": 220 },
+        "machine_name": { "default_value": "Think3Dim_T22_Max" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
         "machine_height": { "default_value": 250 },
         "machine_head_with_fans_polygon": { "default_value": [[-32,11],[-32,-32],[28,-32],[28,11]] },
         "gantry_height": { "value": 40 },

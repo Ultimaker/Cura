@@ -1,5 +1,5 @@
 {
-    "name": "T32",
+    "name": "Think3Dim_T32",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -15,7 +15,7 @@
         }
     },
     "overrides": {
-        "machine_name": { "default_value": "T32" },
+        "machine_name": { "default_value": "Think3Dim_T32" },
         "machine_width": { "default_value": 300 },
         "machine_depth": { "default_value": 200 },
         "machine_height": { "default_value": 200 },
