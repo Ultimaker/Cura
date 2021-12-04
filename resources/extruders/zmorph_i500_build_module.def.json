@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Build module",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "zmorph_i500",
+        "position": "0"
+    },
+
+    "overrides": {
+        "machine_nozzle_offset_x": { "default_value": 0 },
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "machine_nozzle_id": { "default_value": "Build hotend 0.4" },
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "0"
+        },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code":{ "default_value": "E0_start"  },
+        "machine_extruder_end_code":{ "default_value": "E0_end"  },
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "default_value": 0 },
+        "machine_extruder_start_pos_y": { "default_value": 300 },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "default_value": 50 },
+        "machine_extruder_end_pos_y": { "default_value": 300 }
+    }
+}
