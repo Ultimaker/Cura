@@ -19,22 +19,18 @@ if TYPE_CHECKING:
 class CuraPackageManager(PackageManager):
     def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
-        self._locally_installed_packages = None
-        self.installedPackagesChanged.connect(self._updateLocallyInstalledPackages)
+        self._local_packages: Optional[List[Dict[str, Any]]] = None
+        self.installedPackagesChanged.connect(self._updateLocalPackages)
 
-    def _updateLocallyInstalledPackages(self):
-        self._locally_installed_packages = self.getAllLocalPackages()
+    def _updateLocalPackages(self) -> None:
+        self._local_packages = self.getAllLocalPackages()
 
     @property
-    def locally_installed_packages(self):
+    def local_packages(self) -> List[Dict[str, Any]]:
         """locally installed packages, lazy execution"""
-        if self._locally_installed_packages is None:
-            self._updateLocallyInstalledPackages()
-        return self._locally_installed_packages
-
-    @locally_installed_packages.setter
-    def locally_installed_packages(self, value):
-        self._locally_installed_packages = value
+        if self._local_packages is None:
+            self._updateLocalPackages()
+        return self._local_packages
 
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)

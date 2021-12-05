@@ -48,9 +48,10 @@ class LocalPackageList(PackageList):
         self.setIsLoading(True)
 
         # Obtain and sort the local packages
-        self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._manager.locally_installed_packages]])
+        Logger.debug(f"Number of local packages: {len(self._manager.local_packages)} -> {[p['package_id'] for p in self._manager.local_packages]}")
+        self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._manager.local_packages]])
         self.sort(attrgetter("sectionTitle", "canUpdate", "displayName"), key = "package", reverse = True)
-        self.checkForUpdates(self._manager.locally_installed_packages)
+        self.checkForUpdates(self._manager.local_packages)
 
         self.setIsLoading(False)
         self.setHasMore(False)  # All packages should have been loaded at this time
