@@ -328,7 +328,7 @@ Rectangle
                     Label
                     {
                         id: authorBy
-                        Layout.alignment: Qt.AlignTop
+                        Layout.alignment: Qt.AlignCenter
 
                         text: catalog.i18nc("@label", "By")
                         font: UM.Theme.getFont("default")
@@ -339,7 +339,7 @@ Rectangle
                     {
                         Layout.fillWidth: true
                         Layout.preferredHeight: authorBy.height
-                        Layout.alignment: Qt.AlignTop
+                        Layout.alignment: Qt.AlignCenter
 
                         text: packageData.authorName
                         textFont: UM.Theme.getFont("default_bold")
