@@ -1,5 +1,5 @@
 {
-    "version": 3,
+    "version": 2,
     "name": "TinyBoy Fabrikator Mini 1.5",
     "inherits": "fdmprinter",
     "metadata": { 
