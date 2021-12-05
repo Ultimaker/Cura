@@ -23,7 +23,7 @@ class CuraPackageManager(PackageManager):
         self.installedPackagesChanged.connect(self._updateLocallyInstalledPackages)
 
     def _updateLocallyInstalledPackages(self):
-        self._locally_installed_packages = list(self.iterateAllLocalPackages())
+        self._locally_installed_packages = self.getAllLocalPackages()
 
     @property
     def locally_installed_packages(self):
@@ -66,24 +66,29 @@ class CuraPackageManager(PackageManager):
 
         return machine_with_materials, machine_with_qualities
 
-    def iterateAllLocalPackages(self) -> Generator[Dict[str, Any], None, None]:
-        """ A generator which returns an unordered list of all the PackageModels"""
-        handled_packages = {}
+    def getAllLocalPackages(self) -> List[Dict[str, Any]]:
+        """ returns an unordered list of all the package_info installed, to be installed or to be returned"""
 
-        for packages in self.getAllInstalledPackagesInfo().values():
-            for package_info in packages:
-                handled_packages.add(package_info["package_id"])
-                yield package_info
+        class PkgInfo:
+            # Needed helper class because a dict isn't hashable
+            def __init__(self, package_info):
+                self._info = package_info
 
-        # Get all to be removed package_info's. These packages are still used in the current session so the user might
-        # still want to interact with these.
-        for package_data in self.getPackagesToRemove().values():
-            if not package_data["package_info"]["package_id"] in handled_packages:
-                handled_packages.add(package_data["package_info"]["package_id"])
-                yield package_data["package_info"]
+            def __contains__(self, item):
+                return item == self._info["package_id"]
 
-        # Get all to be installed package_info's. Since the user might want to interact with these
-        for package_data in self.getPackagesToInstall().values():
-            if not package_data["package_info"]["package_id"] in handled_packages:
-                handled_packages.add(package_data["package_info"]["package_id"])
-                yield package_data["package_info"]
+            def __repr__(self):
+                return repr(self._info)
+
+            def __iter__(self):
+                for k, v in self._info.items():
+                    yield k, v
+
+            def asdict(self):
+                return self._info
+
+        packages = [PkgInfo(package_info) for package in self.getAllInstalledPackagesInfo().values() for package_info in package]
+        packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToRemove().values() if package["package_info"]["package_id"] not in packages])
+        packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToInstall().values() if package["package_info"]["package_id"] not in packages])
+
+        return [dict(package) for package in packages]
