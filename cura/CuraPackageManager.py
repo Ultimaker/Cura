@@ -70,7 +70,7 @@ class CuraPackageManager(PackageManager):
             def __init__(self, package_info):
                 self._info = package_info
 
-            def __contains__(self, item):
+            def __eq__(self, item):
                 return item == self._info["package_id"]
 
             def __repr__(self):
