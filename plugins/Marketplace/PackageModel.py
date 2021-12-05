@@ -293,13 +293,13 @@ class PackageModel(QObject):
     isEnabledChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isEnabledChanged)
-    def isEnabled(self):
+    def isEnabled(self) -> bool:
         return self._is_active
 
     manageEnableStateChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = manageEnableStateChanged)
-    def manageEnableState(self):
+    def manageEnableState(self) -> str:
         # TODO: Handle manual installed packages
         if self._is_installed:
             if self._is_active:
@@ -330,13 +330,13 @@ class PackageModel(QObject):
     manageUpdateStateChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = manageUpdateStateChanged)
-    def manageUpdateState(self):
+    def manageUpdateState(self) -> str:
         if self._can_update:
             return "primary"
         return "hidden"
 
     @property
-    def canUpdate(self):
+    def canUpdate(self) -> bool:
         return self._can_update
 
     @canUpdate.setter

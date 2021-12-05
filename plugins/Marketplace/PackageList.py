@@ -9,11 +9,10 @@ from typing import Dict, Optional, TYPE_CHECKING
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
-from UM.TaskManagement.HttpRequestManager import HttpRequestData , HttpRequestManager
+from UM.TaskManagement.HttpRequestManager import HttpRequestData, HttpRequestManager
 from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
-from cura.API.Account import Account
 from cura import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
@@ -36,7 +35,7 @@ class PackageList(ListModel):
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._manager: CuraPackageManager = CuraApplication.getInstance().getPackageManager()
-        self._account: Account = CuraApplication.getInstance().getCuraAPI().account
+        self._account = CuraApplication.getInstance().getCuraAPI().account
         self._error_message = ""
         self.addRoleName(self.PackageRole, "package")
         self._is_loading = False
@@ -113,7 +112,7 @@ class PackageList(ListModel):
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise"""
         return self._has_footer
 
-    def _connectManageButtonSignals(self, package):
+    def _connectManageButtonSignals(self, package: PackageModel) -> None:
         package.installPackageTriggered.connect(self.installPackage)
         package.uninstallPackageTriggered.connect(self.uninstallPackage)
         package.updatePackageTriggered.connect(self.installPackage)
@@ -126,7 +125,7 @@ class PackageList(ListModel):
 
     canInstallChanged = pyqtSignal(str, bool)
 
-    def download(self, package_id, url, update: bool = False):
+    def download(self, package_id: str, url: str, update: bool = False) -> None:
 
         def downloadFinished(reply: "QNetworkReply") -> None:
             self._downloadFinished(package_id, reply, update)
@@ -176,7 +175,7 @@ class PackageList(ListModel):
     def _install(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install.pop(package_id)
         Logger.debug(f"Installing {package_id}")
-        to_be_installed = self._manager.installPackage(package_path) != None
+        to_be_installed = self._manager.installPackage(package_path) is not None
         package = self._getPackageModel(package_id)
         if package.canUpdate and to_be_installed:
             package.canUpdate = False
@@ -197,7 +196,7 @@ class PackageList(ListModel):
             )
 
     @pyqtSlot(str)
-    def uninstallPackage(self, package_id):
+    def uninstallPackage(self, package_id: str) -> None:
         Logger.debug(f"Uninstalling {package_id}")
         package = self._getPackageModel(package_id)
         self._manager.removePackage(package_id)
@@ -211,7 +210,7 @@ class PackageList(ListModel):
             HttpRequestManager.getInstance().delete(url = f"{USER_PACKAGES_URL}/{package_id}", scope = self._scope)
 
     @pyqtSlot(str)
-    def updatePackage(self, package_id):
+    def updatePackage(self, package_id: str) -> None:
         self._manager.removePackage(package_id, force_add = True)
         package = self._getPackageModel(package_id)
         url = package.download_url
@@ -219,9 +218,9 @@ class PackageList(ListModel):
         self.download(package_id, url, True)
 
     @pyqtSlot(str)
-    def enablePackage(self, package_id):
+    def enablePackage(self, package_id: str) -> None:
         Logger.debug(f"Enabling {package_id}")
 
     @pyqtSlot(str)
-    def disablePackage(self, package_id):
+    def disablePackage(self, package_id: str) -> None:
         Logger.debug(f"Disabling {package_id}")
