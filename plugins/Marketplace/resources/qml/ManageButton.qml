@@ -28,6 +28,7 @@ RowLayout
 
         onClicked:
         {
+            busyMessageText.text = manageButton.busyPrimaryText
             manageButton.clicked(true)
         }
     }
@@ -40,6 +41,7 @@ RowLayout
 
         onClicked:
         {
+            busyMessageText.text = manageButton.busySecondaryText
             manageButton.clicked(false)
         }
     }
@@ -76,7 +78,6 @@ RowLayout
         {
             id: busyMessageText
             visible: parent.visible
-            text: manageButton.state == "primary" ? manageButton.busyPrimaryText : manageButton.busySecondaryText
             anchors.left: busyIndicator.right
             anchors.verticalCenter: parent.verticalCenter
 
