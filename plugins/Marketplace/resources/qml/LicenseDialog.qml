@@ -20,7 +20,6 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
     backgroundColor: UM.Theme.getColor("main_background")
-    margin: screenScaleFactor * 10
 
     ColumnLayout
     {
@@ -29,48 +28,31 @@ UM.Dialog
 
         UM.I18nCatalog{id: catalog; name: "cura"}
 
-        Label
-        {
-            id: licenseHeader
-            Layout.fillWidth: true
-            text: catalog.i18nc("@label", "You need to accept the license to install the package")
-            color: UM.Theme.getColor("text")
-            wrapMode: Text.Wrap
-            renderType: Text.NativeRendering
-        }
-
         Row {
-            id: packageRow
-
             Layout.fillWidth: true
             height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("narrow_margin").width
 
-            Image
+            UM.RecolorImage
             {
-                id: icon
-                width: 30 * screenScaleFactor
-                height: width
-                sourceSize.width: width
-                sourceSize.height: height
-                fillMode: Image.PreserveAspectFit
-                source: licenseModel.iconUrl || "../../images/placeholder.svg"
-                mipmap: true
+                width: UM.Theme.getSize("marketplace_large_icon").width
+                height: UM.Theme.getSize("marketplace_large_icon").height
+                color: UM.Theme.getColor("text")
+                source: UM.Theme.getIcon("Certificate", "high")
             }
 
             Label
             {
-                id: packageName
-                text: licenseModel.packageName
+                text: catalog.i18nc("@text", "Please read and agree with the plugin licence.")
                 color: UM.Theme.getColor("text")
-                font.bold: true
+                font: UM.Theme.getFont("large")
                 anchors.verticalCenter: icon.verticalCenter
-                height: contentHeight
+                height: UM.Theme.getSize("marketplace_large_icon").height
+                verticalAlignment: Qt.AlignVCenter
                 wrapMode: Text.Wrap
                 renderType: Text.NativeRendering
             }
-
 
         }
 
@@ -90,9 +72,6 @@ UM.Dialog
     [
         Cura.PrimaryButton
         {
-            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
-            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
-
             text: licenseModel.acceptButtonText
             onClicked: { handler.onLicenseAccepted() }
         }
@@ -102,7 +81,6 @@ UM.Dialog
     [
         Cura.SecondaryButton
         {
-            id: declineButton
             text: licenseModel.declineButtonText
             onClicked: { handler.onLicenseDeclined() }
         }

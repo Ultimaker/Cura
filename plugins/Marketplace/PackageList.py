@@ -136,9 +136,8 @@ class PackageList(ListModel):
 
     canInstallChanged = pyqtSignal(str, bool)
 
-    def _openLicenseDialog(self, plugin_name: str, license_content: str, icon_url: str) -> None:
+    def _openLicenseDialog(self, plugin_name: str, license_content: str) -> None:
         Logger.debug(f"Prompting license for {plugin_name}")
-        self._license_model.setIconUrl(icon_url)
         self._license_model.setPackageName(plugin_name)
         self._license_model.setLicenseText(license_content)
         self._license_dialog.show()
@@ -180,8 +179,7 @@ class PackageList(ListModel):
             # Open actual dialog
             package = self.getPackageModel(package_id)
             plugin_name = package.displayName
-            icon_url = package.iconUrl
-            self._openLicenseDialog(plugin_name, license_content, icon_url)
+            self._openLicenseDialog(plugin_name, license_content)
         else:
             # Otherwise continue the installation
             self._install(package_id, package_path, update)

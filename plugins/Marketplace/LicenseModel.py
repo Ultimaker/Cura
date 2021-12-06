@@ -11,7 +11,6 @@ class LicenseModel(QObject):
     dialogTitleChanged = pyqtSignal()
     packageNameChanged = pyqtSignal()
     licenseTextChanged = pyqtSignal()
-    iconChanged = pyqtSignal()
 
     def __init__(self, decline_button_text: str = DEFAULT_DECLINE_BUTTON_TEXT) -> None:
         super().__init__()
@@ -19,7 +18,6 @@ class LicenseModel(QObject):
         self._dialogTitle = ""
         self._license_text = ""
         self._package_name = ""
-        self._icon_url = ""
         self._decline_button_text = decline_button_text
 
     @pyqtProperty(str, constant = True)
@@ -41,14 +39,6 @@ class LicenseModel(QObject):
     def setPackageName(self, name: str) -> None:
         self._package_name = name
         self.packageNameChanged.emit()
-
-    @pyqtProperty(str, notify=iconChanged)
-    def iconUrl(self) -> str:
-        return self._icon_url
-
-    def setIconUrl(self, url: str):
-        self._icon_url = url
-        self.iconChanged.emit()
 
     @pyqtProperty(str, notify=licenseTextChanged)
     def licenseText(self) -> str:
