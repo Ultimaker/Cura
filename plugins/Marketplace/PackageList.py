@@ -60,7 +60,8 @@ class PackageList(ListModel):
         # create a QML component for the license dialog
         license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "LicenseDialog.qml")
         self._license_dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {
-            "licenseModel": self._license_model
+            "licenseModel": self._license_model,
+            "handler": self
         })
 
     @pyqtSlot()
@@ -135,10 +136,31 @@ class PackageList(ListModel):
     canInstallChanged = pyqtSignal(str, bool)
 
     def _openLicenseDialog(self, plugin_name: str, license_content: str, icon_url: str) -> None:
+        Logger.debug(f"Prompting license for {plugin_name}")
         self._license_model.setIconUrl(icon_url)
         self._license_model.setPackageName(plugin_name)
         self._license_model.setLicenseText(license_content)
         self._license_dialog.show()
+
+    @pyqtSlot()
+    def onLicenseAccepted(self) -> None:
+        package_id = self._to_be_installed_package_id
+        package_path = self._to_be_installed_package_path
+        del self._to_be_installed_package_id
+        del self._to_be_installed_package_path
+        Logger.debug(f"Accepted license for {package_id}")
+        self._license_dialog.close()
+        self._install(package_id, package_path)
+
+    @pyqtSlot()
+    def onLicenseDeclined(self) -> None:
+        package_id = self._to_be_installed_package_id
+        del self._to_be_installed_package_id
+        del self._to_be_installed_package_path
+        Logger.debug(f"Declined license for {package_id}")
+        self._license_dialog.close()
+        package = self.getPackageModel(package_id)
+        package.is_installing = False
 
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
         Logger.debug(f"Request installing {package_id}")
@@ -147,17 +169,23 @@ class PackageList(ListModel):
         license_content = self._manager.getPackageLicense(package_path)
 
         if not update and license_content is not None:
+            # If installation is not and update, and the packages contains a license then
             # open dialog, prompting the using to accept the plugin license
+
+            # Store some properties that are needed after the dialog is closed
+            self._to_be_installed_package_id = package_id
+            self._to_be_installed_package_path = package_path
+
+            # Open actual dialog
             package = self.getPackageModel(package_id)
             plugin_name = package.displayName
             icon_url = package.iconUrl
             self._openLicenseDialog(plugin_name, license_content, icon_url)
         else:
             # Otherwise continue the installation
-            self._install(package_id, update)
+            self._install(package_id, package_path, update)
 
-    def _install(self, package_id: str, update: bool = False) -> None:
-        package_path = self._to_install.pop(package_id)
+    def _install(self, package_id: str, package_path: str, update: bool = False) -> None:
         Logger.debug(f"Installing {package_id}")
         to_be_installed = self._manager.installPackage(package_path) is not None
         package = self.getPackageModel(package_id)
