@@ -271,6 +271,11 @@ Window
             {
                 id: quitButton
                 text: catalog.i18nc("@info:button, %1 is the application name", "Quit %1").arg(CuraApplication.applicationDisplayName)
+                onClicked:
+                {
+                    marketplaceDialog.hide();
+                    CuraApplication.closeApplication();
+                }
             }
         }
     }
