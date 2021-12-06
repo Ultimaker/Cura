@@ -5,7 +5,7 @@ import json
 import os.path
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import Dict, Optional, Set, TYPE_CHECKING
+from typing import cast, Dict, Optional, Set, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -15,7 +15,7 @@ from UM.Logger import Logger
 from UM import PluginRegistry
 
 from cura.CuraApplication import CuraApplication
-from cura import CuraPackageManager
+from cura.CuraPackageManager import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
 from .PackageModel import PackageModel
@@ -24,6 +24,7 @@ from .LicenseModel import LicenseModel
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+    from PyQt5.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 
@@ -37,7 +38,7 @@ class PackageList(ListModel):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
-        self._manager: CuraPackageManager = CuraApplication.getInstance().getPackageManager()
+        self._manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._account = CuraApplication.getInstance().getCuraAPI().account
         self._error_message = ""
