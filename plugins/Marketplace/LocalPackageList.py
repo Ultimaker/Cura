@@ -65,14 +65,15 @@ class LocalPackageList(PackageList):
         return package
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]):
-        installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
-        request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
+        if self._account.isLoggedIn:
+            installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
+            request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
 
-        self._ongoing_request = HttpRequestManager.getInstance().get(
-            request_url,
-            scope = self._scope,
-            callback = self._parseResponse
-        )
+            self._ongoing_request = HttpRequestManager.getInstance().get(
+                request_url,
+                scope = self._scope,
+                callback = self._parseResponse
+            )
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:
         """
