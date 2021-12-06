@@ -63,7 +63,7 @@ UM.Dialog
             Layout.fillHeight: true
             anchors.topMargin: UM.Theme.getSize("default_margin").height
 
-            textArea.text: licenseModel.licenseText
+            textArea.text: licenseContent
             textArea.readOnly: true
         }
 
@@ -73,7 +73,7 @@ UM.Dialog
         Cura.PrimaryButton
         {
             text: catalog.i18nc("@button", "Accept")
-            onClicked: { handler.onLicenseAccepted() }
+            onClicked: { handler.onLicenseAccepted(packageId) }
         }
     ]
 
@@ -82,7 +82,7 @@ UM.Dialog
         Cura.SecondaryButton
         {
             text: catalog.i18nc("@button", "Decline")
-            onClicked: { handler.onLicenseDeclined() }
+            onClicked: { handler.onLicenseDeclined(packageId) }
         }
     ]
 }

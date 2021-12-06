@@ -20,7 +20,6 @@ from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To ma
 
 from .PackageModel import PackageModel
 from .Constants import USER_PACKAGES_URL
-from .LicenseModel import LicenseModel
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -52,19 +51,7 @@ class PackageList(ListModel):
 
         self._ongoing_request: Optional[HttpRequestData] = None
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
-
-        self._license_model = LicenseModel()
-
-        plugin_path = self._plugin_registry.getPluginPath("Marketplace")
-        if plugin_path is None:
-            plugin_path = os.path.dirname(__file__)
-
-        # create a QML component for the license dialog
-        license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "LicenseDialog.qml")
-        self._license_dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {
-            "licenseModel": self._license_model,
-            "handler": self
-        })
+        self._license_dialogs: Dict[str, QObject] = {}
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -137,24 +124,42 @@ class PackageList(ListModel):
 
     canInstallChanged = pyqtSignal(str, bool)
 
-    def _openLicenseDialog(self, plugin_name: str, license_content: str) -> None:
-        Logger.debug(f"Prompting license for {plugin_name}")
-        self._license_model.setPackageId(plugin_name)
-        self._license_model.setLicenseText(license_content)
-        self._license_dialog.show()
+    def _openLicenseDialog(self, package_id: str, license_content: str) -> None:
+        Logger.debug(f"Prompting license for {package_id}")
 
-    @pyqtSlot()
-    def onLicenseAccepted(self) -> None:
-        package_id = self._license_model.packageId
+        plugin_path = self._plugin_registry.getPluginPath("Marketplace")
+        if plugin_path is None:
+            plugin_path = os.path.dirname(__file__)
+
+        # create a QML component for the license dialog
+        license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "LicenseDialog.qml")
+        dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {
+            "licenseContent": license_content,
+            "packageId": package_id,
+            "handler": self
+        })
+        dialog.show()
+        # place dialog in class such that it does not get remove by garbage collector
+        self._license_dialogs[package_id] = dialog
+
+    @pyqtSlot(str)
+    def onLicenseAccepted(self, package_id: str) -> None:
         Logger.debug(f"Accepted license for {package_id}")
-        self._license_dialog.close()
+        # close dialog
+        dialog = self._license_dialogs.pop(package_id)
+        if dialog is not None:
+            dialog.deleteLater()
+        # install relevant package
         self._install(package_id)
 
-    @pyqtSlot()
-    def onLicenseDeclined(self) -> None:
-        package_id = self._license_model.packageId
+    @pyqtSlot(str)
+    def onLicenseDeclined(self, package_id: str) -> None:
         Logger.debug(f"Declined license for {package_id}")
-        self._license_dialog.close()
+        # close dialog
+        dialog = self._license_dialogs.pop(package_id)
+        if dialog is not None:
+            dialog.deleteLater()
+        # reset package card
         package = self.getPackageModel(package_id)
         package.is_installing = False
 
