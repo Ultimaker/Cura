@@ -232,7 +232,7 @@ Window
     {
         height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
         color: UM.Theme.getColor("primary")
-        visible: false // TODO: enable this when restart is required
+        visible: CuraApplication.getPackageManager().hasPackagesToRemoveOrInstall
         anchors
         {
             left: parent.left
@@ -270,7 +270,12 @@ Window
             Cura.SecondaryButton
             {
                 id: quitButton
-                text: catalog.i18nc("@button", "Quit Ultimaker Cura")
+                text: catalog.i18nc("@info:button, %1 is the application name", "Quit %1").arg(CuraApplication.applicationDisplayName)
+                onClicked:
+                {
+                    marketplaceDialog.hide();
+                    CuraApplication.closeApplication();
+                }
             }
         }
     }

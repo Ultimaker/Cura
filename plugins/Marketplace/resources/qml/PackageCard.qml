@@ -239,7 +239,7 @@ Rectangle
                     {
                         id: readMoreButton
                         anchors.right: parent.right
-                        anchors.bottom: parent.bottom
+                        anchors.bottom: descriptionLabel.bottom
                         height: fontMetrics.height //Height of a single line.
 
                         text: catalog.i18nc("@info", "Read more")
@@ -324,9 +324,9 @@ Rectangle
                         state: packageData.stateManageEnableButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Enable")
-                        busyPrimaryText: catalog.i18nc("@button", "enabling...")
+                        busyPrimaryText: catalog.i18nc("@button", "Inabling...")
                         secondaryText: catalog.i18nc("@button", "Disable")
-                        busySecondaryText: catalog.i18nc("@button", "disabling...")
+                        busySecondaryText: catalog.i18nc("@button", "Disabling...")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
 
                         onClicked: {
@@ -347,9 +347,9 @@ Rectangle
                         state: packageData.stateManageInstallButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Install")
-                        busyPrimaryText: catalog.i18nc("@button", "installing...")
+                        busyPrimaryText: catalog.i18nc("@button", "Installing...")
                         secondaryText: catalog.i18nc("@button", "Uninstall")
-                        busySecondaryText: catalog.i18nc("@button", "uninstalling...")
+                        busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
                         onClicked:
                         {

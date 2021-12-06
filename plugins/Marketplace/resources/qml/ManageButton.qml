@@ -28,6 +28,7 @@ RowLayout
 
         onClicked:
         {
+            busyMessageText.text = manageButton.busyPrimaryText
             manageButton.clicked(true)
         }
     }
@@ -40,6 +41,7 @@ RowLayout
 
         onClicked:
         {
+            busyMessageText.text = manageButton.busySecondaryText
             manageButton.clicked(false)
         }
     }
@@ -51,21 +53,24 @@ RowLayout
         height: UM.Theme.getSize("action_button").height
         width: childrenRect.width
 
-        BusyIndicator
+        UM.RecolorImage
         {
             id: busyIndicator
             visible: parent.visible
             width: height
             anchors.left: parent.left
             anchors.top: parent.top
+            anchors.topMargin: UM.Theme.getSize("narrow_margin").height
             anchors.bottom: parent.bottom
+            anchors.bottomMargin: anchors.topMargin
 
-            palette.dark: UM.Theme.getColor("text")
+            source: UM.Theme.getIcon("Spinner")
+            color: UM.Theme.getColor("primary")
 
             RotationAnimator
             {
-                target: busyIndicator.contentItem
-                running: busyIndicator.visible && busyIndicator.running
+                target: busyIndicator
+                running: busyIndicator.visible
                 from: 0
                 to: 360
                 loops: Animation.Infinite
@@ -76,12 +81,12 @@ RowLayout
         {
             id: busyMessageText
             visible: parent.visible
-            text: manageButton.state == "primary" ? manageButton.busyPrimaryText : manageButton.busySecondaryText
             anchors.left: busyIndicator.right
+            anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
             anchors.verticalCenter: parent.verticalCenter
 
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("medium_bold")
+            color: UM.Theme.getColor("primary")
         }
     }
 
