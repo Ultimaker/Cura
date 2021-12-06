@@ -10,7 +10,7 @@
         "platform": "tinyboy_fabrikator15.stl",
         "platform_offset": [-95, -3, -46],
         "has_materials": true,
-    	"preferred_material": "generic_pla_175",
+        "preferred_material": "generic_pla_175",
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "machine_extruder_trains":
