@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import tempfile
 import json
+import os.path
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
 from typing import Dict, Optional, Set, TYPE_CHECKING
@@ -11,6 +12,7 @@ from UM.Qt.ListModel import ListModel
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from UM.TaskManagement.HttpRequestManager import HttpRequestData, HttpRequestManager
 from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura import CuraPackageManager
@@ -18,6 +20,7 @@ from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To ma
 
 from .PackageModel import PackageModel
 from .Constants import USER_PACKAGES_URL
+from .LicenseModel import LicenseModel
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -42,11 +45,23 @@ class PackageList(ListModel):
         self._has_more = False
         self._has_footer = True
         self._to_install: Dict[str, str] = {}
-        self.canInstallChanged.connect(self._install)
+        self.canInstallChanged.connect(self._requestInstall)
         self._local_packages: Set[str] = {p["package_id"] for p in self._manager.local_packages}
 
         self._ongoing_request: Optional[HttpRequestData] = None
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+
+        self._license_model = LicenseModel()
+
+        plugin_path = PluginRegistry.getInstance().getPluginPath("Marketplace")
+        if plugin_path is None:
+            plugin_path = os.path.dirname(__file__)
+
+        # create a QML component for the license dialog
+        license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "LicenseDialog.qml")
+        self._license_dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {
+            "licenseModel": self._license_model
+        })
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -118,6 +133,28 @@ class PackageList(ListModel):
         return self.getItem(index)["package"]
 
     canInstallChanged = pyqtSignal(str, bool)
+
+    def _openLicenseDialog(self, plugin_name: str, license_content: str, icon_url: str) -> None:
+        self._license_model.setIconUrl(icon_url)
+        self._license_model.setPackageName(plugin_name)
+        self._license_model.setLicenseText(license_content)
+        self._license_dialog.show()
+
+    def _requestInstall(self, package_id: str, update: bool = False) -> None:
+        Logger.debug(f"Request installing {package_id}")
+
+        package_path = self._to_install.pop(package_id)
+        license_content = self._manager.getPackageLicense(package_path)
+
+        if not update and license_content is not None:
+            # open dialog, prompting the using to accept the plugin license
+            package = self.getPackageModel(package_id)
+            plugin_name = package.displayName
+            icon_url = package.iconUrl
+            self._openLicenseDialog(plugin_name, license_content, icon_url)
+        else:
+            # Otherwise continue the installation
+            self._install(package_id, update)
 
     def _install(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install.pop(package_id)
