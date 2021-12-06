@@ -15,9 +15,8 @@ RowLayout
     property alias secondaryText: secondaryButton.text
     property string busyPrimaryText: busyMessageText.text
     property string busySecondaryText: busyMessageText.text
-    property string mainState: "primary"
     property bool enabled: true
-    property bool busy
+    property bool busy: state == "busy"
 
     signal clicked(bool primary_action)
 
@@ -77,7 +76,7 @@ RowLayout
         {
             id: busyMessageText
             visible: parent.visible
-            text: manageButton.mainState == "primary" ? manageButton.busyPrimaryText : manageButton.busySecondaryText
+            text: manageButton.state == "primary" ? manageButton.busyPrimaryText : manageButton.busySecondaryText
             anchors.left: busyIndicator.right
             anchors.verticalCenter: parent.verticalCenter
 

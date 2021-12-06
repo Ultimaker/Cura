@@ -66,6 +66,7 @@ class PackageModel(QObject):
         self._can_update = False
         self._is_updating = False
         self._is_enabling = False
+        self._can_downgrade = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
@@ -287,8 +288,6 @@ class PackageModel(QObject):
         if self._is_recently_managed:
             return "hidden"
         if self._package_type == "material":
-            if self._is_bundled:  # TODO: Check if a bundled material can/should be un-/install en-/disabled
-                return "secondary"
             return "hidden"
         if not self._is_installed:
             return "hidden"
@@ -306,6 +305,16 @@ class PackageModel(QObject):
             self._is_enabling = value
             self.stateManageButtonChanged.emit()
 
+    @property
+    def is_active(self) -> bool:
+        return self._is_active
+
+    @is_active.setter
+    def is_active(self, value: bool) -> None:
+        if value != self._is_active:
+            self._is_active = value
+            self.stateManageButtonChanged.emit()
+
     # --- Installing ---
 
     @pyqtProperty(str, notify = stateManageButtonChanged)
@@ -315,7 +324,7 @@ class PackageModel(QObject):
         if self._is_recently_managed:
             return "hidden"
         if self._is_installed:
-            if self._is_bundled:
+            if self._is_bundled and not self._can_downgrade:
                 return "hidden"
             else:
                 return "secondary"
@@ -340,6 +349,16 @@ class PackageModel(QObject):
     def is_installing(self, value: bool) -> None:
         if value != self._is_installing:
             self._is_installing = value
+            self.stateManageButtonChanged.emit()
+
+    @property
+    def can_downgrade(self) -> bool:
+        return self._can_downgrade
+
+    @can_downgrade.setter
+    def can_downgrade(self, value: bool) -> None:
+        if value != self._can_downgrade:
+            self._can_downgrade = value
             self.stateManageButtonChanged.emit()
 
     # --- Updating ---
@@ -371,78 +390,3 @@ class PackageModel(QObject):
         if value != self._can_update:
             self._can_update = value
             self.stateManageButtonChanged.emit()
-
-    # ----
-
-
-
-
-
-
-
-
-
-
-    # isInstalledChanged = pyqtSignal()
-    #
-    # @pyqtProperty(bool, notify = isInstalledChanged)
-    # def isInstalled(self):
-    #     return self._is_installed
-    #
-    # isEnabledChanged = pyqtSignal()
-    #
-    #
-    #f
-    # @pyqtProperty(bool, notify = isEnabledChanged)
-    # def isEnabled(self) -> bool:
-    #     return self._is_active
-    #
-    #
-    #
-    # isManageEnableStateChanged = pyqtSignalf()
-    #
-    # @pyqtProperty(str, notify = isManageEnableStateChanged)
-    # def isManageEnableState(self) -> str:
-    #     if self.isEnabling:
-    #         return "busy"
-    #     if self.
-    #
-    # manageEnableStateChanged = pyqtSignal()
-    #
-    # @pyqtProperty(str, notify = manageEnableStateChanged)
-    # def manageEnableState(self) -> str:
-    #     # TODO: Handle manual installed packages
-    #     if self._is_installed:
-    #         if self._is_active:
-    #             return "secondary"
-    #         else:
-    #             return "primary"
-    #     else:
-    #         return "hidden"
-    #
-    # manageInstallStateChanged = pyqtSignal()
-    #
-    # def setManageInstallState(self, value: bool) -> None:
-    #     if value != self._is_installed:
-    #         self._is_installed = value
-    #         self.manageInstallStateChanged.emit()
-    #         self.manageEnableStateChanged.emit()
-    #
-    # @pyqtProperty(str, notify = manageInstallStateChanged)
-    # def manageInstallState(self) -> str:
-    #     if self._is_installed:
-    #         if self._is_bundled:
-    #             return "hidden"
-    #         else:
-    #             return "secondary"
-    #     else:
-    #         return "primary"
-    #
-    # manageUpdateStateChanged = pyqtSignal()
-    #
-    # @pyqtProperty(str, notify = manageUpdateStateChanged)
-    # def manageUpdateState(self) -> str:
-    #     if self._can_update:
-    #         return "primary"
-    #     return "hidden"
-    #

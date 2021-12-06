@@ -94,7 +94,7 @@ Rectangle
                     left: packageItem.right
                     leftMargin: UM.Theme.getSize("default_margin").width
                     right: parent.right
-                    rightMargin: UM.Theme.getSize("thick_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
                     top: parent.top
                     topMargin: UM.Theme.getSize("narrow_margin").height
                 }
@@ -114,46 +114,12 @@ Rectangle
                         color: UM.Theme.getColor("text")
                         verticalAlignment: Text.AlignTop
                     }
-
-                    Control
+                    VerifiedIcon
                     {
-                        Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
-                        Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
-
                         enabled: packageData.isCheckedByUltimaker
                         visible: packageData.isCheckedByUltimaker
-
-                        Cura.ToolTip
-                        {
-                            tooltipText:
-                            {
-                                switch(packageData.packageType)
-                                {
-                                    case "plugin": return catalog.i18nc("@info", "Ultimaker Verified Plug-in");
-                                    case "material": return catalog.i18nc("@info", "Ultimaker Certified Material");
-                                    default: return catalog.i18nc("@info", "Ultimaker Verified Package");
-                                }
-                            }
-                            visible: parent.hovered
-                            targetPoint: Qt.point(0, Math.round(parent.y + parent.height / 4))
-                        }
-
-                        Rectangle
-                        {
-                            anchors.fill: parent
-                            color: UM.Theme.getColor("action_button_hovered")
-                            radius: width
-                            UM.RecolorImage
-                            {
-                                anchors.fill: parent
-                                color: UM.Theme.getColor("primary")
-                                source: packageData.packageType == "plugin" ? UM.Theme.getIcon("CheckCircle") : UM.Theme.getIcon("Certified")
-                            }
-                        }
-
-                        //NOTE: Can we link to something here? (Probably a static link explaining what verified is):
-                        // onClicked: Qt.openUrlExternally( XXXXXX )
                     }
+
 
                     Control
                     {
@@ -362,12 +328,8 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Disable")
                         busySecondaryText: catalog.i18nc("@button", "disabling...")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
-                    }
-                    Connections
-                    {
-                        target: enableManageButton
-                        function onClicked(primary_action)
-                        {
+
+                        onClicked: {
                             if (primary_action)
                             {
                                 packageData.enablePackageTriggered(packageData.packageId)
@@ -389,11 +351,7 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Uninstall")
                         busySecondaryText: catalog.i18nc("@button", "uninstalling...")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
-                    }
-                    Connections
-                    {
-                        target: installManageButton
-                        function onClicked(primary_action)
+                        onClicked:
                         {
                             if (primary_action)
                             {
@@ -414,14 +372,7 @@ Rectangle
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "updating...")
                         enabled: !(installManageButton.busy || enableManageButton.busy)
-                    }
-                    Connections
-                    {
-                        target: updateManageButton
-                        function onClicked(primary_action)
-                        {
-                            packageData.updatePackageTriggered(packageData.packageId)
-                        }
+                        onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
                 }
             }

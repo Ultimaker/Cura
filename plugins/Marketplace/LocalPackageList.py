@@ -58,25 +58,26 @@ class LocalPackageList(PackageList):
     def _makePackageModel(self, package_info: Dict[str, Any]) -> PackageModel:
         """ Create a PackageModel from the package_info and determine its section_title"""
 
-        bundled_or_installed = "bundled" if self._manager.isBundledPackage(package_info["package_id"]) else "installed"
+        package_id = package_info["package_id"]
+        bundled_or_installed = "bundled" if self._manager.isBundledPackage(package_id) else "installed"
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_CATEGORIES[bundled_or_installed][package_type]
         package = PackageModel(package_info, section_title = section_title, parent = self)
-        if package_info["package_id"] in self._manager.getPackagesToRemove() or package_info["package_id"] in self._manager.getPackagesToInstall():
+        if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
             package.is_recently_managed = True
+        package.can_downgrade = self._manager.canDowngrade(package_id)
         self._connectManageButtonSignals(package)
         return package
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]):
-        if self._account.isLoggedIn:
-            installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
-            request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
+        installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
+        request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
 
-            self._ongoing_request = HttpRequestManager.getInstance().get(
-                request_url,
-                scope = self._scope,
-                callback = self._parseResponse
-            )
+        self._ongoing_request = HttpRequestManager.getInstance().get(
+            request_url,
+            scope = self._scope,
+            callback = self._parseResponse
+        )
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:
         """
@@ -95,6 +96,6 @@ class LocalPackageList(PackageList):
         for package_data in response_data["data"]:
             package = self.getPackageModel(package_data["package_id"])
             package.download_url = package_data.get("download_url", "")
-            package.canUpdate = True
+            package.can_update = True
 
         self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
