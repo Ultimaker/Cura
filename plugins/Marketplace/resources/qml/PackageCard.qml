@@ -239,7 +239,7 @@ Rectangle
                     {
                         id: readMoreButton
                         anchors.right: parent.right
-                        anchors.bottom: parent.bottom
+                        anchors.bottom: descriptionLabel.bottom
                         height: fontMetrics.height //Height of a single line.
 
                         text: catalog.i18nc("@info", "Read more")
