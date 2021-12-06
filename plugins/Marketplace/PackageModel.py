@@ -62,7 +62,7 @@ class PackageModel(QObject):
             self._icon_url = author_data.get("icon_url", "")
 
         self._is_installing = False
-        self.is_recently_installed = False
+        self._is_recently_managed = False
         self._can_update = False
         self._is_updating = False
         self._is_enabling = False
@@ -284,7 +284,7 @@ class PackageModel(QObject):
     def stateManageEnableButton(self) -> str:
         if self._is_enabling:
             return "busy"
-        if self.is_recently_installed:
+        if self._is_recently_managed:
             return "hidden"
         if self._package_type == "material":
             if self._is_bundled:  # TODO: Check if a bundled material can/should be un-/install en-/disabled
@@ -312,8 +312,8 @@ class PackageModel(QObject):
     def stateManageInstallButton(self) -> str:
         if self._is_installing:
             return "busy"
-        if self.is_recently_installed:
-            return "secondary"
+        if self._is_recently_managed:
+            return "hidden"
         if self._is_installed:
             if self._is_bundled:
                 return "hidden"
@@ -321,6 +321,16 @@ class PackageModel(QObject):
                 return "secondary"
         else:
             return "primary"
+
+    @property
+    def is_recently_managed(self) -> bool:
+        return self._is_recently_managed
+
+    @is_recently_managed.setter
+    def is_recently_managed(self, value: bool) -> None:
+        if value != self._is_recently_managed:
+            self._is_recently_managed = value
+            self.stateManageButtonChanged.emit()
 
     @property
     def is_installing(self) -> bool:

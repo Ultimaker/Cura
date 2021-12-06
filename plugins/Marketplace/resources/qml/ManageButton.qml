@@ -21,8 +21,6 @@ RowLayout
 
     signal clicked(bool primary_action)
 
-    state: busy ? "busy" : mainState
-
     Cura.PrimaryButton
     {
         id: primaryButton
