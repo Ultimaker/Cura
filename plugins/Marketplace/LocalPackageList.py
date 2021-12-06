@@ -8,6 +8,7 @@ from PyQt5.QtCore import pyqtSlot, QObject
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+    from PyQt5.QtNetwork import QNetworkReply
 
 from UM.i18n import i18nCatalog
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
