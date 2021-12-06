@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import tempfile
 import json
+import os.path
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
 from typing import cast, Dict, Optional, Set, TYPE_CHECKING
@@ -19,6 +20,7 @@ from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To ma
 
 from .PackageModel import PackageModel
 from .Constants import USER_PACKAGES_URL
+from .LicenseModel import LicenseModel
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -45,11 +47,24 @@ class PackageList(ListModel):
         self._has_more = False
         self._has_footer = True
         self._to_install: Dict[str, str] = {}
-        self.canInstallChanged.connect(self._install)
+        self.canInstallChanged.connect(self._requestInstall)
         self._local_packages: Set[str] = {p["package_id"] for p in self._manager.local_packages}
 
         self._ongoing_request: Optional[HttpRequestData] = None
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+
+        self._license_model = LicenseModel()
+
+        plugin_path = self._plugin_registry.getPluginPath("Marketplace")
+        if plugin_path is None:
+            plugin_path = os.path.dirname(__file__)
+
+        # create a QML component for the license dialog
+        license_dialog_component_path = os.path.join(plugin_path, "resources", "qml", "LicenseDialog.qml")
+        self._license_dialog = CuraApplication.getInstance().createQmlComponent(license_dialog_component_path, {
+            "licenseModel": self._license_model,
+            "handler": self
+        })
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -122,9 +137,44 @@ class PackageList(ListModel):
 
     canInstallChanged = pyqtSignal(str, bool)
 
+    def _openLicenseDialog(self, plugin_name: str, license_content: str) -> None:
+        Logger.debug(f"Prompting license for {plugin_name}")
+        self._license_model.setPackageId(plugin_name)
+        self._license_model.setLicenseText(license_content)
+        self._license_dialog.show()
+
+    @pyqtSlot()
+    def onLicenseAccepted(self) -> None:
+        package_id = self._license_model.packageId
+        Logger.debug(f"Accepted license for {package_id}")
+        self._license_dialog.close()
+        self._install(package_id)
+
+    @pyqtSlot()
+    def onLicenseDeclined(self) -> None:
+        package_id = self._license_model.packageId
+        Logger.debug(f"Declined license for {package_id}")
+        self._license_dialog.close()
+        package = self.getPackageModel(package_id)
+        package.is_installing = False
+
+    def _requestInstall(self, package_id: str, update: bool = False) -> None:
+        Logger.debug(f"Request installing {package_id}")
+
+        package_path = self._to_install[package_id]
+        license_content = self._manager.getPackageLicense(package_path)
+
+        if not update and license_content is not None:
+            # If installation is not and update, and the packages contains a license then
+            # open dialog, prompting the using to accept the plugin license
+            self._openLicenseDialog(package_id, license_content)
+        else:
+            # Otherwise continue the installation
+            self._install(package_id, update)
+
     def _install(self, package_id: str, update: bool = False) -> None:
-        package_path = self._to_install.pop(package_id)
         Logger.debug(f"Installing {package_id}")
+        package_path = self._to_install.pop(package_id)
         to_be_installed = self._manager.installPackage(package_path) is not None
         package = self.getPackageModel(package_id)
         if package.can_update and to_be_installed:
