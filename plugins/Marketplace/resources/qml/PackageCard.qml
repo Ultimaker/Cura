@@ -328,12 +328,8 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Disable")
                         busySecondaryText: catalog.i18nc("@button", "disabling...")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
-                    }
-                    Connections
-                    {
-                        target: enableManageButton
-                        function onClicked(primary_action)
-                        {
+
+                        onClicked: {
                             if (primary_action)
                             {
                                 packageData.enablePackageTriggered(packageData.packageId)
@@ -355,11 +351,7 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Uninstall")
                         busySecondaryText: catalog.i18nc("@button", "uninstalling...")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
-                    }
-                    Connections
-                    {
-                        target: installManageButton
-                        function onClicked(primary_action)
+                        onClicked:
                         {
                             if (primary_action)
                             {
@@ -380,14 +372,7 @@ Rectangle
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "updating...")
                         enabled: !(installManageButton.busy || enableManageButton.busy)
-                    }
-                    Connections
-                    {
-                        target: updateManageButton
-                        function onClicked(primary_action)
-                        {
-                            packageData.updatePackageTriggered(packageData.packageId)
-                        }
+                        onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
                 }
             }
