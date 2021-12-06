@@ -52,8 +52,13 @@ class GlobalStacksModel(ListModel):
         self._updateDelayed()
 
     filterConnectionTypeChanged = pyqtSignal()
+    filterCapabilitiesChanged = pyqtSignal()
+    filterOnlineOnlyChanged = pyqtSignal()
+
     def setFilterConnectionType(self, new_filter: Optional[ConnectionType]) -> None:
-        self._filter_connection_type = new_filter
+        if self._filter_connection_type != new_filter:
+            self._filter_connection_type = new_filter
+            self.filterConnectionTypeChanged.emit()
 
     @pyqtProperty(int, fset = setFilterConnectionType, notify = filterConnectionTypeChanged)
     def filterConnectionType(self) -> int:
@@ -67,9 +72,10 @@ class GlobalStacksModel(ListModel):
             return -1
         return self._filter_connection_type.value
 
-    filterOnlineOnlyChanged = pyqtSignal()
     def setFilterOnlineOnly(self, new_filter: bool) -> None:
-        self._filter_online_only = new_filter
+        if self._filter_online_only != new_filter:
+            self._filter_online_only = new_filter
+            self.filterOnlineOnlyChanged.emit()
 
     @pyqtProperty(bool, fset = setFilterOnlineOnly, notify = filterOnlineOnlyChanged)
     def filterOnlineOnly(self) -> bool:
@@ -78,9 +84,10 @@ class GlobalStacksModel(ListModel):
         """
         return self._filter_online_only
 
-    filterCapabilitiesChanged = pyqtSignal()
     def setFilterCapabilities(self, new_filter: List[str]) -> None:
-        self._filter_capabilities = new_filter
+        if self._filter_capabilities != new_filter:
+            self._filter_capabilities = new_filter
+            self.filterCapabilitiesChanged.emit()
 
     @pyqtProperty("QStringList", fset = setFilterCapabilities, notify = filterCapabilitiesChanged)
     def filterCapabilities(self) -> List[str]:
