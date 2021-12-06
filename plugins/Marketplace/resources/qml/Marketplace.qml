@@ -106,9 +106,8 @@ Window
                         height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
                         spacing: UM.Theme.getSize("thin_margin").width
 
-                        Rectangle
+                        Item
                         {
-                            color: "transparent"
                             Layout.preferredHeight: parent.height
                             Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
                             Layout.fillWidth: ! searchBar.visible
