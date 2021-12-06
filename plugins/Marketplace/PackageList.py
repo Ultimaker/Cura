@@ -54,7 +54,7 @@ class PackageList(ListModel):
 
         self._license_model = LicenseModel()
 
-        plugin_path = PluginRegistry.getInstance().getPluginPath("Marketplace")
+        plugin_path = self._plugin_registry.getPluginPath("Marketplace")
         if plugin_path is None:
             plugin_path = os.path.dirname(__file__)
 
