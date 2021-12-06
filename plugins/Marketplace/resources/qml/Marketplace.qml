@@ -232,7 +232,7 @@ Window
     {
         height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
         color: UM.Theme.getColor("primary")
-        visible: false // TODO: enable this when restart is required
+        visible: CuraApplication.getPackageManager().hasPackagesToRemoveOrInstall
         anchors
         {
             left: parent.left
