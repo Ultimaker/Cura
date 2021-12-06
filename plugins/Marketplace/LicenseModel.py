@@ -5,32 +5,15 @@ catalog = i18nCatalog("cura")
 
 # Model for the LicenseDialog
 class LicenseModel(QObject):
-    DEFAULT_DECLINE_BUTTON_TEXT = catalog.i18nc("@button", "Decline")
-    ACCEPT_BUTTON_TEXT = catalog.i18nc("@button", "Agree")
 
     dialogTitleChanged = pyqtSignal()
     packageNameChanged = pyqtSignal()
     licenseTextChanged = pyqtSignal()
 
-    def __init__(self, decline_button_text: str = DEFAULT_DECLINE_BUTTON_TEXT) -> None:
+    def __init__(self, licence_text: str, package_name: str) -> None:
         super().__init__()
-
-        self._dialogTitle = ""
         self._license_text = ""
         self._package_name = ""
-        self._decline_button_text = decline_button_text
-
-    @pyqtProperty(str, constant = True)
-    def acceptButtonText(self):
-        return self.ACCEPT_BUTTON_TEXT
-
-    @pyqtProperty(str, constant = True)
-    def declineButtonText(self):
-        return self._decline_button_text
-
-    @pyqtProperty(str, notify=dialogTitleChanged)
-    def dialogTitle(self) -> str:
-        return self._dialogTitle
 
     @pyqtProperty(str, notify=packageNameChanged)
     def packageName(self) -> str:
@@ -48,7 +31,3 @@ class LicenseModel(QObject):
         if self._license_text != license_text:
             self._license_text = license_text
             self.licenseTextChanged.emit()
-
-    def _updateDialogTitle(self):
-        self._dialogTitle = catalog.i18nc("@title:window", "Plugin License Agreement")
-        self.dialogTitleChanged.emit()

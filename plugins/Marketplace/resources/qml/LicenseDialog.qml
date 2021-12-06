@@ -14,7 +14,7 @@ import Cura 1.6 as Cura
 UM.Dialog
 {
     id: licenseDialog
-    title: licenseModel.dialogTitle
+    title: catalog.i18nc("@button", "Plugin license agreement")
     minimumWidth: UM.Theme.getSize("license_window_minimum").width
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
     width: minimumWidth
@@ -72,7 +72,7 @@ UM.Dialog
     [
         Cura.PrimaryButton
         {
-            text: licenseModel.acceptButtonText
+            text: catalog.i18nc("@button", "Accept")
             onClicked: { handler.onLicenseAccepted() }
         }
     ]
@@ -81,7 +81,7 @@ UM.Dialog
     [
         Cura.SecondaryButton
         {
-            text: licenseModel.declineButtonText
+            text: catalog.i18nc("@button", "Decline")
             onClicked: { handler.onLicenseDeclined() }
         }
     ]
