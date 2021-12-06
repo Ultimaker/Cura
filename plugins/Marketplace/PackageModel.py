@@ -287,8 +287,6 @@ class PackageModel(QObject):
         if self._is_recently_managed:
             return "hidden"
         if self._package_type == "material":
-            if self._is_bundled:  # TODO: Check if a bundled material can/should be un-/install en-/disabled
-                return "secondary"
             return "hidden"
         if not self._is_installed:
             return "hidden"
@@ -304,6 +302,16 @@ class PackageModel(QObject):
     def is_enabling(self, value: bool) -> None:
         if value != self._is_enabling:
             self._is_enabling = value
+            self.stateManageButtonChanged.emit()
+
+    @property
+    def is_active(self) -> bool:
+        return self._is_active
+
+    @is_active.setter
+    def is_active(self, value: bool) -> None:
+        if value != self._is_active:
+            self._is_active = value
             self.stateManageButtonChanged.emit()
 
     # --- Installing ---

@@ -11,6 +11,7 @@ from UM.Qt.ListModel import ListModel
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from UM.TaskManagement.HttpRequestManager import HttpRequestData, HttpRequestManager
 from UM.Logger import Logger
+from UM import PluginRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura import CuraPackageManager
@@ -35,6 +36,7 @@ class PackageList(ListModel):
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._manager: CuraPackageManager = CuraApplication.getInstance().getPackageManager()
+        self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._account = CuraApplication.getInstance().getCuraAPI().account
         self._error_message = ""
         self.addRoleName(self.PackageRole, "package")
@@ -229,7 +231,8 @@ class PackageList(ListModel):
         package = self.getPackageModel(package_id)
         package.is_enabling = True
         Logger.debug(f"Enabling {package_id}")
-        # TODO: implement enabling functionality
+        self._plugin_registry.enablePlugin(package_id)
+        package.is_active = True
         package.is_enabling = False
 
     @pyqtSlot(str)
@@ -237,5 +240,6 @@ class PackageList(ListModel):
         package = self.getPackageModel(package_id)
         package.is_enabling = True
         Logger.debug(f"Disabling {package_id}")
-        # TODO: implement disabling functionality
+        self._plugin_registry.disablePlugin(package_id)
+        package.is_active = False
         package.is_enabling = False
