@@ -94,7 +94,7 @@ Rectangle
                     left: packageItem.right
                     leftMargin: UM.Theme.getSize("default_margin").width
                     right: parent.right
-                    rightMargin: UM.Theme.getSize("thick_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
                     top: parent.top
                     topMargin: UM.Theme.getSize("narrow_margin").height
                 }
