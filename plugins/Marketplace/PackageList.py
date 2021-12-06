@@ -139,25 +139,20 @@ class PackageList(ListModel):
 
     def _openLicenseDialog(self, plugin_name: str, license_content: str) -> None:
         Logger.debug(f"Prompting license for {plugin_name}")
-        self._license_model.setPackageName(plugin_name)
+        self._license_model.setPackageId(plugin_name)
         self._license_model.setLicenseText(license_content)
         self._license_dialog.show()
 
     @pyqtSlot()
     def onLicenseAccepted(self) -> None:
-        package_id = self._to_be_installed_package_id
-        package_path = self._to_be_installed_package_path
-        del self._to_be_installed_package_id
-        del self._to_be_installed_package_path
+        package_id = self._license_model.packageId
         Logger.debug(f"Accepted license for {package_id}")
         self._license_dialog.close()
-        self._install(package_id, package_path)
+        self._install(package_id)
 
     @pyqtSlot()
     def onLicenseDeclined(self) -> None:
-        package_id = self._to_be_installed_package_id
-        del self._to_be_installed_package_id
-        del self._to_be_installed_package_path
+        package_id = self._license_model.packageId
         Logger.debug(f"Declined license for {package_id}")
         self._license_dialog.close()
         package = self.getPackageModel(package_id)
@@ -166,27 +161,20 @@ class PackageList(ListModel):
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
         Logger.debug(f"Request installing {package_id}")
 
-        package_path = self._to_install.pop(package_id)
+        package_path = self._to_install[package_id]
         license_content = self._manager.getPackageLicense(package_path)
 
         if not update and license_content is not None:
             # If installation is not and update, and the packages contains a license then
             # open dialog, prompting the using to accept the plugin license
-
-            # Store some properties that are needed after the dialog is closed
-            self._to_be_installed_package_id = package_id
-            self._to_be_installed_package_path = package_path
-
-            # Open actual dialog
-            package = self.getPackageModel(package_id)
-            plugin_name = package.displayName
-            self._openLicenseDialog(plugin_name, license_content)
+            self._openLicenseDialog(package_id, license_content)
         else:
             # Otherwise continue the installation
-            self._install(package_id, package_path, update)
+            self._install(package_id, update)
 
-    def _install(self, package_id: str, package_path: str, update: bool = False) -> None:
+    def _install(self, package_id: str, update: bool = False) -> None:
         Logger.debug(f"Installing {package_id}")
+        package_path = self._to_install.pop(package_id)
         to_be_installed = self._manager.installPackage(package_path) is not None
         package = self.getPackageModel(package_id)
         if package.can_update and to_be_installed:

@@ -5,23 +5,21 @@ catalog = i18nCatalog("cura")
 
 # Model for the LicenseDialog
 class LicenseModel(QObject):
-
-    dialogTitleChanged = pyqtSignal()
-    packageNameChanged = pyqtSignal()
+    packageIdChanged = pyqtSignal()
     licenseTextChanged = pyqtSignal()
 
-    def __init__(self, licence_text: str, package_name: str) -> None:
+    def __init__(self) -> None:
         super().__init__()
         self._license_text = ""
-        self._package_name = ""
+        self._package_id = ""
 
-    @pyqtProperty(str, notify=packageNameChanged)
-    def packageName(self) -> str:
-        return self._package_name
+    @pyqtProperty(str, notify=packageIdChanged)
+    def packageId(self) -> str:
+        return self._package_id
 
-    def setPackageName(self, name: str) -> None:
-        self._package_name = name
-        self.packageNameChanged.emit()
+    def setPackageId(self, name: str) -> None:
+        self._package_id = name
+        self.packageIdChanged.emit()
 
     @pyqtProperty(str, notify=licenseTextChanged)
     def licenseText(self) -> str:
