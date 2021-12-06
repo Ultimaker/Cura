@@ -228,4 +228,51 @@ Window
             }
         }
     }
+
+    Rectangle
+    {
+        height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
+        color: UM.Theme.getColor("primary")
+        visible: false // TODO: enable this when restart is required
+        anchors
+        {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        RowLayout
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                verticalCenter: parent.verticalCenter
+                margins: UM.Theme.getSize("default_margin").width
+            }
+            spacing: UM.Theme.getSize("default_margin").width
+            UM.RecolorImage
+            {
+                id: bannerIcon
+                source: UM.Theme.getIcon("Plugin")
+
+                color: UM.Theme.getColor("primary_button_text")
+                implicitWidth: UM.Theme.getSize("banner_icon_size").width
+                implicitHeight: UM.Theme.getSize("banner_icon_size").height
+            }
+            Text
+            {
+                color: UM.Theme.getColor("primary_button_text")
+                text: catalog.i18nc("@button", "In order to use the package you will need to restart Cura")
+                font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
+                Layout.fillWidth: true
+            }
+            Cura.SecondaryButton
+            {
+                id: quitButton
+                text: catalog.i18nc("@button", "Quit Ultimaker Cura")
+            }
+        }
+    }
 }
