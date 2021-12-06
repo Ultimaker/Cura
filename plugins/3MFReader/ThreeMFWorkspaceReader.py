@@ -49,7 +49,9 @@ _ignored_machine_network_metadata = {
     "removal_warning",
     "group_name",
     "group_size",
-    "connection_type"
+    "connection_type",
+    "capabilities",
+    "octoprint_api_key",
 }  # type: Set[str]
 
 
