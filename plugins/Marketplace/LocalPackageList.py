@@ -58,12 +58,14 @@ class LocalPackageList(PackageList):
     def _makePackageModel(self, package_info: Dict[str, Any]) -> PackageModel:
         """ Create a PackageModel from the package_info and determine its section_title"""
 
-        bundled_or_installed = "bundled" if self._manager.isBundledPackage(package_info["package_id"]) else "installed"
+        package_id = package_info["package_id"]
+        bundled_or_installed = "bundled" if self._manager.isBundledPackage(package_id) else "installed"
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_CATEGORIES[bundled_or_installed][package_type]
         package = PackageModel(package_info, section_title = section_title, parent = self)
-        if package_info["package_id"] in self._manager.getPackagesToRemove() or package_info["package_id"] in self._manager.getPackagesToInstall():
+        if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
             package.is_recently_managed = True
+        package.can_downgrade = self._manager.canDowngrade(package_id)
         self._connectManageButtonSignals(package)
         return package
 

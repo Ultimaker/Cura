@@ -66,6 +66,7 @@ class PackageModel(QObject):
         self._can_update = False
         self._is_updating = False
         self._is_enabling = False
+        self._can_downgrade = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
@@ -323,7 +324,7 @@ class PackageModel(QObject):
         if self._is_recently_managed:
             return "hidden"
         if self._is_installed:
-            if self._is_bundled:
+            if self._is_bundled and not self._can_downgrade:
                 return "hidden"
             else:
                 return "secondary"
@@ -348,6 +349,16 @@ class PackageModel(QObject):
     def is_installing(self, value: bool) -> None:
         if value != self._is_installing:
             self._is_installing = value
+            self.stateManageButtonChanged.emit()
+
+    @property
+    def can_downgrade(self) -> bool:
+        return self._can_downgrade
+
+    @can_downgrade.setter
+    def can_downgrade(self, value: bool) -> None:
+        if value != self._can_downgrade:
+            self._can_downgrade = value
             self.stateManageButtonChanged.emit()
 
     # --- Updating ---
