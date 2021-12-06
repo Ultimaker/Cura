@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkReply
-from typing import Optional, Set, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -31,7 +31,6 @@ class RemotePackageList(PackageList):
         self._request_url = self._initialRequestUrl()
         self.isLoadingChanged.connect(self._onLoadingChanged)
         self.isLoadingChanged.emit()
-        self._local_packages: Set[str] = { p["package_id"] for p in self._manager.local_packages }
 
     def __del__(self) -> None:
         """

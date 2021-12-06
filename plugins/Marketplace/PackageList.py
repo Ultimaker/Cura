@@ -4,7 +4,7 @@ import tempfile
 import json
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import Dict, Optional, TYPE_CHECKING
+from typing import Dict, Optional, Set, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -43,6 +43,7 @@ class PackageList(ListModel):
         self._has_footer = True
         self._to_install: Dict[str, str] = {}
         self.canInstallChanged.connect(self._install)
+        self._local_packages: Set[str] = {p["package_id"] for p in self._manager.local_packages}
 
         self._ongoing_request: Optional[HttpRequestData] = None
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
@@ -128,7 +129,8 @@ class PackageList(ListModel):
         if update:
             package.is_updating = False
         else:
-            package.is_recently_installed = True
+            Logger.debug(f"Setting recently installed for package: {package_id}")
+            package.is_recently_managed = True
             package.is_installing = False
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
@@ -201,7 +203,7 @@ class PackageList(ListModel):
         package.is_installing = True
         url = package.download_url
         Logger.debug(f"Trying to download and install {package_id} from {url}")
-        self.download(package_id, url)
+        self.download(package_id, url, False)
 
     @pyqtSlot(str)
     def uninstallPackage(self, package_id: str) -> None:
@@ -209,8 +211,9 @@ class PackageList(ListModel):
         package = self.getPackageModel(package_id)
         package.is_installing = True
         self._manager.removePackage(package_id)
-        package.is_installing = False
         self.unsunscribeUserFromPackage(package_id)
+        package.is_installing = False
+        package.is_recently_managed = True
 
     @pyqtSlot(str)
     def updatePackage(self, package_id: str) -> None:
