@@ -71,11 +71,13 @@ class PackageModel(QObject):
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
 
-    def __eq__(self, other: Union[str, "PackageModel"]):
+    def __eq__(self, other: object):
         if isinstance(other, PackageModel):
             return other == self
-        else:
+        elif isinstance(other, str):
             return other == self._package_id
+        else:
+            return False
 
     def __repr__(self):
         return f"<{self._package_id} : {self._package_version} : {self._section_title}>"
