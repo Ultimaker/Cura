@@ -48,9 +48,8 @@ class LocalPackageList(PackageList):
         self.setIsLoading(True)
 
         # Obtain and sort the local packages
-        Logger.debug(f"Number of local packages: {len(self._manager.local_packages)} -> {[p['package_id'] for p in self._manager.local_packages]}")
         self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._manager.local_packages]])
-        self.sort(attrgetter("sectionTitle", "canUpdate", "displayName"), key = "package", reverse = True)
+        self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
         self.checkForUpdates(self._manager.local_packages)
 
         self.setIsLoading(False)
@@ -90,8 +89,8 @@ class LocalPackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
-            package = self._getPackageModel(package_data["package_id"])
+            package = self.getPackageModel(package_data["package_id"])
             package.download_url = package_data.get("download_url", "")
             package.canUpdate = True
 
-        self.sort(attrgetter("sectionTitle", "canUpdate", "displayName"), key = "package", reverse = True)
+        self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)

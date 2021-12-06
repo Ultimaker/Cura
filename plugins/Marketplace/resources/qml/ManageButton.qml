@@ -17,7 +17,7 @@ RowLayout
     property string busySecondaryText: busyMessageText.text
     property string mainState: "primary"
     property bool enabled: true
-    property bool busy: false
+    property bool busy
 
     signal clicked(bool primary_action)
 

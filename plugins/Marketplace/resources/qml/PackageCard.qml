@@ -355,12 +355,12 @@ Rectangle
                     ManageButton
                     {
                         id: enableManageButton
+                        state: packageData.stateManageEnableButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Enable")
                         busyPrimaryText: catalog.i18nc("@button", "enabling...")
                         secondaryText: catalog.i18nc("@button", "Disable")
                         busySecondaryText: catalog.i18nc("@button", "disabling...")
-                        mainState: packageData.manageEnableState
                         enabled: !(installManageButton.busy || updateManageButton.busy)
                     }
                     Connections
@@ -382,13 +382,12 @@ Rectangle
                     ManageButton
                     {
                         id: installManageButton
+                        state: packageData.stateManageInstallButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Install")
                         busyPrimaryText: catalog.i18nc("@button", "installing...")
                         secondaryText: catalog.i18nc("@button", "Uninstall")
                         busySecondaryText: catalog.i18nc("@button", "uninstalling...")
-                        mainState: packageData.manageInstallState
-                        busy: packageData.isInstalling
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
                     }
                     Connections
@@ -396,7 +395,6 @@ Rectangle
                         target: installManageButton
                         function onClicked(primary_action)
                         {
-                            packageData.isInstalling = true
                             if (primary_action)
                             {
                                 packageData.installPackageTriggered(packageData.packageId)
@@ -411,11 +409,10 @@ Rectangle
                     ManageButton
                     {
                         id: updateManageButton
+                        state: packageData.stateManageUpdateButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "updating...")
-                        mainState: packageData.manageUpdateState
-                        busy: packageData.isUpdating
                         enabled: !(installManageButton.busy || enableManageButton.busy)
                     }
                     Connections
@@ -423,7 +420,6 @@ Rectangle
                         target: updateManageButton
                         function onClicked(primary_action)
                         {
-                            packageData.isUpdating = true
                             packageData.updatePackageTriggered(packageData.packageId)
                         }
                     }

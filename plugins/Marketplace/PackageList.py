@@ -112,18 +112,25 @@ class PackageList(ListModel):
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise"""
         return self._has_footer
 
-    def _connectManageButtonSignals(self, package: PackageModel) -> None:
-        package.installPackageTriggered.connect(self.installPackage)
-        package.uninstallPackageTriggered.connect(self.uninstallPackage)
-        package.updatePackageTriggered.connect(self.installPackage)
-        package.enablePackageTriggered.connect(self.enablePackage)
-        package.disablePackageTriggered.connect(self.disablePackage)
-
-    def _getPackageModel(self, package_id: str) -> PackageModel:
+    def getPackageModel(self, package_id: str) -> PackageModel:
         index = self.find("package", package_id)
         return self.getItem(index)["package"]
 
     canInstallChanged = pyqtSignal(str, bool)
+
+    def _install(self, package_id: str, update: bool = False) -> None:
+        package_path = self._to_install.pop(package_id)
+        Logger.debug(f"Installing {package_id}")
+        to_be_installed = self._manager.installPackage(package_path) is not None
+        package = self.getPackageModel(package_id)
+        if package.can_update and to_be_installed:
+            package.can_update = False
+        if update:
+            package.is_updating = False
+        else:
+            package.is_recently_installed = True
+            package.is_installing = False
+        self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
 
@@ -159,34 +166,13 @@ class PackageList(ListModel):
         if reply:
             reply_string = bytes(reply.readAll()).decode()
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
-        package = self._getPackageModel(package_id)
+        package = self.getPackageModel(package_id)
         if update:
-            package.setIsUpdating(False)
+            package.is_updating = False
         else:
-            package.setIsInstalling(False)
+            package.is_installing = False
 
-    @pyqtSlot(str)
-    def installPackage(self, package_id: str) -> None:
-        package = self._getPackageModel(package_id)
-        url = package.download_url
-        Logger.debug(f"Trying to download and install {package_id} from {url}")
-        self.download(package_id, url)
-
-    def _install(self, package_id: str, update: bool = False) -> None:
-        package_path = self._to_install.pop(package_id)
-        Logger.debug(f"Installing {package_id}")
-        to_be_installed = self._manager.installPackage(package_path) is not None
-        package = self._getPackageModel(package_id)
-        if package.canUpdate and to_be_installed:
-            package.canUpdate = False
-        package.setManageInstallState(to_be_installed)
-        if update:
-            package.setIsUpdating(False)
-        else:
-            package.setIsInstalling(False)
-        self._subscribe(package_id, str(package.sdk_version))
-
-    def _subscribe(self, package_id: str, sdk_version: str) -> None:
+    def subscribeUserToPackage(self, package_id: str, sdk_version: str) -> None:
         if self._account.isLoggedIn:
             Logger.debug(f"Subscribing the user for package: {package_id}")
             HttpRequestManager.getInstance().put(
@@ -195,32 +181,58 @@ class PackageList(ListModel):
                 scope = self._scope
             )
 
-    @pyqtSlot(str)
-    def uninstallPackage(self, package_id: str) -> None:
-        Logger.debug(f"Uninstalling {package_id}")
-        package = self._getPackageModel(package_id)
-        self._manager.removePackage(package_id)
-        package.setIsInstalling(False)
-        package.setManageInstallState(False)
-        self._unsunscribe(package_id)
-
-    def _unsunscribe(self, package_id: str) -> None:
+    def unsunscribeUserFromPackage(self, package_id: str) -> None:
         if self._account.isLoggedIn:
             Logger.debug(f"Unsubscribing the user for package: {package_id}")
             HttpRequestManager.getInstance().delete(url = f"{USER_PACKAGES_URL}/{package_id}", scope = self._scope)
 
+    # --- Handle the manage package buttons ---
+
+    def _connectManageButtonSignals(self, package: PackageModel) -> None:
+        package.installPackageTriggered.connect(self.installPackage)
+        package.uninstallPackageTriggered.connect(self.uninstallPackage)
+        package.updatePackageTriggered.connect(self.installPackage)
+        package.enablePackageTriggered.connect(self.enablePackage)
+        package.disablePackageTriggered.connect(self.disablePackage)
+
+    @pyqtSlot(str)
+    def installPackage(self, package_id: str) -> None:
+        package = self.getPackageModel(package_id)
+        package.is_installing = True
+        url = package.download_url
+        Logger.debug(f"Trying to download and install {package_id} from {url}")
+        self.download(package_id, url)
+
+    @pyqtSlot(str)
+    def uninstallPackage(self, package_id: str) -> None:
+        Logger.debug(f"Uninstalling {package_id}")
+        package = self.getPackageModel(package_id)
+        package.is_installing = True
+        self._manager.removePackage(package_id)
+        package.is_installing = False
+        self.unsunscribeUserFromPackage(package_id)
+
     @pyqtSlot(str)
     def updatePackage(self, package_id: str) -> None:
+        package = self.getPackageModel(package_id)
+        package.is_updating = True
         self._manager.removePackage(package_id, force_add = True)
-        package = self._getPackageModel(package_id)
         url = package.download_url
         Logger.debug(f"Trying to download and update {package_id} from {url}")
         self.download(package_id, url, True)
 
     @pyqtSlot(str)
     def enablePackage(self, package_id: str) -> None:
+        package = self.getPackageModel(package_id)
+        package.is_enabling = True
         Logger.debug(f"Enabling {package_id}")
+        # TODO: implement enabling functionality
+        package.is_enabling = False
 
     @pyqtSlot(str)
     def disablePackage(self, package_id: str) -> None:
+        package = self.getPackageModel(package_id)
+        package.is_enabling = True
         Logger.debug(f"Disabling {package_id}")
+        # TODO: implement disabling functionality
+        package.is_enabling = False
