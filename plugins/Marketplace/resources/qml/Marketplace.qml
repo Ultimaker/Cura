@@ -270,7 +270,7 @@ Window
             Cura.SecondaryButton
             {
                 id: quitButton
-                text: catalog.i18nc("@button", "Quit Ultimaker Cura")
+                text: catalog.i18nc("@info:button, %1 is the application name", "Quit %1").arg(CuraApplication.applicationDisplayName)
             }
         }
     }
