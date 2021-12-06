@@ -131,7 +131,6 @@ class PackageList(ListModel):
         if update:
             package.is_updating = False
         else:
-            Logger.debug(f"Setting recently installed for package: {package_id}")
             package.is_recently_managed = True
             package.is_installing = False
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
@@ -195,7 +194,7 @@ class PackageList(ListModel):
     def _connectManageButtonSignals(self, package: PackageModel) -> None:
         package.installPackageTriggered.connect(self.installPackage)
         package.uninstallPackageTriggered.connect(self.uninstallPackage)
-        package.updatePackageTriggered.connect(self.installPackage)
+        package.updatePackageTriggered.connect(self.updatePackage)
         package.enablePackageTriggered.connect(self.enablePackage)
         package.disablePackageTriggered.connect(self.disablePackage)
 
