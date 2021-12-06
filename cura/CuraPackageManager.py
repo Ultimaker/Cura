@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, Dict, List, Tuple, TYPE_CHECKING, Optional, Generator
+from typing import Any, cast, Dict, List, Tuple, TYPE_CHECKING, Optional, Generator
 
 from cura.CuraApplication import CuraApplication #To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
@@ -30,7 +30,9 @@ class CuraPackageManager(PackageManager):
         """locally installed packages, lazy execution"""
         if self._local_packages is None:
             self._updateLocalPackages()
-        return self._local_packages
+            # _updateLocalPackages always results in a list of packages, not None.
+            # It's guaranteed to be a list now.
+        return cast(List[Dict[str, Any]], self._local_packages)
 
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
