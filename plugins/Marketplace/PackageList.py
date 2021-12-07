@@ -192,6 +192,12 @@ class PackageList(ListModel):
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
+        """Initiate the download request
+
+        :param package_id: the package identification string
+        :param url: the URL from which the package needs to be obtained
+        :param update: A flag if this is download request is an update process
+        """
 
         def downloadFinished(reply: "QNetworkReply") -> None:
             self._downloadFinished(package_id, reply, update)
@@ -232,6 +238,11 @@ class PackageList(ListModel):
             package.is_installing = False
 
     def subscribeUserToPackage(self, package_id: str, sdk_version: str) -> None:
+        """Subscribe the user (if logged in) to the package for a given SDK
+
+         :param package_id: the package identification string
+         :param sdk_version: the SDK version
+         """
         if self._account.isLoggedIn:
             Logger.debug(f"Subscribing the user for package: {package_id}")
             HttpRequestManager.getInstance().put(
@@ -241,6 +252,10 @@ class PackageList(ListModel):
             )
 
     def unsunscribeUserFromPackage(self, package_id: str) -> None:
+        """Unsubscribe the user (if logged in) from the package
+
+         :param package_id: the package identification string
+         """
         if self._account.isLoggedIn:
             Logger.debug(f"Unsubscribing the user for package: {package_id}")
             HttpRequestManager.getInstance().delete(url = f"{USER_PACKAGES_URL}/{package_id}", scope = self._scope)
@@ -256,6 +271,10 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def installPackage(self, package_id: str) -> None:
+        """Install a package from the Marketplace
+
+        :param package_id: the package identification string
+        """
         package = self.getPackageModel(package_id)
         package.is_installing = True
         url = package.download_url
@@ -264,6 +283,10 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def uninstallPackage(self, package_id: str) -> None:
+        """Uninstall a package from the Marketplace
+
+        :param package_id: the package identification string
+        """
         Logger.debug(f"Uninstalling {package_id}")
         package = self.getPackageModel(package_id)
         package.is_installing = True
@@ -274,6 +297,10 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def updatePackage(self, package_id: str) -> None:
+        """Update a package from the Marketplace
+
+        :param package_id: the package identification string
+        """
         package = self.getPackageModel(package_id)
         package.is_updating = True
         self._manager.removePackage(package_id, force_add = True)
@@ -283,6 +310,10 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def enablePackage(self, package_id: str) -> None:
+        """Enable a package in the plugin registry
+
+        :param package_id: the package identification string
+        """
         package = self.getPackageModel(package_id)
         package.is_enabling = True
         Logger.debug(f"Enabling {package_id}")
@@ -292,6 +323,10 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def disablePackage(self, package_id: str) -> None:
+        """Disable a package in the plugin registry
+
+        :param package_id: the package identification string
+        """
         package = self.getPackageModel(package_id)
         package.is_enabling = True
         Logger.debug(f"Disabling {package_id}")

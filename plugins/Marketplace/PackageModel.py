@@ -3,10 +3,9 @@
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 import re
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
-from UM.Logger import Logger
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 
 catalog = i18nCatalog("cura")
@@ -285,13 +284,10 @@ class PackageModel(QObject):
 
     @pyqtProperty(str, notify = stateManageButtonChanged)
     def stateManageEnableButton(self) -> str:
+        """The state of the manage Enable Button of this package"""
         if self._is_enabling:
             return "busy"
-        if self._is_recently_managed:
-            return "hidden"
-        if self._package_type == "material":
-            return "hidden"
-        if not self._is_installed:
+        if self._is_recently_managed or self._package_type == "material" or not self._is_installed:
             return "hidden"
         if self._is_installed and self._is_active:
             return "secondary"
@@ -299,6 +295,7 @@ class PackageModel(QObject):
 
     @property
     def is_enabling(self) -> bool:
+        """Flag if the package is being enabled/disabled"""
         return self._is_enabling
 
     @is_enabling.setter
@@ -309,6 +306,7 @@ class PackageModel(QObject):
 
     @property
     def is_active(self) -> bool:
+        """Flag if the package is currently active"""
         return self._is_active
 
     @is_active.setter
@@ -321,6 +319,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(str, notify = stateManageButtonChanged)
     def stateManageInstallButton(self) -> str:
+        """The state of the Manage Install package card"""
         if self._is_installing:
             return "busy"
         if self._is_recently_managed:
@@ -335,6 +334,7 @@ class PackageModel(QObject):
 
     @property
     def is_recently_managed(self) -> bool:
+        """Flag if the package has been recently managed by the user, either un-/installed updated etc"""
         return self._is_recently_managed
 
     @is_recently_managed.setter
@@ -345,6 +345,7 @@ class PackageModel(QObject):
 
     @property
     def is_installing(self) -> bool:
+        """Flag is we're currently installing"""
         return self._is_installing
 
     @is_installing.setter
@@ -355,6 +356,7 @@ class PackageModel(QObject):
 
     @property
     def can_downgrade(self) -> bool:
+        """Flag if the installed package can be downgraded to a bundled version"""
         return self._can_downgrade
 
     @can_downgrade.setter
@@ -367,6 +369,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(str, notify = stateManageButtonChanged)
     def stateManageUpdateButton(self) -> str:
+        """The state of the manage Update button for this card """
         if self._is_updating:
             return "busy"
         if self._can_update:
@@ -375,6 +378,7 @@ class PackageModel(QObject):
 
     @property
     def is_updating(self) -> bool:
+        """Flag indicating if the package is being updated"""
         return self._is_updating
 
     @is_updating.setter
@@ -385,6 +389,7 @@ class PackageModel(QObject):
 
     @property
     def can_update(self) -> bool:
+        """Flag indicating if the package can be updated"""
         return self._can_update
 
     @can_update.setter

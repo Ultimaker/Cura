@@ -38,7 +38,7 @@ class CloudApiClient:
     def _subscribe(self, package_id: str) -> None:
         """You probably don't want to use this directly. All installed packages will be automatically subscribed."""
 
-        Logger.debug("Subscribing to {}", package_id)
+        Logger.debug("Subscribing to using the Old Toolbox {}", package_id)
         data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, CloudApiModel.sdk_version)
         HttpRequestManager.getInstance().put(
             url = CloudApiModel.api_url_user_packages,

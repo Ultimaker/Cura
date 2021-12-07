@@ -8,7 +8,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Styles 1.4
 
-import UM 1.1 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 UM.Dialog
@@ -21,14 +21,15 @@ UM.Dialog
     height: minimumHeight
     backgroundColor: UM.Theme.getColor("main_background")
 
+    property variant catalog: UM.I18nCatalog { name: "cura" }
+
     ColumnLayout
     {
         anchors.fill: parent
         spacing: UM.Theme.getSize("thick_margin").height
 
-        UM.I18nCatalog{id: catalog; name: "cura"}
-
-        Row {
+        Row
+        {
             Layout.fillWidth: true
             height: childrenRect.height
             spacing: UM.Theme.getSize("default_margin").width
@@ -36,6 +37,7 @@ UM.Dialog
 
             UM.RecolorImage
             {
+                id: icon
                 width: UM.Theme.getSize("marketplace_large_icon").width
                 height: UM.Theme.getSize("marketplace_large_icon").height
                 color: UM.Theme.getColor("text")
@@ -53,12 +55,10 @@ UM.Dialog
                 wrapMode: Text.Wrap
                 renderType: Text.NativeRendering
             }
-
         }
 
         Cura.ScrollableTextArea
         {
-
             Layout.fillWidth: true
             Layout.fillHeight: true
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -73,7 +73,7 @@ UM.Dialog
         Cura.PrimaryButton
         {
             text: catalog.i18nc("@button", "Accept")
-            onClicked: { handler.onLicenseAccepted(packageId) }
+            onClicked: handler.onLicenseAccepted(packageId)
         }
     ]
 
@@ -82,11 +82,11 @@ UM.Dialog
         Cura.SecondaryButton
         {
             text: catalog.i18nc("@button", "Decline")
-            onClicked: { handler.onLicenseDeclined(packageId) }
+            onClicked: handler.onLicenseDeclined(packageId)
         }
     ]
 
-    onAccepted: { handler.onLicenseAccepted(packageId) }
-    onRejected: { handler.onLicenseDeclined(packageId) }
-    onClosing: { handler.onLicenseDeclined(packageId) }
+    onAccepted: handler.onLicenseAccepted(packageId)
+    onRejected: handler.onLicenseDeclined(packageId)
+    onClosing: handler.onLicenseDeclined(packageId)
 }

@@ -1,13 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, Dict, List, Tuple, TYPE_CHECKING, Optional, Generator
+from typing import Any, cast, Dict, List, Tuple, TYPE_CHECKING, Optional
 
-from cura.CuraApplication import CuraApplication #To find some resource types.
+from cura.CuraApplication import CuraApplication  # To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
 
-from UM.PackageManager import PackageManager #The class we're extending.
-from UM.Resources import Resources #To find storage paths for some resource types.
+from UM.PackageManager import PackageManager  # The class we're extending.
+from UM.Resources import Resources  # To find storage paths for some resource types.
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
