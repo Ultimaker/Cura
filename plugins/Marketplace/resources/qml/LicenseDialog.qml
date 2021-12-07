@@ -85,4 +85,8 @@ UM.Dialog
             onClicked: { handler.onLicenseDeclined(packageId) }
         }
     ]
+
+    onAccepted: { handler.onLicenseAccepted(packageId) }
+    onRejected: { handler.onLicenseDeclined(packageId) }
+    onClosing: { handler.onLicenseDeclined(packageId) }
 }
