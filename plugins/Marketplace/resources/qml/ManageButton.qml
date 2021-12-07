@@ -19,6 +19,7 @@ RowLayout
     property string confirmedSecondaryText: confirmedMessageText.text
     property bool enabled: true
     property bool busy: state == "busy"
+    property bool confirmed: state == "confirmed"
 
     signal clicked(bool primary_action)
 
@@ -107,7 +108,7 @@ RowLayout
         Label
         {
             id: confirmedMessageText
-            visible: parent.visble
+            visible: parent.visible
             anchors.verticalCenter: parent.verticalCenter
 
             font: UM.Theme.getFont("medium_bold")

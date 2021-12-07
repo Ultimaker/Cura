@@ -332,7 +332,7 @@ Rectangle
                         busySecondaryText: catalog.i18nc("@button", "Disabling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Disabled")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
-                        visible: root.manageableInListView || root.expanded
+                        visible: (root.manageableInListView || root.expanded) && !installManageButton.confirmed
 
                         onClicked: {
                             if (primary_action)
