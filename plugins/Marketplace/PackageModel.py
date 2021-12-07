@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
+from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 
@@ -69,7 +70,7 @@ class PackageModel(QObject):
             self._icon_url = author_data.get("icon_url", "")
 
         self._is_installing: ManageState = ManageState.HALTED
-        self._is_recently_installed = False
+        self._is_recently_installed = self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall()
         self._is_recently_updated = False
         self._is_recently_enabled = False
 
