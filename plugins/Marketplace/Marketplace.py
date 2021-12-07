@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
-from PyQt5.QtCore import pyqtSlot, QObject
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtQml import qmlRegisterType
 from typing import Optional, TYPE_CHECKING
 
@@ -18,15 +18,14 @@ if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
 
 
-class Marketplace(Extension, QObject):
+class Marketplace(Extension):
     """
     The main managing object for the Marketplace plug-in.
     """
 
-    def __init__(self, parent: Optional[QObject] = None) -> None:
-        QObject.__init__(self, parent = parent)
-        Extension.__init__(self)
-        self._window: Optional[QObject] = None  # If the window has been loaded yet, it'll be cached in here.
+    def __init__(self) -> None:
+        super().__init__()
+        self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
         self.plugin_registry: Optional[PluginRegistry] = None
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
