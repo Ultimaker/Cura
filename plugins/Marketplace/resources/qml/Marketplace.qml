@@ -232,7 +232,7 @@ Window
     {
         height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
         color: UM.Theme.getColor("primary")
-        visible: CuraApplication.getPackageManager().hasPackagesToRemoveOrInstall
+        visible: CuraApplication.getPackageManager().hasPackagesToRemoveOrInstall || plugin_registry.hasPluginsEnabledOrDisabled
         anchors
         {
             left: parent.left

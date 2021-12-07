@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import qmlRegisterType
 from typing import Optional, TYPE_CHECKING
 
@@ -18,14 +18,16 @@ if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
 
 
-class Marketplace(Extension):
+class Marketplace(Extension, QObject):
     """
     The main managing object for the Marketplace plug-in.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-        self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        QObject.__init__(self, parent = parent)
+        Extension.__init__(self)
+        self._window: Optional[QObject] = None  # If the window has been loaded yet, it'll be cached in here.
+        self.plugin_registry: Optional[PluginRegistry] = None
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
         qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
@@ -38,11 +40,12 @@ class Marketplace(Extension):
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
         if self._window is None:
+            self.plugin_registry = PluginRegistry.getInstance()
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {})
+            self._window = CuraApplication.getInstance().createQmlComponent(path, {"plugin_registry": self.plugin_registry})
         if self._window is None:  # Still None? Failed to load the QML then.
             return
         self._window.show()
