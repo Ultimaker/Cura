@@ -65,10 +65,10 @@ class LocalPackageList(PackageList):
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_CATEGORIES[bundled_or_installed][package_type]
         package = PackageModel(package_info, section_title = section_title, parent = self)
-        if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
-            package.is_recently_managed = True
-        package.can_downgrade = self._manager.canDowngrade(package_id)
         self._connectManageButtonSignals(package)
+        package.can_downgrade = self._manager.canDowngrade(package_id)
+        if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
+            package.is_recently_installed = True
         return package
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]):

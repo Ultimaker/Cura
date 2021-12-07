@@ -129,11 +129,14 @@ class RemotePackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
-            if package_data["package_id"] in self._local_packages:
+            package_id = package_data["package_id"]
+            if package_id in self._local_packages:
                 continue  # We should only show packages which are not already installed
             try:
                 package = PackageModel(package_data, parent = self)
                 self._connectManageButtonSignals(package)
+                if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
+                    package.is_recently_installed = True
                 self.appendItem({"package": package})  # Add it to this list model.
             except RuntimeError:
                 # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
