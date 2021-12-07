@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.12
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.3 as Controls2
 import QtQuick.Controls.Styles 1.4
@@ -25,17 +25,19 @@ Item
     Column
     {
 
-    spacing: 30
+    spacing: UM.Theme.getSize("default_margin").height
 
         anchors{
             left: parent.left
             right: parent.right
         }
 
-        Column{
-            //height: 600
-            width: parent.width
-            spacing:0
+
+            Label
+            {
+                text: catalog.i18nc("@label", "Profiles")
+                font: UM.Theme.getFont("medium")
+            }
 
             Controls2.TabBar 
             {
@@ -44,17 +46,33 @@ Item
                 height: UM.Theme.getSize("recomended_quality_tab").height
                 spacing: UM.Theme.getSize("narrow_margin").width
 
-            
+                
                 Repeater
                 {
 
                 model: Cura.IntentCategoryModel{}
                 Controls2.TabButton{
+                    id: "intentCategoryButton"
                     anchors.verticalCenter:parent.verticalCenter
                     height: parent.height
                     background: Rectangle{
-                        color: (intentSelection.currentIndex==index) ? UM.Theme.getColor("setting_category_hover") : UM.Theme.getColor("main_background")
+                    color: (intentSelection.currentIndex==index) ? UM.Theme.getColor("setting_category_hover") : UM.Theme.getColor("main_background")
                     }
+                    // function getFirstAvailableQuality(qualities){
+                    //     console.log(qualities)
+
+                    //     for(var i=0;i<qualities.count;i++){
+                    //         console.log(qualities.name)
+                    //         console.log(qualities.intent_category)
+
+                    //         console.log(i, qualities.get(i).available)
+                    //         if (qualities.available){
+                    //             return i
+                    //         }
+                    //     }
+                    // }
+                    onClicked: Cura.IntentManager.selectIntent(model.intent_category, "normal" )
+                    //onClicked: getFirstAvailableQuality(model["qualities"]")
                     
                          ColumnLayout{
                             spacing: 2
@@ -62,7 +80,7 @@ Item
                             UM.RecolorImage
                             {
                                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                                id: buttonIconLeft
+                                id: intent_category
                                 source: {      
                                     switch (model.name) {
                                         case "Default":
@@ -93,6 +111,35 @@ Item
                                 color: UM.Theme.getColor("text")
                         
                             }
+                             
+                        }
+                        MouseArea // Intent description tooltip hover area
+                        {
+                            id: intentDescriptionHoverArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            enabled: model.description !== undefined
+                            acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                            Timer
+                            {
+                                id: intentTooltipTimer
+                                interval: 500
+                                running: false
+                                repeat: false
+                                onTriggered: base.showTooltip(
+                                    intentCategoryButton,
+                                    Qt.point(0, 0),
+                                    model.description
+                                )
+                            }
+
+                            onEntered: intentTooltipTimer.start()
+                            onExited:
+                            {
+                                base.hideTooltip()
+                                intentTooltipTimer.stop()
+                            }
                         }
                     
                     } 
@@ -109,17 +156,37 @@ Item
                 {
 
                     model: Cura.IntentCategoryModel{}
-                    Rectangle{
+                    
+                    Column{
+                        spacing:UM.Theme.getSize("default_margin").height
+                
+                        // Cura.IconWithText
+                        // {
+                        //     source: UM.Theme.getIcon("PrintQuality")
+                        //     text: "resolution"
+                        //     font: UM.Theme.getFont("default")
+                        //     width: labelColumnWidth
+                        //     iconSize: UM.Theme.getSize("medium_button_icon").width
+                        // }
 
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
+                        Label
+                        {
+                                text: catalog.i18nc("@label", "Resolution")
+                                font: UM.Theme.getFont("default")
+
+                        }
 
                         RowLayout
                         {
-                            anchors.fill:parent
+                            //width:parent.width
+                            anchors.left:parent.left
+                            anchors.right:parent.right
+                            height: UM.Theme.getSize("recomended_resolution_button").height
+
                             spacing: UM.Theme.getSize("narrow_margin").width
                             property var intentCategory: model.intent_category
                             property var intentModel: model["qualities"]
+
                             Repeater
                             {
                                 model: parent.intentModel
@@ -129,11 +196,16 @@ Item
 
                                     visible: model.available
                                     Layout.fillWidth: true
-                                    checkable:true
+                                    Layout.fillHeight: true
 
-                                    // background: Rectangle{
-                                    //     color: parent.checked ? UM.Theme.getColor("setting_category_hover") : UM.Theme.getColor("main_background")
-                                    // }
+                                    checkable:true
+                                    height: UM.Theme.getSize("recomended_resolution_button").height
+                                    Layout.minimumWidth: UM.Theme.getSize("recomended_resolution_button").width
+
+                                    background: Rectangle{
+                                        anchors.fill:parent
+                                        color: parent.checked ? UM.Theme.getColor("setting_category_hover") : UM.Theme.getColor("main_background")
+                                    }
                                     
                                     property var modelData: {
                                         "intent_category": parent.intentCategory,
@@ -206,14 +278,14 @@ Item
                                                         
                             }
 
+
+
                         } 
                     }                    
                                 
                 }
             } 
-        }
          
-
         Controls2.ButtonGroup{
             id: activeProfileButtonGroup
             exclusive: true

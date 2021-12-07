@@ -537,6 +537,8 @@
 
         "high_resolution_icon": [4,4],
         "recomended_quality_tab":[5,5 ],
+        "recomended_resolution_button":[3.5,3.5],
+
 
         "section": [0.0, 2],
         "section_control": [0, 1],
