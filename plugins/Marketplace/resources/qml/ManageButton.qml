@@ -17,16 +17,14 @@ RowLayout
     property string busySecondaryText: busyMessageText.text
     property string confirmedPrimaryText: confirmedMessageText.text
     property string confirmedSecondaryText: confirmedMessageText.text
-    property bool enabled: true
-    property bool busy: false
-    property bool confirmed: false
+    property bool busy
+    property bool confirmed
 
     signal clicked(bool primary_action)
 
     Cura.PrimaryButton
     {
         id: primaryButton
-        visible: false
         enabled: manageButton.enabled
 
         onClicked:
@@ -40,7 +38,6 @@ RowLayout
     Cura.SecondaryButton
     {
         id: secondaryButton
-        visible: false
         enabled: manageButton.enabled
 
         onClicked:
@@ -54,7 +51,6 @@ RowLayout
     Item
     {
         id: busyMessage
-        visible: false
         property alias text: busyMessageText.text
         height: UM.Theme.getSize("action_button").height
         width: childrenRect.width
@@ -62,7 +58,6 @@ RowLayout
         UM.RecolorImage
         {
             id: busyIndicator
-            visible: busyMessage.visible
             width: height
             anchors.left: parent.left
             anchors.top: parent.top
@@ -86,7 +81,6 @@ RowLayout
         Label
         {
             id: busyMessageText
-            visible: busyMessage.visible
             anchors.left: busyIndicator.right
             anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -101,14 +95,12 @@ RowLayout
         id: confirmedMessage
         property alias text: confirmedMessageText.text
 
-        visible: false
         height: UM.Theme.getSize("action_button").height
         width: childrenRect.width
 
         Label
         {
             id: confirmedMessageText
-            visible: parent.visible
             anchors.verticalCenter: parent.verticalCenter
 
             font: UM.Theme.getFont("medium_bold")
@@ -121,12 +113,6 @@ RowLayout
         State
         {
             name: "primary"
-            PropertyChanges
-            {
-                target: manageButton
-                busy: false
-                confirmed: false
-            }
             PropertyChanges
             {
                 target: primaryButton
@@ -153,12 +139,6 @@ RowLayout
             name: "secondary"
             PropertyChanges
             {
-                target: manageButton
-                busy: false
-                confirmed: false
-            }
-            PropertyChanges
-            {
                 target: primaryButton
                 visible: false
             }
@@ -183,19 +163,28 @@ RowLayout
             name: "hidden"
             PropertyChanges
             {
-                target: manageButton
+                target: primaryButton
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: secondaryButton
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: busyMessage
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: confirmedMessage
                 visible: false
             }
         },
         State
         {
             name: "busy"
-            PropertyChanges
-            {
-                target: manageButton
-                busy: true
-                confirmed: false
-            }
             PropertyChanges
             {
                 target: primaryButton
@@ -209,7 +198,7 @@ RowLayout
             PropertyChanges
             {
                 target: busyMessage
-                visible: manageButton.visible
+                visible: true
             }
             PropertyChanges
             {
@@ -222,12 +211,6 @@ RowLayout
             name: "confirmed"
             PropertyChanges
             {
-                target: manageButton
-                busy: false
-                confirmed: true
-            }
-            PropertyChanges
-            {
                 target: primaryButton
                 visible: false
             }
@@ -244,7 +227,7 @@ RowLayout
             PropertyChanges
             {
                 target: confirmedMessage
-                visible: manageButton.visible
+                visible: true
             }
         }
     ]

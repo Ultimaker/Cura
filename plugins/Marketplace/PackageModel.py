@@ -367,7 +367,7 @@ class PackageModel(QObject):
     @is_recently_installed.setter
     def is_recently_installed(self, value):
         if value != self._is_recently_installed:
-            value = self._is_recently_installed
+            self._is_recently_installed = value
             self.stateManageButtonChanged.emit()
 
     @property

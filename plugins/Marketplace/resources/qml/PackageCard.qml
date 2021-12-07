@@ -323,7 +323,9 @@ Rectangle
                     ManageButton
                     {
                         id: enableManageButton
-                        state: packageData.stateManageEnableButton
+                        state: !(installManageButton.confirmed || updateManageButton.confirmed) ||  enableManageButton.confirmed ? packageData.stateManageEnableButton : "hidden"
+                        busy: packageData.enableManageButton == "busy"
+                        confirmed: packageData.enableManageButton == "confirmed"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Enable")
                         busyPrimaryText: catalog.i18nc("@button", "Enabling...")
@@ -332,9 +334,9 @@ Rectangle
                         busySecondaryText: catalog.i18nc("@button", "Disabling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Disabled")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
-                        visible: (root.manageableInListView || root.expanded) && !(installManageButton.confirmed || updateManageButton.confirmed)
 
-                        onClicked: {
+                        onClicked:
+                        {
                             if (primary_action)
                             {
                                 packageData.enablePackageTriggered(packageData.packageId)
@@ -349,7 +351,9 @@ Rectangle
                     ManageButton
                     {
                         id: installManageButton
-                        state: packageData.stateManageInstallButton
+                        state: (root.manageableInListView || root.expanded || installManageButton.confirmed) && !(enableManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageInstallButton : "hidden"
+                        busy: packageData.stateManageInstallButton == "busy"
+                        confirmed: packageData.stateManageInstallButton == "confirmed"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Install")
                         busyPrimaryText: catalog.i18nc("@button", "Installing...")
@@ -358,7 +362,8 @@ Rectangle
                         busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Uninstalled")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
-                        visible: (installManageButton.confirmed || root.manageableInListView || root.expanded) && !(updateManageButton.confirmed || enableManageButton.confirmed)
+
+                        onStateChanged: print(packageData.displayName + " " + state)  // TODO: Cleanup once you find out why this happens
 
                         onClicked:
                         {
@@ -376,13 +381,14 @@ Rectangle
                     ManageButton
                     {
                         id: updateManageButton
-                        state: packageData.stateManageUpdateButton
+                        state: (root.manageableInListView || root.expanded) && (!installManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageUpdateButton : "hidden"
+                        busy: packageData.stateManageUpdateButton == "busy"
+                        confirmed: packageData.stateManageUpdateButton == "confirmed"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "Updating...")
                         confirmedPrimaryText: catalog.i18nc("@button", "Updated")
                         enabled: !(installManageButton.busy || enableManageButton.busy)
-                        visible: (root.manageableInListView || root.expanded) && !installManageButton.confirmed
 
                         onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
