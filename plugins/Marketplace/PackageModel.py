@@ -291,6 +291,8 @@ class PackageModel(QObject):
 
     disablePackageTriggered = pyqtSignal(str)
 
+    recentlyInstalledChanged = pyqtSignal(bool)
+
     # --- enabling ---
 
     @pyqtProperty(str, notify = stateManageButtonChanged)
@@ -369,6 +371,10 @@ class PackageModel(QObject):
         if value != self._is_recently_installed:
             self._is_recently_installed = value
             self.stateManageButtonChanged.emit()
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isRecentlyInstalled(self):
+        return self._is_recently_installed
 
     @property
     def can_downgrade(self) -> bool:

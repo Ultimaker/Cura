@@ -19,6 +19,7 @@ RowLayout
     property string confirmedSecondaryText: confirmedMessageText.text
     property bool busy
     property bool confirmed
+    property bool confirmedTextChoice: true
 
     signal clicked(bool primary_action)
 
@@ -228,6 +229,7 @@ RowLayout
             {
                 target: confirmedMessage
                 visible: true
+                text: manageButton.confirmedTextChoice ? manageButton.confirmedPrimaryText : manageButton.confirmedSecondaryText
             }
         }
     ]
