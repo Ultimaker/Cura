@@ -10,8 +10,10 @@ import Cura 1.6 as Cura
 
 Rectangle
 {
+    id: root
     property var packageData
     property bool expanded: false
+    property bool manageableInListView
 
     height: childrenRect.height
     color: UM.Theme.getColor("main_background")
@@ -328,6 +330,7 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Disable")
                         busySecondaryText: catalog.i18nc("@button", "Disabling...")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
+                        visible: root.manageableInListView || root.expanded
 
                         onClicked: {
                             if (primary_action)
@@ -351,6 +354,8 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Uninstall")
                         busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
+                        visible: root.manageableInListView || root.expanded
+
                         onClicked:
                         {
                             if (primary_action)
@@ -372,6 +377,8 @@ Rectangle
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "updating...")
                         enabled: !(installManageButton.busy || enableManageButton.busy)
+                        visible: root.manageableInListView || root.expanded
+
                         onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
                 }

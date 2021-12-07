@@ -19,6 +19,7 @@ ListView
     property string bannerText
     property string bannerReadMoreUrl
     property var onRemoveBanner
+    property bool packagesManageableInListView
 
     clip: true
 
@@ -80,6 +81,7 @@ ListView
 
         PackageCard
         {
+            manageableInListView: packages.packagesManageableInListView
             packageData: model.package
             width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
             color: cardMouseArea.containsMouse ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("main_background")
