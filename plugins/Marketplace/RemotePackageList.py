@@ -29,6 +29,7 @@ class RemotePackageList(PackageList):
         self._requested_search_string = ""
         self._current_search_string = ""
         self._request_url = self._initialRequestUrl()
+        self._ongoing_requests["get_packages"] = None
         self.isLoadingChanged.connect(self._onLoadingChanged)
         self.isLoadingChanged.emit()
 
@@ -49,7 +50,7 @@ class RemotePackageList(PackageList):
         self.setErrorMessage("")  # Clear any previous errors.
         self.setIsLoading(True)
 
-        self._ongoing_request = HttpRequestManager.getInstance().get(
+        self._ongoing_requests["get_packages"] = HttpRequestManager.getInstance().get(
             self._request_url,
             scope = self._scope,
             callback = self._parseResponse,
@@ -58,8 +59,8 @@ class RemotePackageList(PackageList):
 
     @pyqtSlot()
     def abortUpdating(self) -> None:
-        HttpRequestManager.getInstance().abortRequest(self._ongoing_request)
-        self._ongoing_request = None
+        HttpRequestManager.getInstance().abortRequest(self._ongoing_requests["get_packages"])
+        self._ongoing_requests["get_packages"] = None
 
     def reset(self) -> None:
         self.clear()

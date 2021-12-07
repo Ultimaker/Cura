@@ -5,7 +5,7 @@ import json
 import os.path
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import cast, Dict, Optional, Set, TYPE_CHECKING
+from typing import cast, Dict, List, Optional, Set, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -49,7 +49,7 @@ class PackageList(ListModel):
         self.canInstallChanged.connect(self._requestInstall)
         self._local_packages: Set[str] = {p["package_id"] for p in self._manager.local_packages}
 
-        self._ongoing_request: Optional[HttpRequestData] = None
+        self._ongoing_requests: Dict[str, Optional[HttpRequestData]] = {"download_package": None}
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._license_dialogs: Dict[str, QObject] = {}
 
@@ -197,7 +197,7 @@ class PackageList(ListModel):
         def downloadError(reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:
             self._downloadError(package_id, update, reply, error)
 
-        HttpRequestManager.getInstance().get(
+        self._ongoing_requests["download_package"] = HttpRequestManager.getInstance().get(
             url,
             scope = self._scope,
             callback = downloadFinished,
@@ -211,8 +211,8 @@ class PackageList(ListModel):
                 while bytes_read:
                     temp_file.write(bytes_read)
                     bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
-                Logger.debug(f"Finished downloading {package_id} and stored it as {temp_file.name}")
                 self._to_install[package_id] = temp_file.name
+                self._ongoing_requests["download_package"] = None
                 self.canInstallChanged.emit(package_id, update)
         except IOError as e:
             Logger.error(f"Failed to write downloaded package to temp file {e}")

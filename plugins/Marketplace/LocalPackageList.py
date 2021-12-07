@@ -38,6 +38,7 @@ class LocalPackageList(PackageList):
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._has_footer = False
+        self._ongoing_requests["check_updates"] = None
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -74,7 +75,7 @@ class LocalPackageList(PackageList):
         installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
         request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
 
-        self._ongoing_request = HttpRequestManager.getInstance().get(
+        self._ongoing_requests["check_updates"] = HttpRequestManager.getInstance().get(
             request_url,
             scope = self._scope,
             callback = self._parseResponse
@@ -100,3 +101,4 @@ class LocalPackageList(PackageList):
             package.can_update = True
 
         self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
+        self._ongoing_requests["check_updates"] = None
