@@ -125,8 +125,6 @@ class PackageList(ListModel):
     canInstallChanged = pyqtSignal(str, bool)
 
     def _openLicenseDialog(self, package_id: str, license_content: str) -> None:
-        Logger.debug(f"Prompting license for {package_id}")
-
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
         if plugin_path is None:
             plugin_path = os.path.dirname(__file__)
@@ -144,7 +142,6 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def onLicenseAccepted(self, package_id: str) -> None:
-        Logger.debug(f"Accepted license for {package_id}")
         # close dialog
         dialog = self._license_dialogs.pop(package_id)
         if dialog is not None:
@@ -154,7 +151,6 @@ class PackageList(ListModel):
 
     @pyqtSlot(str)
     def onLicenseDeclined(self, package_id: str) -> None:
-        Logger.debug(f"Declined license for {package_id}")
         # close dialog
         dialog = self._license_dialogs.pop(package_id)
         if dialog is not None:
@@ -164,8 +160,6 @@ class PackageList(ListModel):
         package.is_installing = ManageState.FAILED
 
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
-        Logger.debug(f"Request installing {package_id}")
-
         package_path = self._to_install[package_id]
         license_content = self._manager.getPackageLicense(package_path)
 
@@ -178,7 +172,6 @@ class PackageList(ListModel):
             self._install(package_id, update)
 
     def _install(self, package_id: str, update: bool = False) -> None:
-        Logger.debug(f"Installing {package_id}")
         package_path = self._to_install.pop(package_id)
         to_be_installed = self._manager.installPackage(package_path) is not None
         package = self.getPackageModel(package_id)
@@ -243,7 +236,6 @@ class PackageList(ListModel):
          :param sdk_version: the SDK version
          """
         if self._account.isLoggedIn:
-            Logger.debug(f"Subscribing the user for package: {package_id}")
             HttpRequestManager.getInstance().put(
                 url = USER_PACKAGES_URL,
                 data = json.dumps({"data": {"package_id": package_id, "sdk_version": sdk_version}}).encode(),
@@ -256,7 +248,6 @@ class PackageList(ListModel):
          :param package_id: the package identification string
          """
         if self._account.isLoggedIn:
-            Logger.debug(f"Unsubscribing the user for package: {package_id}")
             HttpRequestManager.getInstance().delete(url = f"{USER_PACKAGES_URL}/{package_id}", scope = self._scope)
 
     # --- Handle the manage package buttons ---
@@ -277,7 +268,6 @@ class PackageList(ListModel):
         package = self.getPackageModel(package_id)
         package.is_installing = ManageState.PROCESSING
         url = package.download_url
-        Logger.debug(f"Trying to download and install {package_id} from {url}")
         self.download(package_id, url, False)
 
     @pyqtSlot(str)
@@ -286,7 +276,6 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        Logger.debug(f"Uninstalling {package_id}")
         package = self.getPackageModel(package_id)
         package.is_installing = ManageState.PROCESSING
         self._manager.removePackage(package_id)
@@ -303,7 +292,6 @@ class PackageList(ListModel):
         package.is_updating = ManageState.PROCESSING
         self._manager.removePackage(package_id, force_add = True)
         url = package.download_url
-        Logger.debug(f"Trying to download and update {package_id} from {url}")
         self.download(package_id, url, True)
 
     @pyqtSlot(str)
@@ -314,7 +302,6 @@ class PackageList(ListModel):
         """
         package = self.getPackageModel(package_id)
         package.is_enabling = ManageState.PROCESSING
-        Logger.debug(f"Enabling {package_id}")
         self._plugin_registry.enablePlugin(package_id)
         package.is_active = True
         package.is_enabling = ManageState.HALTED
@@ -327,7 +314,6 @@ class PackageList(ListModel):
         """
         package = self.getPackageModel(package_id)
         package.is_enabling = ManageState.PROCESSING
-        Logger.debug(f"Disabling {package_id}")
         self._plugin_registry.disablePlugin(package_id)
         package.is_active = False
         package.is_enabling = ManageState.HALTED

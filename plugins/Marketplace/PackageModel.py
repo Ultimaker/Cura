@@ -9,7 +9,6 @@ from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
-from UM.Logger import Logger
 
 catalog = i18nCatalog("cura")
 
