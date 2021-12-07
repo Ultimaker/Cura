@@ -358,7 +358,7 @@ Rectangle
                         busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Uninstalled")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
-                        visible: state == "confirmed" || root.manageableInListView || root.expanded
+                        visible: installManageButton.confirmed || root.manageableInListView || root.expanded
 
                         onClicked:
                         {

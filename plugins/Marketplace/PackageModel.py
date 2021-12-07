@@ -1,14 +1,23 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 import re
+from enum import Enum
 from typing import Any, Dict, List, Optional
+
+from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
+from UM.Logger import Logger
 
 catalog = i18nCatalog("cura")
+
+
+class ManageState(Enum):
+    PROCESSING = 1
+    HALTED = 0
+    FAILED = -1
 
 
 class PackageModel(QObject):
@@ -60,14 +69,14 @@ class PackageModel(QObject):
         if not self._icon_url or self._icon_url == "":
             self._icon_url = author_data.get("icon_url", "")
 
-        self._is_installing = False
+        self._is_installing: ManageState = ManageState.HALTED
         self._is_recently_installed = False
         self._is_recently_updated = False
         self._is_recently_enabled = False
 
         self._can_update = False
-        self._is_updating = False
-        self._is_enabling = False
+        self._is_updating: ManageState = ManageState.HALTED
+        self._is_enabling: ManageState = ManageState.HALTED
         self._can_downgrade = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
@@ -288,7 +297,7 @@ class PackageModel(QObject):
     @pyqtProperty(str, notify = stateManageButtonChanged)
     def stateManageEnableButton(self) -> str:
         """The state of the manage Enable Button of this package"""
-        if self._is_enabling:
+        if self._is_enabling == ManageState.PROCESSING:
             return "busy"
         if self._is_recently_enabled:
             return "confirmed"
@@ -299,16 +308,16 @@ class PackageModel(QObject):
         return "primary"
 
     @property
-    def is_enabling(self) -> bool:
+    def is_enabling(self) -> ManageState:
         """Flag if the package is being enabled/disabled"""
         return self._is_enabling
 
     @is_enabling.setter
-    def is_enabling(self, value: bool) -> None:
+    def is_enabling(self, value: ManageState) -> None:
         if value != self._is_enabling:
-            if not value:
-                self._is_recently_enabled = True
             self._is_enabling = value
+            if value == ManageState.HALTED:
+                self._is_recently_enabled = True
             self.stateManageButtonChanged.emit()
 
     @property
@@ -327,7 +336,7 @@ class PackageModel(QObject):
     @pyqtProperty(str, notify = stateManageButtonChanged)
     def stateManageInstallButton(self) -> str:
         """The state of the Manage Install package card"""
-        if self._is_installing:
+        if self._is_installing == ManageState.PROCESSING:
             return "busy"
         if self._is_recently_installed:
             return "confirmed"
@@ -340,16 +349,16 @@ class PackageModel(QObject):
             return "primary"
 
     @property
-    def is_installing(self) -> bool:
-        """Flag is we're currently installing"""
+    def is_installing(self) -> ManageState:
+        """Flag is we're currently installing, when setting this to ``None`` in indicates a failed installation"""
         return self._is_installing
 
     @is_installing.setter
-    def is_installing(self, value: bool) -> None:
+    def is_installing(self, value: ManageState) -> None:
         if value != self._is_installing:
-            if not value:
-                self._is_recently_installed = True
             self._is_installing = value
+            if value == ManageState.HALTED:
+                self._is_recently_installed = True
             self.stateManageButtonChanged.emit()
 
     @property
@@ -368,7 +377,7 @@ class PackageModel(QObject):
     @pyqtProperty(str, notify = stateManageButtonChanged)
     def stateManageUpdateButton(self) -> str:
         """The state of the manage Update button for this card """
-        if self._is_updating:
+        if self._is_updating == ManageState.PROCESSING:
             return "busy"
         if self._is_recently_updated:
             return "confirmed"
@@ -377,16 +386,16 @@ class PackageModel(QObject):
         return "hidden"
 
     @property
-    def is_updating(self) -> bool:
+    def is_updating(self) -> ManageState:
         """Flag indicating if the package is being updated"""
         return self._is_updating
 
     @is_updating.setter
-    def is_updating(self, value: bool) -> None:
+    def is_updating(self, value: ManageState) -> None:
         if value != self._is_updating:
-            if not value:
-                self._is_recently_updated = True
             self._is_updating = value
+            if value == ManageState.HALTED:
+                self._is_recently_updated = True
             self.stateManageButtonChanged.emit()
 
     @property

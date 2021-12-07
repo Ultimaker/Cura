@@ -18,7 +18,7 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
-from .PackageModel import PackageModel
+from .PackageModel import PackageModel, ManageState
 from .Constants import USER_PACKAGES_URL
 
 if TYPE_CHECKING:
@@ -161,7 +161,7 @@ class PackageList(ListModel):
             dialog.deleteLater()
         # reset package card
         package = self.getPackageModel(package_id)
-        package.is_installing = False
+        package.is_installing = ManageState.FAILED
 
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
         Logger.debug(f"Request installing {package_id}")
@@ -185,9 +185,9 @@ class PackageList(ListModel):
         if package.can_update and to_be_installed:
             package.can_update = False
         if update:
-            package.is_updating = False
+            package.is_updating = ManageState.HALTED
         else:
-            package.is_installing = False
+            package.is_installing = ManageState.HALTED
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
@@ -232,9 +232,9 @@ class PackageList(ListModel):
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
         package = self.getPackageModel(package_id)
         if update:
-            package.is_updating = False
+            package.is_updating = ManageState.FAILED
         else:
-            package.is_installing = False
+            package.is_installing = ManageState.FAILED
 
     def subscribeUserToPackage(self, package_id: str, sdk_version: str) -> None:
         """Subscribe the user (if logged in) to the package for a given SDK
@@ -275,7 +275,7 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_installing = True
+        package.is_installing = ManageState.PROCESSING
         url = package.download_url
         Logger.debug(f"Trying to download and install {package_id} from {url}")
         self.download(package_id, url, False)
@@ -288,10 +288,10 @@ class PackageList(ListModel):
         """
         Logger.debug(f"Uninstalling {package_id}")
         package = self.getPackageModel(package_id)
-        package.is_installing = True
+        package.is_installing = ManageState.PROCESSING
         self._manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
-        package.is_installing = False
+        package.is_installing = ManageState.HALTED
 
     @pyqtSlot(str)
     def updatePackage(self, package_id: str) -> None:
@@ -300,7 +300,7 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_updating = True
+        package.is_updating = ManageState.PROCESSING
         self._manager.removePackage(package_id, force_add = True)
         url = package.download_url
         Logger.debug(f"Trying to download and update {package_id} from {url}")
@@ -313,11 +313,11 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_enabling = True
+        package.is_enabling = ManageState.PROCESSING
         Logger.debug(f"Enabling {package_id}")
         self._plugin_registry.enablePlugin(package_id)
         package.is_active = True
-        package.is_enabling = False
+        package.is_enabling = ManageState.HALTED
 
     @pyqtSlot(str)
     def disablePackage(self, package_id: str) -> None:
@@ -326,8 +326,8 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_enabling = True
+        package.is_enabling = ManageState.PROCESSING
         Logger.debug(f"Disabling {package_id}")
         self._plugin_registry.disablePlugin(package_id)
         package.is_active = False
-        package.is_enabling = False
+        package.is_enabling = ManageState.HALTED

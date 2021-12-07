@@ -18,8 +18,8 @@ RowLayout
     property string confirmedPrimaryText: confirmedMessageText.text
     property string confirmedSecondaryText: confirmedMessageText.text
     property bool enabled: true
-    property bool busy: state == "busy"
-    property bool confirmed: state == "confirmed"
+    property bool busy: false
+    property bool confirmed: false
 
     signal clicked(bool primary_action)
 
@@ -62,7 +62,7 @@ RowLayout
         UM.RecolorImage
         {
             id: busyIndicator
-            visible: parent.visible
+            visible: busyMessage.visible
             width: height
             anchors.left: parent.left
             anchors.top: parent.top
@@ -76,7 +76,7 @@ RowLayout
             RotationAnimator
             {
                 target: busyIndicator
-                running: busyIndicator.visible
+                running: busyMessage.visible
                 from: 0
                 to: 360
                 loops: Animation.Infinite
@@ -86,7 +86,7 @@ RowLayout
         Label
         {
             id: busyMessageText
-            visible: parent.visible
+            visible: busyMessage.visible
             anchors.left: busyIndicator.right
             anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -123,6 +123,12 @@ RowLayout
             name: "primary"
             PropertyChanges
             {
+                target: manageButton
+                busy: false
+                confirmed: false
+            }
+            PropertyChanges
+            {
                 target: primaryButton
                 visible: true
             }
@@ -145,6 +151,12 @@ RowLayout
         State
         {
             name: "secondary"
+            PropertyChanges
+            {
+                target: manageButton
+                busy: false
+                confirmed: false
+            }
             PropertyChanges
             {
                 target: primaryButton
@@ -180,6 +192,12 @@ RowLayout
             name: "busy"
             PropertyChanges
             {
+                target: manageButton
+                busy: true
+                confirmed: false
+            }
+            PropertyChanges
+            {
                 target: primaryButton
                 visible: false
             }
@@ -202,6 +220,12 @@ RowLayout
         State
         {
             name: "confirmed"
+            PropertyChanges
+            {
+                target: manageButton
+                busy: false
+                confirmed: true
+            }
             PropertyChanges
             {
                 target: primaryButton
