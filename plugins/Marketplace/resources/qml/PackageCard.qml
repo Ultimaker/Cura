@@ -332,7 +332,7 @@ Rectangle
                         busySecondaryText: catalog.i18nc("@button", "Disabling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Disabled")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
-                        visible: (root.manageableInListView || root.expanded) && !installManageButton.confirmed
+                        visible: (root.manageableInListView || root.expanded) && !(installManageButton.confirmed || updateManageButton.confirmed)
 
                         onClicked: {
                             if (primary_action)
@@ -358,7 +358,7 @@ Rectangle
                         busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Uninstalled")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
-                        visible: installManageButton.confirmed || root.manageableInListView || root.expanded
+                        visible: (installManageButton.confirmed || root.manageableInListView || root.expanded) && !(updateManageButton.confirmed || enableManageButton.confirmed)
 
                         onClicked:
                         {
@@ -382,7 +382,7 @@ Rectangle
                         busyPrimaryText: catalog.i18nc("@button", "Updating...")
                         confirmedPrimaryText: catalog.i18nc("@button", "Updated")
                         enabled: !(installManageButton.busy || enableManageButton.busy)
-                        visible: root.manageableInListView || root.expanded
+                        visible: (root.manageableInListView || root.expanded) && !installManageButton.confirmed
 
                         onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
