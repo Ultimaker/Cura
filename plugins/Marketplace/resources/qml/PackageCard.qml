@@ -326,9 +326,11 @@ Rectangle
                         state: packageData.stateManageEnableButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Enable")
-                        busyPrimaryText: catalog.i18nc("@button", "Inabling...")
+                        busyPrimaryText: catalog.i18nc("@button", "Enabling...")
+                        confirmedPrimaryText: catalog.i18nc("@button", "Enabled")
                         secondaryText: catalog.i18nc("@button", "Disable")
                         busySecondaryText: catalog.i18nc("@button", "Disabling...")
+                        confirmedSecondaryText: catalog.i18nc("@button", "Disabled")
                         enabled: !(installManageButton.busy || updateManageButton.busy)
                         visible: root.manageableInListView || root.expanded
 
@@ -351,10 +353,12 @@ Rectangle
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Install")
                         busyPrimaryText: catalog.i18nc("@button", "Installing...")
+                        confirmedPrimaryText: catalog.i18nc("@button", "Installed")
                         secondaryText: catalog.i18nc("@button", "Uninstall")
                         busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
+                        confirmedSecondaryText: catalog.i18nc("@button", "Uninstalled")
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
-                        visible: root.manageableInListView || root.expanded
+                        visible: state == "confirmed" || root.manageableInListView || root.expanded
 
                         onClicked:
                         {
@@ -375,7 +379,8 @@ Rectangle
                         state: packageData.stateManageUpdateButton
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Update")
-                        busyPrimaryText: catalog.i18nc("@button", "updating...")
+                        busyPrimaryText: catalog.i18nc("@button", "Updating...")
+                        confirmedPrimaryText: catalog.i18nc("@button", "Updated")
                         enabled: !(installManageButton.busy || enableManageButton.busy)
                         visible: root.manageableInListView || root.expanded
 

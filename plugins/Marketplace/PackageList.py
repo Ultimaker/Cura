@@ -187,7 +187,6 @@ class PackageList(ListModel):
         if update:
             package.is_updating = False
         else:
-            package.is_recently_managed = True
             package.is_installing = False
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
@@ -293,7 +292,6 @@ class PackageList(ListModel):
         self._manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
         package.is_installing = False
-        package.is_recently_managed = True
 
     @pyqtSlot(str)
     def updatePackage(self, package_id: str) -> None:

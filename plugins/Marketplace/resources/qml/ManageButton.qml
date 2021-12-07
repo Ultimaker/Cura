@@ -15,6 +15,8 @@ RowLayout
     property alias secondaryText: secondaryButton.text
     property string busyPrimaryText: busyMessageText.text
     property string busySecondaryText: busyMessageText.text
+    property string confirmedPrimaryText: confirmedMessageText.text
+    property string confirmedSecondaryText: confirmedMessageText.text
     property bool enabled: true
     property bool busy: state == "busy"
 
@@ -28,7 +30,8 @@ RowLayout
 
         onClicked:
         {
-            busyMessageText.text = manageButton.busyPrimaryText
+            busyMessage.text = manageButton.busyPrimaryText
+            confirmedMessage.text = manageButton.confirmedPrimaryText
             manageButton.clicked(true)
         }
     }
@@ -41,7 +44,8 @@ RowLayout
 
         onClicked:
         {
-            busyMessageText.text = manageButton.busySecondaryText
+            busyMessage.text = manageButton.busySecondaryText
+            confirmedMessage.text = manageButton.confirmedSecondaryText
             manageButton.clicked(false)
         }
     }
@@ -50,6 +54,7 @@ RowLayout
     {
         id: busyMessage
         visible: false
+        property alias text: busyMessageText.text
         height: UM.Theme.getSize("action_button").height
         width: childrenRect.width
 
@@ -90,6 +95,26 @@ RowLayout
         }
     }
 
+    Item
+    {
+        id: confirmedMessage
+        property alias text: confirmedMessageText.text
+
+        visible: false
+        height: UM.Theme.getSize("action_button").height
+        width: childrenRect.width
+
+        Label
+        {
+            id: confirmedMessageText
+            visible: parent.visble
+            anchors.verticalCenter: parent.verticalCenter
+
+            font: UM.Theme.getFont("medium_bold")
+            color: UM.Theme.getColor("primary")
+        }
+    }
+
     states:
     [
         State
@@ -110,6 +135,11 @@ RowLayout
                 target: busyMessage
                 visible: false
             }
+            PropertyChanges
+            {
+                target: confirmedMessage
+                visible: false
+            }
         },
         State
         {
@@ -127,6 +157,11 @@ RowLayout
             PropertyChanges
             {
                 target: busyMessage
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: confirmedMessage
                 visible: false
             }
         },
@@ -155,6 +190,35 @@ RowLayout
             PropertyChanges
             {
                 target: busyMessage
+                visible: manageButton.visible
+            }
+            PropertyChanges
+            {
+                target: confirmedMessage
+                visible: false
+            }
+        },
+        State
+        {
+            name: "confirmed"
+            PropertyChanges
+            {
+                target: primaryButton
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: secondaryButton
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: busyMessage
+                visible: false
+            }
+            PropertyChanges
+            {
+                target: confirmedMessage
                 visible: manageButton.visible
             }
         }

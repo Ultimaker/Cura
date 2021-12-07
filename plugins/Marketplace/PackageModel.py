@@ -61,7 +61,10 @@ class PackageModel(QObject):
             self._icon_url = author_data.get("icon_url", "")
 
         self._is_installing = False
-        self._is_recently_managed = False
+        self._is_recently_installed = False
+        self._is_recently_updated = False
+        self._is_recently_enabled = False
+
         self._can_update = False
         self._is_updating = False
         self._is_enabling = False
@@ -287,7 +290,9 @@ class PackageModel(QObject):
         """The state of the manage Enable Button of this package"""
         if self._is_enabling:
             return "busy"
-        if self._is_recently_managed or self._package_type == "material" or not self._is_installed:
+        if self._is_recently_enabled:
+            return "confirmed"
+        if self._package_type == "material" or not self._is_installed:
             return "hidden"
         if self._is_installed and self._is_active:
             return "secondary"
@@ -301,6 +306,8 @@ class PackageModel(QObject):
     @is_enabling.setter
     def is_enabling(self, value: bool) -> None:
         if value != self._is_enabling:
+            if not value:
+                self._is_recently_enabled = True
             self._is_enabling = value
             self.stateManageButtonChanged.emit()
 
@@ -322,8 +329,8 @@ class PackageModel(QObject):
         """The state of the Manage Install package card"""
         if self._is_installing:
             return "busy"
-        if self._is_recently_managed:
-            return "hidden"
+        if self._is_recently_installed:
+            return "confirmed"
         if self._is_installed:
             if self._is_bundled and not self._can_downgrade:
                 return "hidden"
@@ -333,17 +340,6 @@ class PackageModel(QObject):
             return "primary"
 
     @property
-    def is_recently_managed(self) -> bool:
-        """Flag if the package has been recently managed by the user, either un-/installed updated etc"""
-        return self._is_recently_managed
-
-    @is_recently_managed.setter
-    def is_recently_managed(self, value: bool) -> None:
-        if value != self._is_recently_managed:
-            self._is_recently_managed = value
-            self.stateManageButtonChanged.emit()
-
-    @property
     def is_installing(self) -> bool:
         """Flag is we're currently installing"""
         return self._is_installing
@@ -351,6 +347,8 @@ class PackageModel(QObject):
     @is_installing.setter
     def is_installing(self, value: bool) -> None:
         if value != self._is_installing:
+            if not value:
+                self._is_recently_installed = True
             self._is_installing = value
             self.stateManageButtonChanged.emit()
 
@@ -372,6 +370,8 @@ class PackageModel(QObject):
         """The state of the manage Update button for this card """
         if self._is_updating:
             return "busy"
+        if self._is_recently_updated:
+            return "confirmed"
         if self._can_update:
             return "primary"
         return "hidden"
@@ -384,6 +384,8 @@ class PackageModel(QObject):
     @is_updating.setter
     def is_updating(self, value: bool) -> None:
         if value != self._is_updating:
+            if not value:
+                self._is_recently_updated = True
             self._is_updating = value
             self.stateManageButtonChanged.emit()
 
