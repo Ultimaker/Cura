@@ -237,11 +237,17 @@ class PackageList(ListModel):
         if reply:
             reply_string = bytes(reply.readAll()).decode()
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
-        package = self.getPackageModel(package_id)
-        if update:
-            package.is_updating = ManageState.FAILED
-        else:
-            package.is_installing = ManageState.FAILED
+        try:
+            package = self.getPackageModel(package_id)
+            if update:
+                package.is_updating = ManageState.FAILED
+            else:
+                package.is_installing = ManageState.FAILED
+        except RuntimeError:
+            # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
+            # between de-/constructing Remote or Local PackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
+            # was deleted when it was still parsing the response
+            return
 
     def subscribeUserToPackage(self, package_id: str, sdk_version: str) -> None:
         """Subscribe the user (if logged in) to the package for a given SDK
