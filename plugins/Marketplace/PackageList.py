@@ -218,6 +218,11 @@ class PackageList(ListModel):
             Logger.error(f"Failed to write downloaded package to temp file {e}")
             temp_file.close()
             self._downloadError(package_id, update)
+        except RuntimeError:
+            # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
+            # between de-/constructing Remote or Local PackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
+            # was deleted when it was still parsing the response
+            return
 
     def _downloadError(self, package_id: str, update: bool = False, reply: Optional["QNetworkReply"] = None, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if reply:

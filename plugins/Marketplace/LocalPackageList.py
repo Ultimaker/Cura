@@ -95,10 +95,16 @@ class LocalPackageList(PackageList):
         if len(response_data["data"]) == 0:
             return
 
-        for package_data in response_data["data"]:
-            package = self.getPackageModel(package_data["package_id"])
-            package.download_url = package_data.get("download_url", "")
-            package.can_update = True
+        try:
+            for package_data in response_data["data"]:
+                package = self.getPackageModel(package_data["package_id"])
+                package.download_url = package_data.get("download_url", "")
+                package.can_update = True
 
-        self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
-        self._ongoing_requests["check_updates"] = None
+            self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
+            self._ongoing_requests["check_updates"] = None
+        except RuntimeError:
+            # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
+            # between de-/constructing RemotePackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
+            # was deleted when it was still parsing the response
+            return
