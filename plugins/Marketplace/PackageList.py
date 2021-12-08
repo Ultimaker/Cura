@@ -279,7 +279,6 @@ class PackageList(ListModel):
         package.enablePackageTriggered.connect(self.enablePackage)
         package.disablePackageTriggered.connect(self.disablePackage)
 
-    @pyqtSlot(str)
     def installPackage(self, package_id: str) -> None:
         """Install a package from the Marketplace
 
@@ -290,7 +289,6 @@ class PackageList(ListModel):
         url = package.download_url
         self.download(package_id, url, False)
 
-    @pyqtSlot(str)
     def uninstallPackage(self, package_id: str) -> None:
         """Uninstall a package from the Marketplace
 
@@ -302,7 +300,6 @@ class PackageList(ListModel):
         self.unsunscribeUserFromPackage(package_id)
         package.is_installing = ManageState.HALTED
 
-    @pyqtSlot(str)
     def updatePackage(self, package_id: str) -> None:
         """Update a package from the Marketplace
 
@@ -314,7 +311,6 @@ class PackageList(ListModel):
         url = package.download_url
         self.download(package_id, url, True)
 
-    @pyqtSlot(str)
     def enablePackage(self, package_id: str) -> None:
         """Enable a package in the plugin registry
 
@@ -326,7 +322,6 @@ class PackageList(ListModel):
         package.is_active = True
         package.is_enabling = ManageState.HALTED
 
-    @pyqtSlot(str)
     def disablePackage(self, package_id: str) -> None:
         """Disable a package in the plugin registry
 
