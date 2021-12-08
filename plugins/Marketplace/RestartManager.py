@@ -1,17 +1,21 @@
 #  Copyright (c) 2021 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 from cura.CuraApplication import CuraApplication
-from UM.PluginRegistry import PluginRegistry
 
-class Manager(QObject):
+if TYPE_CHECKING:
+    from UM.PluginRegistry import PluginRegistry
+    from cura.CuraPackageManager import CuraPackageManager
+
+
+class RestartManager(QObject):
     def __init__(self, parent: Optional[QObject] = None):
         super().__init__(parent = parent)
         self._manager: "CuraPackageManager" = CuraApplication.getInstance().getPackageManager()
-        self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
+        self._plugin_registry: "PluginRegistry" = CuraApplication.getInstance().getPluginRegistry()
 
         self._manager.installedPackagesChanged.connect(self.checkIfRestartNeeded)
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)

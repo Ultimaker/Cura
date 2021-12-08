@@ -13,7 +13,7 @@ from UM.PluginRegistry import PluginRegistry  # To find out where we are stored 
 
 from .RemotePackageList import RemotePackageList  # To register this type with QML.
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
-from .Manager import Manager  # To register this type with QML.
+from .RestartManager import RestartManager  # To register this type with QML.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -31,7 +31,7 @@ class Marketplace(Extension):
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
         qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
-        qmlRegisterType(Manager, "Marketplace", 1, 0, "Manager")
+        qmlRegisterType(RestartManager, "Marketplace", 1, 0, "RestartManager")
 
     @pyqtSlot()
     def show(self) -> None:
