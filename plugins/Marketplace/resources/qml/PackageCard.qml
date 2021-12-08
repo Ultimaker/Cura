@@ -29,6 +29,7 @@ Rectangle
             width: parent.width
             height: UM.Theme.getSize("card").height
 
+            // card icon
             Image
             {
                 id: packageItem
@@ -44,6 +45,7 @@ Rectangle
                 source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
             }
 
+            //
             ColumnLayout
             {
                 anchors
@@ -142,6 +144,7 @@ Rectangle
                     }
                 }
 
+                // description
                 Item
                 {
                     id: shortDescription
@@ -222,6 +225,7 @@ Rectangle
 
                     spacing: UM.Theme.getSize("narrow_margin").width
 
+                    // label "By"
                     Label
                     {
                         id: authorBy
@@ -232,6 +236,7 @@ Rectangle
                         color: UM.Theme.getColor("text")
                     }
 
+                    // clickable author name
                     Cura.TertiaryButton
                     {
                         Layout.fillWidth: true
@@ -252,9 +257,7 @@ Rectangle
                     ManageButton
                     {
                         id: enableManageButton
-                        state: !(installManageButton.confirmed || updateManageButton.confirmed) ||  enableManageButton.confirmed ? packageData.stateManageEnableButton : "hidden"
-                        busy: packageData.enableManageButton == "busy"
-                        confirmed: packageData.enableManageButton == "confirmed"
+                        button_style: !(installManageButton.confirmed || updateManageButton.confirmed) || enableManageButton.confirmed ? packageData.stateManageEnableButton : "hidden"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Enable")
                         busyPrimaryText: catalog.i18nc("@button", "Enabling...")
@@ -280,9 +283,7 @@ Rectangle
                     ManageButton
                     {
                         id: installManageButton
-                        state: (root.manageableInListView || installManageButton.confirmed) && !(enableManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageInstallButton : "hidden"
-                        busy: packageData.stateManageInstallButton == "busy"
-                        confirmed: packageData.stateManageInstallButton == "confirmed"
+                        button_style: (root.manageableInListView || installManageButton.confirmed) && !(enableManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageInstallButton : "hidden"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Install")
                         busyPrimaryText: catalog.i18nc("@button", "Installing...")
@@ -309,9 +310,7 @@ Rectangle
                     ManageButton
                     {
                         id: updateManageButton
-                        state: (root.manageableInListView) && (!installManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageUpdateButton : "hidden"
-                        busy: packageData.stateManageUpdateButton == "busy"
-                        confirmed: packageData.stateManageUpdateButton == "confirmed"
+                        button_style: (root.manageableInListView) && (!installManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageUpdateButton : "hidden"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "Updating...")

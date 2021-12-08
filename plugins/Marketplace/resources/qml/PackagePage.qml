@@ -207,9 +207,7 @@ Rectangle
                     ManageButton
                     {
                         id: enableManageButton
-                        state: !(installManageButton.confirmed || updateManageButton.confirmed) ||  enableManageButton.confirmed ? packageData.stateManageEnableButton : "hidden"
-                        busy: packageData.enableManageButton == "busy"
-                        confirmed: packageData.enableManageButton == "confirmed"
+                        button_style: !(installManageButton.confirmed || updateManageButton.confirmed) ||  enableManageButton.confirmed ? packageData.stateManageEnableButton : "hidden"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Enable")
                         busyPrimaryText: catalog.i18nc("@button", "Enabling...")
@@ -235,9 +233,7 @@ Rectangle
                     ManageButton
                     {
                         id: installManageButton
-                        state: !(enableManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageInstallButton : "hidden"
-                        busy: packageData.stateManageInstallButton == "busy"
-                        confirmed: packageData.stateManageInstallButton == "confirmed"
+                        button_style: !(enableManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageInstallButton : "hidden"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Install")
                         busyPrimaryText: catalog.i18nc("@button", "Installing...")
@@ -264,9 +260,7 @@ Rectangle
                     ManageButton
                     {
                         id: updateManageButton
-                        state: !installManageButton.confirmed || updateManageButton.confirmed ? packageData.stateManageUpdateButton : "hidden"
-                        busy: packageData.stateManageUpdateButton == "busy"
-                        confirmed: packageData.stateManageUpdateButton == "confirmed"
+                        button_style: !installManageButton.confirmed || updateManageButton.confirmed ? packageData.stateManageUpdateButton : "hidden"
                         Layout.alignment: Qt.AlignTop
                         primaryText: catalog.i18nc("@button", "Update")
                         busyPrimaryText: catalog.i18nc("@button", "Updating...")
