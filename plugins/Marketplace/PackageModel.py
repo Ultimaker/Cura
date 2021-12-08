@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
+from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
 
@@ -371,8 +372,8 @@ class PackageModel(QObject):
             self.stateManageButtonChanged.emit()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def isRecentlyInstalled(self):
-        return self._is_recently_installed
+    def installationStatus(self):
+        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall()
 
     @property
     def can_downgrade(self) -> bool:

@@ -361,7 +361,7 @@ Rectangle
                         secondaryText: catalog.i18nc("@button", "Uninstall")
                         busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
                         confirmedSecondaryText: catalog.i18nc("@button", "Uninstalled")
-                        confirmedTextChoice: packageData.isRecentlyInstalled
+                        confirmedTextChoice: packageData.installationStatus
                         enabled: !(enableManageButton.busy || updateManageButton.busy)
 
                         onClicked:
