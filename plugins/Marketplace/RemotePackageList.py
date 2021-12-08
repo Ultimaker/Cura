@@ -33,13 +33,6 @@ class RemotePackageList(PackageList):
         self.isLoadingChanged.connect(self._onLoadingChanged)
         self.isLoadingChanged.emit()
 
-    def __del__(self) -> None:
-        """
-        When deleting this object, abort the request so that we don't get a callback from it later on a deleted C++
-        object.
-        """
-        self.abortUpdating()
-
     @pyqtSlot()
     def updatePackages(self) -> None:
         """
@@ -56,11 +49,6 @@ class RemotePackageList(PackageList):
             callback = self._parseResponse,
             error_callback = self._onError
         )
-
-    @pyqtSlot()
-    def abortUpdating(self) -> None:
-        HttpRequestManager.getInstance().abortRequest(self._ongoing_requests["get_packages"])
-        self._ongoing_requests["get_packages"] = None
 
     def reset(self) -> None:
         self.clear()

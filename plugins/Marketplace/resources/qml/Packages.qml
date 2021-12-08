@@ -24,7 +24,7 @@ ListView
     clip: true
 
     Component.onCompleted: model.updatePackages()
-    Component.onDestruction: model.abortUpdating()
+    Component.onDestruction: model.cleanUpAPIRequest()
 
     spacing: UM.Theme.getSize("default_margin").height
 

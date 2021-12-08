@@ -5,7 +5,7 @@ import json
 import os.path
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import cast, Dict, List, Optional, Set, TYPE_CHECKING
+from typing import cast, Dict, Optional, Set, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -53,15 +53,24 @@ class PackageList(ListModel):
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._license_dialogs: Dict[str, QObject] = {}
 
+    def __del__(self) -> None:
+        """ When this object is deleted it will loop through all registered API requests and aborts them """
+        self.cleanUpAPIRequest()
+
+    def abortRequest(self, request_id: str) -> None:
+        """Aborts a single request"""
+        if request_id in self._ongoing_requests and self._ongoing_requests[request_id]:
+            HttpRequestManager.getInstance().abortRequest(self._ongoing_requests[request_id])
+            self._ongoing_requests[request_id] = None
+
+    @pyqtSlot()
+    def cleanUpAPIRequest(self) -> None:
+        for request_id in self._ongoing_requests:
+            self.abortRequest(request_id)
+
     @pyqtSlot()
     def updatePackages(self) -> None:
         """ A Qt slot which will update the List from a source. Actual implementation should be done in the child class"""
-        pass
-
-    @pyqtSlot()
-    def abortUpdating(self) -> None:
-        """ A Qt slot which allows the update process to be aborted. Override this for child classes with async/callback
-        updatePackges methods"""
         pass
 
     def reset(self) -> None:
