@@ -74,11 +74,11 @@ Item
 
             clip: true //Need to clip, not for the bottom (which is off the window) but for the top (which would overlap the header).
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            contentHeight: expandedPackageCard.height + UM.Theme.getSize("default_margin").height * 2
+            contentHeight: packagePage.height + UM.Theme.getSize("default_margin").height * 2
 
-            PackageCard
+            PackagePage
             {
-                id: expandedPackageCard
+                id: packagePage
                 anchors
                 {
                     left: parent.left
@@ -90,7 +90,6 @@ Item
                 }
 
                 packageData: detailPage.packageData
-                expanded: true
             }
         }
     }

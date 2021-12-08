@@ -29,7 +29,6 @@ Rectangle
             width: parent.width
             height: UM.Theme.getSize("card").height
 
-            // card icon
             Image
             {
                 id: packageItem
@@ -45,7 +44,6 @@ Rectangle
                 source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
             }
 
-            //
             ColumnLayout
             {
                 anchors
@@ -144,75 +142,29 @@ Rectangle
                     }
                 }
 
-                // description
-                Item
+                Row
                 {
-                    id: shortDescription
+                    id: downloadCount
                     Layout.preferredWidth: parent.width
                     Layout.fillHeight: true
 
-                    Label
+                    UM.RecolorImage
                     {
-                        id: descriptionLabel
-                        width: parent.width
-                        property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
+                        id: downloadsIcon
+                        width: UM.Theme.getSize("card_tiny_icon").width
+                        height: UM.Theme.getSize("card_tiny_icon").height
 
-                        text: packageData.description
-                        textFormat: Text.PlainText //Must be plain text, or we won't get onLineLaidOut signals. Don't auto-detect!
-                        font: UM.Theme.getFont("default")
+                        source: UM.Theme.getIcon("Download")
                         color: UM.Theme.getColor("text")
-                        maximumLineCount: 2
-                        wrapMode: Text.Wrap
-                        elide: Text.ElideRight
-                        visible: text !== ""
-
-                        onLineLaidOut:
-                        {
-                            if(truncated && line.isLast)
-                            {
-                                let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ") - 2 * UM.Theme.getSize("default_margin").width;
-                                if(line.implicitWidth > max_line_width)
-                                {
-                                    line.width = max_line_width;
-                                }
-                                else
-                                {
-                                    line.width = line.implicitWidth - fontMetrics.advanceWidth("…"); //Truncate the ellipsis. We're adding this ourselves.
-                                }
-                                descriptionLabel.lastLineWidth = line.implicitWidth;
-                            }
-                        }
                     }
+
                     Label
                     {
-                        id: tripleDotLabel
-                        anchors.left: parent.left
-                        anchors.leftMargin: descriptionLabel.lastLineWidth
-                        anchors.bottom: descriptionLabel.bottom
+                        anchors.verticalCenter: downloadsIcon.verticalCenter
 
-                        text: "… "
-                        font: descriptionLabel.font
-                        color: descriptionLabel.color
-                        visible: descriptionLabel.truncated && descriptionLabel.text !== ""
-                    }
-                    Cura.TertiaryButton
-                    {
-                        id: readMoreButton
-                        anchors.right: parent.right
-                        anchors.bottom: descriptionLabel.bottom
-                        height: fontMetrics.height //Height of a single line.
-
-                        text: catalog.i18nc("@info", "Read more")
-                        iconSource: UM.Theme.getIcon("LinkExternal")
-
-                        visible: descriptionLabel.truncated && descriptionLabel.text !== ""
-                        enabled: visible
-                        leftPadding: UM.Theme.getSize("default_margin").width
-                        rightPadding: UM.Theme.getSize("wide_margin").width
-                        textFont: descriptionLabel.font
-                        isIconOnRightSide: true
-
-                        onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        text: packageData.downloadCount
                     }
                 }
 
@@ -225,7 +177,6 @@ Rectangle
 
                     spacing: UM.Theme.getSize("narrow_margin").width
 
-                    // label "By"
                     Label
                     {
                         id: authorBy
@@ -236,7 +187,6 @@ Rectangle
                         color: UM.Theme.getColor("text")
                     }
 
-                    // clickable author name
                     Cura.TertiaryButton
                     {
                         Layout.fillWidth: true
@@ -302,7 +252,7 @@ Rectangle
                     ManageButton
                     {
                         id: installManageButton
-                        visible: (root.manageableInListView || installManageButton.confirmed) && !(enableManageButton.confirmed || updateManageButton.confirmed)
+                        visible: !(enableManageButton.confirmed || updateManageButton.confirmed)
                         button_style: packageData.stateManageInstallButton
                         busy: packageData.stateManageInstallButton == "busy"
                         confirmed: packageData.stateManageInstallButton == "confirmed"
@@ -347,7 +297,7 @@ Rectangle
                     ManageButton
                     {
                         id: updateManageButton
-                        visible: (root.manageableInListView) && (!installManageButton.confirmed || updateManageButton.confirmed)
+                        visible: !installManageButton.confirmed || updateManageButton.confirmed
 
                         button_style: packageData.stateManageUpdateButton
                         busy: packageData.stateManageUpdateButton == "busy"
@@ -370,6 +320,229 @@ Rectangle
 
                         onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
+                }
+            }
+        }
+
+        Column
+        {
+            id: extendedDescription
+            width: parent.width
+
+            padding: UM.Theme.getSize("default_margin").width
+            topPadding: 0
+            spacing: UM.Theme.getSize("default_margin").height
+
+            Label
+            {
+                width: parent.width - parent.padding * 2
+
+                text: catalog.i18nc("@header", "Description")
+                font: UM.Theme.getFont("medium_bold")
+                color: UM.Theme.getColor("text")
+                elide: Text.ElideRight
+            }
+
+            Label
+            {
+                width: parent.width - parent.padding * 2
+
+                text: packageData.formattedDescription
+                font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
+                wrapMode: Text.Wrap
+                textFormat: Text.RichText
+
+                onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
+            }
+
+            Column //Separate column to have no spacing between compatible printers.
+            {
+                id: compatiblePrinterColumn
+                width: parent.width - parent.padding * 2
+
+                visible: packageData.packageType === "material"
+                spacing: 0
+
+                Label
+                {
+                    width: parent.width
+
+                    text: catalog.i18nc("@header", "Compatible printers")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+
+                Repeater
+                {
+                    model: packageData.compatiblePrinters
+
+                    Label
+                    {
+                        width: compatiblePrinterColumn.width
+
+                        text: modelData
+                        font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
+                    }
+                }
+
+                Label
+                {
+                    width: parent.width
+
+                    visible: packageData.compatiblePrinters.length == 0
+                    text: "(" + catalog.i18nc("@info", "No compatibility information") + ")"
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+            }
+
+            Column
+            {
+                id: compatibleSupportMaterialColumn
+                width: parent.width - parent.padding * 2
+
+                visible: packageData.packageType === "material"
+                spacing: 0
+
+                Label
+                {
+                    width: parent.width
+
+                    text: catalog.i18nc("@header", "Compatible support materials")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+
+                Repeater
+                {
+                    model: packageData.compatibleSupportMaterials
+
+                    Label
+                    {
+                        width: compatibleSupportMaterialColumn.width
+
+                        text: modelData
+                        font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
+                    }
+                }
+
+                Label
+                {
+                    width: parent.width
+
+                    visible: packageData.compatibleSupportMaterials.length == 0
+                    text: "(" + catalog.i18nc("@info No materials", "None") + ")"
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+            }
+
+            Column
+            {
+                width: parent.width - parent.padding * 2
+
+                visible: packageData.packageType === "material"
+                spacing: 0
+
+                Label
+                {
+                    width: parent.width
+
+                    text: catalog.i18nc("@header", "Compatible with Material Station")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+
+                Label
+                {
+                    width: parent.width
+
+                    text: packageData.isCompatibleMaterialStation ? catalog.i18nc("@info", "Yes") : catalog.i18nc("@info", "No")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+            }
+
+            Column
+            {
+                width: parent.width - parent.padding * 2
+
+                visible: packageData.packageType === "material"
+                spacing: 0
+
+                Label
+                {
+                    width: parent.width
+
+                    text: catalog.i18nc("@header", "Optimized for Air Manager")
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+
+                Label
+                {
+                    width: parent.width
+
+                    text: packageData.isCompatibleAirManager ? catalog.i18nc("@info", "Yes") : catalog.i18nc("@info", "No")
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+            }
+
+            Row
+            {
+                id: externalButtonRow
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                spacing: UM.Theme.getSize("narrow_margin").width
+
+                Cura.SecondaryButton
+                {
+                    text: packageData.packageType === "plugin" ? catalog.i18nc("@button", "Visit plug-in website") : catalog.i18nc("@button", "Website")
+                    iconSource: UM.Theme.getIcon("Globe")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+                }
+
+                Cura.SecondaryButton
+                {
+                    visible: packageData.packageType === "material"
+                    text: catalog.i18nc("@button", "Buy spool")
+                    iconSource: UM.Theme.getIcon("ShoppingCart")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.whereToBuy)
+                }
+
+                Cura.SecondaryButton
+                {
+                    visible: packageData.packageType === "material"
+                    text: catalog.i18nc("@button", "Safety datasheet")
+                    iconSource: UM.Theme.getIcon("Warning")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.safetyDataSheet)
+                }
+
+                Cura.SecondaryButton
+                {
+                    visible: packageData.packageType === "material"
+                    text: catalog.i18nc("@button", "Technical datasheet")
+                    iconSource: UM.Theme.getIcon("DocumentFilled")
+                    outlineColor: "transparent"
+                    onClicked: Qt.openUrlExternally(packageData.technicalDataSheet)
                 }
             }
         }
