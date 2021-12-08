@@ -2,17 +2,18 @@
 #  Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
 from cura.CuraApplication import CuraApplication
 
 if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
     from UM.PluginRegistry import PluginRegistry
     from cura.CuraPackageManager import CuraPackageManager
 
 
 class RestartManager(QObject):
-    def __init__(self, parent: Optional[QObject] = None):
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent = parent)
         self._manager: "CuraPackageManager" = CuraApplication.getInstance().getPackageManager()
         self._plugin_registry: "PluginRegistry" = CuraApplication.getInstance().getPluginRegistry()
@@ -22,7 +23,7 @@ class RestartManager(QObject):
 
         self._restart_needed = False
 
-    def checkIfRestartNeeded(self):
+    def checkIfRestartNeeded(self) -> None:
         if self._manager.hasPackagesToRemoveOrInstall or len(self._plugin_registry.getCurrentSessionActivationChangedPlugins()) > 0:
             self._restart_needed = True
         else:
