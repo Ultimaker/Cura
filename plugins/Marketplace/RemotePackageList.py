@@ -123,8 +123,6 @@ class RemotePackageList(PackageList):
             try:
                 package = PackageModel(package_data, parent = self)
                 self._connectManageButtonSignals(package)
-                if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
-                    package.installation_status_changed = True
                 self.appendItem({"package": package})  # Add it to this list model.
             except RuntimeError:
                 # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling

@@ -13,13 +13,6 @@ from UM.i18n import i18nCatalog  # To translate placeholder names if data is not
 
 catalog = i18nCatalog("cura")
 
-
-class ManageState(Enum):
-    PROCESSING = 1
-    HALTED = 0
-    FAILED = -1
-
-
 class PackageModel(QObject):
     """
     Represents a package, containing all the relevant information to be displayed about a package.
@@ -69,18 +62,44 @@ class PackageModel(QObject):
         if not self._icon_url or self._icon_url == "":
             self._icon_url = author_data.get("icon_url", "")
 
-        self._is_installing: ManageState = ManageState.HALTED
-        self._installation_status_changed = False
+        self._is_installing = False
+        self._install_status_changing = False
+        self._is_recently_installed = False
         self._is_recently_updated = False
-        self._is_recently_enabled = False
 
         self._can_update = False
-        self._is_updating: ManageState = ManageState.HALTED
-        self._is_enabling: ManageState = ManageState.HALTED
+        self._is_updating = False
         self._can_downgrade = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
+
+        def install_clicked(package_id):
+            self._install_status_changing = True
+            self.setIsInstalling(True)
+
+        self.installPackageTriggered.connect(install_clicked)
+
+        def uninstall_clicked(package_id):
+            self._install_status_changing = False
+            self.setIsInstalling(True)
+
+        self.uninstallPackageTriggered.connect(uninstall_clicked)
+
+        def update_clicked(package_id):
+            self.setIsUpdating(True)
+
+        self.updatePackageTriggered.connect(update_clicked)
+
+        def finished_installed(is_updating):
+            if is_updating:
+                self._is_recently_installed = True
+                self.setIsUpdating(False)
+            else:
+                self._is_recently_updated
+                self.setIsInstalling(False)
+
+        self.isRecentlyInstalledChanged.connect(finished_installed)
 
     def __eq__(self, other: object):
         if isinstance(other, PackageModel):
@@ -278,6 +297,10 @@ class PackageModel(QObject):
     def isCompatibleAirManager(self) -> bool:
         return self._is_compatible_air_manager
 
+    @pyqtProperty(bool, constant = True)
+    def isBundled(self) -> bool:
+        return self._is_bundled
+
     # --- manage buttons signals ---
 
     stateManageButtonChanged = pyqtSignal()
@@ -292,33 +315,14 @@ class PackageModel(QObject):
 
     disablePackageTriggered = pyqtSignal(str)
 
-    recentlyInstalledChanged = pyqtSignal(bool)
+    isRecentlyInstalledChanged = pyqtSignal(bool)
 
     # --- enabling ---
 
-    @pyqtProperty(str, notify = stateManageButtonChanged)
-    def stateManageEnableButton(self) -> str:
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def stateManageEnableButton(self) -> bool:
         """The state of the manage Enable Button of this package"""
-        if self._is_enabling == ManageState.PROCESSING:
-            return "busy"
-        if self._package_type == "material" or not self._is_installed:
-            return "hidden"
-        if self._is_installed and self._is_active:
-            return "secondary"
-        return "primary"
-
-    @property
-    def is_enabling(self) -> ManageState:
-        """Flag if the package is being enabled/disabled"""
-        return self._is_enabling
-
-    @is_enabling.setter
-    def is_enabling(self, value: ManageState) -> None:
-        if value != self._is_enabling:
-            self._is_enabling = value
-            if value == ManageState.HALTED:
-                self._is_recently_enabled = True
-            self.stateManageButtonChanged.emit()
+        return not (self._is_installed and self._is_active)
 
     @property
     def is_active(self) -> bool:
@@ -333,84 +337,66 @@ class PackageModel(QObject):
 
     # --- Installing ---
 
-    @pyqtProperty(str, notify = stateManageButtonChanged)
-    def stateManageInstallButton(self) -> str:
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def stateManageInstallButton(self) -> bool:
         """The state of the Manage Install package card"""
-        if self._is_installing == ManageState.PROCESSING:
-            return "busy"
-        if self._installation_status_changed:
-            return "confirmed"
-        if self._is_installed:
-            if self._is_bundled and not self._can_downgrade:
-                return "hidden"
-            else:
-                return "secondary"
-        else:
-            return "primary"
+        return not self._is_installed
 
-    @property
-    def is_installing(self) -> ManageState:
-        """Flag is we're currently installing, when setting this to ``None`` in indicates a failed installation"""
-        return self._is_installing
-
-    @is_installing.setter
-    def is_installing(self, value: ManageState) -> None:
+    def setIsInstalling(self, value: bool) -> None:
         if value != self._is_installing:
             self._is_installing = value
-            if value == ManageState.HALTED:
-                self._installation_status_changed = True
             self.stateManageButtonChanged.emit()
 
-    @property
-    def installation_status_changed(self):
-        return self._installation_status_changed
+    @pyqtProperty(bool, fset = setIsInstalling, notify = stateManageButtonChanged)
+    def isInstalling(self) -> bool:
+        return self._is_installing
 
-    @installation_status_changed.setter
-    def installation_status_changed(self, value):
-        if value != self._installation_status_changed:
-            self._installation_status_changed = value
+    def setInstallStatusChanging(self, value: bool) -> None:
+        if value != self._install_status_changing:
+            self._install_status_changing = value
             self.stateManageButtonChanged.emit()
+
+    @pyqtProperty(bool, fset = setInstallStatusChanging, notify = stateManageButtonChanged)
+    def installStatusChanging(self) -> bool:
+        return self._install_status_changing
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def installationStatus(self):
+    def isInstalled(self) -> bool:
         return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall()
 
-    @property
-    def can_downgrade(self) -> bool:
-        """Flag if the installed package can be downgraded to a bundled version"""
-        return self._can_downgrade
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isUninstalled(self) -> bool:
+        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToRemove()
 
-    @can_downgrade.setter
-    def can_downgrade(self, value: bool) -> None:
+    def setCanDowngrade(self, value: bool) -> None:
         if value != self._can_downgrade:
             self._can_downgrade = value
             self.stateManageButtonChanged.emit()
 
+    @pyqtProperty(bool, fset = setCanDowngrade, notify = stateManageButtonChanged)
+    def canDowngrade(self) -> bool:
+        """Flag if the installed package can be downgraded to a bundled version"""
+        return self._can_downgrade
+
     # --- Updating ---
 
-    @pyqtProperty(str, notify = stateManageButtonChanged)
-    def stateManageUpdateButton(self) -> str:
-        """The state of the manage Update button for this card """
-        if self._is_updating == ManageState.PROCESSING:
-            return "busy"
-        if self._is_recently_updated:
-            return "confirmed"
-        if self._can_update:
-            return "primary"
-        return "hidden"
-
-    @property
-    def is_updating(self) -> ManageState:
-        """Flag indicating if the package is being updated"""
-        return self._is_updating
-
-    @is_updating.setter
-    def is_updating(self, value: ManageState) -> None:
+    def setIsUpdating(self, value):
         if value != self._is_updating:
             self._is_updating = value
-            if value == ManageState.HALTED:
-                self._is_recently_updated = True
             self.stateManageButtonChanged.emit()
+
+    @pyqtProperty(bool, fset = setIsUpdating, notify = stateManageButtonChanged)
+    def isUpdating(self):
+        return self._is_updating
+
+    def setIsUpdated(self, value):
+        if value != self._is_recently_updated:
+            self._is_recently_updated = value
+            self.stateManageButtonChanged.emit()
+
+    @pyqtProperty(bool, fset = setIsUpdated, notify = stateManageButtonChanged)
+    def isUpdated(self):
+        return self._is_recently_updated
 
     @property
     def can_update(self) -> bool:
