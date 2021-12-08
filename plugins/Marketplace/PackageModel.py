@@ -300,8 +300,6 @@ class PackageModel(QObject):
         """The state of the manage Enable Button of this package"""
         if self._is_enabling == ManageState.PROCESSING:
             return "busy"
-        if self._is_recently_enabled:
-            return "confirmed"
         if self._package_type == "material" or not self._is_installed:
             return "hidden"
         if self._is_installed and self._is_active:

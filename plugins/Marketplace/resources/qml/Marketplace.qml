@@ -8,11 +8,13 @@ import QtQuick.Window 2.2
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
+import Marketplace 1.0 as Marketplace
 
 Window
 {
     id: marketplaceDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
+    property variant manager: Marketplace.Manager { }
 
     signal searchStringChanged(string new_search)
 
@@ -232,7 +234,7 @@ Window
     {
         height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
         color: UM.Theme.getColor("primary")
-        visible: CuraApplication.getPackageManager().hasPackagesToRemoveOrInstall || plugin_registry.hasPluginsEnabledOrDisabled
+        visible: manager.showRestartNotification
         anchors
         {
             left: parent.left

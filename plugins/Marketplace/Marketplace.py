@@ -13,6 +13,7 @@ from UM.PluginRegistry import PluginRegistry  # To find out where we are stored 
 
 from .RemotePackageList import RemotePackageList  # To register this type with QML.
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
+from .Manager import Manager  # To register this type with QML.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -30,6 +31,7 @@ class Marketplace(Extension):
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
         qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
+        qmlRegisterType(Manager, "Marketplace", 1, 0, "Manager")
 
     @pyqtSlot()
     def show(self) -> None:
@@ -44,7 +46,7 @@ class Marketplace(Extension):
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {"plugin_registry": self.plugin_registry})
+            self._window = CuraApplication.getInstance().createQmlComponent(path, {})
         if self._window is None:  # Still None? Failed to load the QML then.
             return
         self._window.show()
