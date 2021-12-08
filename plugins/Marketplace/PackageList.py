@@ -18,7 +18,7 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
-from .PackageModel import PackageModel, ManageState
+from .PackageModel import PackageModel
 from .Constants import USER_PACKAGES_URL
 
 if TYPE_CHECKING:
@@ -166,7 +166,6 @@ class PackageList(ListModel):
             dialog.deleteLater()
         # reset package card
         package = self.getPackageModel(package_id)
-        package.is_installing = ManageState.FAILED
 
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install[package_id]
@@ -184,12 +183,8 @@ class PackageList(ListModel):
         package_path = self._to_install.pop(package_id)
         to_be_installed = self._manager.installPackage(package_path) is not None
         package = self.getPackageModel(package_id)
-        if package.can_update and to_be_installed:
-            package.can_update = False
-        if update:
-            package.is_updating = ManageState.HALTED
-        else:
-            package.is_installing = ManageState.HALTED
+        # TODO handle failure
+        package.isRecentlyInstalledChanged.emit(update)
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
@@ -239,10 +234,7 @@ class PackageList(ListModel):
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
         try:
             package = self.getPackageModel(package_id)
-            if update:
-                package.is_updating = ManageState.FAILED
-            else:
-                package.is_installing = ManageState.FAILED
+            # TODO: handle error
         except RuntimeError:
             # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
             # between de-/constructing Remote or Local PackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
@@ -285,7 +277,6 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_installing = ManageState.PROCESSING
         url = package.download_url
         self.download(package_id, url, False)
 
@@ -295,10 +286,9 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_installing = ManageState.PROCESSING
         self._manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
-        package.is_installing = ManageState.HALTED
+        package.isRecentlyInstalledChanged.emit(False)
 
     def updatePackage(self, package_id: str) -> None:
         """Update a package from the Marketplace
@@ -306,7 +296,6 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_updating = ManageState.PROCESSING
         self._manager.removePackage(package_id, force_add = True)
         url = package.download_url
         self.download(package_id, url, True)
@@ -317,10 +306,8 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_enabling = ManageState.PROCESSING
         self._plugin_registry.enablePlugin(package_id)
         package.is_active = True
-        package.is_enabling = ManageState.HALTED
 
     def disablePackage(self, package_id: str) -> None:
         """Disable a package in the plugin registry
@@ -328,7 +315,5 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         package = self.getPackageModel(package_id)
-        package.is_enabling = ManageState.PROCESSING
         self._plugin_registry.disablePlugin(package_id)
         package.is_active = False
-        package.is_enabling = ManageState.HALTED

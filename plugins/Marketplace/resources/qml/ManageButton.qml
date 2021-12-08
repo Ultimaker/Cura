@@ -11,7 +11,7 @@ import Cura 1.6 as Cura
 Item
 {
     id: manageButton
-    property string button_style
+    property bool button_style
     property string text
     property bool busy
     property bool confirmed
@@ -117,19 +117,10 @@ Item
 
         sourceComponent:
         {
-            switch (manageButton.button_style)
-            {
-                case "primary":
-                    return manageButton.primaryButton;
-                case "secondary":
-                    return manageButton.secondaryButton;
-                case "busy":
-                    return manageButton.busyButton;
-                case "confirmed":
-                    return manageButton.confirmButton;
-                default:
-                    return;
-            }
+            if (busy) { return manageButton.busyButton; }
+            else if (confirmed) { return manageButton.confirmButton; }
+            else if (manageButton.button_style) { return manageButton.primaryButton; }
+            else { return manageButton.secondaryButton; }
         }
     }
 }
