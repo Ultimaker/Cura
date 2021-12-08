@@ -68,7 +68,7 @@ class LocalPackageList(PackageList):
         self._connectManageButtonSignals(package)
         package.can_downgrade = self._manager.canDowngrade(package_id)
         if package_id in self._manager.getPackagesToRemove() or package_id in self._manager.getPackagesToInstall():
-            package.is_recently_installed = True
+            package.installation_status_changed = True
         return package
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]):

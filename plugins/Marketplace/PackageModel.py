@@ -70,7 +70,7 @@ class PackageModel(QObject):
             self._icon_url = author_data.get("icon_url", "")
 
         self._is_installing: ManageState = ManageState.HALTED
-        self._is_recently_installed = False
+        self._installation_status_changed = False
         self._is_recently_updated = False
         self._is_recently_enabled = False
 
@@ -338,7 +338,7 @@ class PackageModel(QObject):
         """The state of the Manage Install package card"""
         if self._is_installing == ManageState.PROCESSING:
             return "busy"
-        if self._is_recently_installed:
+        if self._installation_status_changed:
             return "confirmed"
         if self._is_installed:
             if self._is_bundled and not self._can_downgrade:
@@ -358,17 +358,17 @@ class PackageModel(QObject):
         if value != self._is_installing:
             self._is_installing = value
             if value == ManageState.HALTED:
-                self._is_recently_installed = True
+                self._installation_status_changed = True
             self.stateManageButtonChanged.emit()
 
     @property
-    def is_recently_installed(self):
-        return self._is_recently_installed
+    def installation_status_changed(self):
+        return self._installation_status_changed
 
-    @is_recently_installed.setter
-    def is_recently_installed(self, value):
-        if value != self._is_recently_installed:
-            self._is_recently_installed = value
+    @installation_status_changed.setter
+    def installation_status_changed(self, value):
+        if value != self._installation_status_changed:
+            self._installation_status_changed = value
             self.stateManageButtonChanged.emit()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
