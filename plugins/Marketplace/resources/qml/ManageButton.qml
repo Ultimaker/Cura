@@ -8,17 +8,13 @@ import QtQuick.Layouts 1.1
 import UM 1.6 as UM
 import Cura 1.6 as Cura
 
-RowLayout
+Item
 {
     id: manageButton
     property string button_style
-    property string primaryText
-    property string secondaryText
-    property string busyPrimaryText
-    property string busySecondaryText
-    property string confirmedPrimaryText
-    property string confirmedSecondaryText
-    property bool confirmedTextChoice: true
+    property string text
+    property bool busy
+    property bool confirmed
 
     signal clicked(bool primary_action)
 
@@ -27,12 +23,10 @@ RowLayout
         Cura.PrimaryButton
         {
             id: primaryButton
-            enabled: manageButton.enabled
-            text: manageButton.primaryText
+            text: manageButton.text
 
             onClicked:
             {
-                manageButton.confirmedTextChoice = true
                 manageButton.clicked(true)
             }
         }
@@ -43,12 +37,10 @@ RowLayout
         Cura.SecondaryButton
         {
             id: secondaryButton
-            enabled: manageButton.enabled
-            text: manageButton.secondaryText
+            text: manageButton.text
 
             onClicked:
             {
-                manageButton.confirmedTextChoice = false
                 manageButton.clicked(false)
             }
         }
@@ -59,8 +51,6 @@ RowLayout
         Item
         {
             id: busyMessage
-            height: UM.Theme.getSize("action_button").height
-            width: childrenRect.width
 
             UM.RecolorImage
             {
@@ -91,7 +81,7 @@ RowLayout
                 anchors.left: busyIndicator.right
                 anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
                 anchors.verticalCenter: parent.verticalCenter
-                text: manageButton.busyMessageText
+                text: manageButton.text
 
                 font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("primary")
@@ -111,7 +101,7 @@ RowLayout
             {
                 id: confirmedMessageText
                 anchors.verticalCenter: parent.verticalCenter
-                text: manageButton.confirmedTextChoice ? manageButton.confirmedPrimaryText : manageButton.confirmedSecondaryText
+                text: manageButton.text
 
                 font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("primary")
@@ -119,8 +109,12 @@ RowLayout
         }
     }
 
+    height: UM.Theme.getSize("action_button").height
+    width: childrenRect.width
+
     Loader
     {
+
         sourceComponent:
         {
             switch (manageButton.button_style)

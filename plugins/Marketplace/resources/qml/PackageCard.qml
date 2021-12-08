@@ -257,15 +257,34 @@ Rectangle
                     ManageButton
                     {
                         id: enableManageButton
-                        button_style: !(installManageButton.confirmed || updateManageButton.confirmed) || enableManageButton.confirmed ? packageData.stateManageEnableButton : "hidden"
+                        visible: !(installManageButton.confirmed || updateManageButton.confirmed) || enableManageButton.confirmed
+                        button_style: packageData.stateManageEnableButton
                         Layout.alignment: Qt.AlignTop
-                        primaryText: catalog.i18nc("@button", "Enable")
-                        busyPrimaryText: catalog.i18nc("@button", "Enabling...")
-                        confirmedPrimaryText: catalog.i18nc("@button", "Enabled")
-                        secondaryText: catalog.i18nc("@button", "Disable")
-                        busySecondaryText: catalog.i18nc("@button", "Disabling...")
-                        confirmedSecondaryText: catalog.i18nc("@button", "Disabled")
-                        enabled: !(installManageButton.busy || updateManageButton.busy)
+                        busy: packageData.enableManageButton == "busy"
+                        confirmed: packageData.enableManageButton == "confirmed"
+                        text: {
+                            switch (packageData.stateManageEnableButton) {
+                                case "primary":
+                                    return catalog.i18nc("@button", "Enable");
+                                case "secondary":
+                                    return catalog.i18nc("@button", "Disable");
+                                case "busy":
+                                    if (packageData.installationStatus) {
+                                        return catalog.i18nc("@button", "Enabling...");
+                                    } else {
+                                        return catalog.i18nc("@button", "Disabling...");
+                                    }
+                                case "confirmed":
+                                    if (packageData.installationStatus) {
+                                        return catalog.i18nc("@button", "Enabled");
+                                    } else {
+                                        return catalog.i18nc("@button", "Disabled");
+                                    }
+                                default:
+                                    return "";
+                            }
+                        }
+                        enabled: !installManageButton.busy && !updateManageButton.busy
 
                         onClicked:
                         {
@@ -283,16 +302,34 @@ Rectangle
                     ManageButton
                     {
                         id: installManageButton
-                        button_style: (root.manageableInListView || installManageButton.confirmed) && !(enableManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageInstallButton : "hidden"
+                        visible: (root.manageableInListView || installManageButton.confirmed) && !(enableManageButton.confirmed || updateManageButton.confirmed)
+                        button_style: packageData.stateManageInstallButton
+                        busy: packageData.stateManageInstallButton == "busy"
+                        confirmed: packageData.stateManageInstallButton == "confirmed"
                         Layout.alignment: Qt.AlignTop
-                        primaryText: catalog.i18nc("@button", "Install")
-                        busyPrimaryText: catalog.i18nc("@button", "Installing...")
-                        confirmedPrimaryText: catalog.i18nc("@button", "Installed")
-                        secondaryText: catalog.i18nc("@button", "Uninstall")
-                        busySecondaryText: catalog.i18nc("@button", "Uninstalling...")
-                        confirmedSecondaryText: catalog.i18nc("@button", "Uninstalled")
-                        confirmedTextChoice: packageData.installationStatus
-                        enabled: !(enableManageButton.busy || updateManageButton.busy)
+                        text: {
+                            switch (packageData.stateManageInstallButton) {
+                                case "primary":
+                                    return catalog.i18nc("@button", "Install");
+                                case "secondary":
+                                    return catalog.i18nc("@button", "Uninstall");
+                                case "busy":
+                                    if (packageData.installationStatus) {
+                                        return catalog.i18nc("@button", "Installing...");
+                                    } else {
+                                        return catalog.i18nc("@button", "Uninstalling...");
+                                    }
+                                case "confirmed":
+                                    if (packageData.installationStatus) {
+                                        return catalog.i18nc("@button", "Installed");
+                                    } else {
+                                        return catalog.i18nc("@button", "Uninstalled");
+                                    }
+                                default:
+                                    return "";
+                            }
+                        }
+                        enabled: !enableManageButton.busy && !updateManageButton.busy
 
                         onClicked:
                         {
@@ -310,12 +347,26 @@ Rectangle
                     ManageButton
                     {
                         id: updateManageButton
-                        button_style: (root.manageableInListView) && (!installManageButton.confirmed || updateManageButton.confirmed) ? packageData.stateManageUpdateButton : "hidden"
+                        visible: (root.manageableInListView) && (!installManageButton.confirmed || updateManageButton.confirmed)
+
+                        button_style: packageData.stateManageUpdateButton
+                        busy: packageData.stateManageUpdateButton == "busy"
+                        confirmed: packageData.stateManageUpdateButton == "confirmed"
                         Layout.alignment: Qt.AlignTop
-                        primaryText: catalog.i18nc("@button", "Update")
-                        busyPrimaryText: catalog.i18nc("@button", "Updating...")
-                        confirmedPrimaryText: catalog.i18nc("@button", "Updated")
-                        enabled: !(installManageButton.busy || enableManageButton.busy)
+                        enabled: !installManageButton.busy && !enableManageButton.busy
+
+                        text: {
+                            switch (packageData.stateManageInstallButton) {
+                                case "primary":
+                                    return catalog.i18nc("@button", "Update");
+                                case "busy":
+                                    return catalog.i18nc("@button", "Updating...");
+                                case "confirmed":
+                                    return catalog.i18nc("@button", "Updated");
+                                default:
+                                    return "";
+                            }
+                        }
 
                         onClicked: packageData.updatePackageTriggered(packageData.packageId)
                     }
