@@ -187,7 +187,7 @@ Item
                 busy: false
                 confirmed: false
 
-                button_style: packageData.isInstalled && !packageData.isActive
+                button_style: !packageData.isActive
                 Layout.alignment: Qt.AlignTop
 
                 text: button_style ? catalog.i18nc("@button", "Enable") : catalog.i18nc("@button", "Disable")

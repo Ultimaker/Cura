@@ -11,6 +11,7 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
+from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 
 catalog = i18nCatalog("cura")
@@ -93,6 +94,9 @@ class PackageModel(QObject):
             self.setIsInstalling(False)
 
         self._package_manager.installedPackagesChanged.connect(finished_installed)
+        self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
+        self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
+        self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
 
     def __eq__(self, other: object):
         if isinstance(other, PackageModel):
@@ -310,6 +314,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isActive(self):
+        Logger.debug(f"getDisabledPlugins = {self._plugin_registry.getDisabledPlugins()}")
         return not self._package_id in self._plugin_registry.getDisabledPlugins()
 
     def setIsInstalling(self, value: bool) -> None:

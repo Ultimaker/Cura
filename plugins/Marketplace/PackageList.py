@@ -267,8 +267,6 @@ class PackageList(ListModel):
         package.installPackageTriggered.connect(self.installPackage)
         package.uninstallPackageTriggered.connect(self.uninstallPackage)
         package.updatePackageTriggered.connect(self.updatePackage)
-        package.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
-        package.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
 
     def installPackage(self, package_id: str) -> None:
         """Install a package from the Marketplace
