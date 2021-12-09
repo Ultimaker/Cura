@@ -78,23 +78,11 @@ class CuraPackageManager(PackageManager):
     def getAllLocalPackages(self) -> List[Dict[str, Any]]:
         """ returns an unordered list of all the package_info installed, to be installed or to be returned"""
 
-        class PkgInfo:
+
+        class PkgInfo(dict):
             # Needed helper class because a dict isn't hashable
-            def __init__(self, package_info):
-                self._info = package_info
-
             def __eq__(self, item):
-                return item == self._info["package_id"]
-
-            def __repr__(self):
-                return repr(self._info)
-
-            def __iter__(self):
-                for k, v in self._info.items():
-                    yield k, v
-
-            def asdict(self):
-                return self._info
+                return item == self["package_id"]
 
         packages = [PkgInfo(package_info) for package in self.getAllInstalledPackagesInfo().values() for package_info in package]
         packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToRemove().values() if package["package_info"]["package_id"] not in packages])
