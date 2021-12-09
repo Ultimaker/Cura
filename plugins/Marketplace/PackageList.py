@@ -184,7 +184,6 @@ class PackageList(ListModel):
         to_be_installed = self._manager.installPackage(package_path) is not None
         package = self.getPackageModel(package_id)
         # TODO handle failure
-        package.isRecentlyInstalledChanged.emit(update)
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
@@ -268,8 +267,8 @@ class PackageList(ListModel):
         package.installPackageTriggered.connect(self.installPackage)
         package.uninstallPackageTriggered.connect(self.uninstallPackage)
         package.updatePackageTriggered.connect(self.updatePackage)
-        package.enablePackageTriggered.connect(self.enablePackage)
-        package.disablePackageTriggered.connect(self.disablePackage)
+        package.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
+        package.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
 
     def installPackage(self, package_id: str) -> None:
         """Install a package from the Marketplace
@@ -288,7 +287,6 @@ class PackageList(ListModel):
         package = self.getPackageModel(package_id)
         self._manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
-        package.isRecentlyInstalledChanged.emit(False)
 
     def updatePackage(self, package_id: str) -> None:
         """Update a package from the Marketplace
@@ -299,21 +297,3 @@ class PackageList(ListModel):
         self._manager.removePackage(package_id, force_add = True)
         url = package.download_url
         self.download(package_id, url, True)
-
-    def enablePackage(self, package_id: str) -> None:
-        """Enable a package in the plugin registry
-
-        :param package_id: the package identification string
-        """
-        package = self.getPackageModel(package_id)
-        self._plugin_registry.enablePlugin(package_id)
-        package.is_active = True
-
-    def disablePackage(self, package_id: str) -> None:
-        """Disable a package in the plugin registry
-
-        :param package_id: the package identification string
-        """
-        package = self.getPackageModel(package_id)
-        self._plugin_registry.disablePlugin(package_id)
-        package.is_active = False

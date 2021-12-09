@@ -3,22 +3,21 @@
 
 import re
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, cast, Dict, List, Optional
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from cura.CuraApplication import CuraApplication
+from cura.CuraPackageManager import CuraPackageManager
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
+from UM.PluginRegistry import PluginRegistry
 
 catalog = i18nCatalog("cura")
 
 class PackageModel(QObject):
     """
     Represents a package, containing all the relevant information to be displayed about a package.
-
-    Effectively this behaves like a glorified named tuple, but as a QObject so that its properties can be obtained from
-    QML. The model can also be constructed directly from a response received by the API.
     """
 
     def __init__(self, package_data: Dict[str, Any], section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
@@ -29,10 +28,11 @@ class PackageModel(QObject):
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
         super().__init__(parent)
+        self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+        self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
+
         self._package_id = package_data.get("package_id", "UnknownPackageId")
         self._package_type = package_data.get("package_type", "")
-        self._is_installed = package_data.get("is_installed", False)
-        self._is_active = package_data.get("is_active", False)
         self._is_bundled = package_data.get("is_bundled", False)
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
@@ -89,13 +89,11 @@ class PackageModel(QObject):
 
         self.updatePackageTriggered.connect(update_clicked)
 
-        def finished_installed(is_updating):
-            if is_updating:
-                self.setIsUpdating(False)
-            else:
-                self.setIsInstalling(False)
+        def finished_installed():
+            self.setIsUpdating(False)
+            self.setIsInstalling(False)
 
-        self.isRecentlyInstalledChanged.connect(finished_installed)
+        self._package_manager.installedPackagesChanged.connect(finished_installed)
 
     def __eq__(self, other: object):
         if isinstance(other, PackageModel):
@@ -313,30 +311,9 @@ class PackageModel(QObject):
 
     isRecentlyInstalledChanged = pyqtSignal(bool)
 
-    # --- enabling ---
-
     @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def stateManageEnableButton(self) -> bool:
-        """The state of the manage Enable Button of this package"""
-        return not (self._is_installed and self._is_active)
-
-    @property
-    def is_active(self) -> bool:
-        """Flag if the package is currently active"""
-        return self._is_active
-
-    @is_active.setter
-    def is_active(self, value: bool) -> None:
-        if value != self._is_active:
-            self._is_active = value
-            self.stateManageButtonChanged.emit()
-
-    # --- Installing ---
-
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def stateManageInstallButton(self) -> bool:
-        """The state of the Manage Install package card"""
-        return not self._is_installed
+    def isActive(self):
+        return not self._package_id in self._plugin_registry.getDisabledPlugins()
 
     def setIsInstalling(self, value: bool) -> None:
         if value != self._is_installing:
@@ -358,15 +335,15 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:
-        return self._package_id in CuraApplication.getInstance().getPackageManager().local_packages
+        return self._package_id in self._package_manager.local_packages_id
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isRecentlyInstalled(self) -> bool:
-        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall() or self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToRemove()
+        return self._package_id in self._package_manager.getPackagesToInstall()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def isUninstalled(self) -> bool:
-        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToRemove()
+    def isRecentlyUninstalled(self) -> bool:
+        return self._package_id in self._package_manager.getPackagesToRemove()
 
     def setCanDowngrade(self, value: bool) -> None:
         if value != self._can_downgrade:
@@ -377,8 +354,6 @@ class PackageModel(QObject):
     def canDowngrade(self) -> bool:
         """Flag if the installed package can be downgraded to a bundled version"""
         return self._can_downgrade
-
-    # --- Updating ---
 
     def setIsUpdating(self, value):
         if value != self._is_updating:
@@ -391,7 +366,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isRecentlyUpdated(self):
-        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall() and self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToRemove()
+        return self._package_id in self._package_manager.getPackagesToInstall() and self._package_id in self._package_manager.getPackagesToRemove()
 
     @property
     def can_update(self) -> bool:

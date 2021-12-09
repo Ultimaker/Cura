@@ -187,7 +187,7 @@ Item
                 busy: false
                 confirmed: false
 
-                button_style: packageData.stateManageEnableButton
+                button_style: packageData.isInstalled && packageData.isActive
                 Layout.alignment: Qt.AlignTop
 
                 text: packageData.stateManageEnableButton ? catalog.i18nc("@button", "Enable") : catalog.i18nc("@button", "Disable")
@@ -213,23 +213,23 @@ Item
                 enabled: !packageData.isUpdating
 
                 busy: packageData.isInstalling
-                confirmed: packageData.isRecentlyInstalled
+                confirmed: packageData.isRecentlyInstalled || packageData.isRecentlyUninstalled
 
-                button_style: packageData.stateManageInstallButton
+                button_style: !packageData.isInstalled
                 Layout.alignment: Qt.AlignTop
 
                 text:
                 {
-                    if (packageData.stateManageInstallButton)
+                    if (packageData.isRecentlyInstalled) { return catalog.i18nc("@button", "Installed"); }
+                    if (packageData.isRecentlyUninstalled) { return catalog.i18nc("@button", "Uninstalled"); }
+                    if (button_style)
                     {
                         if (packageData.isInstalling) { return catalog.i18nc("@button", "Installing..."); }
-                        else if (packageData.isRecentlyInstalled) { return catalog.i18nc("@button", "Installed"); }
                         else { return catalog.i18nc("@button", "Install"); }
                     }
                     else
                     {
                         if (packageData.isInstalling) { return catalog.i18nc("@button", "Uninstalling..."); }
-                        else if (packageData.isUninstalled) { return catalog.i18nc("@button", "Uninstalled"); }
                         else { return catalog.i18nc("@button", "Uninstall"); }
                     }
                 }
