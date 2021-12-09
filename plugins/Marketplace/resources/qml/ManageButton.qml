@@ -16,19 +16,17 @@ Item
     property bool busy
     property bool confirmed
 
+    Layout.preferredWidth: childrenRect.width
+    Layout.preferredHeight: childrenRect.height
+
     signal clicked(bool primary_action)
 
     property Component primaryButton: Component
     {
         Cura.PrimaryButton
         {
-            id: primaryButton
             text: manageButton.text
-
-            onClicked:
-            {
-                manageButton.clicked(true)
-            }
+            onClicked: manageButton.clicked(true)
         }
     }
 
@@ -36,13 +34,8 @@ Item
     {
         Cura.SecondaryButton
         {
-            id: secondaryButton
             text: manageButton.text
-
-            onClicked:
-            {
-                manageButton.clicked(false)
-            }
+            onClicked: manageButton.clicked(false)
         }
     }
 
@@ -50,7 +43,8 @@ Item
     {
         Item
         {
-            id: busyMessage
+            height: UM.Theme.getSize("action_button").height
+            width: childrenRect.width
 
             UM.RecolorImage
             {
@@ -76,7 +70,6 @@ Item
             }
             Label
             {
-                id: busyMessageText
                 visible: parent.visible
                 anchors.left: busyIndicator.right
                 anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
@@ -93,13 +86,11 @@ Item
     {
         Item
         {
-
             height: UM.Theme.getSize("action_button").height
             width: childrenRect.width
 
             Label
             {
-                id: confirmedMessageText
                 anchors.verticalCenter: parent.verticalCenter
                 text: manageButton.text
 
@@ -108,9 +99,6 @@ Item
             }
         }
     }
-
-    height: UM.Theme.getSize("action_button").height
-    width: childrenRect.width
 
     Loader
     {
