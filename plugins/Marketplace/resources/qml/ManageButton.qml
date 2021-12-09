@@ -55,12 +55,11 @@ Item
             UM.RecolorImage
             {
                 id: busyIndicator
+                visible: parent.visible
+                height: UM.Theme.getSize("action_button").height - 2 * UM.Theme.getSize("narrow_margin").height
                 width: height
                 anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.topMargin: UM.Theme.getSize("narrow_margin").height
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: anchors.topMargin
+                anchors.verticalCenter: parent.verticalCenter
 
                 source: UM.Theme.getIcon("Spinner")
                 color: UM.Theme.getColor("primary")
@@ -78,6 +77,7 @@ Item
             Label
             {
                 id: busyMessageText
+                visible: parent.visible
                 anchors.left: busyIndicator.right
                 anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
                 anchors.verticalCenter: parent.verticalCenter
