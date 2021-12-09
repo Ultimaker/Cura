@@ -67,7 +67,6 @@ class PackageModel(QObject):
 
         self._can_update = False
         self._is_updating = False
-        self._can_downgrade = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
@@ -309,8 +308,6 @@ class PackageModel(QObject):
 
     disablePackageTriggered = pyqtSignal(str)
 
-    isRecentlyInstalledChanged = pyqtSignal(bool)
-
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isActive(self):
         return not self._package_id in self._plugin_registry.getDisabledPlugins()
@@ -345,15 +342,10 @@ class PackageModel(QObject):
     def isRecentlyUninstalled(self) -> bool:
         return self._package_id in self._package_manager.getPackagesToRemove()
 
-    def setCanDowngrade(self, value: bool) -> None:
-        if value != self._can_downgrade:
-            self._can_downgrade = value
-            self.stateManageButtonChanged.emit()
-
-    @pyqtProperty(bool, fset = setCanDowngrade, notify = stateManageButtonChanged)
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
     def canDowngrade(self) -> bool:
         """Flag if the installed package can be downgraded to a bundled version"""
-        return self._can_downgrade
+        return self._package_manager.canDowngrade(self._package_id)
 
     def setIsUpdating(self, value):
         if value != self._is_updating:

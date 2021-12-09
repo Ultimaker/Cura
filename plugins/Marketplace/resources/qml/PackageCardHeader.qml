@@ -220,8 +220,12 @@ Item
 
                 text:
                 {
+                    if (packageData.canDowngrade) { return catalog.i18nc("@button", "Downgrade"); }
                     if (packageData.isRecentlyInstalled) { return catalog.i18nc("@button", "Installed"); }
-                    if (packageData.isRecentlyUninstalled) { return catalog.i18nc("@button", "Uninstalled"); }
+                    if (packageData.isRecentlyUninstalled)
+                    {
+                        if (packageData.canDowngrade) { return catalog.i18nc("@button", "Downgraded") }
+                        else { return catalog.i18nc("@button", "Uninstalled"); } }
                     if (button_style)
                     {
                         if (packageData.isInstalling) { return catalog.i18nc("@button", "Installing..."); }
