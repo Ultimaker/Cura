@@ -368,13 +368,12 @@ class PackageModel(QObject):
     def isRecentlyUpdated(self):
         return self._package_id in self._package_manager.getPackagesToInstall() and self._package_id in self._package_manager.getPackagesToRemove()
 
-    @property
-    def can_update(self) -> bool:
-        """Flag indicating if the package can be updated"""
-        return self._can_update
-
-    @can_update.setter
-    def can_update(self, value: bool) -> None:
+    def setCanUpdate(self, value: bool) -> None:
         if value != self._can_update:
             self._can_update = value
             self.stateManageButtonChanged.emit()
+
+    @pyqtProperty(bool, fset = setCanUpdate, notify = stateManageButtonChanged)
+    def canUpdate(self) -> bool:
+        """Flag indicating if the package can be updated"""
+        return self._can_update

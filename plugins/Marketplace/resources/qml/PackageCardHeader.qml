@@ -250,7 +250,7 @@ Item
             ManageButton
             {
                 id: updateManageButton
-                visible: (showManageButtons && confirmed) && !installManageButton.confirmed
+                visible: (showManageButtons || confirmed) && packageData.canUpdate && !installManageButton.confirmed
                 enabled: !installManageButton.busy
 
                 busy: packageData.isUpdating

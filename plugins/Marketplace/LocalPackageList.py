@@ -51,7 +51,7 @@ class LocalPackageList(PackageList):
 
         # Obtain and sort the local packages
         self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._manager.local_packages]])
-        self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
+        self.sort(attrgetter("sectionTitle", "_can_update", "displayName"), key = "package", reverse = True)
         self.checkForUpdates(self._manager.local_packages)
 
         self.setIsLoading(False)
@@ -97,9 +97,9 @@ class LocalPackageList(PackageList):
             for package_data in response_data["data"]:
                 package = self.getPackageModel(package_data["package_id"])
                 package.download_url = package_data.get("download_url", "")
-                package.can_update = True
+                package.setCanUpdate(True)
 
-            self.sort(attrgetter("sectionTitle", "can_update", "displayName"), key = "package", reverse = True)
+            self.sort(attrgetter("sectionTitle", "_can_update", "displayName"), key = "package", reverse = True)
             self._ongoing_requests["check_updates"] = None
         except RuntimeError:
             # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
