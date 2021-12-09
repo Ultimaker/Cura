@@ -181,7 +181,7 @@ Item
             ManageButton
             {
                 id: enableManageButton
-                visible: showManageButtons && packageData.isInstalled && !(installManageButton.confirmed || updateManageButton.confirmed)
+                visible: showManageButtons && packageData.isInstalled && !(installManageButton.confirmed || updateManageButton.confirmed || packageData.packageType == "material")
                 enabled: !(installManageButton.busy || updateManageButton.busy)
 
                 busy: false
