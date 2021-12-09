@@ -64,8 +64,6 @@ class PackageModel(QObject):
 
         self._is_installing = False
         self._install_status_changing = False
-        self._is_recently_installed = False
-        self._is_recently_updated = False
 
         self._can_update = False
         self._is_updating = False
@@ -93,10 +91,8 @@ class PackageModel(QObject):
 
         def finished_installed(is_updating):
             if is_updating:
-                self._is_recently_installed = True
                 self.setIsUpdating(False)
             else:
-                self._is_recently_updated
                 self.setIsInstalling(False)
 
         self.isRecentlyInstalledChanged.connect(finished_installed)
@@ -362,7 +358,11 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:
-        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall()
+        return self._package_id in CuraApplication.getInstance().getPackageManager().local_packages
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isRecentlyInstalled(self) -> bool:
+        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall() or self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToRemove()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isUninstalled(self) -> bool:
@@ -389,14 +389,9 @@ class PackageModel(QObject):
     def isUpdating(self):
         return self._is_updating
 
-    def setIsUpdated(self, value):
-        if value != self._is_recently_updated:
-            self._is_recently_updated = value
-            self.stateManageButtonChanged.emit()
-
-    @pyqtProperty(bool, fset = setIsUpdated, notify = stateManageButtonChanged)
-    def isUpdated(self):
-        return self._is_recently_updated
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isRecentlyUpdated(self):
+        return self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToInstall() and self._package_id in CuraApplication.getInstance().getPackageManager().getPackagesToRemove()
 
     @property
     def can_update(self) -> bool:

@@ -181,7 +181,7 @@ Item
             ManageButton
             {
                 id: enableManageButton
-                visible: showManageButtons && !(installManageButton.confirmed || updateManageButton.confirmed)
+                visible: showManageButtons && packageData.isInstalled && !(installManageButton.confirmed || updateManageButton.confirmed)
                 enabled: !(installManageButton.busy || updateManageButton.busy)
 
                 busy: false
@@ -208,12 +208,12 @@ Item
             ManageButton
             {
                 id: installManageButton
-                visible: (showManageButtons || confirmed) && ((packageData.isBundled && packageData.canDowngrade) || !packageData.isBundled || !updateManageButton.confirmed)
+                visible: (showManageButtons || confirmed) && ((packageData.isBundled && packageData.canDowngrade) || !packageData.isBundled) && !updateManageButton.confirmed
 
                 enabled: !packageData.isUpdating
 
                 busy: packageData.isInstalling
-                confirmed: packageData.isInstalled || packageData.isUninstalled
+                confirmed: packageData.isRecentlyInstalled
 
                 button_style: packageData.stateManageInstallButton
                 Layout.alignment: Qt.AlignTop
@@ -223,7 +223,7 @@ Item
                     if (packageData.stateManageInstallButton)
                     {
                         if (packageData.isInstalling) { return catalog.i18nc("@button", "Installing..."); }
-                        else if (packageData.isInstalled) { return catalog.i18nc("@button", "Installed"); }
+                        else if (packageData.isRecentlyInstalled) { return catalog.i18nc("@button", "Installed"); }
                         else { return catalog.i18nc("@button", "Install"); }
                     }
                     else
@@ -254,7 +254,7 @@ Item
                 enabled: !installManageButton.busy
 
                 busy: packageData.isUpdating
-                confirmed: packageData.isUpdated
+                confirmed: packageData.isRecentlyUpdated
 
                 button_style: true
                 Layout.alignment: Qt.AlignTop
@@ -262,7 +262,7 @@ Item
                 text:
                 {
                     if (packageData.isUpdating) { return catalog.i18nc("@button", "Updating..."); }
-                    else if (packageData.isUpdated) { return catalog.i18nc("@button", "Updated"); }
+                    else if (packageData.isRecentlyUpdated) { return catalog.i18nc("@button", "Updated"); }
                     else { return catalog.i18nc("@button", "Update"); }
                 }
 
