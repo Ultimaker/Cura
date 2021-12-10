@@ -49,6 +49,12 @@
         },
         "bottom_layers": {
             "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"
+        },
+        "skin_material_flow": {
+            "value": "0.97 * material_flow"
+        },
+        "infill_material_flow": {
+            "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow"
         }
     }
 }
