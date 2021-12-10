@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkReply
@@ -131,7 +131,7 @@ class RemotePackageList(PackageList):
                 return
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
-        self._ongoing_request = None
+        self._ongoing_requests["get_packages"] = None
         self.setIsLoading(False)
         self.setHasMore(self._request_url != "")
 
@@ -143,9 +143,9 @@ class RemotePackageList(PackageList):
         """
         if error == QNetworkReply.NetworkError.OperationCanceledError:
             Logger.debug("Cancelled request for packages.")
-            self._ongoing_request = None
+            self._ongoing_requests["get_packages"] = None
             return  # Don't show an error about this to the user.
         Logger.error("Could not reach Marketplace server.")
         self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))
-        self._ongoing_request = None
+        self._ongoing_requests["get_packages"] = None
         self.setIsLoading(False)
