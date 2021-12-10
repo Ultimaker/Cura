@@ -35,11 +35,16 @@ class LocalPackageList(PackageList):
             }
     }  # The section headers to be used for the different package categories
 
+
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._has_footer = False
         self._ongoing_requests["check_updates"] = None
-        self._manager.packagesWithUpdateChanged.connect(lambda: self.sort(attrgetter("sectionTitle", "_can_update", "displayName"), key = "package", reverse = True))
+        self._manager.packagesWithUpdateChanged.connect(self._sortSectionsOnUpdate)
+
+    def _sortSectionsOnUpdate(self) -> None:
+        SECTION_ORDER = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
+        self.sort(lambda model: f"{SECTION_ORDER[model.sectionTitle]}_{model._can_update}_{model.displayName}".lower(), key = "package")
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -52,7 +57,7 @@ class LocalPackageList(PackageList):
 
         # Obtain and sort the local packages
         self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._manager.local_packages]])
-        self.sort(attrgetter("sectionTitle", "_can_update", "displayName"), key = "package", reverse = True)
+        self._sortSectionsOnUpdate()
         self.checkForUpdates(self._manager.local_packages)
 
         self.setIsLoading(False)
