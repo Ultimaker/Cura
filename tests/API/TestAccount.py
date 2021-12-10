@@ -80,46 +80,6 @@ def test_errorLoginState(application):
     account._onLoginStateChanged(False, "OMGZOMG!")
     account.loginStateChanged.emit.called_with(False)
 
-
-def test_userName(user_profile):
-    account = Account(MagicMock())
-    mocked_auth_service = MagicMock()
-    account._authorization_service = mocked_auth_service
-    mocked_auth_service.getUserProfile = MagicMock(return_value = user_profile)
-
-    assert account.userName == "username!"
-
-    mocked_auth_service.getUserProfile = MagicMock(return_value=None)
-    assert account.userName is None
-
-
-def test_profileImageUrl(user_profile):
-    account = Account(MagicMock())
-    mocked_auth_service = MagicMock()
-    account._authorization_service = mocked_auth_service
-    mocked_auth_service.getUserProfile = MagicMock(return_value = user_profile)
-
-    assert account.profileImageUrl == "profile_image_url!"
-
-    mocked_auth_service.getUserProfile = MagicMock(return_value=None)
-    assert account.profileImageUrl is None
-
-
-def test_userProfile(user_profile):
-    account = Account(MagicMock())
-    mocked_auth_service = MagicMock()
-    account._authorization_service = mocked_auth_service
-    mocked_auth_service.getUserProfile = MagicMock(return_value=user_profile)
-
-    returned_user_profile = account.userProfile
-    assert returned_user_profile["username"] == "username!"
-    assert returned_user_profile["profile_image_url"] == "profile_image_url!"
-    assert returned_user_profile["user_id"] == "user_id!"
-
-    mocked_auth_service.getUserProfile = MagicMock(return_value=None)
-    assert account.userProfile is None
-
-
 def test_sync_success():
     account = Account(MagicMock())
 

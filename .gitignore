@@ -56,6 +56,10 @@ plugins/SettingsGuide
 plugins/SettingsGuide2
 plugins/SVGToolpathReader
 plugins/X3GWriter
+plugins/CuraFlatPack
+plugins/CuraRemoteSupport
+plugins/ModelCutter
+plugins/PrintProfileCreator
 
 #Build stuff
 CMakeCache.txt
