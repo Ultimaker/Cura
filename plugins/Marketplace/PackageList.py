@@ -165,7 +165,7 @@ class PackageList(ListModel):
         if dialog is not None:
             dialog.deleteLater()
         # reset package card
-        package = self.getPackageModel(package_id)
+        self._manager.packageInstallingFailed.emit(package_id)
 
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install[package_id]
@@ -182,8 +182,9 @@ class PackageList(ListModel):
     def _install(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install.pop(package_id)
         to_be_installed = self._manager.installPackage(package_path) is not None
+        if not to_be_installed:
+            return
         package = self.getPackageModel(package_id)
-        # TODO handle failure
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
@@ -231,14 +232,7 @@ class PackageList(ListModel):
         if reply:
             reply_string = bytes(reply.readAll()).decode()
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
-        try:
-            package = self.getPackageModel(package_id)
-            # TODO: handle error
-        except RuntimeError:
-            # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
-            # between de-/constructing Remote or Local PackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
-            # was deleted when it was still parsing the response
-            return
+        self._manager.packageInstallingFailed.emit(package_id)
 
     def subscribeUserToPackage(self, package_id: str, sdk_version: str) -> None:
         """Subscribe the user (if logged in) to the package for a given SDK

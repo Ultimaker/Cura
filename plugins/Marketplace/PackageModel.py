@@ -16,6 +16,7 @@ from UM.PluginRegistry import PluginRegistry
 
 catalog = i18nCatalog("cura")
 
+
 class PackageModel(QObject):
     """
     Represents a package, containing all the relevant information to be displayed about a package.
@@ -38,7 +39,8 @@ class PackageModel(QObject):
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
         tags = package_data.get("tags", [])
-        self._is_checked_by_ultimaker = (self._package_type == "plugin" and "verified" in tags) or (self._package_type == "material" and "certified" in tags)
+        self._is_checked_by_ultimaker = (self._package_type == "plugin" and "verified" in tags) or (
+                    self._package_type == "material" and "certified" in tags)
         self._package_version = package_data.get("package_version", "")  # Display purpose, no need for 'UM.Version'.
         self._package_info_url = package_data.get("website", "")  # Not to be confused with 'download_url'.
         self._download_count = package_data.get("download_count", 0)
@@ -63,38 +65,32 @@ class PackageModel(QObject):
         if not self._icon_url or self._icon_url == "":
             self._icon_url = author_data.get("icon_url", "")
 
-        self._is_installing = False
-        self._recently_installed = False
-        self._install_status_changing = False
-
         self._can_update = False
-        self._is_updating = False
-        self._recently_updated = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
 
         self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
         self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
-        self.installPackageTriggered.connect(lambda pkg_id, url: self.setIsInstalling(True))
-        self.uninstallPackageTriggered.connect(lambda pkg_id: self.setIsInstalling(True))
-        self.updatePackageTriggered.connect(lambda pkg_id: self.setIsUpdating(True))
 
-        def finished_installed():
-            if self.isInstalling:
-                self._recently_installed = True
-                self.setIsInstalling(False)
-            if self.isUpdating:
-                self._recently_updated = True
-                self._can_update = not self._package_id in self._package_manager.getPackagesToInstall()
-                self.setIsUpdating(False)
+        self._is_updating = False
+        self._is_recently_updated = self._getRecentlyUpdated()
 
-        self._package_manager.installedPackagesChanged.connect(finished_installed)
+        self._is_installing = False
+        self._is_uninstalling = False
+        self._is_recently_installed = self._getRecentlyInstalled()
+
+        self.updatePackageTriggered.connect(lambda pkg: self._setIsUpdating(True))
+        self.installPackageTriggered.connect(lambda pkg, url: self._setIsInstalling(True))
+        self.uninstallPackageTriggered.connect(lambda pkg: self._setIsUninstalling(True))
+
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
+        self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id, True))
+        self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id, True))
+        self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id, False))
+        self._package_manager.packagesWithUpdateChanged.connect(lambda: self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate))
 
-        self._package_manager.packagesWithUpdateChanged.connect(lambda : self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate))
-
-    def __eq__(self, other: object):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, PackageModel):
             return other == self
         elif isinstance(other, str):
@@ -102,7 +98,7 @@ class PackageModel(QObject):
         else:
             return False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<{self._package_id} : {self._package_version} : {self._section_title}>"
 
     def _findLink(self, subdata: Dict[str, Any], link_type: str) -> str:
@@ -218,8 +214,8 @@ class PackageModel(QObject):
     def packageType(self) -> str:
         return self._package_type
 
-    @pyqtProperty(str, constant=True)
-    def iconUrl(self):
+    @pyqtProperty(str, constant = True)
+    def iconUrl(self) -> str:
         return self._icon_url
 
     @pyqtProperty(str, constant = True)
@@ -230,32 +226,32 @@ class PackageModel(QObject):
     def isCheckedByUltimaker(self):
         return self._is_checked_by_ultimaker
 
-    @pyqtProperty(str, constant=True)
-    def packageVersion(self):
+    @pyqtProperty(str, constant = True)
+    def packageVersion(self) -> str:
         return self._package_version
 
-    @pyqtProperty(str, constant=True)
-    def packageInfoUrl(self):
+    @pyqtProperty(str, constant = True)
+    def packageInfoUrl(self) -> str:
         return self._package_info_url
 
-    @pyqtProperty(int, constant=True)
-    def downloadCount(self):
+    @pyqtProperty(int, constant = True)
+    def downloadCount(self) -> str:
         return self._download_count
 
-    @pyqtProperty(str, constant=True)
-    def description(self):
+    @pyqtProperty(str, constant = True)
+    def description(self) -> str:
         return self._description
 
     @pyqtProperty(str, constant = True)
     def formattedDescription(self) -> str:
         return self._formatted_description
 
-    @pyqtProperty(str, constant=True)
-    def authorName(self):
+    @pyqtProperty(str, constant = True)
+    def authorName(self) -> str:
         return self._author_name
 
-    @pyqtProperty(str, constant=True)
-    def authorInfoUrl(self):
+    @pyqtProperty(str, constant = True)
+    def authorInfoUrl(self) -> str:
         return self._author_info_url
 
     @pyqtProperty(str, constant = True)
@@ -312,48 +308,61 @@ class PackageModel(QObject):
 
     disablePackageTriggered = pyqtSignal(str)
 
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def isActive(self):
-        return not self._package_id in self._plugin_registry.getDisabledPlugins()
+    installedPackagesChanged = pyqtSignal(bool)
 
-    def setIsInstalling(self, value: bool) -> None:
-        if value != self._is_installing:
-            self._is_installing = value
-            self.stateManageButtonChanged.emit()
+    uninstalledPackagesChanged = pyqtSignal(bool)
 
-    @pyqtProperty(bool, fset = setIsInstalling, notify = stateManageButtonChanged)
-    def isInstalling(self) -> bool:
-        return self._is_installing
+    updatePackagesChanged = pyqtSignal(bool)
+
+    def _setIsUpdating(self, value: bool) -> None:
+        self._is_updating = value
+
+    def _setIsInstalling(self, value: bool) -> None:
+        self._is_installing = value
+
+    def _setIsUninstalling(self, value: bool) -> None:
+        self._is_uninstalling = value
+
+    def _packageInstalled(self, package_id: str, success: bool) -> None:
+        if self._package_id != package_id:
+            return
+        if self._is_updating:
+            self.updatePackagesChanged.emit(success)
+            self._is_updating = False
+        if self._is_installing:
+            self.installedPackagesChanged.emit(success)
+            self._is_installing = False
+        if self._is_uninstalling:
+            self.uninstalledPackagesChanged.emit(success)
+            self._is_uninstalling = False
+
+    def _getRecentlyInstalled(self) -> bool:
+        return (self._package_id in self._package_manager.getPackagesToInstall() or self._package_id in self._package_manager.getPackagesToRemove()) \
+               and self._package_id not in self._package_manager.package_infosWithUpdate
+
+    @pyqtProperty(bool, constant = True)
+    def isRecentlyInstalledChanged(self) -> bool:
+        return self._is_recently_installed
+
+    def _getRecentlyUpdated(self) -> bool:
+        return self._package_id in self._package_manager.package_infosWithUpdate and self._package_id in self._package_manager.getPackagesToInstall()
+
+    @pyqtProperty(bool, constant = True)
+    def isRecentlyUpdatedChanged(self) -> bool:
+        return self._is_recently_updated
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:
         return self._package_id in self._package_manager.local_packages_id
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def isRecentlyInstalled(self) -> bool:
-        return self._recently_installed and self._package_id in self._package_manager.getPackagesToInstall()
-
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def isRecentlyUninstalled(self) -> bool:
-        return self._package_id in self._package_manager.getPackagesToRemove()
+    def isActive(self) -> bool:
+        return not self._package_id in self._plugin_registry.getDisabledPlugins()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def canDowngrade(self) -> bool:
         """Flag if the installed package can be downgraded to a bundled version"""
         return self._package_manager.canDowngrade(self._package_id)
-
-    def setIsUpdating(self, value):
-        if value != self._is_updating:
-            self._is_updating = value
-            self.stateManageButtonChanged.emit()
-
-    @pyqtProperty(bool, fset = setIsUpdating, notify = stateManageButtonChanged)
-    def isUpdating(self):
-        return self._is_updating
-
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
-    def isRecentlyUpdated(self):
-        return self._recently_updated and self._package_id in self._package_manager.getPackagesToInstall()
 
     def setCanUpdate(self, value: bool) -> None:
         if value != self._can_update:
