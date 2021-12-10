@@ -242,7 +242,7 @@ Item
                 {
                     if (primary_action)
                     {
-                        packageData.installPackageTriggered(packageData.packageId)
+                        packageData.installPackageTriggered(packageData.packageId, packageData.downloadURL)
                     }
                     else
                     {
@@ -270,7 +270,7 @@ Item
                     else { return catalog.i18nc("@button", "Update"); }
                 }
 
-                onClicked: packageData.updatePackageTriggered(packageData.packageId, packageData.downloadURL)
+                onClicked: packageData.updatePackageTriggered(packageData.packageId)
             }
         }
     }

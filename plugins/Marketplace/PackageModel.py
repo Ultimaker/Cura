@@ -64,23 +64,30 @@ class PackageModel(QObject):
             self._icon_url = author_data.get("icon_url", "")
 
         self._is_installing = False
+        self._recently_installed = False
         self._install_status_changing = False
 
         self._can_update = False
         self._is_updating = False
+        self._recently_updated = False
         self._section_title = section_title
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
 
         self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
         self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
-        self.installPackageTriggered.connect(lambda pkg_id: self.setIsInstalling(True))
+        self.installPackageTriggered.connect(lambda pkg_id, url: self.setIsInstalling(True))
         self.uninstallPackageTriggered.connect(lambda pkg_id: self.setIsInstalling(True))
         self.updatePackageTriggered.connect(lambda pkg_id: self.setIsUpdating(True))
 
         def finished_installed():
-            self.setIsUpdating(False)
-            self.setIsInstalling(False)
+            if self.isInstalling:
+                self._recently_installed = True
+                self.setIsInstalling(False)
+            if self.isUpdating:
+                self._recently_updated = True
+                self._can_update = not self._package_id in self._package_manager.getPackagesToInstall()
+                self.setIsUpdating(False)
 
         self._package_manager.installedPackagesChanged.connect(finished_installed)
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
@@ -324,7 +331,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isRecentlyInstalled(self) -> bool:
-        return self._package_id in self._package_manager.getPackagesToInstall()
+        return self._recently_installed and self._package_id in self._package_manager.getPackagesToInstall()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isRecentlyUninstalled(self) -> bool:
@@ -346,7 +353,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isRecentlyUpdated(self):
-        return self._package_id in self._package_manager.getPackagesToInstall() and self._package_id in self._package_manager.getPackagesToRemove()
+        return self._recently_updated and self._package_id in self._package_manager.getPackagesToInstall()
 
     def setCanUpdate(self, value: bool) -> None:
         if value != self._can_update:

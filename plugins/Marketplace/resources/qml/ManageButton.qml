@@ -61,7 +61,7 @@ Item
                 RotationAnimator
                 {
                     target: busyIndicator
-                    running: busyMessage.visible
+                    running: parent.visible
                     from: 0
                     to: 360
                     loops: Animation.Infinite
