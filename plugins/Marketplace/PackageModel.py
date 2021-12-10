@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import re
 from enum import Enum
@@ -45,7 +45,7 @@ class PackageModel(QObject):
         self._description = package_data.get("description", "")
         self._formatted_description = self._format(self._description)
 
-        self.download_url = package_data.get("download_url", "")
+        self._download_url = package_data.get("download_url", "")
         self._release_notes = package_data.get("release_notes", "")  # Not used yet, propose to add to description?
 
         subdata = package_data.get("data", {})
@@ -72,31 +72,20 @@ class PackageModel(QObject):
         self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
 
-        def install_clicked(package_id):
-            self._install_status_changing = True
-            self.setIsInstalling(True)
-
-        self.installPackageTriggered.connect(install_clicked)
-
-        def uninstall_clicked(package_id):
-            self._install_status_changing = False
-            self.setIsInstalling(True)
-
-        self.uninstallPackageTriggered.connect(uninstall_clicked)
-
-        def update_clicked(package_id):
-            self.setIsUpdating(True)
-
-        self.updatePackageTriggered.connect(update_clicked)
+        self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
+        self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
+        self.installPackageTriggered.connect(lambda pkg_id: self.setIsInstalling(True))
+        self.uninstallPackageTriggered.connect(lambda pkg_id: self.setIsInstalling(True))
+        self.updatePackageTriggered.connect(lambda pkg_id: self.setIsUpdating(True))
 
         def finished_installed():
             self.setIsUpdating(False)
             self.setIsInstalling(False)
 
         self._package_manager.installedPackagesChanged.connect(finished_installed)
-        self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
-        self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
+
+        self._package_manager.packagesWithUpdateChanged.connect(lambda : self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate))
 
     def __eq__(self, other: object):
         if isinstance(other, PackageModel):
@@ -298,11 +287,15 @@ class PackageModel(QObject):
     def isBundled(self) -> bool:
         return self._is_bundled
 
+    @pyqtProperty(str, constant = True)
+    def downloadURL(self) -> str:
+        return self._download_url
+
     # --- manage buttons signals ---
 
     stateManageButtonChanged = pyqtSignal()
 
-    installPackageTriggered = pyqtSignal(str)
+    installPackageTriggered = pyqtSignal(str, str)
 
     uninstallPackageTriggered = pyqtSignal(str)
 
@@ -314,7 +307,6 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isActive(self):
-        Logger.debug(f"getDisabledPlugins = {self._plugin_registry.getDisabledPlugins()}")
         return not self._package_id in self._plugin_registry.getDisabledPlugins()
 
     def setIsInstalling(self, value: bool) -> None:
@@ -325,15 +317,6 @@ class PackageModel(QObject):
     @pyqtProperty(bool, fset = setIsInstalling, notify = stateManageButtonChanged)
     def isInstalling(self) -> bool:
         return self._is_installing
-
-    def setInstallStatusChanging(self, value: bool) -> None:
-        if value != self._install_status_changing:
-            self._install_status_changing = value
-            self.stateManageButtonChanged.emit()
-
-    @pyqtProperty(bool, fset = setInstallStatusChanging, notify = stateManageButtonChanged)
-    def installStatusChanging(self) -> bool:
-        return self._install_status_changing
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:

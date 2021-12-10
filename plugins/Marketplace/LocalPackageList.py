@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 from operator import attrgetter
@@ -39,6 +39,7 @@ class LocalPackageList(PackageList):
         super().__init__(parent)
         self._has_footer = False
         self._ongoing_requests["check_updates"] = None
+        self._manager.packagesWithUpdateChanged.connect(lambda: self.sort(attrgetter("sectionTitle", "_can_update", "displayName"), key = "package", reverse = True))
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -92,16 +93,6 @@ class LocalPackageList(PackageList):
         if len(response_data["data"]) == 0:
             return
 
-        try:
-            for package_data in response_data["data"]:
-                package = self.getPackageModel(package_data["package_id"])
-                package.download_url = package_data.get("download_url", "")
-                package.setCanUpdate(True)
-
-            self.sort(attrgetter("sectionTitle", "_can_update", "displayName"), key = "package", reverse = True)
-            self._ongoing_requests["check_updates"] = None
-        except RuntimeError:
-            # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
-            # between de-/constructing RemotePackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
-            # was deleted when it was still parsing the response
-            return
+        packages = response_data["data"]
+        self._manager.setPackagesWithUpdate(dict(zip([p['package_id'] for p in packages], [p for p in packages])))
+        self._ongoing_requests["check_updates"] = None

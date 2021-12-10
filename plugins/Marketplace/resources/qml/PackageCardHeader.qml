@@ -254,7 +254,7 @@ Item
             ManageButton
             {
                 id: updateManageButton
-                visible: (showManageButtons || confirmed) && packageData.canUpdate && !installManageButton.confirmed
+                visible: (showManageButtons || confirmed) && (packageData.canUpdate || confirmed) && !installManageButton.confirmed
                 enabled: !installManageButton.busy
 
                 busy: packageData.isUpdating
@@ -265,12 +265,12 @@ Item
 
                 text:
                 {
-                    if (packageData.isUpdating) { return catalog.i18nc("@button", "Updating..."); }
-                    else if (packageData.isRecentlyUpdated) { return catalog.i18nc("@button", "Updated"); }
+                    if (busy) { return catalog.i18nc("@button", "Updating..."); }
+                    else if (confirmed) { return catalog.i18nc("@button", "Updated"); }
                     else { return catalog.i18nc("@button", "Update"); }
                 }
 
-                onClicked: packageData.updatePackageTriggered(packageData.packageId)
+                onClicked: packageData.updatePackageTriggered(packageData.packageId, packageData.downloadURL)
             }
         }
     }

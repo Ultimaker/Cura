@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 import tempfile
 import json
 import os.path
@@ -268,13 +268,11 @@ class PackageList(ListModel):
         package.uninstallPackageTriggered.connect(self.uninstallPackage)
         package.updatePackageTriggered.connect(self.updatePackage)
 
-    def installPackage(self, package_id: str) -> None:
+    def installPackage(self, package_id: str, url: str) -> None:
         """Install a package from the Marketplace
 
         :param package_id: the package identification string
         """
-        package = self.getPackageModel(package_id)
-        url = package.download_url
         self.download(package_id, url, False)
 
     def uninstallPackage(self, package_id: str) -> None:
@@ -282,7 +280,6 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        package = self.getPackageModel(package_id)
         self._manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
 
@@ -291,7 +288,6 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        package = self.getPackageModel(package_id)
         self._manager.removePackage(package_id, force_add = True)
-        url = package.download_url
+        url = self._manager.packagesWithUpdate[package_id]["download_url"]
         self.download(package_id, url, True)
