@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -163,9 +163,9 @@ class ThreeMFReader(MeshReader):
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
-
+            known_setting_keys = um_node.callDecoration("getStack").getAllKeys()
             for key in settings:
-                setting_value = settings[key]
+                setting_value = settings[key].value
 
                 # Extruder_nr is a special case.
                 if key == "extruder_nr":
@@ -175,7 +175,10 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key, "value", setting_value)
+                if key in known_setting_keys:
+                    setting_container.setProperty(key, "value", setting_value)
+                else:
+                    um_node.metadata[key] = settings[key]
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
             if len(um_node.getAllChildren()) == 1:
@@ -206,6 +209,10 @@ class ThreeMFReader(MeshReader):
             parser = Savitar.ThreeMFParser()
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
+
+            for key, value in scene_3mf.getMetadata().items():
+                CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
+
             for node in scene_3mf.getSceneNodes():
                 um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:

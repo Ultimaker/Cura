@@ -19,6 +19,8 @@ class SettingVisibilityPresetsModel(QObject):
     onItemsChanged = pyqtSignal()
     activePresetChanged = pyqtSignal()
 
+    Version = 2
+
     def __init__(self, preferences: Preferences, parent = None) -> None:
         super().__init__(parent)
 
@@ -31,7 +33,7 @@ class SettingVisibilityPresetsModel(QObject):
         if basic_item is not None:
             basic_visibile_settings = ";".join(basic_item.settings)
         else:
-            Logger.log("w", "Unable to find the basic visiblity preset.")
+            Logger.log("w", "Unable to find the basic visibility preset.")
             basic_visibile_settings = ""
 
         self._preferences = preferences

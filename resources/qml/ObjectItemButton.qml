@@ -13,8 +13,6 @@ Button
 
     width: parent.width
     height: UM.Theme.getSize("action_button").height
-    leftPadding: UM.Theme.getSize("thin_margin").width
-    rightPadding: perObjectSettingsInfo.visible ? UM.Theme.getSize("default_lining").width : UM.Theme.getSize("thin_margin").width
     checkable: true
     hoverEnabled: true
 
@@ -46,14 +44,14 @@ Button
         width: objectItemButton.width - objectItemButton.leftPadding
         height: UM.Theme.getSize("action_button").height
 
-        UM.RecolorImage
+        Rectangle
         {
             id: swatch
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            width: height
-            height: parent.height - UM.Theme.getSize("narrow_margin").height
-            source: UM.Theme.getIcon("extruder_button")
+            width: UM.Theme.getSize("standard_arrow").height
+            height: UM.Theme.getSize("standard_arrow").height
+            radius: Math.round(width / 2)
             color: extruderColor
             visible: showExtruderSwatches && extruderColor != ""
         }
@@ -87,7 +85,7 @@ Button
                 right: parent.right
                 rightMargin: 0
             }
-            width: childrenRect.width
+            width: contentItem.width
             height: parent.height
             padding: 0
             leftPadding: UM.Theme.getSize("thin_margin").width
@@ -168,12 +166,12 @@ Button
                     {
                         switch (meshType) {
                             case "support_mesh":
-                                return UM.Theme.getIcon("pos_print_as_support");
+                                return UM.Theme.getIcon("MeshTypeSupport");
                             case "cutting_mesh":
                             case "infill_mesh":
-                                return UM.Theme.getIcon("pos_modify_overlaps");
+                                return UM.Theme.getIcon("MeshTypeIntersect");
                             case "anti_overhang_mesh":
-                                return UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                                return UM.Theme.getIcon("BlockSupportOverlaps");
                         }
                         return "";
                     }

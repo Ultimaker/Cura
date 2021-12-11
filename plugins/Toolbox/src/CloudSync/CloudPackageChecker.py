@@ -37,7 +37,7 @@ class CloudPackageChecker(QObject):
         self._i18n_catalog = i18nCatalog("cura")
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
         self._last_notified_packages = set()  # type: Set[str]
-        """Packages for which a notification has been shown. No need to bother the user twice fo equal content"""
+        """Packages for which a notification has been shown. No need to bother the user twice for equal content"""
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
@@ -66,7 +66,7 @@ class CloudPackageChecker(QObject):
         self._application.getHttpRequestManager().get(url,
                                                       callback = self._onUserPackagesRequestFinished,
                                                       error_callback = self._onUserPackagesRequestFinished,
-                                                      timeout=10,
+                                                      timeout = 10,
                                                       scope = self._scope)
 
     def _onUserPackagesRequestFinished(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:

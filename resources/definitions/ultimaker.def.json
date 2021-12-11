@@ -6,7 +6,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "visible": false,
-        "exclude_materials": [ "generic_hips", "generic_petg", "structur3d_dap100silicone" ]
+        "exclude_materials": [ "generic_hips", "structur3d_dap100silicone" ]
     },
     "overrides": {
         "machine_max_feedrate_e": {
@@ -40,6 +40,21 @@
         {
             "value": false,
             "enabled": false
+        },
+        "skin_angles": {
+            "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]"
+        },
+        "top_layers": {
+            "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))"
+        },
+        "bottom_layers": {
+            "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"
+        },
+        "skin_material_flow": {
+            "value": "0.97 * material_flow"
+        },
+        "infill_material_flow": {
+            "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow"
         }
     }
 }

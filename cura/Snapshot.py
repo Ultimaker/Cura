@@ -3,6 +3,7 @@
 import numpy
 
 from PyQt5 import QtCore
+from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QImage
 
 from cura.PreviewPass import PreviewPass
@@ -25,8 +26,8 @@ class Snapshot:
         pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
         # Find indices of non zero pixels
         nonzero_pixels = numpy.nonzero(pixels)
-        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)
-        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)
+        min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)  # type: ignore
+        max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)  # type: ignore
 
         return min_x, max_x, min_y, max_y
 
@@ -46,6 +47,7 @@ class Snapshot:
         render_width, render_height = (width, height) if active_camera is None else active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
+        QCoreApplication.processEvents()  # This ensures that the opengl context is correctly available
         preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()
@@ -93,7 +95,7 @@ class Snapshot:
             pixel_output = preview_pass.getOutput()
             try:
                 min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
-            except ValueError:
+            except (ValueError, AttributeError):
                 return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)

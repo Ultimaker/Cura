@@ -15,12 +15,6 @@ ComboBox
 {
     id: control
 
-    UM.I18nCatalog
-    {
-        id: catalog
-        name: "cura"
-    }
-
     property var defaultTextOnEmptyModel: catalog.i18nc("@label", "No items to select from")  // Text displayed in the combobox when the model is empty
     property var defaultTextOnEmptyIndex: ""  // Text displayed in the combobox when the model has items but no item is selected
     enabled: delegateModel.count > 0
@@ -62,7 +56,7 @@ ComboBox
         x: control.width - width - control.rightPadding
         y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
-        source: UM.Theme.getIcon("arrow_bottom")
+        source: UM.Theme.getIcon("ChevronSingleDown")
         width: UM.Theme.getSize("standard_arrow").width
         height: UM.Theme.getSize("standard_arrow").height
         sourceSize.width: width + 5 * screenScaleFactor

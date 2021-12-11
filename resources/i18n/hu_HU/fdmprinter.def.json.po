@@ -1,12 +1,12 @@
 # Cura
-# Copyright (C) 2020 Ultimaker B.V.
+# Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.8\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-10-19 13:15+0000\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -156,6 +156,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "A nyomtatási terület mélysége (Y-irány)."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Nyomtatási magasság"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "A nyomtatási terület magassága (Z-irány)."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Tárgyasztal alakja"
@@ -194,16 +204,6 @@ msgstr "Üveg"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Alumínium"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Nyomtatási magasság"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "A nyomtatási terület magassága (Z-irány)."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -421,6 +421,26 @@ msgid "Whether the extruders share a single heater rather than each extruder hav
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle label"
+msgid "Extruders Share Nozzle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle description"
+msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
+msgid "Shared Nozzle Initial Retraction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
+msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Tiltott területek"
@@ -487,8 +507,8 @@ msgstr "Extruder eltolás"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
-msgid "Apply the extruder offset to the coordinate system."
-msgstr "Alkalmazza az extruder eltolását a koordinátarendszerre vonatkoztatva."
+msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -542,8 +562,8 @@ msgstr "A Z motor maximális sebessége."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Adagolás maximum"
+msgid "Maximum Speed E"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -667,8 +687,8 @@ msgstr "Lépés per milliméter (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "Hány lépést kell a motornak megtenni ahhoz, hogy 1 mm mozgás történjen a nyomtatószál adagolásakor."
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -882,8 +902,8 @@ msgstr "Az első réteg vonalszélességének szorzója. Ennek a növelésével 
 
 #: fdmprinter.def.json
 msgctxt "shell label"
-msgid "Shell"
-msgstr "Héj"
+msgid "Walls"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -949,166 +969,6 @@ msgstr "Külső fal tisztítási távolság"
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
 msgstr "A külső fal nyomtatása után, beilleszt egy fej átemelést, a meghatározott távolságra. Ez segít elrejteni a Z varratot."
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr label"
-msgid "Top Surface Skin Extruder"
-msgstr "Felső és külső felületi extruder"
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr description"
-msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr "Az az extruder, amelyik a felső réteg külső lezárását végzi.Ez a funkció csak multiextruderes gépen érhető el."
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count label"
-msgid "Top Surface Skin Layers"
-msgstr "Felső kéreg rétegek"
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count description"
-msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr "A felső felszíni zárórétegek száma. Általában egy felső réteg is elegendő a jó minőségű felső felületek előállításához."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr label"
-msgid "Top/Bottom Extruder"
-msgstr "Alsó/felső extruder"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr description"
-msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr "Az az extruder, amit az alsó/felső felületi rétegek nyomtatásához használunk. Ezt csak multi extruder esetén használhatjuk."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness label"
-msgid "Top/Bottom Thickness"
-msgstr "Alsó/felső vastagság"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness description"
-msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
-msgstr "Az alsó/felső rétegek vastagsága a nyomtatáskor. Ez az érték osztva a rétegmagassággal adja meg az alsó/felső rétegek számát."
-
-#: fdmprinter.def.json
-msgctxt "top_thickness label"
-msgid "Top Thickness"
-msgstr "Felső vastagság"
-
-#: fdmprinter.def.json
-msgctxt "top_thickness description"
-msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
-msgstr "A felső rétegek vastagsága a nyomtatáskor. Ez az érték osztva a rétegmagassággal adja meg az felső rétegek számát."
-
-#: fdmprinter.def.json
-msgctxt "top_layers label"
-msgid "Top Layers"
-msgstr "Felső rétegek"
-
-#: fdmprinter.def.json
-msgctxt "top_layers description"
-msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
-msgstr "A felső rétegek száma. A felső vastagság alapján számítva ezt az értéket egész számra kerekíti."
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness label"
-msgid "Bottom Thickness"
-msgstr "Alsó vastagság"
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness description"
-msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
-msgstr "Az alsó rétegek vastagsága a nyomtatáskor. Ez az érték osztva a rétegmagassággal adja meg az alsó rétegek számát."
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers label"
-msgid "Bottom Layers"
-msgstr "Alsó rétegek"
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers description"
-msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "Az alsó rétegek száma. Az alsó vastagság alapján számítva ezt az értéket egész számra kerekíti."
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers label"
-msgid "Initial Bottom Layers"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers description"
-msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern label"
-msgid "Top/Bottom Pattern"
-msgstr "Alsó/felső mintázat"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern description"
-msgid "The pattern of the top/bottom layers."
-msgstr "Az alsó/felső rétegek mintázata."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option lines"
-msgid "Lines"
-msgstr "Vonalas"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option concentric"
-msgid "Concentric"
-msgstr "Körkörös"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "Cikcakk"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 label"
-msgid "Bottom Pattern Initial Layer"
-msgstr "Alsó kezdő réteg mintázata"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 description"
-msgid "The pattern on the bottom of the print on the first layer."
-msgstr "A legalsóbb, kezdő réteg mintázata."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option lines"
-msgid "Lines"
-msgstr "Vonalas"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option concentric"
-msgid "Concentric"
-msgstr "Körkörös"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option zigzag"
-msgid "Zig Zag"
-msgstr "Cikcakk"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons label"
-msgid "Connect Top/Bottom Polygons"
-msgstr "Alsó/felső poligonok kapcsolása"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "Az alsó/felső rétegpályákat kapcsolja össze, ahol egymás mellett futnak.Ha ezt a beállítást engedélyezzük a körkörös mintázatnál, jelentősen csökkenthetjük a fej átemelési időt, mivel a kapcsolódások félúton terténhetnek meg. Ez azonban ronthatja a felső felület minőségét."
-
-#: fdmprinter.def.json
-msgctxt "skin_angles label"
-msgid "Top/Bottom Line Directions"
-msgstr "Alsó/felső vonal irányok"
-
-#: fdmprinter.def.json
-msgctxt "skin_angles description"
-msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "Az egész vonal-irányok listája, amelyet akkor kell használni, ha az alsó/felső rétegek a vonalas vagy cikcakk mintákat használják.A lista elemeit egymás után használják a rétegek előrehaladtával, és amikor a lista vége eléri, akkor újra előlről kezdi.A lista elemeit vesszők választják el, és a teljes listát szögletes zárójelben tartalmazza. Az Alapértelmezés egy üres lista, amely azt jelenti, hogy a hagyományos alapértelmezett szögeket (45 és 135 fok) kell használni."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1416,6 +1276,186 @@ msgid "When enabled, the z seam coordinates are relative to each part's centre. 
 msgstr "Ha engedélyezve van, a z varrás koordinátái az egyes alkatrészek középpontjához viszonyítva vannak. Letiltva a koordináták meghatározzák az abszolút helyzetét a tárgyasztalon."
 
 #: fdmprinter.def.json
+msgctxt "top_bottom label"
+msgid "Top/Bottom"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "top_bottom description"
+msgid "Top/Bottom"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr label"
+msgid "Top Surface Skin Extruder"
+msgstr "Felső és külső felületi extruder"
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr description"
+msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
+msgstr "Az az extruder, amelyik a felső réteg külső lezárását végzi.Ez a funkció csak multiextruderes gépen érhető el."
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count label"
+msgid "Top Surface Skin Layers"
+msgstr "Felső kéreg rétegek"
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count description"
+msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
+msgstr "A felső felszíni zárórétegek száma. Általában egy felső réteg is elegendő a jó minőségű felső felületek előállításához."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr label"
+msgid "Top/Bottom Extruder"
+msgstr "Alsó/felső extruder"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr description"
+msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
+msgstr "Az az extruder, amit az alsó/felső felületi rétegek nyomtatásához használunk. Ezt csak multi extruder esetén használhatjuk."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness label"
+msgid "Top/Bottom Thickness"
+msgstr "Alsó/felső vastagság"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness description"
+msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
+msgstr "Az alsó/felső rétegek vastagsága a nyomtatáskor. Ez az érték osztva a rétegmagassággal adja meg az alsó/felső rétegek számát."
+
+#: fdmprinter.def.json
+msgctxt "top_thickness label"
+msgid "Top Thickness"
+msgstr "Felső vastagság"
+
+#: fdmprinter.def.json
+msgctxt "top_thickness description"
+msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
+msgstr "A felső rétegek vastagsága a nyomtatáskor. Ez az érték osztva a rétegmagassággal adja meg az felső rétegek számát."
+
+#: fdmprinter.def.json
+msgctxt "top_layers label"
+msgid "Top Layers"
+msgstr "Felső rétegek"
+
+#: fdmprinter.def.json
+msgctxt "top_layers description"
+msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
+msgstr "A felső rétegek száma. A felső vastagság alapján számítva ezt az értéket egész számra kerekíti."
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness label"
+msgid "Bottom Thickness"
+msgstr "Alsó vastagság"
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness description"
+msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
+msgstr "Az alsó rétegek vastagsága a nyomtatáskor. Ez az érték osztva a rétegmagassággal adja meg az alsó rétegek számát."
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers label"
+msgid "Bottom Layers"
+msgstr "Alsó rétegek"
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers description"
+msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "Az alsó rétegek száma. Az alsó vastagság alapján számítva ezt az értéket egész számra kerekíti."
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern label"
+msgid "Top/Bottom Pattern"
+msgstr "Alsó/felső mintázat"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern description"
+msgid "The pattern of the top/bottom layers."
+msgstr "Az alsó/felső rétegek mintázata."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option lines"
+msgid "Lines"
+msgstr "Vonalas"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option concentric"
+msgid "Concentric"
+msgstr "Körkörös"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Cikcakk"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 label"
+msgid "Bottom Pattern Initial Layer"
+msgstr "Alsó kezdő réteg mintázata"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 description"
+msgid "The pattern on the bottom of the print on the first layer."
+msgstr "A legalsóbb, kezdő réteg mintázata."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option lines"
+msgid "Lines"
+msgstr "Vonalas"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option concentric"
+msgid "Concentric"
+msgstr "Körkörös"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option zigzag"
+msgid "Zig Zag"
+msgstr "Cikcakk"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr "Alsó/felső poligonok kapcsolása"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "Az alsó/felső rétegpályákat kapcsolja össze, ahol egymás mellett futnak.Ha ezt a beállítást engedélyezzük a körkörös mintázatnál, jelentősen csökkenthetjük a fej átemelési időt, mivel a kapcsolódások félúton terténhetnek meg. Ez azonban ronthatja a felső felület minőségét."
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_angles label"
+msgid "Top/Bottom Line Directions"
+msgstr "Alsó/felső vonal irányok"
+
+#: fdmprinter.def.json
+msgctxt "skin_angles description"
+msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "Az egész vonal-irányok listája, amelyet akkor kell használni, ha az alsó/felső rétegek a vonalas vagy cikcakk mintákat használják.A lista elemeit egymás után használják a rétegek előrehaladtával, és amikor a lista vége eléri, akkor újra előlről kezdi.A lista elemeit vesszők választják el, és a teljes listát szögletes zárójelben tartalmazza. Az Alapértelmezés egy üres lista, amely azt jelenti, hogy a hagyományos alapértelmezett szögeket (45 és 135 fok) kell használni."
+
+#: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
 msgstr "Felület nélküli Z hézag"
@@ -1474,6 +1514,16 @@ msgstr "Körkörös"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Cikcakk"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1556,6 +1606,86 @@ msgid "Adjust the amount of overlap between the walls and (the endpoints of) the
 msgstr "Az átfedés mértékét állítja be a falak és a felszíni vonalak középpontjainak végpontjai között. Az enyhe átfedés lehetővé teszi a falak szoros kapcsolódását  a felszínhez. Vegye figyelembe, hogy ha a kéreg és a fal vonalszélessége egyenlő, akkor a fal szélességének felét meghaladó érték bármilyen felszín esetén  áthaladhat a falon, mert ezen a ponton a kéreg-extruder fúvóka pozíciója már elérheti a fal közepén."
 
 #: fdmprinter.def.json
+msgctxt "skin_preshrink label"
+msgid "Skin Removal Width"
+msgstr "Kéreg eltávolítás szélessége"
+
+#: fdmprinter.def.json
+msgctxt "skin_preshrink description"
+msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
+msgstr "Az eltávolítandó kéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek alsó és felső részének nyomtatásához felhasznált időt és anyagot."
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink label"
+msgid "Top Skin Removal Width"
+msgstr "Felső kéreg eltávolítási szélesség"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink description"
+msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
+msgstr "Az eltávolítandó felső kéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek felső részének nyomtatásához felhasznált időt és anyagot."
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink label"
+msgid "Bottom Skin Removal Width"
+msgstr "Alsó kéreg eltávolítási szélesség"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink description"
+msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
+msgstr "Az eltávolítandó alsókéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek alsó részének nyomtatásához felhasznált időt és anyagot."
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance label"
+msgid "Skin Expand Distance"
+msgstr "Kéreg bővítési távolság"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance description"
+msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
+msgstr "A kéreg felületek a kitöltésig jönnek létre. Ha bővítjük a kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance label"
+msgid "Top Skin Expand Distance"
+msgstr "Felső kéreg bővítési távolság"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance description"
+msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
+msgstr "A felső kéreg felületek a kitöltésig jönnek létre. Ha bővítjük a felső kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance label"
+msgid "Bottom Skin Expand Distance"
+msgstr "Alsó kéreg bővítési távolság"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance description"
+msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
+msgstr "Az alsó kéreg felületek a kitöltésig jönnek létre. Ha bővítjük az alsó kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion label"
+msgid "Maximum Skin Angle for Expansion"
+msgstr "A kéreg bővítés maximális szöge"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion description"
+msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion label"
+msgid "Minimum Skin Width for Expansion"
+msgstr "A minimális kéregszélesség kibővítéshez"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion description"
+msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
+msgstr "Az ennél keskenyebb kéregfelületek nem bővülnek ki. Ezzel elkerülhető, hogy keskeny kéregfelületek kibővüljenek, amik akkor jönnek létre, mikor a modell külső felületének lejtése közel van a függőlegeshez."
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr "Kitöltés"
@@ -1602,8 +1732,8 @@ msgstr "Kitöltési Minta"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "A kitöltés mintázata. A vonal és a cikcakk felváltva cserélgeti az irányát rétegenként, csökkentve ezzel az anyagköltséget. A rács, háromszög, háromhatszög,kocka, oktett, negyed kocka, kereszt és koncentrikus mintákat minden rétegben nyomtatjuk. A gyroid, a kocka, a negyedkocka, és az oktett töltés minden rétegben változik, és így egyenletesebb az erő eloszlása minden irányban."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1669,6 +1799,11 @@ msgstr "3D kereszt"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Gyroid"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1865,86 +2000,6 @@ msgid "The minimum angle of internal overhangs for which infill is added. At a v
 msgstr "Az a belső túlnyúlási szög, amihez szükséges kitöltést hozzáadni. Ha ez 0°, a test teljes mértékben kitöltésre kerül. Ha az érték 90°, akkor nem lesz semmiféle kitöltés."
 
 #: fdmprinter.def.json
-msgctxt "skin_preshrink label"
-msgid "Skin Removal Width"
-msgstr "Kéreg eltávolítás szélessége"
-
-#: fdmprinter.def.json
-msgctxt "skin_preshrink description"
-msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "Az eltávolítandó kéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek alsó és felső részének nyomtatásához felhasznált időt és anyagot."
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink label"
-msgid "Top Skin Removal Width"
-msgstr "Felső kéreg eltávolítási szélesség"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink description"
-msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "Az eltávolítandó felső kéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek felső részének nyomtatásához felhasznált időt és anyagot."
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink label"
-msgid "Bottom Skin Removal Width"
-msgstr "Alsó kéreg eltávolítási szélesség"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink description"
-msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr "Az eltávolítandó alsókéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek alsó részének nyomtatásához felhasznált időt és anyagot."
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance label"
-msgid "Skin Expand Distance"
-msgstr "Kéreg bővítési távolság"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance description"
-msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "A kéreg felületek a kitöltésig jönnek létre. Ha bővítjük a kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance label"
-msgid "Top Skin Expand Distance"
-msgstr "Felső kéreg bővítési távolság"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance description"
-msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "A felső kéreg felületek a kitöltésig jönnek létre. Ha bővítjük a felső kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance label"
-msgid "Bottom Skin Expand Distance"
-msgstr "Alsó kéreg bővítési távolság"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance description"
-msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "Az alsó kéreg felületek a kitöltésig jönnek létre. Ha bővítjük az alsó kérget, és növeljük ezt az értéket, akkor jobb tapadást érhetünk el a kitöltéssel kapcsolatban, illetve a szomszédos falak jobban tudnak tapadni a kéreghez. Az alacsonyabb érték anyagmegtakarítást eredményez."
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion label"
-msgid "Maximum Skin Angle for Expansion"
-msgstr "A kéreg bővítés maximális szöge"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion description"
-msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "A tárgy alsó/felső felületén, az itt megadott szögnél nagyobb szög esetén a kéreg nem lesz kibővítve. Így elkerülhető, hogy a keskeny kéregrészek ne legyenek kibővítve, amik akkor jönnek létre, mikor a modell felülete közel függőleges szögben áll. A 0° szög a vízszintes, míg a 90° szög a függőlegest jelenti."
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion label"
-msgid "Minimum Skin Width for Expansion"
-msgstr "A minimális kéregszélesség kibővítéshez"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion description"
-msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr "Az ennél keskenyebb kéregfelületek nem bővülnek ki. Ezzel elkerülhető, hogy keskeny kéregfelületek kibővüljenek, amik akkor jönnek létre, mikor a modell külső felületének lejtése közel van a függőlegeshez."
-
-#: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
 msgstr ""
@@ -1962,6 +2017,46 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2561,8 +2656,8 @@ msgstr "Kezdő réteg sebessége"
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
-msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
-msgstr "A kezdő réteg sebessége. Az alacsonyabb érték segít növelni a tapadást a tárgyasztalhoz."
+msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3155,6 +3250,11 @@ msgid "All"
 msgstr "Minden"
 
 #: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "Felszínen nem"
@@ -3171,8 +3271,8 @@ msgstr "Maximum fésű táv visszahúzás nélkül"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "Ha ez az érték nem nulla, akkor a megadott értéktől hosszabb utazáskor nyomtatószál visszahúzás fog történni."
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5075,7 +5175,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5105,8 +5205,8 @@ msgstr "Minimális formaszélesség"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "Az öntőforma külseje és a modell külső héja közötti minimális távolság."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5274,6 +5374,16 @@ msgid "Zig Zag"
 msgstr "Cikcakk"
 
 #: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "roofing_angles label"
 msgid "Top Surface Skin Line Directions"
 msgstr "Felső kéregvonal irányok"
@@ -5422,6 +5532,16 @@ msgstr "Maximális túlnyúlási szög"
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "A túlnyúlások maximális szöge a nyomtathatóvá tétel után. 0 ° értéknél az összes túlnyúlást egy, az építőlemezhez kapcsolt modelldarab váltja fel, a 90 ° -ot a modell semmilyen módon nem változtatja meg."
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size label"
+msgid "Maximum Overhang Hole Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size description"
+msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
@@ -6359,6 +6479,42 @@ msgstr "Háló elforgatás mátrix"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "A modellre alkalmazandó átalakítási mátrix, amikor azt fájlból tölti be."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Adagolás maximum"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "A kitöltés mintázata. A vonal és a cikcakk felváltva cserélgeti az irányát rétegenként, csökkentve ezzel az anyagköltséget. A rács, háromszög, háromhatszög,kocka, oktett, negyed kocka, kereszt és koncentrikus mintákat minden rétegben nyomtatjuk. A gyroid, a kocka, a negyedkocka, és az oktett töltés minden rétegben változik, és így egyenletesebb az erő eloszlása minden irányban."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "Az öntőforma külseje és a modell külső héja közötti minimális távolság."
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "Hány lépést kell a motornak megtenni ahhoz, hogy 1 mm mozgás történjen a nyomtatószál adagolásakor."
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "Ha ez az érték nem nulla, akkor a megadott értéktől hosszabb utazáskor nyomtatószál visszahúzás fog történni."
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
+#~ msgid "Apply the extruder offset to the coordinate system."
+#~ msgstr "Alkalmazza az extruder eltolását a koordinátarendszerre vonatkoztatva."
+
+#~ msgctxt "shell label"
+#~ msgid "Shell"
+#~ msgstr "Héj"
+
+#~ msgctxt "max_skin_angle_for_expansion description"
+#~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
+#~ msgstr "A tárgy alsó/felső felületén, az itt megadott szögnél nagyobb szög esetén a kéreg nem lesz kibővítve. Így elkerülhető, hogy a keskeny kéregrészek ne legyenek kibővítve, amik akkor jönnek létre, mikor a modell felülete közel függőleges szögben áll. A 0° szög a vízszintes, míg a 90° szög a függőlegest jelenti."
+
+#~ msgctxt "speed_layer_0 description"
+#~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
+#~ msgstr "A kezdő réteg sebessége. Az alacsonyabb érték segít növelni a tapadást a tárgyasztalhoz."
 
 #~ msgctxt "material_bed_temperature description"
 #~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."

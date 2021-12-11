@@ -250,7 +250,7 @@ class X3DReader(MeshReader):
         else:
             nr = ns = DEFAULT_SUBDIV
 
-        lau = pi / nr  # Unit angle of latitude (rings) for the given tesselation
+        lau = pi / nr  # Unit angle of latitude (rings) for the given tessellation
         lou = 2 * pi / ns  # Unit angle of longitude (segments)
 
         self.reserveFaceAndVertexCount(ns*(nr*2 - 2), 2 + (nr - 1)*ns)

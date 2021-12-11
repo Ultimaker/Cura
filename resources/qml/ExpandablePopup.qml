@@ -7,8 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import QtGraphicalEffects 1.0 // For the dropshadow
-
 // The expandable component has 2 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
 //      * The contentItem; The content that needs to be shown if the component is expanded.
@@ -50,6 +48,11 @@ Item
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
 
+    property alias headerBackgroundBorder: background.border
+
+    // Whether or not to show the background border
+    property bool enableHeaderBackgroundBorder: true
+
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
@@ -72,11 +75,16 @@ Item
     // Change the contentItem close behaviour
     property alias contentClosePolicy : content.closePolicy
 
-    property alias headerShadowColor: shadow.color
+    // Distance between the header and the content.
+    property int popupOffset: 2 * UM.Theme.getSize("default_lining").height
 
-    property alias enableHeaderShadow: shadow.visible
-
-    property int shadowOffset: 2
+    onEnabledChanged:
+    {
+        if (!base.enabled && expanded)
+        {
+            toggleContent()
+        }
+    }
 
     function toggleContent()
     {
@@ -98,19 +106,6 @@ Item
         value: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
     }
 
-    // The panel needs to close when it becomes disabled
-    Connections
-    {
-        target: base
-        onEnabledChanged:
-        {
-            if (!base.enabled && expanded)
-            {
-                toggleContent()
-            }
-        }
-    }
-
     implicitHeight: 100 * screenScaleFactor
     implicitWidth: 400 * screenScaleFactor
 
@@ -118,6 +113,9 @@ Item
     {
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
+
+        border.width: base.enableHeaderBackgroundBorder ? UM.Theme.getSize("default_lining").width : 0
+        border.color: UM.Theme.getColor("lining")
 
         color: base.enabled ? headerBackgroundColor : UM.Theme.getColor("disabled")
         anchors.fill: parent
@@ -183,7 +181,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+                source: UM.Theme.getIcon("ChevronSingleDown")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
@@ -193,26 +191,12 @@ Item
 
     }
 
-    DropShadow
-    {
-        id: shadow
-        // Don't blur the shadow
-        radius: 0
-        anchors.fill: background
-        source: background
-        verticalOffset: base.shadowOffset
-        visible: true
-        color: UM.Theme.getColor("action_button_shadow")
-        // Should always be drawn behind the background.
-        z: background.z - 1
-    }
-
     Popup
     {
         id: content
 
         // Ensure that the content is located directly below the headerItem
-        y: background.height + base.shadowOffset
+        y: background.height + base.popupOffset
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
@@ -247,7 +231,7 @@ Item
     {
         // Since it could be that the content is dynamically populated, we should also take these changes into account.
         target: content.contentItem
-        onWidthChanged: content.width = content.contentItem.width + 2 * content.padding
-        onHeightChanged: content.height = content.contentItem.height + 2 * content.padding
+        function onWidthChanged() { content.width = content.contentItem.width + 2 * content.padding }
+        function onHeightChanged() { content.height = content.contentItem.height + 2 * content.padding }
     }
 }

@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Stereotech START",
+    "name": "Stereotech Start",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

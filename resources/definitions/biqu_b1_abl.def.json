@@ -1,5 +1,5 @@
 {
-    "name": "BIQU B1 ABL",
+    "name": "Biqu B1 ABL",
     "version": 2,
     "inherits": "biqu_base",
     "metadata": {
