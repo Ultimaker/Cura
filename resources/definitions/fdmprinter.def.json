@@ -7876,10 +7876,10 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "raft_wall_count":
+                "raft_base_wall_count":
                 {
-                    "label": "Raft Wall Count",
-                    "description": "The number of contours to print around the linear pattern in the raft.",
+                    "label": "Raft Base Wall Count",
+                    "description": "The number of contours to print around the linear pattern in the base layer of the raft.",
                     "type": "int",
                     "default_value": 1,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
