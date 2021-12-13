@@ -16,8 +16,8 @@ Item
     property bool busy
     property bool confirmed
 
-    Layout.preferredWidth: childrenRect.width
-    Layout.preferredHeight: childrenRect.height
+    implicitWidth: childrenRect.width
+    implicitHeight: childrenRect.height
 
     signal clicked(bool primary_action)
 
