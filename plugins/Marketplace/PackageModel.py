@@ -5,7 +5,7 @@ import re
 from enum import Enum
 from typing import Any, cast, Dict, List, Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
@@ -73,22 +73,19 @@ class PackageModel(QObject):
         self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
         self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
 
-        self._is_updating = False
         self._is_recently_updated = self._getRecentlyUpdated()
-
-        self._is_installing = False
-        self._is_uninstalling = False
         self._is_recently_installed = self._getRecentlyInstalled()
 
         self.updatePackageTriggered.connect(lambda pkg: self._setIsUpdating(True))
-        self.installPackageTriggered.connect(lambda pkg, url: self._setIsInstalling(True))
-        self.uninstallPackageTriggered.connect(lambda pkg: self._setIsUninstalling(True))
+
 
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
         self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id, True))
         self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id, True))
         self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id, False))
         self._package_manager.packagesWithUpdateChanged.connect(lambda: self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate))
+
+        self._is_busy = False
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, PackageModel):
@@ -308,41 +305,43 @@ class PackageModel(QObject):
 
     disablePackageTriggered = pyqtSignal(str)
 
-    installedPackagesChanged = pyqtSignal(bool)
+    installed = pyqtSignal(bool)
 
-    uninstalledPackagesChanged = pyqtSignal(bool)
+    updated = pyqtSignal(bool)
 
-    updatePackagesChanged = pyqtSignal(bool)
+    busyChanged = pyqtSignal()
 
-    def _setIsUpdating(self, value: bool) -> None:
-        self._is_updating = value
+    @pyqtSlot()
+    def install(self):
+        self.setBusy(True)
+        self.installPackageTriggered.emit(self.packageId, self.downloadURL)
 
-    def _setIsInstalling(self, value: bool) -> None:
-        self._is_installing = value
+    @pyqtSlot()
+    def uninstall(self):
+        self.setBusy(True)
+        self.uninstallPackageTriggered.emit(self.packageId)
 
-    def _setIsUninstalling(self, value: bool) -> None:
-        self._is_uninstalling = value
+    @pyqtProperty(bool, notify= busyChanged)
+    def busy(self):
+        """
+        Property indicating that some kind of upgrade is active.
+        """
+        return self._is_busy
+
+    def setBusy(self, value: bool):
+        if self._is_busy != value:
+            self._is_busy = value
+            self.busyChanged.emit()
 
     def _packageInstalled(self, package_id: str, success: bool) -> None:
         if self._package_id != package_id:
             return
-        if self._is_updating:
-            self.updatePackagesChanged.emit(success)
-            self._is_updating = False
-        if self._is_installing:
-            self.installedPackagesChanged.emit(success)
-            self._is_installing = False
-        if self._is_uninstalling:
-            self.uninstalledPackagesChanged.emit(success)
-            self._is_uninstalling = False
+        self.setBusy(not self._is_busy)
+        self.stateManageButtonChanged.emit()
 
     def _getRecentlyInstalled(self) -> bool:
         return (self._package_id in self._package_manager.getPackagesToInstall() or self._package_id in self._package_manager.getPackagesToRemove()) \
                and self._package_id not in self._package_manager.package_infosWithUpdate
-
-    @pyqtProperty(bool, constant = True)
-    def isRecentlyInstalledChanged(self) -> bool:
-        return self._is_recently_installed
 
     def _getRecentlyUpdated(self) -> bool:
         return self._package_id in self._package_manager.package_infosWithUpdate and self._package_id in self._package_manager.getPackagesToInstall()

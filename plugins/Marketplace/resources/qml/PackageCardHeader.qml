@@ -207,18 +207,15 @@ Item
                 id: installManageButton
                 visible: (showManageButtons || confirmed) && ((packageData.isBundled && packageData.canDowngrade) || !packageData.isBundled) && !updateManageButton.confirmed
                 enabled: !updateManageButton.busy
-
-                confirmed: packageData.isRecentlyInstalledChanged
-
-                button_style: confirmed ? packageData.isInstalled : !packageData.isInstalled
+                busy: packageData.busy
+                button_style: !packageData.isInstalled
                 Layout.alignment: Qt.AlignTop
 
                 text:
                 {
-                    if (button_style)
+                    if (!packageData.isInstalled)
                     {
                         if (busy) { return catalog.i18nc("@button", "Installing..."); }
-                        else if (confirmed) { return catalog.i18nc("@button", "Installed"); }
                         else { return catalog.i18nc("@button", "Install"); }
                     }
                     else
@@ -226,41 +223,19 @@ Item
                         if (packageData.canDowngrade)
                         {
                             if (busy) { return catalog.i18nc("@button", "Downgrading..."); }
-                            else if (confirmed) { return catalog.i18nc("@button", "Downgraded"); }
                             else { return catalog.i18nc("@button", "Downgrade"); }
                         }
                         else
                         {
-                            if (busy) { return catalog.i18nc("@button", "Uninstalling..."); }
-                            else if (confirmed) { return catalog.i18nc("@button", "Uninstalled"); }
-                            else { return catalog.i18nc("@button", "Uninstall"); }
+                            return catalog.i18nc("@button", "Uninstall");
                         }
                     }
                 }
 
                 onClicked:
                 {
-                    busy = true
-                    if (packageData.isInstalled){ packageData.installPackageTriggered(packageData.packageId, packageData.downloadURL); }
-                    else { packageData.uninstallPackageTriggered(packageData.packageId); }
-                }
-
-                Connections
-                {
-                    target: packageData
-
-                    function onInstalledPackagesChanged(success)
-                    {
-                        installManageButton.busy = false;
-                        installManageButton.confirmed = success;
-                    }
-                    function onUninstalledPackagesChanged(success)
-                    {
-                        installManageButton.busy = false;
-                        installManageButton.confirmed = success;
-                        installManageButton.button_style = !installManageButton.button_style;
-                    }
-
+                    if (packageData.isInstalled){ packageData.uninstall() }
+                    else { packageData.install()}
                 }
             }
 
@@ -284,7 +259,7 @@ Item
 
                 onClicked:
                 {
-                    busy = true;
+                    busy = true
                     packageData.updatePackageTriggered(packageData.packageId);
                 }
 
@@ -292,7 +267,7 @@ Item
                 {
                     target: packageData
 
-                    function onUpdatePackagesChanged(succes)
+                    function updated(succes)
                     {
                         updateManageButton.busy = false;
                         updateManageButton.confirmed = succes;
