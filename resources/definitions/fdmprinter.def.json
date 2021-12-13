@@ -2907,16 +2907,6 @@
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                },
-                "material_alternate_walls":
-                {
-                    "label": "Alternate Wall Directions",
-                    "description": "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": true,
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
                 }
             }
         },
@@ -7881,6 +7871,16 @@
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": true
+                },
+                "material_alternate_walls":
+                {
+                    "label": "Alternate Wall Directions",
+                    "description": "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": true,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
