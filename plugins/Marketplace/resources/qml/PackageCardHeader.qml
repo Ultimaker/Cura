@@ -212,7 +212,7 @@ Item
                 enabled: !updateManageButton.busy
 
                 busy: false
-                confirmed: { packageData.isRecentlyInstalledChanged }
+                confirmed: packageData.isRecentlyInstalledChanged
 
                 button_style: confirmed ? packageData.isInstalled : !packageData.isInstalled
                 Layout.alignment: Qt.AlignTop
@@ -275,7 +275,7 @@ Item
                 enabled: !installManageButton.busy
 
                 busy: false
-                confirmed: { packageData.isRecentlyUpdatedChanged }
+                confirmed: packageData.isRecentlyUpdatedChanged
 
                 button_style: true
                 Layout.alignment: Qt.AlignTop
