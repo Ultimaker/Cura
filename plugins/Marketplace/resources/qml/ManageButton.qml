@@ -19,14 +19,14 @@ Item
     implicitWidth: childrenRect.width
     implicitHeight: childrenRect.height
 
-    signal clicked(bool primary_action)
+    signal clicked()
 
     property Component primaryButton: Component
     {
         Cura.PrimaryButton
         {
             text: manageButton.text
-            onClicked: manageButton.clicked(true)
+            onClicked: manageButton.clicked()
         }
     }
 
@@ -35,7 +35,7 @@ Item
         Cura.SecondaryButton
         {
             text: manageButton.text
-            onClicked: manageButton.clicked(false)
+            onClicked: manageButton.clicked()
         }
     }
 

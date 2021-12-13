@@ -15,7 +15,7 @@ Item
     default property alias contents: contentItem.children;
 
     property var packageData
-    property bool showManageButtons
+    property bool showManageButtons: false
 
     width: parent.width
     height: UM.Theme.getSize("card").height
@@ -194,13 +194,13 @@ Item
 
                 onClicked:
                 {
-                    if (primary_action)
+                    if(packageData.isActive)
                     {
-                        packageData.enablePackageTriggered(packageData.packageId)
+                        packageData.disablePackageTriggered(packageData.packageId)
                     }
                     else
                     {
-                        packageData.disablePackageTriggered(packageData.packageId)
+                        packageData.enablePackageTriggered(packageData.packageId)
                     }
                 }
             }
@@ -245,7 +245,7 @@ Item
                 onClicked:
                 {
                     busy = true
-                    if (primary_action){ packageData.installPackageTriggered(packageData.packageId, packageData.downloadURL); }
+                    if (packageData.isInstalled){ packageData.installPackageTriggered(packageData.packageId, packageData.downloadURL); }
                     else { packageData.uninstallPackageTriggered(packageData.packageId); }
                 }
 
