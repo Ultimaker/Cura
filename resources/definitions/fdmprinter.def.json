@@ -5511,7 +5511,7 @@
                     "default_value": 5,
                     "minimum_value": "0",
                     "minimum_value_warning": "raft_interface_line_width",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_remove_inside_corners",
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
