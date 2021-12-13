@@ -27,7 +27,7 @@ class Marketplace(Extension):
     def __init__(self) -> None:
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
-        self.plugin_registry: Optional[PluginRegistry] = None
+        self._plugin_registry: Optional[PluginRegistry] = None
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
         qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
@@ -41,7 +41,7 @@ class Marketplace(Extension):
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
         if self._window is None:
-            self.plugin_registry = PluginRegistry.getInstance()
+            self._plugin_registry = PluginRegistry.getInstance()
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
