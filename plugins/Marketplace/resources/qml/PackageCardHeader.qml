@@ -232,11 +232,8 @@ Item
                     }
                 }
 
-                onClicked:
-                {
-                    if (packageData.isInstalled){ packageData.uninstall() }
-                    else { packageData.install()}
-                }
+                onClicked: packageData.isInstalled ? packageData.uninstall(): packageData.install()
+
             }
 
             ManageButton
