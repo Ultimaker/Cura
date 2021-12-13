@@ -5957,10 +5957,10 @@
                         }
                     }
                 },
-                "raft_is_shrink_plate":
+                "raft_remove_inside_corners":
                 {
-                    "label": "Use Raft As Shrinkage Plate",
-                    "description": "The 'Raft' adhesion method is to be used as a 'Shrinkage Plate' if this it set to true. A shrinkage plate can (partly) prevent deforming for materials with high shrinkage, such as metals.",
+                    "label": "Remove Raft Inside Corners",
+                    "description": "Remove inside corners from the raft, causing the raft to become convex.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
