@@ -5956,16 +5956,6 @@
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
                     }
-                },
-                "raft_remove_inside_corners":
-                {
-                    "label": "Remove Raft Inside Corners",
-                    "description": "Remove inside corners from the raft, causing the raft to become convex.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
                 }
             }
         },
@@ -7881,6 +7871,16 @@
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": true
+                },
+                "raft_remove_inside_corners":
+                {
+                    "label": "Remove Raft Inside Corners",
+                    "description": "Remove inside corners from the raft, causing the raft to become convex.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
