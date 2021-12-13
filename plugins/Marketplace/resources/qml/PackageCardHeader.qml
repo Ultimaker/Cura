@@ -181,7 +181,7 @@ Item
             ManageButton
             {
                 id: enableManageButton
-                visible: showManageButtons && !(installManageButton.confirmed || updateManageButton.confirmed || packageData.packageType == "material")
+                visible: showManageButtons && packageData.packageType != "material"
                 enabled: !(installManageButton.busy || updateManageButton.busy)
 
                 button_style: !packageData.isActive
@@ -189,23 +189,13 @@ Item
 
                 text: button_style ? catalog.i18nc("@button", "Enable") : catalog.i18nc("@button", "Disable")
 
-                onClicked:
-                {
-                    if(packageData.isActive)
-                    {
-                        packageData.disablePackageTriggered(packageData.packageId)
-                    }
-                    else
-                    {
-                        packageData.enablePackageTriggered(packageData.packageId)
-                    }
-                }
+                onClicked: packageData.isActive ? packageData.disable(): packageData.enable()
             }
 
             ManageButton
             {
                 id: installManageButton
-                visible: (showManageButtons || confirmed) && ((packageData.isBundled && packageData.canDowngrade) || !packageData.isBundled) && !updateManageButton.confirmed
+                visible: showManageButtons && (packageData.canDowngrade || !packageData.isBundled)
                 enabled: !updateManageButton.busy
                 busy: packageData.busy
                 button_style: !packageData.isInstalled
@@ -213,6 +203,11 @@ Item
 
                 text:
                 {
+                    if (packageData.canDowngrade)
+                    {
+                        if (busy) { return catalog.i18nc("@button", "Downgrading..."); }
+                        else { return catalog.i18nc("@button", "Downgrade"); }
+                    }
                     if (!packageData.isInstalled)
                     {
                         if (busy) { return catalog.i18nc("@button", "Installing..."); }
@@ -220,56 +215,25 @@ Item
                     }
                     else
                     {
-                        if (packageData.canDowngrade)
-                        {
-                            if (busy) { return catalog.i18nc("@button", "Downgrading..."); }
-                            else { return catalog.i18nc("@button", "Downgrade"); }
-                        }
-                        else
-                        {
-                            return catalog.i18nc("@button", "Uninstall");
-                        }
+                        return catalog.i18nc("@button", "Uninstall");
                     }
                 }
 
                 onClicked: packageData.isInstalled ? packageData.uninstall(): packageData.install()
-
             }
 
             ManageButton
             {
                 id: updateManageButton
-                visible: (showManageButtons || confirmed) && (packageData.canUpdate || confirmed) && !installManageButton.confirmed
+                visible: showManageButtons && packageData.canUpdate
                 enabled: !installManageButton.busy
 
-                confirmed: packageData.isRecentlyUpdatedChanged
-
-                button_style: true
+                busy: packageData.busy
                 Layout.alignment: Qt.AlignTop
 
-                text:
-                {
-                    if (busy) { return catalog.i18nc("@button", "Updating..."); }
-                    else if (confirmed) { return catalog.i18nc("@button", "Updated"); }
-                    else { return catalog.i18nc("@button", "Update"); }
-                }
+                text: busy ? catalog.i18nc("@button", "Updating..."): catalog.i18nc("@button", "Update")
 
-                onClicked:
-                {
-                    busy = true
-                    packageData.updatePackageTriggered(packageData.packageId);
-                }
-
-                Connections
-                {
-                    target: packageData
-
-                    function updated(succes)
-                    {
-                        updateManageButton.busy = false;
-                        updateManageButton.confirmed = succes;
-                    }
-                }
+                onClicked: packageData.updatePackageTriggered(packageData.packageId);
             }
         }
     }

@@ -11,7 +11,7 @@ import Cura 1.6 as Cura
 Item
 {
     id: manageButton
-    property bool button_style
+    property bool button_style: true
     property string text
     property bool busy: false
     property bool confirmed: false

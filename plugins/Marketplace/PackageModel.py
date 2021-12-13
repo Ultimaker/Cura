@@ -6,6 +6,7 @@ from enum import Enum
 from typing import Any, cast, Dict, List, Optional
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtQml import QQmlEngine
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
@@ -30,6 +31,7 @@ class PackageModel(QObject):
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
         super().__init__(parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.CppOwnership)
         self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
 
@@ -78,11 +80,10 @@ class PackageModel(QObject):
 
         self.updatePackageTriggered.connect(lambda pkg: self._setIsUpdating(True))
 
-
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
-        self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id, True))
-        self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id, True))
-        self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id, False))
+        self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
+        self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
+        self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packagesWithUpdateChanged.connect(lambda: self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate))
 
         self._is_busy = False
@@ -328,16 +329,30 @@ class PackageModel(QObject):
         """
         return self._is_busy
 
+    @pyqtSlot()
+    def enable(self):
+        self.enablePackageTriggered.emit(self.packageId)
+
+    @pyqtSlot()
+    def disable(self):
+        self.disablePackageTriggered.emit(self.packageId)
+
     def setBusy(self, value: bool):
         if self._is_busy != value:
             self._is_busy = value
-            self.busyChanged.emit()
+            try:
+                self.busyChanged.emit()
+            except RuntimeError:
+                pass
 
-    def _packageInstalled(self, package_id: str, success: bool) -> None:
+    def _packageInstalled(self, package_id: str) -> None:
         if self._package_id != package_id:
             return
         self.setBusy(not self._is_busy)
-        self.stateManageButtonChanged.emit()
+        try:
+            self.stateManageButtonChanged.emit()
+        except RuntimeError:
+            pass
 
     def _getRecentlyInstalled(self) -> bool:
         return (self._package_id in self._package_manager.getPackagesToInstall() or self._package_id in self._package_manager.getPackagesToRemove()) \
