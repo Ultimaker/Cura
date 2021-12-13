@@ -184,9 +184,6 @@ Item
                 visible: showManageButtons && packageData.isInstalled && !(installManageButton.confirmed || updateManageButton.confirmed || packageData.packageType == "material")
                 enabled: !(installManageButton.busy || updateManageButton.busy)
 
-                busy: false
-                confirmed: false
-
                 button_style: !packageData.isActive
                 Layout.alignment: Qt.AlignTop
 
@@ -211,7 +208,6 @@ Item
                 visible: (showManageButtons || confirmed) && ((packageData.isBundled && packageData.canDowngrade) || !packageData.isBundled) && !updateManageButton.confirmed
                 enabled: !updateManageButton.busy
 
-                busy: false
                 confirmed: packageData.isRecentlyInstalledChanged
 
                 button_style: confirmed ? packageData.isInstalled : !packageData.isInstalled
@@ -274,7 +270,6 @@ Item
                 visible: (showManageButtons || confirmed) && (packageData.canUpdate || confirmed) && !installManageButton.confirmed
                 enabled: !installManageButton.busy
 
-                busy: false
                 confirmed: packageData.isRecentlyUpdatedChanged
 
                 button_style: true

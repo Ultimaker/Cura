@@ -13,8 +13,8 @@ Item
     id: manageButton
     property bool button_style
     property string text
-    property bool busy
-    property bool confirmed
+    property bool busy: false
+    property bool confirmed: false
 
     implicitWidth: childrenRect.width
     implicitHeight: childrenRect.height
