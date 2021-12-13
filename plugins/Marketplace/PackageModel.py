@@ -75,11 +75,6 @@ class PackageModel(QObject):
         self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
         self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
 
-        self._is_recently_updated = self._getRecentlyUpdated()
-        self._is_recently_installed = self._getRecentlyInstalled()
-
-        self.updatePackageTriggered.connect(lambda pkg: self._setIsUpdating(True))
-
         self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
         self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
@@ -353,17 +348,6 @@ class PackageModel(QObject):
             self.stateManageButtonChanged.emit()
         except RuntimeError:
             pass
-
-    def _getRecentlyInstalled(self) -> bool:
-        return (self._package_id in self._package_manager.getPackagesToInstall() or self._package_id in self._package_manager.getPackagesToRemove()) \
-               and self._package_id not in self._package_manager.package_infosWithUpdate
-
-    def _getRecentlyUpdated(self) -> bool:
-        return self._package_id in self._package_manager.package_infosWithUpdate and self._package_id in self._package_manager.getPackagesToInstall()
-
-    @pyqtProperty(bool, constant = True)
-    def isRecentlyUpdatedChanged(self) -> bool:
-        return self._is_recently_updated
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:
