@@ -182,7 +182,7 @@ Item
             {
                 id: enableManageButton
                 visible: showManageButtons && packageData.isInstalled && packageData.packageType != "material"
-                enabled: !(installManageButton.busy || updateManageButton.busy)
+                enabled: !packageData.busy
 
                 button_style: !packageData.isActive
                 Layout.alignment: Qt.AlignTop
@@ -196,7 +196,7 @@ Item
             {
                 id: installManageButton
                 visible: showManageButtons && (packageData.canDowngrade || !packageData.isBundled)
-                enabled: !updateManageButton.busy
+                enabled: !packageData.busy
                 busy: packageData.busy
                 button_style: !packageData.isInstalled
                 Layout.alignment: Qt.AlignTop
@@ -226,8 +226,7 @@ Item
             {
                 id: updateManageButton
                 visible: showManageButtons && packageData.canUpdate
-                enabled: !installManageButton.busy
-
+                enabled: !packageData.busy
                 busy: packageData.busy
                 Layout.alignment: Qt.AlignTop
 
