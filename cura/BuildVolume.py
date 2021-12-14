@@ -572,8 +572,13 @@ class BuildVolume(SceneNode):
 
         self.updateNodeBoundaryCheck()
 
-    def getBoundingBox(self):
-        return self._volume_aabb
+    def getBoundingBox(self) -> Optional[AxisAlignedBox]:
+        if self._volume_aabb is None:
+            return None
+        scale_xy = 100.0 / self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value")
+        scale_z  = 100.0 / self._global_container_stack.getProperty("material_shrinkage_percentage_z" , "value")
+        scale_vector = Vector(scale_xy, scale_xy, scale_z)
+        return AxisAlignedBox(self._volume_aabb.minimum.scale(scale_vector), self._volume_aabb.minimum.scale(scale_vector))
 
     def getRaftThickness(self) -> float:
         return self._raft_thickness
@@ -757,6 +762,12 @@ class BuildVolume(SceneNode):
         self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
         self.rebuild()
 
+    def _scaleAreas(self, result_areas: List["Polygons"]) -> None:
+        for i, polygon in enumerate(result_areas):
+            result_areas[i] = polygon.scale(
+                100.0 / self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value")
+            )
+
     def _updateDisallowedAreas(self) -> None:
         if not self._global_container_stack:
             return
@@ -812,9 +823,11 @@ class BuildVolume(SceneNode):
 
         self._disallowed_areas = []
         for extruder_id in result_areas:
+            self._scaleAreas(result_areas[extruder_id])
             self._disallowed_areas.extend(result_areas[extruder_id])
         self._disallowed_areas_no_brim = []
         for extruder_id in result_areas_no_brim:
+            self._scaleAreas(result_areas_no_brim[extruder_id])
             self._disallowed_areas_no_brim.extend(result_areas_no_brim[extruder_id])
 
     def _computeDisallowedAreasPrinted(self, used_extruders):
@@ -1200,4 +1213,5 @@ class BuildVolume(SceneNode):
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
     _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
-    _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings
+    _material_size_settings = ["material_shrinkage_percentage", "material_shrinkage_percentage_xy", "material_shrinkage_percentage_z"]
+    _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings + _material_size_settings
