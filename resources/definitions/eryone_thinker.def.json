@@ -119,6 +119,9 @@
         "infill_before_walls": {
             "value": false
         },
+        "inset_direction": {
+            "default_value": "inside_out"
+        },
         "material_print_temperature": {
             "value": "default_material_print_temperature",
             "maximum_value_warning": 250
