@@ -80,9 +80,6 @@
         "optimize_wall_printing_order": {
             "default_value": true 
         },
-        "outer_inset_first": {
-            "default_value": false 
-        },
         "z_seam_type": {
             "value": "'shortest'"
         },
