@@ -2547,7 +2547,7 @@
                             "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
                             "value": "material_shrinkage_percentage"
                         }
-                }
+                    }
                 },
                 "material_crystallinity":
                 {
