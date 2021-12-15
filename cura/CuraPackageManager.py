@@ -19,11 +19,13 @@ if TYPE_CHECKING:
 class CuraPackageManager(PackageManager):
     def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
-        self._local_packages: Optional[Dict[str, Dict[str, Any]]] = None
+        self._local_packages: Optional[List[Dict[str, Any]]] = None
+        self._local_packages_ids: Optional[Set[str]] = None
         self.installedPackagesChanged.connect(self._updateLocalPackages)
 
     def _updateLocalPackages(self) -> None:
         self._local_packages = self.getAllLocalPackages()
+        self._local_packages_ids = set(pkg["package_id"] for pkg in self._local_packages)
 
     @property
     def local_packages(self) -> List[Dict[str, Any]]:
@@ -32,16 +34,16 @@ class CuraPackageManager(PackageManager):
             self._updateLocalPackages()
             # _updateLocalPackages always results in a list of packages, not None.
             # It's guaranteed to be a list now.
-        return list(self._local_packages.values())
+        return cast(List[Dict[str, Any]], self._local_packages)
 
     @property
     def local_packages_ids(self) -> Set[str]:
         """locally installed packages, lazy execution"""
-        if self._local_packages is None:
+        if self._local_packages_ids is None:
             self._updateLocalPackages()
             # _updateLocalPackages always results in a list of packages, not None.
             # It's guaranteed to be a list now.
-        return set(self._local_packages.keys())
+        return cast(Set[str], self._local_packages_ids)
 
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
@@ -73,11 +75,17 @@ class CuraPackageManager(PackageManager):
 
         return machine_with_materials, machine_with_qualities
 
-    def getAllLocalPackages(self) -> Dict[str, Dict[str, Any]]:
+    def getAllLocalPackages(self) -> List[Dict[str, Any]]:
         """ returns an unordered list of all the package_info installed, to be installed or to be returned"""
 
-        packages = dict([(package_info["package_id"], dict(package_info)) for package in self.getAllInstalledPackagesInfo().values() for package_info in package])
-        packages.update([(package["package_info"]["package_id"], dict(package["package_info"])) for package in self.getPackagesToRemove().values()])
-        packages.update([(package["package_info"]["package_id"], dict(package["package_info"])) for package in self.getPackagesToInstall().values()])
 
-        return packages
+        class PkgInfo(dict):
+            # Needed helper class because a dict isn't hashable
+            def __eq__(self, item):
+                return item == self["package_id"]
+
+        packages = [PkgInfo(package_info) for package in self.getAllInstalledPackagesInfo().values() for package_info in package]
+        packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToRemove().values() if package["package_info"]["package_id"] not in packages])
+        packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToInstall().values() if package["package_info"]["package_id"] not in packages])
+
+        return [dict(package) for package in packages]
