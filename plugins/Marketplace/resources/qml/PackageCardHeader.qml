@@ -198,7 +198,7 @@ Item
                 visible: showManageButtons && (packageData.canDowngrade || !packageData.isBundled)
                 enabled: !packageData.busy
                 busy: packageData.busy
-                button_style: !packageData.isInstalled
+                button_style: packageData.isInstalled || packageData.isToBeInstalled
                 Layout.alignment: Qt.AlignTop
 
                 text:
@@ -208,7 +208,7 @@ Item
                         if (busy) { return catalog.i18nc("@button", "Downgrading..."); }
                         else { return catalog.i18nc("@button", "Downgrade"); }
                     }
-                    if (!packageData.isInstalled)
+                    if (!(packageData.isInstalled || packageData.isToBeInstalled))
                     {
                         if (busy) { return catalog.i18nc("@button", "Installing..."); }
                         else { return catalog.i18nc("@button", "Install"); }
@@ -219,7 +219,7 @@ Item
                     }
                 }
 
-                onClicked: packageData.isInstalled ? packageData.uninstall(): packageData.install()
+                onClicked: packageData.isInstalled || packageData.isToBeInstalled ? packageData.uninstall(): packageData.install()
             }
 
             ManageButton

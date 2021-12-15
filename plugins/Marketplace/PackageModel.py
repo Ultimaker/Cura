@@ -314,7 +314,6 @@ class PackageModel(QObject):
 
     @pyqtSlot()
     def uninstall(self):
-        self.setBusy(True)
         self.uninstallPackageTriggered.emit(self.packageId)
 
     @pyqtProperty(bool, notify= busyChanged)
@@ -351,7 +350,11 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:
-        return self._package_id in self._package_manager.local_packages_ids
+        return self._package_id in self._package_manager.getAllInstalledPackageIDs()
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isToBeInstalled(self) -> bool:
+        return self._package_id in self._package_manager.getPackagesToInstall()
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isActive(self) -> bool:

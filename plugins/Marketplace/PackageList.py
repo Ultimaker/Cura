@@ -19,7 +19,7 @@ from cura.CuraPackageManager import CuraPackageManager
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 
 from .PackageModel import PackageModel
-from .Constants import USER_PACKAGES_URL
+from .Constants import USER_PACKAGES_URL, PACKAGES_URL
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -194,6 +194,9 @@ class PackageList(ListModel):
         :param url: the URL from which the package needs to be obtained
         :param update: A flag if this is download request is an update process
         """
+
+        if url == "":
+            url = f"{PACKAGES_URL}/{package_id}/download"
 
         def downloadFinished(reply: "QNetworkReply") -> None:
             self._downloadFinished(package_id, reply, update)
