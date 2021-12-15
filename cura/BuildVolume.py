@@ -769,7 +769,7 @@ class BuildVolume(SceneNode):
         self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
         self.rebuild()
 
-    def _scaleAreas(self, result_areas: List["Polygons"]) -> None:
+    def _scaleAreas(self, result_areas: List[List[Polygon]]) -> None:
         for i, polygon in enumerate(result_areas):
             result_areas[i] = polygon.scale(
                 100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"))
