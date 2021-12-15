@@ -343,7 +343,7 @@ class PackageModel(QObject):
     def _packageInstalled(self, package_id: str) -> None:
         if self._package_id != package_id:
             return
-        self.setBusy(not self._is_busy)
+        self.setBusy(False)
         try:
             self.stateManageButtonChanged.emit()
         except RuntimeError:
