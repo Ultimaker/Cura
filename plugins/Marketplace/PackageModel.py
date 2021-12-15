@@ -351,7 +351,7 @@ class PackageModel(QObject):
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isInstalled(self) -> bool:
-        return self._package_id in self._package_manager.local_packages_ids
+        return self._package_id in self._package_manager.installed_packages_ids
 
     @pyqtProperty(bool, notify = stateManageButtonChanged)
     def isActive(self) -> bool:

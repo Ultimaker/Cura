@@ -19,11 +19,23 @@ if TYPE_CHECKING:
 class CuraPackageManager(PackageManager):
     def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
+
         self._local_packages: Optional[Dict[str, Dict[str, Any]]] = None
+        self._local_packages_installed: Optional[Dict[str, Dict[str, Any]]] = None
+        self._local_packages_to_remove: Optional[Dict[str, Dict[str, Any]]] = None
+        self._local_packages_to_install: Optional[Dict[str, Dict[str, Any]]] = None
+
         self.installedPackagesChanged.connect(self._updateLocalPackages)
 
     def _updateLocalPackages(self) -> None:
-        self._local_packages = self.getAllLocalPackages()
+        self._local_packages_installed = dict([(package_info["package_id"], dict(package_info)) for package in self.getAllInstalledPackagesInfo().values() for package_info in package])
+        self._local_packages_to_remove = dict([(package["package_info"]["package_id"], dict(package["package_info"])) for package in self.getPackagesToRemove().values()])
+        self._local_packages_to_install = dict([(package["package_info"]["package_id"], dict(package["package_info"])) for package in self.getPackagesToInstall().values()])
+
+        self._local_packages = {}
+        self._local_packages.update(self._local_packages_installed)
+        self._local_packages.update(self._local_packages_to_remove)
+        self._local_packages.update(self._local_packages_to_install)
 
     @property
     def local_packages(self) -> List[Dict[str, Any]]:
@@ -42,6 +54,15 @@ class CuraPackageManager(PackageManager):
             # _updateLocalPackages always results in a list of packages, not None.
             # It's guaranteed to be a list now.
         return set(self._local_packages.keys())
+
+    @property
+    def installed_packages_ids(self) -> Set[str]:
+        """locally installed packages, lazy execution"""
+        if self._local_packages is None:
+            self._updateLocalPackages()
+            # _updateLocalPackages always results in a list of packages, not None.
+            # It's guaranteed to be a list now.
+        return set(self._local_packages_installed.keys())
 
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
@@ -72,12 +93,3 @@ class CuraPackageManager(PackageManager):
                         machine_with_qualities.append((global_stack, str(extruder_nr), container_id))
 
         return machine_with_materials, machine_with_qualities
-
-    def getAllLocalPackages(self) -> Dict[str, Dict[str, Any]]:
-        """ returns an unordered list of all the package_info installed, to be installed or to be returned"""
-
-        packages = dict([(package_info["package_id"], dict(package_info)) for package in self.getAllInstalledPackagesInfo().values() for package_info in package])
-        packages.update([(package["package_info"]["package_id"], dict(package["package_info"])) for package in self.getPackagesToRemove().values()])
-        packages.update([(package["package_info"]["package_id"], dict(package["package_info"])) for package in self.getPackagesToInstall().values()])
-
-        return packages
