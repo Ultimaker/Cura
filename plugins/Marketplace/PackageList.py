@@ -209,24 +209,26 @@ class PackageList(ListModel):
         )
 
     def _downloadFinished(self, package_id: str, reply: "QNetworkReply", update: bool = False) -> None:
-        try:
-            with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
+        with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
+            try:
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
                     temp_file.write(bytes_read)
                     bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
-                self._to_install[package_id] = temp_file.name
-                self._ongoing_requests["download_package"] = None
-                self.canInstallChanged.emit(package_id, update)
-        except IOError as e:
-            Logger.error(f"Failed to write downloaded package to temp file {e}")
-            temp_file.close()
-            self._downloadError(package_id, update)
-        except RuntimeError:
-            # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
-            # between de-/constructing Remote or Local PackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
-            # was deleted when it was still parsing the response
-            return
+            except IOError as e:
+                Logger.error(f"Failed to write downloaded package to temp file {e}")
+                temp_file.close()
+                self._downloadError(package_id, update)
+            except RuntimeError:
+                # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
+                # between de-/constructing Remote or Local PackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
+                # was deleted when it was still parsing the response
+                temp_file.close()
+                return
+        temp_file.close()
+        self._to_install[package_id] = temp_file.name
+        self._ongoing_requests["download_package"] = None
+        self.canInstallChanged.emit(package_id, update)
 
     def _downloadError(self, package_id: str, update: bool = False, reply: Optional["QNetworkReply"] = None, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if reply:
