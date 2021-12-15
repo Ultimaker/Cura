@@ -66,6 +66,7 @@ class BuildVolume(SceneNode):
         self._height = 0  # type: float
         self._depth = 0  # type: float
         self._shape = ""  # type: str
+        self._scale_vector = Vector(1.0, 1.0, 1.0)
 
         self._shader = None
 
@@ -513,6 +514,13 @@ class BuildVolume(SceneNode):
             self._disallowed_area_size = max(size, self._disallowed_area_size)
         return mb.build()
 
+    def _updateScaleFactor(self) -> None:
+        if not self._global_container_stack:
+            return
+        scale_xy = 100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"))
+        scale_z  = 100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_z" , "value"))
+        self._scale_vector = Vector(scale_xy, scale_xy, scale_z)
+
     def rebuild(self) -> None:
         """Recalculates the build volume & disallowed areas."""
 
@@ -554,9 +562,12 @@ class BuildVolume(SceneNode):
 
         self._error_mesh = self._buildErrorMesh(min_w, max_w, min_h, max_h, min_d, max_d, disallowed_area_height)
 
+        self._updateScaleFactor()
+
         self._volume_aabb = AxisAlignedBox(
-            minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
+            minimum = Vector(min_w, min_h - 1.0, min_d).scale(self._scale_vector),
+            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d).scale(self._scale_vector)
+        )
 
         bed_adhesion_size = self.getEdgeDisallowedSize()
 
@@ -564,8 +575,8 @@ class BuildVolume(SceneNode):
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1).scale(self._scale_vector),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1).scale(self._scale_vector)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
@@ -573,12 +584,7 @@ class BuildVolume(SceneNode):
         self.updateNodeBoundaryCheck()
 
     def getBoundingBox(self) -> Optional[AxisAlignedBox]:
-        if self._volume_aabb is None:
-            return None
-        scale_xy = 100.0 / self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value")
-        scale_z  = 100.0 / self._global_container_stack.getProperty("material_shrinkage_percentage_z" , "value")
-        scale_vector = Vector(scale_xy, scale_xy, scale_z)
-        return AxisAlignedBox(self._volume_aabb.minimum.scale(scale_vector), self._volume_aabb.minimum.scale(scale_vector))
+        return self._volume_aabb
 
     def getRaftThickness(self) -> float:
         return self._raft_thickness
@@ -638,18 +644,18 @@ class BuildVolume(SceneNode):
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
-            self._width = self._global_container_stack.getProperty("machine_width", "value")
+            self._width = self._global_container_stack.getProperty("machine_width", "value") * self._scale_vector.x
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
             if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if self._height < machine_height:
+                self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
+                if self._height < (machine_height * self._scale_vector.z):
                     self._build_volume_message.show()
                 else:
                     self._build_volume_message.hide()
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
-            self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+            self._depth = self._global_container_stack.getProperty("machine_depth", "value") * self._scale_vector.y
             self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
             self._updateDisallowedAreas()
@@ -683,18 +689,18 @@ class BuildVolume(SceneNode):
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
                 if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                    if self._height < machine_height:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
+                    if self._height < (machine_height * self._scale_vector.z):
                         self._build_volume_message.show()
                     else:
                         self._build_volume_message.hide()
                 else:
-                    self._height = self._global_container_stack.getProperty("machine_height", "value")
+                    self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
                     self._build_volume_message.hide()
                 update_disallowed_areas = True
 
             # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
-            if setting_key in self._machine_settings:
+            if setting_key in self._machine_settings or setting_key in self._material_size_settings:
                 self._updateMachineSizeProperties()
                 update_extra_z_clearance = True
                 update_disallowed_areas = True
@@ -743,9 +749,10 @@ class BuildVolume(SceneNode):
     def _updateMachineSizeProperties(self) -> None:
         if not self._global_container_stack:
             return
-        self._height = self._global_container_stack.getProperty("machine_height", "value")
-        self._width = self._global_container_stack.getProperty("machine_width", "value")
-        self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+        self._updateScaleFactor()
+        self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
+        self._width = self._global_container_stack.getProperty("machine_width", "value") * self._scale_vector.x
+        self._depth = self._global_container_stack.getProperty("machine_depth", "value") * self._scale_vector.y
         self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
     def _updateDisallowedAreasAndRebuild(self):
@@ -765,7 +772,7 @@ class BuildVolume(SceneNode):
     def _scaleAreas(self, result_areas: List["Polygons"]) -> None:
         for i, polygon in enumerate(result_areas):
             result_areas[i] = polygon.scale(
-                100.0 / self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value")
+                100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"))
             )
 
     def _updateDisallowedAreas(self) -> None:
