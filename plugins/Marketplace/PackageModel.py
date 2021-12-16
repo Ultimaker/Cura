@@ -79,9 +79,16 @@ class PackageModel(QObject):
         self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id))
-        self._package_manager.packagesWithUpdateChanged.connect(lambda: self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate))
+        self._package_manager.packagesWithUpdateChanged.connect(self._processUpdatedPackages)
 
         self._is_busy = False
+
+    @pyqtSlot()
+    def _processUpdatedPackages(self):
+        self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate)
+
+    def __del__(self):
+        self._package_manager.packagesWithUpdateChanged.disconnect(self._processUpdatedPackages)
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, PackageModel):
