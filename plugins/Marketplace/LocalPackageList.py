@@ -40,7 +40,7 @@ class LocalPackageList(PackageList):
         super().__init__(parent)
         self._has_footer = False
         self._ongoing_requests["check_updates"] = None
-        self._manager.packagesWithUpdateChanged.connect(self._sortSectionsOnUpdate)
+        self._package_manager.packagesWithUpdateChanged.connect(self._sortSectionsOnUpdate)
 
     def _sortSectionsOnUpdate(self) -> None:
         SECTION_ORDER = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
@@ -56,9 +56,9 @@ class LocalPackageList(PackageList):
         self.setIsLoading(True)
 
         # Obtain and sort the local packages
-        self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._manager.local_packages]])
+        self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._package_manager.local_packages]])
         self._sortSectionsOnUpdate()
-        self.checkForUpdates(self._manager.local_packages)
+        self.checkForUpdates(self._package_manager.local_packages)
 
         self.setIsLoading(False)
         self.setHasMore(False)  # All packages should have been loaded at this time
@@ -67,7 +67,7 @@ class LocalPackageList(PackageList):
         """ Create a PackageModel from the package_info and determine its section_title"""
 
         package_id = package_info["package_id"]
-        bundled_or_installed = "bundled" if self._manager.isBundledPackage(package_id) else "installed"
+        bundled_or_installed = "bundled" if self._package_manager.isBundledPackage(package_id) else "installed"
         package_type = package_info["package_type"]
         section_title = self.PACKAGE_CATEGORIES[bundled_or_installed][package_type]
         package = PackageModel(package_info, section_title = section_title, parent = self)
@@ -99,5 +99,5 @@ class LocalPackageList(PackageList):
             return
 
         packages = response_data["data"]
-        self._manager.setPackagesWithUpdate(dict(zip([p['package_id'] for p in packages], [p for p in packages])))
+        self._package_manager.setPackagesWithUpdate(dict(zip([p['package_id'] for p in packages], [p for p in packages])))
         self._ongoing_requests["check_updates"] = None

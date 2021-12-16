@@ -37,7 +37,7 @@ class PackageList(ListModel):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
-        self._manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+        self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._account = CuraApplication.getInstance().getCuraAPI().account
         self._error_message = ""
@@ -47,7 +47,7 @@ class PackageList(ListModel):
         self._has_footer = True
         self._to_install: Dict[str, str] = {}
         self.canInstallChanged.connect(self._requestInstall)
-        self._local_packages: Set[str] = {p["package_id"] for p in self._manager.local_packages}
+        self._local_packages: Set[str] = {p["package_id"] for p in self._package_manager.local_packages}
 
         self._ongoing_requests: Dict[str, Optional[HttpRequestData]] = {"download_package": None}
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
@@ -165,11 +165,11 @@ class PackageList(ListModel):
         if dialog is not None:
             dialog.deleteLater()
         # reset package card
-        self._manager.packageInstallingFailed.emit(package_id)
+        self._package_manager.packageInstallingFailed.emit(package_id)
 
     def _requestInstall(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install[package_id]
-        license_content = self._manager.getPackageLicense(package_path)
+        license_content = self._package_manager.getPackageLicense(package_path)
 
         if not update and license_content is not None:
             # If installation is not and update, and the packages contains a license then
@@ -181,8 +181,9 @@ class PackageList(ListModel):
 
     def _install(self, package_id: str, update: bool = False) -> None:
         package_path = self._to_install.pop(package_id)
-        to_be_installed = self._manager.installPackage(package_path) is not None
+        to_be_installed = self._package_manager.installPackage(package_path) is not None
         if not to_be_installed:
+            Logger.warning(f"Could not install {package_id}")
             return
         package = self.getPackageModel(package_id)
         self.subscribeUserToPackage(package_id, str(package.sdk_version))
@@ -237,7 +238,7 @@ class PackageList(ListModel):
         if reply:
             reply_string = bytes(reply.readAll()).decode()
             Logger.error(f"Failed to download package: {package_id} due to {reply_string}")
-        self._manager.packageInstallingFailed.emit(package_id)
+        self._package_manager.packageInstallingFailed.emit(package_id)
 
     def subscribeUserToPackage(self, package_id: str, sdk_version: str) -> None:
         """Subscribe the user (if logged in) to the package for a given SDK
@@ -279,7 +280,7 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        self._manager.removePackage(package_id)
+        self._package_manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
 
     def updatePackage(self, package_id: str) -> None:
@@ -287,6 +288,6 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        self._manager.removePackage(package_id, force_add = not self._manager.isBundledPackage(package_id))
-        url = self._manager.package_infosWithUpdate[package_id]["download_url"]
+        self._package_manager.removePackage(package_id, force_add = not self._package_manager.isBundledPackage(package_id))
+        url = self._package_manager.package_infosWithUpdate[package_id]["download_url"]
         self.download(package_id, url, True)
