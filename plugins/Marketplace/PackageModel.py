@@ -301,10 +301,6 @@ class PackageModel(QObject):
 
     disablePackageTriggered = pyqtSignal(str)
 
-    installed = pyqtSignal(bool)
-
-    updated = pyqtSignal(bool)
-
     busyChanged = pyqtSignal()
 
     @pyqtSlot()
