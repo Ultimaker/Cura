@@ -55,8 +55,11 @@ class PackageList(ListModel):
     def __del__(self) -> None:
         """ When this object is deleted it will loop through all registered API requests and aborts them """
         self.cleanUpAPIRequest()
-        self.isLoadingChanged.disconnect()
-        self.hasMoreChanged.disconnect()
+        try:
+            self.isLoadingChanged.disconnect()
+            self.hasMoreChanged.disconnect()
+        except RuntimeError:
+            pass
 
     def abortRequest(self, request_id: str) -> None:
         """Aborts a single request"""

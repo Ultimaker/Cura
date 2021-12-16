@@ -88,7 +88,10 @@ class PackageModel(QObject):
         self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate)
 
     def __del__(self):
-        self._package_manager.packagesWithUpdateChanged.disconnect(self._processUpdatedPackages)
+        try:
+            self._package_manager.packagesWithUpdateChanged.disconnect(self._processUpdatedPackages)
+        except RuntimeError:
+            pass
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, PackageModel):
