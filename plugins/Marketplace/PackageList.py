@@ -47,7 +47,6 @@ class PackageList(ListModel):
         self._has_footer = True
         self._to_install: Dict[str, str] = {}
         self.canInstallChanged.connect(self._requestInstall)
-        self._local_packages: Set[str] = {p["package_id"] for p in self._package_manager.local_packages}
 
         self._ongoing_requests: Dict[str, Optional[HttpRequestData]] = {"download_package": None}
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
