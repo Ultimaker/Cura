@@ -275,6 +275,9 @@ class PackageList(ListModel):
         """
         if not self._package_manager.reinstallPackage(package_id):
             self.download(package_id, url, False)
+        else:
+            package = self.getPackageModel(package_id)
+            self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def uninstallPackage(self, package_id: str) -> None:
         """Uninstall a package from the Marketplace
