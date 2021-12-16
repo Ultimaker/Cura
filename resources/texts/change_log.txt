@@ -1,10 +1,18 @@
-[Arachne engine second beta]
+<h1> Arachne engine second beta </h1>
 
 <h1>Arachne engine beta 2</h1>
 Our new Ultimaker Cura engine allows you to create parts with ground-breaking quality, strength, and speed. This is made possible by fundamentally redefining how the inside of a model is generated – through adaptive line widths and optimized line positioning. <br>
-Earlier this year, we released the first beta of Ultimaker Cura Arachne engine. Which received an overwhelmingly positive response, thank you for all your feedback! 
+Earlier this year, we released the first beta of Ultimaker Cura Arachne engine. Which received an overwhelmingly positive response, thank you for all your feedback!
 Since the first beta release we've been working on improving the Arachne engine. <br>
 Join <a href="https://github.com/Ultimaker/Cura/discussions/10931">our discussion</a> on GitHub to provide us with all your feedback.
+
+[4.12.1]
+* Bug fixes 
+- Updated Shapely to version 1.8.0 which, among other things, fixes multiplying objects on MacOS Monterey 
+- Fixed a bug in Lightning infill where the infill was printed multiple times under certain circumstances
+
+[4.12.0]
+<i>For an overview of the new features in Cura 4.12, please watch <a href="https://youtu.be/CjFRT6Txn3U">our video</a>.</i>
 
 * Back pressure compensation
 Print quality is improved through dynamically adjusting print head velocity, which slows down or speeds up depending on the pressure of the material through the Bowden tube.

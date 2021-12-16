@@ -3103,7 +3103,7 @@ msgstr "Handlung erforderlich"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:100
 msgctxt "@label:status"
 msgid "Finishes %1 at %2"
-msgstr "Fertigstellung %1 auf %2"
+msgstr "Fertigstellung %1 um %2"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:31
 msgctxt "@label"

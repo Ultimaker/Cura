@@ -1731,7 +1731,7 @@ msgstr "Výplňový vzor"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze horní povrchy objektu. U bleskového vzoru má procento význam pouze v první vrstvě pod každým povrchem."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1771,7 +1771,7 @@ msgstr "Oktet"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
 msgid "Quarter Cubic"
-msgstr "Čtvrtina krychlove"
+msgstr "Čtvrtinově krychlový"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -1781,7 +1781,7 @@ msgstr "Soustředný"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
-msgstr "Zig Zag"
+msgstr "Cik-cak"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
@@ -1801,7 +1801,7 @@ msgstr "Gyroid"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Bleskový"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2020,42 +2020,42 @@ msgstr "Počet výplňových vrstev, které podporují okraje povrchu."
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "Úhel podpory bleskové výplně"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Určuje, kdy má vrstva bleskové výplně nad sebou něco, co má podporovat. Zadává se jako úhel a řídí se tloušťkou vrstvy."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "Úhel převisu bleskové podpory"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Určuje, od jakého úhlu převisu bude vrstva bleskové výplň podporovat model nad sebou."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "Úhel ústupu bleskové vrstvy"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami se větve bleskové výplně zkracují."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "Úhel vyrovnávání bleskové vrstvy"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami může docházet k vyrovnávání větví bleskové výplně."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3250,7 +3250,7 @@ msgstr "Vše"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "Ne na vnějším povrchu"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5204,7 +5204,7 @@ msgstr "Minimální šířka formy"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "Minimální vzdálenost mezi vnější stranou formy a modelu."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
