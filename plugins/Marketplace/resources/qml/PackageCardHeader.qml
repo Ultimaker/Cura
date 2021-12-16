@@ -198,7 +198,7 @@ Item
                 visible: showManageButtons && (packageData.canDowngrade || !packageData.isBundled)
                 enabled: !packageData.busy
                 busy: packageData.busy
-                button_style: packageData.isInstalled || packageData.isToBeInstalled
+                button_style: !(packageData.isInstalled || packageData.isToBeInstalled)
                 Layout.alignment: Qt.AlignTop
 
                 text:
