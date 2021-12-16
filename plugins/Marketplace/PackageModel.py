@@ -85,7 +85,7 @@ class PackageModel(QObject):
 
     @pyqtSlot()
     def _processUpdatedPackages(self):
-        self.setCanUpdate(self._package_id in self._package_manager.packagesWithUpdate)
+        self.setCanUpdate(self._package_manager.checkIfPackageCanUpdate(self._package_id))
 
     def __del__(self):
         try:
@@ -377,9 +377,8 @@ class PackageModel(QObject):
         return self._package_manager.canDowngrade(self._package_id)
 
     def setCanUpdate(self, value: bool) -> None:
-        if value != self._can_update:
-            self._can_update = value
-            self.stateManageButtonChanged.emit()
+        self._can_update = value
+        self.stateManageButtonChanged.emit()
 
     @pyqtProperty(bool, fset = setCanUpdate, notify = stateManageButtonChanged)
     def canUpdate(self) -> bool:
