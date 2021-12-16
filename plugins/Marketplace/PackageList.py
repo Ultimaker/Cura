@@ -286,11 +286,12 @@ class PackageList(ListModel):
         self._package_manager.removePackage(package_id)
         self.unsunscribeUserFromPackage(package_id)
 
-    def updatePackage(self, package_id: str) -> None:
+    def updatePackage(self, package_id: str, url: str) -> None:
         """Update a package from the Marketplace
 
         :param package_id: the package identification string
         """
         self._package_manager.removePackage(package_id, force_add = not self._package_manager.isBundledPackage(package_id))
-        url = self._package_manager.package_infosWithUpdate[package_id]["download_url"]
+        if url == "":
+            url = self._package_manager.package_infosWithUpdate[package_id]["download_url"]
         self.download(package_id, url, True)

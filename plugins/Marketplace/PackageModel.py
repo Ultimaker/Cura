@@ -295,7 +295,7 @@ class PackageModel(QObject):
 
     uninstallPackageTriggered = pyqtSignal(str)
 
-    updatePackageTriggered = pyqtSignal(str)
+    updatePackageTriggered = pyqtSignal(str, str)
 
     enablePackageTriggered = pyqtSignal(str)
 
@@ -307,6 +307,11 @@ class PackageModel(QObject):
     def install(self):
         self.setBusy(True)
         self.installPackageTriggered.emit(self.packageId, self.downloadURL)
+
+    @pyqtSlot()
+    def update(self):
+        self.setBusy(True)
+        self.updatePackageTriggered.emit(self.packageId, self.downloadURL)
 
     @pyqtSlot()
     def uninstall(self):

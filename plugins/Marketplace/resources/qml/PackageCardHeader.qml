@@ -232,7 +232,7 @@ Item
 
                 text: busy ? catalog.i18nc("@button", "Updating..."): catalog.i18nc("@button", "Update")
 
-                onClicked: packageData.install()
+                onClicked: packageData.update()
             }
         }
     }
