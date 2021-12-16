@@ -48,7 +48,8 @@ class LocalPackageList(PackageList):
         self.sort(lambda model: f"{SECTION_ORDER[model.sectionTitle]}_{model._can_update}_{model.displayName}".lower(), key = "package")
 
     def _removePackageModel(self, package_id):
-        if package_id not in self._package_manager.local_packages_ids:
+        package = self.getPackageModel(package_id)
+        if not package.canUpdate and package_id in self._package_manager.getPackagesToRemove() and package_id not in self._package_manager.getPackagesToInstall():
             index = self.find("package", package_id)
             if index < 0:
                 Logger.error(f"Could not find card in Listview corresponding with {package_id}")
