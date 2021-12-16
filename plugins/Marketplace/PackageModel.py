@@ -75,7 +75,7 @@ class PackageModel(QObject):
         self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
         self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
 
-        self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
+        self._plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
         self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id))

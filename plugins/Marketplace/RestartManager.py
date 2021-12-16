@@ -18,7 +18,7 @@ class RestartManager(QObject):
         self._plugin_registry: "PluginRegistry" = CuraApplication.getInstance().getPluginRegistry()
 
         self._manager.installedPackagesChanged.connect(self.checkIfRestartNeeded)
-        self._plugin_registry.hasPluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
+        self._plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
 
         self._restart_needed = False
 
