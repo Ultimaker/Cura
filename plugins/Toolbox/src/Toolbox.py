@@ -635,7 +635,7 @@ class Toolbox(QObject, Extension):
         elif request_type == "updates":
             # Tell the package manager that there's a new set of updates available.
             packages = self._server_response_data[request_type]
-            self._package_manager.setPackagesWithUpdate(dict(zip([p['package_id'] for p in packages], [p for p in packages])))
+            self._package_manager.setPackagesWithUpdate({p['package_id'] for p in packages})
 
         self.metadataChanged.emit()
 

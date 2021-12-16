@@ -49,7 +49,7 @@ class LocalPackageList(PackageList):
 
     def _removePackageModel(self, package_id):
         package = self.getPackageModel(package_id)
-        if not package.canUpdate and package_id in self._package_manager.getPackagesToRemove() and package_id not in self._package_manager.getPackagesToInstall():
+        if not package.canUpdate and package_id in self._package_manager.getToRemovePackageIDs() and package_id not in self._package_manager.getPackagesToInstall():
             index = self.find("package", package_id)
             if index < 0:
                 Logger.error(f"Could not find card in Listview corresponding with {package_id}")
@@ -110,5 +110,7 @@ class LocalPackageList(PackageList):
             return
 
         packages = response_data["data"]
-        self._package_manager.setPackagesWithUpdate(dict(zip([p['package_id'] for p in packages], [p for p in packages])))
+
+        self._package_manager.setPackagesWithUpdate({p['package_id'] for p in packages})
+
         self._ongoing_requests["check_updates"] = None

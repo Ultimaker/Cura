@@ -85,7 +85,4 @@ class CuraPackageManager(PackageManager):
                 return item == self["package_id"]
 
         packages = [PkgInfo(package_info) for package in self.getAllInstalledPackagesInfo().values() for package_info in package]
-        packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToRemove().values() if package["package_info"]["package_id"] not in packages])
-        packages.extend([PkgInfo(package["package_info"]) for package in self.getPackagesToInstall().values() if package["package_info"]["package_id"] not in packages])
-
         return [dict(package) for package in packages]
