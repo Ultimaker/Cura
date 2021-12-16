@@ -297,6 +297,4 @@ class PackageList(ListModel):
         :param package_id: the package identification string
         """
         self._package_manager.removePackage(package_id, force_add = not self._package_manager.isBundledPackage(package_id))
-        if url == "":
-            url = self._package_manager.package_infosWithUpdate[package_id]["download_url"]
         self.download(package_id, url, True)
