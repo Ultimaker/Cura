@@ -273,7 +273,8 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        self.download(package_id, url, False)
+        if not self._package_manager.reinstallPackage(package_id):
+            self.download(package_id, url, False)
 
     def uninstallPackage(self, package_id: str) -> None:
         """Uninstall a package from the Marketplace
