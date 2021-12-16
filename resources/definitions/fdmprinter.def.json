@@ -5546,7 +5546,7 @@
                     "default_value": 5,
                     "minimum_value": "0",
                     "minimum_value_warning": "raft_interface_line_width",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_remove_inside_corners",
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -7916,6 +7916,26 @@
                     "enabled": false,
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
+                },
+                "raft_remove_inside_corners":
+                {
+                    "label": "Remove Raft Inside Corners",
+                    "description": "Remove inside corners from the raft, causing the raft to become convex.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "raft_base_wall_count":
+                {
+                    "label": "Raft Base Wall Count",
+                    "description": "The number of contours to print around the linear pattern in the base layer of the raft.",
+                    "type": "int",
+                    "default_value": 1,
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
