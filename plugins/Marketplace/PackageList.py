@@ -171,7 +171,7 @@ class PackageList(ListModel):
         package_path = self._to_install[package_id]
         license_content = self._package_manager.getPackageLicense(package_path)
 
-        if not update and license_content is not None:
+        if not update and license_content is not None and license_content != "":
             # If installation is not and update, and the packages contains a license then
             # open dialog, prompting the using to accept the plugin license
             self._openLicenseDialog(package_id, license_content)
