@@ -1,162 +1,292 @@
-[Arachne engine second beta]
+[4.12.1]
+* Bug fixes 
+- Updated Shapely to version 1.8.0 which, among other things, fixes multiplying objects on MacOS Monterey 
+- Fixed a bug in Lightning infill where the infill was printed multiple times under certain circumstances
 
-<h1>Arachne engine beta 2</h1>
-Our new Ultimaker Cura engine allows you to create parts with ground-breaking quality, strength, and speed. This is made possible by fundamentally redefining how the inside of a model is generated – through adaptive line widths and optimized line positioning. <br>
-Earlier this year, we released the first beta of Ultimaker Cura Arachne engine. Which received an overwhelmingly positive response, thank you for all your feedback! 
-Since the first beta release we've been working on improving the Arachne engine. <br>
-Join <a href="https://github.com/Ultimaker/Cura/discussions/10931">our discussion</a> on GitHub to provide us with all your feedback.
+[4.12.0]
+<i>For an overview of the new features in Cura 4.12, please watch <a href="https://youtu.be/CjFRT6Txn3U">our video</a>.</i>
 
-* Back pressure compensation
-Print quality is improved through dynamically adjusting print head velocity, which slows down or speeds up depending on the pressure of the material through the Bowden tube.
+* Lightning infill
+The new lightning infill setting lets you to print high-quality top layers but is optimized to use less material and increase your production speed. Special thanks to rburema and BagelOrb!
 
-* Printing order filling gaps
-Gaps in models are now filled in after placing the outer wall, resulting in less over-extrusion.
+* Improved top surface quality
+We’ve tweaked the Monotonic setting and made adjustments throughout Ultimaker print profiles. This removes occasional scarring on models and improves top surface quality by default. 
 
-* Print quality enhancements
-All print quality improvements from Ultimaker Cura 4.12 have been added.
+* Improved horizontal print quality
+Resulting in reduction of ringing, improving resolution and overall print quality.  
 
-* New settings:
-- Split Middle Line Threshold
-- Add Middle Line Threshold
-- Expose the Distribution radius of the Inward Distributed strategy
+* App switcher
+The new switcher provides a simpler way to navigate and use other Ultimaker applications, including Ultimaker Digital Factory, Ultimaker Marketplace, and Ultimaker 3D Printing Academy. Reporting bugs to Github is now just one click away, and it’s easier to find the application you need.
+
+* Faster start-up
+We've shaved 10 seconds from Ultimaker Cura's start-up time by optimizing profile data caching.
+
+* Other new features:
+- Moved the skip button to the left bottom on the sign in onboarding page and replaced with the sign in button and Create new account
+- Add {material_type} and {material_name} as replacement patterns, contributed by fieldOfView
+- Update file name after saving
+- Make parking optional in all "methods" of Pause at Height, contributed by fieldOfView
 
 * Bug fixes:
-- Fixed a bug with concentric skin lines
-- Fixed memory usage, contributed by Piezoid
-- Fixed a bug with opening old project files in Arachne
-- Fixed a bug where the width was not adjusted
-- Fixed a bug with Line Compactness behaviour was inversed for Central Deviation
-- Fixed a bug with tiny movements which caused a nozzle slowdown
-- Fixed a bug where blobs in g-code were generated
-- Fixed a bug with Minimum Wall Line Width setting was used if Print Thin Walls was disabled
-- Fixed a bug where the Inner Line Width was wider thatn the end of the model
-- Fixed a bug where Maximum Resolution was not applied for hyperbolic arcs in inner walls
-- Fixed a bug where Combing was broken
-- Fixed a engine crash within the inset order optimizer with 3 walls, contributed by Piezoid
-- Fixed a bug where the Seam placement was not on the correct corner
-- Fixed a bug where the centerline of Central Deviation is not generated
-- Fixed a bug with Bottom Skin Expand Distance at zero caused skin to expand beyond walls
+- Fixed a bug when combing goes through skin on Top Surface Skin Layers
+- Fixed a bug in one-at-a-time mode to not wait for initial layer bed temperature if the temperature stays the same
+- Fixed a bug where there was double infill and gap filling 
+- Fixed a bug with monotonic ironing that causes fan speed jump to 255 for ironing pass
+- Fixed an engine crash when using monotonic ordering with zigzag skin pattern
+- Fixed missing commas in disallowed list for code injections, contributed by YuvalZilber
+- Fixed various typos, contributed by luzpaz
+- Fixed Filament Change Retract method
+- Fixed extra microsegments inserted from Wall Overlap Computation
+- Fixed inconsistent material name in the header and material selection dropdown
+- Fixed scaling model down after scaling it up with tool handles
+- Fixed single instance option when opening different files
+- Fixed duplicating and multiplying support blockers
+- Fixed a bug where a random 0 was added in end g-code
+- Fixed a bug in Tree support in the global and per object settings
+- Fixed a bug where special characters in configuration files caused a crash
+- Fixed a bug where infill goes through skin
+- Fixed a bug where ironing doesn't listen to combing mode
+- Fixed a bug related to the translations in the monitor tab
 
-* Known issues:
-- Gaps in inner wall where it has enough space to print one line
-- Unwanted travel moves when monotonic order in enabled
-- Printer pauses at certain layer creating dripping spots
-- Retracted unnecessary travel moves
+* Printer definitions, profiles and materials:
+- Added Creasee CS50S pro, Creasee Skywalker and Creasee Phoenix printer definitions, contributed by ivovk9
+- Added Joyplace Cremaker M V1, M V2, S V1, contributed by hyu7000
+- Added Hellbot printer definitions, contributed by DevelopmentHellbot
+- Added Arjun Pro 300 printer definition, contributed by venkatkamesh
+- Added AtomStack printer definitions, contributed by zhpt
+- Added Weedo X40 printer definition, contributed by x40-Community
+- Added 3DI D300 printer definition, contributed by v27jain
+- Changed Crealiy Ender 5 Plus end g-code, contributed by mothnox
+- Updated definitions and extruders of Hellbot Magna 2 230/300 dual, contributed by DevelopmentHellbot
+- Updated Eryone Thinker printer profile, contributed by Eryone
+- Updated FLSUN Super Racer profiles, contritubed by Guilouz
+- Updated Mega S and X acceleration to firmware default, contributed by NilsRo
 
-*<i>Note: This is _not_ based on a specific stable version of the front-end of Cura (like '4.12.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the variable line width feature-set!</i>
+* Known bugs with Lighting infill:
+- Connect infill polygons doesn't work
+- Infill Wipe Distance applies to every polyline
+- Infill mesh modifier density
+- Infill Overlap doesn't work
+- Infill before walls order doesn't respect the order when Lightning is enabled
 
-<h1>Arachne engine beta 1 </h1>
-This is the beta release of Ultimaker Cura's "Arachne" engine. The objective is to fill the available space better with walls, reduce variability in flow rate, preventing gaps and overextrusion and improving path planning by implementing variable line widths. This allows for a more consistent print and better fit to the specifications of the original 3D model.
-If you've tried this beta and want to give some feedback, please see the discussion here.
-This is a second preview, bringing the engine to a more stable state than the alpha that was released in December. This release should be more appropriate to tune profiles within preparation for the stable release. The stable release will still have its own beta in the same fashion as the ordinary release cycle.
-While the bugs and features that greatly influence print quality have been resolved and implemented, there are still some things left to do (see known issues). The profiles have hardly been tuned, even for Ultimaker's own printers. Please don't expect perfection. In fact, the default settings as they are now likely result in a worse print quality than the stable release.
-Note: This is _not_ based on a specific stable version of the front-end of Cura (like '4.8.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the variable line width feature-set!
+[4.11.0]
+<i>For an overview of the new features in Cura 4.11, please watch <a href="https://youtu.be/OcFkcDyO5DU">our video</a>.</i>
 
-* New features in Arachne engine beta:
+* Monotonic ordering
+The new Monotonic top/bottom order setting enables users to print parts with smoother top surfaces. This is especially useful for parts that need good aesthetics, such as visual prototypes. Or for parts that benefit from smooth surfaces, such as those that contact-sensitive components. 
 
-* Line Width Color Scheme
-A new color scheme has been added that shows the line width of individual lines in layer view.
+* Complete UI refresh
+Look around and you will notice that we have refreshed over 100 icons throughout Ultimaker Cura. The new icons are designed for clarity – resulting in a simpler and more informative slicing experience. Also, when scaling the Ultimaker Cura window, the UI will adapt, resulting in less visual clutter.
 
-* Static Outer Wall
-The outer wall will no longer adjust its width or position if there are any inner walls adjacent to it with the (inward) distributed line width strategy. This reduces ringing effects in thin shapes.
+* Improved digital library integration
+Collaborative workflows using the Digital Library are now simpler. Every user with a cloud-connected Ultimaker 3D printer can access stored projects. And we have added a “Search” function to make finding files easier.
 
-* Bug fixes
-- The Randomize Infill Start setting is now working on Arachne.
-- The Infill Travel Optimization setting is now working on Arachne.
-- The Infill Layer Thickness and Support Layer Thickness is now working on Arachne.
-- Fix crash on MacOS when printing parts with a single wall.
-- Fix crash when the model contains very small holes (~0.1mm).
-- Fix crash when using Support Infill.
-- Fix crash when the model contains faces that are almost exactly parallel.
-- Fix crash when simplifying due to Maximum Resolution causes self-intersections to appear in the layer outline.
-- Fix crash when multiple transitions come together in the same point.
-- Fix crash when transitions between different numbers of walls connect the wrong two perimeters together.
-- Infill and support layer thickness should no longer overlap with itself if gradual infill or gradual support is used.
-- Only generate connecting wall segments for the sparsest density when using gradual infill or gradual support.
-- Sharp corners in the infill volume will no longer be filled with a useless tiny infill line.
-- Initial Layer Line Width now only applies to the initial layer again.
-- When using Outer Wall Inset, there will no longer be a ridge when transitioning from 2 to 1 wall.
-- Outer Wall Wipe Distance will no longer cause unnecessary travel moves.
-- Concentric support interface patterns are no longer omitted.
-- When Wall Line Count is 0, the rest of the model will no longer be omitted.
-- When using different extruders for inner and outer walls, the extruders no longer alternate per layer.
-- Small gaps between inner wall and skin are properly filled with infill again.
-- Seam position when using Sharpest Corner set to "hide seam" now properly chooses the sharpest inner corner.
-- Transitions are no longer omitted in very sharp corners, which sometimes led to too small line widths.
-- The outline of the print is no longer shifted towards the bottom left by the Maximum Deviation setting.
-- When using Alternate Extra Wall, the extra wall no longer overlaps with skin or infill.
+* Save materials profiles to USB
+Users can now save all third-party material profiles to USB. <i>This feature is for Ultimaker S-line printers only and is especially useful for cloud-connected (or offline) printers.</i>
 
-* Known issues
-- Some models might still crash the engine, although it is less frequent then before.
-- Infill support can crash the engine.
-- The seam isn't positioned correctly when using the Hide or Expose or Smart Hiding placement options.
-- User specified seam is not aligned.
-- Paths for concentric ironing aren't generated.
-- Concentric support pattern can intersects with model.
-- Lines are not always symmetrical in width at the transitioning point to a lower wall count.
-- Center line is not generated for centre deviation strategy.
-- Missing infill/support walls in certain areas when using Extra Infill/Support Wall Count.
-- Brim lines ordered wrongly.
-- Raft interface layers and raft layers don't align.
-- Connected infill and gradual infill results in overextrusion.
-- Bottom Skin Expand Distance at zero causes skin to expand beyond walls.
-- Spiralize could generate both inner and outer surfaces.
-- Bottom layers of a spiralized model with surface mode enabled, looks like inner walls.
-- Last bottom layer might disappear for a spiralized model.
-- Stringing when spiralized is enabled.
-- Fuzzy skin isn't implemented.
-- Connect Top/Bottom polygons isn't implemented.
+* Notifications for beta and plugin releases
+Users can now set notification preferences to alert them to new Ultimaker Cura beta and plug-in releases.
 
-<h1>Arachne engine alpha</h1>
+* Improve logging of errors in OAuth flow
+When helping a user with log-in problems it is easier to see where the OAuth flow goes wrong.
 
-The Cura Team, as part of and with help from Ultimaker R&D in a more general sense, have been working on a large project that changes the core of how our slicing engine works.
-The goal is to have variable line widths (instead of static) for each extrusion, and better path-planning, in order to better fit the eventual printed part to the specifications.
-If after you've used this alpha you want to give some feedback (please do, it's the main reason we're doing this), please see the discussion here.
-This effort is still ongoing, but we're at the point where we would very much like to have the feedback and input of the wider community.
-In order to get this done, we've decided to release an 'Alpha' build, or an early preview.
-Not everything has been implemented, and there are even an amount of known bugs (see below), as well as very probably a comparable amount of unknown issues.
-On top of that, we added some parameters (and removed a few others). These have hardly been tuned, even for our own printers, let alone 3rd party ones.
-In other words, don't expect perfection. In fact, the default settings as they are now are likely to be worse as what's there in a lot of cases.
-Note: This is _not_ otherwise build on a specific version (like '4.8.0' or similar), so there may be issues that have been solved or introduced since then that have little or nothing to do with the Variable Line Width feature-set!
+* Search in the description in the settings visibility menu
+When searching in the settings visibility menu you will also search in the description of the settings.
 
-* New Settings
-Variable Line Strategy: How the walls are spread over the available space.
-- Central Deviation: Will print all walls at the nominal line width except the central one(s), causing big variations in the center but very consistent outsides.
-- Distributed: Distributes the width variations equally over all walls.
-- Inward Distributed: Is a balance between the other two, distributing the changes in width over all walls but keeping the walls on the outside slightly more consistent.
-- Minimum Variable Line Width: The smallest line width, as a factor of the normal line width, beyond which it will choose to use fewer, but wider lines to fill the available space. Reduce this threshold to use more, thinner lines. Increase to use fewer, wider lines.
-- Wall Transition Length: When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines.
-- Wall Transition Angle: When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.
-- Wall Transition Filter Distance: If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.
-- Maximum Extrusion Area Deviation: Influences extrusion line simplification. The maximum extrusion area deviation allowed when removing intermediate points from a straight line. Keeping it low may cause (too) little simplification to occur (with all the problems that causes), but if you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls.
+* Bug fixes:
+- Fixed the setting visibility button to make it easier to click
+- Inform the user that their webcam does not work because they are cloud connected
+- Inform the user that their webcam does not work if the firewall is enabled
+- Fixed a crash when pressing the slice button while context menu is opened 
+- Support non-ASCII character in the Digital Library project name
+- Fixed integer underflow if print is less than half the initial layer height
+- Fixed a bug where infill mesh sometimes default to having walls or skin
+- Fix builds with Python 3.8, contributed by StefanBruens
+- Fix CC settings for PLA
+- Fixed memory leak in Zeroconf 0.25
+- Fixed connecting USB printing with detecting baud-rates, contributed by rrrlasse
+- Fixed crash when Cura crashes on exit
+- Fixed a bug where the infill goes through walls
+- Fixed the version upgrade of preferences file
+- Fixed missing icons in deprecated icons list, contributed by fieldOfView
+- Fixed a crash in CuraEngine when the prime tower is placed in an invalid position
+- Fixed a bug when user is unable to sign in on Linux if a Keyring backend is installed
+- Fixed the rotation direction of the 90 degrees rotation arrows, contributed by fieldOfView
 
-* Removed/Renamed/Altered Settings
-- Print Thin Walls: Behaviour altered.
-- Optimize Wall Printing Order is renamed to Order Inner Walls By Inset. Behaviour altered.
+* Printer definitions, profiles and materials:
+- Added SecKit SK-Tank, SK-Go printer definitions, contributed by SecKit
+- Added MP Mini Delta 2 printer definition, contributed by PurpleHullPeas
+- Added Kingroon K3P and K3PS printer definitions, contributed by NoTaMu
+- Added Eryone PLA, PLA Wood, PLA Matte and PETG 1.75mm profiles, contributed by dapostol73
+- Added BIQU BX printer definition, contributed by looxonline
+- Added FLSun Super race printer definitions, contributed by thushan
+- Added Atom 2.0 and Atom Plus printer definitions, contributed by lin-ycv
+- Added PBR 3D Gen-I printer definition, contributed by pbr-research
+- Added Creasee 3D printer definitions, contributed by ivovk9
+- Updated Strateo3D profiles, contributed by ChronosTech
+- Added Voron V0 printer definitions, contributed by jgehrig
+- Updated Liquid profiles, contributed by alexgrigoras
+- Added Farm 2 and Farm2CE printer definitions, contributed by saliery999
+- Added GooFoo and Renkforce print definitions and GooFoo materials, contributed by goofoo3d
 
-* To Implement
-Not all initially planned sub-features are in yet, any subsequent non-patch releases will probably contain more.
+*<i>From version 4.11 onwards - Ultimaker Cura is only supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
 
-* Known Issues:
-- SkeletalTrapezoidation not robust to unsimplified input. For very intricate and or small models, crashes may occur. Please attach any crashing model to the discussion/feedback link above.
-- Different extruders for inner and outer walls. The used extruder alternate each layer but the inner and outer wall are printed with the same extruder (used at that layer)
+[4.10.0]
+<i>For an overview of the new features in Cura 4.10, please watch <a href="https://www.youtube.com/watch?v=9PCVeJ_yytk">our video</a>.</i>
 
-* Spiralize bugs:
-- Bottom layers issue in spiralize mode.
-- Stringing when in spiralized mode.
-- Last bottom layer missing for some models.
-- Support not being correctly generated. It might start mid-air or not providing enough support for some parts of the model.
-- Gradual infill support not being correctly generated. Support walls don't seem to be printed well when gradual infill support is enabled. Ultimaker printers enable this by default for PVA.
-- Combing in the wrong part when printing dual extrusion Visible, for example, when printing with dual extrusion with two different colors. E.g.: 'Bleeding' of red into white parts.
-- Printed travel moves.
-- Gaps between inner wall and skin.
-- Z-Seam Sharpest Corner broken. The seam is not placed in the sharpest corner
-- Small line width and overlap. When using the Center Deviation setting on a thin model some wall lines may overlap or leave a gap.
-- Wall positioning is imprecise. On some models, the walls are not centered properly within the outline nor have the correct width.
-- Connected and gradual infill results in overextrusion. When gradual infill and connect infill lines is enabled, it'll connect different pieces of infill on top of each other, causing overextrusion.
-- Connect Top/Bottom polygon not working currently. The issue occurs when concentric is the infill pattern.
-- Small travel line segments in infill/support. This is causing unnecessary traveling and stringing.
-- Wrong Infill Layer Thickness. In combination with a higher Extra Infill Line Count, some parts are not generating infill lines.
-- Inward/Distributed overextrusion. Seen on models with multiplied infill walls.
-- Overlapping skin and alternating wall. The extra wall at each alternating step will overlap with the skin
-- Assertion failure in SkeletalTrapezoidation. Can cause the engine to crash on certain models.
+*Native CAD import plugin
+Ultimaker Professional and Excellence subscribers can now directly import native CAD files into Ultimaker Cura.
+Enable this feature by downloading the Native CAD import plugin from the Ultimaker marketplace. 
+
+*Flow visualization
+In preview mode you can now visualize the flow. Contributed by khani3s.
+
+*Show loading plugins on startup
+When starting Cura you will now see which plugins Cura is loading.
+
+*Add Z position parameter to FilamentChange
+With the FilamentChange script you can now control all 3 coordinates. 
+
+*Allow FilamentChange script to use Marlin M600 configuration
+Contributed by Sekisback.
+
+*Double click on file in Digital Factory
+When double clicking on a file in the open project dialog in Digital Factory it will now open in Cura. 
+
+* Bug Fixes
+- Fixed temperature exceptions for UM2+C material profiles.
+- Fixed a bug where pause at height stops all extrusion if relative extrusion is used.
+- Fixed authentication issues when logging into UM account. Contributed by fieldOfView.
+- Fixed the pause-at-height retract with Repetier-flavour.
+- Fixed erasing z-coordinate in the move tool to the value of 0. 
+- Fixed the limit range of layer view to only visible structures. 
+- Fixed a bug where Cura crashes when scaling a model on Linux. 
+- Fixed path minimum limit. 
+- Fixed a bug when using right to left language numbers were overlaying on text in the print settings.
+- Fixed edge case with disabling bridging.
+- Fixed a bug where some names with Unicode characters crashes Cura when trying to authorize. 
+- Fixed renaming groups. Contributed by fieldOfView. 
+- Fixed a bug when the seam was not placed in sharpest corner.
+- Fixed the gantry height for S-line printers. 
+- Fixed a bug where a model is partially below build plate if center selected model is used.
+- Fixed a bug where a tooltip arrow appeared when the "Manage printers" button is hovered.
+- Fixed a bug where assemblies were not arranged in the center of the build plate. 
+
+* Printer definitions, profiles and materials.
+- Add CC0.4 core and materials for S3 and S5.
+- Updated Axi machine start gcodes, contributed by Synsuiter.
+- Volumic 3D printer definitions, contributed by VOLUMIC.
+- Anycubic Mega X and Anycubic Mega S, contributed by NilsRo.
+- Updated Deltacomb printer profiles, contributed by kaleidoscopeit.
+- eMotionTech Strateo3D materials and profiles, contributed by ChronosTech.
+- Sovol SV03, contributed by balacij.
+- Two Trees Bluer, Bluer Plus, Sapphire Pro and Sapphire Plus, contributed by Lester3DGadgets.
+- Update Skriware 2, contributed by Lukkoz.
+- Longer LK1, LK1 Pro, LK1 Plus, LK4, LK4 Pro, LK5, LK5 Plus and Cube 2, contributed by lowkeyjoe. 
+- Mingda D3, D4 and Rock3, contributed by cataclism. 
+- JGAurora A6, contributed by CrissR.
+
+*<i>Please, be aware that after version 4.10 Ultimaker Cura will only be supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
+
+[4.9.1]
+* PETG Profile update.
+Ultimaker PETG profiles have been added. The Generic PETG profile for 2.85mm filaments has been updated as well.
+
+* Bug Fixes
+- The second extruder should now prime properly again when using a prime blob.
+- Reduced the flood of QML errors in the log file. Contributed by fieldOfView.
+- Fixed a crash when entering layer view on MacOS 10.13.6. Contributed by jwrw.
+- Fixed a crash when there was an inaccessible X: drive in Windows. Cura should no longer try to access the X: drive now.
+
+[4.9.0]
+<i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video</a>.</i>
+
+* Digital factory integration.
+Now you can open files directly from Digital Library projects. Then, after preparation, quickly and easily export them back. This feature is available for all users with an Ultimaker Essentials, Professional, or Excellence subscription. <a href="https://ultimaker.com/software/enterprise-software"> Learn more</a>
+
+* "Line type" is now the default color scheme.
+When entering the Preview mode, you don't have to switch manually to line type. 
+
+* Z-seam is now clearly shown in preview mode.
+This ensures that you will know whether the seam will be sufficiently hidden in the end product. This will also indicate the starting point of the print.
+<i> Thanks to BasF0 for contributing to this feature </i>
+
+* New 'line width' color-scheme available in preview mode.
+Line-width can now be selected as a color-scheme in preview mode.
+
+* Weight estimation in decimals.
+This provides a more detailed idea of the amount of material used - which is especially useful for smaller prints. 
+
+* Split Shell category into Walls and Top/Bottom. 
+The shell category was a mix of settings about walls and settings about top/bottom, splitting them into two categories makes more sense. 
+
+* Post-processing script to embed screenshot in g-code.
+The ability to have thumbnails embedded. Contributed by Gravedigger7789.
+
+* Add checkbox for Extruder Offsets.
+Ability to enable or disable the extruder offsets to gcode. This will be enabled by default, unless it is in the printer's def.json file. Contributed by RFBomb. 
+
+* Cura should work properly on MacOS 'Big Sur' now, afforded by upgrades to Python (to 3.8) and Qt (to 5.15).
+If you had (UX, visual, graphics card) problems, specifically on (newer) MacOS versions, like Big Sur, you should be able to use this new version.
+
+* Bug Fixes
+- Fixed a security vulnerability on windows permitting the openssl library used to launch other programs. Thanks to Xavier Danest for raising this bug.
+- Fixed Connect Top/Bottom Polygons. 
+- Fixed closing Marketplace after quitting Cura.
+- Fixed clicking on Marketplace button to go to web Marketplace.
+- Fixed Pause at Height when using Repetier flavour. Contributed by EGOiST1991.
+- Fixed correct desity for current PETG filaments. Contributed by kad.
+- Fixed Pause at height post processing script that returns to right position.
+- Fixed layer view being grayed out after reslicing.
+- Fixed fan speed issue due to reuse of empty extruder plan.
+- Fixed loading OBJ files with no texture references, but does have normal references.
+- Fixed retraction/priming while extruder switches. Contributed by sisu70.
+- Fixed loading script from all registered resource path. Contributed by fieldOfView.
+- Fixed typeError: define_round_method. Contributed by Sophist-UK. 
+- Fixed missing layer with Hole Horizontal Expansion. 
+- Fixed Tree Support Floor layers. Contributed by ThomasRahm.
+- Fixed Top Surface Skin Layers if Top layers = 0.
+- Fixed recent files on opening as project. 
+- Fixed opening project file from command-line. 
+- Fixed thumbnail in UFP files.
+- Fixed validator for floats in Machine Settings dialog. Contributed by fieldOfView.
+- Fixed recessed areas at the bottom of a model while using Make Overhangs Printable. Contributed by OpusMcN.
+- Fixed slicing grouped models if one of the group parts is below Z=0.
+- Fixed material temperatures and fan speed for Anycubic i3 Mega. Contributed by trunneml.
+- Fixed drop model down to buildplate when always drop to buildplate is disabled. 
+- Fixed drop objects to buildplate after scaling.
+- Fixed disallowed areas while using Brim Line Widths. 
+- Fixed message for non manifold models. 
+- Fixed setting category arrows. Contributed by fieldOfView.
+- Fixed metadate tags for 3MF files. 
+- Fixed engine crash when using low-density Cross Infill.
+- Improved performance of loading .def.json files. 
+
+* Printer definitions, profiles and materials
+- 3DFuel Pro PLA and SnapSupport materials, contributed by grk3010.
+- Cubincon Style NeoA31, contributed by HUNIBESTHyVISION.
+- Eryone thinker series and Eryone ER20, contributed by Eryone.
+- Flashforge DreamerNX, contributed by KeltE.
+- Fused Form FF300, contributed by FusedForm.
+- Geeetech A10 improved start and end gcode, contributed by TheTRCG.
+- ideagen3D Sapphire and ideagen3D Sapphire Plus, contributed by Firedrops.
+- INAT Proton X printers, contributed by MarkINAT.
+- Koonovo, contributed by KOONOVO3DPRINTER.
+- Liquid, contributed by alexgrigoras.
+- Lulzbot TAZ Pro and Lulzbot Mini 2, contributed by spotrh.
+- Maker Made 300x printer, contributed by skilescm.
+- MINGDA D2, contributed by cataclism.
+- Snapmaker 2.0, contributed by maihde.
+- Sri Vignan Technologies, contributed by venkatkamesh.
+- Syndaver AXI Machine, contributed by synsuiter.
+- Tinyboy Fabricator Mini 1.5, contributed by reibuehl.
+- Trimaker printers, contributed by tomasbaldi.
+- TwoTrees Bluer, contributed by WashingtonJunior.
+- Update Hellbot Magna 1 and Hellbot Magna dual, contributed by DevelopmentHellbot.
+- Update Rigid3D and added Rigid3D Mucit2, contributed by mehmetsutas.
+- Update TPU profiles for 0.6mm nozzle of UM2+C.
+- ZAV series, contributed by kimer2002.
+
+[4.8.0]
+
+The release notes of versions &lt;= 4.8.0 can be found in our <a href="https://github.com/Ultimaker/Cura/releases?page=2">releases GitHub page</a>.

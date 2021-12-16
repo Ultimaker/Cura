@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 
@@ -50,9 +50,15 @@ Cura.ExpandablePopup
                 model: extrudersModel
                 delegate: Item
                 {
+                    id: extruderItem
+
                     Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
+
+                    property var extruderStack: Cura.MachineManager.activeMachine.extruders[model.index]
+                    property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
+                    property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon
@@ -61,6 +67,113 @@ Cura.ExpandablePopup
                         materialColor: model.color
                         extruderEnabled: model.enabled
                         anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    MouseArea // Connection status tooltip hover area
+                    {
+                        id: tooltipHoverArea
+                        anchors.fill: parent
+                        hoverEnabled: tooltip.text != ""
+                        acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                        onEntered:
+                        {
+                            base.mouseArea.entered() // we want both this and the outer area to be entered
+                            tooltip.show()
+                        }
+                        onExited: { tooltip.hide() }
+                    }
+
+                    Cura.ToolTip
+                    {
+                        id: tooltip
+                        x: 0
+                        y: parent.height + UM.Theme.getSize("default_margin").height
+                        width: UM.Theme.getSize("tooltip").width
+                        targetPoint: Qt.point(Math.round(extruderIcon.width / 2), 0)
+                        text:
+                        {
+                            if (!model.enabled)
+                            {
+                                return ""
+                            }
+                            if (extruderItem.valueError)
+                            {
+                                return catalog.i18nc("@tooltip", "The configuration of this extruder is not allowed, and prohibits slicing.")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return catalog.i18nc("@tooltip", "There are no profiles matching the configuration of this extruder.")
+                            }
+                            return ""
+                        }
+                    }
+
+                    // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
+                    UM.RecolorImage
+                    {
+                        id: badge
+                        anchors
+                        {
+                            top: parent.top
+                            topMargin: - Math.round(height * 1 / 6)
+                            left: parent.left
+                            leftMargin: extruderIcon.width - Math.round(width * 5 / 6)
+                        }
+
+                        width: UM.Theme.getSize("icon_indicator").width
+                        height: UM.Theme.getSize("icon_indicator").height
+
+                        visible: model.enabled && (extruderItem.valueError || extruderItem.valueWarning)
+
+                        source:
+                        {
+                            if (extruderItem.valueError)
+                            {
+                                return UM.Theme.getIcon("ErrorBadge", "low")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return UM.Theme.getIcon("WarningBadge", "low")
+                            }
+                            return ""
+                        }
+
+                        color:
+                        {
+                            if (extruderItem.valueError)
+                            {
+                                return UM.Theme.getColor("error")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return UM.Theme.getColor("warning")
+                            }
+                            return "transparent"
+                        }
+
+                        // Make a themable circle in the background so we can change it in other themes
+                        Rectangle
+                        {
+                            id: iconBackground
+                            anchors.centerIn: parent
+                            width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                            height: parent.height - 1.5
+                            radius: width / 2
+                            z: parent.z - 1
+                            color:
+                            {
+                                if (extruderItem.valueError)
+                                {
+                                    return UM.Theme.getColor("error_badge_background")
+                                }
+                                if (extruderItem.valueWarning)
+                                {
+                                    return UM.Theme.getColor("warning_badge_background")
+                                }
+                                return "transparent"
+                            }
+                        }
                     }
 
                     Column
