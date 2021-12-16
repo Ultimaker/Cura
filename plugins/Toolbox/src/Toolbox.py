@@ -645,7 +645,7 @@ class Toolbox(QObject, Extension):
     # This function goes through all known remote versions of a package and notifies the package manager of this change
     def _notifyPackageManager(self):
         for package in self._server_response_data["packages"]:
-            self._package_manager.addAvailablePackageVersion(package["package_id"], Version(package["package_version"]), package)
+            self._package_manager.addAvailablePackageVersion(package["package_id"], Version(package["package_version"]))
 
     def _onDownloadFinished(self, reply: "QNetworkReply") -> None:
         self.resetDownload()
