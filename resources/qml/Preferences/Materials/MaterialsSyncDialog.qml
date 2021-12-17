@@ -691,7 +691,7 @@ Window
                 {
                     text: catalog.i18nc("@button", "How to load new material profiles to my printer")
                     iconSource: UM.Theme.getIcon("LinkExternal")
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-how-usb")
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/4403319801106/?utm_source=cura&utm_medium=software&utm_campaign=add-material-profiles-via-usb")
                 }
 
                 Item
