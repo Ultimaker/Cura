@@ -69,32 +69,6 @@ Item
                 visible: packageData.isCheckedByUltimaker
             }
 
-            Control
-            {
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").height
-                Layout.alignment: Qt.AlignCenter
-                enabled: false  // remove!
-                visible: false  // replace packageInfo.XXXXXX
-                // TODO: waiting for materials card implementation
-
-                Cura.ToolTip
-                {
-                    tooltipText: "" // TODO
-                    visible: parent.hovered
-                }
-
-                UM.RecolorImage
-                {
-                    anchors.fill: parent
-
-                    color: UM.Theme.getColor("primary")
-                    source: UM.Theme.getIcon("CheckCircle") // TODO
-                }
-
-                // onClicked: Qt.openUrlExternally( XXXXXX )  // TODO
-            }
-
             Label
             {
                 id: packageVersionLabel
