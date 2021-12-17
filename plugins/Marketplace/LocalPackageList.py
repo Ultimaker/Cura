@@ -86,7 +86,7 @@ class LocalPackageList(PackageList):
         return package
 
     def checkForUpdates(self, packages: List[Dict[str, Any]]) -> None:
-        installed_packages = "installed_packages=".join([f"{package['package_id']}:{package['package_version']}&" for package in packages])
+        installed_packages = "&".join([f"installed_packages={package['package_id']}:{package['package_version']}" for package in packages])
         request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
 
         self._ongoing_requests["check_updates"] = HttpRequestManager.getInstance().get(
