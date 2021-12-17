@@ -46,7 +46,6 @@ class PackageList(ListModel):
         self._has_more = False
         self._has_footer = True
         self._to_install: Dict[str, str] = {}
-        self.canInstallChanged.connect(self._requestInstall)
 
         self._ongoing_requests: Dict[str, Optional[HttpRequestData]] = {"download_package": None}
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
@@ -134,8 +133,6 @@ class PackageList(ListModel):
     def getPackageModel(self, package_id: str) -> PackageModel:
         index = self.find("package", package_id)
         return self.getItem(index)["package"]
-
-    canInstallChanged = pyqtSignal(str, bool)
 
     def _openLicenseDialog(self, package_id: str, license_content: str) -> None:
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
@@ -236,7 +233,8 @@ class PackageList(ListModel):
         temp_file.close()
         self._to_install[package_id] = temp_file.name
         self._ongoing_requests["download_package"] = None
-        self.canInstallChanged.emit(package_id, update)
+        self._requestInstall(package_id, update)
+
 
     def _downloadError(self, package_id: str, update: bool = False, reply: Optional["QNetworkReply"] = None, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if reply:
