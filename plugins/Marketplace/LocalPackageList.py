@@ -44,8 +44,8 @@ class LocalPackageList(PackageList):
         self._package_manager.packageUninstalled.connect(self._removePackageModel)
 
     def _sortSectionsOnUpdate(self) -> None:
-        SECTION_ORDER = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
-        self.sort(lambda model: f"{SECTION_ORDER[model.sectionTitle]}_{model._can_update}_{model.displayName}".lower(), key = "package")
+        section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
+        self.sort(lambda model: (section_order[model.sectionTitle], model.canUpdate, model.displayName.lower()), key = "package")
 
     def _removePackageModel(self, package_id):
         package = self.getPackageModel(package_id)
