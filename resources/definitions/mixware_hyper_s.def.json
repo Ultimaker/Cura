@@ -7,7 +7,7 @@
         "author": "Mixware",
         "manufacturer": "Mixware",
         "file_formats": "text/x-gcode",
-        "platform": "hyper_s_platform.stl",
+        "platform": "mixware_hyper_s_platform.stl",
         "has_materials": true,
         "has_machine_quality": true,
         "preferred_material": "generic_pla",
@@ -146,9 +146,6 @@
         },
         "infill_sparse_density": {
             "default_value": 15
-        },
-        "fill_perimeter_gaps": {
-            "default_value": "everywhere"
         },
         "fill_outline_gaps": {
             "default_value": false
@@ -343,8 +340,6 @@
         "minimum_interface_area": { 
             "default_value": 10 
         },
-        
-        
         "support_wall_count": { 
             "value": 1 
         },
@@ -369,9 +364,6 @@
         },
         "infill_overlap": {
             "value": 30.0
-        },
-        "travel_compensate_overlapping_walls_0_enabled": {
-            "value": "False"
         },
         "wall_0_wipe_dist": {
             "value": 0.0
