@@ -6,7 +6,7 @@
         "visible": true,
         "author": "William Anderson",
         "manufacturer": "MakerGear",
-        "platform": "makergear_m2_platform.stl",
+        "platform": "makergear_m2_platform.3mf",
         "has_materials": true,
         "machine_extruder_trains":
         {
