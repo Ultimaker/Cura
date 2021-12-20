@@ -1,3 +1,61 @@
+[4.13]
+Beta
+
+* Sync material profiles 
+With Ultimaker Cura 4.13 beta, we give you access to a seamless material experience for Ultimaker Material Alliance materials – with the ease of use you’ve come to expect from Ultimaker materials. You can easily synchronize your Material Alliance profiles with your S-line Ultimaker hardware, at the click of a button. 
+
+* New print profile
+A new print profile with 0.3mm layer height for PLA Tough PLA, PVA and BAM for Ultimaker S-line printers
+
+* 3MF thumbnail
+Show the model in the thumbnail of a .3mf file, contributed by fieldOfView
+
+* Infill density
+When printing with a 100% infill the infill pattern will change to ZigzZag for all Ultimaker print profiles
+
+* User login authentication
+We’ve streamlined the user login authentication by removing any restrictions, especially for strict enterprise-level IT requirements. 
+
+* Other new features and improvements:
+- TPU top layers 
+- Add warning icon to show which extruder is causing the configuration to be 'Not Supported', contributed by fieldOfView
+- Show what's new pages with every Cura build
+- Speed up loading of settings list
+- Re-use vertex buffer objects in rendering
+- Add Build Volume Temperature value to ChangeAtZ, contributed by legend069
+- Allow plugins to have multiple views, contributed by Tyronnosaurus
+
+* Bug fixes:
+- Reduced flow for 100% density parts
+- Fixed a bug in Surface Mode where small line-segments were created
+- Changed the Russian translation for 'nozzle', contributed by mlapkin
+- Fixed a visualization bug where layer lines were renderend in weird directions
+- Fixed a crash when recieving incomplete cloud API responses
+- Add SET_RPATH option to CMake, contributed by boomanaiden154
+- Fixed initial layer bed and print head temperature for Snapmaker profile, contributed by prueker
+- Fixed shader compilation on some GPUs, contributed by fieldOfView
+- Fixed a bug where Cross 3D infill pattern vertical angles varies wildly
+- Bridge Skin Density can be set above 100%
+- Fixed tiny travel moves when monotonic ordering was enabled
+- Fix crash when using 'Select face to align to the build plate', contributed by eliadevito
+- Fixed a bug in fuzzy skin where sometimes it produced weird long overshoots, contributed by BagelOrb
+- Fixed undo and redo for support blockers
+- Fixed a bug where the Native CAD plugin wouldn't loading
+- Fixed a bug where the camera view toggle was not visible
+- Fixed some German translations, contributed by Sekisback
+- Fixed the link of the beta update message
+- Fixed a crash due to extruder being out of range
+- Fixed a bug where a disabled extruder was used
+- Fixed a bug where the aborted state was not reflected correctly in Monitor view
+- Fixed a bug in Pause at Height where it stops extruding
+- Fixed a bug where support blockers were included in the bounding box after loading a project file
+- Fixed a bug where grouped models become unslicable if the first extruder was disabled
+- Fixed a bug in Tree Support where the Z Distance was too big
+
+* Printer definitions, profiles and materials:
+- Add Eazao Zero printer definition, contributed by Hogan-Polaris
+- Add XYZprinting printer definitions, contributed by heed818
+
 [4.12.1]
 * Bug fixes 
 - Updated Shapely to version 1.8.0 which, among other things, fixes multiplying objects on MacOS Monterey 
@@ -189,104 +247,5 @@ When double clicking on a file in the open project dialog in Digital Factory it 
 *<i>Please, be aware that after version 4.10 Ultimaker Cura will only be supported on operating systems actively maintained by their software manufacturer or community. This means Windows 7 and MacOS 10.13 will no longer be supported. Technically this means Ultimaker will stop testing and developing for such operating systems. However, even though it is no longer supported, there is still a high likelihood the application keeps functioning.</i>
 
 [4.9.1]
-* PETG Profile update.
-Ultimaker PETG profiles have been added. The Generic PETG profile for 2.85mm filaments has been updated as well.
 
-* Bug Fixes
-- The second extruder should now prime properly again when using a prime blob.
-- Reduced the flood of QML errors in the log file. Contributed by fieldOfView.
-- Fixed a crash when entering layer view on MacOS 10.13.6. Contributed by jwrw.
-- Fixed a crash when there was an inaccessible X: drive in Windows. Cura should no longer try to access the X: drive now.
-
-[4.9.0]
-<i>For an overview of the new features in Cura 4.9, please watch <a href="https://www.youtube.com/watch?app=desktop&v=q7IJ0I9Mi1I&feature=youtu.be">our video</a>.</i>
-
-* Digital factory integration.
-Now you can open files directly from Digital Library projects. Then, after preparation, quickly and easily export them back. This feature is available for all users with an Ultimaker Essentials, Professional, or Excellence subscription. <a href="https://ultimaker.com/software/enterprise-software"> Learn more</a>
-
-* "Line type" is now the default color scheme.
-When entering the Preview mode, you don't have to switch manually to line type. 
-
-* Z-seam is now clearly shown in preview mode.
-This ensures that you will know whether the seam will be sufficiently hidden in the end product. This will also indicate the starting point of the print.
-<i> Thanks to BasF0 for contributing to this feature </i>
-
-* New 'line width' color-scheme available in preview mode.
-Line-width can now be selected as a color-scheme in preview mode.
-
-* Weight estimation in decimals.
-This provides a more detailed idea of the amount of material used - which is especially useful for smaller prints. 
-
-* Split Shell category into Walls and Top/Bottom. 
-The shell category was a mix of settings about walls and settings about top/bottom, splitting them into two categories makes more sense. 
-
-* Post-processing script to embed screenshot in g-code.
-The ability to have thumbnails embedded. Contributed by Gravedigger7789.
-
-* Add checkbox for Extruder Offsets.
-Ability to enable or disable the extruder offsets to gcode. This will be enabled by default, unless it is in the printer's def.json file. Contributed by RFBomb. 
-
-* Cura should work properly on MacOS 'Big Sur' now, afforded by upgrades to Python (to 3.8) and Qt (to 5.15).
-If you had (UX, visual, graphics card) problems, specifically on (newer) MacOS versions, like Big Sur, you should be able to use this new version.
-
-* Bug Fixes
-- Fixed a security vulnerability on windows permitting the openssl library used to launch other programs. Thanks to Xavier Danest for raising this bug.
-- Fixed Connect Top/Bottom Polygons. 
-- Fixed closing Marketplace after quitting Cura.
-- Fixed clicking on Marketplace button to go to web Marketplace.
-- Fixed Pause at Height when using Repetier flavour. Contributed by EGOiST1991.
-- Fixed correct desity for current PETG filaments. Contributed by kad.
-- Fixed Pause at height post processing script that returns to right position.
-- Fixed layer view being grayed out after reslicing.
-- Fixed fan speed issue due to reuse of empty extruder plan.
-- Fixed loading OBJ files with no texture references, but does have normal references.
-- Fixed retraction/priming while extruder switches. Contributed by sisu70.
-- Fixed loading script from all registered resource path. Contributed by fieldOfView.
-- Fixed typeError: define_round_method. Contributed by Sophist-UK. 
-- Fixed missing layer with Hole Horizontal Expansion. 
-- Fixed Tree Support Floor layers. Contributed by ThomasRahm.
-- Fixed Top Surface Skin Layers if Top layers = 0.
-- Fixed recent files on opening as project. 
-- Fixed opening project file from command-line. 
-- Fixed thumbnail in UFP files.
-- Fixed validator for floats in Machine Settings dialog. Contributed by fieldOfView.
-- Fixed recessed areas at the bottom of a model while using Make Overhangs Printable. Contributed by OpusMcN.
-- Fixed slicing grouped models if one of the group parts is below Z=0.
-- Fixed material temperatures and fan speed for Anycubic i3 Mega. Contributed by trunneml.
-- Fixed drop model down to buildplate when always drop to buildplate is disabled. 
-- Fixed drop objects to buildplate after scaling.
-- Fixed disallowed areas while using Brim Line Widths. 
-- Fixed message for non manifold models. 
-- Fixed setting category arrows. Contributed by fieldOfView.
-- Fixed metadate tags for 3MF files. 
-- Fixed engine crash when using low-density Cross Infill.
-- Improved performance of loading .def.json files. 
-
-* Printer definitions, profiles and materials
-- 3DFuel Pro PLA and SnapSupport materials, contributed by grk3010.
-- Cubincon Style NeoA31, contributed by HUNIBESTHyVISION.
-- Eryone thinker series and Eryone ER20, contributed by Eryone.
-- Flashforge DreamerNX, contributed by KeltE.
-- Fused Form FF300, contributed by FusedForm.
-- Geeetech A10 improved start and end gcode, contributed by TheTRCG.
-- ideagen3D Sapphire and ideagen3D Sapphire Plus, contributed by Firedrops.
-- INAT Proton X printers, contributed by MarkINAT.
-- Koonovo, contributed by KOONOVO3DPRINTER.
-- Liquid, contributed by alexgrigoras.
-- Lulzbot TAZ Pro and Lulzbot Mini 2, contributed by spotrh.
-- Maker Made 300x printer, contributed by skilescm.
-- MINGDA D2, contributed by cataclism.
-- Snapmaker 2.0, contributed by maihde.
-- Sri Vignan Technologies, contributed by venkatkamesh.
-- Syndaver AXI Machine, contributed by synsuiter.
-- Tinyboy Fabricator Mini 1.5, contributed by reibuehl.
-- Trimaker printers, contributed by tomasbaldi.
-- TwoTrees Bluer, contributed by WashingtonJunior.
-- Update Hellbot Magna 1 and Hellbot Magna dual, contributed by DevelopmentHellbot.
-- Update Rigid3D and added Rigid3D Mucit2, contributed by mehmetsutas.
-- Update TPU profiles for 0.6mm nozzle of UM2+C.
-- ZAV series, contributed by kimer2002.
-
-[4.8.0]
-
-The release notes of versions &lt;= 4.8.0 can be found in our <a href="https://github.com/Ultimaker/Cura/releases?page=2">releases GitHub page</a>.
+The release notes of versions &lt;= 4.9.1 can be found in our <a href="https://github.com/Ultimaker/Cura/releases?page=2">releases GitHub page</a>.
