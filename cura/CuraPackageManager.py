@@ -76,13 +76,10 @@ class CuraPackageManager(PackageManager):
         return machine_with_materials, machine_with_qualities
 
     def getAllLocalPackages(self) -> List[Dict[str, Any]]:
-        """ returns an unordered list of all the package_info installed, to be installed or to be returned"""
+        """ Returns an unordered list of all the package_info of installed, to be installed, or bundled packages"""
+        packages: List[Dict[str, Any]] = []
 
+        for packages_to_add in self.getAllInstalledPackagesInfo().values():
+            packages.extend(packages_to_add)
 
-        class PkgInfo(dict):
-            # Needed helper class because a dict isn't hashable
-            def __eq__(self, item):
-                return item == self["package_id"]
-
-        packages = [PkgInfo(package_info) for package in self.getAllInstalledPackagesInfo().values() for package_info in package]
-        return [dict(package) for package in packages]
+        return packages
