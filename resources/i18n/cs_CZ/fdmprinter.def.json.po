@@ -2055,7 +2055,7 @@ msgstr "Úhel vyrovnávání bleskové vrstvy"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr "Čáry výplně jsou jsou vyrovnávány, aby se snížila doba tisku. Toto je maximální dovolený úhel převisu podél čáry výplně."
+msgstr "Čáry výplně jsou vyrovnávány, aby se snížila doba tisku. Toto je maximální dovolený úhel převisu podél čáry výplně."
 
 #: fdmprinter.def.json
 msgctxt "material label"
