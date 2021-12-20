@@ -35,7 +35,6 @@ class LocalPackageList(PackageList):
             }
     }  # The section headers to be used for the different package categories
 
-
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._has_footer = False
@@ -47,9 +46,15 @@ class LocalPackageList(PackageList):
         section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
         self.sort(lambda model: (section_order[model.sectionTitle], model.canUpdate, model.displayName.lower()), key = "package")
 
-    def _removePackageModel(self, package_id):
+    def _removePackageModel(self, package_id: str) -> None:
+        """
+        Cleanup function to remove the package model from the list. Note that this is only done if the package can't
+        be updated, it is in the to remove list and isn't in the to be installed list
+        """
         package = self.getPackageModel(package_id)
-        if not package.canUpdate and package_id in self._package_manager.getToRemovePackageIDs() and package_id not in self._package_manager.getPackagesToInstall():
+        if not package.canUpdate and \
+                package_id in self._package_manager.getToRemovePackageIDs() and \
+                package_id not in self._package_manager.getPackagesToInstall():
             index = self.find("package", package_id)
             if index < 0:
                 Logger.error(f"Could not find card in Listview corresponding with {package_id}")
