@@ -6,21 +6,17 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtQml import qmlRegisterType
 from typing import Optional, TYPE_CHECKING
 
-from cura.ApplicationMetadata import CuraSDKVersion
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
-from cura.UltimakerCloud import UltimakerCloudConstants
 
 from UM.Extension import Extension  # We are implementing the main object of an extension here.
 from UM.PluginRegistry import PluginRegistry  # To find out where we are stored (the proper way).
 
 from .RemotePackageList import RemotePackageList  # To register this type with QML.
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
+from .RestartManager import RestartManager  # To register this type with QML.
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
-
-ROOT_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}"  # Root of all Marketplace API requests.
-PACKAGES_URL = f"{ROOT_URL}/packages"  # URL to use for requesting the list of packages.
 
 
 class Marketplace(Extension):
@@ -31,9 +27,11 @@ class Marketplace(Extension):
     def __init__(self) -> None:
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
+        self._plugin_registry: Optional[PluginRegistry] = None
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
         qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
+        qmlRegisterType(RestartManager, "Marketplace", 1, 0, "RestartManager")
 
     @pyqtSlot()
     def show(self) -> None:
@@ -43,6 +41,7 @@ class Marketplace(Extension):
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
         if self._window is None:
+            self._plugin_registry = PluginRegistry.getInstance()
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)

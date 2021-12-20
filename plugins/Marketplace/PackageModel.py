@@ -1,12 +1,19 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, QObject
 import re
-from typing import Any, Dict, List, Optional
+from enum import Enum
+from typing import Any, cast, Dict, List, Optional
 
+from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtQml import QQmlEngine
+
+from cura.CuraApplication import CuraApplication
+from cura.CuraPackageManager import CuraPackageManager
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
+from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
 
 catalog = i18nCatalog("cura")
 
@@ -14,26 +21,28 @@ catalog = i18nCatalog("cura")
 class PackageModel(QObject):
     """
     Represents a package, containing all the relevant information to be displayed about a package.
-
-    Effectively this behaves like a glorified named tuple, but as a QObject so that its properties can be obtained from
-    QML. The model can also be constructed directly from a response received by the API.
     """
 
-    def __init__(self, package_data: Dict[str, Any], installation_status: str, section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
+    def __init__(self, package_data: Dict[str, Any], section_title: Optional[str] = None, parent: Optional[QObject] = None) -> None:
         """
         Constructs a new model for a single package.
         :param package_data: The data received from the Marketplace API about the package to create.
-        :param installation_status: Whether the package is `not_installed`, `installed` or `bundled`.
         :param section_title: If the packages are to be categorized per section provide the section_title
         :param parent: The parent QML object that controls the lifetime of this model (normally a PackageList).
         """
         super().__init__(parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.CppOwnership)
+        self._package_manager: CuraPackageManager = cast(CuraPackageManager, CuraApplication.getInstance().getPackageManager())
+        self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
+
         self._package_id = package_data.get("package_id", "UnknownPackageId")
         self._package_type = package_data.get("package_type", "")
+        self._is_bundled = package_data.get("is_bundled", False)
         self._icon_url = package_data.get("icon_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
         tags = package_data.get("tags", [])
-        self._is_checked_by_ultimaker = (self._package_type == "plugin" and "verified" in tags) or (self._package_type == "material" and "certified" in tags)
+        self._is_checked_by_ultimaker = (self._package_type == "plugin" and "verified" in tags) or (
+                    self._package_type == "material" and "certified" in tags)
         self._package_version = package_data.get("package_version", "")  # Display purpose, no need for 'UM.Version'.
         self._package_info_url = package_data.get("website", "")  # Not to be confused with 'download_url'.
         self._download_count = package_data.get("download_count", 0)
@@ -58,9 +67,39 @@ class PackageModel(QObject):
         if not self._icon_url or self._icon_url == "":
             self._icon_url = author_data.get("icon_url", "")
 
-        self._installation_status = installation_status
+        self._can_update = False
         self._section_title = section_title
+        self.sdk_version = package_data.get("sdk_version_semver", "")
         # Note that there's a lot more info in the package_data than just these specified here.
+
+        self.enablePackageTriggered.connect(self._plugin_registry.enablePlugin)
+        self.disablePackageTriggered.connect(self._plugin_registry.disablePlugin)
+
+        self._plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.stateManageButtonChanged)
+        self._package_manager.packageInstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
+        self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
+        self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id))
+        self._package_manager.packagesWithUpdateChanged.connect(self._processUpdatedPackages)
+
+        self._is_busy = False
+
+    @pyqtSlot()
+    def _processUpdatedPackages(self):
+        self.setCanUpdate(self._package_manager.checkIfPackageCanUpdate(self._package_id))
+
+    def __del__(self):
+        self._package_manager.packagesWithUpdateChanged.disconnect(self._processUpdatedPackages)
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, PackageModel):
+            return other == self
+        elif isinstance(other, str):
+            return other == self._package_id
+        else:
+            return False
+
+    def __repr__(self) -> str:
+        return f"<{self._package_id} : {self._package_version} : {self._section_title}>"
 
     def _findLink(self, subdata: Dict[str, Any], link_type: str) -> str:
         """
@@ -175,8 +214,8 @@ class PackageModel(QObject):
     def packageType(self) -> str:
         return self._package_type
 
-    @pyqtProperty(str, constant=True)
-    def iconUrl(self):
+    @pyqtProperty(str, constant = True)
+    def iconUrl(self) -> str:
         return self._icon_url
 
     @pyqtProperty(str, constant = True)
@@ -187,37 +226,33 @@ class PackageModel(QObject):
     def isCheckedByUltimaker(self):
         return self._is_checked_by_ultimaker
 
-    @pyqtProperty(str, constant=True)
-    def packageVersion(self):
+    @pyqtProperty(str, constant = True)
+    def packageVersion(self) -> str:
         return self._package_version
 
-    @pyqtProperty(str, constant=True)
-    def packageInfoUrl(self):
+    @pyqtProperty(str, constant = True)
+    def packageInfoUrl(self) -> str:
         return self._package_info_url
 
-    @pyqtProperty(int, constant=True)
-    def downloadCount(self):
+    @pyqtProperty(int, constant = True)
+    def downloadCount(self) -> str:
         return self._download_count
 
-    @pyqtProperty(str, constant=True)
-    def description(self):
+    @pyqtProperty(str, constant = True)
+    def description(self) -> str:
         return self._description
 
     @pyqtProperty(str, constant = True)
     def formattedDescription(self) -> str:
         return self._formatted_description
 
-    @pyqtProperty(str, constant=True)
-    def authorName(self):
+    @pyqtProperty(str, constant = True)
+    def authorName(self) -> str:
         return self._author_name
 
-    @pyqtProperty(str, constant=True)
-    def authorInfoUrl(self):
-        return self._author_info_url
-
     @pyqtProperty(str, constant = True)
-    def installationStatus(self) -> str:
-        return self._installation_status
+    def authorInfoUrl(self) -> str:
+        return self._author_info_url
 
     @pyqtProperty(str, constant = True)
     def sectionTitle(self) -> Optional[str]:
@@ -250,3 +285,99 @@ class PackageModel(QObject):
     @pyqtProperty(bool, constant = True)
     def isCompatibleAirManager(self) -> bool:
         return self._is_compatible_air_manager
+
+    @pyqtProperty(bool, constant = True)
+    def isBundled(self) -> bool:
+        return self._is_bundled
+
+    @pyqtProperty(str, constant = True)
+    def downloadURL(self) -> str:
+        return self._download_url
+
+    # --- manage buttons signals ---
+
+    stateManageButtonChanged = pyqtSignal()
+
+    installPackageTriggered = pyqtSignal(str, str)
+
+    uninstallPackageTriggered = pyqtSignal(str)
+
+    updatePackageTriggered = pyqtSignal(str, str)
+
+    enablePackageTriggered = pyqtSignal(str)
+
+    disablePackageTriggered = pyqtSignal(str)
+
+    busyChanged = pyqtSignal()
+
+    @pyqtSlot()
+    def install(self):
+        self.setBusy(True)
+        self.installPackageTriggered.emit(self.packageId, self.downloadURL)
+
+    @pyqtSlot()
+    def update(self):
+        self.setBusy(True)
+        self.updatePackageTriggered.emit(self.packageId, self.downloadURL)
+
+    @pyqtSlot()
+    def uninstall(self):
+        self.uninstallPackageTriggered.emit(self.packageId)
+
+    @pyqtProperty(bool, notify= busyChanged)
+    def busy(self):
+        """
+        Property indicating that some kind of upgrade is active.
+        """
+        return self._is_busy
+
+    @pyqtSlot()
+    def enable(self):
+        self.enablePackageTriggered.emit(self.packageId)
+
+    @pyqtSlot()
+    def disable(self):
+        self.disablePackageTriggered.emit(self.packageId)
+
+    def setBusy(self, value: bool):
+        if self._is_busy != value:
+            self._is_busy = value
+            try:
+                self.busyChanged.emit()
+            except RuntimeError:
+                pass
+
+    def _packageInstalled(self, package_id: str) -> None:
+        if self._package_id != package_id:
+            return
+        self.setBusy(False)
+        try:
+            self.stateManageButtonChanged.emit()
+        except RuntimeError:
+            pass
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isInstalled(self) -> bool:
+        return self._package_id in self._package_manager.getAllInstalledPackageIDs()
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isToBeInstalled(self) -> bool:
+        return self._package_id in self._package_manager.getPackagesToInstall()
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def isActive(self) -> bool:
+        return not self._package_id in self._plugin_registry.getDisabledPlugins()
+
+    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    def canDowngrade(self) -> bool:
+        """Flag if the installed package can be downgraded to a bundled version"""
+        return self._package_manager.canDowngrade(self._package_id)
+
+    def setCanUpdate(self, value: bool) -> None:
+        self._can_update = value
+        self.stateManageButtonChanged.emit()
+
+    @pyqtProperty(bool, fset = setCanUpdate, notify = stateManageButtonChanged)
+    def canUpdate(self) -> bool:
+        """Flag indicating if the package can be updated"""
+        return self._can_update

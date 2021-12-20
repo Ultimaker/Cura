@@ -17,6 +17,7 @@ Packages
         bannerVisible = false;
     }
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
+    packagesManageableInListView: false
 
     model: Marketplace.RemotePackageList
     {

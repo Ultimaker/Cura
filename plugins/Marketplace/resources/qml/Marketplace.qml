@@ -8,11 +8,13 @@ import QtQuick.Window 2.2
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
+import Marketplace 1.0 as Marketplace
 
 Window
 {
     id: marketplaceDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
+    property variant restartManager: Marketplace.RestartManager { }
 
     signal searchStringChanged(string new_search)
 
@@ -106,9 +108,8 @@ Window
                         height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
                         spacing: UM.Theme.getSize("thin_margin").width
 
-                        Rectangle
+                        Item
                         {
-                            color: "transparent"
                             Layout.preferredHeight: parent.height
                             Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
                             Layout.fillWidth: ! searchBar.visible
@@ -224,6 +225,58 @@ Window
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    Rectangle
+    {
+        height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
+        color: UM.Theme.getColor("primary")
+        visible: restartManager.showRestartNotification
+        anchors
+        {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        RowLayout
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                verticalCenter: parent.verticalCenter
+                margins: UM.Theme.getSize("default_margin").width
+            }
+            spacing: UM.Theme.getSize("default_margin").width
+            UM.RecolorImage
+            {
+                id: bannerIcon
+                source: UM.Theme.getIcon("Plugin")
+
+                color: UM.Theme.getColor("primary_button_text")
+                implicitWidth: UM.Theme.getSize("banner_icon_size").width
+                implicitHeight: UM.Theme.getSize("banner_icon_size").height
+            }
+            Text
+            {
+                color: UM.Theme.getColor("primary_button_text")
+                text: catalog.i18nc("@button", "In order to use the package you will need to restart Cura")
+                font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
+                Layout.fillWidth: true
+            }
+            Cura.SecondaryButton
+            {
+                id: quitButton
+                text: catalog.i18nc("@info:button, %1 is the application name", "Quit %1").arg(CuraApplication.applicationDisplayName)
+                onClicked:
+                {
+                    marketplaceDialog.hide();
+                    CuraApplication.closeApplication();
                 }
             }
         }

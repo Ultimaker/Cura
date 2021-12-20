@@ -1,18 +1,15 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkReply
 from typing import Optional, TYPE_CHECKING
 
-from cura.CuraApplication import CuraApplication
-from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope  # To make requests to the Ultimaker API with correct authorization.
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.TaskManagement.HttpRequestManager import HttpRequestManager, HttpRequestData  # To request the package list from the API.
-from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope  # To request JSON responses from the API.
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 
-from . import Marketplace   # To get the list of packages. Imported this way to prevent circular imports.
+from .Constants import PACKAGES_URL   # To get the list of packages. Imported this way to prevent circular imports.
 from .PackageList import PackageList
 from .PackageModel import PackageModel  # The contents of this list.
 
@@ -28,22 +25,13 @@ class RemotePackageList(PackageList):
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
-        self._ongoing_request: Optional[HttpRequestData] = None
-        self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
-
         self._package_type_filter = ""
         self._requested_search_string = ""
         self._current_search_string = ""
         self._request_url = self._initialRequestUrl()
+        self._ongoing_requests["get_packages"] = None
         self.isLoadingChanged.connect(self._onLoadingChanged)
         self.isLoadingChanged.emit()
-
-    def __del__(self) -> None:
-        """
-        When deleting this object, abort the request so that we don't get a callback from it later on a deleted C++
-        object.
-        """
-        self.abortUpdating()
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -55,17 +43,12 @@ class RemotePackageList(PackageList):
         self.setErrorMessage("")  # Clear any previous errors.
         self.setIsLoading(True)
 
-        self._ongoing_request = HttpRequestManager.getInstance().get(
+        self._ongoing_requests["get_packages"] = HttpRequestManager.getInstance().get(
             self._request_url,
             scope = self._scope,
             callback = self._parseResponse,
             error_callback = self._onError
         )
-
-    @pyqtSlot()
-    def abortUpdating(self) -> None:
-        HttpRequestManager.getInstance().abortRequest(self._ongoing_request)
-        self._ongoing_request = None
 
     def reset(self) -> None:
         self.clear()
@@ -113,7 +96,7 @@ class RemotePackageList(PackageList):
         Get the URL to request the first paginated page with.
         :return: A URL to request.
         """
-        request_url = f"{Marketplace.PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
+        request_url = f"{PACKAGES_URL}?limit={self.ITEMS_PER_PAGE}"
         if self._package_type_filter != "":
             request_url += f"&package_type={self._package_type_filter}"
         if self._current_search_string != "":
@@ -134,18 +117,21 @@ class RemotePackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
-            installation_status = "installed" if CuraApplication.getInstance().getPackageManager().isUserInstalledPackage(package_data["package_id"]) else "not_installed"
+            package_id = package_data["package_id"]
+            if package_id in self._package_manager.local_packages_ids:
+                continue  # We should only show packages which are not already installed
             try:
-                package = PackageModel(package_data, installation_status, parent = self)
+                package = PackageModel(package_data, parent = self)
+                self._connectManageButtonSignals(package)
                 self.appendItem({"package": package})  # Add it to this list model.
             except RuntimeError:
                 # Setting the ownership of this object to not qml can still result in a RuntimeError. Which can occur when quickly toggling
                 # between de-/constructing RemotePackageLists. This try-except is here to prevent a hard crash when the wrapped C++ object
                 # was deleted when it was still parsing the response
-                return
+                continue
 
         self._request_url = response_data["links"].get("next", "")  # Use empty string to signify that there is no next page.
-        self._ongoing_request = None
+        self._ongoing_requests["get_packages"] = None
         self.setIsLoading(False)
         self.setHasMore(self._request_url != "")
 
@@ -157,9 +143,9 @@ class RemotePackageList(PackageList):
         """
         if error == QNetworkReply.NetworkError.OperationCanceledError:
             Logger.debug("Cancelled request for packages.")
-            self._ongoing_request = None
+            self._ongoing_requests["get_packages"] = None
             return  # Don't show an error about this to the user.
         Logger.error("Could not reach Marketplace server.")
         self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))
-        self._ongoing_request = None
+        self._ongoing_requests["get_packages"] = None
         self.setIsLoading(False)

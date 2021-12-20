@@ -19,11 +19,12 @@ ListView
     property string bannerText
     property string bannerReadMoreUrl
     property var onRemoveBanner
+    property bool packagesManageableInListView
 
     clip: true
 
     Component.onCompleted: model.updatePackages()
-    Component.onDestruction: model.abortUpdating()
+    Component.onDestruction: model.cleanUpAPIRequest()
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -35,15 +36,13 @@ ListView
 
         color: UM.Theme.getColor("detail_background")
 
-        required property string section
-
         Label
         {
             id: sectionHeaderText
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
 
-            text: parent.section
+            text: section
             font: UM.Theme.getFont("large")
             color: UM.Theme.getColor("text")
         }
@@ -82,6 +81,7 @@ ListView
 
         PackageCard
         {
+            manageableInListView: packages.packagesManageableInListView
             packageData: model.package
             width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
             color: cardMouseArea.containsMouse ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("main_background")
@@ -230,4 +230,3 @@ ListView
         }
     }
 }
-

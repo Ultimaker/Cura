@@ -1,40 +1,66 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, Dict, Generator, List, Optional, TYPE_CHECKING
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from operator import attrgetter
+
 from PyQt5.QtCore import pyqtSlot, QObject
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+    from PyQt5.QtNetwork import QNetworkReply
 
 from UM.i18n import i18nCatalog
-
-from cura.CuraApplication import CuraApplication
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager
+from UM.Logger import Logger
 
 from .PackageList import PackageList
-from .PackageModel import PackageModel  # The contents of this list.
+from .PackageModel import PackageModel
+from .Constants import PACKAGE_UPDATES_URL
 
 catalog = i18nCatalog("cura")
 
 
 class LocalPackageList(PackageList):
-    PACKAGE_SECTION_HEADER = {
+    PACKAGE_CATEGORIES = {
         "installed":
             {
-                "plugin": catalog.i18nc("@label:property", "Installed Plugins"),
-                "material": catalog.i18nc("@label:property", "Installed Materials")
+                "plugin": catalog.i18nc("@label", "Installed Plugins"),
+                "material": catalog.i18nc("@label", "Installed Materials")
             },
         "bundled":
             {
-                "plugin": catalog.i18nc("@label:property", "Bundled Plugins"),
-                "material": catalog.i18nc("@label:property", "Bundled Materials")
+                "plugin": catalog.i18nc("@label", "Bundled Plugins"),
+                "material": catalog.i18nc("@label", "Bundled Materials")
             }
     }  # The section headers to be used for the different package categories
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
-        self._manager = CuraApplication.getInstance().getPackageManager()
         self._has_footer = False
+        self._ongoing_requests["check_updates"] = None
+        self._package_manager.packagesWithUpdateChanged.connect(self._sortSectionsOnUpdate)
+        self._package_manager.packageUninstalled.connect(self._removePackageModel)
+
+    def _sortSectionsOnUpdate(self) -> None:
+        section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
+        self.sort(lambda model: (section_order[model.sectionTitle], model.canUpdate, model.displayName.lower()), key = "package")
+
+    def _removePackageModel(self, package_id: str) -> None:
+        """
+        Cleanup function to remove the package model from the list. Note that this is only done if the package can't
+        be updated, it is in the to remove list and isn't in the to be installed list
+        """
+        package = self.getPackageModel(package_id)
+        if not package.canUpdate and \
+                package_id in self._package_manager.getToRemovePackageIDs() and \
+                package_id not in self._package_manager.getPackagesToInstall():
+            index = self.find("package", package_id)
+            if index < 0:
+                Logger.error(f"Could not find card in Listview corresponding with {package_id}")
+                self.updatePackages()
+                return
+            self.removeItem(index)
 
     @pyqtSlot()
     def updatePackages(self) -> None:
@@ -44,50 +70,52 @@ class LocalPackageList(PackageList):
         """
         self.setErrorMessage("")  # Clear any previous errors.
         self.setIsLoading(True)
-        self._getLocalPackages()
+
+        # Obtain and sort the local packages
+        self.setItems([{"package": p} for p in [self._makePackageModel(p) for p in self._package_manager.local_packages]])
+        self._sortSectionsOnUpdate()
+        self.checkForUpdates(self._package_manager.local_packages)
+
         self.setIsLoading(False)
         self.setHasMore(False)  # All packages should have been loaded at this time
 
-    def _getLocalPackages(self) -> None:
-        """ Obtain the local packages.
-
-        The list is sorted per category as in  the order of the PACKAGE_SECTION_HEADER dictionary, whereas the packages
-        for the sections are sorted alphabetically on the display name. These sorted sections are then added to the items
-        """
-        package_info = list(self._allPackageInfo())
-        sorted_sections: List[Dict[str, PackageModel]] = []
-        for section in self._getSections():
-            packages = filter(lambda p: p.sectionTitle == section, package_info)
-            sorted_sections.extend([{"package": p} for p in sorted(packages, key = lambda p: p.displayName)])
-        self.setItems(sorted_sections)
-
-    def _getSections(self) -> Generator[str, None, None]:
-        """ Flatten and order the PACKAGE_SECTION_HEADER such that it can be used in obtaining the packages in the
-        correct order"""
-        for package_type in self.PACKAGE_SECTION_HEADER.values():
-            for section in package_type.values():
-                yield section
-
-    def _allPackageInfo(self) -> Generator[PackageModel, None, None]:
-        """ A generator which returns a unordered list of all the PackageModels"""
-
-        # Get all the installed packages, add a section_title depending on package_type and user installed
-        for packages in self._manager.getAllInstalledPackagesInfo().values():
-            for package_info in packages:
-                yield self._makePackageModel(package_info)
-
-        # Get all to be removed package_info's. These packages are still used in the current session so the user might
-        # still want to interact with these.
-        for package_data in self._manager.getPackagesToRemove().values():
-            yield self._makePackageModel(package_data["package_info"])
-
-        # Get all to be installed package_info's. Since the user might want to interact with these
-        for package_data in self._manager.getPackagesToInstall().values():
-            yield self._makePackageModel(package_data["package_info"])
-
     def _makePackageModel(self, package_info: Dict[str, Any]) -> PackageModel:
         """ Create a PackageModel from the package_info and determine its section_title"""
-        bundled_or_installed = "installed" if self._manager.isUserInstalledPackage(package_info["package_id"]) else "bundled"
+
+        package_id = package_info["package_id"]
+        bundled_or_installed = "bundled" if self._package_manager.isBundledPackage(package_id) else "installed"
         package_type = package_info["package_type"]
-        section_title = self.PACKAGE_SECTION_HEADER[bundled_or_installed][package_type]
-        return PackageModel(package_info, installation_status = bundled_or_installed, section_title = section_title, parent = self)
+        section_title = self.PACKAGE_CATEGORIES[bundled_or_installed][package_type]
+        package = PackageModel(package_info, section_title = section_title, parent = self)
+        self._connectManageButtonSignals(package)
+        return package
+
+    def checkForUpdates(self, packages: List[Dict[str, Any]]) -> None:
+        installed_packages = "&".join([f"installed_packages={package['package_id']}:{package['package_version']}" for package in packages])
+        request_url = f"{PACKAGE_UPDATES_URL}?installed_packages={installed_packages[:-1]}"
+
+        self._ongoing_requests["check_updates"] = HttpRequestManager.getInstance().get(
+            request_url,
+            scope = self._scope,
+            callback = self._parseResponse
+        )
+
+    def _parseResponse(self, reply: "QNetworkReply") -> None:
+        """
+        Parse the response from the package list API request which can update.
+
+        :param reply: A reply containing information about a number of packages.
+        """
+        response_data = HttpRequestManager.readJSON(reply)
+        if "data" not in response_data:
+            Logger.error(
+                f"Could not interpret the server's response. Missing 'data' from response data. Keys in response: {response_data.keys()}")
+            return
+        if len(response_data["data"]) == 0:
+            return
+
+        packages = response_data["data"]
+
+        self._package_manager.setPackagesWithUpdate({p['package_id'] for p in packages})
+
+        self._ongoing_requests["check_updates"] = None

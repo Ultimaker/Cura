@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Toolbox is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import json
 import os
@@ -634,8 +634,8 @@ class Toolbox(QObject, Extension):
             self._models[request_type].setFilter({"tags": "generic"})
         elif request_type == "updates":
             # Tell the package manager that there's a new set of updates available.
-            packages = set([pkg["package_id"] for pkg in self._server_response_data[request_type]])
-            self._package_manager.setPackagesWithUpdate(packages)
+            packages = self._server_response_data[request_type]
+            self._package_manager.setPackagesWithUpdate({p['package_id'] for p in packages})
 
         self.metadataChanged.emit()
 

@@ -179,7 +179,7 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
-        "primary": [50, 130, 255, 255],
+        "primary": [25, 110, 240, 255],
         "primary_shadow": [64, 47, 205, 255],
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
@@ -554,7 +554,7 @@
         "standard_list_lineheight": [1.5, 1.5],
         "standard_arrow": [1.0, 1.0],
 
-        "card": [25.0, 8.75],
+        "card": [25.0, 10],
         "card_icon": [6.0, 6.0],
         "card_tiny_icon": [1.5, 1.5],
 
@@ -686,6 +686,8 @@
         "welcome_wizard_content_image_big": [18, 15],
         "welcome_wizard_cloud_content_image": [4, 4],
 
-        "banner_icon_size": [2.0, 2.0]
+        "banner_icon_size": [2.0, 2.0],
+
+        "marketplace_large_icon": [4.0, 4.0]
     }
 }
