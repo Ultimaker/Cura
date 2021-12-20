@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "name": "Cremaker S V1",
+  "inherits": "cremaker_common",
+  "metadata": {
+    "visible": true,
+    "platform": "cremaker_platform_200.obj"
+  },
+
+  "overrides": {
+    "machine_name": { "default_value": "Cremaker S V1" },
+    "machine_width": { "default_value": 200 },
+    "machine_depth": { "default_value": 200 },
+    "machine_height": { "default_value": 160 },
+    "initial_layer_line_width_factor": { "default_value": 110.0 },
+    "machine_head_with_fans_polygon": {
+      "default_value": [
+        [ -39, 45 ],
+        [ 23, 45 ],
+        [ 23, -33 ],
+        [ -39, -33 ]
+      ]
+    },
+    "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "machine_start_gcode": {
+      "default_value": "G28\nG1 Z5.0 F6000\nG1 X2 Y5 F3000\nG1 Z0.3\nG92 E0\nG1 Y100 E10 F600\nG92 E0"
+    },
+    "machine_end_gcode": {
+      "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nG92 E1\nG1 E-1 F300\nG28 X0 Y180\nM84"
+    }
+  }
+}

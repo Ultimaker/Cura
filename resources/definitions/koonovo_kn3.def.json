@@ -129,7 +129,6 @@
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 

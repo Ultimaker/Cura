@@ -57,7 +57,10 @@ class TestCalculateBedAdhesionSize:
                              "machine_depth": {"value": 200},
                              "skirt_line_count": {"value": 0},
                              "skirt_gap": {"value": 0},
-                             "raft_margin": {"value": 0}
+                             "raft_margin": {"value": 0},
+                             "material_shrinkage_percentage": {"value": 100.0},
+                             "material_shrinkage_percentage_xy": {"value": 100.0},
+                             "material_shrinkage_percentage_z": {"value": 100.0},
                              }
 
     def getPropertySideEffect(*args, **kwargs):
@@ -109,6 +112,9 @@ class TestComputeDisallowedAreasStatic:
     setting_property_dict = {"machine_disallowed_areas": {"value": [[[-200,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]]]},
                              "machine_width": {"value": 200},
                              "machine_depth": {"value": 200},
+                             "material_shrinkage_percentage": {"value": 100.0},
+                             "material_shrinkage_percentage_xy": {"value": 100.0},
+                             "material_shrinkage_percentage_z": {"value": 100.0},
                             }
 
     def getPropertySideEffect(*args, **kwargs):
@@ -157,7 +163,11 @@ class TestUpdateRaftThickness:
                              "raft_surface_thickness": {"value": 1},
                              "raft_airgap": {"value": 1},
                              "layer_0_z_overlap": {"value": 1},
-                             "adhesion_type": {"value": "raft"}}
+                             "adhesion_type": {"value": "raft"},
+                             "material_shrinkage_percentage": {"value": 100.0},
+                             "material_shrinkage_percentage_xy": {"value": 100.0},
+                             "material_shrinkage_percentage_z": {"value": 100.0},
+                             }
 
     def getPropertySideEffect(*args, **kwargs):
         properties = TestUpdateRaftThickness.setting_property_dict.get(args[1])
@@ -208,6 +218,9 @@ class TestComputeDisallowedAreasPrimeBlob:
                              "extruder_prime_pos_x":  {"value": 25},
                              "extruder_prime_pos_y": {"value": 50},
                              "machine_center_is_zero": {"value": True},
+                             "material_shrinkage_percentage": {"value": 100.0},
+                             "material_shrinkage_percentage_xy": {"value": 100.0},
+                             "material_shrinkage_percentage_z": {"value": 100.0},
                              }
 
     def getPropertySideEffect(*args, **kwargs):
@@ -248,7 +261,11 @@ class TestComputeDisallowedAreasPrimeBlob:
 
 class TestCalculateExtraZClearance:
     setting_property_dict = {"retraction_hop": {"value": 12},
-                             "retraction_hop_enabled": {"value": True}}
+                             "retraction_hop_enabled": {"value": True},
+                             "material_shrinkage_percentage": {"value": 100.0},
+                             "material_shrinkage_percentage_xy": {"value": 100.0},
+                             "material_shrinkage_percentage_z": {"value": 100.0},
+                            }
 
     def getPropertySideEffect(*args, **kwargs):
         properties = TestCalculateExtraZClearance.setting_property_dict.get(args[1])
@@ -285,6 +302,16 @@ class TestCalculateExtraZClearance:
 
 
 class TestRebuild:
+    setting_property_dict = {
+        "material_shrinkage_percentage": {"value": 100.0},
+        "material_shrinkage_percentage_xy": {"value": 100.0},
+        "material_shrinkage_percentage_z": {"value": 100.0},
+    }
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestCalculateExtraZClearance.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
     def test_zeroWidthHeightDepth(self, build_volume: BuildVolume):
         build_volume.rebuild()
         assert build_volume.getMeshData() is None
@@ -311,6 +338,7 @@ class TestRebuild:
         build_volume.setDepth(10)
 
         mocked_global_stack = MagicMock()
+        mocked_global_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
         build_volume._global_container_stack = mocked_global_stack
         build_volume.getEdgeDisallowedSize = MagicMock(return_value = 0)
         build_volume.updateNodeBoundaryCheck = MagicMock()
@@ -328,7 +356,11 @@ class TestUpdateMachineSizeProperties:
     setting_property_dict = {"machine_width": {"value": 50},
                              "machine_depth": {"value": 100},
                              "machine_height": {"value": 200},
-                             "machine_shape": {"value": "DERP!"}}
+                             "machine_shape": {"value": "DERP!"},
+                             "material_shrinkage_percentage": {"value": 100.0},
+                             "material_shrinkage_percentage_xy": {"value": 100.0},
+                             "material_shrinkage_percentage_z": {"value": 100.0},
+                             }
 
     def getPropertySideEffect(*args, **kwargs):
         properties = TestUpdateMachineSizeProperties.setting_property_dict.get(args[1])

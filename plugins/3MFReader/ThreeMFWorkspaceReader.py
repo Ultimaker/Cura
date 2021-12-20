@@ -49,7 +49,9 @@ _ignored_machine_network_metadata = {
     "removal_warning",
     "group_name",
     "group_size",
-    "connection_type"
+    "connection_type",
+    "capabilities",
+    "octoprint_api_key",
 }  # type: Set[str]
 
 
@@ -377,7 +379,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - the global stack DOESN'T exist but some/all of the extruder stacks exist
         # To simplify this, only check if the global stack exists or not
         global_stack_id = self._stripFileToId(global_stack_file)
+
         serialized = archive.open(global_stack_file).read().decode("utf-8")
+
         serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
         machine_name = self._getMachineNameFromSerializedStack(serialized)
         self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
