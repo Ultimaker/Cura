@@ -1,5 +1,4 @@
 {
-	"id": "trex2_extruder_1",
 	"version": 2,
 	"name": "Right Extruder",
 	"inherits": "trex_extruder_1",
