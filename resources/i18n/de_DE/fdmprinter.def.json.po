@@ -1263,7 +1263,7 @@ msgstr "Intelligent verbergen"
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
-msgstr "Realitvwert der Z-Naht"
+msgstr "Relativwert der Z-Naht"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative description"
