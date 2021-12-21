@@ -1,5 +1,6 @@
 {
     "name": "Creality CR-100",
+    "version": 2,
     "inherits": "creality_base",
     "overrides": {
         "machine_name": { "default_value": "Creality CR-100" },
