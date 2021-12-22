@@ -448,7 +448,7 @@
                 "machine_head_with_fans_polygon":
                 {
                     "label": "Machine Head & Fan Polygon",
-                    "description": "A 2D silhouette of the print head (fan caps included).",
+                    "description": "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates.",
                     "type": "polygon",
                     "default_value":
                     [
