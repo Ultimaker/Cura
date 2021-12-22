@@ -6,6 +6,8 @@ from operator import attrgetter
 
 from PyQt5.QtCore import pyqtSlot, QObject
 
+from UM.Version import Version
+
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
     from PyQt5.QtNetwork import QNetworkReply
@@ -115,7 +117,7 @@ class LocalPackageList(PackageList):
             return
 
         packages = response_data["data"]
-
-        self._package_manager.setPackagesWithUpdate({p['package_id'] for p in packages})
+        for package in packages:
+            self._package_manager.addAvailablePackageVersion(package["package_id"], Version(package["package_version"]))
 
         self._ongoing_requests["check_updates"] = None
