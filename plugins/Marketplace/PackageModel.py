@@ -290,9 +290,8 @@ class PackageModel(QObject):
     def isBundled(self) -> bool:
         return self._is_bundled
 
-    @pyqtProperty(str, constant = True)
-    def downloadURL(self) -> str:
-        return self._download_url
+    def setDownloadUrl(self, download_url):
+        self._download_url = download_url
 
     # --- manage buttons signals ---
 
@@ -313,12 +312,12 @@ class PackageModel(QObject):
     @pyqtSlot()
     def install(self):
         self.setBusy(True)
-        self.installPackageTriggered.emit(self.packageId, self.downloadURL)
+        self.installPackageTriggered.emit(self.packageId, self._download_url)
 
     @pyqtSlot()
     def update(self):
         self.setBusy(True)
-        self.updatePackageTriggered.emit(self.packageId, self.downloadURL)
+        self.updatePackageTriggered.emit(self.packageId, self._download_url)
 
     @pyqtSlot()
     def uninstall(self):

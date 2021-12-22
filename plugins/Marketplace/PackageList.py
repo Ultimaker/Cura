@@ -237,7 +237,6 @@ class PackageList(ListModel):
         self._ongoing_requests["download_package"] = None
         self._requestInstall(package_id, update)
 
-
     def _downloadError(self, package_id: str, update: bool = False, reply: Optional["QNetworkReply"] = None, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if reply:
             reply_string = bytes(reply.readAll()).decode()

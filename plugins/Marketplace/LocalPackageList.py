@@ -119,5 +119,9 @@ class LocalPackageList(PackageList):
         packages = response_data["data"]
         for package in packages:
             self._package_manager.addAvailablePackageVersion(package["package_id"], Version(package["package_version"]))
+            package_model = self.getPackageModel(package["package_id"])
+            if package_model:
+                # Also make sure that the local list knows where to get an update
+                package_model.setDownloadUrl(package["download_url"])
 
         self._ongoing_requests["check_updates"] = None
