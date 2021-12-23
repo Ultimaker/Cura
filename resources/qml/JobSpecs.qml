@@ -2,8 +2,8 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.2
+import QtQuick.Controls.Styles 2.2
 import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
@@ -106,6 +106,7 @@ Item
                 regExp: /^[^\\\/\*\?\|\[\]]*$/
             }
 
+/*
             style: TextFieldStyle
             {
                 textColor: UM.Theme.getColor("text_scene")
@@ -116,6 +117,7 @@ Item
                     border.width: 0
                 }
             }
+*/
         }
     }
 

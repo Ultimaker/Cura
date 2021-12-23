@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 from shapely.errors import TopologicalError  # To capture errors if Shapely messes up.
 
 from UM.Application import Application

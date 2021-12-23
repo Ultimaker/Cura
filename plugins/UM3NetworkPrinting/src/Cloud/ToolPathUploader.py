@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 from typing import Callable, Any, Tuple, cast, Dict, Optional
 
 from UM.Logger import Logger

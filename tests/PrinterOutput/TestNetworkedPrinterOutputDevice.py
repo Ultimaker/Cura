@@ -1,8 +1,8 @@
 import time
 from unittest.mock import MagicMock, patch
 
-from PyQt5.QtNetwork import QNetworkAccessManager
-from PyQt5.QtCore import QUrl
+from PyQt6.QtNetwork import QNetworkAccessManager
+from PyQt6.QtCore import QUrl
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 

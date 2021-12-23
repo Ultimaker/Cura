@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
-from pynest2d import Point, Box, Item, NfpConfig, nest
+#from pynest2d import Point, Box, Item, NfpConfig, nest
 from typing import List, TYPE_CHECKING, Optional, Tuple
 
 from UM.Application import Application

@@ -1,7 +1,7 @@
 import os
 from typing import Optional
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtSlot
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Signal import Signal

@@ -5,7 +5,7 @@ import UM 1.2 as UM
 import Cura 1.5 as Cura
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Dialogs 1.2

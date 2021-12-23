@@ -3,7 +3,7 @@
 
 from typing import Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 
 from .ExtruderConfigurationModel import ExtruderConfigurationModel
 

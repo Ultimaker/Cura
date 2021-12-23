@@ -2,8 +2,8 @@
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.2
+import QtQuick.Controls.Styles 2.2
 import QtQuick.Layouts 1.3
 import UM 1.1 as UM
 import Cura 1.1 as Cura
@@ -14,7 +14,7 @@ Item
     property int packageCount: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getTotalNumberOfMaterialPackagesByAuthor(model.id) : 1
     property int installedPackages: (toolbox.viewCategory == "material" && model.type === undefined) ? toolbox.getNumberOfInstalledPackagesByAuthor(model.id) : (toolbox.isInstalled(model.id) ? 1 : 0)
     height: childrenRect.height
-    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+    Layout.alignment: Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft
 
     MouseArea
     {

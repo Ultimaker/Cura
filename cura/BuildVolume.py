@@ -30,7 +30,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 
 
 if TYPE_CHECKING:

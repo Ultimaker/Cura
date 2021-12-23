@@ -2,8 +2,8 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.2
+//import QtQuick.Controls.Styles 2.2
 
 import UM 1.1 as UM
 
@@ -11,6 +11,7 @@ QtObject
 {
     property Component print_setup_header_button: Component
     {
+    /*
         ButtonStyle
         {
             background: Rectangle
@@ -94,10 +95,12 @@ QtObject
             }
             label: Label{}
         }
+        */
     }
 
     property Component main_window_header_tab: Component
     {
+    /*
         ButtonStyle
         {
             // This property will be back-propagated when the width of the label is calculated
@@ -167,10 +170,12 @@ QtObject
 
 
         }
+        */
     }
 
     property Component tool_button: Component
     {
+    /*
         ButtonStyle
         {
             background: Item
@@ -260,10 +265,12 @@ QtObject
                 }
             }
         }
+        */
     }
 
     property Component progressbar: Component
     {
+    /*
         ProgressBarStyle
         {
             background: Rectangle
@@ -311,10 +318,12 @@ QtObject
                 }
             }
         }
+        */
     }
 
     property Component scrollview: Component
     {
+    /*
         ScrollViewStyle
         {
             decrementControl: Item { }
@@ -339,10 +348,12 @@ QtObject
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }
+        */
     }
 
     property Component combobox: Component
     {
+    /*
         ComboBoxStyle
         {
 
@@ -394,10 +405,12 @@ QtObject
                 }
             }
         }
+        */
     }
 
     property Component checkbox: Component
     {
+    /*
         CheckBoxStyle
         {
             background: Item { }
@@ -436,10 +449,12 @@ QtObject
                 renderType: Text.NativeRendering
             }
         }
+        */
     }
 
     property Component partially_checkbox: Component
     {
+    /*
         CheckBoxStyle
         {
             background: Item { }
@@ -486,10 +501,12 @@ QtObject
                 font: UM.Theme.getFont("default")
             }
         }
+        */
     }
 
     property Component text_field: Component
     {
+    /*
         TextFieldStyle
         {
             textColor: UM.Theme.getColor("setting_control_text")
@@ -520,10 +537,12 @@ QtObject
                 }
             }
         }
+        */
     }
 
     property Component print_setup_action_button: Component
     {
+    /*
         ButtonStyle
         {
             background: Rectangle
@@ -600,10 +619,12 @@ QtObject
             }
             label: Item { }
         }
+        */
     }
 
     property Component toolbox_action_button: Component
     {
+    /*
         ButtonStyle
         {
             background: Rectangle
@@ -656,10 +677,12 @@ QtObject
                 font: UM.Theme.getFont("default_bold")
             }
         }
+        */
     }
 
     property Component monitor_button_style: Component
     {
+    /*
         ButtonStyle
         {
             background: Rectangle
@@ -735,10 +758,12 @@ QtObject
                 }
             }
         }
+        */
     }
 
     property Component monitor_checkable_button_style: Component
     {
+    /*
         ButtonStyle {
             background: Rectangle {
                 border.width: control.checked ? UM.Theme.getSize("default_lining").width * 2 : UM.Theme.getSize("default_lining").width
@@ -805,5 +830,6 @@ QtObject
             }
             label: Item { }
         }
+        */
     }
 }

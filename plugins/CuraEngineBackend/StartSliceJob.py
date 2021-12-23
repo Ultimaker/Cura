@@ -7,8 +7,8 @@ from enum import IntEnum
 import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
-import Arcus #For typing.
-from PyQt5.QtCore import QCoreApplication
+#import Arcus #For typing.
+from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -90,7 +90,7 @@ class GcodeStartEndFormatter(Formatter):
 class StartSliceJob(Job):
     """Job class that builds up the message of scene data to send to CuraEngine."""
 
-    def __init__(self, slice_message: Arcus.PythonMessage) -> None:
+    def __init__(self, slice_message: Any) -> None: #Arcus.PythonMessage) -> None:
         super().__init__()
 
         self._scene = CuraApplication.getInstance().getController().getScene() #type: Scene
@@ -100,7 +100,7 @@ class StartSliceJob(Job):
 
         self._all_extruders_settings = None #type: Optional[Dict[str, Any]] # cache for all setting values from all stacks (global & extruder) for the current machine
 
-    def getSliceMessage(self) -> Arcus.PythonMessage:
+    def getSliceMessage(self) -> Any:  #Arcus.PythonMessage:
         return self._slice_message
 
     def setBuildPlate(self, build_plate_number: int) -> None:
@@ -490,7 +490,7 @@ class StartSliceJob(Job):
                 setting_extruder.extruder = extruder_position
             Job.yieldThread()
 
-    def _handlePerObjectSettings(self, node: CuraSceneNode, message: Arcus.PythonMessage):
+    def _handlePerObjectSettings(self, node: CuraSceneNode, message: Any): #Arcus.PythonMessage):
         """Check if a node has per object settings and ensure that they are set correctly in the message
 
         :param node: Node to check.

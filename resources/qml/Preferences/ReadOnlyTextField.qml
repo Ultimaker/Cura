@@ -3,7 +3,7 @@
 // Different than the name suggests, it is not always read-only.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
 
 Item

@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt, QTimer
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
@@ -13,13 +13,13 @@ from cura.Settings.GlobalStack import GlobalStack
 
 
 class GlobalStacksModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    IdRole = Qt.UserRole + 2
-    HasRemoteConnectionRole = Qt.UserRole + 3
-    ConnectionTypeRole = Qt.UserRole + 4
-    MetaDataRole = Qt.UserRole + 5
-    DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
-    RemovalWarningRole = Qt.UserRole + 7
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IdRole = Qt.ItemDataRole.UserRole + 2
+    HasRemoteConnectionRole = Qt.ItemDataRole.UserRole + 3
+    ConnectionTypeRole = Qt.ItemDataRole.UserRole + 4
+    MetaDataRole = Qt.ItemDataRole.UserRole + 5
+    DiscoverySourceRole = Qt.ItemDataRole.UserRole + 6  # For separating local and remote printers in the machine management page
+    RemovalWarningRole = Qt.ItemDataRole.UserRole + 7
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)

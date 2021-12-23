@@ -7,7 +7,7 @@ import threading
 from tempfile import NamedTemporaryFile
 from typing import Optional, Any, Dict
 
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger

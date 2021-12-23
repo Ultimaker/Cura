@@ -5,9 +5,9 @@ from time import time
 import os
 from typing import cast, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest  # Parse errors specific to print job uploading.
+from PyQt6.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest  # Parse errors specific to print job uploading.
 
 from UM import i18nCatalog
 from UM.Backend.Backend import BackendState

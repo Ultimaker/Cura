@@ -3,8 +3,8 @@
 
 from typing import Optional, TYPE_CHECKING, List
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
-from PyQt5.QtGui import QImage
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
+from PyQt6.QtGui import QImage
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController

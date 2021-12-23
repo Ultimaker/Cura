@@ -4,7 +4,7 @@
 import re
 from typing import Dict
 
-from PyQt5.QtCore import Qt, pyqtProperty
+from PyQt6.QtCore import Qt, pyqtProperty
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -23,28 +23,28 @@ class PackagesModel(ListModel):
 
         self._metadata = None
 
-        self.addRoleName(Qt.UserRole + 1, "id")
-        self.addRoleName(Qt.UserRole + 2, "type")
-        self.addRoleName(Qt.UserRole + 3, "name")
-        self.addRoleName(Qt.UserRole + 4, "version")
-        self.addRoleName(Qt.UserRole + 5, "author_id")
-        self.addRoleName(Qt.UserRole + 6, "author_name")
-        self.addRoleName(Qt.UserRole + 7, "author_email")
-        self.addRoleName(Qt.UserRole + 8, "description")
-        self.addRoleName(Qt.UserRole + 9, "icon_url")
-        self.addRoleName(Qt.UserRole + 10, "image_urls")
-        self.addRoleName(Qt.UserRole + 11, "download_url")
-        self.addRoleName(Qt.UserRole + 12, "last_updated")
-        self.addRoleName(Qt.UserRole + 13, "is_bundled")
-        self.addRoleName(Qt.UserRole + 14, "is_active")
-        self.addRoleName(Qt.UserRole + 15, "is_installed")  # Scheduled pkgs are included in the model but should not be marked as actually installed
-        self.addRoleName(Qt.UserRole + 16, "has_configs")
-        self.addRoleName(Qt.UserRole + 17, "supported_configs")
-        self.addRoleName(Qt.UserRole + 18, "download_count")
-        self.addRoleName(Qt.UserRole + 19, "tags")
-        self.addRoleName(Qt.UserRole + 20, "links")
-        self.addRoleName(Qt.UserRole + 21, "website")
-        self.addRoleName(Qt.UserRole + 22, "login_required")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "type")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 4, "version")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 5, "author_id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 6, "author_name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 7, "author_email")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 8, "description")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 9, "icon_url")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 10, "image_urls")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 11, "download_url")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 12, "last_updated")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 13, "is_bundled")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 14, "is_active")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 15, "is_installed")  # Scheduled pkgs are included in the model but should not be marked as actually installed
+        self.addRoleName(Qt.ItemDataRole.UserRole + 16, "has_configs")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 17, "supported_configs")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 18, "download_count")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 19, "tags")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 20, "links")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 21, "website")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 22, "login_required")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]

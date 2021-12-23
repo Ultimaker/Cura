@@ -1,9 +1,9 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QCoreApplication, QTimer
-from PyQt5.QtGui import QPixmap, QColor, QFont, QPen, QPainter
-from PyQt5.QtWidgets import QSplashScreen
+from PyQt6.QtCore import Qt, QCoreApplication, QTimer
+from PyQt6.QtGui import QPixmap, QColor, QFont, QPen, QPainter
+from PyQt6.QtWidgets import QSplashScreen
 
 from UM.Resources import Resources
 from UM.Application import Application
@@ -61,8 +61,8 @@ class CuraSplashScreen(QSplashScreen):
 
         painter.save()
         painter.setPen(QColor(255, 255, 255, 255))
-        painter.setRenderHint(QPainter.Antialiasing)
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
 
         version = Application.getInstance().getVersion().split("-")
 
@@ -70,12 +70,12 @@ class CuraSplashScreen(QSplashScreen):
         font = QFont()  # Using system-default font here
         font.setPixelSize(18)
         painter.setFont(font)
-        painter.drawText(60, 70 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(60, 70 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, version[0])
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)
             painter.setPen(QColor(200, 200, 200, 255))
-            painter.drawText(247, 105 + self._version_y_offset, round(330 * self._scale), round(255 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[1])
+            painter.drawText(247, 105 + self._version_y_offset, round(330 * self._scale), round(255 * self._scale), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, version[1])
         painter.setPen(QColor(255, 255, 255, 255))
 
         # Draw the loading image
@@ -94,7 +94,7 @@ class CuraSplashScreen(QSplashScreen):
             painter.setPen(pen)
             painter.setFont(font)
             painter.drawText(100, 128, 170, 64,
-                             Qt.AlignLeft | Qt.AlignVCenter | Qt.TextWordWrap,
+                             Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap,
                              self._current_message)
 
         painter.restore()
@@ -106,7 +106,7 @@ class CuraSplashScreen(QSplashScreen):
 
         self._current_message = message
         self.messageChanged.emit(message)
-        QCoreApplication.flush()
+        QCoreApplication.processEvents() #.flush()
         self.repaint()
 
     def close(self):

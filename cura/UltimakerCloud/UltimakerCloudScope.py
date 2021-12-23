@@ -1,4 +1,4 @@
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt6.QtNetwork import QNetworkRequest
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestScope import DefaultUserAgentScope

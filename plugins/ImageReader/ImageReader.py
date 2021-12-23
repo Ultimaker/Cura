@@ -5,8 +5,8 @@ import numpy
 
 import math
 
-from PyQt5.QtGui import QImage, qRed, qGreen, qBlue, qAlpha
-from PyQt5.QtCore import Qt
+from PyQt6.QtGui import QImage, qRed, qGreen, qBlue, qAlpha
+from PyQt6.QtCore import Qt
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.Mesh.MeshBuilder import MeshBuilder

@@ -4,7 +4,7 @@ from UM.Logger import Logger
 import re
 from typing import Dict, List, Optional, Union
 
-from PyQt5.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
@@ -34,14 +34,14 @@ class _NodeInfo:
 class ObjectsModel(ListModel):
     """Keep track of all objects in the project"""
 
-    NameRole = Qt.UserRole + 1
-    SelectedRole = Qt.UserRole + 2
-    OutsideAreaRole = Qt.UserRole + 3
-    BuilplateNumberRole = Qt.UserRole + 4
-    NodeRole = Qt.UserRole + 5
-    PerObjectSettingsCountRole = Qt.UserRole + 6
-    MeshTypeRole = Qt.UserRole + 7
-    ExtruderNumberRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    SelectedRole = Qt.ItemDataRole.UserRole + 2
+    OutsideAreaRole = Qt.ItemDataRole.UserRole + 3
+    BuilplateNumberRole = Qt.ItemDataRole.UserRole + 4
+    NodeRole = Qt.ItemDataRole.UserRole + 5
+    PerObjectSettingsCountRole = Qt.ItemDataRole.UserRole + 6
+    MeshTypeRole = Qt.ItemDataRole.UserRole + 7
+    ExtruderNumberRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)

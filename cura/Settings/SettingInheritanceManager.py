@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.Logger import Logger

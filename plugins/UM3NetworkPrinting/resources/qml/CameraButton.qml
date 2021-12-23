@@ -3,7 +3,7 @@
 
 import QtQuick 2.3
 import QtQuick.Controls 2.4
-import QtQuick.Controls.Styles 1.3
+import QtQuick.Controls.Styles 2.2
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 

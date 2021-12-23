@@ -6,8 +6,8 @@ import os
 import tempfile
 from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Extension import Extension
 from UM.Logger import Logger

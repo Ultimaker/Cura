@@ -8,7 +8,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.Nest2DArrange import arrange
+#from cura.Arranging.Nest2DArrange import arrange
 
 i18n_catalog = i18nCatalog("cura")
 

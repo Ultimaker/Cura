@@ -4,7 +4,7 @@ from .WelcomePagesModel import WelcomePagesModel
 
 import os
 from typing import Optional, Dict, List, Tuple
-from PyQt5.QtCore import pyqtProperty, pyqtSlot
+from PyQt6.QtCore import pyqtProperty, pyqtSlot
 from UM.Logger import Logger
 from UM.Resources import Resources
 

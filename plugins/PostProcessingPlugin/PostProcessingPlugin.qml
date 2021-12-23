@@ -2,9 +2,9 @@
 // The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.2
 import QtQuick.Controls 2.15 as QQC2
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls.Styles 2.2
 import QtQml.Models 2.15 as Models
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1

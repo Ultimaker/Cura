@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtGui import QDesktopServices
 
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT

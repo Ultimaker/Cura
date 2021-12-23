@@ -4,7 +4,7 @@
 import os
 from collections import OrderedDict
 
-from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt6.QtCore import pyqtSlot, Qt
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -15,12 +15,12 @@ from UM.Qt.ListModel import ListModel
 
 
 class UserChangesModel(ListModel):
-    KeyRole = Qt.UserRole + 1
-    LabelRole = Qt.UserRole + 2
-    ExtruderRole = Qt.UserRole + 3
-    OriginalValueRole = Qt.UserRole + 4
-    UserValueRole = Qt.UserRole + 6
-    CategoryRole = Qt.UserRole + 7
+    KeyRole = Qt.ItemDataRole.UserRole + 1
+    LabelRole = Qt.ItemDataRole.UserRole + 2
+    ExtruderRole = Qt.ItemDataRole.UserRole + 3
+    OriginalValueRole = Qt.ItemDataRole.UserRole + 4
+    UserValueRole = Qt.ItemDataRole.UserRole + 6
+    CategoryRole = Qt.ItemDataRole.UserRole + 7
 
     def __init__(self, parent = None):
         super().__init__(parent = parent)

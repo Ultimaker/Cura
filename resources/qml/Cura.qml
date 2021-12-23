@@ -2,8 +2,8 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.2
+import QtQuick.Controls.Styles 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
@@ -152,7 +152,7 @@ UM.MainWindow
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
         {
-            if (event.key == Qt.Key_Backspace)
+            if (event.key == Qt.Key.Key_Backspace)
             {
                 Cura.Actions.deleteSelection.trigger()
             }

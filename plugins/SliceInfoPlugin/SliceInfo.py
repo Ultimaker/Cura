@@ -7,8 +7,8 @@ import platform
 import time
 from typing import cast, Optional, Set, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, QObject
-from PyQt5.QtNetwork import QNetworkRequest
+from PyQt6.QtCore import pyqtSlot, QObject
+from PyQt6.QtNetwork import QNetworkRequest
 
 from UM.Extension import Extension
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -20,7 +20,7 @@ from UM.Qt.Duration import DurationFormat
 from cura import ApplicationMetadata
 
 if TYPE_CHECKING:
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtNetwork import QNetworkReply
 
 
 catalog = i18nCatalog("cura")

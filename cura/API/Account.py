@@ -1,9 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
+from enum import IntEnum
 from typing import Optional, Dict, TYPE_CHECKING, Callable
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
+from PyQt6.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, pyqtEnum
 
 from UM.Logger import Logger
 from UM.Message import Message
@@ -18,7 +19,7 @@ if TYPE_CHECKING:
 i18n_catalog = i18nCatalog("cura")
 
 
-class SyncState:
+class SyncState(IntEnum):
     """QML: Cura.AccountSyncState"""
     SYNCING = 0
     SUCCESS = 1
@@ -41,7 +42,7 @@ class Account(QObject):
 
     # The interval in which sync services are automatically triggered
     SYNC_INTERVAL = 60.0  # seconds
-    Q_ENUMS(SyncState)
+    pyqtEnum(SyncState)
 
     loginStateChanged = pyqtSignal(bool)
     """Signal emitted when user logged in or out"""

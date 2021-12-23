@@ -1,9 +1,9 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 import QtQuick 2.5
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls.Styles 2.2
 
 import UM 1.0 as UM
 import Cura 1.0 as Cura
@@ -63,12 +63,14 @@ UM.PointingRectangle {
         Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
         Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
+/*
         style: TextFieldStyle {
             textColor: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
             background: Item {  }
         }
+*/
 
         onEditingFinished: {
 
