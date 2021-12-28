@@ -123,6 +123,9 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         for changed_setting_key in changed_setting_keys:
+            if not stack.getProperty(changed_setting_key, "enabled"):
+                continue
+
             validation_state = stack.getProperty(changed_setting_key, "validationState")
 
             if validation_state is None:

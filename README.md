@@ -2,7 +2,7 @@ Cura
 ====
 Ultimaker Cura is a state-of-the-art slicer application to prepare your 3D models for printing with a 3D printer. With hundreds of settings and hundreds of community-managed print profiles, Ultimaker Cura is sure to lead your next project to a success.
 
-![Screenshot](screenshot.png)
+![Screenshot](cura-logo.PNG)
 
 Logging Issues
 ------------
