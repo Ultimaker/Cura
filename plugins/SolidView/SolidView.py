@@ -6,8 +6,8 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt5.QtGui import QOpenGLContext, QDesktopServices, QImage
-from PyQt5.QtCore import QSize, QUrl
+from PyQt6.QtGui import QOpenGLContext, QDesktopServices, QImage
+from PyQt6.QtCore import QSize, QUrl
 
 import numpy as np
 import time

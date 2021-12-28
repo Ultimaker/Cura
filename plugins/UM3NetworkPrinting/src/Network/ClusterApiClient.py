@@ -4,8 +4,8 @@ import json
 from json import JSONDecodeError
 from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeVar, Tuple
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PyQt6.QtCore import QUrl
+from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
 

@@ -2,9 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal
-from PyQt5.QtGui import QImage
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtCore import pyqtProperty, pyqtSignal
+from PyQt6.QtGui import QImage
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager

@@ -5,8 +5,8 @@ import json
 from typing import List, Dict, Any, Set
 from typing import Optional
 
-from PyQt5.QtCore import QObject
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtCore import QObject
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM import i18nCatalog
 from UM.Logger import Logger

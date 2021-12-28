@@ -3,7 +3,7 @@
 
 from typing import Dict, Set
 
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 from UM.Logger import Logger

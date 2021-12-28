@@ -20,9 +20,9 @@ try:
 except ImportError:
     with_sentry_sdk = False
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
+from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
+from PyQt6.QtGui import QDesktopServices
 
 from UM.Application import Application
 from UM.Logger import Logger

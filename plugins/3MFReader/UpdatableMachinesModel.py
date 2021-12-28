@@ -3,7 +3,7 @@
 
 from typing import Dict, List
 
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from UM.Qt.ListModel import ListModel
 from cura.Settings.GlobalStack import GlobalStack

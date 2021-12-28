@@ -4,7 +4,7 @@ from UM.Logger import Logger
 import re
 from typing import Dict, List, Optional, Union
 
-from PyQt5.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel

@@ -5,7 +5,7 @@ import json
 import os
 from typing import List, Optional
 
-from PyQt5.QtNetwork import QLocalServer, QLocalSocket
+from PyQt6.QtNetwork import QLocalServer, QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication #For typing.
 from UM.Logger import Logger

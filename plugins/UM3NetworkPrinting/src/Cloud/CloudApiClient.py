@@ -5,8 +5,8 @@ from json import JSONDecodeError
 from time import time
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any, cast
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt6.QtCore import QUrl
+from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager

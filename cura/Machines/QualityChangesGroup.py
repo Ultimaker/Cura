@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, Optional
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
 
 class QualityChangesGroup(QObject):

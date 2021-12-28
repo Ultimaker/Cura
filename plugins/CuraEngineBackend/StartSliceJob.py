@@ -8,7 +8,7 @@ import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
 import Arcus #For typing.
-from PyQt5.QtCore import QCoreApplication
+from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger

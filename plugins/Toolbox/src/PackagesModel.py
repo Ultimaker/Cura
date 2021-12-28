@@ -4,7 +4,7 @@
 import re
 from typing import Dict
 
-from PyQt5.QtCore import Qt, pyqtProperty
+from PyQt6.QtCore import Qt, pyqtProperty
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel

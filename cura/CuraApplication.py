@@ -8,10 +8,10 @@ import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
-from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
-from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
+from PyQt6.QtGui import QColor, QIcon
+from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
+from PyQt6.QtWidgets import QMessageBox
 
 import UM.Util
 import cura.Settings.cura_empty_instance_containers

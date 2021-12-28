@@ -13,7 +13,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Snapshot import Snapshot
 
-from PyQt5.QtCore import QBuffer
+from PyQt6.QtCore import QBuffer
 
 import Savitar
 

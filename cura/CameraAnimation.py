@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
-from PyQt5.QtCore import QVariantAnimation, QEasingCurve
-from PyQt5.QtGui import QVector3D
+from PyQt6.QtCore import QVariantAnimation, QEasingCurve
+from PyQt6.QtGui import QVector3D
 
 from UM.Math.Vector import Vector
 

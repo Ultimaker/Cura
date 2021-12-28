@@ -4,7 +4,7 @@
 import os
 from collections import OrderedDict
 
-from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt6.QtCore import pyqtSlot, Qt
 
 from UM.Application import Application
 from UM.Logger import Logger

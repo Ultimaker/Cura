@@ -3,9 +3,9 @@
 
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QOpenGLContext
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QOpenGLContext
+from PyQt6.QtWidgets import QApplication
 
 from UM.Application import Application
 from UM.Event import Event, KeyEvent

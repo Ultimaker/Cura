@@ -4,8 +4,8 @@
 from datetime import datetime
 from unittest.mock import MagicMock, Mock, patch
 
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT

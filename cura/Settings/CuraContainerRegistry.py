@@ -6,7 +6,7 @@ import re
 import configparser
 
 from typing import Any, cast, Dict, Optional, List, Union, Tuple
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QMessageBox
 
 from UM.Decorators import override
 from UM.Settings.ContainerFormatError import ContainerFormatError

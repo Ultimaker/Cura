@@ -3,7 +3,7 @@
 
 from typing import Optional, Dict, Any, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtCore import QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.Qt.ListModel import ListModel
 

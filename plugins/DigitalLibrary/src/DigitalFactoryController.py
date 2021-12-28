@@ -10,9 +10,9 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional, List, Dict, Any, cast
 
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
-from PyQt5.QtNetwork import QNetworkReply
-from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType
+from PyQt6.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
+from PyQt6.QtNetwork import QNetworkReply
+from PyQt6.QtQml import qmlRegisterType, qmlRegisterUncreatableType
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger

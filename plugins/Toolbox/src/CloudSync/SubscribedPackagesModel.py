@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtProperty, pyqtSlot
+from PyQt6.QtCore import Qt, pyqtProperty, pyqtSlot
 
 from UM.PackageManager import PackageManager
 from UM.Qt.ListModel import ListModel

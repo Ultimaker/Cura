@@ -4,7 +4,7 @@
 from typing import Any
 
 from UM.Qt.ListModel import ListModel
-from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt6.QtCore import pyqtSlot, Qt
 
 
 class SidebarCustomMenuItemsModel(ListModel):

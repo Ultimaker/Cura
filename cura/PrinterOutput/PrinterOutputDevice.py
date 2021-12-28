@@ -4,8 +4,8 @@
 from enum import IntEnum
 from typing import Callable, List, Optional, Union
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
+from PyQt6.QtWidgets import QMessageBox
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
 from UM.Logger import Logger

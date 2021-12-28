@@ -3,7 +3,7 @@
 
 from typing import Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject
+from PyQt6.QtCore import pyqtProperty, QObject
 
 
 class MaterialOutputModel(QObject):

@@ -6,8 +6,8 @@ import urllib.parse
 import uuid
 from typing import Any, cast, Dict, List, TYPE_CHECKING, Union
 
-from PyQt5.QtCore import QObject, QUrl
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import QObject, QUrl
+from PyQt6.QtWidgets import QMessageBox
 
 from UM.i18n import i18nCatalog
 from UM.FlameProfiler import pyqtSlot

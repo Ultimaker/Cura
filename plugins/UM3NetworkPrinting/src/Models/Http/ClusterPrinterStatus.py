@@ -3,7 +3,7 @@
 from itertools import product
 from typing import List, Union, Dict, Optional, Any
 
-from PyQt5.QtCore import QUrl
+from PyQt6.QtCore import QUrl
 
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController

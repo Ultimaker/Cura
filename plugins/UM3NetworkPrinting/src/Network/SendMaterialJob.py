@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from typing import Dict, TYPE_CHECKING, Set, List
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger

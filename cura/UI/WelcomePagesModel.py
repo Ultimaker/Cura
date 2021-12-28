@@ -6,7 +6,7 @@ import os
 from collections import deque
 from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
-from PyQt5.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -14,7 +14,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
     from cura.CuraApplication import CuraApplication
 
 

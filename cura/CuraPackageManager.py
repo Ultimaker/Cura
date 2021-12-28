@@ -11,7 +11,7 @@ from UM.Resources import Resources #To find storage paths for some resource type
 
 if TYPE_CHECKING:
     from UM.Qt.QtApplication import QtApplication
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
 
 
 class CuraPackageManager(PackageManager):

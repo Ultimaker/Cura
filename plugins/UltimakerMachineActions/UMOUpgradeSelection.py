@@ -3,7 +3,7 @@
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.MachineAction import MachineAction
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 
 from UM.i18n import i18nCatalog
 from UM.Application import Application

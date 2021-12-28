@@ -1,6 +1,6 @@
 from typing import Optional, TYPE_CHECKING, List, Dict
 
-from PyQt5.QtCore import QObject, pyqtSlot, Qt, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import QObject, pyqtSlot, Qt, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 

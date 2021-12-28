@@ -9,7 +9,7 @@ import pkgutil
 import sys
 from typing import Dict, Type, TYPE_CHECKING, List, Optional, cast
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
 from UM.Extension import Extension
