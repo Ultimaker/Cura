@@ -45,7 +45,7 @@ msgstr "उपलब्ध नेटवर्क प्रिंटर"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/ExtrudersModel.py:211
 msgctxt "@menuitem"
 msgid "Not overridden"
-msgstr "Nepřepsáno"
+msgstr "ओवरराइड नहीं किया"
 
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/GlobalStacksModel.py:76
@@ -74,7 +74,7 @@ msgstr "दृश्य"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
-msgstr "दृश्य प्रोफ़ाइल उच्च दृश्य और सतह की गुणवत्ता के इरादे से दृश्य प्रोटोटाइप और मॉडल मुद्रित करने के लिए डिज़ाइन किया गया है।"
+msgstr "विसुअल प्रोटोटाइप और मॉडल को प्रिंट करते समय विसुअल और सरफेस क्वालिटी बनाये रखने के लिए विसुअल प्रोफाइल बनाया गया है|"
 
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:49
@@ -88,7 +88,7 @@ msgstr "इंजीनियरिंग"
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "इंजीनियरिंग प्रोफ़ाइल बेहतर सटीकता के इरादे से और करीब सहिष्णुता के लिए कार्यात्मक प्रोटोटाइप और अंत उपयोग भागों मुद्रित करने के लिए डिज़ाइन किया गया है।"
+msgstr "फंक्शनल प्रोटोटाइप और एन्ड-यूस पार्ट प्रिंट करते समय बेहतर एक्यूरेसी और प्रिसिजन के इरादे से इंजीनियरिंग प्रोफ़ाइल बनाया गया है|"
 
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:53
