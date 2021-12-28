@@ -24,5 +24,5 @@ def createSimulationViewProxy(engine, script_engine):
 
 def register(app):
     simulation_view = SimulationView.SimulationView()
-    qmlRegisterSingletonType(SimulationViewProxy.SimulationViewProxy, "UM", 1, 0, "SimulationView", simulation_view.getProxy)
+    qmlRegisterSingletonType(SimulationViewProxy.SimulationViewProxy, "UM", 1, 0, simulation_view.getProxy, "SimulationView")
     return { "view": simulation_view}
