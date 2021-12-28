@@ -10,7 +10,7 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional, List, Dict, Any, cast
 
-from PyQt6.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
+from PyQt6.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, pyqtEnum, QTimer, QUrl
 from PyQt6.QtNetwork import QNetworkReply
 from PyQt6.QtQml import qmlRegisterType, qmlRegisterUncreatableType
 
@@ -50,7 +50,7 @@ class DFRetrievalStatus(QObject):
     be used within QML objects as DigitalFactory.RetrievalStatus.<status>
     """
 
-    Q_ENUMS(RetrievalStatus)
+    pyqtEnum(RetrievalStatus)
 
 
 class DigitalFactoryController(QObject):
