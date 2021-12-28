@@ -21,11 +21,11 @@ catalog = i18nCatalog("cura")
 class IntentCategoryModel(ListModel):
     """Lists the intent categories that are available for the current printer configuration. """
 
-    NameRole = Qt.UserRole + 1
-    IntentCategoryRole = Qt.UserRole + 2
-    WeightRole = Qt.UserRole + 3
-    QualitiesRole = Qt.UserRole + 4
-    DescriptionRole = Qt.UserRole + 5
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IntentCategoryRole = Qt.ItemDataRole.UserRole + 2
+    WeightRole = Qt.ItemDataRole.UserRole + 3
+    QualitiesRole = Qt.ItemDataRole.UserRole + 4
+    DescriptionRole = Qt.ItemDataRole.UserRole + 5
 
     modelUpdated = pyqtSignal()
 

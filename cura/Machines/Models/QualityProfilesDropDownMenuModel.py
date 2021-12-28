@@ -13,14 +13,14 @@ from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 class QualityProfilesDropDownMenuModel(ListModel):
     """QML Model for all built-in quality profiles. This model is used for the drop-down quality menu."""
 
-    NameRole = Qt.UserRole + 1
-    QualityTypeRole = Qt.UserRole + 2
-    LayerHeightRole = Qt.UserRole + 3
-    LayerHeightUnitRole = Qt.UserRole + 4
-    AvailableRole = Qt.UserRole + 5
-    QualityGroupRole = Qt.UserRole + 6
-    QualityChangesGroupRole = Qt.UserRole + 7
-    IsExperimentalRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    QualityTypeRole = Qt.ItemDataRole.UserRole + 2
+    LayerHeightRole = Qt.ItemDataRole.UserRole + 3
+    LayerHeightUnitRole = Qt.ItemDataRole.UserRole + 4
+    AvailableRole = Qt.ItemDataRole.UserRole + 5
+    QualityGroupRole = Qt.ItemDataRole.UserRole + 6
+    QualityChangesGroupRole = Qt.ItemDataRole.UserRole + 7
+    IsExperimentalRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None):
         super().__init__(parent)

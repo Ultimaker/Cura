@@ -12,10 +12,10 @@ class DiscoveredCloudPrintersModel(ListModel):
     """Model used to inform the application about newly added cloud printers, which are discovered from the user's
      account """
 
-    DeviceKeyRole = Qt.UserRole + 1
-    DeviceNameRole = Qt.UserRole + 2
-    DeviceTypeRole = Qt.UserRole + 3
-    DeviceFirmwareVersionRole = Qt.UserRole + 4
+    DeviceKeyRole = Qt.ItemDataRole.UserRole + 1
+    DeviceNameRole = Qt.ItemDataRole.UserRole + 2
+    DeviceTypeRole = Qt.ItemDataRole.UserRole + 3
+    DeviceFirmwareVersionRole = Qt.ItemDataRole.UserRole + 4
 
     cloudPrintersDetectedChanged = pyqtSignal(bool)
 

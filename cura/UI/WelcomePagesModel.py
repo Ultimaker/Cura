@@ -36,11 +36,11 @@ class WelcomePagesModel(ListModel):
     Note that in any case, a page that has its "should_show_function" == False will ALWAYS be skipped.
     """
 
-    IdRole = Qt.UserRole + 1  # Page ID
-    PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
-    NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
-    NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
-    PreviousPageButtonTextRole = Qt.UserRole + 5  # The text for the previous page button
+    IdRole = Qt.ItemDataRole.UserRole + 1  # Page ID
+    PageUrlRole = Qt.ItemDataRole.UserRole + 2  # URL to the page's QML file
+    NextPageIdRole = Qt.ItemDataRole.UserRole + 3  # The next page ID it should go to
+    NextPageButtonTextRole = Qt.ItemDataRole.UserRole + 4  # The text for the next page button
+    PreviousPageButtonTextRole = Qt.ItemDataRole.UserRole + 5  # The text for the previous page button
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)

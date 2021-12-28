@@ -15,11 +15,11 @@ from cura.Machines.QualityGroup import QualityGroup
 
 
 class IntentModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    QualityTypeRole = Qt.UserRole + 2
-    LayerHeightRole = Qt.UserRole + 3
-    AvailableRole = Qt.UserRole + 4
-    IntentRole = Qt.UserRole + 5
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    QualityTypeRole = Qt.ItemDataRole.UserRole + 2
+    LayerHeightRole = Qt.ItemDataRole.UserRole + 3
+    AvailableRole = Qt.ItemDataRole.UserRole + 4
+    IntentRole = Qt.ItemDataRole.UserRole + 5
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)

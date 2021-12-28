@@ -20,14 +20,14 @@ class AuthorsModel(ListModel):
 
         self._metadata = None  # type: Optional[List[Dict[str, Union[str, List[str], int]]]]
 
-        self.addRoleName(Qt.UserRole + 1, "id")
-        self.addRoleName(Qt.UserRole + 2, "name")
-        self.addRoleName(Qt.UserRole + 3, "email")
-        self.addRoleName(Qt.UserRole + 4, "website")
-        self.addRoleName(Qt.UserRole + 5, "package_count")
-        self.addRoleName(Qt.UserRole + 6, "package_types")
-        self.addRoleName(Qt.UserRole + 7, "icon_url")
-        self.addRoleName(Qt.UserRole + 8, "description")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "email")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 4, "website")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 5, "package_count")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 6, "package_types")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 7, "icon_url")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 8, "description")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]

@@ -29,13 +29,13 @@ if TYPE_CHECKING:
 class QualityManagementModel(ListModel):
     """This the QML model for the quality management page."""
 
-    NameRole = Qt.UserRole + 1
-    IsReadOnlyRole = Qt.UserRole + 2
-    QualityGroupRole = Qt.UserRole + 3
-    QualityTypeRole = Qt.UserRole + 4
-    QualityChangesGroupRole = Qt.UserRole + 5
-    IntentCategoryRole = Qt.UserRole + 6
-    SectionNameRole = Qt.UserRole + 7
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    IsReadOnlyRole = Qt.ItemDataRole.UserRole + 2
+    QualityGroupRole = Qt.ItemDataRole.UserRole + 3
+    QualityTypeRole = Qt.ItemDataRole.UserRole + 4
+    QualityChangesGroupRole = Qt.ItemDataRole.UserRole + 5
+    IntentCategoryRole = Qt.ItemDataRole.UserRole + 6
+    SectionNameRole = Qt.ItemDataRole.UserRole + 7
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)

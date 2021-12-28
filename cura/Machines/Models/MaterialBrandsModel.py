@@ -10,9 +10,9 @@ class MaterialTypesModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "brand")
-        self.addRoleName(Qt.UserRole + 3, "colors")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "brand")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "colors")
 
 class MaterialBrandsModel(BaseMaterialsModel):
 
@@ -21,8 +21,8 @@ class MaterialBrandsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "material_types")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "material_types")
 
         self._update()
 

@@ -12,12 +12,12 @@ PROJECT_UPDATED_AT_DATETIME_FORMAT = "%d-%m-%Y"
 
 
 class DigitalFactoryProjectModel(ListModel):
-    DisplayNameRole = Qt.UserRole + 1
-    LibraryProjectIdRole = Qt.UserRole + 2
-    DescriptionRole = Qt.UserRole + 3
-    ThumbnailUrlRole = Qt.UserRole + 5
-    UsernameRole = Qt.UserRole + 6
-    LastUpdatedRole = Qt.UserRole + 7
+    DisplayNameRole = Qt.ItemDataRole.UserRole + 1
+    LibraryProjectIdRole = Qt.ItemDataRole.UserRole + 2
+    DescriptionRole = Qt.ItemDataRole.UserRole + 3
+    ThumbnailUrlRole = Qt.ItemDataRole.UserRole + 5
+    UsernameRole = Qt.ItemDataRole.UserRole + 6
+    LastUpdatedRole = Qt.ItemDataRole.UserRole + 7
 
     dfProjectModelChanged = pyqtSignal()
 

@@ -10,9 +10,9 @@ from cura.Machines.ContainerTree import ContainerTree
 
 
 class NozzleModel(ListModel):
-    IdRole = Qt.UserRole + 1
-    HotendNameRole = Qt.UserRole + 2
-    ContainerNodeRole = Qt.UserRole + 3
+    IdRole = Qt.ItemDataRole.UserRole + 1
+    HotendNameRole = Qt.ItemDataRole.UserRole + 2
+    ContainerNodeRole = Qt.ItemDataRole.UserRole + 3
 
     def __init__(self, parent = None):
         super().__init__(parent)

@@ -19,9 +19,9 @@ class FirstStartMachineActionsModel(ListModel):
         - action  : the MachineAction object itself
     """
 
-    TitleRole = Qt.UserRole + 1
-    ContentRole = Qt.UserRole + 2
-    ActionRole = Qt.UserRole + 3
+    TitleRole = Qt.ItemDataRole.UserRole + 1
+    ContentRole = Qt.ItemDataRole.UserRole + 2
+    ActionRole = Qt.ItemDataRole.UserRole + 3
 
     def __init__(self, application: "CuraApplication", parent: Optional[QObject] = None) -> None:
         super().__init__(parent)

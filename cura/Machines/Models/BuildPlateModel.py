@@ -7,8 +7,8 @@ from UM.Qt.ListModel import ListModel
 
 
 class BuildPlateModel(ListModel):
-    NameRole = Qt.UserRole + 1
-    ContainerNodeRole = Qt.UserRole + 2
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    ContainerNodeRole = Qt.ItemDataRole.UserRole + 2
 
     def __init__(self, parent = None):
         super().__init__(parent)
