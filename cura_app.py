@@ -156,7 +156,7 @@ def exceptHook(hook_type, value, traceback):
     # If the application has finished its initialization and was running fine, and then something causes a crash,
     # we run the old routine to show the Crash Dialog.
     #
-    from PyQt6.Qt import QApplication
+    from PyQt6.QtWidgets import QApplication
     if CuraApplication.Created:
         _crash_handler = CrashHandler(hook_type, value, traceback, has_started)
         if CuraApplication.splash is not None:
@@ -228,7 +228,7 @@ if Platform.isLinux():
     
 if ApplicationMetadata.CuraDebugMode:
     ssl_conf = QSslConfiguration.defaultConfiguration()
-    ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)
+    ssl_conf.setPeerVerifyMode(QSslSocket.PeerVerifyMode.VerifyNone)
     QSslConfiguration.setDefaultConfiguration(ssl_conf)
 
 app = CuraApplication()

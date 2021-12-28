@@ -217,7 +217,7 @@ class CuraApplication(QtApplication):
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
-        self._cura_API = CuraAPI(self)
+        self._cura_API = None
 
         self._physics = None
         self._volume = None
@@ -682,8 +682,8 @@ class CuraApplication(QtApplication):
     def messageBox(self, title, text,
                    informativeText = "",
                    detailedText = "",
-                   buttons = QMessageBox.Ok,
-                   icon = QMessageBox.NoIcon,
+                   buttons = QMessageBox.StandardButton.Ok,
+                   icon = QMessageBox.Icon.NoIcon,
                    callback = None,
                    callback_arguments = []
                    ):
@@ -837,7 +837,7 @@ class CuraApplication(QtApplication):
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
         # Initialize Cura API
-        self._cura_API.initialize()
+        self._cura_API = self.getCuraAPI()
         self.processEvents()
         self._output_device_manager.start()
         self._welcome_pages_model.initialize()
@@ -1087,7 +1087,7 @@ class CuraApplication(QtApplication):
     def event(self, event):
         """Handle Qt events"""
 
-        if event.type() == QEvent.FileOpen:
+        if event.type() == QEvent.Type.FileOpen:
             if self._plugins_loaded:
                 self._openFile(event.file())
             else:
@@ -1114,6 +1114,9 @@ class CuraApplication(QtApplication):
         return self._custom_quality_profile_drop_down_menu_model
 
     def getCuraAPI(self, *args, **kwargs) -> "CuraAPI":
+        if not self._cura_API:
+            self._cura_API = CuraAPI(self)
+            self._cura_API.initialize()
         return self._cura_API
 
     def registerObjects(self, engine):
