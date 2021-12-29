@@ -175,7 +175,7 @@ def exceptHook(hook_type, value, traceback):
         if CuraApplication.splash is not None:
             CuraApplication.splash.close()
         _crash_handler.early_crash_dialog.show()
-        sys.exit(application.exec_())
+        sys.exit(application.exec())
 
 
 # Set exception hook to use the crash dialog handler

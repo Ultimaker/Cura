@@ -136,8 +136,8 @@ class CrashHandler:
 
         # "backup and start clean" and "close" buttons
         buttons = QDialogButtonBox()
-        buttons.addButton(QDialogButtonBox.Close)
-        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.AcceptRole)
+        buttons.addButton(QDialogButtonBox.StandardButton.Close)
+        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.ButtonRole.AcceptRole)
         buttons.rejected.connect(self._closeEarlyCrashDialog)
         buttons.accepted.connect(self._backupAndStartClean)
 
@@ -409,12 +409,12 @@ class CrashHandler:
 
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
-        buttons.addButton(QDialogButtonBox.Close)
+        buttons.addButton(QDialogButtonBox.StandardButton.Close)
         # Like above, this will be served as a separate detailed report dialog if the application has not yet been
         # fully loaded. In this case, "send report" will be a check box in the early crash dialog, so there is no
         # need for this extra button.
         if self.has_started:
-            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.ButtonRole.AcceptRole)
             buttons.accepted.connect(self._sendCrashReport)
         buttons.rejected.connect(self.dialog.close)
 
