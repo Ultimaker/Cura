@@ -8,7 +8,7 @@ from typing import Tuple
 
 class PrintJobPreviewImageProvider(QQuickImageProvider):
     def __init__(self):
-        super().__init__(QQuickImageProvider.Image)
+        super().__init__(QQuickImageProvider.ImageType.Image)
 
     def requestImage(self, id: str, size: QSize) -> Tuple[QImage, QSize]:
         """Request a new image.

@@ -152,7 +152,7 @@ class SendMaterialJob(Job):
     def _sendingFinished(self, reply: QNetworkReply) -> None:
         """Check a reply from an upload to the printer and log an error when the call failed"""
 
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+        if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) != 200:
             Logger.log("w", "Error while syncing material: %s", reply.errorString())
             return
         body = reply.readAll().data().decode('utf8')

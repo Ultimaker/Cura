@@ -289,7 +289,7 @@ class SliceInfo(QObject, Extension):
             Logger.logException("e", "Exception raised while sending slice info.") # But we should be notified about these problems of course.
 
     def _onRequestFinished(self, reply: "QNetworkReply") -> None:
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         if status_code == 200:
             Logger.log("i", "SliceInfo sent successfully")
             return

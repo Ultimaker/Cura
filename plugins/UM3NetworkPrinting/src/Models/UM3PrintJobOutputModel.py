@@ -42,6 +42,6 @@ class UM3PrintJobOutputModel(PrintJobOutputModel):
     def _onImageLoaded(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if not HttpRequestManager.replyIndicatesSuccess(reply, error):
             Logger.warning("Requesting preview image failed, response code {0} while trying to connect to {1}".format(
-                           reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url()))
+                           reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url()))
             return
         self.updatePreviewImageData(reply.readAll())

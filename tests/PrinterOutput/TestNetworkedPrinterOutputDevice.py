@@ -43,7 +43,7 @@ def test_post():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.post = MagicMock(return_value = reply)
 
@@ -65,7 +65,7 @@ def test_get():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.get = MagicMock(return_value=reply)
 
@@ -87,7 +87,7 @@ def test_delete():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.deleteResource = MagicMock(return_value=reply)
 
@@ -109,7 +109,7 @@ def test_put():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.put = MagicMock(return_value = reply)
 

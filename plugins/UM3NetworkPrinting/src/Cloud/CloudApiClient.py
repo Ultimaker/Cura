@@ -165,7 +165,7 @@ class CloudApiClient:
 
         request = QNetworkRequest(QUrl(path))
         if content_type:
-            request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
+            request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
         access_token = self._account.accessToken
         if access_token:
             request.setRawHeader(b"Authorization", "Bearer {}".format(access_token).encode())
@@ -179,7 +179,7 @@ class CloudApiClient:
         :return: A tuple with a status code and a dictionary.
         """
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
             return status_code, json.loads(response)
@@ -233,7 +233,7 @@ class CloudApiClient:
             self._anti_gc_callbacks.remove(parse)
 
             # Don't try to parse the reply if we didn't get one
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+            if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
                 if on_error is not None:
                     on_error()
                 return

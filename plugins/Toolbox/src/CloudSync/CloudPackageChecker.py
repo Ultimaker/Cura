@@ -70,10 +70,10 @@ class CloudPackageChecker(QObject):
                                                       scope = self._scope)
 
     def _onUserPackagesRequestFinished(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:
-        if error is not None or reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+        if error is not None or reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) != 200:
             Logger.log("w",
                        "Requesting user packages failed, response code %s while trying to connect to %s",
-                       reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
+                       reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url())
             self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
             return
 

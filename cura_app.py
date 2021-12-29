@@ -148,10 +148,10 @@ def exceptHook(hook_type, value, traceback):
     # The flag "CuraApplication.Created" is set to True when CuraApplication finishes its constructor call.
     #
     # Before the "started" flag is set to True, the Qt event loop has not started yet. The event loop is a blocking
-    # call to the QApplication.exec_(). In this case, we need to:
+    # call to the QApplication.exec(). In this case, we need to:
     #   1. Remove all scheduled events so no more unnecessary events will be processed, such as loading the main dialog,
     #      loading the machine, etc.
-    #   2. Start the Qt event loop with exec_() and show the Crash Dialog.
+    #   2. Start the Qt event loop with exec() and show the Crash Dialog.
     #
     # If the application has finished its initialization and was running fine, and then something causes a crash,
     # we run the old routine to show the Crash Dialog.
@@ -164,7 +164,7 @@ def exceptHook(hook_type, value, traceback):
         if not has_started:
             CuraApplication.getInstance().removePostedEvents(None)
             _crash_handler.early_crash_dialog.show()
-            sys.exit(CuraApplication.getInstance().exec_())
+            sys.exit(CuraApplication.getInstance().exec())
         else:
             _crash_handler.show()
     else:

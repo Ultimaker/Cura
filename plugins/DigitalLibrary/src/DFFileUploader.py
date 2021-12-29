@@ -120,9 +120,9 @@ class DFFileUploader:
         """
 
         Logger.log("i", "Finished callback %s %s",
-                   reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
+                   reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: Optional[int]
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)  # type: Optional[int]
         if not status_code:
             Logger.log("e", "Reply contained no status code.")
             self._onUploadError(reply, None)

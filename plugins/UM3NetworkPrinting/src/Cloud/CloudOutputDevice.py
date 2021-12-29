@@ -272,7 +272,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         Displays a message when an error occurs specific to uploading print job (i.e. queue is full).
         """
-        error_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        error_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         if error_code == 409:
             PrintJobUploadQueueFullMessage().show()
         else:

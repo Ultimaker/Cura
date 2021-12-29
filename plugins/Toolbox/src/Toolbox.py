@@ -589,11 +589,11 @@ class Toolbox(QObject, Extension):
         self.setViewPage("errored")
 
     def _onDataRequestFinished(self, request_type: str, reply: "QNetworkReply") -> None:
-        if reply.operation() != QNetworkAccessManager.GetOperation:
+        if reply.operation() != QNetworkAccessManager.Operation.GetOperation:
             Logger.log("e", "_onDataRequestFinished() only handles GET requests but got [%s] instead", reply.operation())
             return
 
-        http_status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        http_status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         if http_status_code != 200:
             Logger.log("e", "Request type [%s] got non-200 HTTP response: [%s]", http_status_code)
             self.setViewPage("errored")
@@ -650,7 +650,7 @@ class Toolbox(QObject, Extension):
     def _onDownloadFinished(self, reply: "QNetworkReply") -> None:
         self.resetDownload()
 
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+        if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) != 200:
             try:
                 reply_error = json.loads(reply.readAll().data().decode("utf-8"))
             except Exception as e:

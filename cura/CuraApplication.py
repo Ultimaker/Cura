@@ -870,7 +870,7 @@ class CuraApplication(QtApplication):
         self._auto_save = AutoSave(self)
         self._auto_save.initialize()
 
-        self.exec_()
+        self.exec()
 
     def __setUpSingleInstanceServer(self):
         if self._use_single_instance:

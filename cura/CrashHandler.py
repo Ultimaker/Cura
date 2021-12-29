@@ -161,7 +161,7 @@ class CrashHandler:
         QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
-        self.dialog.exec_()
+        self.dialog.exec()
 
     def _createDialog(self):
         """Creates a modal dialog."""
@@ -449,5 +449,5 @@ class CrashHandler:
     def _show(self):
         # When the exception is in the skip_exception_types list, the dialog is not created, so we don't need to show it
         if self.dialog:
-            self.dialog.exec_()
+            self.dialog.exec()
         os._exit(1)
