@@ -152,7 +152,7 @@ UM.MainWindow
         //DeleteSelection on the keypress backspace event
         Keys.onPressed:
         {
-            if (event.key == Qt.Key_Backspace)
+            if (event.key == Qt.Key.Key_Backspace)
             {
                 Cura.Actions.deleteSelection.trigger()
             }
