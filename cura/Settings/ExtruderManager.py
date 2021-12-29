@@ -31,9 +31,9 @@ class ExtruderManager(QObject):
 
         if ExtruderManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        ExtruderManager.__instance = self
 
         super().__init__(parent)
+        ExtruderManager.__instance = self
 
         self._application = cura.CuraApplication.CuraApplication.getInstance()
 

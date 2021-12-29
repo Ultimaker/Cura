@@ -30,9 +30,10 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
     def __init__(self, application, parent = None):
         if USBPrinterOutputDeviceManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        USBPrinterOutputDeviceManager.__instance = self
 
         super().__init__(parent = parent)
+        USBPrinterOutputDeviceManager.__instance = self
+
         self._application = application
 
         self._serial_port_list = []
