@@ -67,7 +67,7 @@ Item
 
                 Rectangle
                 {
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignmentFlag.AlignHCenter
                     color: UM.Theme.getColor("viewport_overlay")
                     width: whatsNewViewport.width
                     height: whatsNewViewport.height

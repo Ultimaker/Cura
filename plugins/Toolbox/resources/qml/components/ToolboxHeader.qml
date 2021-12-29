@@ -90,7 +90,7 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
-        acceptedButtons: Qt.LeftButton
+        acceptedButtons: Qt.MouseButton.LeftButton
         onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins") + "?utm_source=cura&utm_medium=software&utm_campaign=marketplace-button")
         UM.RecolorImage
         {
