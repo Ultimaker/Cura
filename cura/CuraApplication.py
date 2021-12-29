@@ -10,7 +10,7 @@ from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 import numpy
 from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum
 from PyQt6.QtGui import QColor, QIcon
-from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
+from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
 
 import UM.Util
@@ -1133,7 +1133,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
 
         self.processEvents()
-        qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
+        qmlRegisterUncreatableMetaObject(CuraApplication.staticMetaObject, "Cura", 1, 0, "ResourceTypes", "ResourceTypes is an enum-only type")
 
         self.processEvents()
         qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 0, self.getCuraSceneController, "SceneController")
@@ -1193,7 +1193,7 @@ class CuraApplication(QtApplication):
 
         from cura.API import CuraAPI
         qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, self.getCuraAPI, "API")
-        qmlRegisterUncreatableType(Account, "Cura", 1, 0, "AccountSyncState", "Could not create AccountSyncState")
+        qmlRegisterUncreatableMetaObject(CuraApplication.staticMetaObject, "Cura", 1, 0, "AccountSyncState", "AccountSyncState is an enum-only type")
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
