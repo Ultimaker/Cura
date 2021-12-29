@@ -34,12 +34,13 @@ class CuraAPI(QObject):
             raise RuntimeError("Tried to create singleton '{class_name}' more than once.".format(class_name = CuraAPI.__name__))
         if application is None:
             raise RuntimeError("Upon first time creation, the application must be set.")
-        cls.__instance = super(CuraAPI, cls).__new__(cls)
+        instance = super(CuraAPI, cls).__new__(cls)
         cls._application = application
-        return cls.__instance
+        return instance
 
     def __init__(self, application: Optional["CuraApplication"] = None) -> None:
         super().__init__(parent = CuraAPI._application)
+        CuraAPI.__instance = self
 
         self._account = Account(self._application)
 
