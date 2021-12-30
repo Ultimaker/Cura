@@ -602,62 +602,6 @@ QtObject
         }
     }
 
-    property Component toolbox_action_button: Component
-    {
-        ButtonStyle
-        {
-            background: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("toolbox_action_button").width
-                implicitHeight: UM.Theme.getSize("toolbox_action_button").height
-                color:
-                {
-                    if (control.installed)
-                    {
-                        return UM.Theme.getColor("action_button_disabled");
-                    }
-                    else
-                    {
-                        if (control.hovered)
-                        {
-                            return UM.Theme.getColor("primary_hover");
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("primary");
-                        }
-                    }
-
-                }
-            }
-            label: Label
-            {
-                text: control.text
-                color:
-                {
-                    if (control.installed)
-                    {
-                        return UM.Theme.getColor("action_button_disabled_text");
-                    }
-                    else
-                    {
-                        if (control.hovered)
-                        {
-                            return UM.Theme.getColor("button_text_hover");
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("button_text");
-                        }
-                    }
-                }
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font: UM.Theme.getFont("default_bold")
-            }
-        }
-    }
-
     property Component monitor_button_style: Component
     {
         ButtonStyle
