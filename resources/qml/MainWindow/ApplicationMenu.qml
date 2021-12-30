@@ -196,15 +196,7 @@ Item
         }
     }
 
-    // show the Toolbox
-    Connections
-    {
-        target: Cura.Actions.browsePackages
-        function onTriggered()
-        {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
-        }
-    }
+    // show the Marketplace
     Connections
     {
         target: Cura.Actions.openMarketplace
