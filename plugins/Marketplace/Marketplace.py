@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import qmlRegisterType
 from typing import Optional, TYPE_CHECKING
 
@@ -15,19 +15,33 @@ from .RemotePackageList import RemotePackageList  # To register this type with Q
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
 from .RestartManager import RestartManager  # To register this type with QML.
 
-if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
-
 
 class Marketplace(Extension):
     """
     The main managing object for the Marketplace plug-in.
     """
 
+    class TabManager(QObject):
+        def __init__(self) -> None:
+            super().__init__(parent=CuraApplication.getInstance())
+            self._tab_shown = 0
+
+        def getTabShown(self):
+            return self._tab_shown
+
+        def setTabShown(self, tab_shown):
+            if tab_shown != self._tab_shown:
+                self._tab_shown = tab_shown
+                self.tabShownChanged.emit()
+
+        tabShownChanged = pyqtSignal()
+        tabShown = pyqtProperty(int, fget=getTabShown, fset=setTabShown, notify=tabShownChanged)
+
     def __init__(self) -> None:
         super().__init__()
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
         self._plugin_registry: Optional[PluginRegistry] = None
+        self._tab_manager = Marketplace.TabManager()
 
         qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
         qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
@@ -46,8 +60,17 @@ class Marketplace(Extension):
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {})
+            self._window = CuraApplication.getInstance().createQmlComponent(path, {"tabManager": self._tab_manager})
         if self._window is None:  # Still None? Failed to load the QML then.
             return
+        self._tab_manager.setTabShown(0)
         self._window.show()
         self._window.requestActivate()  # Bring window into focus, if it was already open in the background.
+
+    @pyqtSlot()
+    def setVisibleTabToMaterials(self) -> None:
+        """
+        Set the tab shown to the remote materials one.
+        Not implemented in a more generic way because it needs the ability to be called with 'callExtensionMethod'.
+        """
+        self._tab_manager.setTabShown(1)

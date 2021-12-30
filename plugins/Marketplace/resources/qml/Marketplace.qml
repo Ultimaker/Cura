@@ -25,7 +25,6 @@ Window
 
     onVisibleChanged:
     {
-        pageSelectionTabBar.currentIndex = 0; //Go back to the initial tab.
         while(contextStack.depth > 1)
         {
             contextStack.pop(); //Do NOT use the StackView.Immediate transition here, since it causes the window to stay empty. Seemingly a Qt bug: https://bugreports.qt.io/browse/QTBUG-60670?
@@ -131,9 +130,11 @@ Window
                             height: UM.Theme.getSize("button_icon").height
                             spacing: 0
                             background: Rectangle { color: "transparent" }
+                            currentIndex: tabManager.tabShown
 
                             onCurrentIndexChanged:
                             {
+                                tabManager.tabShown = currentIndex
                                 searchBar.text = "";
                                 searchBar.visible = currentItem.hasSearch;
                                 content.source = currentItem.sourcePage;

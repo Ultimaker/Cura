@@ -212,8 +212,8 @@ Item
         target: Cura.Actions.marketplaceMaterials
         function onTriggered()
         {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
-            curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
+            curaExtensions.callExtensionMethod("Marketplace", "show")
+            curaExtensions.callExtensionMethod("Marketplace", "setVisibleTabToMaterials")
         }
     }
 }
