@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "name": "Extruder 2",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "custom",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "7"
+        },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": { 
+            "default_value": "G1 F1200 E80\nG92 E0\n;Please do not change the upon code"
+        },
+        "machine_extruder_end_code": {
+            "default_value": "G1 F1600 E-80\nG92 E0"
+        }
+    }
+}
