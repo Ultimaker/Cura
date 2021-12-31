@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication
 
 from UM.Application import Application
 from UM.Math.Vector import Vector
+from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Tool import Tool
 from UM.Event import Event, MouseEvent
 from UM.Mesh.MeshBuilder import MeshBuilder
@@ -120,8 +121,8 @@ class SupportEraser(Tool):
         # First add node to the scene at the correct position/scale, before parenting, so the eraser mesh does not get scaled with the parent
         op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot()))
         op.addOperation(SetParentOperation(node, parent))
+        op.addOperation(TranslateOperation(node, position, set_position = True))
         op.push()
-        node.setPosition(position, CuraSceneNode.TransformSpace.World)
 
         CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)
 

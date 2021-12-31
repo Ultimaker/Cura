@@ -4,7 +4,6 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Ultimaker",
         "manufacturer": "Punchtec",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":

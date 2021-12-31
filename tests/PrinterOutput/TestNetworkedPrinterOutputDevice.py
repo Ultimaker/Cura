@@ -1,3 +1,6 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import time
 from unittest.mock import MagicMock, patch
 
@@ -122,8 +125,9 @@ def test_put():
 
 def test_timeout():
     with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
-        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
-    output_device.setConnectionState(ConnectionState.Connected)
+        output_device = NetworkedPrinterOutputDevice(device_id = "test", address = "127.0.0.1", properties = {})
+    with patch("cura.CuraApplication.CuraApplication.getInstance"):
+        output_device.setConnectionState(ConnectionState.Connected)
 
     assert output_device.connectionState == ConnectionState.Connected
     output_device._update()
@@ -131,9 +135,8 @@ def test_timeout():
     output_device._last_response_time = time.time() - 15
     # But we did recently ask for a response!
     output_device._last_request_time = time.time() - 5
-    output_device._update()
+    with patch("cura.CuraApplication.CuraApplication.getInstance"):
+        output_device._update()
 
     # The connection should now be closed, since it went into timeout.
     assert output_device.connectionState == ConnectionState.Closed
-
-

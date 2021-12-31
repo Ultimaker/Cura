@@ -78,7 +78,7 @@
             "default_value": 0.2
         },
         "support_pattern": {
-            "default_value": "ZigZag"
+            "default_value": "zigzag"
         },
         "support_infill_rate": {
             "value": "15 if support_enable and support_structure == 'normal' else 0 if support_enable and support_structure == 'tree' else 15"
