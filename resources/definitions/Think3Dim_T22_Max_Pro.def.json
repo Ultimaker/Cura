@@ -1,5 +1,5 @@
 {
-    "name": "Think3Dim_T22_Max_pro",
+    "name": "Think3Dim_T22_Max_Pro",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -15,10 +15,10 @@
         }
     },
     "overrides": {
-        "machine_name": { "default_value": "Think3Dim_T22_Max_pro" },
+        "machine_name": { "default_value": "Think3Dim_T22_Max_Pro" },
         "machine_width": { "default_value": 300 },
         "machine_depth": { "default_value": 300 },
-        "machine_height": { "default_value": 250 },
+        "machine_height": { "default_value": 300 },
         "machine_head_with_fans_polygon": { "default_value": [[-32,11],[-32,-32],[28,-32],[28,11]] },
         "gantry_height": { "value": 40 },
         "machine_start_gcode": { "default_value": "; think3dim Custom Start G-code\nG28 ; auto-level G-code\nG29 ;Home all axes\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\n; End of custom start GCode" },
