@@ -3,7 +3,7 @@
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Think3Dim_T22",
+        "machine": "Think3Dim_T22_Max_Pro",
         "position": "0"
     },
 
