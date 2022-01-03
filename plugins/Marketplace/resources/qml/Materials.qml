@@ -1,7 +1,6 @@
 // Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import Marketplace 1.0 as Marketplace
 import UM 1.4 as UM
 
 Packages

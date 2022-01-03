@@ -13,7 +13,6 @@ from UM.PluginRegistry import PluginRegistry  # To find out where we are stored 
 
 from .RemotePackageList import RemotePackageList  # To register this type with QML.
 from .LocalPackageList import LocalPackageList  # To register this type with QML.
-from .RestartManager import RestartManager  # To register this type with QML.
 
 
 class Marketplace(Extension, QObject):
@@ -36,9 +35,10 @@ class Marketplace(Extension, QObject):
         self._local_package_list = LocalPackageList(self)
         self._local_package_list.checkForUpdates(self._package_manager.local_packages)
 
-        self._tab_shown: int = 0
+        self._package_manager.installedPackagesChanged.connect(self.checkIfRestartNeeded)
 
-        qmlRegisterType(RestartManager, "Marketplace", 1, 0, "RestartManager")
+        self._tab_shown: int = 0
+        self._restart_needed = False
 
     def getTabShown(self) -> int:
         return self._tab_shown
@@ -79,6 +79,7 @@ class Marketplace(Extension, QObject):
         """
         if self._window is None:
             self._plugin_registry = PluginRegistry.getInstance()
+            self._plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
@@ -97,3 +98,17 @@ class Marketplace(Extension, QObject):
         Not implemented in a more generic way because it needs the ability to be called with 'callExtensionMethod'.
         """
         self.setTabShown(1)
+
+    def checkIfRestartNeeded(self) -> None:
+        if self._package_manager.hasPackagesToRemoveOrInstall or len(
+                self._plugin_registry.getCurrentSessionActivationChangedPlugins()) > 0:
+            self._restart_needed = True
+        else:
+            self._restart_needed = False
+        self.showRestartNotificationChanged.emit()
+
+    showRestartNotificationChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=showRestartNotificationChanged)
+    def showRestartNotification(self) -> bool:
+        return self._restart_needed
