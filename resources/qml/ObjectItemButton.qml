@@ -82,7 +82,7 @@ Button
                 right: parent.right
                 rightMargin: 0
             }
-            width: childrenRect.width
+            width: contentItem.width
             height: parent.height
             padding: 0
             leftPadding: UM.Theme.getSize("thin_margin").width

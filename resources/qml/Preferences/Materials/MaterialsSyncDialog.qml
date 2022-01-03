@@ -571,7 +571,7 @@ Window
                 }
                 UM.Label
                 {
-                    text: catalog.i18nc("@text", "It seems like you don't have access to any printers connected to Digital Factory.")
+                    text: catalog.i18nc("@text", "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware.")
                     width: parent.width
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.Wrap
@@ -680,7 +680,7 @@ Window
                 {
                     text: catalog.i18nc("@button", "How to load new material profiles to my printer")
                     iconSource: UM.Theme.getIcon("LinkExternal")
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-how-usb")
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/4403319801106/?utm_source=cura&utm_medium=software&utm_campaign=add-material-profiles-via-usb")
                 }
 
                 Item
@@ -726,6 +726,7 @@ Window
         id: cloudPrinterList
         filterConnectionType: 3 //Only show cloud connections.
         filterOnlineOnly: true //Only show printers that are online.
+        filterCapabilities: ["import_material"] //Only show printers that can receive the material profiles.
     }
     Cura.GlobalStacksModel
     {

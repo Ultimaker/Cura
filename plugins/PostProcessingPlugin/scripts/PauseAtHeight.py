@@ -479,7 +479,15 @@ class PauseAtHeight(Script):
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
-                    prepend_gcode += self.putValue(M = 82) + "\n"
+                    extrusion_mode_string = "absolute"
+                    extrusion_mode_numeric = 82
+
+                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
+                    if relative_extrusion:
+                        extrusion_mode_string = "relative"
+                        extrusion_mode_numeric = 83
+
+                    prepend_gcode += self.putValue(M = extrusion_mode_numeric) + " ; switch back to " + extrusion_mode_string + " E values\n"
 
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"

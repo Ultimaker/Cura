@@ -66,6 +66,8 @@ Item
             switch (printJob.state)
             {
                 case "wait_cleanup":
+                    // This hack was removed previously. Then we found out that we don't get back 'aborted_wait_cleanup'
+                    // for the UM2+C it seems. Will communicate this to other teams, in the mean time, put this back.
                     if (printJob.timeTotal > printJob.timeElapsed)
                     {
                         return catalog.i18nc("@label:status", "Aborted");
@@ -81,6 +83,20 @@ Item
                     return catalog.i18nc("@label:status", "Aborting...");
                 case "aborted": // NOTE: Unused, see above
                     return catalog.i18nc("@label:status", "Aborted");
+                case "aborted_post_print":
+                    return catalog.i18nc("@label:status", "Aborted");
+                case "aborted_wait_user_action":
+                    return catalog.i18nc("@label:status", "Aborted");
+                case "aborted_wait_cleanup":
+                    return catalog.i18nc("@label:status", "Aborted");
+                case "failed":
+                    return catalog.i18nc("@label:status", "Failed");
+                case "failed_post_print":
+                    return catalog.i18nc("@label:status", "Failed");
+                case "failed_wait_user_action":
+                    return catalog.i18nc("@label:status", "Failed");
+                case "failed_wait_cleanup":
+                    return catalog.i18nc("@label:status", "Failed");
                 case "pausing":
                     return catalog.i18nc("@label:status", "Pausing...");
                 case "paused":

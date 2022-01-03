@@ -96,7 +96,6 @@
         "speed_wall": { "value": "speed_print*wall_line_width_0/line_width" },
         "speed_wall_0": { "value": "math.ceil(speed_wall * 0.6)" },
         "speed_wall_x": { "value": "speed_wall" },
-        "speed_equalize_flow_enabled": { "value": "False" },
         "support_angle": { "value": "50" },
         "support_xy_distance": { "value": "1" },
         "support_z_distance": { "value": "max((0.2 if(0.2%layer_height==0) else layer_height*int((0.2+layer_height)/layer_height)),layer_height)" },
@@ -118,7 +117,6 @@
         "support_interface_enable": { "value": "True" },
         "support_interface_height": { "value": "0.5" },
         "support_roof_pattern": { "value": "'concentric'" },
-        "z_seam_type": { "value": "'shortest'" },
-        "speed_equalize_flow_max": { "value": "65" }
+        "z_seam_type": { "value": "'shortest'" }
     }
 }

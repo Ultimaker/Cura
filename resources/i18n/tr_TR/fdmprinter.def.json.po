@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.12\n"
+"Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-10-20 16:43+0000\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 15:03+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Turkish <info@lionbridge.com>, Turkish <info@bothof.nl>\n"
@@ -53,8 +53,10 @@ msgstr "G-code’u Başlat"
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
-msgid "G-code commands to be executed at the very start - separated by \\n."
-msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları \\n."
+msgid ""
+"G-code commands to be executed at the very start - separated by \n"
+"."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -63,8 +65,10 @@ msgstr "G-code’u Sonlandır"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
-msgid "G-code commands to be executed at the very end - separated by \\n."
-msgstr "ile ayrılan, bitişte yürütülecek G-code komutları \\n."
+msgid ""
+"G-code commands to be executed at the very end - separated by \n"
+"."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -147,6 +151,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "Yazdırılabilir alan derinliği (Y yönü)."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Makine Yüksekliği"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "Yazdırılabilir alan yüksekliği (Z yönü)."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Yapı Levhası Şekli"
@@ -185,16 +199,6 @@ msgstr "Cam"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Alüminyum"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Makine Yüksekliği"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "Yazdırılabilir alan yüksekliği (Z yönü)."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -553,8 +557,8 @@ msgstr "Z yönü motoru için maksimum hız."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Maksimum besleme hızı"
+msgid "Maximum Speed E"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1723,11 +1727,8 @@ msgstr "Dolgu Şekli"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr "Baskının dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, üçlü altıgen,"
-" kübik, sekizlik, çeyrek kübik, çapraz ve eşmerkezli şekiller her katmana tam olarak basılır. Gyroid, kübik, çeyrek kübik ve sekizlik dolgu, her yönde"
-" daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir. Yıldırım dolgu, objenin yalnızca (iç) çatılarını destekleyerek dolgu miktarını en aza"
-" indirmeye çalışır. Bu durumda dolgu yüzdesi yalnızca bir katmanın altında 'geçerli' olur ve modeli destekler."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2040,9 +2041,8 @@ msgstr "Yıldırım Dolgu Budama Açısı"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr "Bir yıldırım dolgu katmanının hemen üstündeki katmanla ağaçların dış uzantılarının budanması şeklinde sahip olabileceği farktır. Dalların açısı olarak"
-" ölçülür."
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2051,8 +2051,8 @@ msgstr "Yıldırım Dolgu Düzleştirme Açısı"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr "Bir yıldırım dolgu katmanının hemen üstündeki katmanla ağaçların düzlenmesi şeklinde sahip olabileceği farktır. Dalların açısı olarak ölçülür."
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -6476,6 +6476,30 @@ msgstr "Bileşim Rotasyon Matrisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "ile ayrılan, bitişte yürütülecek G-code komutları \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Maksimum besleme hızı"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "Baskının dolgu malzemesinin şeklidir. Hat ve zikzak dolgu, farklı katmanlar üzerinde yön değiştirerek malzeme maliyetini azaltır. Izgara, üçgen, üçlü altıgen, kübik, sekizlik, çeyrek kübik, çapraz ve eşmerkezli şekiller her katmana tam olarak basılır. Gyroid, kübik, çeyrek kübik ve sekizlik dolgu, her yönde daha eşit bir kuvvet dağılımı sağlamak için her katmanda değişir. Yıldırım dolgu, objenin yalnızca (iç) çatılarını destekleyerek dolgu miktarını en aza indirmeye çalışır. Bu durumda dolgu yüzdesi yalnızca bir katmanın altında 'geçerli' olur ve modeli destekler."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "Bir yıldırım dolgu katmanının hemen üstündeki katmanla ağaçların dış uzantılarının budanması şeklinde sahip olabileceği farktır. Dalların açısı olarak ölçülür."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "Bir yıldırım dolgu katmanının hemen üstündeki katmanla ağaçların düzlenmesi şeklinde sahip olabileceği farktır. Dalların açısı olarak ölçülür."
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
