@@ -1,10 +1,9 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
-from PyQt5.QtQml import qmlRegisterType
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
 
