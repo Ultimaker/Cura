@@ -198,7 +198,7 @@ class FlavorParser:
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
             # Also, 1.5 is a heuristic for any priming or whatsoever, we skip those.
-            if z > self._previous_z and (z - self._previous_z < 1.5):
+            if z > self._previous_z and (z - self._previous_z < 1.5) and (params.x is not None or params.y is not None):
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
         elif self._previous_extrusion_value > e[self._extruder_number]:

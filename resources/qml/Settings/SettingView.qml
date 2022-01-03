@@ -279,7 +279,7 @@ Item
                 {
                     target: provider
                     property: "containerStackId"
-                    when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0);
+                    when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
                         // Associate this binding with Cura.MachineManager.activeMachine.id in the beginning so this
@@ -292,10 +292,10 @@ Item
                             //Not settable per extruder or there only is global, so we must pick global.
                             return contents.activeMachineId
                         }
-                        if (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                        if (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
-                            return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
+                            return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder];
                         }
                         if (Cura.ExtruderManager.activeExtruderStackId)
                         {

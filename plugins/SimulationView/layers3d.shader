@@ -56,12 +56,12 @@ vertex41core =
             value = (abs_value - min_value) / (max_value - min_value);
         }
         float red = value;
-        float green = 1-abs(1-4*value);
+        float green = 1.0 - abs(1.0 - 4.0 * value);
         if (value > 0.375)
         {
             green = 0.5;
         }
-        float blue = max(1-4*value, 0);
+        float blue = max(1.0 - 4.0 * value, 0.0);
         return vec4(red, green, blue, 1.0);
     }
 
@@ -76,7 +76,7 @@ vertex41core =
         {
             value = (abs_value - min_value) / (max_value - min_value);
         }
-        float red = min(max(4*value-2, 0), 1);
+        float red = min(max(4.0 * value - 2.0, 0.0), 1.0);
         float green = min(1.5*value, 0.75);
         if (value > 0.75)
         {
@@ -98,18 +98,18 @@ vertex41core =
             value = (abs_value - min_value) / (max_value - min_value);
         }
         float red = value;
-        float green = 1 - abs(1 - 4 * value);
+        float green = 1.0 - abs(1.0 - 4.0 * value);
         if(value > 0.375)
         {
             green = 0.5;
         }
-        float blue = max(1 - 4 * value, 0);
+        float blue = max(1.0 - 4.0 * value, 0.0);
         return vec4(red, green, blue, 1.0);
     }
 
     float clamp(float v)
     {
-        float t = v < 0 ? 0 : v;
+        float t = v < 0.0 ? 0.0 : v;
         return t > 1.0 ? 1.0 : t;
     }
 

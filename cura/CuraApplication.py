@@ -152,16 +152,17 @@ class CuraApplication(QtApplication):
     def __init__(self, *args, **kwargs):
         super().__init__(name = ApplicationMetadata.CuraAppName,
                          app_display_name = ApplicationMetadata.CuraAppDisplayName,
-                         version = ApplicationMetadata.CuraVersion,
+                         version = ApplicationMetadata.CuraVersion if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType,
                          api_version = ApplicationMetadata.CuraSDKVersion,
                          build_type = ApplicationMetadata.CuraBuildType,
                          is_debug_mode = ApplicationMetadata.CuraDebugMode,
-                         tray_icon_name = "cura-icon-32.png",
+                         tray_icon_name = "cura-icon-32.png" if not ApplicationMetadata.IsAlternateVersion else "cura-icon-32_wip.png",
                          **kwargs)
 
         self.default_theme = "cura-light"
 
         self.change_log_url = "https://ultimaker.com/ultimaker-cura-latest-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
+        self.beta_change_log_url = "https://ultimaker.com/ultimaker-cura-beta-features?utm_source=cura&utm_medium=software&utm_campaign=cura-update-features"
 
         self._boot_loading_time = time.time()
 
@@ -483,7 +484,7 @@ class CuraApplication(QtApplication):
 
         if not self.getIsHeadLess():
             try:
-                self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+                self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png" if not ApplicationMetadata.IsAlternateVersion else "cura-icon_wip.png")))
             except FileNotFoundError:
                 Logger.log("w", "Unable to find the window icon.")
 
@@ -720,6 +721,7 @@ class CuraApplication(QtApplication):
             for extruder in global_stack.extruderList:
                 extruder.userChanges.clear()
             global_stack.userChanges.clear()
+            self.getMachineManager().correctExtruderSettings()
 
         # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
         # before slicing. To ensure that slicer uses right settings values
