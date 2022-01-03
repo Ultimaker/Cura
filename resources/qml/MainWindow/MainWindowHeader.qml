@@ -174,10 +174,8 @@ Item
         {
             anchors
             {
-                top: parent.top
-                right: parent.right
-                rightMargin: (-0.5 * width) | 0
-                topMargin: (-0.5 * height) | 0
+                horizontalCenter: parent.right
+                verticalCenter: parent.top
             }
             visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
 
