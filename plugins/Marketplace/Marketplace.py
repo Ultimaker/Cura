@@ -16,7 +16,7 @@ from .LocalPackageList import LocalPackageList  # To register this type with QML
 from .RestartManager import RestartManager  # To register this type with QML.
 
 
-class Marketplace(Extension):
+class Marketplace(Extension, QObject):
     """
     The main managing object for the Marketplace plug-in.
     """
@@ -37,15 +37,43 @@ class Marketplace(Extension):
         tabShownChanged = pyqtSignal()
         tabShown = pyqtProperty(int, fget=getTabShown, fset=setTabShown, notify=tabShownChanged)
 
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        QObject.__init__(self, parent)
+        Extension.__init__(self)
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
         self._plugin_registry: Optional[PluginRegistry] = None
         self._tab_manager = Marketplace.TabManager()
+        self._package_manager = CuraApplication.getInstance().getPackageManager()
 
-        qmlRegisterType(RemotePackageList, "Marketplace", 1, 0, "RemotePackageList")
-        qmlRegisterType(LocalPackageList, "Marketplace", 1, 0, "LocalPackageList")
+        self._material_package_list: Optional[RemotePackageList] = None
+        self._plugin_package_list: Optional[RemotePackageList] = None
+
+        # Not entirely the cleanest code, since the localPackage list also checks the server if there are updates
+        # Since that in turn will trigger notifications to be shown, we do need to construct it here and make sure
+        # that it checks for updates...
+        self._local_package_list = LocalPackageList(self)
+        self._local_package_list.checkForUpdates(self._package_manager.local_packages)
+
         qmlRegisterType(RestartManager, "Marketplace", 1, 0, "RestartManager")
+
+    @pyqtProperty(QObject, constant=True)
+    def MaterialPackageList(self):
+        if self._material_package_list is None:
+            self._material_package_list = RemotePackageList()
+            self._material_package_list.packageTypeFilter = "material"
+
+        return self._material_package_list
+
+    @pyqtProperty(QObject, constant=True)
+    def PluginPackageList(self):
+        if self._plugin_package_list is None:
+            self._plugin_package_list = RemotePackageList()
+            self._plugin_package_list.packageTypeFilter = "plugin"
+        return self._plugin_package_list
+
+    @pyqtProperty(QObject, constant=True)
+    def LocalPackageList(self):
+        return self._local_package_list
 
     @pyqtSlot()
     def show(self) -> None:
@@ -60,7 +88,7 @@ class Marketplace(Extension):
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {"tabManager": self._tab_manager})
+            self._window = CuraApplication.getInstance().createQmlComponent(path, {"tabManager": self._tab_manager, "manager": self})
         if self._window is None:  # Still None? Failed to load the QML then.
             return
         self._tab_manager.setTabShown(0)

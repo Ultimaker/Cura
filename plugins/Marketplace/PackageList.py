@@ -132,9 +132,12 @@ class PackageList(ListModel):
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise"""
         return self._has_footer
 
-    def getPackageModel(self, package_id: str) -> PackageModel:
+    def getPackageModel(self, package_id: str) -> Optional[PackageModel]:
         index = self.find("package", package_id)
-        return self.getItem(index)["package"]
+        data = self.getItem(index)
+        if data:
+            return data.get("package")
+        return None
 
     def _openLicenseDialog(self, package_id: str, license_content: str) -> None:
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
