@@ -3,7 +3,7 @@
 
 import os.path
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
-from typing import Optional
+from typing import Optional, cast
 
 from cura.CuraApplication import CuraApplication  # Creating QML objects and managing packages.
 
@@ -100,7 +100,7 @@ class Marketplace(Extension, QObject):
 
     def checkIfRestartNeeded(self) -> None:
         if self._package_manager.hasPackagesToRemoveOrInstall or \
-                self._plugin_registry.getCurrentSessionActivationChangedPlugins():
+                cast(PluginRegistry, self._plugin_registry).getCurrentSessionActivationChangedPlugins():
             self._restart_needed = True
         else:
             self._restart_needed = False

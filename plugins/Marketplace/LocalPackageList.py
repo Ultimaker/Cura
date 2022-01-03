@@ -52,7 +52,8 @@ class LocalPackageList(PackageList):
         be updated, it is in the to remove list and isn't in the to be installed list
         """
         package = self.getPackageModel(package_id)
-        if not package.canUpdate and \
+
+        if package and not package.canUpdate and \
                 package_id in self._package_manager.getToRemovePackageIDs() and \
                 package_id not in self._package_manager.getPackagesToInstall():
             index = self.find("package", package_id)
