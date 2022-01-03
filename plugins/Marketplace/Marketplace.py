@@ -24,12 +24,12 @@ class Marketplace(Extension):
     class TabManager(QObject):
         def __init__(self) -> None:
             super().__init__(parent=CuraApplication.getInstance())
-            self._tab_shown = 0
+            self._tab_shown: int = 0
 
-        def getTabShown(self):
+        def getTabShown(self) -> int:
             return self._tab_shown
 
-        def setTabShown(self, tab_shown):
+        def setTabShown(self, tab_shown: int) -> None:
             if tab_shown != self._tab_shown:
                 self._tab_shown = tab_shown
                 self.tabShownChanged.emit()
