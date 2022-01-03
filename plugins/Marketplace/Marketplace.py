@@ -20,29 +20,11 @@ class Marketplace(Extension, QObject):
     """
     The main managing object for the Marketplace plug-in.
     """
-
-    class TabManager(QObject):
-        def __init__(self) -> None:
-            super().__init__(parent=CuraApplication.getInstance())
-            self._tab_shown: int = 0
-
-        def getTabShown(self) -> int:
-            return self._tab_shown
-
-        def setTabShown(self, tab_shown: int) -> None:
-            if tab_shown != self._tab_shown:
-                self._tab_shown = tab_shown
-                self.tabShownChanged.emit()
-
-        tabShownChanged = pyqtSignal()
-        tabShown = pyqtProperty(int, fget=getTabShown, fset=setTabShown, notify=tabShownChanged)
-
     def __init__(self, parent: Optional[QObject] = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
         self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
         self._plugin_registry: Optional[PluginRegistry] = None
-        self._tab_manager = Marketplace.TabManager()
         self._package_manager = CuraApplication.getInstance().getPackageManager()
 
         self._material_package_list: Optional[RemotePackageList] = None
@@ -54,7 +36,20 @@ class Marketplace(Extension, QObject):
         self._local_package_list = LocalPackageList(self)
         self._local_package_list.checkForUpdates(self._package_manager.local_packages)
 
+        self._tab_shown: int = 0
+
         qmlRegisterType(RestartManager, "Marketplace", 1, 0, "RestartManager")
+
+    def getTabShown(self) -> int:
+        return self._tab_shown
+
+    def setTabShown(self, tab_shown: int) -> None:
+        if tab_shown != self._tab_shown:
+            self._tab_shown = tab_shown
+            self.tabShownChanged.emit()
+
+    tabShownChanged = pyqtSignal()
+    tabShown = pyqtProperty(int, fget=getTabShown, fset=setTabShown, notify=tabShownChanged)
 
     @pyqtProperty(QObject, constant=True)
     def MaterialPackageList(self):
@@ -88,10 +83,10 @@ class Marketplace(Extension, QObject):
             if plugin_path is None:
                 plugin_path = os.path.dirname(__file__)
             path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {"tabManager": self._tab_manager, "manager": self})
+            self._window = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         if self._window is None:  # Still None? Failed to load the QML then.
             return
-        self._tab_manager.setTabShown(0)
+        self.setTabShown(0)
         self._window.show()
         self._window.requestActivate()  # Bring window into focus, if it was already open in the background.
 
@@ -101,4 +96,4 @@ class Marketplace(Extension, QObject):
         Set the tab shown to the remote materials one.
         Not implemented in a more generic way because it needs the ability to be called with 'callExtensionMethod'.
         """
-        self._tab_manager.setTabShown(1)
+        self.setTabShown(1)

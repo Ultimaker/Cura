@@ -130,11 +130,11 @@ Window
                             height: UM.Theme.getSize("button_icon").height
                             spacing: 0
                             background: Rectangle { color: "transparent" }
-                            currentIndex: tabManager.tabShown
+                            currentIndex: manager.tabShown
 
                             onCurrentIndexChanged:
                             {
-                                tabManager.tabShown = currentIndex
+                                manager.tabShown = currentIndex
                                 searchBar.text = "";
                                 searchBar.visible = currentItem.hasSearch;
                                 content.source = currentItem.sourcePage;
