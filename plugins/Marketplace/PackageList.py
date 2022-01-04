@@ -53,7 +53,6 @@ class PackageList(ListModel):
 
     def __del__(self) -> None:
         """ When this object is deleted it will loop through all registered API requests and aborts them """
-
         try:
             self.isLoadingChanged.disconnect()
             self.hasMoreChanged.disconnect()
@@ -132,9 +131,12 @@ class PackageList(ListModel):
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise"""
         return self._has_footer
 
-    def getPackageModel(self, package_id: str) -> PackageModel:
+    def getPackageModel(self, package_id: str) -> Optional[PackageModel]:
         index = self.find("package", package_id)
-        return self.getItem(index)["package"]
+        data = self.getItem(index)
+        if data:
+            return data.get("package")
+        return None
 
     def _openLicenseDialog(self, package_id: str, license_content: str) -> None:
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")
@@ -189,7 +191,10 @@ class PackageList(ListModel):
             Logger.warning(f"Could not install {package_id}")
             return
         package = self.getPackageModel(package_id)
-        self.subscribeUserToPackage(package_id, str(package.sdk_version))
+        if package:
+            self.subscribeUserToPackage(package_id, str(package.sdk_version))
+        else:
+            Logger.log("w", f"Unable to get data on package {package_id}")
 
     def download(self, package_id: str, url: str, update: bool = False) -> None:
         """Initiate the download request
@@ -280,7 +285,8 @@ class PackageList(ListModel):
             self.download(package_id, url, False)
         else:
             package = self.getPackageModel(package_id)
-            self.subscribeUserToPackage(package_id, str(package.sdk_version))
+            if package:
+                self.subscribeUserToPackage(package_id, str(package.sdk_version))
 
     def uninstallPackage(self, package_id: str) -> None:
         """Uninstall a package from the Marketplace

@@ -44,7 +44,7 @@ Cura.RoundedRectangle
         {
             id: projectImage
             anchors.verticalCenter: parent.verticalCenter
-            width: UM.Theme.getSize("toolbox_thumbnail_small").width
+            width: UM.Theme.getSize("card_icon").width
             height: Math.round(width * 3/4)
             sourceSize.width: width
             sourceSize.height: height

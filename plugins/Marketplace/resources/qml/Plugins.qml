@@ -1,7 +1,6 @@
 // Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import Marketplace 1.0 as Marketplace
 import UM 1.4 as UM
 
 Packages
@@ -19,8 +18,5 @@ Packages
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
     packagesManageableInListView: false
 
-    model: Marketplace.RemotePackageList
-    {
-        packageTypeFilter: "plugin"
-    }
+    model: manager.PluginPackageList
 }

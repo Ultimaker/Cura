@@ -201,7 +201,7 @@ Item
                 LoadMoreProjectsCard
                 {
                     id: loadMoreProjectsCard
-                    height: UM.Theme.getSize("toolbox_thumbnail_small").height
+                    height: UM.Theme.getSize("card_icon").height
                     width: parent.width
                     visible: manager.digitalFactoryProjectModel.count > 0
                     hasMoreProjectsToLoad: manager.hasMoreProjectsToLoad

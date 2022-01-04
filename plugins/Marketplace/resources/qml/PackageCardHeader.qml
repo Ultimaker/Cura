@@ -135,21 +135,23 @@ Item
             }
 
             // clickable author name
-            Cura.TertiaryButton
+            Item
             {
                 Layout.fillWidth: true
-                Layout.preferredHeight: authorBy.height
-                Layout.alignment: Qt.AlignCenter
+                implicitHeight: authorBy.height
+                Layout.alignment: Qt.AlignTop
+                Cura.TertiaryButton
+                {
+                    text: packageData.authorName
+                    textFont: UM.Theme.getFont("default_bold")
+                    textColor: UM.Theme.getColor("text") // override normal link color
+                    leftPadding: 0
+                    rightPadding: 0
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
 
-                text: packageData.authorName
-                textFont: UM.Theme.getFont("default_bold")
-                textColor: UM.Theme.getColor("text") // override normal link color
-                leftPadding: 0
-                rightPadding: 0
-                iconSource: UM.Theme.getIcon("LinkExternal")
-                isIconOnRightSide: true
-
-                onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
+                    onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
+                }
             }
 
             ManageButton

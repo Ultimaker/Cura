@@ -4,7 +4,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-import Marketplace 1.0 as Marketplace
 import UM 1.4 as UM
 
 Packages
@@ -22,7 +21,5 @@ Packages
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
     packagesManageableInListView: true
 
-    model: Marketplace.LocalPackageList
-    {
-    }
+    model: manager.LocalPackageList
 }

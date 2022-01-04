@@ -196,15 +196,7 @@ Item
         }
     }
 
-    // show the Toolbox
-    Connections
-    {
-        target: Cura.Actions.browsePackages
-        function onTriggered()
-        {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
-        }
-    }
+    // show the Marketplace
     Connections
     {
         target: Cura.Actions.openMarketplace
@@ -220,8 +212,8 @@ Item
         target: Cura.Actions.marketplaceMaterials
         function onTriggered()
         {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
-            curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
+            curaExtensions.callExtensionMethod("Marketplace", "show")
+            curaExtensions.callExtensionMethod("Marketplace", "setVisibleTabToMaterials")
         }
     }
 }

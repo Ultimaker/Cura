@@ -1,17 +1,11 @@
-#  Copyright (c) 2021 Ultimaker B.V.
+#  Copyright (c) 2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
-from operator import attrgetter
 
 from PyQt5.QtCore import pyqtSlot, QObject
 
 from UM.Version import Version
-
-if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
-    from PyQt5.QtNetwork import QNetworkReply
-
 from UM.i18n import i18nCatalog
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.Logger import Logger
@@ -19,6 +13,10 @@ from UM.Logger import Logger
 from .PackageList import PackageList
 from .PackageModel import PackageModel
 from .Constants import PACKAGE_UPDATES_URL
+
+if TYPE_CHECKING:
+    from PyQt5.QtCore import QObject
+    from PyQt5.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 
@@ -54,7 +52,8 @@ class LocalPackageList(PackageList):
         be updated, it is in the to remove list and isn't in the to be installed list
         """
         package = self.getPackageModel(package_id)
-        if not package.canUpdate and \
+
+        if package and not package.canUpdate and \
                 package_id in self._package_manager.getToRemovePackageIDs() and \
                 package_id not in self._package_manager.getPackagesToInstall():
             index = self.find("package", package_id)

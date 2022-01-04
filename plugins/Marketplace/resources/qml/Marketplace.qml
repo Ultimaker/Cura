@@ -8,13 +8,11 @@ import QtQuick.Window 2.2
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
-import Marketplace 1.0 as Marketplace
 
 Window
 {
     id: marketplaceDialog
     property variant catalog: UM.I18nCatalog { name: "cura" }
-    property variant restartManager: Marketplace.RestartManager { }
 
     signal searchStringChanged(string new_search)
 
@@ -25,7 +23,6 @@ Window
 
     onVisibleChanged:
     {
-        pageSelectionTabBar.currentIndex = 0; //Go back to the initial tab.
         while(contextStack.depth > 1)
         {
             contextStack.pop(); //Do NOT use the StackView.Immediate transition here, since it causes the window to stay empty. Seemingly a Qt bug: https://bugreports.qt.io/browse/QTBUG-60670?
@@ -131,9 +128,11 @@ Window
                             height: UM.Theme.getSize("button_icon").height
                             spacing: 0
                             background: Rectangle { color: "transparent" }
+                            currentIndex: manager.tabShown
 
                             onCurrentIndexChanged:
                             {
+                                manager.tabShown = currentIndex
                                 searchBar.text = "";
                                 searchBar.visible = currentItem.hasSearch;
                                 content.source = currentItem.sourcePage;
@@ -250,7 +249,7 @@ Window
     {
         height: quitButton.height + 2 * UM.Theme.getSize("default_margin").width
         color: UM.Theme.getColor("primary")
-        visible: restartManager.showRestartNotification
+        visible: manager.showRestartNotification
         anchors
         {
             left: parent.left
