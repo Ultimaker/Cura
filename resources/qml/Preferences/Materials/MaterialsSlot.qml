@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
@@ -91,10 +90,7 @@ Rectangle
                 CuraApplication.getMaterialManagementModel().addFavorite(material.root_material_id)
             }
         }
-        style: ButtonStyle
-        {
-            background: Item { }
-        }
+
         UM.RecolorImage
         {
             anchors
