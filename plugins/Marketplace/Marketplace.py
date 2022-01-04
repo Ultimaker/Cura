@@ -86,7 +86,8 @@ class Marketplace(Extension, QObject):
             self._window = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         if self._window is None:  # Still None? Failed to load the QML then.
             return
-        self.setTabShown(0)
+        if not self._window.isVisible():
+            self.setTabShown(0)
         self._window.show()
         self._window.requestActivate()  # Bring window into focus, if it was already open in the background.
 
