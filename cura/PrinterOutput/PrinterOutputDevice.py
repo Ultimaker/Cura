@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from enum import IntEnum
@@ -137,7 +137,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
         """
         if self.connectionState != connection_state:
             self._connection_state = connection_state
-            cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().setMetaDataEntry("is_online", self.isConnected())
+            application = cura.CuraApplication.CuraApplication.getInstance()
+            if application is not None:  # Might happen during the closing of Cura or in a test.
+                global_stack = application.getGlobalContainerStack()
+                if global_stack is not None:
+                    global_stack.setMetaDataEntry("is_online", self.isConnected())
             self.connectionStateChanged.emit(self._id)
 
     @pyqtProperty(int, constant = True)
