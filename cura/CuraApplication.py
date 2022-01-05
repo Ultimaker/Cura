@@ -777,10 +777,14 @@ class CuraApplication(QtApplication):
             lib_suffixes = {""}
         for suffix in lib_suffixes:
             self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib" + suffix, "cura"))
+
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
             self._plugin_registry.preloaded_plugins.append("ConsoleLogger")
 
+        # Since it's possible to get crashes in code before the sentrylogger is loaded, we want to start this plugin
+        # as quickly as possible, as we might get unsolvable crash reports without it.
+        self._plugin_registry.preloaded_plugins.append("SentryLogger")
         self._plugin_registry.loadPlugins()
 
         if self.getBackend() is None:
