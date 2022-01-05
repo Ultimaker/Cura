@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -33,18 +33,20 @@ class VersionUpgrade44to45(VersionUpgrade):
         In this case the plug-in will also check for stacks that need to be
         deleted.
         """
+        super().__init__()
 
         # Only delete hidden stacks when upgrading from version 4.4. Not 4.3 or 4.5, just when you're starting out from 4.4.
         # If you're starting from an earlier version, you can't have had the bug that produces too many hidden stacks (https://github.com/Ultimaker/Cura/issues/6731).
         # If you're starting from a later version, the bug was already fixed.
         data_storage_root = os.path.dirname(Resources.getDataStoragePath())
-        folders = set(os.listdir(data_storage_root))  # All version folders.
-        folders = set(filter(lambda p: re.fullmatch(r"\d+\.\d+", p), folders))  # Only folders with a correct version number as name.
-        folders.difference_update({os.path.basename(Resources.getDataStoragePath())})  # Remove current version from candidates (since the folder was just copied).
-        if folders:
-            latest_version = max(folders, key = Version)  # Sort them by semantic version numbering.
-            if latest_version == "4.4":
-                self.removeHiddenStacks()
+        if os.path.exists(data_storage_root):
+            folders = set(os.listdir(data_storage_root))  # All version folders.
+            folders = set(filter(lambda p: re.fullmatch(r"\d+\.\d+", p), folders))  # Only folders with a correct version number as name.
+            folders.difference_update({os.path.basename(Resources.getDataStoragePath())})  # Remove current version from candidates (since the folder was just copied).
+            if folders:
+                latest_version = max(folders, key = Version)  # Sort them by semantic version numbering.
+                if latest_version == "4.4":
+                    self.removeHiddenStacks()
 
     def removeHiddenStacks(self) -> None:
         """
