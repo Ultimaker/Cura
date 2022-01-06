@@ -261,7 +261,10 @@ class DigitalFactoryController(QObject):
         """
         Error function, called whenever the retrieval of the files in a library project fails.
         """
-        Logger.log("w", "Failed to retrieve the list of files in project '{}' from the Digital Library".format(self._project_model._projects[self._selected_project_idx]))
+        try:
+            Logger.warning(f"Failed to retrieve the list of files in project '{self._project_model._projects[self._selected_project_idx]}' from the Digital Library")
+        except IndexError:
+            Logger.warning(f"Failed to retrieve the list of files in a project from the Digital Library. And failed to get the project too.")
         self.setRetrievingFilesStatus(RetrievalStatus.Failed)
 
     @pyqtSlot()

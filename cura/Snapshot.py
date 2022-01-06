@@ -3,6 +3,7 @@
 import numpy
 
 from PyQt5 import QtCore
+from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QImage
 
 from cura.PreviewPass import PreviewPass
@@ -46,6 +47,7 @@ class Snapshot:
         render_width, render_height = (width, height) if active_camera is None else active_camera.getWindowSize()
         render_width = int(render_width)
         render_height = int(render_height)
+        QCoreApplication.processEvents()  # This ensures that the opengl context is correctly available
         preview_pass = PreviewPass(render_width, render_height)
 
         root = scene.getRoot()

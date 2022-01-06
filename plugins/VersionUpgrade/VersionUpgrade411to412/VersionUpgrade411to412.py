@@ -3,6 +3,7 @@
 
 import configparser
 import io
+import json
 import os.path
 from typing import List, Tuple
 
@@ -48,6 +49,28 @@ class VersionUpgrade411to412(VersionUpgrade):
 
         # Update version number.
         parser["metadata"]["setting_version"] = "19"
+
+        # If the account scope in 4.11 is outdated, delete it so that the user is enforced to log in again and get the
+        # correct permissions.
+        new_scopes = {"account.user.read",
+                      "drive.backup.read",
+                      "drive.backup.write",
+                      "packages.download",
+                      "packages.rating.read",
+                      "packages.rating.write",
+                      "connect.cluster.read",
+                      "connect.cluster.write",
+                      "library.project.read",
+                      "library.project.write",
+                      "cura.printjob.read",
+                      "cura.printjob.write",
+                      "cura.mesh.read",
+                      "cura.mesh.write",
+                      "cura.material.write"}
+        if "ultimaker_auth_data" in parser["general"]:
+            ultimaker_auth_data = json.loads(parser["general"]["ultimaker_auth_data"])
+            if new_scopes - set(ultimaker_auth_data["scope"].split(" ")):
+                parser["general"]["ultimaker_auth_data"] = "{}"
 
         result = io.StringIO()
         parser.write(result)
