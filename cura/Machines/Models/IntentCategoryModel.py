@@ -106,11 +106,15 @@ class IntentCategoryModel(ListModel):
         for category in available_categories:
             qualities = IntentModel()
             qualities.setIntentCategory(category)
+            try:
+                weight = list(IntentCategoryModel._get_translations().keys()).index(category)
+            except ValueError:
+                weight = 99
             result.append({
-                "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
+                "name": IntentCategoryModel.translation(category, "name", category),
                 "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
-                "weight": list(IntentCategoryModel._get_translations().keys()).index(category),
+                "weight": weight,
                 "qualities": qualities
             })
         result.sort(key = lambda k: k["weight"])

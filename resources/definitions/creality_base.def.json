@@ -183,7 +183,6 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
@@ -196,7 +195,6 @@
         "infill_wipe_dist": { "value": 0.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 
@@ -247,7 +245,8 @@
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
-        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
+        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height * 2" },
+        "support_top_distance": { "value":  "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance') + (layer_height if support_structure == 'tree' else 0)"},
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
         "support_wall_count": { "value": 1 },
         "support_brim_enable": { "value": true },
