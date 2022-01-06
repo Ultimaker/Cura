@@ -4,8 +4,8 @@
 import os
 from typing import Dict, List, Optional, Set
 
-from PyQt5.QtNetwork import QNetworkReply
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtNetwork import QNetworkReply
+from PyQt6.QtWidgets import QMessageBox
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.

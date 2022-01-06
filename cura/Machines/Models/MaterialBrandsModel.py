@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal
 from UM.Qt.ListModel import ListModel
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
@@ -10,9 +10,9 @@ class MaterialTypesModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "brand")
-        self.addRoleName(Qt.UserRole + 3, "colors")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "brand")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "colors")
 
 class MaterialBrandsModel(BaseMaterialsModel):
 
@@ -21,8 +21,8 @@ class MaterialBrandsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "material_types")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "material_types")
 
         self._update()
 

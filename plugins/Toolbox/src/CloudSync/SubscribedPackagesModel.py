@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtProperty, pyqtSlot
+from PyQt6.QtCore import Qt, pyqtProperty, pyqtSlot
 
 from UM.PackageManager import PackageManager
 from UM.Qt.ListModel import ListModel
@@ -20,11 +20,11 @@ class SubscribedPackagesModel(ListModel):
         self._discrepancies = None
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
 
-        self.addRoleName(Qt.UserRole + 1, "package_id")
-        self.addRoleName(Qt.UserRole + 2, "display_name")
-        self.addRoleName(Qt.UserRole + 3, "icon_url")
-        self.addRoleName(Qt.UserRole + 4, "is_compatible")
-        self.addRoleName(Qt.UserRole + 5, "is_dismissed")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "package_id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "display_name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "icon_url")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 4, "is_compatible")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 5, "is_dismissed")
 
     @pyqtProperty(bool, constant=True)
     def hasCompatiblePackages(self) -> bool:

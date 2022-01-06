@@ -6,7 +6,7 @@ import os
 from collections import deque
 from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
-from PyQt5.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -14,7 +14,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
     from cura.CuraApplication import CuraApplication
 
 
@@ -36,11 +36,11 @@ class WelcomePagesModel(ListModel):
     Note that in any case, a page that has its "should_show_function" == False will ALWAYS be skipped.
     """
 
-    IdRole = Qt.UserRole + 1  # Page ID
-    PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
-    NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
-    NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
-    PreviousPageButtonTextRole = Qt.UserRole + 5  # The text for the previous page button
+    IdRole = Qt.ItemDataRole.UserRole + 1  # Page ID
+    PageUrlRole = Qt.ItemDataRole.UserRole + 2  # URL to the page's QML file
+    NextPageIdRole = Qt.ItemDataRole.UserRole + 3  # The next page ID it should go to
+    NextPageButtonTextRole = Qt.ItemDataRole.UserRole + 4  # The text for the next page button
+    PreviousPageButtonTextRole = Qt.ItemDataRole.UserRole + 5  # The text for the previous page button
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)

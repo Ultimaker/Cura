@@ -4,8 +4,8 @@
 import time
 from unittest.mock import MagicMock, patch
 
-from PyQt5.QtNetwork import QNetworkAccessManager
-from PyQt5.QtCore import QUrl
+from PyQt6.QtNetwork import QNetworkAccessManager
+from PyQt6.QtCore import QUrl
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
@@ -43,7 +43,7 @@ def test_post():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.post = MagicMock(return_value = reply)
 
@@ -65,7 +65,7 @@ def test_get():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.get = MagicMock(return_value=reply)
 
@@ -87,7 +87,7 @@ def test_delete():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.deleteResource = MagicMock(return_value=reply)
 
@@ -109,7 +109,7 @@ def test_put():
 
     # Create a fake reply (we can't use a QReply, since those are abstract C++)
     reply = MagicMock()
-    reply.operation = MagicMock(return_value=QNetworkAccessManager.PostOperation)
+    reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
     mocked_network_manager.put = MagicMock(return_value = reply)
 

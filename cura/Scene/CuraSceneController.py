@@ -1,7 +1,7 @@
 from UM.Logger import Logger
 
-from PyQt5.QtCore import Qt, pyqtSlot, QObject, QTimer
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt, pyqtSlot, QObject, QTimer
+from PyQt6.QtWidgets import QApplication
 
 from UM.Scene.Camera import Camera
 from cura.UI.ObjectsModel import ObjectsModel

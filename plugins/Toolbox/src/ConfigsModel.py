@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from UM.Qt.ListModel import ListModel
 
@@ -14,11 +14,11 @@ class ConfigsModel(ListModel):
 
         self._configs = None
 
-        self.addRoleName(Qt.UserRole + 1, "machine")
-        self.addRoleName(Qt.UserRole + 2, "print_core")
-        self.addRoleName(Qt.UserRole + 3, "build_plate")
-        self.addRoleName(Qt.UserRole + 4, "support_material")
-        self.addRoleName(Qt.UserRole + 5, "quality")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "machine")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "print_core")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "build_plate")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 4, "support_material")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 5, "quality")
 
     def setConfigs(self, configs):
         self._configs = configs

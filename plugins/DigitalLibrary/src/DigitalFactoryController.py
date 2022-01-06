@@ -10,9 +10,9 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Optional, List, Dict, Any, cast
 
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, Q_ENUMS, QTimer, QUrl
-from PyQt5.QtNetwork import QNetworkReply
-from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType
+from PyQt6.QtCore import pyqtSignal, QObject, pyqtSlot, pyqtProperty, pyqtEnum, QTimer, QUrl
+from PyQt6.QtNetwork import QNetworkReply
+from PyQt6.QtQml import qmlRegisterType, qmlRegisterUncreatableMetaObject
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
@@ -50,7 +50,7 @@ class DFRetrievalStatus(QObject):
     be used within QML objects as DigitalFactory.RetrievalStatus.<status>
     """
 
-    Q_ENUMS(RetrievalStatus)
+    pyqtEnum(RetrievalStatus)
 
 
 class DigitalFactoryController(QObject):
@@ -439,7 +439,7 @@ class DigitalFactoryController(QObject):
 
     @staticmethod
     def _onEngineCreated() -> None:
-        qmlRegisterUncreatableType(DFRetrievalStatus, "DigitalFactory", 1, 0, "RetrievalStatus", "Could not create RetrievalStatus enum type")
+        qmlRegisterUncreatableMetaObject(DigitalFactoryController.staticMetaObject, "DigitalFactory", 1, 0, "RetrievalStatus", "RetrievalStatus is an Enum-only type")
 
     def _applicationInitializationFinished(self) -> None:
         self._supported_file_types = self._application.getInstance().getMeshFileHandler().getSupportedFileTypesRead()

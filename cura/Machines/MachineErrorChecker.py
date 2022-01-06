@@ -5,7 +5,7 @@ import time
 
 from collections import deque
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
 from typing import Optional, Any, Set
 
 from UM.Logger import Logger

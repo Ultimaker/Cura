@@ -6,8 +6,8 @@ import urllib.parse
 import uuid
 from typing import Any, cast, Dict, List, TYPE_CHECKING, Union
 
-from PyQt5.QtCore import QObject, QUrl
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtCore import QObject, QUrl
+from PyQt6.QtWidgets import QMessageBox
 
 from UM.i18n import i18nCatalog
 from UM.FlameProfiler import pyqtSlot
@@ -47,11 +47,11 @@ class ContainerManager(QObject):
     def __init__(self, application: "CuraApplication") -> None:
         if ContainerManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
-        ContainerManager.__instance = self
         try:
             super().__init__(parent = application)
         except TypeError:
             super().__init__()
+        ContainerManager.__instance = self
 
         self._container_name_filters = {}  # type: Dict[str, Dict[str, Any]]
 

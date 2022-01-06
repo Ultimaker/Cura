@@ -2,9 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import numpy
 
-from PyQt5 import QtCore
-from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtGui import QImage
+from PyQt6 import QtCore
+from PyQt6.QtCore import QCoreApplication
+from PyQt6.QtGui import QImage
 
 from cura.PreviewPass import PreviewPass
 

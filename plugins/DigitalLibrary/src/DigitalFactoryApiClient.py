@@ -7,7 +7,7 @@ import re
 from time import time
 from typing import List, Any, Optional, Union, Type, Tuple, Dict, cast, TypeVar, Callable
 
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
@@ -228,7 +228,7 @@ class DigitalFactoryApiClient:
             self._anti_gc_callbacks.remove(parse)
 
             # Don't try to parse the reply if we didn't get one
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+            if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
                 if on_error is not None:
                     on_error()
                 return
@@ -250,7 +250,7 @@ class DigitalFactoryApiClient:
         :return: A tuple with a status code and a dictionary.
         """
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         try:
             response = bytes(reply.readAll()).decode()
             return status_code, json.loads(response)

@@ -5,7 +5,7 @@ import os
 from collections import OrderedDict
 from typing import Dict, Optional, List, Any
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtSlot
 
 from UM.Logger import Logger
 from UM.PackageManager import PackageManager

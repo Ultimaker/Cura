@@ -1,8 +1,8 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, QObject, pyqtSignal, QRegExp
-from PyQt5.QtGui import QValidator
+from PyQt6.QtCore import pyqtSlot, pyqtProperty, QObject, pyqtSignal
+from PyQt6.QtGui import QValidator
 import os #For statvfs.
 import urllib #To escape machine names for how they're saved to file.
 
@@ -65,6 +65,6 @@ class MachineNameValidator(QObject):
             self.validation_regex = "a^" #Never matches (unless you manage to get "a" before the start of the string... good luck).
         self.validationChanged.emit()
 
-    @pyqtProperty("QRegExp", notify=validationChanged)
+    @pyqtProperty(str, notify=validationChanged)
     def machineNameRegex(self):
-        return QRegExp(self.machine_name_regex)
+        return str(self.machine_name_regex)

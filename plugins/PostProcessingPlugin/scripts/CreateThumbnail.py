@@ -2,7 +2,7 @@ import base64
 
 from UM.Logger import Logger
 from cura.Snapshot import Snapshot
-from PyQt5.QtCore import QByteArray, QIODevice, QBuffer
+from PyQt6.QtCore import QByteArray, QIODevice, QBuffer
 
 from ..Script import Script
 

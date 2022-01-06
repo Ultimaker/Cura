@@ -4,7 +4,7 @@
 import tempfile
 from typing import Dict, List, Any
 
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger

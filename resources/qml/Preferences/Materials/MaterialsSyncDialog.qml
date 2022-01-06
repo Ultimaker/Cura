@@ -574,7 +574,7 @@ Window
                     source: UM.Theme.getImage("3d_printer_faded")
                     sourceSize.width: width
                     fillMode: Image.PreserveAspectFit
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignmentFlag.AlignHCenter
                     Layout.preferredWidth: parent.width / 3
                 }
                 Label

@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
+from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 from typing import Callable, Any, cast, Optional, Union
 
 from UM.Logger import Logger
@@ -120,9 +120,9 @@ class DFFileUploader:
         """
 
         Logger.log("i", "Finished callback %s %s",
-                   reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
+                   reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute), reply.url().toString())
 
-        status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)  # type: Optional[int]
+        status_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)  # type: Optional[int]
         if not status_code:
             Logger.log("e", "Reply contained no status code.")
             self._onUploadError(reply, None)
