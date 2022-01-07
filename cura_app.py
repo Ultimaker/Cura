@@ -15,6 +15,7 @@ if "" in sys.path:
 import argparse
 import faulthandler
 import os
+os.environ["QT_PLUGIN_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
 
 from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
 
