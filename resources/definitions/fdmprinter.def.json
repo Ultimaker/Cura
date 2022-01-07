@@ -3883,6 +3883,7 @@
                     "default_value": 90,
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
+                    "maximum_value": 999999999,
                     "type": "int",
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
