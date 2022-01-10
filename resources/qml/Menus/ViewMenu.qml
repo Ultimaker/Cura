@@ -52,7 +52,6 @@ Menu
             {
                 UM.Preferences.setValue("general/camera_perspective_mode", "perspective")
             }
-            //exclusiveGroup: group
         }
 
         MenuItem
@@ -64,9 +63,7 @@ Menu
             {
                 UM.Preferences.setValue("general/camera_perspective_mode", "orthographic")
             }
-            //exclusiveGroup: group
         }
-        //ExclusiveGroup { id: group }
     }
 
     MenuSeparator {}
