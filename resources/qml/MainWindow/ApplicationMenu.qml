@@ -2,11 +2,10 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.2
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "../Menus"
@@ -17,13 +16,48 @@ Item
     id: menu
     width: applicationMenu.width
     height: applicationMenu.height
-    property alias window: applicationMenu.window
 
-    UM.ApplicationMenu
+    Component
+    {
+        id: menuBarComponent
+        MenuBarItem
+        {
+            id: menuBarItem
+
+            function replaceText(txt)
+            {
+                var index = txt.indexOf("&")
+                if(index >= 0)
+                {
+                    txt = txt.replace(txt.substr(index, 2), ("<u>" + txt.substr(index + 1, 1) +"</u>"))
+                }
+                return txt
+            }
+
+            contentItem: Label {
+                text: replaceText(menuBarItem.text)
+                color: "white"
+                verticalAlignment: Text.AlignVCenter
+                textFormat: Text.RichText
+            }
+        }
+    }
+
+    MenuBar
+    {
+        id: applicationMenu
+        delegate: menuBarComponent
+        FileMenu {}
+
+        EditMenu {}
+        ViewMenu {}
+    }
+
+    /*UM.ApplicationMenu
     {
         id: applicationMenu
 
-        FileMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&File") }
+        //FileMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&File") }
 
         Menu
         {
@@ -126,9 +160,10 @@ Item
             MenuItem { action: Cura.Actions.whatsNew }
             MenuItem { action: Cura.Actions.about }
         }
-    }
+    }*/
 
-    Component
+
+    /*Component
     {
         id: extensionsMenuItem
 
@@ -214,5 +249,5 @@ Item
             curaExtensions.callExtensionMethod("Toolbox", "launch")
             curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
         }
-    }
+    }*/
 }
