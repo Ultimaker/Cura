@@ -3468,12 +3468,12 @@ msgstr "A processar"
 #: /home/clamboo/Desktop/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:121
 msgctxt "@button"
 msgid "Slice"
-msgstr "Segmentação"
+msgstr "Seccionar"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:122
 msgctxt "@label"
 msgid "Start the slicing process"
-msgstr "Iniciar o processo de segmentação"
+msgstr "Iniciar o processo de seccionamento"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:136
 msgctxt "@button"
@@ -3726,7 +3726,7 @@ msgstr "Utilização do material"
 #: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:83
 msgctxt "@text"
 msgid "Number of slices"
-msgstr "Número de segmentos"
+msgstr "Número de Secções"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:89
 msgctxt "@text"
