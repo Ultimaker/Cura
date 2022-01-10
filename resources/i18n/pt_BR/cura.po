@@ -75,7 +75,7 @@ msgstr "Falha em salvar o arquivo de materiais"
 #: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:188
 msgctxt "@text"
 msgid "Unknown error."
-msgstr ""
+msgstr "Erro desconhecido."
 
 #: /home/clamboo/Desktop/Cura/cura/BuildVolume.py:99
 msgctxt "@info:status"
@@ -203,32 +203,32 @@ msgstr "Não Foi Encontrada Localização"
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:104
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
-msgstr ""
+msgstr "Falha em criar arquivo de materiais para sincronizar com impressoras."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
-msgstr ""
+msgstr "Falha em carregar o arquivo de materiais para sincronizar com impressoras."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:143
 msgctxt "@text:error"
 msgid "The response from Digital Factory appears to be corrupted."
-msgstr ""
+msgstr "A resposta da Digital Factory parece estar corrompida."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
-msgstr ""
+msgstr "A resposta da Digital Factory veio sem informações importantes."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr ""
+msgstr "Falha em conectar com a Digital Factory para sincronizar materiais com algumas das impressoras."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:232
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
-msgstr ""
+msgstr "Falha em conectar à Digital Factory."
 
 #: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:530
 msgctxt "@info:progress"
@@ -556,7 +556,7 @@ msgstr "Não foi possível contactar o servidor de contas da Ultimaker."
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
 msgid "Log-in failed"
-msgstr ""
+msgstr "Login falhou"
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:75
 msgctxt "@message"
@@ -566,7 +566,7 @@ msgstr "O estado provido não está correto."
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:80
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
-msgstr ""
+msgstr "Tempo esgotado ao autenticar com o servidor da conta."
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:97
 msgctxt "@message"
@@ -1661,7 +1661,7 @@ msgstr "O complemento de Escrita 3MF está corrompido."
 #: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:37
 msgctxt "@error"
 msgid "There is no workspace yet to write. Please add a printer first."
-msgstr ""
+msgstr "Não existe espaço de trabalho ainda para a escrita. Por favor adicione uma impressora primeiro."
 
 #: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64 /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
 msgctxt "@error:zip"
@@ -2985,7 +2985,7 @@ msgstr "Abortado"
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:100
 msgctxt "@label:status"
 msgid "Failed"
-msgstr ""
+msgstr "Falhado"
 
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:102
 msgctxt "@label:status"
@@ -4146,12 +4146,12 @@ msgstr "Use cola para melhor aderência com essa combinação de materiais."
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:102
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
-msgstr ""
+msgstr "A configuração deste extrusor não é permitida e proíbe o fatiamento."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:106
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
-msgstr ""
+msgstr "Não há perfis correspondendo à configuração deste extrusor."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:253
 msgctxt "@label"
@@ -4876,152 +4876,152 @@ msgstr "Material exportado para <filename>%1</filename> com sucesso"
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:17
 msgctxt "@title:window"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "Sincronizar materiais com impressoras"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:47
 msgctxt "@title:header"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "Sincronizar materiais com impressoras"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:53
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
-msgstr ""
+msgstr "Seguindo alguns passos simples, você conseguirá sincronizar todos os seus perfis de material com suas impressoras."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:77
 msgctxt "@button"
 msgid "Start"
-msgstr ""
+msgstr "Iniciar"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:98
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
-msgstr ""
+msgstr "Por que eu preciso sincronizar perfis de material?"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:130
 msgctxt "@title:header"
 msgid "Sign in"
-msgstr ""
+msgstr "Entrar"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:137
 msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
-msgstr ""
+msgstr "Para automaticamente sincronizar os perfis de material com todas as suas impressoras conectadas à Digital Factory, você precisa estar logado pelo Cura."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:165 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:476 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:611
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr ""
+msgstr "Sincronizar materiais usando USB"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:200
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr ""
+msgstr "Os seguintes materiais receberão novos perfis de material:"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:207
 msgctxt "@title:header"
 msgid "Something went wrong when sending the materials to the printers."
-msgstr ""
+msgstr "Algo de errado aconteceu ao enviar os materiais às impressoras."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:214
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr ""
+msgstr "Perfis de material sincronizados com sucesso com as seguintes impressoras:"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:256 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:444
 msgctxt "@button"
 msgid "Troubleshooting"
-msgstr ""
+msgstr "Resolução de problemas"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:432
 msgctxt "@text Asking the user whether printers are missing in a list."
 msgid "Printers missing?"
-msgstr ""
+msgstr "Impressoras faltando?"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:434
 msgctxt "@text"
 msgid "Make sure all your printers are turned ON and connected to Digital Factory."
-msgstr ""
+msgstr "Certifique-se de que todas as suas impressoras estejam LIGADAS e conectadas à Digital Factory."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:457
 msgctxt "@button"
 msgid "Refresh List"
-msgstr ""
+msgstr "Atualizar Lista"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:487
 msgctxt "@button"
 msgid "Try again"
-msgstr ""
+msgstr "Tentar novamente"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:491 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
 msgctxt "@button"
 msgid "Done"
-msgstr ""
+msgstr "Feito"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:493 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:618
 msgctxt "@button"
 msgid "Sync"
-msgstr ""
+msgstr "Sincronizar"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:549
 msgctxt "@button"
 msgid "Syncing"
-msgstr ""
+msgstr "Sincronizando"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:566
 msgctxt "@title:header"
 msgid "No printers found"
-msgstr ""
+msgstr "Nenhuma impressora encontrada"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:582
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
-msgstr ""
+msgstr "Parece que você não tem impressoras compatíveis conectadas à Digital Factory. Certifique-se que sua impressora esteja conectada e rodando o firmware mais recente."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:595
 msgctxt "@button"
 msgid "Learn how to connect your printer to Digital Factory"
-msgstr ""
+msgstr "Aprenda como conectar sua impressora à Digital Factory"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:625
 msgctxt "@button"
 msgid "Refresh"
-msgstr ""
+msgstr "Atualizar"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:647
 msgctxt "@title:header"
 msgid "Sync material profiles via USB"
-msgstr ""
+msgstr "Sincronizar perfis de material via USB"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:654
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
-msgstr ""
+msgstr "Siga os passos seguintes para carregar os perfis de material novos na sua impressora."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:679
 msgctxt "@text"
 msgid "Click the export material archive button."
-msgstr ""
+msgstr "Clique no botão de exportar arquivo de material."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:680
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
-msgstr ""
+msgstr "Grava o arquivo .umm em um pendrive USB."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
-msgstr ""
+msgstr "Insira o pendrive USB na sua impressora e faça o procedimento de carregar novos perfis de material."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:692
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "Como carregar novos perfis de material na minha impressora"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
 msgctxt "@button"
 msgid "Export material archive"
-msgstr ""
+msgstr "Exportar arquivo de material"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:753
 msgctxt "@title:window"
