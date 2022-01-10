@@ -55,7 +55,7 @@ msgstr "Установлены новые материалы"
 #: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:63
 msgctxt "@action:button"
 msgid "Sync materials with printers"
-msgstr "Синхронизировать материалы с принтерами"
+msgstr "Синхронизация материалов"
 
 #: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:71 /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:80
 msgctxt "@action:button"
