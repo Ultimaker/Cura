@@ -251,7 +251,7 @@ msgstr "来自 Digital Factory 的响应缺少重要信息。"
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr "无法通过 Digital Factory 同步材料与某些打印机。"
+msgstr "无法通过 Digital Factory 为某些打印机同步材料配置文件。"
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:232
 msgctxt "@text:error"
@@ -616,7 +616,7 @@ msgstr "所提供的状态不正确。"
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:80
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
-msgstr "使用帐户服务器进行身份验证时超时。"
+msgstr "使用帐户服务器进行身份验证超时。"
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:97
 msgctxt "@message"
@@ -5064,7 +5064,7 @@ msgstr "要自动将材料配置文件与连接到 Digital Factory 的所有打�
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:611
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr "同步材料与 USB"
+msgstr "使用 USB 同步材料"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:200
 msgctxt "@title:header"
