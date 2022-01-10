@@ -5005,7 +5005,7 @@ msgstr "Klicken Sie auf die Schaltfläche Materialarchiv exportieren."
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:680
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
-msgstr "Speichern Sie die .umm- Datei auf einem USB-Stick."
+msgstr "Speichern Sie die .umm-Datei auf einem USB-Stick."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"

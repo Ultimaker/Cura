@@ -56,7 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "Los comandos de GCode que se ejecutarán justo al inicio separados por - \n."
+msgstr "Los comandos de GCode que se ejecutarán justo al inicio - separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -68,7 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "Los comandos de GCode que se ejecutarán justo al final separados por -\n."
+msgstr "Los comandos de GCode que se ejecutarán justo al final - separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
