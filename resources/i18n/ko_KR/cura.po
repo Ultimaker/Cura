@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2021-12-10 12:00+0100\n"
-"PO-Revision-Date: 2021-04-16 15:01+0200\n"
+"PO-Revision-Date: 2022-01-10 11:57+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -15,17 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:115
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "사용자 데이터 디렉터리에서 압축 파일을 만들 수 없습니다: {}"
 
-#: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:122
-#: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:159
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126
+#: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:122 /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:159 /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118 /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "백업"
@@ -43,29 +40,24 @@ msgstr "현재 버전보다 높은 Cura 백업을 복원하려고 시도했습�
 #: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:158
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
-msgstr "다음의 오류는 Cura 백업을 복원하려고 시도하는 동안 발생했습니다."
+msgstr "다음의 오류는 Cura 백업을 복원하려고 시도하는 동안 발생했습니다:"
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:55
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:55
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "프린트를 시작하기 전에 재료 프로파일을 프린터와 동기화하십시오."
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:56
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:56
 msgctxt "@action:button"
 msgid "New materials installed"
 msgstr "새로운 재료가 설치됨"
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:63
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:63
 msgctxt "@action:button"
 msgid "Sync materials with printers"
 msgstr "재료를 프린터와 동기화"
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:71
-#: /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:80
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:71 /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:80
 msgctxt "@action:button"
 msgid "Learn more"
 msgstr "자세히 알아보기"
@@ -83,7 +75,7 @@ msgstr "재료 아카이브를 저장하는 데 실패함"
 #: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:188
 msgctxt "@text"
 msgid "Unknown error."
-msgstr ""
+msgstr "알 수 없는 오류입니다."
 
 #: /home/clamboo/Desktop/Cura/cura/BuildVolume.py:99
 msgctxt "@info:status"
@@ -99,18 +91,15 @@ msgstr "출력물 크기"
 #, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
-msgstr "정말로 {0}을(를) 제거하시겠습니까? 이 작업을 실행 취소할 수 없습니다."
+msgstr "정말로 {0}을(를) 제거하시겠습니까? 이 작업을 실행 취소할 수 없습니다!"
 
 #: /home/clamboo/Desktop/Cura/cura/Machines/Models/ExtrudersModel.py:219
 msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "재정의되지 않음"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:361
-#: /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:1614
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83 /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:361 /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:1614
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
 msgctxt "@label"
 msgid "Unknown"
 msgstr "알 수 없는"
@@ -125,9 +114,7 @@ msgctxt "@label"
 msgid "Available networked printers"
 msgstr "사용 가능한 네트워크 프린터"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:338
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:42
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:11
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:338 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:42 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:11
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
@@ -148,38 +135,32 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "모든 파일 (*)"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:45
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:14
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:45 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
 msgid "Visual"
 msgstr "뛰어난 외관"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:46
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:15
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:46 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "시각적 프로파일은 높은 시각적 및 표면 품질의 의도를 지니고 시각적 프로토타입과 모델을 인쇄하기 위해 설계되었습니다."
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:49
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:18
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:49 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engineering"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:50
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:19
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:50 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "엔지니어링 프로파일은 정확도를 개선하고 허용 오차를 좁히려는 의도로 기능 프로토타입 및 최종 사용 부품을 인쇄하도록 설계되었습니다."
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:53
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:22
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:53 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:22
 msgctxt "@label"
 msgid "Draft"
 msgstr "초안"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:54
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:23
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:54 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:23
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "초안 프로파일은 인쇄 시간을 상당히 줄이려는 의도로 초기 프로토타입과 컨셉트 확인을 인쇄하도록 설계되었습니다."
@@ -189,8 +170,7 @@ msgctxt "@label"
 msgid "Custom Material"
 msgstr "사용자 정의 소재"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:289
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:346
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:289 /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:346
 msgctxt "@label"
 msgid "Custom"
 msgstr "사용자 정의"
@@ -200,27 +180,22 @@ msgctxt "@info:title"
 msgid "Login failed"
 msgstr "로그인 실패"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:24
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:24 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "객체의 새 위치 찾기"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:28
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:28 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "위치 찾기"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:41
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
-#: /home/clamboo/Desktop/Cura/cura/MultiplyObjectsJob.py:99
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:41 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151 /home/clamboo/Desktop/Cura/cura/MultiplyObjectsJob.py:99
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "모든 개체가 출력할 수 있는 최대 사이즈 내에 위치할 수 없습니다"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:42
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:42 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "위치를 찾을 수 없음"
@@ -228,35 +203,32 @@ msgstr "위치를 찾을 수 없음"
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:104
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
-msgstr ""
+msgstr "프린터와 동기화할 재료의 아카이브 저장에 실패했습니다."
 
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
+#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
-msgstr ""
+msgstr "프린터와 동기화할 재료의 아카이브 로드에 실패했습니다."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:143
 msgctxt "@text:error"
 msgid "The response from Digital Factory appears to be corrupted."
-msgstr ""
+msgstr "Digital Factory의 응답이 손상된 것 같습니다."
 
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
+#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
-msgstr ""
+msgstr "Digital Factory의 응답에 중요한 정보가 누락되었습니다."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr ""
+msgstr "일부 프린터와 재료를 동기화하기 위한 Digital Factory 연결에 실패했습니다."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:232
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
-msgstr ""
+msgstr "Digital Factory 연결에 실패했습니다."
 
 #: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:530
 msgctxt "@info:progress"
@@ -310,9 +282,7 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "한 번에 하나의 G-코드 파일만 로드 할 수 있습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1809
-#: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:217
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177
+#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1809 /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:217 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "경고"
@@ -323,60 +293,41 @@ msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-코드가 로드되어 있으면 다른 파일을 열 수 없습니다. {0} 가져 오기를 건너 뛰었습니다."
 
-#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1821
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:156
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:166
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141
+#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1821 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:156 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:166 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141
 #: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:161
 msgctxt "@info:title"
 msgid "Error"
 msgstr "오류"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:67
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:286
+#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:67 /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:286
 msgctxt "@action:button"
 msgid "Skip"
 msgstr "건너뛰기"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:72
-#: /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
-#: /home/clamboo/Desktop/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
-#: /home/clamboo/Desktop/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:485
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:127
+#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:72 /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128 /home/clamboo/Desktop/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
+#: /home/clamboo/Desktop/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:485 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:174 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:127
 msgctxt "@action:button"
 msgid "Close"
 msgstr "닫기"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:57
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:277
+#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:57 /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:277
 msgctxt "@action:button"
 msgid "Next"
 msgstr "다음"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:290
-#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:26
+#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:290 /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:26
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "종료"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:17
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:48
+#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:17 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:48
 msgctxt "@action:button"
 msgid "Add"
 msgstr "추가"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:445
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:234
-#: /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:44
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
+#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:33 /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:445 /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:234 /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:44
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
 #: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:293
 msgctxt "@action:button"
 msgid "Cancel"
@@ -448,8 +399,7 @@ msgctxt "@tooltip"
 msgid "Other"
 msgstr "다른"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:37
-#: /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:61
+#: /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:37 /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:61
 msgctxt "@text:window"
 msgid "The release notes could not be opened."
 msgstr "릴리즈 노트를 열 수 없습니다."
@@ -606,7 +556,7 @@ msgstr "Ultimaker 계정 서버에 도달할 수 없음."
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
 msgid "Log-in failed"
-msgstr ""
+msgstr "로그인 실패"
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:75
 msgctxt "@message"
@@ -616,7 +566,7 @@ msgstr "입력한 상태가 올바르지 않습니다."
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:80
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
-msgstr ""
+msgstr "계정 서버 인증 시간이 초과되었습니다."
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:97
 msgctxt "@message"
@@ -658,8 +608,7 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:713
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
+#: /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:713 /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "노즐"
@@ -679,21 +628,18 @@ msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "익스트루더 비활성화됨"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:207
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:140
+#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:207 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:140
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "파일이 이미 있습니다"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:208
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:141
+#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:208 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:141
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "파일 <filename>{0}</filename>이 이미 있습니다. 덮어 쓰시겠습니까?"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:459
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:462
+#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:459 /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:462
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "유효하지 않은 파일 URL:"
@@ -745,8 +691,7 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename>에서 프로파일을 가져오지 못했습니다:"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:252
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:262
+#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:252 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:262
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
@@ -818,8 +763,7 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "모델 별 설정 구성"
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraProfileReader/__init__.py:14
-#: /home/clamboo/Desktop/Cura/plugins/CuraProfileWriter/__init__.py:14
+#: /home/clamboo/Desktop/Cura/plugins/CuraProfileReader/__init__.py:14 /home/clamboo/Desktop/Cura/plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura 프로파일"
@@ -829,8 +773,7 @@ msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D 파일"
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:26
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DriveApiService.py:86
+#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:26 /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DriveApiService.py:86
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "백업 복원 시도 중 오류가 있었습니다."
@@ -906,8 +849,7 @@ msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "이동식 드라이브  {0}에 저장"
 
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
+#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "쓸 수있는 파일 형식이 없습니다!"
@@ -923,8 +865,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "저장"
 
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
+#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
@@ -936,8 +877,7 @@ msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "{device} 장치에 쓸 때 파일 이름을 찾을 수 없습니다."
 
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
+#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
@@ -1019,8 +959,7 @@ msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "프로젝트 파일 <filename>{0}</filename>에 갑자기 접근할 수 없습니다: <message>{1}</message>."
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:643
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:651
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:643 /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:651
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "프로젝트 파일 열 수 없음"
@@ -1037,30 +976,23 @@ msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
 msgstr "프로젝트 파일 <filename>{0}</filename>이(가) 이 버전의 Ultimaker Cura에서 확인할 수 없는 프로파일을 사용하였습니다."
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:27
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:33
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:27 /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:33
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 파일"
 
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:57
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:72
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:94
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:149
+#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:57 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:72 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:94 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:149
 #: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:159
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "UFP 파일에 쓸 수 없음:"
 
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/__init__.py:28
-#: /home/clamboo/Desktop/Cura/plugins/UFPReader/__init__.py:22
+#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/__init__.py:28 /home/clamboo/Desktop/Cura/plugins/UFPReader/__init__.py:22
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimaker 포맷 패키지"
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeProfileReader/__init__.py:14
-#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/__init__.py:14
-#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/__init__.py:16
+#: /home/clamboo/Desktop/Cura/plugins/GCodeProfileReader/__init__.py:14 /home/clamboo/Desktop/Cura/plugins/GCodeReader/__init__.py:14 /home/clamboo/Desktop/Cura/plugins/GCodeWriter/__init__.py:16
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code 파일"
@@ -1075,8 +1007,7 @@ msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "엑스레이 뷰"
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
+#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "레이어 처리 중"
@@ -1104,19 +1035,15 @@ msgstr "버그 보고"
 #: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:168
 msgctxt "@message:description"
 msgid "Report a bug on Ultimaker Cura's issue tracker."
-msgstr "Ultimaker Cura의 이슈 트래커에 버그 보고"
+msgstr "Ultimaker Cura의 이슈 트래커에 버그 보고."
 
 #: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:395
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "선택한 소재 또는 구성과 호환되지 않기 때문에 현재 소재로 슬라이스 할 수 없습니다."
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:429
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:456
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:468
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:480
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:493
+#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:429 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:456
+#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:468 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:480 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:493
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "슬라이스 할 수 없습니다"
@@ -1162,8 +1089,7 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF 파일"
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeGzReader/__init__.py:17
-#: /home/clamboo/Desktop/Cura/plugins/GCodeGzWriter/__init__.py:17
+#: /home/clamboo/Desktop/Cura/plugins/GCodeGzReader/__init__.py:17 /home/clamboo/Desktop/Cura/plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "압축된 G-code 파일"
@@ -1223,8 +1149,7 @@ msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G 코드 파싱"
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:349
-#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:503
+#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:349 /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:503
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-코드 세부 정보"
@@ -1316,8 +1241,7 @@ msgctxt "@info:generic"
 msgid "Syncing..."
 msgstr "동기화 중..."
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:95
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:95 /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
 msgstr "Ultimaker 계정에서 변경 사항이 감지되었습니다"
@@ -1347,8 +1271,7 @@ msgctxt "@button"
 msgid "Decline"
 msgstr "거절"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
 msgctxt "@button"
 msgid "Agree"
 msgstr "동의"
@@ -1363,8 +1286,7 @@ msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "GCodeWriter는 텍스트가 아닌 모드는 지원하지 않습니다."
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:80
-#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:96
+#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:80 /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:96
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "내보내기 전에 G-code를 준비하십시오."
@@ -1389,8 +1311,7 @@ msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "표시할 레이어 없음"
 
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationView.py:136
-#: /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:74
+#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationView.py:136 /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "다시 메시지 표시 안 함"
@@ -1525,7 +1446,7 @@ msgid ""
 " Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
 msgstr ""
 "<b>{printer_name}</b> 프린터를 클라우드를 통해 연결할 수 있습니다.\n"
-" 프린터를 Digital Factory에 연결하는 모든 위치에서 프린트 대기열을 관리하고 프린트를 모니터링합니다."
+" 프린터를 Digital Factory에 연결하는 모든 위치에서 프린트 대기열을 관리하고 프린트를 모니터링합니다"
 
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
@@ -1601,7 +1522,7 @@ msgstr "Digital Factory에서 프린터 추가:"
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
-msgstr[0] "일부 프린터에서는 클라우드 연결을 사용할 수 없습니다."
+msgstr[0] "일부 프린터에서는 클라우드 연결을 사용할 수 없습니다"
 
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:337
 msgctxt "info:status"
@@ -1609,8 +1530,7 @@ msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "다음 프린터는 Digital Factory에 연결되어 있지 않습니다:"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:432
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:432
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
@@ -1734,10 +1654,9 @@ msgstr "3MF 기록기 플러그인이 손상되었습니다."
 #: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:37
 msgctxt "@error"
 msgid "There is no workspace yet to write. Please add a printer first."
-msgstr ""
+msgstr "작성할 작업 환경이 없습니다. 프린터를 먼저 추가하십시오."
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64
-#: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
+#: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64 /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "여기서 작업 환경을 작성할 권한이 없습니다."
@@ -1826,8 +1745,7 @@ msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "이 모델에 맞게 사용자 정의 설정을 선택하십시오"
 
-#: /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:96
+#: /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55 /home/clamboo/Desktop/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:96
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "필터..."
@@ -1917,11 +1835,8 @@ msgctxt "@description"
 msgid "Backup and synchronize your Cura settings."
 msgstr "Cura 설정을 백업, 동기화하십시오."
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:225
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:171
-#: /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:53
+#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:225
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:171 /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:53
 msgctxt "@button"
 msgid "Sign in"
 msgstr "로그인"
@@ -1951,18 +1866,10 @@ msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (너비)"
 
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
@@ -2187,14 +2094,12 @@ msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "새로 만들기"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:75
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:70
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:75 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:70
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "요약 - Cura 프로젝트"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:97
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:94
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:97 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:94
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "프린터 설정"
@@ -2204,20 +2109,17 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "기기의 충돌을 어떻게 해결해야합니까?"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:103
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:167 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:103
 msgctxt "@action:label"
 msgid "Type"
 msgstr "유형"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:183 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "프린터 그룹"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:205
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:219
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:205 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:219
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "프로파일 설정"
@@ -2227,28 +2129,22 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "프로파일의 충돌을 어떻게 해결해야합니까?"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:242
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:353
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:243
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:242 /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:353 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:243
 msgctxt "@action:label"
 msgid "Name"
 msgstr "이름"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:258
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:260
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:258 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:260
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:274
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:227
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:274 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:227
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "프로파일에 없음"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:279
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:232
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:279 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:232
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2406,8 +2302,7 @@ msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "직선 모양"
 
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:161
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:172
+#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:161 /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
 msgstr "반투명성"
@@ -2432,9 +2327,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "스무딩(smoothing)"
 
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:227
-#: /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
+#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:227 /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
 msgctxt "@action:button"
 msgid "OK"
 msgstr "확인"
@@ -2514,8 +2407,7 @@ msgctxt "@action:button"
 msgid "Install"
 msgstr "설치"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "설치됨"
@@ -2525,8 +2417,7 @@ msgctxt "@label"
 msgid "Premium"
 msgstr "프리미엄"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
 msgstr "웹 마켓플레이스로 이동"
@@ -2591,20 +2482,17 @@ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Buy material spools</a>"
 msgstr "<a href='%1'>재료 스플 구입</a>"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34
 msgctxt "@action:button"
 msgid "Update"
 msgstr "업데이트"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "업데이트 중"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "업데이트됨"
@@ -2619,9 +2507,7 @@ msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "플러그인"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:475
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:475
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "재료"
@@ -2684,7 +2570,7 @@ msgstr "이메일"
 #: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:22
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for Ultimaker Cura Enterprise"
-msgstr "Ultimaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오."
+msgstr "Ultimaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오"
 
 #: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:89
 msgctxt "@label"
@@ -2696,8 +2582,7 @@ msgctxt "@label"
 msgid "Last updated"
 msgstr "마지막으로 업데이트한 날짜"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
 msgctxt "@label"
 msgid "Brand"
 msgstr "상표"
@@ -2757,9 +2642,7 @@ msgctxt "@button"
 msgid "Dismiss"
 msgstr "취소"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
 #: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:186
 msgctxt "@button"
 msgid "Next"
@@ -2800,8 +2683,7 @@ msgctxt "@action:button"
 msgid "Confirm"
 msgstr "확인"
 
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
+#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20 /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "색 구성표"
@@ -2856,8 +2738,7 @@ msgctxt "@label"
 msgid "Shell"
 msgstr "외곽"
 
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
+#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263 /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
 msgctxt "@label"
 msgid "Infill"
 msgstr "내부채움"
@@ -2902,16 +2783,12 @@ msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "프린터 관리"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
 msgctxt "@label"
 msgid "Glass"
 msgstr "유리"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:523
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:523 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "대기열을 원격으로 관리하려면 프린터 펌웨어를 업데이트하십시오."
@@ -2941,9 +2818,7 @@ msgctxt "@label:status"
 msgid "Idle"
 msgstr "대기 상태"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:364
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:364 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
 msgctxt "@label:status"
 msgid "Preparing..."
 msgstr "준비 중..."
@@ -3079,8 +2954,7 @@ msgctxt "@label"
 msgid "Aluminum"
 msgstr "알루미늄"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:76
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:76 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "끝마친"
@@ -3090,21 +2964,17 @@ msgctxt "@label:status"
 msgid "Aborting..."
 msgstr "중지 중..."
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:92
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "중단됨"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:100
 msgctxt "@label:status"
 msgid "Failed"
-msgstr ""
+msgstr "실패"
 
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:102
 msgctxt "@label:status"
@@ -3151,9 +3021,7 @@ msgctxt "@action:button"
 msgid "Edit"
 msgstr "편집"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:138
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88 /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:138 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:55
 msgctxt "@action:button"
 msgid "Remove"
@@ -3169,20 +3037,17 @@ msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "프린터가 목록에 없으면 네트워크 프린팅 문제 해결 가이드를 읽어보십시오"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
 msgctxt "@label"
 msgid "Type"
 msgstr "유형"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "펌웨어 버전"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
 msgctxt "@label"
 msgid "Address"
 msgstr "주소"
@@ -3212,8 +3077,7 @@ msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "잘못된 IP 주소"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "유효한 IP 주소를 입력하십시오."
@@ -3223,8 +3087,7 @@ msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "프린터 주소"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "네트워크에 있는 프린터의 IP 주소를 입력하십시오."
@@ -3239,8 +3102,7 @@ msgctxt "@label"
 msgid "Delete"
 msgstr "삭제"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:290
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:290
 msgctxt "@label"
 msgid "Resume"
 msgstr "재개"
@@ -3255,9 +3117,7 @@ msgctxt "@label"
 msgid "Resuming..."
 msgstr "다시 시작..."
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:285
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:294
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:285 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:294
 msgctxt "@label"
 msgid "Pause"
 msgstr "중지"
@@ -3297,8 +3157,7 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "%1(을)를 정말로 중지하시겠습니까?"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:336
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:336
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "프린팅 중단"
@@ -3369,8 +3228,7 @@ msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "시장"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/FileMenu.qml:13
+#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27 /home/clamboo/Desktop/Cura/resources/qml/Menus/FileMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "파일"
@@ -3380,14 +3238,12 @@ msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "편집(&E)"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/ViewMenu.qml:12
+#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49 /home/clamboo/Desktop/Cura/resources/qml/Menus/ViewMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "보기(&V)"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:60
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/SettingsMenu.qml:13
+#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:60 /home/clamboo/Desktop/Cura/resources/qml/Menus/SettingsMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "설정"
@@ -3515,7 +3371,7 @@ msgstr "사용자의 계정에 프린터가 없습니까?"
 #: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:121
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
-msgstr "사용자의 계정에 있는 다음 프린터를 Cura에 추가하였습니다."
+msgstr "사용자의 계정에 있는 다음 프린터를 Cura에 추가하였습니다:"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddCloudPrintersView.qml:204
 msgctxt "@button"
@@ -3542,8 +3398,7 @@ msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "장치에 연결할 수 없습니다."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
+#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
 msgstr "Ultimaker 프린터로 연결할 수 없습니까?"
@@ -3558,8 +3413,7 @@ msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "알 수 없는 프린터이거나 그룹의 호스트가 아니기 때문에 이 프린터를 추가할 수 없습니다."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:334
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:707
+#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:334 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:707
 msgctxt "@button"
 msgid "Back"
 msgstr "뒤로"
@@ -3594,8 +3448,7 @@ msgctxt "@button"
 msgid "Get started"
 msgstr "시작하기"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:64
-#: /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:20
+#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:64 /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
 msgstr "Ultimaker 플랫폼에 로그인"
@@ -3849,8 +3702,7 @@ msgctxt "@Label"
 msgid "Static type checker for Python"
 msgstr "Python용 정적 유형 검사기"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:157
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:156 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@Label"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "SSL 신뢰성 검증용 루트 인증서"
@@ -3895,8 +3747,7 @@ msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux 교차 배포 응용 프로그램 배포"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:645
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:645
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "파일 열기"
@@ -3967,8 +3818,7 @@ msgctxt "@title:column"
 msgid "Current changes"
 msgstr "현재 변경 사항"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:160
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:755
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:160 /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:755
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "항상 묻기"
@@ -4078,8 +3928,7 @@ msgctxt "@label"
 msgid "Preset printers"
 msgstr "프린터 사전 설정"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
+#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
 msgctxt "@label"
 msgid "Print settings"
 msgstr "프린팅 설정"
@@ -4110,8 +3959,7 @@ msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "사용자 정의 프로파일"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:564
+#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244 /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:564
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "현재 변경 사항 삭제"
@@ -4147,8 +3995,7 @@ msgid "There is no %1 profile for the configuration in extruder %2. The default 
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
 msgstr[0] "압출기 %2의 구성에 대한 %1 프로파일이 없습니다. 대신 기본 의도가 사용됩니다"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:736
+#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52 /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:736
 msgctxt "@label"
 msgid "Profiles"
 msgstr "프로파일"
@@ -4283,12 +4130,12 @@ msgstr "더 나은 접착력을 위해 이 재료 조합과 함께 접착제를 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:102
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
-msgstr ""
+msgstr "이 익스트루더의 구성이 허용되지 않았으며, 슬라이싱이 금지됩니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:106
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
-msgstr ""
+msgstr "이 익스트루더 구성에 일치하는 프로파일이 없습니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:253
 msgctxt "@label"
@@ -4426,15 +4273,12 @@ msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
 msgstr[0] "%1 설정을 덮어씁니다."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:34
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:477
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:34 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:477
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "프로파일"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:84
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:40
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:84 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:40
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "활성화"
@@ -4449,20 +4293,17 @@ msgctxt "@label"
 msgid "Duplicate"
 msgstr "복제"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:152
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:63
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:152 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:63
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "이름 바꾸기"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:167
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:167 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171
 msgctxt "@action:button"
 msgid "Import"
 msgstr "가져오기"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:179
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:179 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185
 msgctxt "@action:button"
 msgid "Export"
 msgstr "내보내기"
@@ -4482,14 +4323,12 @@ msgctxt "@title:window"
 msgid "Duplicate Profile"
 msgstr "프로파일 복제하기"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:277
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:277 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "제거 확인"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:278
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:278 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "%1을 제거 하시겠습니까? 이것은 취소 할 수 없습니다!"
@@ -4534,8 +4373,7 @@ msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "전역 설정"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:17
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:468
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:17 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:468
 msgctxt "@title:tab"
 msgid "General"
 msgstr "일반"
@@ -4988,8 +4826,7 @@ msgctxt "@action:label"
 msgid "Printer"
 msgstr "프린터"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:329
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:337
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:329 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:337
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "재료 가져 오기"
@@ -5004,8 +4841,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "재료를 성공적으로 가져왔습니다"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:360
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:368
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:360 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:368
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "재료 내보내기"
@@ -5023,157 +4859,152 @@ msgstr "재료를 성공적으로 내보냈습니다"
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:17
 msgctxt "@title:window"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "재료를 프린터와 동기화"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:47
 msgctxt "@title:header"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "재료를 프린터와 동기화"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:53
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
-msgstr ""
+msgstr "몇 가지 간단한 단계를 수행하면 모든 재료 프로파일과 프린터를 동기화할 수 있습니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:77
 msgctxt "@button"
 msgid "Start"
-msgstr ""
+msgstr "시작"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:98
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
-msgstr ""
+msgstr "재료 프로파일을 동기화해야 하는 이유는 무엇입니까?"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:130
 msgctxt "@title:header"
 msgid "Sign in"
-msgstr ""
+msgstr "로그인"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:137
 msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
-msgstr ""
+msgstr "Digital Factory에 연결된 모든 프린터와 자동으로 재료 프로파일을 동기화하려면 Cura에 가입되어 있어야 합니다."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:165
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:476
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:611
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:165 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:476 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:611
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr ""
+msgstr "재료를 USB로 동기화"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:200
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr ""
+msgstr "다음 프린터는 새 재료 프로파일을 받게 됩니다:"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:207
 msgctxt "@title:header"
 msgid "Something went wrong when sending the materials to the printers."
-msgstr ""
+msgstr "재료를 프린터로 전송할 때 어떤 문제가 발생했습니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:214
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr ""
+msgstr "다음 프린터에 재료 프로파일이 성공적으로 동기화되었습니다:"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:256
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:444
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:256 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:444
 msgctxt "@button"
 msgid "Troubleshooting"
-msgstr ""
+msgstr "문제 해결"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:432
 msgctxt "@text Asking the user whether printers are missing in a list."
 msgid "Printers missing?"
-msgstr ""
+msgstr "프린터가 없습니까?"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:434
 msgctxt "@text"
 msgid "Make sure all your printers are turned ON and connected to Digital Factory."
-msgstr ""
+msgstr "모든 프린터가 켜져 있고 Digital Factory에 연결되어 있는지 확인하십시오."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:457
 msgctxt "@button"
 msgid "Refresh List"
-msgstr ""
+msgstr "목록 새로고침"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:487
 msgctxt "@button"
 msgid "Try again"
-msgstr ""
+msgstr "다시 시도"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:491
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:491 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
 msgctxt "@button"
 msgid "Done"
-msgstr ""
+msgstr "완료"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:493
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:618
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:493 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:618
 msgctxt "@button"
 msgid "Sync"
-msgstr ""
+msgstr "동기화"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:549
 msgctxt "@button"
 msgid "Syncing"
-msgstr ""
+msgstr "동기화 중"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:566
 msgctxt "@title:header"
 msgid "No printers found"
-msgstr ""
+msgstr "프린터를 찾을 수 없음"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:582
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
-msgstr ""
+msgstr "Digital Factory에 호환되는 프린터가 연결되지 않은 것 같습니다. 프린터가 연결되어 있고 최신 펌웨어가 설치되어 있는지 확인하십시오."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:595
 msgctxt "@button"
 msgid "Learn how to connect your printer to Digital Factory"
-msgstr ""
+msgstr "Digital Factory에 프린터를 연결하는 방법 알아보기"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:625
 msgctxt "@button"
 msgid "Refresh"
-msgstr ""
+msgstr "새로고침"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:647
 msgctxt "@title:header"
 msgid "Sync material profiles via USB"
-msgstr ""
+msgstr "재료 프로파일을 USB로 동기화"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:654
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
-msgstr ""
+msgstr "새로운 재료 프로파일을 프린터로 로드하기 위해 다음 단계를 수행합니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:679
 msgctxt "@text"
 msgid "Click the export material archive button."
-msgstr ""
+msgstr "재료 아카이브 내보내기 버튼을 클릭합니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:680
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
-msgstr ""
+msgstr ".umm 파일을 USB 스틱에 저장합니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
-msgstr ""
+msgstr "USB 스틱을 프린터에 삽입하고 새로운 재료 프로파일 로드 절차를 진행합니다."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:692
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "새로운 재료 프로파일을 내 프린터로 로드하는 방법"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
 msgctxt "@button"
 msgid "Export material archive"
-msgstr ""
+msgstr "재료 아카이브 내보내기"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:753
 msgctxt "@title:window"
@@ -5190,8 +5021,7 @@ msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "모두 확인"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:473
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:16 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:473
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "프린터"
@@ -5402,14 +5232,12 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "노즐을 예열하기 위한 온도."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
+#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341 /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "취소"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
+#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344 /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "예열"
@@ -5760,8 +5588,7 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "설정 폴더 표시"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Actions.qml:476
-#: /home/clamboo/Desktop/Cura/resources/qml/Settings/SettingView.qml:535
+#: /home/clamboo/Desktop/Cura/resources/qml/Actions.qml:476 /home/clamboo/Desktop/Cura/resources/qml/Settings/SettingView.qml:535
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "설정 보기..."
@@ -5874,8 +5701,7 @@ msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "%1 닫기"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:595
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:607
+#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:595 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:607
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "%1을(를) 정말로 종료하시겠습니까?"
