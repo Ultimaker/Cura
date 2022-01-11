@@ -1,4 +1,4 @@
-[4.13]
+[4.13.0]
 <i>For an overview of the new features in Cura 4.13, please watch <a href="https://youtu.be/chvAuI6Eqto">our video</a>.</i>
 
 * Sync material profiles 
@@ -56,6 +56,7 @@ We’ve streamlined the user login authentication by removing any restrictions, 
 - Fixed a bug where support blockers were included in the bounding box after loading a project file
 - Fixed a bug where grouped models become unslicable if the first extruder was disabled
 - Fixed a bug in Tree Support where the Z Distance was too big
+- Prevented QT plug-ins from being loaded from an insecure directory if an environment variable is set
 
 * Printer definitions, profiles and materials:
 - Add Eazao Zero printer definition, contributed by Hogan-Polaris
