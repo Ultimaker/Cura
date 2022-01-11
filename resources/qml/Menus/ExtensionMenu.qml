@@ -7,7 +7,7 @@ import QtQuick.Controls 2.4
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-UM.Menu
+Menu
 {
     id: extensionMenu
     title: catalog.i18nc("@title:menu menubar:toplevel", "E&xtensions")
