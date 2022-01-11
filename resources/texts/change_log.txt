@@ -11,7 +11,7 @@ A new print profile with 0.3mm layer height for PLA Tough PLA, PVA and BAM for U
 Show the model in the thumbnail of a .3mf file, contributed by fieldOfView
 
 * Infill density
-When printing with a 100% infill the infill pattern will change to ZigzZag for all Ultimaker print profiles
+When printing with a 100% infill the infill pattern will change to ZigZag for all Ultimaker print profiles
 
 * User login authentication
 We’ve streamlined the user login authentication by removing any restrictions, especially for strict enterprise-level IT requirements. 
@@ -34,8 +34,8 @@ We’ve streamlined the user login authentication by removing any restrictions, 
 - Reduced flow for 100% density parts
 - Fixed a bug in Surface Mode where small line-segments were created
 - Changed the Russian translation for 'nozzle', contributed by mlapkin
-- Fixed a visualization bug where layer lines were renderend in weird directions
-- Fixed a crash when recieving incomplete cloud API responses
+- Fixed a visualization bug where layer lines were rendered in weird directions
+- Fixed a crash when receiving incomplete cloud API responses
 - Add SET_RPATH option to CMake, contributed by boomanaiden154
 - Fixed initial layer bed and print head temperature for Snapmaker profile, contributed by prueker
 - Fixed shader compilation on some GPUs, contributed by fieldOfView
