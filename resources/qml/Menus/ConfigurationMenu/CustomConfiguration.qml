@@ -35,7 +35,7 @@ Item
         }
     }
 
-    //Printer type selector.
+    // Printer type selector.
     Item
     {
         id: printerTypeSelectorRow
@@ -64,17 +64,18 @@ Item
             anchors.left: parent.left
         }
 
-        OldControls.ToolButton
+        Button
         {
             id: printerTypeSelector
             text: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.name: ""
-            tooltip: text
+
             height: UM.Theme.getSize("print_setup_big_item").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
-            style: UM.Theme.styles.print_setup_header_button
+            onClicked: menu.open()
+            //style: UM.Theme.styles.print_setup_header_button
 
-            menu: Cura.PrinterTypeMenu { }
+            Cura.PrinterTypeMenu { id: menu}
         }
     }
 
