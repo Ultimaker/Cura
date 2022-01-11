@@ -1,10 +1,10 @@
-//Copyright (c) 2022 Ultimaker B.V.
-//Cura is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2022 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.4
 
-import UM 1.6 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 UM.Menu

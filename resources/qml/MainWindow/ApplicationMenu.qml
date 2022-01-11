@@ -64,6 +64,8 @@ Item
             title: (Qt.platform.os == "osx") ? "&Settings" : catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
         }
 
+        ExtensionMenu {}
+
     }
 
     /*UM.ApplicationMenu
