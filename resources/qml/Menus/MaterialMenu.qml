@@ -1,13 +1,13 @@
-//Copyright (c) 2020 Ultimaker B.V.
+//Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.4
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.0 as Cura
 
-Menu
+UM.Menu
 {
     id: menu
     title: catalog.i18nc("@label:category menu label", "Material")
@@ -49,23 +49,24 @@ Menu
         enabled: updateModels
     }
 
-    MenuItem
+    UM.MenuItem
     {
         text: catalog.i18nc("@label:category menu label", "Favorites")
         enabled: false
         visible: favoriteMaterialsModel.items.length > 0
+        height: visible ? implicitHeight: 0
     }
+
     Instantiator
     {
         model: favoriteMaterialsModel
-        delegate: MenuItem
+        delegate: UM.MenuItem
         {
             text: model.brand + " " + model.name
             checkable: true
             enabled: isActiveExtruderEnabled
             checked: model.root_material_id === menu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
-            exclusiveGroup: favoriteGroup  // One favorite and one item from the others can be active at the same time.
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(index)
@@ -81,13 +82,12 @@ Menu
         Instantiator
         {
             model: genericMaterialsModel
-            delegate: MenuItem
+            delegate: UM.MenuItem
             {
                 text: model.name
                 checkable: true
                 enabled: isActiveExtruderEnabled
                 checked: model.root_material_id === menu.currentRootMaterialId
-                exclusiveGroup: group
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
             onObjectAdded: genericMenu.insertItem(index, object)
@@ -100,7 +100,7 @@ Menu
     Instantiator
     {
         model: brandModel
-        Menu
+        UM.Menu
         {
             id: brandMenu
             title: brandName
@@ -120,47 +120,37 @@ Menu
                     Instantiator
                     {
                         model: brandMaterialColors
-                        delegate: MenuItem
+                        delegate: UM.MenuItem
                         {
                             text: model.name
                             checkable: true
                             enabled: isActiveExtruderEnabled
                             checked: model.id === menu.activeMaterialId
-                            exclusiveGroup: group
+
                             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
                         }
                         onObjectAdded: brandMaterialsMenu.insertItem(index, object)
                         onObjectRemoved: brandMaterialsMenu.removeItem(object)
                     }
                 }
-                onObjectAdded: brandMenu.insertItem(index, object)
-                onObjectRemoved: brandMenu.removeItem(object)
+                onObjectAdded: brandMenu.insertMenu(index, object)
+                onObjectRemoved: brandMenu.removeMenu(object)
             }
         }
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
-    }
-
-    ExclusiveGroup
-    {
-        id: group
-    }
-
-    ExclusiveGroup
-    {
-        id: favoriteGroup
+        onObjectAdded: menu.insertMenu(index, object)
+        onObjectRemoved: menu.removeMenu(object)
     }
 
     MenuSeparator {}
 
-    MenuItem
+    UM.MenuItem
     {
         action: Cura.Actions.manageMaterials
     }
 
     MenuSeparator {}
 
-    MenuItem
+    UM.MenuItem
     {
         action: Cura.Actions.marketplaceMaterials
     }

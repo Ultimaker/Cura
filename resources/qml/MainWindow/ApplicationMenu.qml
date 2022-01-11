@@ -51,6 +51,19 @@ Item
 
         EditMenu {}
         ViewMenu {}
+
+        SettingsMenu
+        {
+            //On MacOS, don't translate the "Settings" word.
+            //Qt moves the "settings" entry to a different place, and if it got renamed can't find it again when it
+            //attempts to delete the item upon closing the application, causing a crash.
+            //In the new location, these items are translated automatically according to the system's language.
+            //For more information, see:
+            //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+            //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+            title: (Qt.platform.os == "osx") ? "&Settings" : catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
+        }
+
     }
 
     /*UM.ApplicationMenu
