@@ -14,7 +14,7 @@ import "../Dialogs"
 Item
 {
     id: menu
-    width: applicationMenu.width
+    width: parent.width
     height: applicationMenu.height
 
     Component
@@ -46,11 +46,14 @@ Item
     MenuBar
     {
         id: applicationMenu
+        width: parent.width
         delegate: menuBarComponent
         FileMenu {}
 
         EditMenu {}
         ViewMenu {}
+
+        background: Rectangle {}
 
         SettingsMenu
         {
@@ -78,7 +81,7 @@ Item
     // Definition of other components that are linked to the menus
     // ###############################################################################################
 
-    /*WorkspaceSummaryDialog
+    WorkspaceSummaryDialog
     {
         id: saveWorkspaceDialog
         property var args
@@ -99,11 +102,6 @@ Item
             Cura.Actions.resetProfile.trigger()
             UM.Controller.setActiveStage("PrepareStage")
         }
-    }
-
-    UM.ExtensionModel
-    {
-        id: curaExtensions
     }
 
     // ###############################################################################################
@@ -141,5 +139,5 @@ Item
             curaExtensions.callExtensionMethod("Toolbox", "launch")
             curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
         }
-    }*/
+    }
 }
