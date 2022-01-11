@@ -12,8 +12,6 @@ import json
 import locale
 from typing import cast, Any
 
-import sentry_sdk
-
 try:
     from sentry_sdk.hub import Hub
     from sentry_sdk.utils import event_from_exception
