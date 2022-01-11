@@ -34,7 +34,7 @@ UM.Menu
                 {
                     return false
                 }
-                var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
+                var extruder = activeMachine.extruderList[extruderIndex]
                 return (extruder === undefined) ? false : (extruder.variant.name == model.hotend_name)
             }
             enabled:
@@ -43,7 +43,7 @@ UM.Menu
                 {
                     return false
                 }
-                var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
+                var extruder = activeMachine.extruderList[extruderIndex]
                 return (extruder === undefined) ? false : extruder.isEnabled
             }
             onTriggered:Cura.MachineManager.setVariant(nozzleMenu.extruderIndex, model.container_node)
