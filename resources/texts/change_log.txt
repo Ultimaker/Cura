@@ -26,9 +26,9 @@ We’ve streamlined the user login authentication by removing any restrictions, 
 - Allow plugins to have multiple views, contributed by Tyronnosaurus
 - Reduced top/bottom speed for TPU
 - Increased lined width for 0.3mm layer height profiles
+- Improved logging to allow debugging in early start-up process
 
 * Bug fixes:
-- Fixed a crash when installing plugins. 
 - Fixed a bug with surface mode will not print all layers
 - Fixed a bug where maximum retraction could cause a crash
 - Reduced flow for 100% density parts
