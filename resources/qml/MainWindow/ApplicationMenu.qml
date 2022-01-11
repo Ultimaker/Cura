@@ -17,37 +17,10 @@ Item
     width: parent.width
     height: applicationMenu.height
 
-    Component
-    {
-        id: menuBarComponent
-        MenuBarItem
-        {
-            id: menuBarItem
-
-            function replaceText(txt)
-            {
-                var index = txt.indexOf("&")
-                if(index >= 0)
-                {
-                    txt = txt.replace(txt.substr(index, 2), ("<u>" + txt.substr(index + 1, 1) +"</u>"))
-                }
-                return txt
-            }
-
-            contentItem: Label {
-                text: replaceText(menuBarItem.text)
-                color: "white"
-                verticalAlignment: Text.AlignVCenter
-                textFormat: Text.RichText
-            }
-        }
-    }
-
     MenuBar
     {
         id: applicationMenu
         width: parent.width
-        delegate: menuBarComponent
         FileMenu {}
 
         EditMenu {}
