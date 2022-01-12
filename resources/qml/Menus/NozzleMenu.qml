@@ -46,13 +46,10 @@ UM.Menu
                 var extruder = activeMachine.extruderList[extruderIndex]
                 return (extruder === undefined) ? false : extruder.isEnabled
             }
-            onTriggered:Cura.MachineManager.setVariant(nozzleMenu.extruderIndex, model.container_node)
+            onTriggered: Cura.MachineManager.setVariant(nozzleMenu.extruderIndex, model.container_node)
         }
 
-        onObjectAdded:
-        {
-            nozzleMenu.insertItem(index, object)
-        }
+        onObjectAdded: nozzleMenu.insertItem(index, object)
         onObjectRemoved: nozzleMenu.removeItem(object)
     }
 

@@ -27,7 +27,7 @@ Menu
     {
         id: cameraViewMenu
 
-        title: catalog.i18nc("@action:inmenu menubar:view","Camera view")
+        title: catalog.i18nc("@action:inmenu menubar:view", "Camera view")
         property string cameraMode: UM.Preferences.getValue("general/camera_perspective_mode")
 
         Connections
