@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -162,7 +162,7 @@ UM.PreferencesPage
                     Component.onCompleted:
                     {
                         append({ text: "English", code: "en_US" })
-//                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
                         //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })

@@ -1535,7 +1535,7 @@ class MachineManager(QObject):
         machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
         variant_node = machine_node.variants.get(variant_name)
         if variant_node is None:
-            Logger.error("There is no variant with the name {variant_name}.")
+            Logger.error(f"There is no variant with the name {variant_name}.")
             return
         self.setVariant(position, variant_node)
 

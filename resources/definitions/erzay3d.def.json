@@ -62,8 +62,6 @@
     "retraction_amount": { "default_value": 6.5 },
 
     "speed_print": { "default_value": 40 },
-    "speed_equalize_flow_enabled": { "default_value": true },
-    "speed_equalize_flow_max": { "default_value": 100 },
 
     "acceleration_print": { "default_value": 1000 },
 

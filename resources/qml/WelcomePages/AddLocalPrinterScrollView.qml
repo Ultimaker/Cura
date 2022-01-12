@@ -186,7 +186,7 @@ Item
 
                     checked: ListView.view.currentIndex == index
                     text: name
-                    visible: base.currentSection == section
+                    visible: base.currentSection.toLowerCase() === section.toLowerCase()
                     onClicked: ListView.view.currentIndex = index
                 }
             }

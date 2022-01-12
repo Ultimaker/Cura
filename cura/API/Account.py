@@ -1,15 +1,15 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from datetime import datetime
-from typing import Any, Optional, Dict, TYPE_CHECKING, Callable
 
+from datetime import datetime
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
+from typing import Any, Optional, Dict, TYPE_CHECKING, Callable
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
-from cura.OAuth2.Models import OAuth2Settings
+from cura.OAuth2.Models import OAuth2Settings, UserProfile
 from cura.UltimakerCloud import UltimakerCloudConstants
 
 if TYPE_CHECKING:
@@ -46,6 +46,9 @@ class Account(QObject):
     loginStateChanged = pyqtSignal(bool)
     """Signal emitted when user logged in or out"""
 
+    userProfileChanged = pyqtSignal()
+    """Signal emitted when new account information is available."""
+
     additionalRightsChanged = pyqtSignal("QVariantMap")
     """Signal emitted when a users additional rights change"""
 
@@ -71,13 +74,14 @@ class Account(QObject):
         self._application = application
         self._new_cloud_printers_detected = False
 
-        self._error_message = None  # type: Optional[Message]
+        self._error_message: Optional[Message] = None
         self._logged_in = False
+        self._user_profile: Optional[UserProfile] = None
         self._additional_rights: Dict[str, Any] = {}
         self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._update_packages_enabled = False
-        self._update_packages_action = None  # type: Optional[Callable]
+        self._update_packages_action: Optional[Callable] = None
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -103,7 +107,7 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.sync)
 
-        self._sync_services = {}  # type: Dict[str, int]
+        self._sync_services: Dict[str, int] = {}
         """contains entries "service_name" : SyncState"""
 
     def initialize(self) -> None:
@@ -196,11 +200,16 @@ class Account(QObject):
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
             if logged_in:
+                self._authorization_service.getUserProfile(self._onProfileChanged)
                 self._setManualSyncEnabled(False)
                 self._sync()
             else:
                 if self._update_timer.isActive():
                     self._update_timer.stop()
+
+    def _onProfileChanged(self, profile: Optional[UserProfile]) -> None:
+        self._user_profile = profile
+        self.userProfileChanged.emit()
 
     def _sync(self) -> None:
         """Signals all sync services to start syncing
@@ -243,32 +252,28 @@ class Account(QObject):
                 return
         self._authorization_service.startAuthorizationFlow(force_logout_before_login)
 
-    @pyqtProperty(str, notify=loginStateChanged)
+    @pyqtProperty(str, notify = userProfileChanged)
     def userName(self):
-        user_profile = self._authorization_service.getUserProfile()
-        if not user_profile:
-            return None
-        return user_profile.username
+        if not self._user_profile:
+            return ""
+        return self._user_profile.username
 
-    @pyqtProperty(str, notify = loginStateChanged)
+    @pyqtProperty(str, notify = userProfileChanged)
     def profileImageUrl(self):
-        user_profile = self._authorization_service.getUserProfile()
-        if not user_profile:
-            return None
-        return user_profile.profile_image_url
+        if not self._user_profile:
+            return ""
+        return self._user_profile.profile_image_url
 
     @pyqtProperty(str, notify=accessTokenChanged)
     def accessToken(self) -> Optional[str]:
         return self._authorization_service.getAccessToken()
 
-    @pyqtProperty("QVariantMap", notify = loginStateChanged)
+    @pyqtProperty("QVariantMap", notify = userProfileChanged)
     def userProfile(self) -> Optional[Dict[str, Optional[str]]]:
         """None if no user is logged in otherwise the logged in  user as a dict containing containing user_id, username and profile_image_url """
-
-        user_profile = self._authorization_service.getUserProfile()
-        if not user_profile:
+        if not self._user_profile:
             return None
-        return user_profile.__dict__
+        return self._user_profile.__dict__
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
     def lastSyncDateTime(self) -> str:
