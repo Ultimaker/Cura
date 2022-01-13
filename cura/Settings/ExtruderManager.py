@@ -422,7 +422,10 @@ class ExtruderManager(QObject):
             Logger.log("w", "Could not find the variant %s", active_variant_name)
             return True
         active_variant_node = machine_node.variants[active_variant_name]
-        active_material_node = active_variant_node.materials[extruder_stack.material.getMetaDataEntry("base_file")]
+        try:
+            active_material_node = active_variant_node.materials[extruder_stack.material.getMetaDataEntry("base_file")]
+        except KeyError:  # The material in this stack is not a supported material (e.g. wrong filament diameter, as loaded from a project file).
+            return False
 
         active_material_node_qualities = active_material_node.qualities
         if not active_material_node_qualities:
