@@ -36,12 +36,7 @@ Menu
             text: connectGroupName
             checkable: true
             checked: Cura.MachineManager.activeMachineNetworkGroupName == connectGroupName
-            onTriggered:
-             {
-             print(typeof(model.id))
-                Cura.MachineManager.someFunction("YAY")
-                Cura.MachineManager.setActiveMachine(model.id)
-            }
+            onTriggered: Cura.MachineManager.setActiveMachine(model.id)
         }
         onObjectAdded: menu.insertItem(2, object)
         onObjectRemoved: menu.removeItem(object)
