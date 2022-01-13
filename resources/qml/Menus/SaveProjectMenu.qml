@@ -1,15 +1,15 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.1
 
 import UM 1.6 as UM
 import Cura 1.1 as Cura
 
 import "../Dialogs"
 
-Menu
+UM.Menu
 {
     id: saveProjectMenu
     title: catalog.i18nc("@title:menu menubar:file", "Save Project...")
@@ -18,7 +18,7 @@ Menu
     Instantiator
     {
         id: projectOutputDevices
-        MenuItem
+        UM.MenuItem
         {
             text: model.name
             onTriggered:

@@ -2,11 +2,10 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.2
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "../Menus"
@@ -15,37 +14,19 @@ import "../Dialogs"
 Item
 {
     id: menu
-    width: applicationMenu.width
+    width: parent.width
     height: applicationMenu.height
-    property alias window: applicationMenu.window
 
-    UM.ApplicationMenu
+    MenuBar
     {
         id: applicationMenu
+        width: parent.width
+        FileMenu {}
 
-        FileMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&File") }
+        EditMenu {}
+        ViewMenu {}
 
-        Menu
-        {
-            title: catalog.i18nc("@title:menu menubar:toplevel", "&Edit")
-
-            MenuItem { action: Cura.Actions.undo }
-            MenuItem { action: Cura.Actions.redo }
-            MenuSeparator { }
-            MenuItem { action: Cura.Actions.selectAll }
-            MenuItem { action: Cura.Actions.arrangeAll }
-            MenuItem { action: Cura.Actions.multiplySelection }
-            MenuItem { action: Cura.Actions.deleteSelection }
-            MenuItem { action: Cura.Actions.deleteAll }
-            MenuItem { action: Cura.Actions.resetAllTranslation }
-            MenuItem { action: Cura.Actions.resetAll }
-            MenuSeparator { }
-            MenuItem { action: Cura.Actions.groupObjects }
-            MenuItem { action: Cura.Actions.mergeObjects }
-            MenuItem { action: Cura.Actions.unGroupObjects }
-        }
-
-        ViewMenu { title: catalog.i18nc("@title:menu menubar:toplevel", "&View") }
+        background: Rectangle {}
 
         SettingsMenu
         {
@@ -59,92 +40,14 @@ Item
             title: (Qt.platform.os == "osx") ? "&Settings" : catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
         }
 
-        Menu
-        {
-            id: extensionMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel", "E&xtensions")
+        ExtensionMenu {}
 
-            Instantiator
-            {
-                id: extensions
-                model: UM.ExtensionModel { }
+        PreferencesMenu {}
 
-                Menu
-                {
-                    id: sub_menu
-                    title: model.name;
-                    visible: actions != null
-                    enabled: actions != null
-                    Instantiator
-                    {
-                        model: actions
-                        Loader
-                        {
-                            property var extensionsModel: extensions.model
-                            property var modelText: model.text
-                            property var extensionName: name
+        HelpMenu {}
 
-                            sourceComponent: modelText.trim() == "" ? extensionsMenuSeparator : extensionsMenuItem
-                        }
-
-                        onObjectAdded: sub_menu.insertItem(index, object.item)
-                        onObjectRemoved: sub_menu.removeItem(object.item)
-                    }
-                }
-
-                onObjectAdded: extensionMenu.insertItem(index, object)
-                onObjectRemoved: extensionMenu.removeItem(object)
-            }
-        }
-
-        Menu
-        {
-            id: preferencesMenu
-
-            //On MacOS, don't translate the "Preferences" word.
-            //Qt moves the "preferences" entry to a different place, and if it got renamed can't find it again when it
-            //attempts to delete the item upon closing the application, causing a crash.
-            //In the new location, these items are translated automatically according to the system's language.
-            //For more information, see:
-            //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
-            //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
-            title: (Qt.platform.os == "osx") ? "&Preferences" : catalog.i18nc("@title:menu menubar:toplevel", "P&references")
-
-            MenuItem { action: Cura.Actions.preferences }
-        }
-
-        Menu
-        {
-            id: helpMenu
-            title: catalog.i18nc("@title:menu menubar:toplevel", "&Help")
-
-            MenuItem { action: Cura.Actions.showProfileFolder }
-            MenuItem { action: Cura.Actions.showTroubleshooting}
-            MenuItem { action: Cura.Actions.documentation }
-            MenuItem { action: Cura.Actions.reportBug }
-            MenuSeparator { }
-            MenuItem { action: Cura.Actions.whatsNew }
-            MenuItem { action: Cura.Actions.about }
-        }
     }
 
-    Component
-    {
-        id: extensionsMenuItem
-
-        MenuItem
-        {
-            text: modelText
-            onTriggered: extensionsModel.subMenuTriggered(extensionName, modelText)
-        }
-    }
-
-    Component
-    {
-        id: extensionsMenuSeparator
-
-        MenuSeparator {}
-    }
 
 
     // ###############################################################################################
@@ -172,11 +75,6 @@ Item
             Cura.Actions.resetProfile.trigger()
             UM.Controller.setActiveStage("PrepareStage")
         }
-    }
-
-    UM.ExtensionModel
-    {
-        id: curaExtensions
     }
 
     // ###############################################################################################

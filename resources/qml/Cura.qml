@@ -6,8 +6,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
-
-import UM 1.3 as UM
+import QtQuick.Controls 2.15 as NewControls
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "Dialogs"
@@ -160,7 +160,6 @@ UM.MainWindow
         ApplicationMenu
         {
             id: applicationMenu
-            window: base
         }
 
         Item
