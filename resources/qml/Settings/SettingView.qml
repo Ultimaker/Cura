@@ -14,7 +14,6 @@ Item
     id: settingsView
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
-    //property Action configureSettings
     property bool findingSettings
 
     Item
@@ -46,7 +45,7 @@ Item
             anchors.left: parent.left
             anchors.right: parent.right
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-            placeholderText:  catalog.i18nc("@label:textbox", "Search settings")
+            placeholderText: catalog.i18nc("@label:textbox", "Search settings")
             font.italic: true
 
             property var expandedCategories
@@ -68,10 +67,7 @@ Item
                 color: UM.Theme.getColor("text")
             }
 
-            onTextChanged:
-            {
-                settingsSearchTimer.restart()
-            }
+            onTextChanged: settingsSearchTimer.restart()
 
             onEditingFinished:
             {
@@ -84,10 +80,7 @@ Item
                 }
             }
 
-            Keys.onEscapePressed:
-            {
-                filter.text = ""
-            }
+            Keys.onEscapePressed: filter.text = ""
 
             function updateDefinitionModel()
             {
@@ -294,12 +287,12 @@ Item
                     if (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                     {
                         //We have limit_to_extruder, so pick that stack.
-                        return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder];
+                        return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder]
                     }
                     if (Cura.ExtruderManager.activeExtruderStackId)
                     {
                         //We're on an extruder tab. Pick the current extruder.
-                        return Cura.ExtruderManager.activeExtruderStackId;
+                        return Cura.ExtruderManager.activeExtruderStackId
                     }
                     //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
                     return contents.activeMachineId
@@ -332,10 +325,10 @@ Item
                 target: item
                 function onContextMenuRequested()
                 {
-                    contextMenu.key = model.key;
-                    contextMenu.settingVisible = model.visible;
+                    contextMenu.key = model.key
+                    contextMenu.settingVisible = model.visible
                     contextMenu.provider = provider
-                    contextMenu.popup();
+                    contextMenu.popup()                    //iconName: model.icon_name
                 }
                 function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
                 function onHideTooltip() { base.hideTooltip() }
@@ -350,36 +343,36 @@ Item
                 }
                 function onFocusReceived()
                 {
-                    contents.indexWithFocus = index;
-                    animateContentY.from = contents.contentY;
-                    contents.positionViewAtIndex(index, ListView.Contain);
-                    animateContentY.to = contents.contentY;
-                    animateContentY.running = true;
+                    contents.indexWithFocus = index
+                    animateContentY.from = contents.contentY
+                    contents.positionViewAtIndex(index, ListView.Contain)
+                    animateContentY.to = contents.contentY
+                    animateContentY.running = true
                 }
                 function onSetActiveFocusToNextSetting(forward)
                 {
                     if (forward == undefined || forward)
                     {
-                        contents.currentIndex = contents.indexWithFocus + 1;
+                        contents.currentIndex = contents.indexWithFocus + 1
                         while(contents.currentItem && contents.currentItem.height <= 0)
                         {
-                            contents.currentIndex++;
+                            contents.currentIndex++
                         }
                         if (contents.currentItem)
                         {
-                            contents.currentItem.item.focusItem.forceActiveFocus();
+                            contents.currentItem.item.focusItem.forceActiveFocus()
                         }
                     }
                     else
                     {
-                        contents.currentIndex = contents.indexWithFocus - 1;
+                        contents.currentIndex = contents.indexWithFocus - 1
                         while(contents.currentItem && contents.currentItem.height <= 0)
                         {
-                            contents.currentIndex--;
+                            contents.currentIndex--
                         }
                         if (contents.currentItem)
                         {
-                            contents.currentItem.item.focusItem.forceActiveFocus();
+                            contents.currentItem.item.focusItem.forceActiveFocus()
                         }
                     }
                 }
@@ -456,7 +449,6 @@ Item
                 UM.MenuItem
                 {
                     text: model.name
-                    //iconName: model.icon_name
                     onTriggered:
                     {
                         customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
@@ -490,11 +482,11 @@ Item
                 {
                     if (contextMenu.settingVisible)
                     {
-                        return catalog.i18nc("@action:menu", "Don't show this setting");
+                        return catalog.i18nc("@action:menu", "Don't show this setting")
                     }
                     else
                     {
-                        return catalog.i18nc("@action:menu", "Keep this setting visible");
+                        return catalog.i18nc("@action:menu", "Keep this setting visible")
                     }
                 }
                 visible: findingSettings
@@ -503,20 +495,20 @@ Item
                 {
                     if (contextMenu.settingVisible)
                     {
-                        definitionsModel.hide(contextMenu.key);
+                        definitionsModel.hide(contextMenu.key)
                     }
                     else
                     {
-                        definitionsModel.show(contextMenu.key);
+                        definitionsModel.show(contextMenu.key)
                     }
                 }
             }
             UM.MenuItem
             {
                 //: Settings context menu action
-                text: catalog.i18nc("@action:menu", "Configure setting visibility...");
+                text: catalog.i18nc("@action:menu", "Configure setting visibility...")
 
-                onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
+                onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu)
             }
         }
 
