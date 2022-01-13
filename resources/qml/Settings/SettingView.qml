@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.1
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "../Menus"
@@ -423,20 +423,22 @@ Item
             property var provider
             property bool settingVisible
 
-            MenuItem
+            UM.MenuItem
             {
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Copy value to all extruders")
                 visible: machineExtruderCount.properties.value > 1
+                height: visible ? implicitHeight : 0
                 enabled: contextMenu.provider !== undefined && contextMenu.provider.properties.settable_per_extruder !== "False"
                 onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
             }
 
-            MenuItem
+            UM.MenuItem
             {
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Copy all changed values to all extruders")
                 visible: machineExtruderCount.properties.value > 1
+                height: visible ? implicitHeight : 0
                 enabled: contextMenu.provider !== undefined
                 onTriggered: Cura.MachineManager.copyAllValuesToExtruders()
             }
@@ -444,13 +446,14 @@ Item
             MenuSeparator
             {
                 visible: machineExtruderCount.properties.value > 1
+                height: visible ? implicitHeight : 0
             }
 
             Instantiator
             {
                 id: customMenuItems
                 model: Cura.SidebarCustomMenuItemsModel { }
-                MenuItem
+                UM.MenuItem
                 {
                     text: model.name
                     //iconName: model.icon_name
@@ -466,19 +469,21 @@ Item
             MenuSeparator
             {
                 visible: customMenuItems.count > 0
+                height: visible ? implicitHeight : 0
             }
 
-            MenuItem
+            UM.MenuItem
             {
                 //: Settings context menu action
                 visible: !findingSettings
-                text: catalog.i18nc("@action:menu", "Hide this setting");
+                text: catalog.i18nc("@action:menu", "Hide this setting")
+                height: visible ? implicitHeight : 0
                 onTriggered:
                 {
                     definitionsModel.hide(contextMenu.key)
                 }
             }
-            MenuItem
+            UM.MenuItem
             {
                 //: Settings context menu action
                 text:
@@ -493,6 +498,7 @@ Item
                     }
                 }
                 visible: findingSettings
+                height: visible ? implicitHeight : 0
                 onTriggered:
                 {
                     if (contextMenu.settingVisible)
@@ -505,7 +511,7 @@ Item
                     }
                 }
             }
-            MenuItem
+            UM.MenuItem
             {
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Configure setting visibility...");
