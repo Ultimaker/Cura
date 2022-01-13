@@ -17,6 +17,8 @@ UM.PreferencesPage
     title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
 
+    width: parent.width
+
     function setDefaultLanguage(languageCode)
     {
         //loops through the languageList and sets the language using the languageCode
@@ -128,14 +130,14 @@ UM.PreferencesPage
 
     ScrollView
     {
+        id: preferencesScrollView
         width: parent.width
         height: parent.height
 
         Column
         {
-
-            //: Language selection label
             UM.I18nCatalog{id: catalog; name: "cura"}
+            width: preferencesScrollView.viewport.width
 
             Label
             {
@@ -212,7 +214,7 @@ UM.PreferencesPage
                 Label
                 {
                     id: currencyLabel
-                    text: catalog.i18nc("@label","Currency:")
+                    text: catalog.i18nc("@label", "Currency:")
                 }
 
                 TextField
