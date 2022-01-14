@@ -5449,7 +5449,7 @@
                         },
                         "raft_surface_extruder_nr":
                         {
-                            "label": "Raft Surface Extruder",
+                            "label": "Raft Top Extruder",
                             "description": "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion.",
                             "type": "extruder",
                             "default_value": "0",
