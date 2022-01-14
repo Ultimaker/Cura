@@ -18,29 +18,27 @@ Menu
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // Selection-related actions.
-    UM.MenuItem { action: Cura.Actions.centerSelection; }
-    UM.MenuItem { action: Cura.Actions.deleteSelection; }
-    UM.MenuItem { action: Cura.Actions.multiplySelection; }
+    Cura.MenuItem { action: Cura.Actions.centerSelection; }
+    Cura.MenuItem { action: Cura.Actions.deleteSelection; }
+    Cura.MenuItem { action: Cura.Actions.multiplySelection; }
 
     // Extruder selection - only visible if there is more than 1 extruder
-    MenuSeparator { visible: base.shouldShowExtruders }
-    UM.MenuItem
+    Cura.MenuSeparator { visible: base.shouldShowExtruders }
+    Cura.MenuItem
     {
         id: extruderHeader
         text: catalog.i18ncp("@label", "Print Selected Model With:", "Print Selected Models With:", UM.Selection.selectionCount)
         enabled: false
         visible: base.shouldShowExtruders
-        height: visible ? implicitHeight: 0
     }
 
     Instantiator
     {
         model: CuraApplication.getExtrudersModel()
-        UM.MenuItem
+        Cura.MenuItem
         {
             text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
             visible: base.shouldShowExtruders
-            height: visible ? implicitHeight: 0
             enabled: UM.Selection.hasSelection && model.enabled
             checkable: true
             checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
@@ -53,19 +51,19 @@ Menu
     }
 
     // Global actions
-    MenuSeparator {}
-    UM.MenuItem { action: Cura.Actions.selectAll }
-    UM.MenuItem { action: Cura.Actions.arrangeAll }
-    UM.MenuItem { action: Cura.Actions.deleteAll }
-    UM.MenuItem { action: Cura.Actions.reloadAll }
-    UM.MenuItem { action: Cura.Actions.resetAllTranslation }
-    UM.MenuItem { action: Cura.Actions.resetAll }
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.selectAll }
+    Cura.MenuItem { action: Cura.Actions.arrangeAll }
+    Cura.MenuItem { action: Cura.Actions.deleteAll }
+    Cura.MenuItem { action: Cura.Actions.reloadAll }
+    Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
+    Cura.MenuItem { action: Cura.Actions.resetAll }
 
     // Group actions
-    MenuSeparator {}
-    UM.MenuItem { action: Cura.Actions.groupObjects }
-    UM.MenuItem { action: Cura.Actions.mergeObjects }
-    UM.MenuItem { action: Cura.Actions.unGroupObjects }
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.groupObjects }
+    Cura.MenuItem { action: Cura.Actions.mergeObjects }
+    Cura.MenuItem { action: Cura.Actions.unGroupObjects }
 
     Connections
     {

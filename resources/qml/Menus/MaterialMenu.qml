@@ -48,18 +48,17 @@ UM.Menu
         enabled: updateModels
     }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         text: catalog.i18nc("@label:category menu label", "Favorites")
         enabled: false
         visible: favoriteMaterialsModel.items.length > 0
-        height: visible ? implicitHeight: 0
     }
 
     Instantiator
     {
         model: favoriteMaterialsModel
-        delegate: UM.MenuItem
+        delegate: Cura.MenuItem
         {
             text: model.brand + " " + model.name
             checkable: true
@@ -81,7 +80,7 @@ UM.Menu
         Instantiator
         {
             model: genericMaterialsModel
-            delegate: UM.MenuItem
+            delegate: Cura.MenuItem
             {
                 text: model.name
                 checkable: true
@@ -94,12 +93,12 @@ UM.Menu
         }
     }
 
-    MenuSeparator {}
+    Cura.MenuSeparator {}
 
     Instantiator
     {
         model: brandModel
-        UM.Menu
+        Cura.Menu
         {
             id: brandMenu
             title: brandName
@@ -119,7 +118,7 @@ UM.Menu
                     Instantiator
                     {
                         model: brandMaterialColors
-                        delegate: UM.MenuItem
+                        delegate: Cura.MenuItem
                         {
                             text: model.name
                             checkable: true
@@ -140,16 +139,16 @@ UM.Menu
         onObjectRemoved: materialMenu.removeMenu(object)
     }
 
-    MenuSeparator {}
+    Cura.MenuSeparator {}
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         action: Cura.Actions.manageMaterials
     }
 
-    MenuSeparator {}
+    Cura.MenuSeparator {}
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         action: Cura.Actions.marketplaceMaterials
     }

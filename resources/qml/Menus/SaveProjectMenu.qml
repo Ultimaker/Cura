@@ -4,7 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 
-import UM 1.6 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "../Dialogs"
@@ -18,7 +18,7 @@ UM.Menu
     Instantiator
     {
         id: projectOutputDevices
-        UM.MenuItem
+        Cura.MenuItem
         {
             text: model.name
             onTriggered:

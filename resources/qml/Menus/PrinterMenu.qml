@@ -11,7 +11,7 @@ Menu
 {
     id: menu
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: networkEnabledPrinterItem
         text: catalog.i18nc("@label:category menu label", "Network enabled printers")
@@ -22,8 +22,8 @@ Menu
     Instantiator
     {
         id: networKPrinterInstantiator
-        model: Cura.GlobalStacksModel {filterOnlineOnly: true}
-        UM.MenuItem
+        model: Cura.GlobalStacksModel {filterOnlineOnly: true }
+        Cura.MenuItem
         {
             property string connectGroupName:
             {
@@ -42,12 +42,9 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    MenuSeparator
-    {
-        visible: networKPrinterInstantiator.count > 0
-    }
+    Cura.MenuSeparator { visible: networKPrinterInstantiator.count > 0 }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: localPrinterMenu
         text: catalog.i18nc("@label:category menu label", "Local printers")
@@ -60,13 +57,12 @@ Menu
         id: localPrinterInstantiator
         model: Cura.GlobalStacksModel {}
 
-        UM.MenuItem
+        Cura.MenuItem
         {
             text: model.name
             checkable: true
             checked: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id == model.id: false
             visible: !model.hasRemoteConnection
-            height: visible ? implicitHeight: 0
             onTriggered: Cura.MachineManager.setActiveMachine(model.id)
         }
         // A bit hackish, but we have 2 items at the end, put them before that
@@ -74,11 +70,8 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    MenuSeparator
-    {
-        visible: localPrinterInstantiator.count > 0
-    }
+    Cura.MenuSeparator { visible: localPrinterInstantiator.count > 0 }
 
-    UM.MenuItem { action: Cura.Actions.addMachine }
-    UM.MenuItem { action: Cura.Actions.configureMachines }
+    Cura.MenuItem { action: Cura.Actions.addMachine }
+    Cura.MenuItem { action: Cura.Actions.configureMachines }
 }

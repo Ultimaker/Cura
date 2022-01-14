@@ -11,18 +11,18 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&Edit")
 
-    UM.MenuItem { action: Cura.Actions.undo }
-    UM.MenuItem { action: Cura.Actions.redo }
+    Cura.MenuItem { action: Cura.Actions.undo }
+    Cura.MenuItem { action: Cura.Actions.redo }
     MenuSeparator { }
-    UM.MenuItem { action: Cura.Actions.selectAll }
-    UM.MenuItem { action: Cura.Actions.arrangeAll }
-    UM.MenuItem { action: Cura.Actions.multiplySelection }
-    UM.MenuItem { action: Cura.Actions.deleteSelection }
-    UM.MenuItem { action: Cura.Actions.deleteAll }
-    UM.MenuItem { action: Cura.Actions.resetAllTranslation }
-    UM.MenuItem { action: Cura.Actions.resetAll }
+    Cura.MenuItem { action: Cura.Actions.selectAll }
+    Cura.MenuItem { action: Cura.Actions.arrangeAll }
+    Cura.MenuItem { action: Cura.Actions.multiplySelection }
+    Cura.MenuItem { action: Cura.Actions.deleteSelection }
+    Cura.MenuItem { action: Cura.Actions.deleteAll }
+    Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
+    Cura.MenuItem { action: Cura.Actions.resetAll }
     MenuSeparator { }
-    UM.MenuItem { action: Cura.Actions.groupObjects }
-    UM.MenuItem { action: Cura.Actions.mergeObjects }
-    UM.MenuItem { action: Cura.Actions.unGroupObjects }
+    Cura.MenuItem { action: Cura.Actions.groupObjects }
+    Cura.MenuItem { action: Cura.Actions.mergeObjects }
+    Cura.MenuItem { action: Cura.Actions.unGroupObjects }
 }

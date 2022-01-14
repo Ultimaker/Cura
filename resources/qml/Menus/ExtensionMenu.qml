@@ -16,7 +16,7 @@ Menu
     {
         id: extensionsMenuItem
 
-        UM.MenuItem
+        Cura.MenuItem
         {
             text: modelText
             onTriggered: extensionsModel.subMenuTriggered(extensionName, modelText)

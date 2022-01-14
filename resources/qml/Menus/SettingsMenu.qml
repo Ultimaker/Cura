@@ -44,13 +44,13 @@ Menu
                 visible: Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials
             }
 
-            UM.MenuItem
+            Cura.MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
                 onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
             }
 
-            UM.MenuItem
+            Cura.MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
@@ -58,7 +58,7 @@ Menu
                 height: visible ? implicitHeight: 0
             }
 
-            UM.MenuItem
+            Cura.MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
@@ -71,7 +71,7 @@ Menu
         onObjectRemoved: base.removeMenu(object)
     }
 
-    MenuSeparator { }
+    Cura.MenuSeparator { }
 
-    UM.MenuItem { action: Cura.Actions.configureSettingVisibility }
+    Cura.MenuItem { action: Cura.Actions.configureSettingVisibility }
 }

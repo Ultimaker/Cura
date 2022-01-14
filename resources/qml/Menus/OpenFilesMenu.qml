@@ -18,7 +18,7 @@ UM.Menu
     {
         id: fileProviders
         model: CuraApplication.getFileProviderModel()
-        UM.MenuItem
+        Cura.MenuItem
         {
             text:
             {

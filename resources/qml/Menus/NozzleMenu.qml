@@ -23,7 +23,7 @@ UM.Menu
     {
         model: nozzleModel
 
-        UM.MenuItem
+        Cura.MenuItem
         {
             text: model.hotend_name
             checkable: true

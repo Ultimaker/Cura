@@ -15,12 +15,12 @@ Menu
     Menu
     {
         title: catalog.i18nc("@action:inmenu menubar:view", "&Camera position")
-        UM.MenuItem { action: Cura.Actions.view3DCamera }
-        UM.MenuItem { action: Cura.Actions.viewFrontCamera }
-        UM.MenuItem { action: Cura.Actions.viewTopCamera }
-        UM.MenuItem { action: Cura.Actions.viewBottomCamera }
-        UM.MenuItem { action: Cura.Actions.viewLeftSideCamera }
-        UM.MenuItem { action: Cura.Actions.viewRightSideCamera }
+        Cura.MenuItem { action: Cura.Actions.view3DCamera }
+        Cura.MenuItem { action: Cura.Actions.viewFrontCamera }
+        Cura.MenuItem { action: Cura.Actions.viewTopCamera }
+        Cura.MenuItem { action: Cura.Actions.viewBottomCamera }
+        Cura.MenuItem { action: Cura.Actions.viewLeftSideCamera }
+        Cura.MenuItem { action: Cura.Actions.viewRightSideCamera }
     }
 
     Menu
@@ -43,7 +43,7 @@ Menu
             }
         }
 
-        MenuItem
+        Cura.MenuItem
         {
             text: catalog.i18nc("@action:inmenu menubar:view", "Perspective")
             checkable: true
@@ -54,7 +54,7 @@ Menu
             }
         }
 
-        MenuItem
+        Cura.MenuItem
         {
             text: catalog.i18nc("@action:inmenu menubar:view", "Orthographic")
             checkable: true
@@ -66,9 +66,9 @@ Menu
         }
     }
 
-    MenuSeparator {}
+    Cura.MenuSeparator {}
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         action: Cura.Actions.toggleFullScreen
     }

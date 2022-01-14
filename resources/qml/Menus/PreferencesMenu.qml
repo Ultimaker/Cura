@@ -20,6 +20,6 @@ Menu
     //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
     title: (Qt.platform.os == "osx") ? "&Preferences" : catalog.i18nc("@title:menu menubar:toplevel", "P&references")
 
-    UM.MenuItem { action: Cura.Actions.preferences }
+    Cura.MenuItem { action: Cura.Actions.preferences }
 }
 

@@ -14,18 +14,17 @@ Menu
     property var fileProviderModel: CuraApplication.getFileProviderModel()
 
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: newProjectMenu
         action: Cura.Actions.newProject
     }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: openMenu
         action: Cura.Actions.open
         visible: base.fileProviderModel.count == 1
-        height: visible ? implicitHeight: 0
     }
 
     OpenFilesMenu
@@ -37,13 +36,12 @@ Menu
 
     RecentFilesMenu { }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: saveWorkspaceMenu
         shortcut: StandardKey.Save
         text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
         visible: saveProjectMenu.model.count == 1
-        height: visible ? implicitHeight : 0
         enabled: UM.WorkspaceFileHandler.enabled
         onTriggered:
         {
@@ -72,7 +70,7 @@ Menu
 
     MenuSeparator { }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: saveAsMenu
         text: catalog.i18nc("@title:menu menubar:file", "&Export...")
@@ -83,7 +81,7 @@ Menu
         }
     }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: exportSelectionMenu
         text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
@@ -94,7 +92,7 @@ Menu
 
     MenuSeparator { }
 
-    UM.MenuItem
+    Cura.MenuItem
     {
         id: reloadAllMenu
         action: Cura.Actions.reloadAll
@@ -102,5 +100,5 @@ Menu
 
     MenuSeparator { }
 
-    UM.MenuItem { action: Cura.Actions.quit }
+    Cura.MenuItem { action: Cura.Actions.quit }
 }
