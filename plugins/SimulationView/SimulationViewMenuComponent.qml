@@ -3,6 +3,7 @@
 
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.1
 import QtGraphicalEffects 1.0
 
@@ -284,7 +285,7 @@ Cura.ExpandableComponent
                     visible: viewSettings.show_legend
                 }
 
-                Label
+                UM.Label
                 {
                     text: label
                     font: UM.Theme.getFont("default")
