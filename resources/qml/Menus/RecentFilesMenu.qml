@@ -9,7 +9,7 @@ import Cura 1.0 as Cura
 
 import "../Dialogs"
 
-Menu
+Cura.Menu
 {
     id: menu
     title: catalog.i18nc("@title:menu menubar:file", "Open &Recent")
@@ -20,7 +20,7 @@ Menu
     Instantiator
     {
         model: CuraApplication.recentFiles
-        MenuItem
+        Cura.MenuItem
         {
             text:
             {

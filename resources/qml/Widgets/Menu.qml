@@ -4,6 +4,7 @@
 import QtQuick 2.7
 
 import UM 1.5 as UM
+import Cura 1.0 as Cura
 
 //
 // Menu with Cura styling.
@@ -15,7 +16,9 @@ UM.Menu
 
     implicitWidth: UM.Theme.getSize("setting_control").width
 
-    background: Rectangle {
+    delegate: Cura.MenuItem {}
+    background: Rectangle
+    {
         color: UM.Theme.getColor("setting_control")
         border.color: UM.Theme.getColor("setting_control_border")
     }

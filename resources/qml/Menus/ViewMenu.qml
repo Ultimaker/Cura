@@ -7,12 +7,12 @@ import QtQuick.Controls 2.1
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View")
 
-    Menu
+    Cura.Menu
     {
         title: catalog.i18nc("@action:inmenu menubar:view", "&Camera position")
         Cura.MenuItem { action: Cura.Actions.view3DCamera }
@@ -23,7 +23,7 @@ Menu
         Cura.MenuItem { action: Cura.Actions.viewRightSideCamera }
     }
 
-    Menu
+    Cura.Menu
     {
         id: cameraViewMenu
 

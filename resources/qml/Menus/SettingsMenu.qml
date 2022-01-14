@@ -7,12 +7,12 @@ import QtQuick.Controls 2.4
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
 
-    PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
+    PrinterMenu { }
 
     property var activeMachine: Cura.MachineManager.activeMachine
     Instantiator

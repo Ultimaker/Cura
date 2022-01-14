@@ -7,10 +7,10 @@ import QtQuick.Controls 2.4
 import UM 1.6 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     id: menu
-
+    title: catalog.i18nc("@title:menu menubar:settings", "&Printer")
     Cura.MenuItem
     {
         id: networkEnabledPrinterItem
