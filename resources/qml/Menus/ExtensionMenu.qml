@@ -11,7 +11,7 @@ Menu
 {
     id: extensionMenu
     title: catalog.i18nc("@title:menu menubar:toplevel", "E&xtensions")
-
+    property var extensionModel: UM.ExtensionModel { }
     Component
     {
         id: extensionsMenuItem
@@ -33,7 +33,7 @@ Menu
     Instantiator
     {
         id: extensions
-        model: UM.ExtensionModel { }
+        model: extensionModel
 
         UM.Menu
         {

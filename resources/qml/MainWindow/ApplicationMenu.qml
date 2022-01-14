@@ -40,7 +40,7 @@ Item
             title: (Qt.platform.os == "osx") ? "&Settings" : catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
         }
 
-        ExtensionMenu {}
+        ExtensionMenu { id: extensionMenu }
 
         PreferencesMenu {}
 
@@ -99,7 +99,7 @@ Item
         target: Cura.Actions.browsePackages
         function onTriggered()
         {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
+            extensionMenu.extensionModel.callExtensionMethod("Toolbox", "launch")
         }
     }
 
@@ -109,8 +109,8 @@ Item
         target: Cura.Actions.marketplaceMaterials
         function onTriggered()
         {
-            curaExtensions.callExtensionMethod("Toolbox", "launch")
-            curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
+            extensionMenu.extensionModel.callExtensionMethod("Toolbox", "launch")
+            extensionMenu.extensionModel.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
         }
     }
 }
