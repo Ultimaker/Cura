@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 import "../Dialogs"
 
-UM.Menu
+Cura.Menu
 {
     id: saveProjectMenu
     title: catalog.i18nc("@title:menu menubar:file", "Save Project...")

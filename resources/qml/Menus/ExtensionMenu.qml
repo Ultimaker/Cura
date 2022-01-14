@@ -27,7 +27,7 @@ Menu
     {
         id: extensionsMenuSeparator
 
-        MenuSeparator {}
+        Cura.MenuSeparator {}
     }
 
     Instantiator
@@ -35,7 +35,7 @@ Menu
         id: extensions
         model: extensionModel
 
-        UM.Menu
+        Cura.Menu
         {
             id: sub_menu
             title: model.name

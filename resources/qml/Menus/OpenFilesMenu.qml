@@ -9,7 +9,7 @@ import Cura 1.0 as Cura
 
 import "../Dialogs"
 
-UM.Menu
+Cura.Menu
 {
     id: openFilesMenu
     title: catalog.i18nc("@title:menu menubar:file", "Open File(s)...")
