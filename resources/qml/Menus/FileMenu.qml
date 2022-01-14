@@ -43,6 +43,7 @@ Menu
         shortcut: StandardKey.Save
         text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
         visible: saveProjectMenu.model.count == 1
+        height: visible ? implicitHeight : 0
         enabled: UM.WorkspaceFileHandler.enabled
         onTriggered:
         {
