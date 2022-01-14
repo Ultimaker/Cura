@@ -848,7 +848,7 @@ class BuildVolume(SceneNode):
         """
 
         result = {}
-        skirt_brim_extruder = None #type: ExtruderStack
+        skirt_brim_extruder: ExtruderStack = None
         for extruder in used_extruders:
             if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")):
                 skirt_brim_extruder = extruder
