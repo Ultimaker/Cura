@@ -66,11 +66,11 @@ Cura.Menu
             checked: model.root_material_id === materialMenu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
         }
-        onObjectAdded: materialMenu.insertItem(index, object)
+        onObjectAdded: materialMenu.insertItem(index + 1, object)
         onObjectRemoved: materialMenu.removeItem(index)
     }
 
-    MenuSeparator {}
+    Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0}
 
     Menu
     {
@@ -135,7 +135,7 @@ Cura.Menu
                 onObjectRemoved: brandMenu.removeMenu(object)
             }
         }
-        onObjectAdded: materialMenu.insertMenu(index, object)
+        onObjectAdded: materialMenu.insertMenu(index + 4, object)
         onObjectRemoved: materialMenu.removeMenu(object)
     }
 
