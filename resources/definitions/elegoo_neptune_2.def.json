@@ -13,7 +13,6 @@
         {
             "0": "elgoo_neptune2_extruder_0"
         },
-        "has_machine_quality": true,
         "preferred_material": "generic_pla",
         "exclude_materials": [
             "Vertex_Delta_ABS",
