@@ -124,6 +124,7 @@
         "machine_depth": {"default_value": 235},
         "machine_heated_bed": {"default_value": true},
         "material_diameter": { "default_value": 1.75 },
+        "speed_print": { "value": 60.0 } ,
         "z_seam_type":{"default_value": "back"},
         "z_seam_corner":{"default_value": "z_seam_corner_weighted"},
         "material_standby_temperature":{"default_value": 200,"settable_per_extruder": false},
