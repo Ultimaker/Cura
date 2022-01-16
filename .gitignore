@@ -60,6 +60,7 @@ plugins/CuraFlatPack
 plugins/CuraRemoteSupport
 plugins/ModelCutter
 plugins/PrintProfileCreator
+plugins/MultiPrintPlugin
 
 #Build stuff
 CMakeCache.txt

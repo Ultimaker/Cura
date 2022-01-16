@@ -60,7 +60,7 @@ class MaterialManagementModel(QObject):
 
         sync_materials_message.addAction(
                 "sync",
-                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                name = catalog.i18nc("@action:button", "Sync materials"),
                 icon = "",
                 description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
