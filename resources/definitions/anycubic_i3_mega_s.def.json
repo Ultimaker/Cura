@@ -44,7 +44,6 @@
 
         "material_diameter": { "default_value": 1.75 },
         "material_print_temperature_layer_0": { "value": "material_print_temperature + 5"},
-        "material_initial_print_temperature": { "value": "material_print_temperature + 5" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
 
@@ -74,22 +73,22 @@
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
-        
+
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
         "optimize_wall_printing_order": { "value": "True" },
 
         "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
-        
+
         "infill_sparse_density": { "value": 25 },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 15.0 },
-       
-       
+
+
         "retraction_speed": { "value": 25, "maximum_value": 40 },
         "retraction_retract_speed": { "maximum_value": 40 },
         "retraction_prime_speed": { "maximum_value": 40 },
-        
+
         "retraction_hop_enabled": { "value": true },
         "retraction_hop": { "value": 0.075 },
         "retraction_hop_only_when_collides": { "value": true },
