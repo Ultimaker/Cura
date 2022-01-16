@@ -2,11 +2,11 @@
     "version": 2,
     "name": "Anycubic i3 Mega X",
     "inherits": "anycubic_i3_mega_s",
-	"metadata":
+    "metadata":
     {
-		"quality_definition": "anycubic_i3_mega_s",
-		"platform": "anycubic_i3_mega_x_platform.stl"
-	},
+        "quality_definition": "anycubic_i3_mega_s",
+        "platform": "anycubic_i3_mega_x_platform.stl"
+    },
     "overrides":
     {
         "machine_name": { "default_value": "Anycubic i3 Mega X" },
@@ -16,5 +16,5 @@
 
         "acceleration_print": { "value": 400 },
         "acceleration_travel": { "value": 400 }
-	}
+    }
 }
