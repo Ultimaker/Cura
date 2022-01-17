@@ -11,39 +11,38 @@ import Cura 1.1 as Cura
 //
 // Cura-style TextArea with scrolls
 //
-ScrollView
+Flickable
 {
     id: scrollableTextAreaBase
-    property alias textArea: _textArea
-
+    property bool do_borders: true
     property var back_color: UM.Theme.getColor("main_background")
-    property var do_borders: true
+    property alias textArea: flickableTextArea
 
-    clip: true
-    ScrollBar.vertical: UM.ScrollBar
+    ScrollBar.vertical: UM.ScrollBar {}
+
+    TextArea.flickable: TextArea
     {
-        parent: scrollableTextAreaBase
-        anchors
+        id: flickableTextArea
+
+        background: Rectangle //Providing the background color and border.
         {
-            right: parent.right
-            rightMargin: parent.background.border.width
-            top: parent.top
-            topMargin: anchors.rightMargin
-            bottom: parent.bottom
-            bottomMargin: anchors.rightMargin
+            anchors
+            {
+                top: parent.top
+                topMargin: -border.width
+                bottom: parent.bottom
+                bottomMargin: -border.width
+                left: parent.left
+                leftMargin: -border.width
+                right: parent.right
+                rightMargin: -border.width
+            }
+
+            color: scrollableTextAreaBase.back_color
+            border.color: UM.Theme.getColor("thick_lining")
+            border.width: scrollableTextAreaBase.do_borders ? UM.Theme.getSize("default_lining").width : 0
         }
-    }
 
-    background: Rectangle  // Border
-    {
-        color: back_color
-        border.color: UM.Theme.getColor("thick_lining")
-        border.width: do_borders ? UM.Theme.getSize("default_lining").width : 0
-    }
-
-    TextArea
-    {
-        id: _textArea
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
         textFormat: TextEdit.PlainText
