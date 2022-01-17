@@ -20,10 +20,7 @@ Cura.Menu
         model: CuraApplication.getFileProviderModel()
         Cura.MenuItem
         {
-            text:
-            {
-                return model.displayText;
-            }
+            text: model.displayText
             onTriggered:
             {
                 if (model.index == 0)  // The 0th element is the "From Disk" option, which should activate the open local file dialog
@@ -35,12 +32,10 @@ Cura.Menu
                     CuraApplication.getFileProviderModel().trigger(model.name);
                 }
             }
-            // Unassign the shortcuts when the submenu is invisible (i.e. when there is only one file provider) to avoid ambiguous shortcuts.
-            // When there is a single file provider, the openAction is assigned with the Ctrl+O shortcut instead.
-            shortcut: openFilesMenu.visible ? model.shortcut : ""
-            visible: openFilesMenu.visible
+            shortcut: model.shortcut
         }
         onObjectAdded: openFilesMenu.insertItem(index, object)
+
         onObjectRemoved: openFilesMenu.removeItem(object)
     }
 }
