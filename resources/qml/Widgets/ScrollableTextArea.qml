@@ -28,9 +28,9 @@ ScrollView
             right: parent.right
             rightMargin: parent.background.border.width
             top: parent.top
-            topMargin: rightMargin
+            topMargin: anchors.rightMargin
             bottom: parent.bottom
-            bottomMargin: rightMargin
+            bottomMargin: anchors.rightMargin
         }
     }
 
