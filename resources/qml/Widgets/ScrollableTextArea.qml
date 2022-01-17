@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -13,12 +13,26 @@ import Cura 1.1 as Cura
 //
 ScrollView
 {
+    id: scrollableTextAreaBase
     property alias textArea: _textArea
 
     property var back_color: UM.Theme.getColor("main_background")
     property var do_borders: true
 
     clip: true
+    ScrollBar.vertical: UM.ScrollBar
+    {
+        parent: scrollableTextAreaBase
+        anchors
+        {
+            right: parent.right
+            rightMargin: parent.background.border.width
+            top: parent.top
+            topMargin: rightMargin
+            bottom: parent.bottom
+            bottomMargin: rightMargin
+        }
+    }
 
     background: Rectangle  // Border
     {
