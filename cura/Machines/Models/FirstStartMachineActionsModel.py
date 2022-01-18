@@ -5,6 +5,7 @@ from typing import Optional, Dict, Any, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 
+import cura.CuraApplication
 from UM.Qt.ListModel import ListModel
 
 if TYPE_CHECKING:
@@ -23,7 +24,7 @@ class FirstStartMachineActionsModel(ListModel):
     ContentRole = Qt.UserRole + 2
     ActionRole = Qt.UserRole + 3
 
-    def __init__(self, application: "CuraApplication", parent: Optional[QObject] = None) -> None:
+    def __init__(self, application: Optional["CuraApplication"], parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.TitleRole, "title")
@@ -31,11 +32,14 @@ class FirstStartMachineActionsModel(ListModel):
         self.addRoleName(self.ActionRole, "action")
 
         self._current_action_index = 0
-
+        if application is None:
+            application = cura.CuraApplication.CuraApplication.getInstance()
         self._application = application
-        self._application.initializationFinished.connect(self.initialize)
-
         self._previous_global_stack = None
+        if not self._application.started:
+            self._application.initializationFinished.connect(self.initialize)
+        else:
+            self.initialize()
 
     def initialize(self) -> None:
         self._application.getMachineManager().globalContainerChanged.connect(self._update)

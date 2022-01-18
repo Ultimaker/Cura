@@ -15,7 +15,7 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property var machineActionsModel: CuraApplication.getFirstStartMachineActionsModel()
+    property var machineActionsModel: Cura.FirstStartMachineActionsModel {}
 
     Component.onCompleted:
     {

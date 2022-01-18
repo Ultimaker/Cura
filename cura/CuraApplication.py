@@ -208,7 +208,6 @@ class CuraApplication(QtApplication):
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
-        self._first_start_machine_actions_model = None
         self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(self, parent = self)
         self._text_manager = TextManager(parent = self)
 
@@ -951,14 +950,6 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result=QObject)
     def getDiscoveredCloudPrintersModel(self, *args) -> "DiscoveredCloudPrintersModel":
         return self._discovered_cloud_printers_model
-
-    @pyqtSlot(result = QObject)
-    def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
-        if self._first_start_machine_actions_model is None:
-            self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
-            if self.started:
-                self._first_start_machine_actions_model.initialize()
-        return self._first_start_machine_actions_model
 
     @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
