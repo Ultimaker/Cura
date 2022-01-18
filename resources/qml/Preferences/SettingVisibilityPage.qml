@@ -1,13 +1,11 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.15
+import QtQuick.Controls 1.1 as OldControls
 
-import QtQuick.Controls 2.3 as NewControls
-
-import UM 1.2 as UM
+import UM 1.5 as UM
 
 import Cura 1.0 as Cura
 
@@ -36,7 +34,7 @@ UM.PreferencesPage
         id: base;
         anchors.fill: parent;
 
-        CheckBox
+        OldControls.CheckBox
         {
             id: toggleVisibleSettings
             anchors
@@ -98,7 +96,7 @@ UM.PreferencesPage
             onTextChanged: definitionsModel.filter = {"i18n_label|i18n_description": "*" + text}
         }
 
-        NewControls.ComboBox
+        ComboBox
         {
             id: visibilityPreset
             width: 150 * screenScaleFactor
@@ -106,7 +104,7 @@ UM.PreferencesPage
             {
                 top: parent.top
                 right: parent.right
-                bottom: scrollView.top
+                bottom: settingsListView.top
             }
 
             model: settingVisibilityPresetsModel.items
@@ -133,12 +131,9 @@ UM.PreferencesPage
             }
         }
 
-        ScrollView
+        ListView
         {
-            id: scrollView
-
-            frameVisible: true
-
+            id: settingsListView
             anchors
             {
                 top: filter.bottom;
@@ -147,42 +142,41 @@ UM.PreferencesPage
                 right: parent.right;
                 bottom: parent.bottom;
             }
-            ListView
+
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar {}
+
+            model: UM.SettingDefinitionsModel
             {
-                id: settingsListView
+                id: definitionsModel
+                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                showAll: true
+                exclude: ["machine_settings", "command_line_settings"]
+                showAncestors: true
+                expanded: ["*"]
+                visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+            }
 
-                model: UM.SettingDefinitionsModel
+            delegate: Loader
+            {
+                id: loader
+
+                width: settingsListView.width
+                height: model.type != undefined ? UM.Theme.getSize("section").height : 0
+
+                property var definition: model
+                property var settingDefinitionsModel: definitionsModel
+
+                asynchronous: true
+                active: model.type != undefined
+                sourceComponent:
                 {
-                    id: definitionsModel
-                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    showAll: true
-                    exclude: ["machine_settings", "command_line_settings"]
-                    showAncestors: true
-                    expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
-                }
-
-                delegate: Loader
-                {
-                    id: loader
-
-                    width: settingsListView.width
-                    height: model.type != undefined ? UM.Theme.getSize("section").height : 0
-
-                    property var definition: model
-                    property var settingDefinitionsModel: definitionsModel
-
-                    asynchronous: true
-                    active: model.type != undefined
-                    sourceComponent:
+                    switch(model.type)
                     {
-                        switch(model.type)
-                        {
-                            case "category":
-                                return settingVisibilityCategory
-                            default:
-                                return settingVisibilityItem
-                        }
+                        case "category":
+                            return settingVisibilityCategory
+                        default:
+                            return settingVisibilityItem
                     }
                 }
             }
