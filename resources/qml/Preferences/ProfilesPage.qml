@@ -1,12 +1,13 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
+import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 
@@ -78,7 +79,7 @@ Item
         height: childrenRect.height
 
         // Activate button
-        Button
+        OldControls.Button
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
@@ -98,7 +99,7 @@ Item
         }
 
         // Create button
-        Button
+        OldControls.Button
         {
             id: createMenuButton
             text: catalog.i18nc("@label", "Create")
@@ -115,7 +116,7 @@ Item
         }
 
         // Duplicate button
-        Button
+        OldControls.Button
         {
             id: duplicateMenuButton
             text: catalog.i18nc("@label", "Duplicate")
@@ -132,7 +133,7 @@ Item
         }
 
         // Remove button
-        Button
+        OldControls.Button
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
@@ -146,7 +147,7 @@ Item
         }
 
         // Rename button
-        Button
+        OldControls.Button
         {
             id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename")
@@ -161,7 +162,7 @@ Item
         }
 
         // Import button
-        Button
+        OldControls.Button
         {
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
@@ -173,7 +174,7 @@ Item
         }
 
         // Export button
-        Button
+        OldControls.Button
         {
             id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
@@ -397,13 +398,13 @@ Item
             }
             visible: text != ""
             text: catalog.i18nc("@label %1 is printer name", "Printer: %1").arg(Cura.MachineManager.activeMachine.name)
-            width: profileScrollView.width
+            width: profileBackground.width
             elide: Text.ElideRight
         }
 
-        ScrollView
+        Rectangle
         {
-            id: profileScrollView
+            id: profileBackground
             anchors
             {
                 top: captionLabel.visible ? captionLabel.bottom : parent.top
@@ -411,22 +412,20 @@ Item
                 bottom: parent.bottom
                 left: parent.left
             }
+            width: (parent.width * 0.4) | 0
 
-            Rectangle
-            {
-                parent: viewport
-                anchors.fill: parent
-                color: palette.light
-            }
-
-            width: true ? (parent.width * 0.4) | 0 : parent.width
-            frameVisible: true
-            clip: true
+            color: palette.light
 
             ListView
             {
                 id: qualityListView
+                anchors.fill: parent
 
+                ScrollBar.vertical: UM.ScrollBar
+                {
+                    id: profileScrollBar
+                }
+                clip: true
                 model: base.qualityManagementModel
 
                 Component.onCompleted:
@@ -461,7 +460,7 @@ Item
 
                 delegate: Rectangle
                 {
-                    width: profileScrollView.width
+                    width: profileBackground.width - profileScrollBar.width
                     height: childrenRect.height
 
                     // Added this property to identify custom profiles in automated system tests (Squish)
@@ -513,7 +512,7 @@ Item
 
             anchors
             {
-                left: profileScrollView.right
+                left: profileBackground.right
                 leftMargin: UM.Theme.getSize("default_margin").width
                 top: parent.top
                 bottom: parent.bottom
@@ -555,7 +554,7 @@ Item
                     Button
                     {
                         text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
-                        enabled: Cura.MachineManager.hasUserSettings && !base.currentItem.is_read_only
+                        enabled: Cura.MachineManager.hasUserSettings && qualityListView.currentItem && !qualityListView.currentItem.is_read_only
                         onClicked: Cura.ContainerManager.updateQualityChanges()
                     }
 
@@ -594,7 +593,7 @@ Item
                     }
                 }
 
-                TabView
+                OldControls.TabView
                 {
                     anchors.left: parent.left
                     anchors.top: profileNotices.visible ? profileNotices.bottom : profileNotices.anchors.top
