@@ -25,6 +25,7 @@ Cura.Menu
         id: openMenu
         action: Cura.Actions.open
         visible: base.fileProviderModel.count == 1
+        enabled: base.fileProviderModel.count == 1
     }
 
     OpenFilesMenu
@@ -42,7 +43,7 @@ Cura.Menu
         shortcut: StandardKey.Save
         text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
         visible: saveProjectMenu.model.count == 1
-        enabled: UM.WorkspaceFileHandler.enabled
+        enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1
         onTriggered:
         {
             var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };

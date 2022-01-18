@@ -11,7 +11,6 @@ try:
 except ImportError:
     pass
 from typing import Optional
-import os
 
 
 class SentryLogger(LogOutput):

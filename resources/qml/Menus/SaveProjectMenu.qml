@@ -40,9 +40,8 @@ Cura.Menu
                     UM.OutputDeviceManager.requestWriteToDevice(model.id, PrintInformation.jobName, args)
                 }
             }
-            // Unassign the shortcuts when the submenu is invisible (i.e. when there is only one project output device) to avoid ambiguous shortcuts.
-            // When there is only the LocalFileOutputDevice, the Ctrl+S shortcut is assigned to the saveWorkspaceMenu MenuItem
-            shortcut: saveProjectMenu.visible ? model.shortcut : ""
+            shortcut: model.shortcut
+            enabled: saveProjectMenu.shouldBeVisible
         }
         onObjectAdded: saveProjectMenu.insertItem(index, object)
         onObjectRemoved: saveProjectMenu.removeItem(object)

@@ -57,7 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "Comandos G-code a serem executados no início – separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -69,7 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "Comandos G-code a serem executados no fim – separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -563,7 +563,7 @@ msgstr "A velocidade máxima do motor da direção Z."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "Velocidade Máxima de E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1783,7 +1783,10 @@ msgstr "Padrão de Enchimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "O padrão do material de enchimento da impressão. A linha e o enchimento em ziguezague mudam de direção em camadas alternativas, o que reduz o custo do"
+" material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos"
+" gyroid, cúbico, quarto cúbico e octeto mudam em cada camada para proporcionar uma distribuição mais uniforme da resistência em cada direção. O enchimento"
+" relâmpago tenta minimizar o enchimento, ao suportar apenas a parte superior do objeto."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2100,7 +2103,7 @@ msgstr "Ângulo de corte do enchimento relâmpago"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "As extremidades das linhas de enchimento são encurtadas para poupar material. Esta definição é o ângulo da saliência das extremidades destas linhas."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2110,7 +2113,7 @@ msgstr "Ângulo de alisamento do enchimento relâmpago"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "As linhas de enchimento são simplificadas para poupar tempo de impressão. Este é o ângulo máximo permitido de saliência ao longo da linha de enchimento."
 
 #: fdmprinter.def.json
 msgctxt "material label"

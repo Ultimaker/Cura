@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2021-12-10 12:00+0100\n"
-"PO-Revision-Date: 2021-04-16 14:58+0200\n"
+"PO-Revision-Date: 2022-01-10 11:57+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Turkish <info@lionbridge.com>, Turkish <info@bothof.nl>\n"
 "Language: tr_TR\n"
@@ -15,17 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:115
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Kullanıcı veri dizininden arşiv oluşturulamadı: {}"
 
-#: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:122
-#: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:159
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126
+#: /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:122 /home/clamboo/Desktop/Cura/cura/Backups/Backup.py:159 /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118 /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "Yedekle"
@@ -45,27 +42,22 @@ msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
 msgstr "Cura yedeklemesi geri yüklenmeye çalışılırken aşağıdaki hata oluştu:"
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:55
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:55
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "Lütfen baskıya başlamadan önce malzeme profillerini yazıcılarınızla senkronize edin."
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:56
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:56
 msgctxt "@action:button"
 msgid "New materials installed"
 msgstr "Yeni malzemeler yüklendi"
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:63
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:63
 msgctxt "@action:button"
 msgid "Sync materials with printers"
 msgstr "Malzemeleri yazıcılarla senkronize et"
 
-#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:71
-#: /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:80
+#: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82 /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:71 /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:80
 msgctxt "@action:button"
 msgid "Learn more"
 msgstr "Daha fazla bilgi edinin"
@@ -83,7 +75,7 @@ msgstr "Malzeme arşivi kaydedilemedi"
 #: /home/clamboo/Desktop/Cura/cura/UltimakerCloud/CloudMaterialSync.py:188
 msgctxt "@text"
 msgid "Unknown error."
-msgstr ""
+msgstr "Bilinmeyen hata."
 
 #: /home/clamboo/Desktop/Cura/cura/BuildVolume.py:99
 msgctxt "@info:status"
@@ -106,10 +98,7 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "Geçersiz kılınmadı"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:361
-#: /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:1614
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83 /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:361 /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:1614 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:130
 #: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:171
 msgctxt "@label"
 msgid "Unknown"
@@ -125,9 +114,7 @@ msgctxt "@label"
 msgid "Available networked printers"
 msgstr "Mevcut ağ yazıcıları"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:338
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:42
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:11
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/QualityManagementModel.py:338 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:42 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:11
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
@@ -148,38 +135,32 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Tüm Dosyalar (*)"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:45
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:14
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:45 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
 msgid "Visual"
 msgstr "Görsel"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:46
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:15
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:46 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "Görsel profili, yüksek görsel ve yüzey kalitesi oluşturmak amacıyla, görsel prototipler ve modeller basılması için tasarlanmıştır."
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:49
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:18
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:49 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engineering"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:50
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:19
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:50 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "Mühendislik profili, daha yüksek doğruluk ve daha yakın toleranslar sağlamak amacıyla, işlevsel prototipler ve son kullanım parçaları basılması için tasarlanmıştır."
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:53
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:22
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:53 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:22
 msgctxt "@label"
 msgid "Draft"
 msgstr "Taslak"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:54
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:23
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentCategoryModel.py:54 /home/clamboo/Desktop/Cura/cura/Machines/Models/IntentTranslations.py:23
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "Taslak profili, baskı süresinin önemli ölçüde kısaltılması amacıyla, birincil prototipler basılması ve konsept doğrulaması yapılması için tasarlanmıştır."
@@ -189,8 +170,7 @@ msgctxt "@label"
 msgid "Custom Material"
 msgstr "Özel Malzeme"
 
-#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:289
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:346
+#: /home/clamboo/Desktop/Cura/cura/Machines/Models/MaterialManagementModel.py:289 /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:346
 msgctxt "@label"
 msgid "Custom"
 msgstr "Özel"
@@ -200,27 +180,22 @@ msgctxt "@info:title"
 msgid "Login failed"
 msgstr "Giriş başarısız"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:24
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:24 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:67
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "Nesneler için yeni konum bulunuyor"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:28
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:28 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:71
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "Konumu Buluyor"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:41
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151
-#: /home/clamboo/Desktop/Cura/cura/MultiplyObjectsJob.py:99
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:41 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:151 /home/clamboo/Desktop/Cura/cura/MultiplyObjectsJob.py:99
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Yapılan hacim içinde tüm nesneler için konum bulunamadı"
 
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:42
-#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
+#: /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsJob.py:42 /home/clamboo/Desktop/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:152
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "Konum Bulunamıyor"
@@ -228,35 +203,32 @@ msgstr "Konum Bulunamıyor"
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:104
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
-msgstr ""
+msgstr "Yazıcılarla senkronize edilecek malzeme arşivi oluşturulamadı."
 
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
+#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
-msgstr ""
+msgstr "Yazıcılarla senkronize etmek için malzeme arşivi oluşturulamadı."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:143
 msgctxt "@text:error"
 msgid "The response from Digital Factory appears to be corrupted."
-msgstr ""
+msgstr "Digital Factory'den gelen yanıt bozuk görünüyor."
 
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151
-#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
+#: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151 /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
-msgstr ""
+msgstr "Digital Factory'den gelen yanıtta önemli bilgiler eksik."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr ""
+msgstr "Malzemeleri bazı yazıcılarla senkronize etmek için Digital Factory'ye bağlanılamadı."
 
 #: /home/clamboo/Desktop/Cura/cura/PrinterOutput/UploadMaterialsJob.py:232
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
-msgstr ""
+msgstr "Digital Factory'ye bağlanılamadı."
 
 #: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:530
 msgctxt "@info:progress"
@@ -310,9 +282,7 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Aynı anda yalnızca bir G-code dosyası yüklenebilir. {0} içe aktarma atlandı"
 
-#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1809
-#: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:217
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177
+#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1809 /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:217 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Uyarı"
@@ -323,60 +293,41 @@ msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-code yüklenirken başka bir dosya açılamaz. {0} içe aktarma atlandı"
 
-#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1821
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:156
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:166
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141
+#: /home/clamboo/Desktop/Cura/cura/CuraApplication.py:1821 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:156 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:166 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141
 #: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:161
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Hata"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:67
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:286
+#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:67 /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:286
 msgctxt "@action:button"
 msgid "Skip"
 msgstr "Atla"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:72
-#: /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128
-#: /home/clamboo/Desktop/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
-#: /home/clamboo/Desktop/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:485
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:174
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:127
+#: /home/clamboo/Desktop/Cura/cura/UI/WhatsNewPagesModel.py:72 /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:128 /home/clamboo/Desktop/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185 /home/clamboo/Desktop/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:485
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:174 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:127
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Kapat"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:57
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:277
+#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:57 /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:277
 msgctxt "@action:button"
 msgid "Next"
 msgstr "Sonraki"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:290
-#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:26
+#: /home/clamboo/Desktop/Cura/cura/UI/WelcomePagesModel.py:290 /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:26
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "Bitir"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:17
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:48
+#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:17 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:48
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Ekle"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:445
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:234
-#: /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:44
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
+#: /home/clamboo/Desktop/Cura/cura/UI/AddPrinterPagesModel.py:33 /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:445 /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:234 /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:19 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:81 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:44
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:82
 #: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:293
 msgctxt "@action:button"
 msgid "Cancel"
@@ -448,8 +399,7 @@ msgctxt "@tooltip"
 msgid "Other"
 msgstr "Diğer"
 
-#: /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:37
-#: /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:61
+#: /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:37 /home/clamboo/Desktop/Cura/cura/UI/TextManager.py:61
 msgctxt "@text:window"
 msgid "The release notes could not be opened."
 msgstr "Sürüm notları açılamadı."
@@ -606,7 +556,7 @@ msgstr "Ultimaker hesabı sunucusuna ulaşılamadı."
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationService.py:278
 msgctxt "@info:title"
 msgid "Log-in failed"
-msgstr ""
+msgstr "Giriş başarısız"
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:75
 msgctxt "@message"
@@ -616,7 +566,7 @@ msgstr "Sağlanan durum doğru değil."
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:80
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
-msgstr ""
+msgstr "Hesap sunucusuyla kimlik doğrulaması yapılırken zaman aşımı oluştu."
 
 #: /home/clamboo/Desktop/Cura/cura/OAuth2/AuthorizationRequestHandler.py:97
 msgctxt "@message"
@@ -658,8 +608,7 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "Default"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:713
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
+#: /home/clamboo/Desktop/Cura/cura/Settings/MachineManager.py:713 /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Nozül"
@@ -679,21 +628,18 @@ msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "Ekstrüder(ler) Devre Dışı Bırakıldı"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:207
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:140
+#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:207 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:140
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Dosya Zaten Mevcut"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:208
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:141
+#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:208 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:141
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "Dosya <filename>{0}</filename> zaten mevcut. Üstüne yazmak istediğinizden emin misiniz?"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:459
-#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:462
+#: /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:459 /home/clamboo/Desktop/Cura/cura/Settings/ContainerManager.py:462
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "Geçersiz dosya URL’si:"
@@ -745,8 +691,7 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "<filename>{0}</filename> dosyasından profil içe aktarımı başarısız oldu:"
 
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:252
-#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:262
+#: /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:252 /home/clamboo/Desktop/Cura/cura/Settings/CuraContainerRegistry.py:262
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
@@ -818,8 +763,7 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Model Başına Ayarları Yapılandır"
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraProfileReader/__init__.py:14
-#: /home/clamboo/Desktop/Cura/plugins/CuraProfileWriter/__init__.py:14
+#: /home/clamboo/Desktop/Cura/plugins/CuraProfileReader/__init__.py:14 /home/clamboo/Desktop/Cura/plugins/CuraProfileWriter/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura Profili"
@@ -829,8 +773,7 @@ msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D Dosyası"
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:26
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DriveApiService.py:86
+#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:26 /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/DriveApiService.py:86
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "Yedeklemeniz geri yüklenirken bir hata oluştu."
@@ -906,8 +849,7 @@ msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Çıkarılabilir Sürücüye Kaydediliyor {0}"
 
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
+#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Yazılacak dosya biçimleri mevcut değil!"
@@ -923,8 +865,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Kaydediliyor"
 
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
+#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
@@ -936,8 +877,7 @@ msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "{device} üzerine yazmaya çalışırken dosya adı bulunamadı."
 
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140
-#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
+#: /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140 /home/clamboo/Desktop/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
@@ -1019,8 +959,7 @@ msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "<filename>{0}</filename> proje dosyası aniden erişilemez oldu: <message>{1}</message>."
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:643
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:651
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:643 /home/clamboo/Desktop/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:651
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Proje Dosyası Açılamıyor"
@@ -1037,30 +976,22 @@ msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
 msgstr "<filename>{0}</filename> proje dosyası, Ultimaker Cura'nın bu sürümünde bilinmeyen profiller kullanılarak yapılmış."
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:27
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:33
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:27 /home/clamboo/Desktop/Cura/plugins/3MFReader/__init__.py:33
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF Dosyası"
 
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:57
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:72
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:94
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:149
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:159
+#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:57 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:72 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:94 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:149 /home/clamboo/Desktop/Cura/plugins/UFPWriter/UFPWriter.py:159
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "UFP dosyasına yazamıyor:"
 
-#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/__init__.py:28
-#: /home/clamboo/Desktop/Cura/plugins/UFPReader/__init__.py:22
+#: /home/clamboo/Desktop/Cura/plugins/UFPWriter/__init__.py:28 /home/clamboo/Desktop/Cura/plugins/UFPReader/__init__.py:22
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Ultimaker Biçim Paketi"
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeProfileReader/__init__.py:14
-#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/__init__.py:14
-#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/__init__.py:16
+#: /home/clamboo/Desktop/Cura/plugins/GCodeProfileReader/__init__.py:14 /home/clamboo/Desktop/Cura/plugins/GCodeReader/__init__.py:14 /home/clamboo/Desktop/Cura/plugins/GCodeWriter/__init__.py:16
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code dosyası"
@@ -1075,8 +1006,7 @@ msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Röntgen Görüntüsü"
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
+#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "Katmanlar İşleniyor"
@@ -1111,12 +1041,8 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Mevcut malzeme, seçilen makine veya yapılandırma ile uyumlu olmadığından mevcut malzeme ile dilimlenemedi."
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:429
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:456
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:468
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:480
-#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:493
+#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:429 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:456 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:468
+#: /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:480 /home/clamboo/Desktop/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:493
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Dilimlenemedi"
@@ -1162,8 +1088,7 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF Dosyası"
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeGzReader/__init__.py:17
-#: /home/clamboo/Desktop/Cura/plugins/GCodeGzWriter/__init__.py:17
+#: /home/clamboo/Desktop/Cura/plugins/GCodeGzReader/__init__.py:17 /home/clamboo/Desktop/Cura/plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Sıkıştırılmış G-code Dosyası"
@@ -1223,8 +1148,7 @@ msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-code ayrıştırma"
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:349
-#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:503
+#: /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:349 /home/clamboo/Desktop/Cura/plugins/GCodeReader/FlavorParser.py:503
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-code Ayrıntıları"
@@ -1316,8 +1240,7 @@ msgctxt "@info:generic"
 msgid "Syncing..."
 msgstr "Senkronize ediliyor..."
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:95
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:95 /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:143
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
 msgstr "Ultimaker hesabınızda değişiklik tespit edildi"
@@ -1347,8 +1270,7 @@ msgctxt "@button"
 msgid "Decline"
 msgstr "Reddet"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
 msgctxt "@button"
 msgid "Agree"
 msgstr "Kabul ediyorum"
@@ -1363,8 +1285,7 @@ msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "GCodeWriter metin dışı modu desteklemez."
 
-#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:80
-#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:96
+#: /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:80 /home/clamboo/Desktop/Cura/plugins/GCodeWriter/GCodeWriter.py:96
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Lütfen dışa aktarmadan önce G-code'u hazırlayın."
@@ -1389,8 +1310,7 @@ msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Görüntülenecek katman yok"
 
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationView.py:136
-#: /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:74
+#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationView.py:136 /home/clamboo/Desktop/Cura/plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "Bu mesajı bir daha gösterme"
@@ -1613,8 +1533,7 @@ msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "Bu yazıcı Digital Factory ile bağlantılandırılmamış:"
 msgstr[1] "Bu yazıcılar Digital Factory ile bağlantılandırılmamış:"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:432
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:432
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
@@ -1741,10 +1660,9 @@ msgstr "3MF Writer eklentisi bozuk."
 #: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:37
 msgctxt "@error"
 msgid "There is no workspace yet to write. Please add a printer first."
-msgstr ""
+msgstr "Henüz yazılacak bir çalışma alanı yok. Lütfen önce bir yazıcı ekleyin."
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64
-#: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
+#: /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64 /home/clamboo/Desktop/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "Burada çalışma alanını yazmak için izin yok."
@@ -1833,8 +1751,7 @@ msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Bu modeli Özelleştirmek için Ayarları seçin"
 
-#: /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:96
+#: /home/clamboo/Desktop/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55 /home/clamboo/Desktop/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:96
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Filtrele..."
@@ -1924,11 +1841,8 @@ msgctxt "@description"
 msgid "Backup and synchronize your Cura settings."
 msgstr "Cura ayarlarınızı yedekleyin ve senkronize edin."
 
-#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:225
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:171
-#: /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:53
+#: /home/clamboo/Desktop/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:51 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:39 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:225
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:171 /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:53
 msgctxt "@button"
 msgid "Sign in"
 msgstr "Giriş yap"
@@ -1958,18 +1872,10 @@ msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (Genişlik)"
 
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
-#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
+#: /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109 /home/clamboo/Desktop/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
@@ -2194,14 +2100,12 @@ msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "Yeni oluştur"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:75
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:70
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:75 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:70
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Özet - Cura Projesi"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:97
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:94
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:97 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:94
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "Yazıcı ayarları"
@@ -2211,20 +2115,17 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "Makinedeki çakışma nasıl çözülmelidir?"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:103
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:167 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:103
 msgctxt "@action:label"
 msgid "Type"
 msgstr "Tür"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:183
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:183 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "Yazıcı Grubu"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:205
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:219
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:205 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:219
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Profil ayarları"
@@ -2234,28 +2135,22 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "Profildeki çakışma nasıl çözülmelidir?"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:242
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:353
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:243
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:242 /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:353 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:118 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:243
 msgctxt "@action:label"
 msgid "Name"
 msgstr "İsim"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:258
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:260
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:258 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:260
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Intent"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:274
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:227
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:274 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:227
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Profilde değil"
 
-#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:279
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:232
+#: /home/clamboo/Desktop/Cura/plugins/3MFReader/WorkspaceDialog.qml:279 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:232
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2416,8 +2311,7 @@ msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "Doğrusal"
 
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:161
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:172
+#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:161 /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
 msgstr "Yarı saydamlık"
@@ -2442,9 +2336,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Düzeltme"
 
-#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:227
-#: /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
+#: /home/clamboo/Desktop/Cura/plugins/ImageReader/ConfigUI.qml:227 /home/clamboo/Desktop/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
 msgctxt "@action:button"
 msgid "OK"
 msgstr "Tamam"
@@ -2524,8 +2416,7 @@ msgctxt "@action:button"
 msgid "Install"
 msgstr "Yükle"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "Yüklü"
@@ -2535,8 +2426,7 @@ msgctxt "@label"
 msgid "Premium"
 msgstr "Premium"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:39 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
 msgstr "Web Mağazasına Git"
@@ -2601,20 +2491,17 @@ msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Buy material spools</a>"
 msgstr "<a href='%1'>Malzeme makarası satın al</a>"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:96 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:34
 msgctxt "@action:button"
 msgid "Update"
 msgstr "Güncelle"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:97 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:35
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "Güncelleniyor"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:98 /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxInstalledTileActions.qml:36
 msgctxt "@action:button"
 msgid "Updated"
 msgstr "Güncellendi"
@@ -2629,9 +2516,7 @@ msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "Eklentiler"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:475
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:44 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:475
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Malzemeler"
@@ -2706,8 +2591,7 @@ msgctxt "@label"
 msgid "Last updated"
 msgstr "Son güncelleme"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDetailPage.qml:103 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
 msgctxt "@label"
 msgid "Brand"
 msgstr "Marka"
@@ -2767,9 +2651,7 @@ msgctxt "@button"
 msgid "Dismiss"
 msgstr "Kapat"
 
-#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
+#: /home/clamboo/Desktop/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
 #: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:186
 msgctxt "@button"
 msgid "Next"
@@ -2810,8 +2692,7 @@ msgctxt "@action:button"
 msgid "Confirm"
 msgstr "Onayla"
 
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
+#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20 /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "Renk şeması"
@@ -2866,8 +2747,7 @@ msgctxt "@label"
 msgid "Shell"
 msgstr "Kabuk"
 
-#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
+#: /home/clamboo/Desktop/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:263 /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:65
 msgctxt "@label"
 msgid "Infill"
 msgstr "Dolgu"
@@ -2912,16 +2792,12 @@ msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "Yazıcıyı yönet"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:191 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:184 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
 msgctxt "@label"
 msgid "Glass"
 msgstr "Cam"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:523
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:254 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:523 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:250
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "Kuyruğu uzaktan yönetmek için lütfen yazıcının donanım yazılımını güncelleyin."
@@ -2951,9 +2827,7 @@ msgctxt "@label:status"
 msgid "Idle"
 msgstr "Boşta"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:364
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:364 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
 msgctxt "@label:status"
 msgid "Preparing..."
 msgstr "Hazırlanıyor..."
@@ -3090,8 +2964,7 @@ msgctxt "@label"
 msgid "Aluminum"
 msgstr "Alüminyum"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:76
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:76 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "Tamamlandı"
@@ -3101,21 +2974,17 @@ msgctxt "@label:status"
 msgid "Aborting..."
 msgstr "İptal ediliyor..."
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:92
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "Durduruldu"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96 /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:100
 msgctxt "@label:status"
 msgid "Failed"
-msgstr ""
+msgstr "Başarısız"
 
 #: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:102
 msgctxt "@label:status"
@@ -3162,9 +3031,7 @@ msgctxt "@action:button"
 msgid "Edit"
 msgstr "Düzenle"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:138
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88 /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:138 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:156
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:55
 msgctxt "@action:button"
 msgid "Remove"
@@ -3180,20 +3047,17 @@ msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Yazıcınız listede yoksa <a href='%1'>ağ yazdırma sorun giderme kılavuzunu</a> okuyun"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
 msgctxt "@label"
 msgid "Type"
 msgstr "Tür"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Üretici yazılımı sürümü"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
 msgctxt "@label"
 msgid "Address"
 msgstr "Adres"
@@ -3223,8 +3087,7 @@ msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Geçersiz IP adresi"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "Lütfen geçerli bir IP adresi girin."
@@ -3234,8 +3097,7 @@ msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Yazıcı Adresi"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "Ağdaki yazıcınızın IP adresini girin."
@@ -3250,8 +3112,7 @@ msgctxt "@label"
 msgid "Delete"
 msgstr "Sil"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:290
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:290
 msgctxt "@label"
 msgid "Resume"
 msgstr "Devam et"
@@ -3266,9 +3127,7 @@ msgctxt "@label"
 msgid "Resuming..."
 msgstr "Devam ediliyor..."
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:285
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:294
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:285 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:294
 msgctxt "@label"
 msgid "Pause"
 msgstr "Duraklat"
@@ -3308,8 +3167,7 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "%1 öğesini durdurmak istediğinizden emin misiniz?"
 
-#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164
-#: /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:336
+#: /home/clamboo/Desktop/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:164 /home/clamboo/Desktop/Cura/resources/qml/MonitorButton.qml:336
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "Yazdırmayı durdur"
@@ -3382,8 +3240,7 @@ msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "Mağaza"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/FileMenu.qml:13
+#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:27 /home/clamboo/Desktop/Cura/resources/qml/Menus/FileMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Dosya"
@@ -3393,14 +3250,12 @@ msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "Düz&enle"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/ViewMenu.qml:12
+#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:49 /home/clamboo/Desktop/Cura/resources/qml/Menus/ViewMenu.qml:12
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Görünüm"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:60
-#: /home/clamboo/Desktop/Cura/resources/qml/Menus/SettingsMenu.qml:13
+#: /home/clamboo/Desktop/Cura/resources/qml/MainWindow/ApplicationMenu.qml:60 /home/clamboo/Desktop/Cura/resources/qml/Menus/SettingsMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Ayarlar"
@@ -3555,8 +3410,7 @@ msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "Cihaza bağlanılamadı."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
+#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207 /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
 msgstr "Ultimaker yazıcınıza bağlanamıyor musunuz?"
@@ -3571,8 +3425,7 @@ msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "Bu yazıcı bilinmeyen bir yazıcı olduğu veya bir grubun ana makinesi olmadığı için eklenemiyor."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:334
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:707
+#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:334 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:707
 msgctxt "@button"
 msgid "Back"
 msgstr "Geri"
@@ -3609,8 +3462,7 @@ msgctxt "@button"
 msgid "Get started"
 msgstr "Başlayın"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:64
-#: /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:20
+#: /home/clamboo/Desktop/Cura/resources/qml/WelcomePages/CloudContent.qml:64 /home/clamboo/Desktop/Cura/resources/qml/Account/GeneralOperations.qml:20
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
 msgstr "Ultimaker platformuna giriş yapın"
@@ -3864,8 +3716,7 @@ msgctxt "@Label"
 msgid "Static type checker for Python"
 msgstr "Python için statik tür denetleyicisi"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:156
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:157
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:156 /home/clamboo/Desktop/Cura/resources/qml/Dialogs/AboutDialog.qml:157
 msgctxt "@Label"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "SSL güvenilirliğini doğrulamak için kök sertifikalar"
@@ -3910,8 +3761,7 @@ msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux çapraz-dağıtım uygulama dağıtımı"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:645
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:645
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Dosya aç"
@@ -3982,8 +3832,7 @@ msgctxt "@title:column"
 msgid "Current changes"
 msgstr "Mevcut değişiklikler"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:160
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:755
+#: /home/clamboo/Desktop/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:160 /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:755
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Her zaman sor"
@@ -4093,8 +3942,7 @@ msgctxt "@label"
 msgid "Preset printers"
 msgstr "Önayarlı yazıcılar"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
+#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
 msgctxt "@label"
 msgid "Print settings"
 msgstr "Yazdırma ayarları"
@@ -4125,8 +3973,7 @@ msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Özel profiller"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:564
+#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:244 /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:564
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Geçerli değişiklikleri iptal et"
@@ -4163,8 +4010,7 @@ msgid_plural "There is no %1 profile for the configurations in extruders %2. The
 msgstr[0] "%2 ekstrüderindeki yapılandırmalar için %1 profili yok. Bunun yerine varsayılan amaç kullanılacak"
 msgstr[1] "%2 ekstrüderindeki yapılandırmalar için %1 profili yok. Bunun yerine varsayılan amaç kullanılacak"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:736
+#: /home/clamboo/Desktop/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52 /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:736
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profiller"
@@ -4301,12 +4147,12 @@ msgstr "Bu malzeme kombinasyonuyla daha iyi yapıştırma için yapıştırıcı
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:102
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
-msgstr ""
+msgstr "Bu ekstrüderin yapılandırılmasına izin verilmiyor ve dilimleme yapılamaz."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:106
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
-msgstr ""
+msgstr "Bu ekstrüderin yapılandırmasıyla eşleşen profil yok."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:253
 msgctxt "@label"
@@ -4445,15 +4291,12 @@ msgid_plural "Overrides %1 settings."
 msgstr[0] "%1 ayarı geçersiz kılar."
 msgstr[1] "%1 ayarı geçersiz kılar."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:34
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:477
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:34 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:477
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Profiller"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:84
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:40
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:84 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:40
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "Etkinleştir"
@@ -4468,20 +4311,17 @@ msgctxt "@label"
 msgid "Duplicate"
 msgstr "Çoğalt"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:152
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:63
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:152 /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:63
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Yeniden adlandır"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:167
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:167 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:171
 msgctxt "@action:button"
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:179
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:179 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:185
 msgctxt "@action:button"
 msgid "Export"
 msgstr "Dışa Aktar"
@@ -4501,14 +4341,12 @@ msgctxt "@title:window"
 msgid "Duplicate Profile"
 msgstr "Profili Çoğalt"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:277
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:277 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Kaldırmayı Onayla"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:278
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/ProfilesPage.qml:278 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:315
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "%1’i kaldırmak istediğinizden emin misiniz? Bu eylem geri alınamaz!"
@@ -4553,8 +4391,7 @@ msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Küresel Ayarlar"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:17
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:468
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/GeneralPage.qml:17 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:468
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Genel"
@@ -5007,8 +4844,7 @@ msgctxt "@action:label"
 msgid "Printer"
 msgstr "Yazıcı"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:329
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:337
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:329 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:337
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Malzemeyi İçe Aktar"
@@ -5023,8 +4859,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Malzeme <filename>%1</filename> dosyasına başarıyla içe aktarıldı"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:360
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:368
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:360 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:368
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Malzemeyi Dışa Aktar"
@@ -5042,157 +4877,152 @@ msgstr "Malzeme <filename>%1</filename> dosyasına başarıyla dışa aktarıld�
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:17
 msgctxt "@title:window"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "Malzemeleri yazıcılarla senkronize et"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:47
 msgctxt "@title:header"
 msgid "Sync materials with printers"
-msgstr ""
+msgstr "Malzemeleri yazıcılarla senkronize et"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:53
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
-msgstr ""
+msgstr "Birkaç basit adımı izleyerek tüm malzeme profillerinizi yazıcılarınızla senkronize edebileceksiniz."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:77
 msgctxt "@button"
 msgid "Start"
-msgstr ""
+msgstr "Başlat"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:98
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
-msgstr ""
+msgstr "Malzeme profillerini neden senkronize etmem gerekiyor?"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:130
 msgctxt "@title:header"
 msgid "Sign in"
-msgstr ""
+msgstr "Giriş yap"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:137
 msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
-msgstr ""
+msgstr "Malzeme profillerini Digital Factory'ye bağlı tüm yazıcılarınızla otomatik olarak senkronize etmek için Cura'da oturum açmanız gerekir."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:165
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:476
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:611
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:165 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:476 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:611
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr ""
+msgstr "Malzemeleri USB ile senkronize et"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:200
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr ""
+msgstr "Aşağıdaki yazıcılar yeni malzeme profillerini alacak:"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:207
 msgctxt "@title:header"
 msgid "Something went wrong when sending the materials to the printers."
-msgstr ""
+msgstr "Malzemeler yazıcılara gönderilirken bir sorun oluştu."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:214
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr ""
+msgstr "Malzeme profilleri aşağıdaki yazıcılarla başarıyla senkronize edildi:"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:256
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:444
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:256 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:444
 msgctxt "@button"
 msgid "Troubleshooting"
-msgstr ""
+msgstr "Sorun giderme"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:432
 msgctxt "@text Asking the user whether printers are missing in a list."
 msgid "Printers missing?"
-msgstr ""
+msgstr "Yazıcı eksik mi?"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:434
 msgctxt "@text"
 msgid "Make sure all your printers are turned ON and connected to Digital Factory."
-msgstr ""
+msgstr "Tüm yazıcılarınızın AÇIK ve Digitial Factory'ye bağlı olduğundan emin olun."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:457
 msgctxt "@button"
 msgid "Refresh List"
-msgstr ""
+msgstr "Listeyi Yenile"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:487
 msgctxt "@button"
 msgid "Try again"
-msgstr ""
+msgstr "Yeniden dene"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:491
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:491 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
 msgctxt "@button"
 msgid "Done"
-msgstr ""
+msgstr "Bitti"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:493
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:618
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:493 /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:618
 msgctxt "@button"
 msgid "Sync"
-msgstr ""
+msgstr "Senkronize et"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:549
 msgctxt "@button"
 msgid "Syncing"
-msgstr ""
+msgstr "Senkronize ediliyor"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:566
 msgctxt "@title:header"
 msgid "No printers found"
-msgstr ""
+msgstr "Yazıcı bulunamadı"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:582
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
-msgstr ""
+msgstr "Digital Factory'ye bağlı uyumlu yazıcınız yok gibi görünüyor. Yazıcınızın bağlı olduğundan ve en son donanım yazılımını çalıştırdığından emin olun."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:595
 msgctxt "@button"
 msgid "Learn how to connect your printer to Digital Factory"
-msgstr ""
+msgstr "Yazıcınızı Digital Factory'ye nasıl bağlayacağınızı öğrenin"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:625
 msgctxt "@button"
 msgid "Refresh"
-msgstr ""
+msgstr "Yenile"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:647
 msgctxt "@title:header"
 msgid "Sync material profiles via USB"
-msgstr ""
+msgstr "Malzeme profillerini USB üzerinden senkronize edin"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:654
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
-msgstr ""
+msgstr "Yeni malzeme profillerini yazıcınıza yüklemek için aşağıdaki adımları izleyin."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:679
 msgctxt "@text"
 msgid "Click the export material archive button."
-msgstr ""
+msgstr "Malzeme arşivini dışa aktar düğmesine tıklayın."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:680
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
-msgstr ""
+msgstr ".umm dosyasını bir USB çubuğa kaydedin."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:681
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
-msgstr ""
+msgstr "USB çubuğunu yazıcınıza takın ve yeni malzeme profillerini yükleme işlemini başlatın."
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:692
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "Yazıcıma yeni malzeme profilleri nasıl yüklenir"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:716
 msgctxt "@button"
 msgid "Export material archive"
-msgstr ""
+msgstr "Malzeme arşivini dışa aktar"
 
 #: /home/clamboo/Desktop/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:753
 msgctxt "@title:window"
@@ -5209,8 +5039,7 @@ msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "Tümünü denetle"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:473
+#: /home/clamboo/Desktop/Cura/resources/qml/Preferences/MachinesPage.qml:16 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:473
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Yazıcılar"
@@ -5422,14 +5251,12 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "Sıcak ucun ön ısıtma sıcaklığı."
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
+#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341 /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "İptal Et"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344
-#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
+#: /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344 /home/clamboo/Desktop/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Ön ısıtma"
@@ -5780,8 +5607,7 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Yapılandırma Klasörünü Göster"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Actions.qml:476
-#: /home/clamboo/Desktop/Cura/resources/qml/Settings/SettingView.qml:535
+#: /home/clamboo/Desktop/Cura/resources/qml/Actions.qml:476 /home/clamboo/Desktop/Cura/resources/qml/Settings/SettingView.qml:535
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Görünürlük ayarını yapılandır..."
@@ -5894,8 +5720,7 @@ msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "%1 kapatılıyor"
 
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:595
-#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:607
+#: /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:595 /home/clamboo/Desktop/Cura/resources/qml/Cura.qml:607
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "%1 uygulamasından çıkmak istediğinizden emin misiniz?"
