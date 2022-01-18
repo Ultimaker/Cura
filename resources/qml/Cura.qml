@@ -20,6 +20,8 @@ UM.MainWindow
 {
     id: base
 
+    property var whatsNewModel: Cura.WhatsNewPagesModel {}
+
     // Cura application window title
     title:
     {
@@ -128,7 +130,7 @@ UM.MainWindow
             // Reuse the welcome dialog item to show "What's New" only.
             if (CuraApplication.shouldShowWhatsNewDialog())
             {
-                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.model = base.whatsNewModel
                 welcomeDialogItem.progressBarVisible = false
                 welcomeDialogItem.visible = true
             }
@@ -873,7 +875,7 @@ UM.MainWindow
     {
         id: addMachineDialog
         title: catalog.i18nc("@title:window", "Add Printer")
-        model: CuraApplication.getAddPrinterPagesModel()
+        model: Cura.AddPrinterPagesModel {}
         progressBarVisible: false
     }
 
@@ -883,7 +885,7 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "What's New")
         minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
         minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
-        model: CuraApplication.getWhatsNewPagesModel()
+        model: base.whatsNewModel
         progressBarVisible: false
         visible: false
     }

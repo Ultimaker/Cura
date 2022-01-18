@@ -27,7 +27,7 @@ Item
     property int shadowOffset: 1 * screenScaleFactor
 
     property alias progressBarVisible: wizardPanel.progressBarVisible
-    property var model: CuraApplication.getWelcomePagesModel()
+    property var model: Cura.WelcomePagesModel {}
 
     onVisibleChanged:
     {

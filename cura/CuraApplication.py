@@ -209,10 +209,7 @@ class CuraApplication(QtApplication):
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = None
-        self._welcome_pages_model = WelcomePagesModel(self, parent = self)
-        self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
         self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(self, parent = self)
-        self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
         self._text_manager = TextManager(parent = self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -844,10 +841,7 @@ class CuraApplication(QtApplication):
         self._cura_API.initialize()
         self.processEvents()
         self._output_device_manager.start()
-        self._welcome_pages_model.initialize()
-        self._add_printer_pages_model.initialize()
         self._add_printer_pages_model_without_cancel.initialize(cancellable = False)
-        self._whats_new_pages_model.initialize()
 
         # Initialize the FileProviderModel
         self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
@@ -971,20 +965,8 @@ class CuraApplication(QtApplication):
         return self._setting_visibility_presets_model
 
     @pyqtSlot(result = QObject)
-    def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
-        return self._welcome_pages_model
-
-    @pyqtSlot(result = QObject)
-    def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
-        return self._add_printer_pages_model
-
-    @pyqtSlot(result = QObject)
     def getAddPrinterPagesModelWithoutCancel(self, *args) -> "AddPrinterPagesModel":
         return self._add_printer_pages_model_without_cancel
-
-    @pyqtSlot(result = QObject)
-    def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
-        return self._whats_new_pages_model
 
     @pyqtSlot(result = QObject)
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":

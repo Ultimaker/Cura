@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt5.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
+import cura.CuraApplication
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -42,7 +43,7 @@ class WelcomePagesModel(ListModel):
     NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
     PreviousPageButtonTextRole = Qt.UserRole + 5  # The text for the previous page button
 
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
+    def __init__(self, application: Optional["CuraApplication"], parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.IdRole, "id")
@@ -50,6 +51,9 @@ class WelcomePagesModel(ListModel):
         self.addRoleName(self.NextPageIdRole, "next_page_id")
         self.addRoleName(self.NextPageButtonTextRole, "next_page_button_text")
         self.addRoleName(self.PreviousPageButtonTextRole, "previous_page_button_text")
+
+        if application is None:
+            application = cura.CuraApplication.CuraApplication.getInstance()
 
         self._application = application
         self._catalog = i18nCatalog("cura")
@@ -65,6 +69,11 @@ class WelcomePagesModel(ListModel):
         # If the welcome flow should be shown. It can show the complete flow or just the changelog depending on the
         # specific case. See initialize() for how this variable is set.
         self._should_show_welcome_flow = False
+
+        if application.isQmlEngineInitialized():
+            self.initialize()
+        else:
+            application.engineCreatedSignal.connect(self.initialize)
 
     allFinished = pyqtSignal()  # emitted when all steps have been finished
     currentPageIndexChanged = pyqtSignal()
