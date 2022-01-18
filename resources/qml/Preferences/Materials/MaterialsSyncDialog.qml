@@ -1,4 +1,4 @@
-//Copyright (c) 2021 Ultimaker B.V.
+//Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.15
@@ -253,204 +253,202 @@ Window
                         onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                     }
                 }
-                ScrollView
+                ListView
                 {
-                    id: printerListScrollView
+                    id: printerList
                     width: parent.width
                     Layout.preferredWidth: width
                     Layout.fillHeight: true
+
                     clip: true
-                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-                    ListView
+                    ScrollBar.vertical: UM.ScrollBar
                     {
-                        id: printerList
-                        width: parent.width
-                        spacing: UM.Theme.getSize("default_margin").height
+                        id: printerListScrollBar
+                    }
+                    spacing: UM.Theme.getSize("default_margin").height
 
-                        model: cloudPrinterList
-                        delegate: Rectangle
+                    model: cloudPrinterList
+                    delegate: Rectangle
+                    {
+                        id: delegateContainer
+                        color: "transparent"
+                        border.color: UM.Theme.getColor("lining")
+                        border.width: UM.Theme.getSize("default_lining").width
+                        width: printerList.width - printerListScrollBar.width
+                        height: UM.Theme.getSize("card").height
+
+                        property string syncStatus:
                         {
-                            id: delegateContainer
-                            color: "transparent"
-                            border.color: UM.Theme.getColor("lining")
-                            border.width: UM.Theme.getSize("default_lining").width
-                            width: printerListScrollView.width
-                            height: UM.Theme.getSize("card").height
-
-                            property string syncStatus:
+                            var printer_id = model.metadata["host_guid"]
+                            if(syncModel.printerStatus[printer_id] === undefined) //No status information available. Could be added after we started syncing.
                             {
-                                var printer_id = model.metadata["host_guid"]
-                                if(syncModel.printerStatus[printer_id] === undefined) //No status information available. Could be added after we started syncing.
-                                {
-                                    return "idle";
-                                }
-                                return syncModel.printerStatus[printer_id];
+                                return "idle";
+                            }
+                            return syncModel.printerStatus[printer_id];
+                        }
+
+                        Cura.IconWithText
+                        {
+                            anchors
+                            {
+                                verticalCenter: parent.verticalCenter
+                                left: parent.left
+                                leftMargin: Math.round(parent.height - height) / 2 //Equal margin on the left as above and below.
+                                right: parent.right
+                                rightMargin: Math.round(parent.height - height) / 2
                             }
 
-                            Cura.IconWithText
-                            {
-                                anchors
-                                {
-                                    verticalCenter: parent.verticalCenter
-                                    left: parent.left
-                                    leftMargin: Math.round(parent.height - height) / 2 //Equal margin on the left as above and below.
-                                    right: parent.right
-                                    rightMargin: Math.round(parent.height - height) / 2
-                                }
+                            text: model.name
+                            font: UM.Theme.getFont("medium")
 
-                                text: model.name
-                                font: UM.Theme.getFont("medium")
+                            source: UM.Theme.getIcon("Printer", "medium")
+                            iconColor: UM.Theme.getColor("machine_selector_printer_icon")
+                            iconSize: UM.Theme.getSize("machine_selector_icon").width
 
-                                source: UM.Theme.getIcon("Printer", "medium")
-                                iconColor: UM.Theme.getColor("machine_selector_printer_icon")
-                                iconSize: UM.Theme.getSize("machine_selector_icon").width
-
-                                //Printer status badge (always cloud, but whether it's online or offline).
-                                UM.RecolorImage
-                                {
-                                    width: UM.Theme.getSize("printer_status_icon").width
-                                    height: UM.Theme.getSize("printer_status_icon").height
-                                    anchors
-                                    {
-                                        bottom: parent.bottom
-                                        bottomMargin: -Math.round(height / 6)
-                                        left: parent.left
-                                        leftMargin: parent.iconSize - Math.round(width * 5 / 6)
-                                    }
-
-                                    source: UM.Theme.getIcon("CloudBadge", "low")
-                                    color: UM.Theme.getColor("primary")
-
-                                    //Make a themeable circle in the background so we can change it in other themes.
-                                    Rectangle
-                                    {
-                                        anchors.centerIn: parent
-                                        width: parent.width - 1.5 //1.5 pixels smaller (at least sqrt(2), regardless of pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
-                                        height: parent.height - 1.5
-                                        radius: width / 2
-                                        color: UM.Theme.getColor("connection_badge_background")
-                                        z: parent.z - 1
-                                    }
-                                }
-                            }
-
+                            //Printer status badge (always cloud, but whether it's online or offline).
                             UM.RecolorImage
                             {
-                                id: printerSpinner
-                                width: UM.Theme.getSize("section_icon").width
-                                height: width
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.right: parent.right
-                                anchors.rightMargin: Math.round((parent.height - height) / 2) //Same margin on the right as above and below.
+                                width: UM.Theme.getSize("printer_status_icon").width
+                                height: UM.Theme.getSize("printer_status_icon").height
+                                anchors
+                                {
+                                    bottom: parent.bottom
+                                    bottomMargin: -Math.round(height / 6)
+                                    left: parent.left
+                                    leftMargin: parent.iconSize - Math.round(width * 5 / 6)
+                                }
 
-                                visible: delegateContainer.syncStatus === "uploading"
-                                source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                                source: UM.Theme.getIcon("CloudBadge", "low")
                                 color: UM.Theme.getColor("primary")
 
-                                RotationAnimator
+                                //Make a themeable circle in the background so we can change it in other themes.
+                                Rectangle
                                 {
-                                    target: printerSpinner
-                                    from: 0
-                                    to: 360
-                                    duration: 1000
-                                    loops: Animation.Infinite
-                                    running: true
+                                    anchors.centerIn: parent
+                                    width: parent.width - 1.5 //1.5 pixels smaller (at least sqrt(2), regardless of pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                                    height: parent.height - 1.5
+                                    radius: width / 2
+                                    color: UM.Theme.getColor("connection_badge_background")
+                                    z: parent.z - 1
                                 }
-                            }
-                            UM.StatusIcon
-                            {
-                                width: UM.Theme.getSize("section_icon").width
-                                height: width
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.right: parent.right
-                                anchors.rightMargin: Math.round((parent.height - height) / 2) //Same margin on the right as above and below.
-
-                                visible: delegateContainer.syncStatus === "failed" || delegateContainer.syncStatus === "success"
-                                status: delegateContainer.syncStatus === "success" ? UM.StatusIcon.Status.POSITIVE : UM.StatusIcon.Status.ERROR
                             }
                         }
 
-                        footer: Item
+                        UM.RecolorImage
                         {
-                            width: printerListScrollView.width
-                            height: {
-                                if(!visible)
-                                {
-                                    return 0;
-                                }
-                                let h = UM.Theme.getSize("card").height + printerListTroubleshooting.height + UM.Theme.getSize("default_margin").height * 2; //1 margin between content and footer, 1 for troubleshooting link.
-                                return h;
-                            }
-                            visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && typeof syncModel !== "undefined" && syncModel.exportUploadStatus === "idle"
-                            Rectangle
+                            id: printerSpinner
+                            width: UM.Theme.getSize("section_icon").width
+                            height: width
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: parent.right
+                            anchors.rightMargin: Math.round((parent.height - height) / 2) //Same margin on the right as above and below.
+
+                            visible: delegateContainer.syncStatus === "uploading"
+                            source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                            color: UM.Theme.getColor("primary")
+
+                            RotationAnimator
                             {
-                                anchors.fill: parent
-                                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                                target: printerSpinner
+                                from: 0
+                                to: 360
+                                duration: 1000
+                                loops: Animation.Infinite
+                                running: true
+                            }
+                        }
+                        UM.StatusIcon
+                        {
+                            width: UM.Theme.getSize("section_icon").width
+                            height: width
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.right: parent.right
+                            anchors.rightMargin: Math.round((parent.height - height) / 2) //Same margin on the right as above and below.
 
-                                border.color: UM.Theme.getColor("lining")
-                                border.width: UM.Theme.getSize("default_lining").width
-                                color: "transparent"
+                            visible: delegateContainer.syncStatus === "failed" || delegateContainer.syncStatus === "success"
+                            status: delegateContainer.syncStatus === "success" ? UM.StatusIcon.Status.POSITIVE : UM.StatusIcon.Status.ERROR
+                        }
+                    }
 
-                                Row
+                    footer: Item
+                    {
+                        width: printerList.width - printerListScrollBar
+                        height: {
+                            if(!visible)
+                            {
+                                return 0;
+                            }
+                            let h = UM.Theme.getSize("card").height + printerListTroubleshooting.height + UM.Theme.getSize("default_margin").height * 2; //1 margin between content and footer, 1 for troubleshooting link.
+                            return h;
+                        }
+                        visible: includeOfflinePrinterList.count - cloudPrinterList.count > 0 && typeof syncModel !== "undefined" && syncModel.exportUploadStatus === "idle"
+                        Rectangle
+                        {
+                            anchors.fill: parent
+                            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+                            border.color: UM.Theme.getColor("lining")
+                            border.width: UM.Theme.getSize("default_lining").width
+                            color: "transparent"
+
+                            Row
+                            {
+                                anchors
                                 {
-                                    anchors
+                                    fill: parent
+                                    margins: Math.round(UM.Theme.getSize("card").height - UM.Theme.getSize("machine_selector_icon").width) / 2 //Same margin as in other cards.
+                                }
+                                spacing: UM.Theme.getSize("default_margin").width
+
+                                UM.StatusIcon
+                                {
+                                    id: infoIcon
+                                    width: UM.Theme.getSize("section_icon").width
+                                    height: width
+                                    //Fake anchor.verticalCenter: printersMissingText.verticalCenter, since we can't anchor to things that aren't siblings.
+                                    anchors.top: parent.top
+                                    anchors.topMargin: Math.round(printersMissingText.height / 2 - height / 2)
+
+                                    status: UM.StatusIcon.Status.WARNING
+                                }
+
+                                Column
+                                {
+                                    //Fill the total width. Can't use layouts because we need the anchors for vertical alignment.
+                                    width: parent.width - infoIcon.width - refreshListButton.width - parent.spacing * 2
+
+                                    spacing: UM.Theme.getSize("default_margin").height
+
+                                    UM.Label
                                     {
-                                        fill: parent
-                                        margins: Math.round(UM.Theme.getSize("card").height - UM.Theme.getSize("machine_selector_icon").width) / 2 //Same margin as in other cards.
+                                        id: printersMissingText
+                                        text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
+                                          + "\n"
+                                          + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
+                                        font: UM.Theme.getFont("medium")
+                                        elide: Text.ElideRight
                                     }
-                                    spacing: UM.Theme.getSize("default_margin").width
-
-                                    UM.StatusIcon
+                                    Cura.TertiaryButton
                                     {
-                                        id: infoIcon
-                                        width: UM.Theme.getSize("section_icon").width
-                                        height: width
-                                        //Fake anchor.verticalCenter: printersMissingText.verticalCenter, since we can't anchor to things that aren't siblings.
-                                        anchors.top: parent.top
-                                        anchors.topMargin: Math.round(printersMissingText.height / 2 - height / 2)
+                                        id: printerListTroubleshooting
+                                        leftPadding: 0  //Want to visually align this to the text.
 
-                                        status: UM.StatusIcon.Status.WARNING
+                                        text: catalog.i18nc("@button", "Troubleshooting")
+                                        iconSource: UM.Theme.getIcon("LinkExternal")
+                                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                                     }
+                                }
 
-                                    Column
-                                    {
-                                        //Fill the total width. Can't use layouts because we need the anchors for vertical alignment.
-                                        width: parent.width - infoIcon.width - refreshListButton.width - parent.spacing * 2
+                                Cura.SecondaryButton
+                                {
+                                    id: refreshListButton
+                                    //Fake anchor.verticalCenter: printersMissingText.verticalCenter, since we can't anchor to things that aren't siblings.
+                                    anchors.top: parent.top
+                                    anchors.topMargin: Math.round(printersMissingText.height / 2 - height / 2)
 
-                                        spacing: UM.Theme.getSize("default_margin").height
-
-                                        UM.Label
-                                        {
-                                            id: printersMissingText
-                                            text: catalog.i18nc("@text Asking the user whether printers are missing in a list.", "Printers missing?")
-                                              + "\n"
-                                              + catalog.i18nc("@text", "Make sure all your printers are turned ON and connected to Digital Factory.")
-                                            font: UM.Theme.getFont("medium")
-                                            elide: Text.ElideRight
-                                        }
-                                        Cura.TertiaryButton
-                                        {
-                                            id: printerListTroubleshooting
-                                            leftPadding: 0  //Want to visually align this to the text.
-
-                                            text: catalog.i18nc("@button", "Troubleshooting")
-                                            iconSource: UM.Theme.getIcon("LinkExternal")
-                                            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
-                                        }
-                                    }
-
-                                    Cura.SecondaryButton
-                                    {
-                                        id: refreshListButton
-                                        //Fake anchor.verticalCenter: printersMissingText.verticalCenter, since we can't anchor to things that aren't siblings.
-                                        anchors.top: parent.top
-                                        anchors.topMargin: Math.round(printersMissingText.height / 2 - height / 2)
-
-                                        text: catalog.i18nc("@button", "Refresh List")
-                                        iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
-                                        onClicked: Cura.API.account.sync(true)
-                                    }
+                                    text: catalog.i18nc("@button", "Refresh List")
+                                    iconSource: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                                    onClicked: Cura.API.account.sync(true)
                                 }
                             }
                         }
