@@ -45,8 +45,6 @@ class MachineActionManager(QObject):
         # Dict of all actions that need to be done when first added by definition ID
         self._first_start_actions = {}  # type: Dict[str, List[MachineAction]]
 
-    def initialize(self) -> None:
-        # Add machine_action as plugin type
         PluginRegistry.addType("machine_action", self.addMachineAction)
 
     # Adds all default machine actions that are defined in the machine definition for the given machine.

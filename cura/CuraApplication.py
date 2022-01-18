@@ -327,7 +327,6 @@ class CuraApplication(QtApplication):
         self.__setLatestResouceVersionsForVersionUpgrade()
 
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
-        self._machine_action_manager.initialize()
 
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open)
