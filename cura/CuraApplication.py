@@ -177,7 +177,7 @@ class CuraApplication(QtApplication):
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
-        self._machine_action_manager =  MachineActionManager.MachineActionManager(self)
+        self._machine_action_manager = MachineActionManager.MachineActionManager(self)
 
         self.empty_container = None  # type: EmptyInstanceContainer
         self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
@@ -325,6 +325,8 @@ class CuraApplication(QtApplication):
         self.__addAllResourcesAndContainerResources()
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
+
+        self._machine_action_manager = MachineActionManager.MachineActionManager(self)
 
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open)
