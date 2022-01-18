@@ -480,6 +480,6 @@ Item
     {
         id: browsePackagesAction
         text: "&Marketplace"
-        iconName: "plugins_browse"
+        icon.name: "plugins_browse"
     }
 }
