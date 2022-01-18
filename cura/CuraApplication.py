@@ -118,6 +118,7 @@ from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
 from .AutoSave import AutoSave
 from .SingleInstance import SingleInstance
+from .UI.AddPrinterPagesModelWitoutCancel import AddPrinterPagesModelWithoutCancel
 
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
@@ -208,7 +209,6 @@ class CuraApplication(QtApplication):
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
-        self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(self, parent = self)
         self._text_manager = TextManager(parent = self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -840,7 +840,6 @@ class CuraApplication(QtApplication):
         self._cura_API.initialize()
         self.processEvents()
         self._output_device_manager.start()
-        self._add_printer_pages_model_without_cancel.initialize(cancellable = False)
 
         # Initialize the FileProviderModel
         self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
@@ -954,10 +953,6 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
-
-    @pyqtSlot(result = QObject)
-    def getAddPrinterPagesModelWithoutCancel(self, *args) -> "AddPrinterPagesModel":
-        return self._add_printer_pages_model_without_cancel
 
     @pyqtSlot(result = QObject)
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
@@ -1126,6 +1121,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
+        qmlRegisterType(AddPrinterPagesModelWithoutCancel, "Cura", 1, 0, "AddPrinterPagesModelWithoutCancel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
         qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
 

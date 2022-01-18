@@ -21,6 +21,7 @@ UM.MainWindow
     id: base
 
     property var whatsNewModel: Cura.WhatsNewPagesModel {}
+    property var addPrinterPagesWithoutCancel: Cura.AddPrinterPagesModelWithoutCancel {}
 
     // Cura application window title
     title:
@@ -95,7 +96,7 @@ UM.MainWindow
             Cura.Actions.parent = backgroundItem
 
             // Reuse the welcome dialog item to show "Add a printer" only.
-            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+            welcomeDialogItem.model = base.addPrinterPagesWithoutCancel
             welcomeDialogItem.progressBarVisible = false
             welcomeDialogItem.visible = true
         }
@@ -139,7 +140,7 @@ UM.MainWindow
             // machine and the user is logged in.
             if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
             {
-                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+                welcomeDialogItem.model = base.addPrinterPagesWithoutCancel
                 welcomeDialogItem.progressBarVisible = false
                 welcomeDialogItem.visible = true
             }

@@ -10,7 +10,7 @@ from .WelcomePagesModel import WelcomePagesModel
 #
 class AddPrinterPagesModel(WelcomePagesModel):
 
-    def initialize(self, cancellable: bool = True) -> None:
+    def _generatePages(self) -> None:
         self._pages.append({"id": "add_network_or_local_printer",
                             "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
                             "next_page_id": "machine_actions",
@@ -29,10 +29,8 @@ class AddPrinterPagesModel(WelcomePagesModel):
                             "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
                             "should_show_function": self.shouldShowMachineActions,
                             })
-        if cancellable:
-            self._pages[0]["previous_page_button_text"] = self._catalog.i18nc("@action:button", "Cancel")
 
+    def initialize(self) -> None:
+        self._generatePages()
+        self._pages[0]["previous_page_button_text"] = self._catalog.i18nc("@action:button", "Cancel")
         self.setItems(self._pages)
-
-
-__all__ = ["AddPrinterPagesModel"]
