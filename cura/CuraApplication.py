@@ -669,22 +669,6 @@ class CuraApplication(QtApplication):
         super().setGlobalContainerStack(stack)
         self.showAddPrintersUncancellableDialog.emit()
 
-    showMessageBox = pyqtSignal(str,str, str, str, int, int,
-                                arguments = ["title", "text", "informativeText", "detailedText","buttons", "icon"])
-    """A reusable dialogbox"""
-
-    def messageBox(self, title, text,
-                   informativeText = "",
-                   detailedText = "",
-                   buttons = QMessageBox.Ok,
-                   icon = QMessageBox.NoIcon,
-                   callback = None,
-                   callback_arguments = []
-                   ):
-        self._message_box_callback = callback
-        self._message_box_callback_arguments = callback_arguments
-        self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
-
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
     def discardOrKeepProfileChanges(self) -> bool:
@@ -719,13 +703,6 @@ class CuraApplication(QtApplication):
             for extruder in global_stack.extruderList:
                 extruder.userChanges.update()
             global_stack.userChanges.update()
-
-    @pyqtSlot(int)
-    def messageBoxClosed(self, button):
-        if self._message_box_callback:
-            self._message_box_callback(button, *self._message_box_callback_arguments)
-            self._message_box_callback = None
-            self._message_box_callback_arguments = []
 
     def enableSave(self, enable: bool):
         self._enable_save = enable
