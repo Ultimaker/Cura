@@ -316,7 +316,6 @@ class MachineManager(QObject):
         if not stack_id:
             self._application.setGlobalContainerStack(None)
             self.globalContainerChanged.emit()
-            self._application.showAddPrintersUncancellableDialog.emit()
             return
 
         container_registry = CuraContainerRegistry.getInstance()

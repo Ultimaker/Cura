@@ -667,6 +667,7 @@ class CuraApplication(QtApplication):
     def setGlobalContainerStack(self, stack: Optional["GlobalStack"]) -> None:
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing Active Machine..."))
         super().setGlobalContainerStack(stack)
+        self.showAddPrintersUncancellableDialog.emit()
 
     showMessageBox = pyqtSignal(str,str, str, str, int, int,
                                 arguments = ["title", "text", "informativeText", "detailedText","buttons", "icon"])
