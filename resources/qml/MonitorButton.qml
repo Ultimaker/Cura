@@ -266,7 +266,7 @@ Item
             }
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: pauseResumeButton
 
@@ -309,11 +309,9 @@ Item
                     activePrintJob.setState("pause");
                 }
             }
-
-            style: UM.Theme.styles.print_setup_action_button
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: abortButton
 
@@ -325,8 +323,6 @@ Item
 
             text: catalog.i18nc("@label", "Abort Print")
             onClicked: confirmationDialog.visible = true
-
-            style: UM.Theme.styles.print_setup_action_button
         }
 
         MessageDialog

@@ -92,14 +92,13 @@ Item
                     Layout.preferredHeight: height
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 1
                     Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleUp");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -109,14 +108,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 0
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleLeft");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -126,14 +124,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 2
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleRight");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -143,14 +140,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 3
                     Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleDown");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -160,14 +156,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("House");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -192,10 +187,9 @@ Item
                     horizontalAlignment: Text.AlignHCenter
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     iconSource: UM.Theme.getIcon("ChevronSingleUp");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -205,10 +199,9 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     iconSource: UM.Theme.getIcon("House");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -218,10 +211,9 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     iconSource: UM.Theme.getIcon("ChevronSingleDown");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -270,8 +262,6 @@ Item
                         checkable: true
                         checked: distancesRow.currentDistance == model.value
                         onClicked: distancesRow.currentDistance = model.value
-
-                        style: UM.Theme.styles.monitor_checkable_button_style
                     }
                 }
             }
