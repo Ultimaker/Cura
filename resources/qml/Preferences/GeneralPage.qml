@@ -167,13 +167,11 @@ UM.PreferencesPage
                         append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
-                        //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "日本語", code: "ja_JP" })
                         append({ text: "한국어", code: "ko_KR" })
                         append({ text: "Nederlands", code: "nl_NL" })
-                        //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
                         append({ text: "Português", code: "pt_PT" })
                         append({ text: "Русский", code: "ru_RU" })
@@ -186,6 +184,12 @@ UM.PreferencesPage
                         {
                             append({ text: "Pirate", code: "en_7S" })
                         }
+
+                        // incomplete and/or abandoned
+                        append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Magyar", code: "hu_HU" })
+                        append({ text: "Suomi", code: "fi_FI" })
+                        append({ text: "Polski", code: "pl_PL" })
                     }
                 }
 
@@ -197,8 +201,7 @@ UM.PreferencesPage
                     model: languageList
                     Layout.fillWidth: true
 
-                    currentIndex:
-                    {
+                    function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
                         for(var i = 0; i < languageList.count; ++i)
                         {
@@ -208,7 +211,17 @@ UM.PreferencesPage
                             }
                         }
                     }
-                    onActivated: UM.Preferences.setValue("general/language", model.get(index).code)
+
+                    currentIndex: setCurrentIndex()
+
+                    onActivated: if (model.get(index).code != "")
+                        {
+                            UM.Preferences.setValue("general/language", model.get(index).code);
+                        }
+                        else
+                        {
+                            currentIndex = setCurrentIndex();
+                        }
                 }
 
                 Label
