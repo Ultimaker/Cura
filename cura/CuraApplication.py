@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -11,7 +11,6 @@ import numpy
 from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
-from PyQt5.QtWidgets import QMessageBox
 
 import UM.Util
 import cura.Settings.cura_empty_instance_containers
@@ -717,11 +716,6 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().saveDirtyContainers()
         self.savePreferences()
 
-    def saveStack(self, stack):
-        if not self._enable_save:
-            return
-        ContainerRegistry.getInstance().saveContainer(stack)
-
     @pyqtSlot(str, result = QUrl)
     def getDefaultPath(self, key):
         default_path = self.getPreferences().getValue("local_file/%s" % key)
@@ -781,7 +775,6 @@ class CuraApplication(QtApplication):
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
-        self._machine_error_checker.initialize()
         self.processEvents()
 
         Logger.log("i", "Initializing machine manager")

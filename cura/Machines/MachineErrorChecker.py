@@ -50,11 +50,9 @@ class MachineErrorChecker(QObject):
         self._error_check_timer = QTimer(self)
         self._error_check_timer.setInterval(100)
         self._error_check_timer.setSingleShot(True)
+        self._error_check_timer.timeout.connect(self._rescheduleCheck)
 
         self._keys_to_check = set()  # type: Set[str]
-
-    def initialize(self) -> None:
-        self._error_check_timer.timeout.connect(self._rescheduleCheck)
 
         # Reconnect all signals when the active machine gets changed.
         self._machine_manager.globalContainerChanged.connect(self._onMachineChanged)
