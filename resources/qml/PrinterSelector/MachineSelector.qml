@@ -1,10 +1,10 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Cura.ExpandablePopup
@@ -193,42 +193,27 @@ Cura.ExpandablePopup
     {
         id: popup
         width: UM.Theme.getSize("machine_selector_widget_content").width
+        height: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
 
-        ScrollView
+        MachineSelectorList
         {
-            id: scroll
-            width: parent.width
-            clip: true
-            leftPadding: UM.Theme.getSize("default_lining").width
-            rightPadding: UM.Theme.getSize("default_lining").width
-
-            MachineSelectorList
+            id: machineSelectorList
+            anchors
             {
-                id: machineSelectorList
-                // Can't use parent.width since the parent is the flickable component and not the ScrollView
-                width: scroll.width - scroll.leftPadding - scroll.rightPadding
-                property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
-
-                // We use an extra property here, since we only want to to be informed about the content size changes.
-                onContentHeightChanged:
-                {
-                    scroll.height = Math.min(contentHeight, maximumHeight)
-                    popup.height = scroll.height + buttonRow.height
-                }
-
-                Component.onCompleted:
-                {
-                    scroll.height = Math.min(contentHeight, maximumHeight)
-                    popup.height = scroll.height + buttonRow.height
-                }
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_lining").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("default_lining").width
+                top: parent.top
+                bottom: separator.top
             }
+            clip: true
         }
 
         Rectangle
         {
             id: separator
-
-            anchors.top: scroll.bottom
+            anchors.bottom: buttonRow.top
             width: parent.width
             height: UM.Theme.getSize("default_lining").height
             color: UM.Theme.getColor("lining")
@@ -238,8 +223,7 @@ Cura.ExpandablePopup
         {
             id: buttonRow
 
-            // The separator is inside the buttonRow. This is to avoid some weird behaviours with the scroll bar.
-            anchors.top: separator.top
+            anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
