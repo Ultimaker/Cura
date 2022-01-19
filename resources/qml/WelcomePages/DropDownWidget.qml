@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -61,7 +61,7 @@ Item
         anchors.left: header.left
         anchors.right: header.right
         // Add 2x lining, because it needs a bit of space on the top and the bottom.
-        height: contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height
+        height: contentLoader.item ? contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height : 0
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
