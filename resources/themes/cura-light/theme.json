@@ -604,8 +604,9 @@
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],
 
-        "checkbox": [1.5, 1.5],
-        "checkbox_radius": [0.08, 0.08],
+        "checkbox": [1.33, 1.33],
+        "checkbox_mark": [1, 1],
+        "checkbox_radius": [0.25, 0.25],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
