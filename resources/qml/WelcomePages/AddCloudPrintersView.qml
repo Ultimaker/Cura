@@ -157,7 +157,7 @@ Item
                     {
                         id: cloudPrinterNameLabel
                         leftPadding: UM.Theme.getSize("default_margin").width
-                        text: model.name
+                        text: model.name ? model.name : ""
                         font: UM.Theme.getFont("large_bold")
                         color: UM.Theme.getColor("text")
                         elide: Text.ElideRight
