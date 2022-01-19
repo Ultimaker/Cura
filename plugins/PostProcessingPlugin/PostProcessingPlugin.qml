@@ -34,7 +34,7 @@ UM.Dialog
         UM.I18nCatalog{id: catalog; name: "cura"}
         id: base
         property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
-        property int textMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
+        property int textMargin: UM.Theme.getSize("narrow_margin").width
         property string activeScriptName
         SystemPalette{ id: palette }
         SystemPalette{ id: disabledPalette; colorGroup: SystemPalette.Disabled }
@@ -44,19 +44,18 @@ UM.Dialog
         {
             id: selectedScriptGroup
         }
-        Item
+        Column
         {
             id: activeScripts
-            anchors.left: parent.left
             width: base.columnWidth
             height: parent.height
+
+            spacing: base.textMargin
 
             Label
             {
                 id: activeScriptsHeader
                 text: catalog.i18nc("@label", "Post Processing Scripts")
-                anchors.top: parent.top
-                anchors.topMargin: base.textMargin
                 anchors.left: parent.left
                 anchors.leftMargin: base.textMargin
                 anchors.right: parent.right
@@ -67,22 +66,24 @@ UM.Dialog
             ListView
             {
                 id: activeScriptsList
-
                 anchors
                 {
-                    top: activeScriptsHeader.bottom
                     left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
                     right: parent.right
                     rightMargin: base.textMargin
-                    topMargin: base.textMargin
-                    leftMargin: UM.Theme.getSize("default_margin").width
                 }
+                height: Math.min(contentHeight, parent.height - parent.spacing * 2 - activeScriptsHeader.height - addButton.height) //At the window height, start scrolling this one.
 
-                height: childrenRect.height
+                clip: true
+                ScrollBar.vertical: UM.ScrollBar
+                {
+                    id: activeScriptsScrollBar
+                }
                 model: manager.scriptList
                 delegate: Item
                 {
-                    width: parent.width
+                    width: parent.width - activeScriptsScrollBar.width
                     height: activeScriptButton.height
                     Button
                     {
@@ -132,8 +133,7 @@ UM.Dialog
                         text: "x"
                         width: 20 * screenScaleFactor
                         height: 20 * screenScaleFactor
-                        anchors.right:parent.right
-                        anchors.rightMargin: base.textMargin
+                        anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         onClicked: manager.removeScriptByIndex(index)
                         contentItem: Item
@@ -221,8 +221,6 @@ UM.Dialog
                 text: catalog.i18nc("@action", "Add a script")
                 anchors.left: parent.left
                 anchors.leftMargin: base.textMargin
-                anchors.top: activeScriptsList.bottom
-                anchors.topMargin: base.textMargin
                 onClicked: scriptsMenu.open()
             }
             Menu
