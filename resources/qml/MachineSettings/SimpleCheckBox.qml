@@ -20,7 +20,7 @@ UM.TooltipArea
 
     property int controlHeight: UM.Theme.getSize("setting_control").height
 
-    height: childrenRect.height
+    height: controlHeight
     width: childrenRect.width
     text: tooltip
 
@@ -60,10 +60,13 @@ UM.TooltipArea
     Cura.CheckBox
     {
         id: checkBox
-        anchors.left: fieldLabel.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors {
+            left: fieldLabel.right
+            leftMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: parent.verticalCenter
+        }
         checked: String(propertyProvider.properties.value).toLowerCase() != 'false'
-        height: simpleCheckBox.controlHeight
+        height: UM.Theme.getSize("checkbox").height
         text: ""
         onClicked:
         {
