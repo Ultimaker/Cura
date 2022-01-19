@@ -1,16 +1,17 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
+import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import ".." // Access to ReadOnlyTextArea.qml
 
-TabView
+OldControls.TabView
 {
     id: base
 
@@ -67,7 +68,7 @@ TabView
         }
     }
 
-    Tab
+    OldControls.Tab
     {
         title: catalog.i18nc("@title", "Information")
 
@@ -77,11 +78,21 @@ TabView
         {
             id: scrollView
             anchors.fill: parent
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-            flickableItem.flickableDirection: Flickable.VerticalFlick
-            frameVisible: true
 
-            property real columnWidth: (viewport.width * 0.5 - UM.Theme.getSize("default_margin").width) | 0
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                parent: scrollView
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            clip: true
+
+            property real columnWidth: (scrollView.width * 0.5 - UM.Theme.getSize("default_margin").width) | 0
 
             Flow
             {
@@ -257,7 +268,7 @@ TabView
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
-                SpinBox
+                OldControls.SpinBox
                 {
                     id: spoolCostSpinBox
                     width: scrollView.columnWidth
@@ -274,7 +285,7 @@ TabView
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
-                SpinBox
+                OldControls.SpinBox
                 {
                     id: spoolWeightSpinBox
                     width: scrollView.columnWidth
@@ -318,7 +329,7 @@ TabView
                     wrapMode: Text.WordWrap
                     visible: unlinkMaterialButton.visible
                 }
-                Button
+                OldControls.Button
                 {
                     id: unlinkMaterialButton
                     text: catalog.i18nc("@label", "Unlink Material")
@@ -369,7 +380,7 @@ TabView
         }
     }
 
-    Tab
+    OldControls.Tab
     {
         title: catalog.i18nc("@label", "Print settings")
         anchors
@@ -380,86 +391,85 @@ TabView
             rightMargin: 0
         }
 
-        ScrollView
+        ListView
         {
-            anchors.fill: parent;
-
-            ListView
+            anchors.fill: parent
+            model: UM.SettingDefinitionsModel
             {
-                model: UM.SettingDefinitionsModel
+                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
+                expanded: ["*"]
+            }
+
+            ScrollBar.vertical: UM.ScrollBar {}
+            clip: true
+
+            delegate: UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: model.description
+                Label
                 {
-                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
-                    expanded: ["*"]
+                    id: label
+                    width: base.firstColumnWidth;
+                    height: spinBox.height + UM.Theme.getSize("default_lining").height
+                    text: model.label
+                    elide: Text.ElideRight
+                    verticalAlignment: Qt.AlignVCenter
+                }
+                ReadOnlySpinBox
+                {
+                    id: spinBox
+                    anchors.left: label.right
+                    value:
+                    {
+                        // In case the setting is not in the material...
+                        if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
+                        {
+                            return parseFloat(materialPropertyProvider.properties.value);
+                        }
+                        // ... we search in the variant, and if it is not there...
+                        if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
+                        {
+                            return parseFloat(variantPropertyProvider.properties.value);
+                        }
+                        // ... then look in the definition container.
+                        if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
+                        {
+                            return parseFloat(machinePropertyProvider.properties.value);
+                        }
+                        return 0;
+                    }
+                    width: base.secondColumnWidth
+                    readOnly: !base.editingEnabled
+                    suffix: " " + model.unit
+                    maximumValue: 99999
+                    decimals: model.unit == "mm" ? 2 : 0
+
+                    onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
                 }
 
-                delegate: UM.TooltipArea
+                UM.ContainerPropertyProvider
                 {
-                    width: childrenRect.width
-                    height: childrenRect.height
-                    text: model.description
-                    Label
-                    {
-                        id: label
-                        width: base.firstColumnWidth;
-                        height: spinBox.height + UM.Theme.getSize("default_lining").height
-                        text: model.label
-                        elide: Text.ElideRight
-                        verticalAlignment: Qt.AlignVCenter
-                    }
-                    ReadOnlySpinBox
-                    {
-                        id: spinBox
-                        anchors.left: label.right
-                        value:
-                        {
-                            // In case the setting is not in the material...
-                            if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
-                            {
-                                return parseFloat(materialPropertyProvider.properties.value);
-                            }
-                            // ... we search in the variant, and if it is not there...
-                            if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
-                            {
-                                return parseFloat(variantPropertyProvider.properties.value);
-                            }
-                            // ... then look in the definition container.
-                            if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
-                            {
-                                return parseFloat(machinePropertyProvider.properties.value);
-                            }
-                            return 0;
-                        }
-                        width: base.secondColumnWidth
-                        readOnly: !base.editingEnabled
-                        suffix: " " + model.unit
-                        maximumValue: 99999
-                        decimals: model.unit == "mm" ? 2 : 0
-
-                        onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
-                    }
-
-                    UM.ContainerPropertyProvider
-                    {
-                        id: materialPropertyProvider
-                        containerId: base.containerId
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider
-                    {
-                        id: variantPropertyProvider
-                        containerId: Cura.MachineManager.activeStack.variant.id
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider
-                    {
-                        id: machinePropertyProvider
-                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
+                    id: materialPropertyProvider
+                    containerId: base.containerId
+                    watchedProperties: [ "value" ]
+                    key: model.key
+                }
+                UM.ContainerPropertyProvider
+                {
+                    id: variantPropertyProvider
+                    containerId: Cura.MachineManager.activeStack.variant.id
+                    watchedProperties: [ "value" ]
+                    key: model.key
+                }
+                UM.ContainerPropertyProvider
+                {
+                    id: machinePropertyProvider
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                    watchedProperties: [ "value" ]
+                    key: model.key
                 }
             }
         }
