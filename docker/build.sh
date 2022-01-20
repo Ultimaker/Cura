@@ -59,7 +59,7 @@ export PYTHONPATH="${PROJECT_DIR}/Uranium:.:${PYTHONPATH}"
 
 mkdir build
 cd build
-cmake3 \
+cmake \
     -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_PREFIX_PATH="${CURA_BUILD_ENV_PATH}" \
     -DURANIUM_DIR="${PROJECT_DIR}/Uranium" \
