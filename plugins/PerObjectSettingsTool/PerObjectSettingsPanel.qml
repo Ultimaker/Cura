@@ -2,7 +2,8 @@
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick.Controls 2.1
+import QtQuick.Controls 1.2 as OldControls
 import QtQuick.Controls.Styles 1.2
 
 import UM 1.5 as UM
@@ -76,7 +77,7 @@ Item
             id: meshTypeButtons
             spacing: UM.Theme.getSize("default_margin").width
 
-            Button
+            ToolBarButton
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
@@ -84,11 +85,10 @@ Item
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
-                style: UM.Theme.styles.tool_button;
                 z: 4
             }
 
-            Button
+            ToolBarButton
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
@@ -96,11 +96,10 @@ Item
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 3
             }
 
-            Button
+            ToolBarButton
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
@@ -108,11 +107,10 @@ Item
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 2
             }
 
-            Button
+            ToolBarButton
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
@@ -120,7 +118,6 @@ Item
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 1
             }
 
@@ -179,7 +176,7 @@ Item
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
             visible: currentMeshType != "anti_overhang_mesh"
 
-            ScrollView
+            OldControls.ScrollView
             {
                 height: parent.height
                 width: UM.Theme.getSize("setting").width + UM.Theme.getSize("default_margin").width
@@ -292,19 +289,16 @@ Item
 
                             onClicked: addedSettingsModel.setVisible(model.key, false)
 
-                            style: ButtonStyle
+                            background: Item
                             {
-                                background: Item
+                                UM.RecolorImage
                                 {
-                                    UM.RecolorImage
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        width: parent.width
-                                        height: width
-                                        sourceSize.height: width
-                                        color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                        source: UM.Theme.getIcon("Minus")
-                                    }
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: parent.width
+                                    height: width
+                                    sourceSize.height: width
+                                    color: parent.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                    source: UM.Theme.getIcon("Minus")
                                 }
                             }
                         }
