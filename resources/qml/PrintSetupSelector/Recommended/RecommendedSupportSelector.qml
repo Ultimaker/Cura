@@ -1,9 +1,9 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls 2.3 as Controls2
+import QtQuick.Controls 1.4 as OldControls
+import QtQuick.Controls 2.3
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -73,7 +73,7 @@ Item
             }
         }
 
-        Controls2.ComboBox
+        ComboBox
         {
             id: supportExtruderCombobox
 
@@ -200,7 +200,7 @@ Item
                 }
             }
 
-            contentItem:UM.Label
+            contentItem: UM.Label
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -229,7 +229,7 @@ Item
                 }
             }
 
-            popup: Controls2.Popup
+            popup: Popup
             {
                 y: supportExtruderCombobox.height - UM.Theme.getSize("default_lining").height
                 width: supportExtruderCombobox.width
@@ -238,12 +238,12 @@ Item
 
                 contentItem: ListView
                 {
-                    clip: true
                     implicitHeight: contentHeight
+
+                    ScrollBar.vertical: UM.ScrollBar {}
+                    clip: true
                     model: supportExtruderCombobox.popup.visible ? supportExtruderCombobox.delegateModel : null
                     currentIndex: supportExtruderCombobox.highlightedIndex
-
-                    Controls2.ScrollIndicator.vertical: Controls2.ScrollIndicator { }
                 }
 
                 background: Rectangle
@@ -253,7 +253,7 @@ Item
                 }
             }
 
-            delegate: Controls2.ItemDelegate
+            delegate: ItemDelegate
             {
                 width: supportExtruderCombobox.width - 2 * UM.Theme.getSize("default_lining").width
                 height: supportExtruderCombobox.height

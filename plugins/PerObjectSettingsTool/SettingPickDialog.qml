@@ -71,7 +71,7 @@ UM.Dialog
     }
 
     ListView
-        {
+    {
         id: listview
         anchors
         {
