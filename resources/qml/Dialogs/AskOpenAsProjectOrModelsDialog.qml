@@ -92,17 +92,11 @@ UM.Dialog
             wrapMode: Text.WordWrap
         }
 
-        CheckBox
+        Cura.CheckBox
         {
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
-            style: CheckBoxStyle {
-                label: Label {
-                    text: control.text
-                    font: UM.Theme.getFont("default")
-                }
-            }
         }
 
         // Buttons

@@ -275,7 +275,7 @@ UM.Dialog
             width: parent.width
             height: childrenRect.height
             anchors.bottom: parent.bottom
-            CheckBox
+            Cura.CheckBox
             {
                 id: dontShowAgainCheckbox
                 anchors.left: parent.left

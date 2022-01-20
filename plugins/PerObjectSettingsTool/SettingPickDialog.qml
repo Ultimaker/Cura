@@ -57,12 +57,12 @@ UM.Dialog
         onTextChanged: settingPickDialog.updateFilter()
     }
 
-    CheckBox
+    Cura.CheckBox
     {
         id: toggleShowAll
         anchors
         {
-            top: parent.top
+            verticalCenter: parent.verticalCenter
             right: parent.right
         }
         text: catalog.i18nc("@label:checkbox", "Show all")

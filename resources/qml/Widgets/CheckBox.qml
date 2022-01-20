@@ -17,6 +17,9 @@ CheckBox
 
     hoverEnabled: true
 
+    height: UM.Theme.getSize("checkbox").height
+    width: UM.Theme.getSize("checkbox").width
+
     indicator: Rectangle
     {
         width: control.height
