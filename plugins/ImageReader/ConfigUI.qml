@@ -1,8 +1,9 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.1 as OldControls
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
@@ -27,20 +28,24 @@ UM.Dialog
         rowSpacing: 4 * screenScaleFactor
         columns: 1
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The maximum distance of each pixel from \"Base.\"")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: catalog.i18nc("@action:label", "Height (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                TextField {
+                OldControls.TextField
+                {
                     id: peak_height
                     objectName: "Peak_Height"
                     validator: RegExpValidator {regExp: /^\d{0,3}([\,|\.]\d*)?$/}
@@ -50,20 +55,24 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The base height from the build plate in millimeters.")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: catalog.i18nc("@action:label", "Base (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                TextField {
+                OldControls.TextField
+                {
                     id: base_height
                     objectName: "Base_Height"
                     validator: RegExpValidator {regExp: /^\d{0,3}([\,|\.]\d*)?$/}
@@ -73,20 +82,24 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The width in millimeters on the build plate.")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: catalog.i18nc("@action:label", "Width (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                TextField {
+                OldControls.TextField
+                {
                     id: width
                     objectName: "Width"
                     focus: true
@@ -97,19 +110,23 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The depth in millimeters on the build plate")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: catalog.i18nc("@action:label", "Depth (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                TextField {
+                OldControls.TextField
+                {
                     id: depth
                     objectName: "Depth"
                     focus: true
@@ -120,20 +137,24 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model.")
-            Row {
+            Row
+            {
                 width: parent.width
 
                 //Empty label so 2 column layout works.
-                Label {
+                Label
+                {
                     text: ""
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                ComboBox {
+                OldControls.ComboBox
+                {
                     id: lighter_is_higher
                     objectName: "Lighter_Is_Higher"
                     model: [ catalog.i18nc("@item:inlistbox","Darker is higher"), catalog.i18nc("@item:inlistbox","Lighter is higher") ]
@@ -143,19 +164,23 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly.")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: "Color Model"
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                ComboBox {
+                OldControls.ComboBox
+                {
                     id: color_model
                     objectName: "ColorModel"
                     model: [ catalog.i18nc("@item:inlistbox","Linear"), catalog.i18nc("@item:inlistbox","Translucency") ]
@@ -165,20 +190,24 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image.")
             visible: color_model.currentText == catalog.i18nc("@item:inlistbox","Translucency")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: catalog.i18nc("@action:label", "1mm Transmittance (%)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                TextField {
+                OldControls.TextField
+                {
                     id: transmittance
                     objectName: "Transmittance"
                     focus: true
@@ -189,28 +218,34 @@ UM.Dialog
             }
         }
 
-        UM.TooltipArea {
+        UM.TooltipArea
+        {
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The amount of smoothing to apply to the image.")
-            Row {
+            Row
+            {
                 width: parent.width
 
-                Label {
+                Label
+                {
                     text: catalog.i18nc("@action:label", "Smoothing")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Item {
+                Item
+                {
                     width: 180 * screenScaleFactor
                     height: 20 * screenScaleFactor
                     Layout.fillWidth: true
 
-                    Slider {
+                    Slider
+                    {
                         id: smoothing
                         objectName: "Smoothing"
-                        maximumValue: 100.0
+                        from: 0.0
+                        to: 100.0
                         stepSize: 1.0
                         width: 180
                         onValueChanged: { manager.onSmoothingChanged(value) }
@@ -221,14 +256,14 @@ UM.Dialog
     }
 
     rightButtons: [
-        Button
+        OldControls.Button
         {
             id:ok_button
             text: catalog.i18nc("@action:button","OK");
             onClicked: { manager.onOkButtonClicked() }
             enabled: true
         },
-        Button
+        OldControls.Button
         {
             id:cancel_button
             text: catalog.i18nc("@action:button","Cancel");
