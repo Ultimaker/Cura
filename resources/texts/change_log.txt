@@ -1,8 +1,8 @@
-[4.13]
-Beta
+[4.13.0]
+<i>For an overview of the new features in Cura 4.13, please watch <a href="https://youtu.be/chvAuI6Eqto">our video</a>.</i>
 
 * Sync material profiles 
-With Ultimaker Cura 4.13 beta, we give you access to a seamless material experience for Ultimaker Material Alliance materials – with the ease of use you’ve come to expect from Ultimaker materials. You can easily synchronize your Material Alliance profiles with your S-line Ultimaker hardware, at the click of a button. 
+With Ultimaker Cura 4.13, we give you access to a seamless material experience for Ultimaker Material Alliance materials – with the ease of use you’ve come to expect from Ultimaker materials. You can easily synchronize your Material Alliance profiles with your S-line Ultimaker hardware, at the click of a button. 
 
 * New print profile
 A new print profile with 0.3mm layer height for PLA Tough PLA, PVA and BAM for Ultimaker S-line printers
@@ -11,26 +11,31 @@ A new print profile with 0.3mm layer height for PLA Tough PLA, PVA and BAM for U
 Show the model in the thumbnail of a .3mf file, contributed by fieldOfView
 
 * Infill density
-When printing with a 100% infill the infill pattern will change to ZigzZag for all Ultimaker print profiles
+When printing with a 100% infill the infill pattern will change to ZigZag for all Ultimaker print profiles
 
 * User login authentication
 We’ve streamlined the user login authentication by removing any restrictions, especially for strict enterprise-level IT requirements. 
 
 * Other new features and improvements:
-- TPU top layers 
+- Improved TPU: top layers have large bridge distance 
 - Add warning icon to show which extruder is causing the configuration to be 'Not Supported', contributed by fieldOfView
 - Show what's new pages with every Cura build
 - Speed up loading of settings list
 - Re-use vertex buffer objects in rendering
 - Add Build Volume Temperature value to ChangeAtZ, contributed by legend069
 - Allow plugins to have multiple views, contributed by Tyronnosaurus
+- Reduced top/bottom speed for TPU
+- Increased lined width for 0.3mm layer height profiles
+- Improved logging to allow debugging in early start-up process
 
 * Bug fixes:
+- Fixed a bug with surface mode will not print all layers
+- Fixed a bug where maximum retraction could cause a crash
 - Reduced flow for 100% density parts
 - Fixed a bug in Surface Mode where small line-segments were created
 - Changed the Russian translation for 'nozzle', contributed by mlapkin
-- Fixed a visualization bug where layer lines were renderend in weird directions
-- Fixed a crash when recieving incomplete cloud API responses
+- Fixed a visualization bug where layer lines were rendered in weird directions
+- Fixed a crash when receiving incomplete cloud API responses
 - Add SET_RPATH option to CMake, contributed by boomanaiden154
 - Fixed initial layer bed and print head temperature for Snapmaker profile, contributed by prueker
 - Fixed shader compilation on some GPUs, contributed by fieldOfView
@@ -51,6 +56,7 @@ We’ve streamlined the user login authentication by removing any restrictions, 
 - Fixed a bug where support blockers were included in the bounding box after loading a project file
 - Fixed a bug where grouped models become unslicable if the first extruder was disabled
 - Fixed a bug in Tree Support where the Z Distance was too big
+- Prevented QT plug-ins from being loaded from an insecure directory if an environment variable is set
 
 * Printer definitions, profiles and materials:
 - Add Eazao Zero printer definition, contributed by Hogan-Polaris

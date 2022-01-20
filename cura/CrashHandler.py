@@ -15,7 +15,7 @@ from typing import cast, Any
 try:
     from sentry_sdk.hub import Hub
     from sentry_sdk.utils import event_from_exception
-    from sentry_sdk import configure_scope
+    from sentry_sdk import configure_scope, add_breadcrumb
     with_sentry_sdk = True
 except ImportError:
     with_sentry_sdk = False
@@ -424,6 +424,13 @@ class CrashHandler:
         if with_sentry_sdk:
             try:
                 hub = Hub.current
+                if not Logger.getLoggers():
+                    # No loggers have been loaded yet, so we don't have any breadcrumbs :(
+                    # So add them manually so we at least have some info...
+                    add_breadcrumb(level = "info", message = "SentryLogging was not initialised yet")
+                    for log_type, line in Logger.getUnloggedLines():
+                        add_breadcrumb(message=line)
+
                 event, hint = event_from_exception((self.exception_type, self.value, self.traceback))
                 hub.capture_event(event, hint=hint)
                 hub.flush()

@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Ultimaker B.V.
+// Copyright (C) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -49,6 +49,8 @@ Item
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
+            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
+            focus: true
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
         }
 
