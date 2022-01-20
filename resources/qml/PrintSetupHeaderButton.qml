@@ -1,0 +1,104 @@
+// Copyright (c) 2021 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
+import QtQuick 2.1
+import QtQuick.Controls 2.1
+
+import Cura 1.0 as Cura
+import UM 1.5 as UM
+
+ToolButton
+{
+    id: base
+
+    property alias tooltip: tooltip.text
+
+    contentItem: Label {}
+
+    Cura.ToolTip
+    {
+        id: tooltip
+        visible: base.hovered
+        targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
+    }
+
+    background: Rectangle
+    {
+        color:
+        {
+            if(base.enabled)
+            {
+                if(base.valueError)
+                {
+                    return UM.Theme.getColor("setting_validation_error_background");
+                }
+                else if(base.valueWarning)
+                {
+                    return UM.Theme.getColor("setting_validation_warning_background");
+                }
+                else
+                {
+                    return UM.Theme.getColor("setting_control");
+                }
+            }
+            else
+            {
+                return UM.Theme.getColor("setting_control_disabled");
+            }
+        }
+
+        radius: UM.Theme.getSize("setting_control_radius").width
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color:
+        {
+            if (base.enabled)
+            {
+                if (base.valueError)
+                {
+                    return UM.Theme.getColor("setting_validation_error");
+                }
+                else if (base.valueWarning)
+                {
+                    return UM.Theme.getColor("setting_validation_warning");
+                }
+                else if (base.hovered)
+                {
+                    return UM.Theme.getColor("setting_control_border_highlight");
+                }
+                else
+                {
+                    return UM.Theme.getColor("setting_control_border");
+                }
+            }
+            else
+            {
+                return UM.Theme.getColor("setting_control_disabled_border");
+            }
+        }
+        UM.RecolorImage
+        {
+            id: downArrow
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            width: UM.Theme.getSize("standard_arrow").width
+            height: UM.Theme.getSize("standard_arrow").height
+            sourceSize.height: width
+            color: base.enabled ? UM.Theme.getColor("setting_control_button") : UM.Theme.getColor("setting_category_disabled_text")
+            source: UM.Theme.getIcon("ChevronSingleDown")
+        }
+        Label
+        {
+            id: printSetupComboBoxLabel
+            color: base.enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+            text: base.text;
+            elide: Text.ElideRight;
+            anchors.left: parent.left;
+            anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+            anchors.right: downArrow.left;
+            anchors.rightMargin: base.rightMargin;
+            anchors.verticalCenter: parent.verticalCenter;
+            font: UM.Theme.getFont("default")
+        }
+    }
+}

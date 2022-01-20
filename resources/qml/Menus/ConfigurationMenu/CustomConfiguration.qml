@@ -1,9 +1,8 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.6
 import QtQuick.Controls 2.0
-import QtQuick.Controls 1.1 as OldControls
 
 import Cura 1.0 as Cura
 import UM 1.5 as UM
@@ -262,7 +261,7 @@ Item
                     width: selectors.textWidth
                 }
 
-                OldControls.ToolButton
+                Cura.PrintSetupHeaderButton
                 {
                     id: materialSelection
 
@@ -276,8 +275,8 @@ Item
                     width: selectors.controlWidth
                     height: parent.height
 
-                    style: UM.Theme.styles.print_setup_header_button
-                    activeFocusOnPress: true
+                    focusPolicy: ClickFocus
+
                     Cura.MaterialMenu
                     {
                         id: materialsMenu
@@ -324,15 +323,14 @@ Item
                     width: selectors.textWidth
                 }
 
-                OldControls.ToolButton
+                Cura.PrintSetupHeaderButton
                 {
                     id: variantSelection
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
                     tooltip: text
                     height: parent.height
                     width: selectors.controlWidth
-                    style: UM.Theme.styles.print_setup_header_button
-                    activeFocusOnPress: true
+                    focusPolicy: ClickFocus
                     enabled: enabledCheckbox.checked
 
                     Cura.NozzleMenu
