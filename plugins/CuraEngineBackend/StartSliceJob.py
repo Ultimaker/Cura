@@ -210,7 +210,7 @@ class StartSliceJob(Job):
 
                 # Filter on current build plate
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
-                if build_plate_number is not None and build_plate_number != self._build_plate_number:
+                if None is not build_plate_number != self._build_plate_number:
                     continue
 
                 children = node.getAllChildren()
