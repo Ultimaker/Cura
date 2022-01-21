@@ -1,10 +1,9 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
 
 import UM 1.5 as UM
@@ -133,7 +132,54 @@ Cura.ExpandableComponent
             width: parent.width
             model: layerViewTypes
             visible: !UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.combobox
+
+            background: Rectangle
+            {
+                implicitHeight: UM.Theme.getSize("setting_control").height;
+                implicitWidth: UM.Theme.getSize("setting_control").width;
+
+                color: ladyerTypeCombobox.hovered ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                border.width: UM.Theme.getSize("default_lining").width;
+                border.color: ladyerTypeCombobox.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border");
+                radius: UM.Theme.getSize("setting_control_radius").width
+            }
+
+            contentItem: Item
+            {
+                Label
+                {
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                    anchors.right: downArrow.left
+                    anchors.rightMargin: UM.Theme.getSize("default_lining").width
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    text: ladyerTypeCombobox.currentText
+                    font: UM.Theme.getFont("default");
+                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                UM.RecolorImage
+                {
+                    id: downArrow
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    source: UM.Theme.getIcon("ChevronSingleDown")
+                    width: UM.Theme.getSize("standard_arrow").width
+                    height: UM.Theme.getSize("standard_arrow").height
+                    sourceSize.width: width + 5 * screenScaleFactor
+                    sourceSize.height: width + 5 * screenScaleFactor
+
+                    color: UM.Theme.getColor("setting_control_button");
+                }
+            }
 
             onActivated:
             {
