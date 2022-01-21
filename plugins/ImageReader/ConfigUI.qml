@@ -1,8 +1,8 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
@@ -210,7 +210,7 @@ UM.Dialog
                     Slider {
                         id: smoothing
                         objectName: "Smoothing"
-                        maximumValue: 100.0
+                        to: 100.0
                         stepSize: 1.0
                         width: 180
                         onValueChanged: { manager.onSmoothingChanged(value) }
