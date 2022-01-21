@@ -36,7 +36,7 @@ UM.PreferencesPage
         id: base;
         anchors.fill: parent;
 
-        CheckBox
+        Cura.CheckBox
         {
             id: toggleVisibleSettings
             anchors
@@ -46,7 +46,7 @@ UM.PreferencesPage
                 leftMargin: UM.Theme.getSize("default_margin").width
             }
             text: catalog.i18nc("@label:textbox", "Check all")
-            checkedState:
+            checkState:
             {
                 if(definitionsModel.visibleCount == definitionsModel.categoryCount)
                 {
@@ -61,14 +61,13 @@ UM.PreferencesPage
                     return Qt.PartiallyChecked
                 }
             }
-            partiallyCheckedEnabled: true
 
             MouseArea
             {
                 anchors.fill: parent;
                 onClicked:
                 {
-                    if(parent.checkedState == Qt.Unchecked || parent.checkedState == Qt.PartiallyChecked)
+                    if(parent.checkState == Qt.Unchecked || parent.checkState == Qt.PartiallyChecked)
                     {
                         definitionsModel.setAllExpandedVisible(true)
                     }
