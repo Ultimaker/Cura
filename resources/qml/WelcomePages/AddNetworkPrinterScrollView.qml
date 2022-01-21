@@ -69,8 +69,7 @@ Item
             {
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                anchors.right: networkPrinterScrollBar.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                width: parent.width - networkPrinterScrollBar.width - UM.Theme.getSize("default_margin").width
                 height: UM.Theme.getSize("setting_control").height
                 text: section
                 color: UM.Theme.getColor("small_button_text")
