@@ -8,6 +8,8 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.2 as UM
 
+import Cura 1.0 as Cura
+
 UM.TooltipArea
 {
     x: model.depth * UM.Theme.getSize("default_margin").width;
@@ -16,7 +18,7 @@ UM.TooltipArea
     width: childrenRect.width;
     height: childrenRect.height;
 
-    CheckBox
+    Cura.CheckBox
     {
         id: check
 
