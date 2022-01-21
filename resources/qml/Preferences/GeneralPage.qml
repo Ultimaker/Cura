@@ -2,10 +2,9 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.1 as OldControls
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.1
-
-import QtQuick.Controls 2.3 as NewControls
 
 import UM 1.1 as UM
 import Cura 1.1 as Cura
@@ -125,7 +124,7 @@ UM.PreferencesPage
         pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
     }
 
-    ScrollView
+    OldControls.ScrollView
     {
         width: parent.width
         height: parent.height
@@ -186,7 +185,7 @@ UM.PreferencesPage
                     }
                 }
 
-                NewControls.ComboBox
+                ComboBox
                 {
                     id: languageComboBox
 
@@ -240,7 +239,7 @@ UM.PreferencesPage
                     }
                 }
 
-                NewControls.ComboBox
+                ComboBox
                 {
                     id: themeComboBox
 
@@ -516,7 +515,7 @@ UM.PreferencesPage
                         }
                     }
 
-                    NewControls.ComboBox
+                    ComboBox
                     {
                         id: cameraComboBox
 
@@ -673,7 +672,7 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    NewControls.ComboBox
+                    ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
                         width: Math.round(250 * screenScaleFactor)
@@ -740,7 +739,7 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    NewControls.ComboBox
+                    ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
                         width: Math.round(250 * screenScaleFactor)
@@ -843,7 +842,11 @@ UM.PreferencesPage
                 }
             }
 
-            ExclusiveGroup { id: curaUpdatesGroup }
+            ButtonGroup {
+                id: curaUpdatesGroup
+                buttons: [checkUpdatesOptionBeta, checkUpdatesOptionStable]
+            }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
@@ -853,8 +856,8 @@ UM.PreferencesPage
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 RadioButton
                 {
+                    id: checkUpdatesOptionStable
                     text: catalog.i18nc("@option:radio", "Stable releases only")
-                    exclusiveGroup: curaUpdatesGroup
                     enabled: checkUpdatesCheckbox.checked
                     checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
                     onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
@@ -869,8 +872,8 @@ UM.PreferencesPage
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 RadioButton
                 {
+                    id: checkUpdatesOptionBeta
                     text: catalog.i18nc("@option:radio", "Stable and Beta releases")
-                    exclusiveGroup: curaUpdatesGroup
                     enabled: checkUpdatesCheckbox.checked
                     checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
                     onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")
