@@ -62,7 +62,7 @@ UM.Dialog
         id: toggleShowAll
         anchors
         {
-            verticalCenter: parent.verticalCenter
+            top: parent.top
             right: parent.right
         }
         text: catalog.i18nc("@label:checkbox", "Show all")
