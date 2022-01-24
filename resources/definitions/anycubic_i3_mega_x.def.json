@@ -14,7 +14,13 @@
         "machine_height": { "default_value": 305 },
         "machine_depth": { "default_value": 300 },
 
+        "speed_travel": { "value": 100.0,  "maximum_value": 120.0 },
+
         "acceleration_print": { "value": 400 },
         "acceleration_travel": { "value": 400 }
+        
+        "retraction_speed": { "value": 30, "maximum_value_warning": 80 },
+        "retraction_retract_speed": { "maximum_value_warning": 80 },
+        "retraction_prime_speed": { "maximum_value_warning": 80 }
     }
 }
