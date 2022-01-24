@@ -1,8 +1,8 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
@@ -97,29 +97,32 @@ UM.Dialog
             text: catalog.i18nc("@text:window", "Remember my choice")
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
         }
+    }
 
-        // Buttons
-        Item {
-            id: buttonBar
-            anchors.right: parent.right
-            anchors.left: parent.left
-            height: childrenRect.height
-
-            Button {
-                id: openAsProjectButton
-                text: catalog.i18nc("@action:button", "Open as project")
-                anchors.right: importModelsButton.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                isDefault: true
-                onClicked: loadProjectFile()
-            }
-
-            Button {
-                id: importModelsButton
-                text: catalog.i18nc("@action:button", "Import models")
-                anchors.right: parent.right
-                onClicked: loadModelFiles()
-            }
+    Item
+    {
+        ButtonGroup
+        {
+            buttons: [openAsProjectButton, importModelsButton]
+            checkedButton: openAsProjectButton
         }
     }
+
+    onAccepted: loadProjectFile()
+    onRejected: loadModelFiles()
+
+    rightButtons: [
+        Button
+        {
+            id: openAsProjectButton
+            text: catalog.i18nc("@action:button", "Open as project")
+            onClicked: loadProjectFile()
+        },
+        Button
+        {
+            id: importModelsButton
+            text: catalog.i18nc("@action:button", "Import models")
+            onClicked: loadModelFiles()
+        }
+    ]
 }
