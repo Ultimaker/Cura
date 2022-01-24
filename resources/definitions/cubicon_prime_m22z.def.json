@@ -8,7 +8,7 @@
         "visible": true,
         "file_formats": "text/x-gcode",
         "platform": "cubicon_prime_m22z_platform.stl",
-        "supports_usb_connection": true,
+        "supports_usb_connection": false,
         "supports_network_connection": true,
         "machine_extruder_trains": {
             "0": "cubicon_prime_m22z_extruder_0"
