@@ -7,7 +7,6 @@
         "manufacturer": "Cubicon",
         "visible": false,
         "has_materials": true,
-        "is_online": false,
         "preferred_material": "cubicon_pla"
     },
     "overrides": {

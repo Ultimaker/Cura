@@ -7,7 +7,6 @@
         "manufacturer": "Cubicon",
         "visible": true,
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": true,
         "supports_network_connection": true,
         "machine_extruder_trains": {
             "0": "cubicon_optimus_c23_extruder_0"

@@ -7,7 +7,6 @@
         "manufacturer": "Cubicon",
         "visible": true,
         "file_formats": "text/x-gcode",
-        "supports_usb_connection": false,
         "machine_extruder_trains": {
             "0": "cubicon_style_neo_a31_extruder_0"
         },
