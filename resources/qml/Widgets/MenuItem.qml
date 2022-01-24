@@ -37,7 +37,7 @@ MenuItem
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        source: UM.Theme.getIcon("EmptyCheck", "low")
+        source: UM.Theme.getIcon("CheckMark", "low")
         color: UM.Theme.getColor("setting_control_text")
     }
 
