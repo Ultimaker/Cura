@@ -2,7 +2,8 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.4 as OldControls
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
@@ -106,7 +107,7 @@ Item
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
-            iconName: "list-activate"
+            icon.name: "list-activate"
             enabled: !isCurrentItemActivated && Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
@@ -124,7 +125,7 @@ Item
         {
             id: createMenuButton
             text: catalog.i18nc("@action:button", "Create")
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
@@ -139,7 +140,7 @@ Item
         {
             id: duplicateMenuButton
             text: catalog.i18nc("@action:button", "Duplicate");
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: base.hasCurrentItem
             onClicked:
             {
@@ -154,7 +155,7 @@ Item
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
-            iconName: "list-remove"
+            icon.name: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManagementModel.canMaterialBeRemoved(base.currentItem.container_node)
 
             onClicked:
@@ -169,7 +170,7 @@ Item
         {
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
-            iconName: "document-import"
+            icon.name: "document-import"
             onClicked:
             {
                 forceActiveFocus();
@@ -183,7 +184,7 @@ Item
         {
             id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
-            iconName: "document-export"
+            icon.name: "document-export"
             onClicked:
             {
                 forceActiveFocus();
@@ -197,7 +198,7 @@ Item
         {
             id: syncMaterialsButton
             text: catalog.i18nc("@action:button Sending materials to printers", "Sync with Printers")
-            iconName: "sync-synchronizing"
+            icon.name: "sync-synchronizing"
             onClicked:
             {
                 forceActiveFocus();
@@ -261,7 +262,7 @@ Item
             elide: Text.ElideRight
         }
 
-        ScrollView
+        OldControls.ScrollView
         {
             id: materialScrollView
             anchors
