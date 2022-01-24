@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker_original_dual_2nd",
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",

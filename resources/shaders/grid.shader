@@ -1,6 +1,8 @@
 [shaders]
 vertex =
-    uniform highp mat4 u_modelViewProjectionMatrix;
+    uniform highp mat4 u_modelMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
 
     attribute highp vec4 a_vertex;
     attribute lowp vec2 a_uvs;
@@ -9,7 +11,7 @@ vertex =
 
     void main()
     {
-        gl_Position = u_modelViewProjectionMatrix * a_vertex;
+        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_vertex;
         v_uvs = a_uvs;
     }
 
@@ -47,7 +49,9 @@ fragment =
 
 vertex41core =
     #version 410
-    uniform highp mat4 u_modelViewProjectionMatrix;
+    uniform highp mat4 u_modelMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
 
     in highp vec4 a_vertex;
     in lowp vec2 a_uvs;
@@ -56,7 +60,7 @@ vertex41core =
 
     void main()
     {
-        gl_Position = u_modelViewProjectionMatrix * a_vertex;
+        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_vertex;
         v_uvs = a_uvs;
     }
 
@@ -92,7 +96,9 @@ u_gridColor0 = [0.96, 0.96, 0.96, 1.0]
 u_gridColor1 = [0.8, 0.8, 0.8, 1.0]
 
 [bindings]
-u_modelViewProjectionMatrix = model_view_projection_matrix
+u_modelMatrix = model_matrix
+u_viewMatrix = view_matrix
+u_projectionMatrix = projection_matrix
 
 [attributes]
 a_vertex = vertex

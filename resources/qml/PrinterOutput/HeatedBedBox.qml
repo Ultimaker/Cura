@@ -1,10 +1,10 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -12,12 +12,13 @@ import Cura 1.0 as Cura
 Item
 {
     implicitWidth: parent.width
-    height: visible ? UM.Theme.getSize("sidebar_extruder_box").height : 0
+    height: visible ? UM.Theme.getSize("print_setup_extruder_box").height : 0
     property var printerModel
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
     Rectangle
     {
-        color: UM.Theme.getColor("sidebar")
+        color: UM.Theme.getColor("main_background")
         anchors.fill: parent
 
         Label //Build plate label.
@@ -34,7 +35,7 @@ Item
         {
             id: bedTargetTemperature
             text: printerModel != null ? printerModel.targetBedTemperature + "°C" : ""
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("default_bold")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -66,7 +67,7 @@ Item
         {
             id: bedCurrentTemperature
             text: printerModel != null ? printerModel.bedTemperature + "°C" : ""
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             color: UM.Theme.getColor("text")
             anchors.right: bedTargetTemperature.left
             anchors.top: parent.top
@@ -114,7 +115,7 @@ Item
                 {
                     return false; //Can't preheat if not connected.
                 }
-                if (!connectedPrinter.acceptsCommands)
+                if (connectedPrinter == null || !connectedPrinter.acceptsCommands)
                 {
                     return false; //Not allowed to do anything.
                 }
@@ -192,22 +193,22 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 
-                Component.onCompleted:
+                text:
                 {
                     if (!bedTemperature.properties.value)
                     {
-                        text = "";
+                        return "";
                     }
                     if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
                     {
                         // We have a resolve function. Indicates that the setting is not settable per extruder and that
                         // we have to choose between the resolved value (default) and the global value
                         // (if user has explicitly set this).
-                        text = bedTemperature.resolve;
+                        return bedTemperature.resolve;
                     }
                     else
                     {
-                        text = bedTemperature.properties.value;
+                        return bedTemperature.properties.value;
                     }
                 }
             }
@@ -319,7 +320,7 @@ Item
                                 return UM.Theme.getColor("action_button_text");
                             }
                         }
-                        font: UM.Theme.getFont("action_button")
+                        font: UM.Theme.getFont("medium")
                         text:
                         {
                             if(printerModel == null)

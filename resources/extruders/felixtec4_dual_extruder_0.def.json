@@ -1,5 +1,4 @@
 {
-    "id": "felixtec4_dual_extruder_0",
     "version": 2,
     "name": "Left Extruder",
     "inherits": "fdmextruder",

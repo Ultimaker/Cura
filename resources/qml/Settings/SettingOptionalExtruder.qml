@@ -1,5 +1,5 @@
-// Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
@@ -12,15 +12,24 @@ SettingItem
     id: base
     property var focusItem: control
 
+    // Somehow if we directory set control.model to CuraApplication.getExtrudersModelWithOptional()
+    // and in the Connections.onModelChanged use control.model as a reference, it will complain about
+    // non-existing properties such as "onModelChanged" and "getItem". I guess if we access the model
+    // via "control.model", it gives back a generic/abstract model instance. To avoid this, we add
+    // this extra property to keep the ExtrudersModel and use this in the rest of the code.
+    property var extrudersWithOptionalModel: CuraApplication.getExtrudersModelWithOptional()
+
     contents: ComboBox
     {
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        model: base.extrudersWithOptionalModel
+
+        Connections
         {
-            onModelChanged: control.color = getItem(control.currentIndex).color
-            addOptionalExtruder: true
+            target: base.extrudersWithOptionalModel
+            function onModelChanged() { control.color = base.extrudersWithOptionalModel.getItem(control.currentIndex).color }
         }
 
         textRole: "name"
@@ -31,12 +40,15 @@ SettingItem
             {
                 forceActiveFocus();
                 propertyProvider.setPropertyValue("value", model.getItem(index).index);
-            } else
+            }
+            else
             {
                 if (propertyProvider.properties.value == -1)
                 {
-                    control.currentIndex = model.rowCount() - 1;  // we know the last item is "Not overriden"
-                } else {
+                    control.currentIndex = model.count - 1;  // we know the last item is "Not overridden"
+                }
+                else
+                {
                     control.currentIndex = propertyProvider.properties.value;  // revert to the old value
                 }
             }
@@ -76,7 +88,7 @@ SettingItem
             when: control.model.items.length > 0
         }
 
-        property string color: "#fff"
+        property string color: "transparent"
 
         Binding
         {
@@ -84,7 +96,7 @@ SettingItem
             // explicit binding here otherwise we do not handle value changes after the model changes.
             target: control
             property: "color"
-            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
+            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : "transparent"
         }
 
         indicator: UM.RecolorImage
@@ -93,13 +105,13 @@ SettingItem
             x: control.width - width - control.rightPadding
             y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
-            source: UM.Theme.getIcon("arrow_bottom")
+            source: UM.Theme.getIcon("ChevronSingleDown")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_button");
         }
 
         background: Rectangle
@@ -116,6 +128,7 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control");
             }
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
@@ -151,16 +164,12 @@ SettingItem
             background: Rectangle
             {
                 id: swatch
-                height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                height: Math.round(parent.height / 2)
                 width: height
-
+                radius: Math.round(width / 2)
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
-
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                radius: Math.round(width / 2)
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
                 color: control.color
             }
@@ -218,16 +227,12 @@ SettingItem
                 background: Rectangle
                 {
                     id: swatch
-                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                    height: Math.round(parent.height / 2)
                     width: height
-
+                    radius: Math.round(width / 2)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                    radius: Math.round(width / 2)
+                    anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
                     color: control.model.getItem(index).color
                 }

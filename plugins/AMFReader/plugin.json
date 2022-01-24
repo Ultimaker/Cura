@@ -1,0 +1,7 @@
+{
+    "name": "AMF Reader",
+    "author": "fieldOfView",
+    "version": "1.0.0",
+    "description": "Provides support for reading AMF files.",
+    "api": 7
+}

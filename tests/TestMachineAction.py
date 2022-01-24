@@ -4,7 +4,7 @@
 import pytest
 
 from cura.MachineAction import MachineAction
-from cura.MachineActionManager import NotUniqueMachineActionError, UnknownMachineActionError
+from cura.UI.MachineActionManager import NotUniqueMachineActionError, UnknownMachineActionError
 from cura.Settings.GlobalStack import GlobalStack
 
 
@@ -38,7 +38,7 @@ def test_addDefaultMachineActions(machine_action_manager, global_stack):
         machine_action_manager.addMachineAction(action)
 
     # Only the actions in the definition that were registered first will be added to the machine.
-    # For the sake of this test, all the actions were previouly added.
+    # For the sake of this test, all the actions were previously added.
     machine_action_manager.addDefaultMachineActions(global_stack)
     definition_id = global_stack.getDefinition().getId()
 
@@ -104,3 +104,18 @@ def test_addMachineAction(machine_action_manager):
     machine_action_manager.addFirstStartAction(test_machine, "test_action")
     machine_action_manager.addFirstStartAction(test_machine, "test_action")
     assert machine_action_manager.getFirstStartActions(test_machine) == [test_action, test_action]
+
+    # Adding unknown action should not crash.
+    machine_action_manager.addFirstStartAction(test_machine, "key_that_doesnt_exists")
+
+
+def test_removeMachineAction(machine_action_manager):
+    test_action = MachineAction(key="test_action")
+    machine_action_manager.addMachineAction(test_action)
+
+    # Remove the machine action
+    machine_action_manager.removeMachineAction(test_action)
+    assert machine_action_manager.getMachineAction("test_action") is None
+
+    # Attempting to remove it again should not crash.
+    machine_action_manager.removeMachineAction(test_action)

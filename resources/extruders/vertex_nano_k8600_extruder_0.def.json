@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "vertex_nano_k8600",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.35 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

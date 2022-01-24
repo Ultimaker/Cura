@@ -4,7 +4,7 @@
 from typing import List
 
 from cura.MachineAction import MachineAction
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 from UM.FlameProfiler import pyqtSlot
 
@@ -14,9 +14,12 @@ from UM.Logger import Logger
 catalog = i18nCatalog("cura")
 
 
-##  A simple action to handle manual bed leveling procedure for printers that don't have it on the firmware.
-#   This is currently only used by the Ultimaker Original+
 class BedLevelMachineAction(MachineAction):
+    """A simple action to handle manual bed leveling procedure for printers that don't have it on the firmware.
+
+    This is currently only used by the Ultimaker Original+
+    """
+
     def __init__(self):
         super().__init__("BedLevel", catalog.i18nc("@action", "Level build plate"))
         self._qml_url = "BedLevelMachineAction.qml"

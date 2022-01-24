@@ -47,7 +47,7 @@ def getMetaData() -> Dict[str, Any]:
             },
             "user": {
                 "get_version": upgrade.getCfgVersion,
-                "location": {"./user"}
+                "location": {"./user", "./materials/*"}
             },
             "variant": {
                 "get_version": upgrade.getCfgVersion,

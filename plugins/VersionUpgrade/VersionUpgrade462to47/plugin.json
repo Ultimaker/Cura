@@ -1,0 +1,8 @@
+{
+    "name": "Version Upgrade 4.6.2 to 4.7",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.0",
+    "description": "Upgrades configurations from Cura 4.6.2 to Cura 4.7.",
+    "api": 7,
+    "i18n-catalog": "cura"
+}

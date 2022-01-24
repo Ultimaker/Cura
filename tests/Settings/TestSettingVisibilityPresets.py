@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import os.path
 
@@ -15,11 +15,11 @@ Resources.addStorageType(CuraApplication.ResourceTypes.SettingVisibilityPreset, 
 
 
 def test_createVisibilityPresetFromLocalFile():
-    # Simple creation test. This is seperated from the visibilityFromPrevious, since we can't check for the contents
+    # Simple creation test. This is separated from the visibilityFromPrevious, since we can't check for the contents
     # of the other profiles, since they might change over time.
     visibility_preset = SettingVisibilityPreset()
 
-    visibility_preset.loadFromFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "setting_visiblity_preset_test.cfg"))
+    visibility_preset.loadFromFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "setting_visibility_preset_test.cfg"))
     assert setting_visibility_preset_test_settings == set(visibility_preset.settings)
 
     assert visibility_preset.name == "test"
@@ -28,8 +28,8 @@ def test_createVisibilityPresetFromLocalFile():
 
 def test_visibilityFromPrevious():
     # This test checks that all settings in basic are in advanced and all settings in advanced are in expert.
-
-    visibility_model = SettingVisibilityPresetsModel(Preferences())
+    with patch("cura.CuraApplication.CuraApplication.getInstance"):
+        visibility_model = SettingVisibilityPresetsModel(Preferences())
 
     basic_visibility = visibility_model.getVisibilityPresetById("basic")
     advanced_visibility = visibility_model.getVisibilityPresetById("advanced")
@@ -46,9 +46,10 @@ def test_visibilityFromPrevious():
 
 def test_setActivePreset():
     preferences = Preferences()
-    visibility_model = SettingVisibilityPresetsModel(preferences)
+    with patch("cura.CuraApplication.CuraApplication.getInstance"):
+        visibility_model = SettingVisibilityPresetsModel(preferences)
     visibility_model.activePresetChanged = MagicMock()
-    # Ensure that we start off with basic (since we didn't change anyting just yet!)
+    # Ensure that we start off with basic (since we didn't change anything just yet!)
     assert visibility_model.activePreset == "basic"
 
     # Everything should be the same.
@@ -71,12 +72,12 @@ def test_preferenceChanged():
     preferences = Preferences()
     # Set the visible_settings to something silly
     preferences.addPreference("general/visible_settings", "omgzomg")
-    visibility_model = SettingVisibilityPresetsModel(preferences)
+    with patch("cura.CuraApplication.CuraApplication.getInstance"):
+        visibility_model = SettingVisibilityPresetsModel(preferences)
     visibility_model.activePresetChanged = MagicMock()
 
     assert visibility_model.activePreset == "custom"  # This should make the model start at "custom
     assert visibility_model.activePresetChanged.emit.call_count == 0
-
 
     basic_visibility = visibility_model.getVisibilityPresetById("basic")
     new_visibility_string = ";".join(basic_visibility.settings)

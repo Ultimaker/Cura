@@ -3,9 +3,12 @@
 from UM.Mesh.MeshData import MeshData
 
 
-##  Class to holds the layer mesh and information about the layers.
-# Immutable, use LayerDataBuilder to create one of these.
 class LayerData(MeshData):
+    """Class to holds the layer mesh and information about the layers.
+
+    Immutable, use :py:class:`cura.LayerDataBuilder.LayerDataBuilder` to create one of these.
+    """
+
     def __init__(self, vertices = None, normals = None, indices = None, colors = None, uvs = None, file_name = None,
                  center_position = None, layers=None, element_counts=None, attributes=None):
         super().__init__(vertices=vertices, normals=normals, indices=indices, colors=colors, uvs=uvs,
@@ -16,8 +19,7 @@ class LayerData(MeshData):
     def getLayer(self, layer):
         if layer in self._layers:
             return self._layers[layer]
-        else:
-            return None
+        return None
 
     def getLayers(self):
         return self._layers

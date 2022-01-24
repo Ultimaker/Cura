@@ -15,6 +15,8 @@ Item
     property string value: ""
     height: childrenRect.height;
 
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
     Row
     {
         height: UM.Theme.getSize("setting_control").height

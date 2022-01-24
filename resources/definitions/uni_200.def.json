@@ -1,0 +1,18 @@
+{
+    "name":      "Uni 200",
+    "version":   2,
+    "inherits":  "uni_base",
+    "metadata":  {
+                  "author": "Nail` Gimadeev (C)",
+                  "visible": true,
+                  "quality_definition": "uni_base",
+                  "platform": "uni_200_platform.stl",
+                  "platform_texture": "uni.png"
+                 },
+    "overrides": {
+                  "machine_name":   {"default_value": "uni_200"},
+                  "machine_width":  {"default_value": 220},
+				  "machine_depth":  {"default_value": 220},
+                  "machine_height": {"default_value": 250}
+                 }
+}

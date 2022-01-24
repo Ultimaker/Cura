@@ -1,13 +1,13 @@
 {
     "version": 2,
-    "name": "Innovo INVENTOR",
+    "name": "Innovo Inventor",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
         "file_formats": "text/x-gcode",
-        "platform": "inventor_platform.stl",
+        "platform": "inventor_platform.3mf",
         "platform_offset": [-180, -0.25, 160],
         "machine_extruder_trains":
         {
@@ -32,7 +32,7 @@
         "machine_center_is_zero": {
             "default_value": true
         },
-        "machine_head_polygon": {
+        "machine_head_with_fans_polygon": {
             "default_value": [
                 [-43.7, -19.2],
                 [-43.7, 55],
@@ -41,7 +41,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 82.3
+            "value": "82.3"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -56,41 +56,15 @@
             "default_value": 0.15
         },
         "wall_thickness": {
-            "default_value": 0.8
+            "value": "0.8"
         },
         "top_bottom_thickness": {
             "default_value": 1.2
         },
-        "material_print_temperature": {
-            "default_value": 205
-        },
-        "material_bed_temperature": {
-            "default_value": 60
-        },
         "speed_print": {
             "default_value": 50
         },
-        "speed_wall_0": {
-            "default_value": 25
-        },
-        "speed_wall_x": {
-            "default_value": 40
-        },
-        "speed_infill": {
-            "default_value": 80
-        },
-        "speed_topbottom": {
-            "default_value": 30
-        },
-        "speed_support_interface":
-        {
-            "default_value": 20
-        },
-        "speed_travel": {
-            "default_value": 150
-        },
         "speed_layer_0": {
-            "default_value": 30.0,
             "minimum_value": 0.1
         }
     }

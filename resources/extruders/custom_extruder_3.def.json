@@ -1,5 +1,4 @@
 {
-    "id": "custom_extruder_3",
     "version": 2,
     "name": "Extruder 3",
     "inherits": "fdmextruder",

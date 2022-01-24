@@ -126,9 +126,6 @@
         "adhesion_type": {
             "value": "'none'"
         },
-        "acceleration_enabled": {
-            "value": "False"
-        },
         "print_sequence": {
             "enabled": false
         },
@@ -173,26 +170,17 @@
         "minimum_polygon_circumference": {
             "value": "0.1"
         },
-        "meshfix_maximum_resolution": {
-            "value": "0.005"
+        "meshfix_maximum_deviation": {
+            "value": "0.002"
         },
         "skin_outline_count": {
             "value": 0
-        },
-        "travel_compensate_overlapping_walls_enabled": {
-            "value": "False"
-        },
-        "travel_compensate_overlapping_walls_0_enabled": {
-            "value": "False"
-        },
-        "travel_compensate_overlapping_walls_x_enabled": {
-            "value": "False"
         },
         "wall_0_wipe_dist": {
             "value": "machine_nozzle_size / 3"
         },
         "wall_thickness": {
-            "value": 0.5
+            "value": "0.5"
         },
         "infill_sparse_density": {
             "value": 70
@@ -221,10 +209,6 @@
         "material_flow_layer_0": {
             "enabled": false
         },
-        "speed_equalize_flow_enabled": {
-            "enabled": false,
-            "value": "False"
-        },
         "draft_shield_enabled": {
             "enabled": false,
             "value": "False"
@@ -250,10 +234,6 @@
         },
         "expand_skins_expand_distance": {
             "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
-        },
-        "max_feedrate_z_override": {
-            "value": 0,
-            "enabled": false
         },
         "flow_rate_max_extrusion_offset": {
             "enabled": false

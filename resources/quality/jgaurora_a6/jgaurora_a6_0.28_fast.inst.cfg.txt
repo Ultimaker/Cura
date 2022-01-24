@@ -1,0 +1,24 @@
+[general]
+version = 4
+name = Fast 0.28
+definition = jgaurora_a6
+
+[metadata]
+quality_type = fast
+setting_version = 19
+type = quality
+weight = -4
+global_quality = true
+
+[values]
+layer_height = 0.28
+layer_height_0 = 0.28
+speed_print = 60
+speed_travel = 120
+speed_layer_0 = 30
+wall_thickness = =line_width * 4
+retraction_amount = 4
+adhesion_type = skirt
+retraction_combing = infill
+support_enable = False
+travel_retract_before_outer_wall = True

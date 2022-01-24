@@ -1,8 +1,9 @@
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 
 
-##  A decorator that stores the amount an object has been moved below the platform.
 class ZOffsetDecorator(SceneNodeDecorator):
+    """A decorator that stores the amount an object has been moved below the platform."""
+
     def __init__(self) -> None:
         super().__init__()
         self._z_offset = 0.

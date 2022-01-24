@@ -1,41 +1,44 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+import math
+import re
+from typing import Dict, List, NamedTuple, Optional, Union, Set
+
+import numpy
 
 from UM.Backend import Backend
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
 from UM.Message import Message
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.i18n import i18nCatalog
-
-catalog = i18nCatalog("cura")
 
 from cura.CuraApplication import CuraApplication
 from cura.LayerDataBuilder import LayerDataBuilder
 from cura.LayerDataDecorator import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 
-import numpy
-import math
-import re
-from typing import Dict, List, NamedTuple, Optional, Union
+catalog = i18nCatalog("cura")
 
 PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
 
-##  This parser is intended to interpret the common firmware codes among all the
-#   different flavors
+
 class FlavorParser:
+    """This parser is intended to interpret the common firmware codes among all the different flavors"""
 
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
-        self._message = None
+        self._message = None  # type: Optional[Message]
         self._layer_number = 0
         self._extruder_number = 0
+        # All extruder numbers that have been seen
+        self._extruders_seen = {0}  # type: Set[int]
         self._clearValues()
         self._scene_node = None
         # X, Y, Z position, F feedrate and E extruder values are stored
@@ -64,7 +67,7 @@ class FlavorParser:
         if n < 0:
             return None
         n += len(code)
-        pattern = re.compile("[;\s]")
+        pattern = re.compile("[;\\s]")
         match = pattern.search(line, n)
         m = match.start() if match is not None else -1
         try:
@@ -107,6 +110,8 @@ class FlavorParser:
             self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
             self._layer_data_builder.setLayerThickness(self._layer_number, layer_thickness)
             this_layer = self._layer_data_builder.getLayer(self._layer_number)
+            if not this_layer:
+                return False
         except ValueError:
             return False
         count = len(path)
@@ -148,7 +153,7 @@ class FlavorParser:
         Af = (self._filament_diameter / 2) ** 2 * numpy.pi
         # Length of the extruded filament
         de = current_extrusion - previous_extrusion
-        # Volumne of the extruded filament
+        # Volume of the extruded filament
         dVe = de * Af
         # Length of the printed line
         dX = numpy.sqrt((current_point[0] - previous_point[0])**2 + (current_point[2] - previous_point[2])**2)
@@ -163,6 +168,9 @@ class FlavorParser:
         # A threshold is set to avoid weird paths in the GCode
         if line_width > 1.2:
             return 0.35
+        # Prevent showing infinitely wide lines
+        if line_width < 0.0:
+            return 0.0
         return line_width
 
     def _gCode0(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
@@ -190,7 +198,7 @@ class FlavorParser:
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
             # Also, 1.5 is a heuristic for any priming or whatsoever, we skip those.
-            if z > self._previous_z and (z - self._previous_z < 1.5):
+            if z > self._previous_z and (z - self._previous_z < 1.5) and (params.x is not None or params.y is not None):
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
         elif self._previous_extrusion_value > e[self._extruder_number]:
@@ -203,8 +211,9 @@ class FlavorParser:
     # G0 and G1 should be handled exactly the same.
     _gCode1 = _gCode0
 
-    ##  Home the head.
     def _gCode28(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Home the head."""
+
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -212,24 +221,29 @@ class FlavorParser:
             position.f,
             position.e)
 
-    ##  Set the absolute positioning
     def _gCode90(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Set the absolute positioning"""
+
         self._is_absolute_positioning = True
         self._is_absolute_extrusion = True
         return position
 
-    ##  Set the relative positioning
     def _gCode91(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Set the relative positioning"""
+
         self._is_absolute_positioning = False
         self._is_absolute_extrusion = False
         return position
 
-    ##  Reset the current position to the values specified.
-    #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Reset the current position to the values specified.
+
+        For example: G92 X10 will set the X to 10 without any physical motion.
+        """
+
         if params.e is not None:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
-            self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
+            self._extrusion_length_offset[self._extruder_number] = position.e[self._extruder_number] - params.e
             position.e[self._extruder_number] = params.e
             self._previous_extrusion_value = params.e
         else:
@@ -252,16 +266,19 @@ class FlavorParser:
                     continue
                 if item.startswith(";"):
                     continue
-                if item[0] == "X":
-                    x = float(item[1:])
-                if item[0] == "Y":
-                    y = float(item[1:])
-                if item[0] == "Z":
-                    z = float(item[1:])
-                if item[0] == "F":
-                    f = float(item[1:]) / 60
-                if item[0] == "E":
-                    e = float(item[1:])
+                try:
+                    if item[0] == "X":
+                        x = float(item[1:])
+                    elif item[0] == "Y":
+                        y = float(item[1:])
+                    elif item[0] == "Z":
+                        z = float(item[1:])
+                    elif item[0] == "F":
+                        f = float(item[1:]) / 60
+                    elif item[0] == "E":
+                        e = float(item[1:])
+                except ValueError:  # Improperly formatted g-code: Coordinates are not floats.
+                    continue  # Skip the command then.
             params = PositionOptional(x, y, z, f, e)
             return func(position, params, path)
         return position
@@ -279,8 +296,9 @@ class FlavorParser:
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"
 
-    ##  For showing correct x, y offsets for each extruder
     def _extruderOffsets(self) -> Dict[int, List[float]]:
+        """For showing correct x, y offsets for each extruder"""
+
         result = {}
         for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
@@ -288,8 +306,13 @@ class FlavorParser:
                 extruder.getProperty("machine_nozzle_offset_y", "value")]
         return result
 
-    def processGCodeStream(self, stream: str) -> Optional[CuraSceneNode]:
-        Logger.log("d", "Preparing to load GCode")
+    #
+    # CURA-6643
+    # This function needs the filename so it can be set to the SceneNode. Otherwise, if you load a GCode file and press
+    # F5, that gcode SceneNode will be removed because it doesn't have a file to be reloaded from.
+    #
+    def processGCodeStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
+        Logger.log("d", "Preparing to load g-code")
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
@@ -297,7 +320,7 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
+        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
 
@@ -329,7 +352,7 @@ class FlavorParser:
         self._message.setProgress(0)
         self._message.show()
 
-        Logger.log("d", "Parsing Gcode...")
+        Logger.log("d", "Parsing g-code...")
 
         current_position = Position(0, 0, 0, 0, [0])
         current_path = [] #type: List[List[float]]
@@ -340,7 +363,7 @@ class FlavorParser:
 
         for line in stream.split("\n"):
             if self._cancelled:
-                Logger.log("d", "Parsing Gcode file cancelled")
+                Logger.log("d", "Parsing g-code file cancelled.")
                 return None
             current_line += 1
 
@@ -364,6 +387,10 @@ class FlavorParser:
                     self._layer_type = LayerPolygon.SupportType
                 elif type == "FILL":
                     self._layer_type = LayerPolygon.InfillType
+                elif type == "SUPPORT-INTERFACE":
+                    self._layer_type = LayerPolygon.SupportInterfaceType
+                elif type == "PRIME-TOWER":
+                    self._layer_type = LayerPolygon.PrimeTowerType
                 else:
                     Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
@@ -401,7 +428,7 @@ class FlavorParser:
 
             G = self._getInt(line, "G")
             if G is not None:
-                # When find a movement, the new posistion is calculated and added to the current_path, but
+                # When find a movement, the new position is calculated and added to the current_path, but
                 # don't need to create a polygon until the end of the layer
                 current_position = self.processGCode(G, line, current_position, current_path)
                 continue
@@ -410,6 +437,7 @@ class FlavorParser:
             if line.startswith("T"):
                 T = self._getInt(line, "T")
                 if T is not None:
+                    self._extruders_seen.add(T)
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
 
@@ -421,7 +449,8 @@ class FlavorParser:
 
             if line.startswith("M"):
                 M = self._getInt(line, "M")
-                self.processMCode(M, line, current_position, current_path)
+                if M is not None:
+                    self.processMCode(M, line, current_position, current_path)
 
         # "Flush" leftovers. Last layer paths are still stored
         if len(current_path) > 1:
@@ -444,6 +473,7 @@ class FlavorParser:
         scene_node.addDecorator(decorator)
 
         gcode_list_decorator = GCodeListDecorator()
+        gcode_list_decorator.setGcodeFileName(filename)
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
@@ -452,26 +482,26 @@ class FlavorParser:
         gcode_dict = {active_build_plate_id: gcode_list}
         CuraApplication.getInstance().getController().getScene().gcode_dict = gcode_dict #type: ignore #Because gcode_dict is generated dynamically.
 
-        Logger.log("d", "Finished parsing Gcode")
+        Logger.log("d", "Finished parsing g-code.")
         self._message.hide()
 
         if self._layer_number == 0:
             Logger.log("w", "File doesn't contain any valid layers")
 
-        settings = CuraApplication.getInstance().getGlobalContainerStack()
-        if not settings.getProperty("machine_center_is_zero", "value"):
-            machine_width = settings.getProperty("machine_width", "value")
-            machine_depth = settings.getProperty("machine_depth", "value")
+        if not global_stack.getProperty("machine_center_is_zero", "value"):
+            machine_width = global_stack.getProperty("machine_width", "value")
+            machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
-        Logger.log("d", "GCode loading finished")
+        Logger.log("d", "G-code loading finished.")
 
         if CuraApplication.getInstance().getPreferences().getValue("gcodereader/show_caution"):
             caution_message = Message(catalog.i18nc(
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."),
                 lifetime=0,
-                title = catalog.i18nc("@info:title", "G-code Details"))
+                title = catalog.i18nc("@info:title", "G-code Details"),
+                message_type = Message.MessageType.WARNING)
             caution_message.show()
 
         # The "save/print" button's state is bound to the backend state.

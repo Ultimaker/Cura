@@ -12,48 +12,30 @@ Button
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.leftMargin: UM.Theme.getSize("sidebar_margin").width
-    anchors.rightMargin: UM.Theme.getSize("sidebar_margin").width
+    // To avoid overlapping with the scrollBars
+    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
+    hoverEnabled: true
+
+    height: UM.Theme.getSize("section_icon_column").height
+
     background: Rectangle
     {
         id: backgroundRectangle
-        implicitHeight: UM.Theme.getSize("section").height
-        color: {
-            if (base.color) {
-                return base.color;
-            } else if (!base.enabled) {
-                return UM.Theme.getColor("setting_category_disabled");
-            } else if (base.hovered && base.checkable && base.checked) {
-                return UM.Theme.getColor("setting_category_active_hover");
-            } else if (base.pressed || (base.checkable && base.checked)) {
-                return UM.Theme.getColor("setting_category_active");
-            } else if (base.hovered) {
-                return UM.Theme.getColor("setting_category_hover");
-            } else {
-                return UM.Theme.getColor("setting_category");
+        height: UM.Theme.getSize("section").height
+        anchors.verticalCenter: parent.verticalCenter
+        color:
+        {
+            if (!base.enabled)
+            {
+                return UM.Theme.getColor("setting_category_disabled")
             }
+            else if (base.hovered)
+            {
+                return UM.Theme.getColor("setting_category_hover")
+            }
+            return UM.Theme.getColor("setting_category")
         }
         Behavior on color { ColorAnimation { duration: 50; } }
-        Rectangle
-        {
-            id: backgroundLiningRectangle
-            height: UM.Theme.getSize("default_lining").height
-            width: parent.width
-            anchors.bottom: parent.bottom
-            color: {
-                if (!base.enabled) {
-                    return UM.Theme.getColor("setting_category_disabled_border");
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked) {
-                    return UM.Theme.getColor("setting_category_active_hover_border");
-                } else if (base.pressed || (base.checkable && base.checked)) {
-                    return UM.Theme.getColor("setting_category_active_border");
-                } else if (base.hovered || base.activeFocus) {
-                    return UM.Theme.getColor("setting_category_hover_border");
-                } else {
-                    return UM.Theme.getColor("setting_category_border");
-                }
-            }
-        }
     }
 
     signal showTooltip(string text)
@@ -64,41 +46,46 @@ Button
     signal setActiveFocusToNextSetting(bool forward)
 
     property var focusItem: base
+    property bool expanded: definition.expanded
 
-    contentItem: Item {
+
+    property color text_color:
+    {
+        if (!base.enabled)
+        {
+            return UM.Theme.getColor("setting_category_disabled_text")
+        } else if (base.hovered || base.pressed || base.activeFocus)
+        {
+            return UM.Theme.getColor("setting_category_active_text")
+        }
+
+        return UM.Theme.getColor("setting_category_text")
+
+    }
+
+    contentItem: Item
+    {
         anchors.fill: parent
-        anchors.left: parent.left
 
-        Label {
+        Label
+        {
             id: settingNameLabel
             anchors
             {
                 left: parent.left
                 leftMargin: 2 * UM.Theme.getSize("default_margin").width + UM.Theme.getSize("section_icon").width
-                right: parent.right;
-                verticalCenter: parent.verticalCenter;
+                right: parent.right
+                verticalCenter: parent.verticalCenter
             }
             text: definition.label
             textFormat: Text.PlainText
             renderType: Text.NativeRendering
-            font: UM.Theme.getFont("setting_category")
-            color:
-            {
-                if (!base.enabled) {
-                    return UM.Theme.getColor("setting_category_disabled_text");
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked) {
-                    return UM.Theme.getColor("setting_category_active_hover_text");
-                } else if (base.pressed || (base.checkable && base.checked)) {
-                    return UM.Theme.getColor("setting_category_active_text");
-                } else if (base.hovered || base.activeFocus) {
-                    return UM.Theme.getColor("setting_category_hover_text");
-                } else {
-                    return UM.Theme.getColor("setting_category_text");
-                }
-            }
+            font: UM.Theme.getFont("medium_bold")
+            color: base.text_color
             fontSizeMode: Text.HorizontalFit
             minimumPointSize: 8
         }
+
         UM.RecolorImage
         {
             id: category_arrow
@@ -107,23 +94,9 @@ Button
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.width: width
             sourceSize.height: width
-            color:
-            {
-                if (!base.enabled) {
-                    return UM.Theme.getColor("setting_category_disabled_text");
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked) {
-                    return UM.Theme.getColor("setting_category_active_hover_text");
-                } else if (base.pressed || (base.checkable && base.checked)) {
-                    return UM.Theme.getColor("setting_category_active_text");
-                } else if (base.hovered || base.activeFocus) {
-                    return UM.Theme.getColor("setting_category_hover_text");
-                } else {
-                    return UM.Theme.getColor("setting_category_text");
-                }
-            }
-            source: base.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+            color: UM.Theme.getColor("setting_control_button")
+            source: definition.expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
         }
     }
 
@@ -132,81 +105,61 @@ Button
         id: icon
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        color:
-        {
-            if (!base.enabled) {
-                return UM.Theme.getColor("setting_category_disabled_text");
-            } else if((base.hovered || base.activeFocus) && base.checkable && base.checked) {
-                return UM.Theme.getColor("setting_category_active_hover_text");
-            } else if(base.pressed || (base.checkable && base.checked)) {
-                return UM.Theme.getColor("setting_category_active_text");
-            } else if(base.hovered || base.activeFocus) {
-                return UM.Theme.getColor("setting_category_hover_text");
-            } else {
-                return UM.Theme.getColor("setting_category_text");
-            }
-        }
+        anchors.leftMargin: UM.Theme.getSize("thin_margin").width
+        color: base.text_color
         source: UM.Theme.getIcon(definition.icon)
-        width: UM.Theme.getSize("section_icon").width;
-        height: UM.Theme.getSize("section_icon").height;
-        sourceSize.width: width + 15 * screenScaleFactor
-        sourceSize.height: width + 15 * screenScaleFactor
+        width: UM.Theme.getSize("section_icon").width
+        height: UM.Theme.getSize("section_icon").height
+        sourceSize.width: width
+        sourceSize.height: width
     }
-
-    checkable: true
-    checked: definition.expanded
 
     onClicked:
     {
-        if (definition.expanded) {
-            settingDefinitionsModel.collapse(definition.key);
-        } else {
-            settingDefinitionsModel.expandRecursive(definition.key);
+        if (definition.expanded)
+        {
+            settingDefinitionsModel.collapseRecursive(definition.key)
+        }
+        else
+        {
+            settingDefinitionsModel.expandRecursive(definition.key)
         }
         //Set focus so that tab navigation continues from this point on.
         //NB: This must be set AFTER collapsing/expanding the category so that the scroll position is correct.
-        forceActiveFocus();
+        forceActiveFocus()
     }
     onActiveFocusChanged:
     {
-        if(activeFocus)
+        if (activeFocus)
         {
-            base.focusReceived();
+            base.focusReceived()
         }
     }
 
-    Keys.onTabPressed:
-    {
-        base.setActiveFocusToNextSetting(true)
-    }
-    Keys.onBacktabPressed:
-    {
-        base.setActiveFocusToNextSetting(false)
-    }
+    Keys.onTabPressed: base.setActiveFocusToNextSetting(true)
+    Keys.onBacktabPressed: base.setActiveFocusToNextSetting(false)
 
     UM.SimpleButton
     {
         id: settingsButton
 
         visible: base.hovered || settingsButton.hovered
-        height: Math.round(base.height * 0.6)
-        width: Math.round(base.height * 0.6)
+        height: UM.Theme.getSize("small_button_icon").height
+        width: height
 
-        anchors {
+        anchors
+        {
             right: inheritButton.visible ? inheritButton.left : parent.right
-            // use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
+            // Use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
             rightMargin: inheritButton.visible ? Math.round(UM.Theme.getSize("default_margin").width / 2) : category_arrow.width + Math.round(UM.Theme.getSize("default_margin").width * 1.9)
             verticalCenter: parent.verticalCenter
         }
 
         color: UM.Theme.getColor("setting_control_button")
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("settings")
+        iconSource: UM.Theme.getIcon("Sliders")
 
-        onClicked: {
-            Cura.Actions.configureSettingVisibility.trigger(definition)
-        }
+        onClicked: Cura.Actions.configureSettingVisibility.trigger(definition)
     }
 
     UM.SimpleButton
@@ -234,30 +187,21 @@ Button
             return false
         }
 
-        height: Math.round(parent.height / 2)
+        height: UM.Theme.getSize("small_button_icon").height
         width: height
 
         onClicked:
         {
-            settingDefinitionsModel.expandRecursive(definition.key);
-            base.checked = true;
-            base.showAllHiddenInheritedSettings(definition.key);
+            settingDefinitionsModel.expandRecursive(definition.key)
+            base.showAllHiddenInheritedSettings(definition.key)
         }
 
         color: UM.Theme.getColor("setting_control_button")
         hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("notice")
+        iconSource: UM.Theme.getIcon("Information")
 
-        onEntered:
-        {
-            base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
-        }
+        onEntered: base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
 
-        onExited:
-        {
-            base.hideTooltip();
-        }
-
-        UM.I18nCatalog { id: catalog; name: "cura" }
+        onExited: base.hideTooltip()
     }
 }

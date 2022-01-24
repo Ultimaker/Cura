@@ -1,0 +1,38 @@
+{
+    "version":                 2,
+    "name":                    "Deltacomb DC-20 Dual",
+    "inherits":                "deltacomb_base",
+
+    "metadata": {
+        "visible":                 true,
+        "platform":                "deltacomb_dc20.stl",
+        "quality_definition":      "deltacomb_base",
+        "preferred_variant_name":  "DBE 0.40mm",
+        "machine_extruder_trains": {
+            "0": "deltacomb_dc20dual_extruder_0",
+            "1": "deltacomb_dc20dual_extruder_1"
+        }
+    },
+
+    "overrides": {
+        "machine_name":            { "default_value": "Deltacomb DC-20 DUAL" },
+        "machine_extruder_count":  { "default_value": 2, "maximum_value": "2" },
+        "machine_width":           { "default_value": 190 },
+        "machine_depth":           { "default_value": 190 },
+        "machine_height":          { "default_value": 250 },
+        "machine_disallowed_areas":{ "default_value": [
+           [[ 53, 78], [ 63, 78], [  73, 70], [ 62, 70]],
+           [[ 62, 70], [ 73, 70], [  81, 61], [ 70, 61]],
+           [[ 70, 61], [ 81, 61], [  88, 51], [ 76, 51]],
+           [[ 76, 51], [ 88, 51], [  93, 40], [ 81, 40]],
+           [[ 81, 40], [ 93, 40], [  97, 29], [ 85, 29]],
+           [[ 85, 29], [ 97, 29], [ 101, 17], [ 88, 17]],
+           [[-37, 78], [-47, 78], [-57, 70], [-46, 70]],
+           [[-46, 70], [-57, 70], [-69, 61], [-54, 61]],
+           [[-54, 61], [-69, 61], [-72, 51], [-60, 51]],
+           [[-60, 51], [-72, 51], [-77, 40], [-65, 40]],
+           [[-65, 40], [-77, 40], [-81, 29], [-69, 29]],
+           [[-69, 29], [-81, 29], [-85, 17], [-72, 17]]
+         ]}
+    }
+}

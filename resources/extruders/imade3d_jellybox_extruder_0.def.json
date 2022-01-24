@@ -1,5 +1,4 @@
 {
-    "id": "imade3d_jellybox_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

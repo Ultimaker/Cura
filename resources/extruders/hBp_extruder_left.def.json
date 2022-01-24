@@ -1,5 +1,4 @@
 {
-    "id": "hBp_extruder_left",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

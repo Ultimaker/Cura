@@ -28,25 +28,27 @@ if TYPE_CHECKING:
 class SettingInheritanceManager(QObject):
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._settings_with_inheritance_warning = []  # type: List[str]
         self._active_container_stack = None  # type: Optional[ExtruderStack]
-        self._onGlobalContainerChanged()
-
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
-        self._onActiveExtruderChanged()
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(500)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)
 
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        self._onGlobalContainerChanged()
+        self._onActiveExtruderChanged()
+
     settingsWithIntheritanceChanged = pyqtSignal()
 
-    ##  Get the keys of all children settings with an override.
     @pyqtSlot(str, result = "QStringList")
     def getChildrenKeysWithOverride(self, key: str) -> List[str]:
+        """Get the keys of all children settings with an override."""
+
         if self._global_container_stack is None:
             return []
         definitions = self._global_container_stack.definition.findDefinitions(key=key)
@@ -58,6 +60,10 @@ class SettingInheritanceManager(QObject):
             if key in self._settings_with_inheritance_warning:
                 result.append(key)
         return result
+
+    @pyqtSlot(str, str, result = bool)
+    def hasOverrides(self, key: str, extruder_index: str):
+        return key in self.getOverridesForExtruder(key, extruder_index)
 
     @pyqtSlot(str, str, result = "QStringList")
     def getOverridesForExtruder(self, key: str, extruder_index: str) -> List[str]:
@@ -88,8 +94,8 @@ class SettingInheritanceManager(QObject):
             self.settingsWithIntheritanceChanged.emit()
 
     @pyqtSlot()
-    def forceUpdate(self) -> None:
-        self._update()
+    def scheduleUpdate(self) -> None:
+        self._update_timer.start()
 
     def _onActiveExtruderChanged(self) -> None:
         new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
@@ -106,7 +112,7 @@ class SettingInheritanceManager(QObject):
             if self._active_container_stack is not None:
                 self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
                 self._active_container_stack.containersChanged.connect(self._onContainersChanged)
-            self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
+            self._update_timer.start()  # Ensure that the settings_with_inheritance_warning list is populated.
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if (property_name == "value" or property_name == "enabled") and self._global_container_stack:
@@ -162,8 +168,9 @@ class SettingInheritanceManager(QObject):
     def settingsWithInheritanceWarning(self) -> List[str]:
         return self._settings_with_inheritance_warning
 
-    ##  Check if a setting has an inheritance function that is overwritten
     def _settingIsOverwritingInheritance(self, key: str, stack: ContainerStack = None) -> bool:
+        """Check if a setting has an inheritance function that is overwritten"""
+
         has_setting_function = False
         if not stack:
             stack = self._active_container_stack
@@ -176,17 +183,19 @@ class SettingInheritanceManager(QObject):
 
         containers = []  # type: List[ContainerInterface]
 
-        ## Check if the setting has a user state. If not, it is never overwritten.
         has_user_state = stack.getProperty(key, "state") == InstanceState.User
+        """Check if the setting has a user state. If not, it is never overwritten."""
+
         if not has_user_state:
             return False
 
-        ## If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
+        # If a setting is not enabled, don't label it as overwritten (It's never visible anyway).
         if not stack.getProperty(key, "enabled"):
             return False
 
-        ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
         user_container = stack.getTop()
+        """Also check if the top container is not a setting function (this happens if the inheritance is restored)."""
+
         if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
 

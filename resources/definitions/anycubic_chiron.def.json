@@ -1,0 +1,78 @@
+{
+    "version": 2,
+    "name": "Anycubic Chiron",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Patrick Glatt",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "platform": "anycubic_chiron_platform.obj",
+        "platform_texture": "anycubic-chiron.png",
+        "has_materials": true,
+        "preferred_material": "generic_pla",
+        "has_machine_quality": true,
+        "quality_definition": "anycubic_chiron",
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "anycubic_chiron_extruder_0"
+        },
+        "firmware_file": "MarlinChiron.hex"
+    },
+
+    "overrides":
+    {
+        "machine_name":
+        {
+            "default_value": "Anycubic Chiron"
+        },
+        "machine_heated_bed":
+        {
+            "default_value": true
+        },
+        "machine_width":
+        {
+            "default_value": 400
+        },
+        "machine_height":
+        {
+            "default_value": 450
+        },
+        "machine_depth":
+        {
+            "default_value": 400
+        },
+        "machine_center_is_zero":
+        {
+            "default_value": false
+        },
+        "gantry_height":
+        {
+            "value": "35"
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value":
+            [
+                [-45, 50],
+                [-45, -45],
+                [45, 50],
+                [45, -45]
+            ]
+        },
+        "machine_gcode_flavor":
+        {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode":
+        {
+            "default_value": "M107 ;Start with the fan off\nG21 ;Set units to millimeters\nG91 ;Change to relative positioning mode for retract filament and nozzle lifting\nG1 F200 E-3 ;Retract 3mm filament for a clean start\nG92 E0 ;Zero the extruded length\nG1 F1000 Z5 ;Lift the nozzle 5mm before homing axes\nG90 ;Absolute positioning\nM82 ;Set extruder to absolute mode too\nG28 X0 Y0 ;First move X/Y to min endstops\nG28 Z0 ;Then move Z to min endstops\nG1 F1000 Z15 ;After homing lift the nozzle 15mm before start printing\n"
+        },
+        "machine_end_gcode":
+        {
+            "default_value": "G91 ;Change to relative positioning mode for filament retraction and nozzle lifting\nG1 F200 E-4;Retract the filament a bit before lifting the nozzle\nG1 F1000 Z5;Lift nozzle 5mm\nG90 ;Change to absolute positioning mode to prepare for part rermoval\nG1 X0 Y400 ;Move the print to max y pos for part rermoval\nM104 S0 ; Turn off hotend\nM106 S0 ; Turn off cooling fan\nM140 S0 ; Turn off bed\nM84 ; Disable motors\n"
+        }
+    }
+}

@@ -11,9 +11,12 @@ catalog = i18nCatalog("cura")
 
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
-##  The Ultimaker Original can have a few revisions & upgrades. This action helps with selecting them, so they are added
-#   as a variant.
+
 class UMOUpgradeSelection(MachineAction):
+    """The Ultimaker Original can have a few revisions & upgrades.
+    This action helps with selecting them, so they are added as a variant.
+    """
+
     def __init__(self):
         super().__init__("UMOUpgradeSelection", catalog.i18nc("@action", "Select upgrades"))
         self._qml_url = "UMOUpgradeSelectionMachineAction.qml"

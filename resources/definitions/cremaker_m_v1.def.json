@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "name": "Cremaker M V1",
+  "inherits": "cremaker_common",
+  "metadata": {
+    "visible": true,
+    "platform": "cremaker_platform_200.obj"
+  },
+
+  "overrides": {
+    "machine_name": { "default_value": "Cremaker M V1" },
+    "machine_width": { "default_value": 200 },
+    "machine_depth": { "default_value": 200 },
+    "machine_height": { "default_value": 260 },
+    "initial_layer_line_width_factor": { "default_value": 110.0 },
+    "machine_head_with_fans_polygon": {
+      "default_value": [
+        [ -35, 48 ],
+        [ 54, 48 ],
+        [ 54, -67 ],
+        [ -35, -67 ]
+      ]
+    },
+    "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "machine_start_gcode": {
+      "default_value": "G28\nG1 Z5.0 F6000\nG1 X2 Y5 F3000\nG1 Z0.3\nG92 E0\nG1 Y100 E10 F600\nG92 E0"
+    },
+    "machine_end_gcode": {
+      "default_value": "M104 S0\nM140 S0\nG92 E1\nG1 E-1 F300\nG28 X0 Y180\nM84"
+    },
+    "jerk_enabled": { "value": true },
+    "jerk_print": { "value": 8 },
+    "jerk_infill": { "value": 8 },
+    "jerk_wall": { "value": 8 },
+    "jerk_wall_0": { "value": 8 },
+    "jerk_wall_x": { "value": 8 },
+    "jerk_travel": { "value": 10 },
+    "jerk_layer_0": { "value": 8 }
+  }
+}

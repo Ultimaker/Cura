@@ -3,7 +3,6 @@
 
 from UM.Application import Application
 from UM.Math.Color import Color
-from UM.Math.Vector import Vector
 from UM.PluginRegistry import PluginRegistry
 from UM.Scene.SceneNode import SceneNode
 from UM.View.GL.OpenGL import OpenGL

@@ -17,10 +17,16 @@ SettingItem
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        property var extrudersModel: CuraApplication.getExtrudersModel()
+
+        model: extrudersModel
+
+        Connections
         {
-            onModelChanged: {
-                control.color = getItem(control.currentIndex).color;
+            target: extrudersModel
+            function onModelChanged()
+            {
+                control.color = extrudersModel.getItem(control.currentIndex).color
             }
         }
 
@@ -69,9 +75,9 @@ SettingItem
             base.setActiveFocusToNextSetting(false)
         }
 
-        currentIndex: propertyProvider.properties.value
+        currentIndex: propertyProvider.properties.value !== undefined ? propertyProvider.properties.value : 0
 
-        property string color: "#fff"
+        property string color: "transparent"
 
         Binding
         {
@@ -79,7 +85,7 @@ SettingItem
             // explicit binding here otherwise we do not handle value changes after the model changes.
             target: control
             property: "color"
-            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
+            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : "transparent"
         }
 
         Binding
@@ -98,13 +104,13 @@ SettingItem
             x: control.width - width - control.rightPadding
             y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
-            source: UM.Theme.getIcon("arrow_bottom")
+            source: UM.Theme.getIcon("ChevronSingleDown")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_button");
         }
 
         background: Rectangle
@@ -113,14 +119,15 @@ SettingItem
             {
                 if (!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled");
+                    return UM.Theme.getColor("setting_control_disabled")
                 }
                 if (control.hovered || base.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_highlight");
+                    return UM.Theme.getColor("setting_control_highlight")
                 }
-                return UM.Theme.getColor("setting_control");
+                return UM.Theme.getColor("setting_control")
             }
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
@@ -156,28 +163,26 @@ SettingItem
             background: Rectangle
             {
                 id: swatch
-                height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                height: Math.round(parent.height / 2)
                 width: height
-
+                radius: Math.round(width / 2)
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
-
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                radius: Math.round(width / 2)
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
                 color: control.color
             }
         }
 
-        popup: Popup {
+        popup: Popup
+        {
             y: control.height - UM.Theme.getSize("default_lining").height
             width: control.width
             implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
             padding: UM.Theme.getSize("default_lining").width
 
-            contentItem: ListView {
+            contentItem: ListView
+            {
                 clip: true
                 implicitHeight: contentHeight
                 model: control.popup.visible ? control.delegateModel : null
@@ -186,7 +191,8 @@ SettingItem
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
 
-            background: Rectangle {
+            background: Rectangle
+            {
                 color: UM.Theme.getColor("setting_control")
                 border.color: UM.Theme.getColor("setting_control_border")
             }
@@ -208,9 +214,11 @@ SettingItem
                 renderType: Text.NativeRendering
                 color:
                 {
-                    if (model.enabled) {
+                    if (model.enabled)
+                    {
                         UM.Theme.getColor("setting_control_text")
-                    } else {
+                    } else
+                    {
                         UM.Theme.getColor("action_button_disabled_text");
                     }
                 }
@@ -222,16 +230,12 @@ SettingItem
                 background: Rectangle
                 {
                     id: swatch
-                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                    height: Math.round(parent.height / 2)
                     width: height
-
+                    radius: Math.round(width / 2)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
-
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                    radius: Math.round(width / 2)
+                    anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
                     color: control.model.getItem(index).color
                 }

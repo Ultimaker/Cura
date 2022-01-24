@@ -42,15 +42,23 @@ ctypes.windll.kernel32.DeviceIoControl.argtypes = [ #type: ignore
 ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL #type: ignore
 
 
-## Removable drive support for windows
 class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
+    """Removable drive support for windows"""
+
     def checkRemovableDrives(self):
         drives = {}
 
+        # The currently available disk drives, e.g.: bitmask = ...1100 <-- ...DCBA
         bitmask = ctypes.windll.kernel32.GetLogicalDrives()
-        # Check possible drive letters, from A to Z
+        # Since we are ignoring drives A and B, the bitmask has has to shift twice to the right
+        bitmask >>= 2
+        # Check possible drive letters, from C to Z
         # Note: using ascii_uppercase because we do not want this to change with locale!
-        for letter in string.ascii_uppercase:
+        # Skip A and B, since those drives are typically reserved for floppy disks.
+        # Those drives can theoretically be reassigned but it's safer to not check them for removable drives.
+        # Windows will also behave weirdly even with some of its internal functions if you do this (e.g. search indexing doesn't search it).
+        # Users that have removable drives in A or B will just have to save to file and select the drive there.
+        for letter in string.ascii_uppercase[2:]:
             drive = "{0}:/".format(letter)
 
             # Do we really want to skip A and B?
