@@ -1,9 +1,9 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls 2.15 as NewControls
+import QtQuick.Controls 1.1 as OldControls
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
@@ -14,6 +14,9 @@ UM.Dialog
 {
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
+
+    onAccepted: CuraApplication.discardOrKeepProfileChangesClosed("discard")
+    onRejected: CuraApplication.discardOrKeepProfileChangesClosed("keep")
 
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
@@ -44,7 +47,6 @@ UM.Dialog
         anchors.margins: UM.Theme.getSize("default_margin").width
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: parent.top
         spacing: UM.Theme.getSize("default_margin").width
 
         UM.I18nCatalog
@@ -68,7 +70,7 @@ UM.Dialog
         anchors.bottom: optionRow.top
         anchors.left: parent.left
         anchors.right: parent.right
-        TableView
+        OldControls.TableView
         {
             anchors.fill: parent
             height: base.height - 150
@@ -106,21 +108,21 @@ UM.Dialog
                 }
             }
 
-            TableViewColumn
+            OldControls.TableViewColumn
             {
                 role: "label"
                 title: catalog.i18nc("@title:column", "Profile settings")
                 delegate: labelDelegate
                 width: (tableView.width * 0.4) | 0
             }
-            TableViewColumn
+            OldControls.TableViewColumn
             {
                 role: "original_value"
                 title: Cura.MachineManager.activeQualityDisplayNameMap["main"]
                 width: (tableView.width * 0.3) | 0
                 delegate: defaultDelegate
             }
-            TableViewColumn
+            OldControls.TableViewColumn
             {
                 role: "user_value"
                 title: catalog.i18nc("@title:column", "Current changes")
@@ -140,13 +142,13 @@ UM.Dialog
     Item
     {
         id: optionRow
-        anchors.bottom: buttonsRow.top
+        anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.margins: UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        NewControls.ComboBox
+        ComboBox
         {
             id: discardOrKeepProfileChangesDropDownButton
             width: 300
@@ -186,37 +188,33 @@ UM.Dialog
 
     Item
     {
-        id: buttonsRow
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.margins: UM.Theme.getSize("default_margin").width
-        height: childrenRect.height
+        ButtonGroup
+        {
+            buttons: [discardButton, keepButton]
+            checkedButton: discardButton
+        }
+    }
 
+    rightButtons: [
         Button
         {
             id: discardButton
             text: catalog.i18nc("@action:button", "Discard changes");
-            anchors.right: parent.right
             onClicked:
             {
                 CuraApplication.discardOrKeepProfileChangesClosed("discard")
                 base.hide()
             }
-            isDefault: true
-        }
-
+        },
         Button
         {
             id: keepButton
             text: catalog.i18nc("@action:button", "Keep changes");
-            anchors.right: discardButton.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             onClicked:
             {
                 CuraApplication.discardOrKeepProfileChangesClosed("keep")
                 base.hide()
             }
         }
-    }
+    ]
 }
