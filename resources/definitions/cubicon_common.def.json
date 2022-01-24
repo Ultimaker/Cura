@@ -6,8 +6,7 @@
         "author": "Cubicon R&D Center",
         "manufacturer": "Cubicon",
         "visible": false,
-        "has_materials": true,
-        "preferred_material": "cubicon_pla"
+        "has_materials": true
     },
     "overrides": {
         "machine_start_gcode": {
