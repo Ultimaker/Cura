@@ -1,5 +1,4 @@
 {
-    "id": "ord_extruder_2",
     "version": 2,
     "name": "2",
     "inherits": "fdmextruder",

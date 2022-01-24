@@ -10,12 +10,14 @@ import glob
 import os
 import subprocess
 
-##  Support for removable devices on Linux.
-#
-#   TODO: This code uses the most basic interfaces for handling this.
-#         We should instead use UDisks2 to handle mount/unmount and hotplugging events.
-#
+
 class LinuxRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
+    """Support for removable devices on Linux.
+
+    TODO: This code uses the most basic interfaces for handling this.
+    We should instead use UDisks2 to handle mount/unmount and hotplugging events.
+    """
+
     def checkRemovableDrives(self):
         drives = {}
         for volume in glob.glob("/media/*"):

@@ -1,0 +1,8 @@
+{
+    "name": "Ultimaker Digital Library",
+    "author": "Ultimaker B.V.",
+    "description": "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library.",
+    "version": "1.1.0",
+    "api": 7,
+    "i18n-catalog": "cura"
+}

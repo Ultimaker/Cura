@@ -8,7 +8,6 @@
         "manufacturer": "Deltaprintr",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0],
-        "platform": "",
         "machine_extruder_trains":
         {
             "0": "delta_go_extruder_0"
@@ -17,12 +16,8 @@
     "overrides": {
         "machine_name":                       { "default_value": "Delta Go" },
         "default_material_print_temperature": { "default_value": 210 },
-        "speed_travel":                       { "default_value": 150 },
         "prime_tower_size":                   { "default_value": 8.66 },
         "infill_sparse_density":              { "default_value": 10 },
-        "speed_wall_x":                       { "default_value": 30 },
-        "speed_wall_0":                       { "default_value": 30 },
-        "speed_topbottom":                    { "default_value": 20 },
         "layer_height":                       { "default_value": 0.15 },
         "speed_print":                        { "default_value": 30 },
         "machine_heated_bed":                 { "default_value": false },

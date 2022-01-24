@@ -10,9 +10,9 @@ WARNING This script has never been tested with several extruders
 from ..Script import Script
 import numpy as np
 from UM.Logger import Logger
-from UM.Application import Application
 import re
 from cura.Settings.ExtruderManager import ExtruderManager
+
 
 def _getValue(line, key, default=None):
     """
@@ -30,12 +30,13 @@ def _getValue(line, key, default=None):
         return default
     return float(number.group(0))
 
+
 class GCodeStep():
     """
     Class to store the current value of each G_Code parameter
     for any G-Code step
     """
-    def __init__(self, step, in_relative_movement: bool = False):
+    def __init__(self, step, in_relative_movement: bool = False) -> None:
         self.step = step
         self.step_x = 0
         self.step_y = 0
@@ -85,7 +86,7 @@ class GCodeStep():
 
 
 # Execution part of the stretch plugin
-class Stretcher():
+class Stretcher:
     """
     Execution part of the stretch algorithm
     """
@@ -128,9 +129,26 @@ class Stretcher():
                     onestep = GCodeStep(0, in_relative_movement)
                     onestep.copyPosFrom(current)
                 elif _getValue(line, "G") == 1:
+                    last_x = current.step_x
+                    last_y = current.step_y
+                    last_z = current.step_z
+                    last_e = current.step_e
                     current.readStep(line)
-                    onestep = GCodeStep(1, in_relative_movement)
-                    onestep.copyPosFrom(current)
+                    if (current.step_x == last_x and current.step_y == last_y and
+                        current.step_z == last_z and current.step_e != last_e
+                    ):
+                        # It's an extruder only move. Preserve it rather than process it as an
+                        # extruded move. Otherwise, the stretched output might contain slight
+                        # motion in X and Y in addition to E. This can cause problems with
+                        # firmwares that implement pressure advance.
+                        onestep = GCodeStep(-1, in_relative_movement)
+                        onestep.copyPosFrom(current)
+                        # Rather than copy the original line, write a new one with consistent
+                        # extruder coordinates
+                        onestep.comment = "G1 F{} E{}".format(onestep.step_f, onestep.step_e)
+                    else:
+                        onestep = GCodeStep(1, in_relative_movement)
+                        onestep.copyPosFrom(current)
 
                 # end of relative movement
                 elif _getValue(line, "G") == 90:
@@ -145,6 +163,7 @@ class Stretcher():
                     current.readStep(line)
                     onestep = GCodeStep(-1, in_relative_movement)
                     onestep.copyPosFrom(current)
+                    onestep.comment = line
                 else:
                     onestep = GCodeStep(-1, in_relative_movement)
                     onestep.copyPosFrom(current)
@@ -176,7 +195,7 @@ class Stretcher():
         i.e. it is a travel move
         """
         if i_pos == 0:
-            return True # Begining a layer always breaks filament (for simplicity)
+            return True # Beginning a layer always breaks filament (for simplicity)
         step = layer_steps[i_pos]
         prev_step = layer_steps[i_pos - 1]
         if step.step_e != prev_step.step_e:
@@ -188,7 +207,6 @@ class Stretcher():
             # It does not break filament, we should stay in the same extrusion sequence
             return False
         return True # New sequence
-
 
     def processLayer(self, layer_steps):
         """
@@ -271,8 +289,14 @@ class Stretcher():
                 self.layergcode = self.layergcode + sout + "\n"
                 ipos = ipos + 1
             else:
+                # The command is intended to be passed through unmodified via
+                # the comment field. In the case of an extruder only move, though,
+                # the extruder and potentially the feed rate are modified.
+                # We need to update self.outpos accordingly so that subsequent calls
+                # to stepToGcode() knows about the extruder and feed rate change.
+                self.outpos.step_e = layer_steps[i].step_e
+                self.outpos.step_f = layer_steps[i].step_f
                 self.layergcode = self.layergcode + layer_steps[i].comment + "\n"
-
 
     def workOnSequence(self, orig_seq, modif_seq):
         """

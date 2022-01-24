@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker_s5_extruder_right",
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",

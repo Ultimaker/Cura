@@ -27,7 +27,7 @@ Note: The profiler front-end itself is quite "heavy" (ok, not optimised). It run
 
 What the Profiler Sees
 ----------------------
-The profiler doesn't capture every function call in Cura. It hooks into a number of important systems which give a good picture of activity without too much run time overhead. The most important system is Uranium's signal mechanism and PyQt5 slots. Functions which are called via the signal mechanism are recorded and thier names appear in the results. PyQt5 slots appear in the results with the prefix `[SLOT]`.
+The profiler doesn't capture every function call in Cura. It hooks into a number of important systems which give a good picture of activity without too much run time overhead. The most important system is Uranium's signal mechanism and PyQt5 slots. Functions which are called via the signal mechanism are recorded and their names appear in the results. PyQt5 slots appear in the results with the prefix `[SLOT]`.
 
 Note that not all slots are captured. Only those slots which belong to classes which use the `pyqtSlot` decorator from the `UM.FlameProfiler` module.
 

@@ -13,7 +13,7 @@ from time import sleep
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 
 class AvrFirmwareUpdater(FirmwareUpdater):
@@ -52,11 +52,11 @@ class AvrFirmwareUpdater(FirmwareUpdater):
         try:
             programmer.programChip(hex_file)
         except SerialException as e:
-            Logger.log("e", "A serial port exception occured during firmware update: %s" % e)
+            Logger.log("e", "A serial port exception occurred during firmware update: %s" % e)
             self._setFirmwareUpdateState(FirmwareUpdateState.io_error)
             return
         except Exception as e:
-            Logger.log("e", "An unknown exception occured during firmware update: %s" % e)
+            Logger.log("e", "An unknown exception occurred during firmware update: %s" % e)
             self._setFirmwareUpdateState(FirmwareUpdateState.unknown_error)
             return
 

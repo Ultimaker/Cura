@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "name": "FFSTD Doppia",
+    "inherits": "fusedform_doppia_base",
+    "metadata": {
+        "visible": true,
+        "quality_definition": "fusedform_base"
+    },
+
+    "overrides": {
+	"machine_extruder_count":  { "value": 2 },
+        "machine_name": { "default_value": "FFSTD Doppia" },
+        "machine_width": { "default_value": 220 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 320 },
+        "machine_max_feedrate_x": { "default_value": 100 },
+        "machine_max_feedrate_y": { "default_value": 100 },
+	"machine_max_feedrate_z": { "default_value": 3 },
+        "machine_max_feedrate_e": { "default_value": 100 },
+	"machine_max_acceleration_x": {"value":1200},
+	"machine_max_acceleration_y": {"value":1200},
+        "machine_max_acceleration_z": { "default_value": 100 },
+        "machine_acceleration": { "default_value": 900 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.3 },
+        "machine_max_jerk_e": { "default_value": 5 },
+	"acceleration_travel": {"value":1200}
+        
+    }
+}

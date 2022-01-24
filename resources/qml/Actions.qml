@@ -1,10 +1,11 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.3 as Controls2
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
@@ -20,10 +21,9 @@ Item
     property alias view3DCamera: view3DCameraAction;
     property alias viewFrontCamera: viewFrontCameraAction;
     property alias viewTopCamera: viewTopCameraAction;
+    property alias viewBottomCamera: viewBottomCameraAction;
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
-
-    property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
@@ -55,35 +55,54 @@ Item
     property alias manageProfiles: manageProfilesAction;
 
     property alias manageMaterials: manageMaterialsAction;
+    property alias marketplaceMaterials: marketplaceMaterialsAction;
 
     property alias preferences: preferencesAction;
 
-    property alias showEngineLog: showEngineLogAction;
     property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
+    property alias showTroubleshooting: showTroubleShootingAction
     property alias reportBug: reportBugAction;
+    property alias whatsNew: whatsNewAction
     property alias about: aboutAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
+    property alias exitFullScreen: exitFullScreenAction
 
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePackages: browsePackagesAction
 
-    UM.I18nCatalog{id: catalog; name:"cura"}
+    UM.I18nCatalog{id: catalog; name: "cura"}
+
 
     Action
     {
-        id:toggleFullScreenAction
-        shortcut: StandardKey.FullScreen;
-        text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
-        iconName: "view-fullscreen";
+        id: showTroubleShootingAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
+        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide");
+    }
+
+    Action
+    {
+        id: toggleFullScreenAction
+        shortcut: StandardKey.FullScreen
+        text: catalog.i18nc("@action:inmenu", "Toggle Full Screen")
+        iconName: "view-fullscreen"
+    }
+
+    Action
+    {
+        id: exitFullScreenAction
+        shortcut: StandardKey.Cancel
+        text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
+        iconName: "view-fullscreen"
     }
 
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
@@ -93,7 +112,7 @@ Item
     Action
     {
         id: redoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Redo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
         onTriggered: UM.OperationStack.redo();
@@ -102,65 +121,87 @@ Item
 
     Action
     {
-        id: quitAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","&Quit");
-        iconName: "application-exit";
-        shortcut: StandardKey.Quit;
+        id: quitAction
+
+        //On MacOS, don't translate the "Quit" word.
+        //Qt moves the "quit" entry to a different place, and if it got renamed can't find it again when it attempts to
+        //delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "&Quit" : catalog.i18nc("@action:inmenu menubar:file", "&Quit")
+        iconName: "application-exit"
+        shortcut: StandardKey.Quit
     }
 
     Action
     {
-        id: view3DCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","3D View");
-        onTriggered: UM.Controller.rotateView("3d", 0);
+        id: view3DCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "3D View")
+        onTriggered: UM.Controller.setCameraRotation("3d", 0)
     }
 
     Action
     {
-        id: viewFrontCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Front View");
-        onTriggered: UM.Controller.rotateView("home", 0);
+        id: viewFrontCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Front View")
+        onTriggered: UM.Controller.setCameraRotation("home", 0)
     }
 
     Action
     {
-        id: viewTopCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Top View");
-        onTriggered: UM.Controller.rotateView("y", 90);
+        id: viewTopCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Top View")
+        onTriggered: UM.Controller.setCameraRotation("y", 90)
     }
 
     Action
     {
-        id: viewLeftSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Left Side View");
-        onTriggered: UM.Controller.rotateView("x", 90);
+        id: viewBottomCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Bottom View")
+        onTriggered: UM.Controller.setCameraRotation("y", -90)
     }
 
     Action
     {
-        id: viewRightSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Right Side View");
-        onTriggered: UM.Controller.rotateView("x", -90);
+        id: viewLeftSideCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Left Side View")
+        onTriggered: UM.Controller.setCameraRotation("x", 90)
     }
 
     Action
     {
-        id: preferencesAction;
-        text: catalog.i18nc("@action:inmenu","Configure Cura...");
-        iconName: "configure";
+        id: viewRightSideCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Right Side View")
+        onTriggered: UM.Controller.setCameraRotation("x", -90)
     }
 
     Action
     {
-        id: addMachineAction;
-        text: catalog.i18nc("@action:inmenu menubar:printer","&Add Printer...");
+        id: preferencesAction
+        //On MacOS, don't translate the "Configure" word.
+        //Qt moves the "configure" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
+        iconName: "configure"
     }
 
     Action
     {
-        id: settingsAction;
-        text: catalog.i18nc("@action:inmenu menubar:printer","Manage Pr&inters...");
-        iconName: "configure";
+        id: addMachineAction
+        text: catalog.i18nc("@action:inmenu menubar:printer", "&Add Printer...")
+    }
+
+    Action
+    {
+        id: settingsAction
+        text: catalog.i18nc("@action:inmenu menubar:printer", "Manage Pr&inters...")
+        iconName: "configure"
     }
 
     Action
@@ -173,9 +214,15 @@ Item
 
     Action
     {
+        id: marketplaceMaterialsAction
+        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate.", "Add more materials from Marketplace")
+    }
+
+    Action
+    {
         id: updateProfileAction;
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings/overrides");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Update profile with current settings/overrides");
         onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
 
@@ -224,25 +271,39 @@ Item
 
     Action
     {
+        id: whatsNewAction;
+        text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
+    }
+
+    Action
+    {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help", "About...");
+
+        //On MacOS, don't translate the "About" word.
+        //Qt moves the "about" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "About..." : catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
     }
 
     Action
     {
         id: deleteSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete Selected Model", "Delete Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Delete Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-delete";
-        shortcut: StandardKey.Delete;
+        shortcut: StandardKey.Delete | "Backspace"
         onTriggered: CuraActions.deleteSelection();
     }
 
     Action
     {
         id: centerSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Center Selected Model", "Center Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Center Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "align-vertical-center";
         onTriggered: CuraActions.centerSelection();
@@ -251,7 +312,7 @@ Item
     Action
     {
         id: multiplySelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Multiply Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-duplicate";
         shortcut: "Ctrl+M"
@@ -275,7 +336,7 @@ Item
     {
         id: groupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
         onTriggered: CuraApplication.groupSelected();
@@ -295,7 +356,7 @@ Item
     {
         id: unGroupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
-        enabled: UM.Scene.isGroupSelected
+        enabled: UM.Selection.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
         onTriggered: CuraApplication.ungroupSelected();
@@ -305,7 +366,7 @@ Item
     {
         id: mergeObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
         onTriggered: CuraApplication.mergeSelected();
@@ -386,9 +447,13 @@ Item
     Action
     {
         id: openAction;
+        property var fileProviderModel: CuraApplication.getFileProviderModel()
+
         text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
         iconName: "document-open";
-        shortcut: StandardKey.Open;
+        // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
+        // enabled instead, and Ctrl+O is assigned to the local file provider
+        shortcut: fileProviderModel.count == 1 ? StandardKey.Open : "";
     }
 
     Action
@@ -396,14 +461,6 @@ Item
         id: newProjectAction
         text: catalog.i18nc("@action:inmenu menubar:file","&New Project...");
         shortcut: StandardKey.New
-    }
-
-    Action
-    {
-        id: showEngineLogAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
-        iconName: "view-list-text";
-        shortcut: StandardKey.WhatsThis;
     }
 
     Action
@@ -423,14 +480,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "&Marketplace")
+        text: "&Marketplace"
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: expandSidebarAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
-        shortcut: "Ctrl+E";
     }
 }

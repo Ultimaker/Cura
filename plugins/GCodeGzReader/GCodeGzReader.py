@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import gzip
@@ -7,16 +7,19 @@ from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementin
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType #To add the .gcode.gz files to the MIME type database.
 from UM.PluginRegistry import PluginRegistry
 
-##  A file reader that reads gzipped g-code.
-#
-#   If you're zipping g-code, you might as well use gzip!
+
 class GCodeGzReader(MeshReader):
+    """A file reader that reads gzipped g-code.
+
+    If you're zipping g-code, you might as well use gzip!
+    """
+
     def __init__(self) -> None:
         super().__init__()
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-cura-compressed-gcode-file",
-                comment = "Cura Compressed GCode File",
+                comment = "Cura Compressed G-code File",
                 suffixes = ["gcode.gz"]
             )
         )
@@ -27,6 +30,6 @@ class GCodeGzReader(MeshReader):
             file_data = file.read()
         uncompressed_gcode = gzip.decompress(file_data).decode("utf-8")
         PluginRegistry.getInstance().getPluginObject("GCodeReader").preReadFromStream(uncompressed_gcode)
-        result = PluginRegistry.getInstance().getPluginObject("GCodeReader").readFromStream(uncompressed_gcode)
+        result = PluginRegistry.getInstance().getPluginObject("GCodeReader").readFromStream(uncompressed_gcode, file_name)
 
         return result

@@ -1,12 +1,14 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
 import threading
-from typing import Any, Dict, Optional, Set, TYPE_CHECKING
-from PyQt5.QtCore import pyqtProperty, pyqtSlot
+from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
+import uuid
 
-from UM.Decorators import override
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
+
+from UM.Decorators import deprecated, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.SettingInstance import InstanceState
@@ -18,6 +20,7 @@ from UM.Platform import Platform
 from UM.Util import parseBool
 
 import cura.CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -26,13 +29,19 @@ if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
 
 
-##  Represents the Global or Machine stack and its related containers.
-#
 class GlobalStack(CuraContainerStack):
+    """Represents the Global or Machine stack and its related containers."""
+
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
         self.setMetaDataEntry("type", "machine")  # For backward compatibility
+
+        # TL;DR: If Cura is looking for printers that belong to the same group, it should use "group_id".
+        # Each GlobalStack by default belongs to a group which is identified via "group_id". This group_id is used to
+        # figure out which GlobalStacks are in the printer cluster for example without knowing the implementation
+        # details such as the um_network_key or some other identifier that's used by the underlying device plugin.
+        self.setMetaDataEntry("group_id", str(uuid.uuid4()))  # Assign a new GlobalStack to a unique group by default
 
         self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 
@@ -42,16 +51,108 @@ class GlobalStack(CuraContainerStack):
         # Per thread we have our own resolving_settings, or strange things sometimes occur.
         self._resolving_settings = defaultdict(set) #type: Dict[str, Set[str]] # keys are thread names
 
-    ##  Get the list of extruders of this stack.
-    #
-    #   \return The extruders registered with this stack.
-    @pyqtProperty("QVariantMap")
+        # Since the metadatachanged is defined in container stack, we can't use it here as a notifier for pyqt
+        # properties. So we need to tie them together like this.
+        self.metaDataChanged.connect(self.configuredConnectionTypesChanged)
+
+        self.setDirty(False)
+
+    extrudersChanged = pyqtSignal()
+    configuredConnectionTypesChanged = pyqtSignal()
+
+    @pyqtProperty("QVariantMap", notify = extrudersChanged)
+    @deprecated("Please use extruderList instead.", "4.4")
     def extruders(self) -> Dict[str, "ExtruderStack"]:
+        """Get the list of extruders of this stack.
+
+        :return: The extruders registered with this stack.
+        """
+
         return self._extruders
+
+    @pyqtProperty("QVariantList", notify = extrudersChanged)
+    def extruderList(self) -> List["ExtruderStack"]:
+        result_tuple_list = sorted(list(self._extruders.items()), key=lambda x: int(x[0]))
+        result_list = [item[1] for item in result_tuple_list]
+
+        machine_extruder_count = self.getProperty("machine_extruder_count", "value")
+        return result_list[:machine_extruder_count]
+
+    @pyqtProperty(int, constant = True)
+    def maxExtruderCount(self):
+        return len(self.getMetaDataEntry("machine_extruder_trains"))
+
+    @pyqtProperty(bool, notify=configuredConnectionTypesChanged)
+    def supportsNetworkConnection(self):
+        return self.getMetaDataEntry("supports_network_connection", False)
+
+    @pyqtProperty(bool, constant = True)
+    def supportsMaterialExport(self):
+        """
+        Whether the printer supports Cura's export format of material profiles.
+        :return: ``True`` if it supports it, or ``False`` if not.
+        """
+        return self.getMetaDataEntry("supports_material_export", False)
 
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
+
+    @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
+    def configuredConnectionTypes(self) -> List[int]:
+        """The configured connection types can be used to find out if the global
+
+        stack is configured to be connected with a printer, without having to
+        know all the details as to how this is exactly done (and without
+        actually setting the stack to be active).
+
+        This data can then in turn also be used when the global stack is active;
+        If we can't get a network connection, but it is configured to have one,
+        we can display a different icon to indicate the difference.
+        """
+        # Requesting it from the metadata actually gets them as strings (as that's what you get from serializing).
+        # But we do want them returned as a list of ints (so the rest of the code can directly compare)
+        connection_types = self.getMetaDataEntry("connection_type", "").split(",")
+        result = []
+        for connection_type in connection_types:
+            if connection_type != "":
+                try:
+                    result.append(int(connection_type))
+                except ValueError:
+                    # We got invalid data, probably a None.
+                    pass
+        return result
+
+    # Returns a boolean indicating if this machine has a remote connection. A machine is considered as remotely
+    # connected if its connection types contain one of the following values:
+    #   - ConnectionType.NetworkConnection
+    #   - ConnectionType.CloudConnection
+    @pyqtProperty(bool, notify = configuredConnectionTypesChanged)
+    def hasRemoteConnection(self) -> bool:
+        has_remote_connection = False
+
+        for connection_type in self.configuredConnectionTypes:
+            has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                         ConnectionType.CloudConnection.value]
+        return has_remote_connection
+
+    def addConfiguredConnectionType(self, connection_type: int) -> None:
+        """:sa configuredConnectionTypes"""
+
+        configured_connection_types = self.configuredConnectionTypes
+        if connection_type not in configured_connection_types:
+            # Store the values as a string.
+            configured_connection_types.append(connection_type)
+            self.setMetaDataEntry("connection_type", ",".join([str(c_type) for c_type in configured_connection_types]))
+
+    def removeConfiguredConnectionType(self, connection_type: int) -> None:
+        """:sa configuredConnectionTypes"""
+
+        configured_connection_types = self.configuredConnectionTypes
+        if connection_type in configured_connection_types:
+            # Store the values as a string.
+            configured_connection_types.remove(connection_type)
+            self.setMetaDataEntry("connection_type", ",".join([str(c_type) for c_type in configured_connection_types]))
 
     @classmethod
     def getConfigurationTypeFromSerialized(cls, serialized: str) -> Optional[str]:
@@ -59,6 +160,14 @@ class GlobalStack(CuraContainerStack):
         if configuration_type == "machine":
             return "machine_stack"
         return configuration_type
+
+    def getIntentCategory(self) -> str:
+        intent_category = "default"
+        for extruder in self.extruderList:
+            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if category != "default" and category != intent_category:
+                intent_category = category
+        return intent_category
 
     def getBuildplateName(self) -> Optional[str]:
         name = None
@@ -70,13 +179,15 @@ class GlobalStack(CuraContainerStack):
     def preferred_output_file_formats(self) -> str:
         return self.getMetaDataEntry("file_formats")
 
-    ##  Add an extruder to the list of extruders of this stack.
-    #
-    #   \param extruder The extruder to add.
-    #
-    #   \throws Exceptions.TooManyExtrudersError Raised when trying to add an extruder while we
-    #                                            already have the maximum number of extruders.
     def addExtruder(self, extruder: ContainerStack) -> None:
+        """Add an extruder to the list of extruders of this stack.
+
+        :param extruder: The extruder to add.
+
+        :raise Exceptions.TooManyExtrudersError: Raised when trying to add an extruder while we
+            already have the maximum number of extruders.
+        """
+
         position = extruder.getMetaDataEntry("position")
         if position is None:
             Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder = extruder.id, stack = self.id)
@@ -87,27 +198,29 @@ class GlobalStack(CuraContainerStack):
             return
 
         self._extruders[position] = extruder
+        self.extrudersChanged.emit()
         Logger.log("i", "Extruder[%s] added to [%s] at position [%s]", extruder.id, self.id, position)
 
-    ##  Overridden from ContainerStack
-    #
-    #   This will return the value of the specified property for the specified setting,
-    #   unless the property is "value" and that setting has a "resolve" function set.
-    #   When a resolve is set, it will instead try and execute the resolve first and
-    #   then fall back to the normal "value" property.
-    #
-    #   \param key The setting key to get the property of.
-    #   \param property_name The property to get the value of.
-    #
-    #   \return The value of the property for the specified setting, or None if not found.
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
+        """Overridden from ContainerStack
+
+        This will return the value of the specified property for the specified setting,
+        unless the property is "value" and that setting has a "resolve" function set.
+        When a resolve is set, it will instead try and execute the resolve first and
+        then fall back to the normal "value" property.
+
+        :param key: The setting key to get the property of.
+        :param property_name: The property to get the value of.
+
+        :return: The value of the property for the specified setting, or None if not found.
+        """
+
         if not self.definition.findDefinitions(key = key):
             return None
 
-        if context is None:
-            context = PropertyEvaluationContext()
-        context.pushContainer(self)
+        if context:
+            context.pushContainer(self)
 
         # Handle the "resolve" property.
         #TODO: Why the hell does this involve threading?
@@ -132,29 +245,35 @@ class GlobalStack(CuraContainerStack):
             if super().getProperty(key, "settable_per_extruder", context):
                 result = self._extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
-                    context.popContainer()
+                    if context:
+                        context.popContainer()
                     return result
             else:
                 Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
 
         result = super().getProperty(key, property_name, context)
-        context.popContainer()
+        if context:
+            context.popContainer()
         return result
 
-    ##  Overridden from ContainerStack
-    #
-    #   This will simply raise an exception since the Global stack cannot have a next stack.
     @override(ContainerStack)
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
-        raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
+        """Overridden from ContainerStack
 
-    # protected:
+        This will simply raise an exception since the Global stack cannot have a next stack.
+        """
+
+        raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
     def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
-        if property_name is not "value":
+        if property_name != "value":
             # Do not try to resolve anything but the "value" property
+            return False
+
+        if not self.definition.getProperty(key, "resolve"):
+            # If there isn't a resolve set for this setting, there isn't anything to do here.
             return False
 
         current_thread = threading.current_thread()
@@ -165,17 +284,17 @@ class GlobalStack(CuraContainerStack):
             # track all settings that are being resolved.
             return False
 
-        setting_state = super().getProperty(key, "state", context = context)
-        if setting_state is not None and setting_state != InstanceState.Default:
-            # When the user has explicitly set a value, we should ignore any resolve and
-            # just return that value.
+        if self.hasUserValue(key):
+            # When the user has explicitly set a value, we should ignore any resolve and just return that value.
             return False
 
         return True
 
-    ##  Perform some sanity checks on the global stack
-    #   Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
     def isValid(self) -> bool:
+        """Perform some sanity checks on the global stack
+
+        Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
+        """
         container_registry = ContainerRegistry.getInstance()
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = self.getId())
 
@@ -193,18 +312,22 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    def getHasMaterials(self) -> bool:
+    @pyqtProperty(bool, constant = True)
+    def hasMaterials(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    def getHasVariants(self) -> bool:
+    @pyqtProperty(bool, constant = True)
+    def hasVariants(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    def getHasMachineQuality(self) -> bool:
-        return parseBool(self.getMetaDataEntry("has_machine_quality", False))
+    @pyqtProperty(bool, constant = True)
+    def hasVariantBuildplates(self) -> bool:
+        return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 
-    ##  Get default firmware file name if one is specified in the firmware
     @pyqtSlot(result = str)
     def getDefaultFirmwareName(self) -> str:
+        """Get default firmware file name if one is specified in the firmware"""
+
         machine_has_heated_bed = self.getProperty("machine_heated_bed", "value")
 
         baudrate = 250000
@@ -227,6 +350,17 @@ class GlobalStack(CuraContainerStack):
         except FileNotFoundError:
             Logger.log("w", "Firmware file %s not found.", hex_file)
             return ""
+
+    def getName(self) -> str:
+        return self._metadata.get("group_name", self._metadata.get("name", ""))
+
+    def setName(self, name: "str") -> None:
+        super().setName(name)
+
+    nameChanged = pyqtSignal()
+    name = pyqtProperty(str, fget=getName, fset=setName, notify=nameChanged)
+
+
 
 ## private:
 global_stack_mime = MimeType(

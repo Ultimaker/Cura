@@ -1,32 +1,34 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Logger import Logger
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
+import cura.CuraApplication  # To listen to changes to the preferences.
 
 class FavoriteMaterialsModel(BaseMaterialsModel):
+    """Model that shows the list of favorite materials."""
 
     def __init__(self, parent = None):
         super().__init__(parent)
-        self._update()
+        cura.CuraApplication.CuraApplication.getInstance().getPreferences().preferenceChanged.connect(self._onFavoritesChanged)
+        self._onChanged()
+
+    def _onFavoritesChanged(self, preference_key: str) -> None:
+        """Triggered when any preference changes, but only handles it when the list of favourites is changed. """
+
+        if preference_key != "cura/favorite_materials":
+            return
+        self._onChanged()
 
     def _update(self):
-
-        # Perform standard check and reset if the check fails
         if not self._canUpdate():
-            self.setItems([])
             return
-
-        # Get updated list of favorites
-        self._favorite_ids = self._material_manager.getFavorites()
+        super()._update()
 
         item_list = []
 
         for root_material_id, container_node in self._available_materials.items():
-            metadata = container_node.getMetadata()
-
             # Do not include the materials from a to-be-removed package
-            if bool(metadata.get("removed", False)):
+            if bool(container_node.getMetaDataEntry("removed", False)):
                 continue
 
             # Only add results for favorite materials
@@ -34,7 +36,8 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
                 continue
 
             item = self._createMaterialItem(root_material_id, container_node)
-            item_list.append(item)
+            if item:
+                item_list.append(item)
 
         # Sort the item list alphabetically by name
         item_list = sorted(item_list, key = lambda d: d["brand"].upper())

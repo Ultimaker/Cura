@@ -1,4 +1,4 @@
-#Copyright (c) 2017 Ultimaker B.V.
+#Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
 import gc
@@ -24,14 +24,16 @@ from cura import LayerPolygon
 
 import numpy
 from time import time
-from cura.Settings.ExtrudersModel import ExtrudersModel
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 catalog = i18nCatalog("cura")
 
 
-##  Return a 4-tuple with floats 0-1 representing the html color code
-#
-#   \param color_code html color code, i.e. "#FF0000" -> red
 def colorCodeToRGBA(color_code):
+    """Return a 4-tuple with floats 0-1 representing the html color code
+
+    :param color_code: html color code, i.e. "#FF0000" -> red
+    """
+
     if color_code is None:
         Logger.log("w", "Unable to convert color code, returning default")
         return [0, 0, 0, 1]
@@ -51,13 +53,15 @@ class ProcessSlicedLayersJob(Job):
         self._abort_requested = False
         self._build_plate_number = None
 
-    ##  Aborts the processing of layers.
-    #
-    #   This abort is made on a best-effort basis, meaning that the actual
-    #   job thread will check once in a while to see whether an abort is
-    #   requested and then stop processing by itself. There is no guarantee
-    #   that the abort will stop the job any time soon or even at all.
     def abort(self):
+        """Aborts the processing of layers.
+
+        This abort is made on a best-effort basis, meaning that the actual
+        job thread will check once in a while to see whether an abort is
+        requested and then stop processing by itself. There is no guarantee
+        that the abort will stop the job any time soon or even at all.
+        """
+
         self._abort_requested = True
 
     def setBuildPlate(self, new_value):
@@ -136,22 +140,23 @@ class ProcessSlicedLayersJob(Job):
 
                 extruder = polygon.extruder
 
-                line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
+                line_types = numpy.fromstring(polygon.line_type, dtype = "u1")  # Convert bytearray to numpy array
+
                 line_types = line_types.reshape((-1,1))
 
-                points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
+                points = numpy.fromstring(polygon.points, dtype = "f4")  # Convert bytearray to numpy array
                 if polygon.point_type == 0: # Point2D
                     points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                 else:  # Point3D
                     points = points.reshape((-1,3))
 
-                line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
+                line_widths = numpy.fromstring(polygon.line_width, dtype = "f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
-                line_thicknesses = numpy.fromstring(polygon.line_thickness, dtype="f4")  # Convert bytearray to numpy array
+                line_thicknesses = numpy.fromstring(polygon.line_thickness, dtype = "f4")  # Convert bytearray to numpy array
                 line_thicknesses = line_thicknesses.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
-                line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype="f4")  # Convert bytearray to numpy array
+                line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype = "f4")  # Convert bytearray to numpy array
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
@@ -193,9 +198,9 @@ class ProcessSlicedLayersJob(Job):
         manager = ExtruderManager.getInstance()
         extruders = manager.getActiveExtruderStacks()
         if extruders:
-            material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
+            material_color_map = numpy.zeros((len(extruders), 4), dtype = numpy.float32)
             for extruder in extruders:
-                position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
+                position = int(extruder.getMetaDataEntry("position", default = "0"))
                 try:
                     default_color = ExtrudersModel.defaultColors[position]
                 except IndexError:
@@ -205,8 +210,8 @@ class ProcessSlicedLayersJob(Job):
                 material_color_map[position, :] = color
         else:
             # Single extruder via global stack.
-            material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
-            color_code = global_container_stack.material.getMetaDataEntry("color_code", default="#e0e000")
+            material_color_map = numpy.zeros((1, 4), dtype = numpy.float32)
+            color_code = global_container_stack.material.getMetaDataEntry("color_code", default = "#e0e000")
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 
@@ -252,10 +257,10 @@ class ProcessSlicedLayersJob(Job):
         if self.isRunning():
             if Application.getInstance().getController().getActiveView().getPluginId() == "SimulationView":
                 if not self._progress_message:
-                    self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0, catalog.i18nc("@info:title", "Information"))
+                    self._progress_message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0,
+                                                     catalog.i18nc("@info:title", "Information"))
                 if self._progress_message.getProgress() != 100:
                     self._progress_message.show()
             else:
                 if self._progress_message:
                     self._progress_message.hide()
-

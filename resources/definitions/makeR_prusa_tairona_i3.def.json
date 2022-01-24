@@ -1,13 +1,13 @@
 {
     "version": 2,
-    "name": "makeR Prusa Tairona i3",
+    "name": "Maker Prusa Tairona i3",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "makeR",
-        "manufacturer": "makeR",
+        "author": "Maker",
+        "manufacturer": "Maker",
         "file_formats": "text/x-gcode",
-        "platform": "makeR_prusa_tairona_i3_platform.stl",
+        "platform": "makeR_prusa_tairona_i3_platform.3mf",
         "platform_offset": [-2, 0, 0],
         "machine_extruder_trains":
         {
@@ -32,7 +32,7 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_head_polygon": {
+        "machine_head_with_fans_polygon": {
             "default_value": [
                 [-75, -18],
                 [-75, 35],
@@ -41,7 +41,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

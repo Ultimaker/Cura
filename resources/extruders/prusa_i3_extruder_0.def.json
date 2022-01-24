@@ -1,5 +1,4 @@
 {
-    "id": "prusa_i3_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

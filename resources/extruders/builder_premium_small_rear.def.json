@@ -1,5 +1,4 @@
 {
-    "id": "builder_premium_small_rear",
     "version": 2,
     "name": "Rear Extruder",
     "inherits": "fdmextruder",

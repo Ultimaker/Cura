@@ -1,9 +1,11 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
+
+import Cura 1.6 as Cura
 
 /**
  * This component comprises a colored extruder icon, the material name, and the
@@ -18,10 +20,10 @@ import UM 1.3 as UM
 Item
 {
     // The material color
-    property alias color: extruderIcon.color
+    property alias color: extruderIcon.materialColor
 
-    // The extruder position; NOTE: Decent human beings count from 0
-    property alias position: extruderIcon.position
+    // The extruder position
+    property int position
 
     // The material name
     property alias material: materialLabel.text
@@ -32,45 +34,55 @@ Item
     // Height is 2 x 18px labels, plus 4px spacing between them
     height: 40 * screenScaleFactor // TODO: Theme!
     width: childrenRect.width
+    opacity: material != "" && material != "Empty" && position >= 0 ? 1 : 0.4
 
-    MonitorIconExtruder
+    Cura.ExtruderIcon
     {
         id: extruderIcon
-        color: "#eeeeee" // TODO: Theme!
-        position: 0
+        materialColor: UM.Theme.getColor("monitor_skeleton_loading")
+        anchors.verticalCenter: parent.verticalCenter
     }
-    Label
+
+    Rectangle
     {
-        id: materialLabel
+        id: materialLabelWrapper
         anchors
         {
             left: extruderIcon.right
-            leftMargin: 12 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: extruderIcon.verticalCenter
         }
-        color: "#191919" // TODO: Theme!
-        elide: Text.ElideRight
-        font: UM.Theme.getFont("very_small") // 12pt, regular
-        text: ""
+        color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
+        height: childrenRect.height
+        width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
+        radius: 2 * screenScaleFactor // TODO: Theme!
 
-        // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
-        verticalAlignment: Text.AlignVCenter
-    }
-    Label
-    {
-        id: printCoreLabel
-        anchors
+        Label
         {
-            left: materialLabel.left
-            bottom: parent.bottom
-        }
-        color: "#191919" // TODO: Theme!
-        elide: Text.ElideRight
-        font: UM.Theme.getFont("small") // 12pt, bold
-        text: ""
+            id: materialLabel
+            anchors.top: parent.top
 
-        // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
-        verticalAlignment: Text.AlignVCenter
+            color: UM.Theme.getColor("text")
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default") // 12pt, regular
+            text: ""
+            visible: text !== ""
+
+            renderType: Text.NativeRendering
+        }
+
+        Label
+        {
+            id: printCoreLabel
+            anchors.top: materialLabel.bottom
+
+            color: UM.Theme.getColor("text")
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default_bold") // 12pt, bold
+            text: ""
+            visible: text !== ""
+
+            renderType: Text.NativeRendering
+        }
     }
 }

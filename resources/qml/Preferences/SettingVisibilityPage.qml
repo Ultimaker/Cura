@@ -5,6 +5,8 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
+import QtQuick.Controls 2.3 as NewControls
+
 import UM 1.2 as UM
 
 import Cura 1.0 as Cura
@@ -25,11 +27,7 @@ UM.PreferencesPage
 
     function reset()
     {
-        UM.Preferences.resetPreference("general/visible_settings")
-
-        // After calling this function update Setting visibility preset combobox.
-        // Reset should set default setting preset ("Basic")
-        visibilityPreset.currentIndex = 1
+        settingVisibilityPresetsModel.setActivePreset("basic")
     }
     resetEnabled: true;
 
@@ -54,7 +52,7 @@ UM.PreferencesPage
                 {
                     return Qt.Unchecked
                 }
-                else if(definitionsModel.visibleCount == definitionsModel.rowCount(null))
+                else if(definitionsModel.visibleCount == definitionsModel.count)
                 {
                     return Qt.Checked
                 }
@@ -97,10 +95,10 @@ UM.PreferencesPage
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
-            onTextChanged: definitionsModel.filter = {"i18n_label": "*" + text}
+            onTextChanged: definitionsModel.filter = {"i18n_label|i18n_description": "*" + text}
         }
 
-        ComboBox
+        NewControls.ComboBox
         {
             id: visibilityPreset
             width: 150 * screenScaleFactor
@@ -108,6 +106,7 @@ UM.PreferencesPage
             {
                 top: parent.top
                 right: parent.right
+                bottom: scrollView.top
             }
 
             model: settingVisibilityPresetsModel.items
@@ -115,21 +114,22 @@ UM.PreferencesPage
 
             currentIndex:
             {
+                var idx = -1;
                 for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
                 {
-                    if(settingVisibilityPresetsModel.items[i].id == settingVisibilityPresetsModel.activePreset)
+                    if(settingVisibilityPresetsModel.items[i].presetId == settingVisibilityPresetsModel.activePreset)
                     {
-                        currentIndex = i;
-                        return;
+                        idx = i;
+                        break;
                     }
                 }
-                return -1
+                return idx;
             }
 
             onActivated:
             {
-                var preset_id = settingVisibilityPresetsModel.items[index].id;
-                settingVisibilityPresetsModel.setActivePreset(preset_id);
+                var preset_id = settingVisibilityPresetsModel.items[index].presetId
+                settingVisibilityPresetsModel.setActivePreset(preset_id)
             }
         }
 
@@ -154,7 +154,7 @@ UM.PreferencesPage
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     showAll: true
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
@@ -166,7 +166,7 @@ UM.PreferencesPage
                 {
                     id: loader
 
-                    width: parent.width
+                    width: settingsListView.width
                     height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
                     property var definition: model

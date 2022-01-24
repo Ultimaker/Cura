@@ -1,7 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
@@ -13,18 +12,18 @@ from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-from cura.Settings.GlobalStack import GlobalStack
-
 from .FirmwareUpdateCheckerJob import FirmwareUpdateCheckerJob
 from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
 
 i18n_catalog = i18nCatalog("cura")
 
 
-## This Extension checks for new versions of the firmware based on the latest checked version number.
-#  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
-#  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
+    """This Extension checks for new versions of the firmware based on the latest checked version number.
+
+    The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
+    to change it to work for other applications.
+    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -38,8 +37,9 @@ class FirmwareUpdateChecker(Extension):
         self._check_job = None
         self._checked_printer_names = set()  # type: Set[str]
 
-    ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
+        """Callback for the message that is spawned when there is a new version."""
+
         if action == FirmwareUpdateCheckerMessage.STR_ACTION_DOWNLOAD:
             machine_id = message.getMachineId()
             download_url = message.getDownloadUrl()
@@ -53,19 +53,22 @@ class FirmwareUpdateChecker(Extension):
 
     def _onContainerAdded(self, container):
         # Only take care when a new GlobalStack was added
+        from cura.Settings.GlobalStack import GlobalStack  # otherwise circular imports
         if isinstance(container, GlobalStack):
             self.checkFirmwareVersion(container, True)
 
     def _onJobFinished(self, *args, **kwargs):
         self._check_job = None
 
-    ##  Connect with software.ultimaker.com, load latest.version and check version info.
-    #   If the version info is different from the current version, spawn a message to
-    #   allow the user to download it.
-    #
-    #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
-    #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
+        """Connect with software.ultimaker.com, load latest.version and check version info.
+
+        If the version info is different from the current version, spawn a message to
+        allow the user to download it.
+
+        :param silent: type(boolean) Suppresses messages other than "new version found" messages.
+            This is used when checking for a new firmware version at startup.
+        """
         container_name = container.definition.getName()
         if container_name in self._checked_printer_names:
             return
@@ -76,7 +79,7 @@ class FirmwareUpdateChecker(Extension):
             Logger.log("i", "No machine with name {0} in list of firmware to check.".format(container_name))
             return
 
-        self._check_job = FirmwareUpdateCheckerJob(container = container, silent = silent,
+        self._check_job = FirmwareUpdateCheckerJob(silent = silent,
                                                    machine_name = container_name, metadata = metadata,
                                                    callback = self._onActionTriggered)
         self._check_job.start()

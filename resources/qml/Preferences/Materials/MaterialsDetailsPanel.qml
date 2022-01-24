@@ -64,8 +64,10 @@ Item
             height: childrenRect.height
 
             Label {
+                width: parent.width
                 text: materialProperties.name
-                font: UM.Theme.getFont("large")
+                font: UM.Theme.getFont("large_bold")
+                elide: Text.ElideRight
             }
         }
 
@@ -82,6 +84,7 @@ Item
             }
 
             editingEnabled: currentItem != null && !currentItem.is_read_only
+            onResetSelectedMaterial: base.resetExpandedActiveMaterial()
 
             properties: materialProperties
             containerId: currentItem != null ? currentItem.id : ""

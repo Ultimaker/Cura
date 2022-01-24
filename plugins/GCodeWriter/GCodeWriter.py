@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re  # For escaping characters in the settings.
@@ -9,40 +9,45 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
-
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.Machines.ContainerTree import ContainerTree
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-##  Writes g-code to a file.
-#
-#   While this poses as a mesh writer, what this really does is take the g-code
-#   in the entire scene and write it to an output device. Since the g-code of a
-#   single mesh isn't separable from the rest what with rafts and travel moves
-#   and all, it doesn't make sense to write just a single mesh.
-#
-#   So this plug-in takes the g-code that is stored in the root of the scene
-#   node tree, adds a bit of extra information about the profiles and writes
-#   that to the output device.
-class GCodeWriter(MeshWriter):
-    ##  The file format version of the serialised g-code.
-    #
-    #   It can only read settings with the same version as the version it was
-    #   written with. If the file format is changed in a way that breaks reverse
-    #   compatibility, increment this version number!
-    version = 3
 
-    ##  Dictionary that defines how characters are escaped when embedded in
-    #   g-code.
-    #
-    #   Note that the keys of this dictionary are regex strings. The values are
-    #   not.
+class GCodeWriter(MeshWriter):
+    """Writes g-code to a file.
+
+    While this poses as a mesh writer, what this really does is take the g-code
+    in the entire scene and write it to an output device. Since the g-code of a
+    single mesh isn't separable from the rest what with rafts and travel moves
+    and all, it doesn't make sense to write just a single mesh.
+
+    So this plug-in takes the g-code that is stored in the root of the scene
+    node tree, adds a bit of extra information about the profiles and writes
+    that to the output device.
+    """
+
+    version = 3
+    """The file format version of the serialised g-code.
+
+    It can only read settings with the same version as the version it was
+    written with. If the file format is changed in a way that breaks reverse
+    compatibility, increment this version number!
+    """
+
     escape_characters = {
         re.escape("\\"): "\\\\",  # The escape character.
         re.escape("\n"): "\\n",   # Newlines. They break off the comment.
         re.escape("\r"): "\\r"    # Carriage return. Windows users may need this for visualisation in their editors.
     }
+    """Dictionary that defines how characters are escaped when embedded in
+
+    g-code.
+
+    Note that the keys of this dictionary are regex strings. The values are
+    not.
+    """
 
     _setting_keyword = ";SETTING_"
 
@@ -51,17 +56,19 @@ class GCodeWriter(MeshWriter):
 
         self._application = Application.getInstance()
 
-    ##  Writes the g-code for the entire scene to a stream.
-    #
-    #   Note that even though the function accepts a collection of nodes, the
-    #   entire scene is always written to the file since it is not possible to
-    #   separate the g-code for just specific nodes.
-    #
-    #   \param stream The stream to write the g-code to.
-    #   \param nodes This is ignored.
-    #   \param mode Additional information on how to format the g-code in the
-    #   file. This must always be text mode.
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
+        """Writes the g-code for the entire scene to a stream.
+
+        Note that even though the function accepts a collection of nodes, the
+        entire scene is always written to the file since it is not possible to
+        separate the g-code for just specific nodes.
+
+        :param stream: The stream to write the g-code to.
+        :param nodes: This is ignored.
+        :param mode: Additional information on how to format the g-code in the
+            file. This must always be text mode.
+        """
+
         if mode != MeshWriter.OutputMode.TextMode:
             Logger.log("e", "GCodeWriter does not support non-text mode.")
             self.setInformation(catalog.i18nc("@error:not supported", "GCodeWriter does not support non-text mode."))
@@ -89,8 +96,9 @@ class GCodeWriter(MeshWriter):
         self.setInformation(catalog.i18nc("@warning:status", "Please prepare G-code before exporting."))
         return False
 
-    ##  Create a new container with container 2 as base and container 1 written over it.
     def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
+        """Create a new container with container 2 as base and container 1 written over it."""
+
         flat_container = InstanceContainer(instance_container2.getName())
 
         # The metadata includes id, name and definition
@@ -107,27 +115,35 @@ class GCodeWriter(MeshWriter):
 
         return flat_container
 
-    ##  Serialises a container stack to prepare it for writing at the end of the
-    #   g-code.
-    #
-    #   The settings are serialised, and special characters (including newline)
-    #   are escaped.
-    #
-    #   \param settings A container stack to serialise.
-    #   \return A serialised string of the settings.
     def _serialiseSettings(self, stack):
+        """Serialises a container stack to prepare it for writing at the end of the g-code.
+
+        The settings are serialised, and special characters (including newline)
+        are escaped.
+
+        :param stack: A container stack to serialise.
+        :return: A serialised string of the settings.
+        """
         container_registry = self._application.getContainerRegistry()
-        quality_manager = self._application.getQualityManager()
 
         prefix = self._setting_keyword + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
         quality_type = stack.quality.getMetaDataEntry("quality_type")
         container_with_profile = stack.qualityChanges
+        machine_definition_id_for_quality = ContainerTree.getInstance().machines[stack.definition.getId()].quality_definition
         if container_with_profile.getId() == "empty_quality_changes":
             # If the global quality changes is empty, create a new one
             quality_name = container_registry.uniqueName(stack.quality.getName())
-            container_with_profile = quality_manager._createQualityChanges(quality_type, quality_name, stack, None)
+            quality_id = container_registry.uniqueName((stack.definition.getId() + "_" + quality_name).lower().replace(" ", "_"))
+            container_with_profile = InstanceContainer(quality_id)
+            container_with_profile.setName(quality_name)
+            container_with_profile.setMetaDataEntry("type", "quality_changes")
+            container_with_profile.setMetaDataEntry("quality_type", quality_type)
+            if stack.getMetaDataEntry("position") is not None:  # For extruder stacks, the quality changes should include an intent category.
+                container_with_profile.setMetaDataEntry("intent_category", stack.intent.getMetaDataEntry("intent_category", "default"))
+            container_with_profile.setDefinition(machine_definition_id_for_quality)
+            container_with_profile.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 
         flat_global_container = self._createFlattenedContainerInstance(stack.userChanges, container_with_profile)
         # If the quality changes is not set, we need to set type manually
@@ -139,19 +155,24 @@ class GCodeWriter(MeshWriter):
             flat_global_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         # Get the machine definition ID for quality profiles
-        machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(stack.definition)
         flat_global_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
 
         serialized = flat_global_container.serialize()
         data = {"global_quality": serialized}
 
         all_setting_keys = flat_global_container.getAllKeys()
-        for extruder in sorted(stack.extruders.values(), key = lambda k: int(k.getMetaDataEntry("position"))):
+        for extruder in stack.extruderList:
             extruder_quality = extruder.qualityChanges
             if extruder_quality.getId() == "empty_quality_changes":
                 # Same story, if quality changes is empty, create a new one
                 quality_name = container_registry.uniqueName(stack.quality.getName())
-                extruder_quality = quality_manager._createQualityChanges(quality_type, quality_name, stack, None)
+                quality_id = container_registry.uniqueName((stack.definition.getId() + "_" + quality_name).lower().replace(" ", "_"))
+                extruder_quality = InstanceContainer(quality_id)
+                extruder_quality.setName(quality_name)
+                extruder_quality.setMetaDataEntry("type", "quality_changes")
+                extruder_quality.setMetaDataEntry("quality_type", quality_type)
+                extruder_quality.setDefinition(machine_definition_id_for_quality)
+                extruder_quality.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.userChanges, extruder_quality)
             # If the quality changes is not set, we need to set type manually

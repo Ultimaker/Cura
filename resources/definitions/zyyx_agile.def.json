@@ -1,5 +1,5 @@
 {
-    "name": "ZYYX Agile",
+    "name": "Zyyx Agile",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -7,7 +7,7 @@
         "author": "Magicfirm Europe",
         "manufacturer": "Magicfirm Europe",
         "file_formats": "application/x3g",
-        "platform": "zyyx_platform.stl",
+        "platform": "zyyx_platform.3mf",
         "has_machine_quality": true,
         "quality_definition": "zyyx_agile",
         "preferred_material": "zyyx_pro_pla",
@@ -33,7 +33,7 @@
         "machine_center_is_zero": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "Makerbot" },
         "machine_head_with_fans_polygon": { "default_value": [ [ -37, 50 ], [ 25, 50 ], [ 25, -40 ], [ -37, -40 ] ] },
-        "gantry_height": { "default_value": 10 },
+        "gantry_height": { "value": "10" },
         "machine_steps_per_mm_x": { "default_value": 88.888889 },
         "machine_steps_per_mm_y": { "default_value": 88.888889 },
         "machine_steps_per_mm_z": { "default_value": 400 },

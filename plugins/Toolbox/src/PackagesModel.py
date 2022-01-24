@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re
@@ -12,8 +12,12 @@ from UM.Qt.ListModel import ListModel
 from .ConfigsModel import ConfigsModel
 
 
-##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
+    """Model that holds Cura packages.
+
+    By setting the filter property the instances held by this model can be changed.
+    """
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -33,26 +37,27 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
         self.addRoleName(Qt.UserRole + 14, "is_active")
-        self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
+        self.addRoleName(Qt.UserRole + 15, "is_installed")  # Scheduled pkgs are included in the model but should not be marked as actually installed
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
         self.addRoleName(Qt.UserRole + 18, "download_count")
         self.addRoleName(Qt.UserRole + 19, "tags")
         self.addRoleName(Qt.UserRole + 20, "links")
         self.addRoleName(Qt.UserRole + 21, "website")
+        self.addRoleName(Qt.UserRole + 22, "login_required")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
 
     def setMetadata(self, data):
-        self._metadata = data
-        self._update()
+        if self._metadata != data:
+            self._metadata = data
+            self._update()
 
     def _update(self):
         items = []
 
         if self._metadata is None:
-            Logger.logException("w", "Failed to load packages for Marketplace")
             self.setItems(items)
             return
 
@@ -62,16 +67,21 @@ class PackagesModel(ListModel):
 
             links_dict = {}
             if "data" in package:
+                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
+                # to process.
+                link_list = package["data"]["links"] if "links" in package["data"] else []
+                links_dict = {d["title"]: d["url"] for d in link_list}
+
+                # This code never gets executed because the API response does not contain "supported_configs" in it
+                # It is so because 2y ago when this was created - it did contain it. But it was a prototype only
+                # and never got to production. As agreed with the team, it'll stay here for now, in case we decide to rework and use it
+                # The response payload has been changed. Please see:
+                # https://github.com/Ultimaker/Cura/compare/CURA-7072-temp?expand=1
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
                         has_configs = True
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
-
-                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
-                # to process.
-                link_list = package["data"]["links"] if "links" in package["data"] else []
-                links_dict = {d["title"]: d["url"] for d in link_list}
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""
@@ -80,7 +90,7 @@ class PackagesModel(ListModel):
             items.append({
                 "id":                   package["package_id"],
                 "type":                 package["package_type"],
-                "name":                 package["display_name"],
+                "name":                 package["display_name"].strip(),
                 "version":              package["package_version"],
                 "author_id":            package["author"]["author_id"],
                 "author_name":          package["author"]["display_name"],
@@ -99,11 +109,12 @@ class PackagesModel(ListModel):
                 "tags":                 package["tags"] if "tags" in package else [],
                 "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
+                "login_required":       "login-required" in package.get("tags", []),
             })
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if key is "tags":
+            if key == "tags":
                 key_filter = lambda item, v = value: v in item["tags"]
             elif "*" in value:
                 key_filter = lambda candidate, k = key, v = value: self._matchRegExp(candidate, k, v)
@@ -117,9 +128,11 @@ class PackagesModel(ListModel):
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
 
-    ##  Set the filter of this model based on a string.
-    #   \param filter_dict \type{Dict} Dictionary to do the filtering by.
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
+        """Set the filter of this model based on a string.
+
+        :param filter_dict: Dictionary to do the filtering by.
+        """
         if filter_dict != self._filter:
             self._filter = filter_dict
             self._update()

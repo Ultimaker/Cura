@@ -7,9 +7,11 @@ from enum import IntEnum
 from threading import Thread
 from typing import Union
 
+from UM.Logger import Logger
+
 MYPY = False
 if MYPY:
-    from cura.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 class FirmwareUpdater(QObject):
     firmwareProgressChanged = pyqtSignal()
@@ -20,7 +22,7 @@ class FirmwareUpdater(QObject):
 
         self._output_device = output_device
 
-        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name = "FirmwareUpdateThread")
 
         self._firmware_file = ""
         self._firmware_progress = 0
@@ -33,17 +35,24 @@ class FirmwareUpdater(QObject):
         else:
             self._firmware_file = firmware_file
 
-        self._setFirmwareUpdateState(FirmwareUpdateState.updating)
+        if self._firmware_file == "":
+            self._setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
+            return
 
-        self._update_firmware_thread.start()
+        self._setFirmwareUpdateState(FirmwareUpdateState.updating)
+        try:
+            self._update_firmware_thread.start()
+        except RuntimeError:
+            Logger.warning("Could not start the update thread, since it's still running!")
 
     def _updateFirmware(self) -> None:
         raise NotImplementedError("_updateFirmware needs to be implemented")
 
-    ##  Cleanup after a succesful update
     def _cleanupAfterUpdate(self) -> None:
+        """Cleanup after a successful update"""
+
         # Clean up for next attempt.
-        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True)
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name = "FirmwareUpdateThread")
         self._firmware_file = ""
         self._onFirmwareProgress(100)
         self._setFirmwareUpdateState(FirmwareUpdateState.completed)

@@ -22,7 +22,7 @@ Cura.MachineAction
     {
         id: firmwareUpdaterMachineAction
         anchors.fill: parent;
-        UM.I18nCatalog { id: catalog; name:"cura"}
+        UM.I18nCatalog { id: catalog; name: "cura"}
         spacing: UM.Theme.getSize("default_margin").height
 
         Label

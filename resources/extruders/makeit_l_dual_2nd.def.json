@@ -1,5 +1,4 @@
 {
-    "id": "makeit_l_dual_2nd",
     "version": 2,
     "name": "2nd Extruder",
     "inherits": "fdmextruder",

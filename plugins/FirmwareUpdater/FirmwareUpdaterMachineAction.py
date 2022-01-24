@@ -19,8 +19,10 @@ if MYPY:
 
 catalog = i18nCatalog("cura")
 
-##  Upgrade the firmware of a machine by USB with this action.
+
 class FirmwareUpdaterMachineAction(MachineAction):
+    """Upgrade the firmware of a machine by USB with this action."""
+
     def __init__(self) -> None:
         super().__init__("UpgradeFirmware", catalog.i18nc("@action", "Update Firmware"))
         self._qml_url = "FirmwareUpdaterMachineAction.qml"
@@ -57,7 +59,7 @@ class FirmwareUpdaterMachineAction(MachineAction):
     outputDeviceCanUpdateFirmwareChanged = pyqtSignal()
     @pyqtProperty(QObject, notify = outputDeviceCanUpdateFirmwareChanged)
     def firmwareUpdater(self) -> Optional["FirmwareUpdater"]:
-        if self._active_output_device and self._active_output_device.activePrinter.getController().can_update_firmware:
+        if self._active_output_device and self._active_output_device.activePrinter and self._active_output_device.activePrinter.getController() is not None and self._active_output_device.activePrinter.getController().can_update_firmware:
             self._active_firmware_updater = self._active_output_device.getFirmwareUpdater()
             return self._active_firmware_updater
 

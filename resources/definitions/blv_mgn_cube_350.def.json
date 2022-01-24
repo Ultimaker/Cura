@@ -1,0 +1,33 @@
+{
+  "name": "BLV MGN Cube 350",
+  "version": 2,
+  "inherits": "blv_mgn_cube_base",
+  "metadata": {
+    "visible": true,
+    "author": "wolfgangmauer",
+    "manufacturer": "BLV",
+    "file_formats": "text/x-gcode",
+    "first_start_actions": [
+      "MachineSettingsAction"
+    ],
+    "machine_extruder_trains": {
+      "0": "blv_mgn_cube_extruder_0"
+    },
+    "quality_definition": "blv_mgn_cube_base",
+    "platform": "blv_mgn_cube_350_platform.3mf"
+  },
+  "overrides": {
+    "machine_name": {
+      "default_value": "BLV mgn Cube350"
+    },
+    "machine_height": {
+      "default_value": 465
+    },
+    "machine_width": {
+      "default_value": 350
+    },
+    "machine_depth": {
+      "default_value": 350
+    }
+  }
+}
