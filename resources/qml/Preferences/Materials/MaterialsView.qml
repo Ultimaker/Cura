@@ -1,8 +1,9 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.1
+import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
@@ -10,7 +11,7 @@ import Cura 1.0 as Cura
 
 import ".." // Access to ReadOnlyTextArea.qml
 
-TabView
+OldControls.TabView
 {
     id: base
 
@@ -67,13 +68,13 @@ TabView
         }
     }
 
-    Tab
+    OldControls.Tab
     {
         title: catalog.i18nc("@title", "Information")
 
         anchors.margins: UM.Theme.getSize("default_margin").width
 
-        ScrollView
+        OldControls.ScrollView
         {
             id: scrollView
             anchors.fill: parent
@@ -262,13 +263,25 @@ TabView
                     id: spoolCostSpinBox
                     width: scrollView.columnWidth
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
-                    prefix: base.currency + " "
-                    decimals: 2
-                    maximumValue: 100000000
+                    to: 100000000
+                    editable: true
+
+                    property int decimals: 2
+
+                    valueFromText: function(text) {
+                        // remove all non-number tokens from input string so value can be parsed correctly
+                        var value = Number(text.replace(/[^0-9.-]+/g, ""));
+                        var precision = Math.pow(10, spoolCostSpinBox.decimals);
+                        return Math.round(value * precision) / precision;
+                    }
+
+                    textFromValue: function(value) {
+                        return base.currency + " " + value.toFixed(spoolCostSpinBox.decimals)
+                    }
 
                     onValueChanged:
                     {
-                        base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
+                        base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value, decimals))
                         updateCostPerMeter()
                     }
                 }
@@ -279,10 +292,19 @@ TabView
                     id: spoolWeightSpinBox
                     width: scrollView.columnWidth
                     value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
-                    suffix: " g"
                     stepSize: 100
-                    decimals: 0
-                    maximumValue: 10000
+                    to: 10000
+                    editable: true
+
+                    valueFromText: function(text, locale) {
+                        // remove all non-number tokens from input string so value can be parsed correctly
+                        var value = Number(text.replace(/[^0-9.-]+/g, ""));
+                        return Math.round(value);
+                    }
+
+                    textFromValue: function(value, locale) {
+                        return value + " g"
+                    }
 
                     onValueChanged:
                     {
@@ -369,7 +391,7 @@ TabView
         }
     }
 
-    Tab
+    OldControls.Tab
     {
         title: catalog.i18nc("@label", "Print settings")
         anchors
@@ -380,7 +402,7 @@ TabView
             rightMargin: 0
         }
 
-        ScrollView
+        OldControls.ScrollView
         {
             anchors.fill: parent;
 
