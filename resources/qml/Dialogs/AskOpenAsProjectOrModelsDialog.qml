@@ -92,7 +92,7 @@ UM.Dialog
             wrapMode: Text.WordWrap
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")

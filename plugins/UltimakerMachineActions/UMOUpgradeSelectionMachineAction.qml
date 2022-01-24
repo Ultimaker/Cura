@@ -33,7 +33,7 @@ Cura.MachineAction
             renderType: Text.NativeRendering
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height

@@ -228,7 +228,7 @@ Item
         width: childrenRect.width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asProjectCheckbox
             height: UM.Theme.getSize("checkbox").height
@@ -238,7 +238,7 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asSlicedCheckbox
             height: UM.Theme.getSize("checkbox").height

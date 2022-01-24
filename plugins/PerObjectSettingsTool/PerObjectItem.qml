@@ -18,7 +18,7 @@ UM.TooltipArea
     width: childrenRect.width;
     height: childrenRect.height;
 
-    Cura.CheckBox
+    UM.CheckBox
     {
         id: check
 

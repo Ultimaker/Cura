@@ -57,7 +57,7 @@ UM.Dialog
         onTextChanged: settingPickDialog.updateFilter()
     }
 
-    Cura.CheckBox
+    UM.CheckBox
     {
         id: toggleShowAll
         anchors

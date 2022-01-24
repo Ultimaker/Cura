@@ -57,7 +57,7 @@ UM.TooltipArea
         renderType: Text.NativeRendering
     }
 
-    Cura.CheckBox
+    UM.CheckBox
     {
         id: checkBox
         anchors {

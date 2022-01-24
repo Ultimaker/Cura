@@ -36,7 +36,7 @@ UM.PreferencesPage
         id: base;
         anchors.fill: parent;
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: toggleVisibleSettings
             anchors
