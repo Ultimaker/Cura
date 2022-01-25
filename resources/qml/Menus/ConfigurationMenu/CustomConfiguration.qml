@@ -1,5 +1,5 @@
-// Copyright (c) 2019 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.6
 import QtQuick.Controls 2.0
@@ -92,6 +92,7 @@ Item
             model: extrudersModel
             delegate: UM.TabRowButton
             {
+                checked: model.index == 0
                 contentItem: Item
                 {
                     Cura.ExtruderIcon
