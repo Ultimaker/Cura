@@ -35,7 +35,7 @@ RowLayout
         busy: CuraDrive.isCreatingBackup
     }
 
-    Cura.CheckBoxWithTooltip
+    UM.CheckBox
     {
         id: autoBackupEnabled
         checked: CuraDrive.autoBackupEnabled
