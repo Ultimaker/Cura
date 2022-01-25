@@ -64,6 +64,7 @@ Item
         {
             id: filesTableView
             anchors.fill: parent
+            anchors.margins: parent.border.width
 
             columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
             model: TableModel
