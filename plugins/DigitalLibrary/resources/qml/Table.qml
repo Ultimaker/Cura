@@ -24,6 +24,7 @@ Item
     property alias model: tableView.model //A TableModel to display in this table. To use a ListModel for the rows, use "rows: listModel.items"
     property int currentRow: -1 //The selected row index.
     property var onDoubleClicked: function(row) {} //Something to execute when double clicked. Accepts one argument: The index of the row that was clicked on.
+    property bool allowSelection: true //Whether to allow the user to select items.
 
     Row
     {
@@ -134,6 +135,8 @@ Item
             MouseArea
             {
                 anchors.fill: parent
+
+                enabled: tableScrollView.allowSelection
                 onClicked:
                 {
                     tableScrollView.currentRow = row; //Select this row.
