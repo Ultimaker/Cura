@@ -78,6 +78,11 @@ Item
             {
                 manager.setSelectedFileIndices([currentRow]);
             }
+            onDoubleClicked: function(row)
+            {
+                manager.setSelectedFileIndices([row]);
+                openFilesButton.clicked();
+            }
         }
 
         Label

@@ -24,6 +24,7 @@ Item
     required property var columnHeaders //The text to show in the headers of each column.
     property alias model: tableView.model //A TableModel to display in this table. To use a ListModel for the rows, use "rows: listModel.items"
     property int currentRow: -1 //The selected row index.
+    property var onDoubleClicked: function(row) {} //Something to execute when double clicked. Accepts one argument: The index of the row that was clicked on.
 
     Row
     {
@@ -127,6 +128,10 @@ Item
                 onClicked:
                 {
                     tableScrollView.currentRow = row; //Select this row.
+                }
+                onDoubleClicked:
+                {
+                    tableScrollView.onDoubleClicked(row);
                 }
             }
         }
