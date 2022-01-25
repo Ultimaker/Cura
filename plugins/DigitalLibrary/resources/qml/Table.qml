@@ -80,6 +80,15 @@ Item
                             if(drag.active)
                             {
                                 parent.parent.width = Math.max(10, parent.parent.width + mouseX); //Don't go smaller than 10 pixels, to make sure you can still scale it back.
+                                let sum_widths = 0;
+                                for(let i = 0; i < headerBar.children.length; ++i)
+                                {
+                                    sum_widths += headerBar.children[i].width;
+                                }
+                                if(sum_widths > tableScrollView.width)
+                                {
+                                    parent.parent.width -= sum_widths - tableScrollView.width; //Limit the total width to not exceed the view.
+                                }
                             }
                             tableView.forceLayout();
                         }
