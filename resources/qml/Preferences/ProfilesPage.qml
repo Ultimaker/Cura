@@ -519,9 +519,11 @@ Item
                 right: parent.right
             }
 
-            Item
+            Column
             {
                 anchors.fill: parent
+
+                spacing: UM.Theme.getSize("default_margin").height
                 visible: base.currentItem != null
 
                 Item    // Profile title Label
@@ -545,11 +547,9 @@ Item
                 Flow
                 {
                     id: currentSettingsActions
+                    width: parent.width
+
                     visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: profileName.bottom
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
 
                     Button
                     {
@@ -566,58 +566,37 @@ Item
                     }
                 }
 
-                Column
+                Label
                 {
-                    id: profileNotices
-                    anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : currentSettingsActions.anchors.top
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    spacing: UM.Theme.getSize("default_margin").height
-
-                    Label
-                    {
-                        id: defaultsMessage
-                        visible: false
-                        text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
-                        wrapMode: Text.WordWrap
-                        width: parent.width
-                    }
-                    Label
-                    {
-                        id: noCurrentSettingsMessage
-                        visible: base.isCurrentItemActivated && !Cura.MachineManager.hasUserSettings
-                        text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
-                        wrapMode: Text.WordWrap
-                        width: parent.width
-                    }
+                    id: defaultsMessage
+                    visible: false
+                    text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
+                    wrapMode: Text.WordWrap
+                    width: parent.width
+                }
+                Label
+                {
+                    id: noCurrentSettingsMessage
+                    visible: base.isCurrentItemActivated && !Cura.MachineManager.hasUserSettings
+                    text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
+                    wrapMode: Text.WordWrap
+                    width: parent.width
                 }
 
-                OldControls.TabView
+                UM.TabRow
                 {
-                    anchors.left: parent.left
-                    anchors.top: profileNotices.visible ? profileNotices.bottom : profileNotices.anchors.top
-                    anchors.topMargin: UM.Theme.getSize("default_margin").height
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-
-                    currentIndex: 0
-
-                    ProfileTab
+                    UM.TabRowButton //One extra tab for the global settings.
                     {
-                        title: catalog.i18nc("@title:tab", "Global Settings")
-                        qualityItem: base.currentItem
+                        text: catalog.i18nc("@title:tab", "Global Settings")
                     }
 
                     Repeater
                     {
                         model: base.extrudersModel
 
-                        ProfileTab
+                        UM.TabRowButton
                         {
-                            title: model.name
-                            extruderPosition: model.index
-                            qualityItem: base.currentItem
+                            text: model.name
                         }
                     }
                 }
