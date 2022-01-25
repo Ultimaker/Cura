@@ -73,54 +73,12 @@ Item
                 TableModelColumn { display: "uploadedAt" }
                 rows: manager.digitalFactoryFileModel.items
             }
+
+            onCurrentRowChanged:
+            {
+                manager.setSelectedFileIndices([currentRow]);
+            }
         }
-
-        /*Cura.TableView
-        {
-            id: filesTableView
-            anchors.fill: parent
-            model: manager.digitalFactoryFileModel
-            visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
-            selectionMode: OldControls.SelectionMode.SingleSelection
-            onDoubleClicked:
-            {
-                manager.setSelectedFileIndices([row]);
-                openFilesButton.clicked();
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: fileNameColumn
-                role: "fileName"
-                title: "Name"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: usernameColumn
-                role: "username"
-                title: "Uploaded by"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                role: "uploadedAt"
-                title: "Uploaded at"
-            }
-
-            Connections
-            {
-                target: filesTableView.selection
-                function onSelectionChanged()
-                {
-                    let newSelection = [];
-                    filesTableView.selection.forEach(function(rowIndex) { newSelection.push(rowIndex); });
-                    manager.setSelectedFileIndices(newSelection);
-                }
-            }
-        }*/
 
         Label
         {
@@ -178,7 +136,6 @@ Item
             {
                 // Make sure no files are selected when the file model changes
                 filesTableView.currentRow = -1
-                filesTableView.selection.clear()
             }
         }
     }
@@ -204,7 +161,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Open"
-        enabled: filesTableView.selection.count > 0
+        enabled: filesTableView.currentRow >= 0
         onClicked:
         {
             manager.openSelectedFiles()
