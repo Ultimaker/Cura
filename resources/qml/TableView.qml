@@ -1,67 +1,148 @@
-// Copyright (C) 2021 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
-import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
+import Qt.labs.qmlmodels 1.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
 
-
-OldControls.TableView
+/*
+ * A re-sizeable table of data.
+ *
+ * This table combines a list of headers with a TableView to show certain roles in a table.
+ * The columns of the table can be resized.
+ * When the table becomes too big, you can scroll through the table. When a column becomes too small, the contents of
+ * the table are elided.
+ * The table gets Cura's themeing.
+ */
+Item
 {
-    itemDelegate: Item
-    {
-        height: tableCellLabel.implicitHeight
+    id: tableScrollView
 
-        UM.Label
+    required property var columnHeaders //The text to show in the headers of each column.
+    property alias model: tableView.model //A TableModel to display in this table. To use a ListModel for the rows, use "rows: listModel.items"
+    property int currentRow: -1 //The selected row index.
+    property var onDoubleClicked: function(row) {} //Something to execute when double clicked. Accepts one argument: The index of the row that was clicked on.
+
+    Row
+    {
+        id: headerBar
+        Repeater
         {
-            id: tableCellLabel
-            color: styleData.selected ? UM.Theme.getColor("primary_button_text") : UM.Theme.getColor("text")
-            elide: Text.ElideRight
-            text: styleData.value
-            anchors.fill: parent
-            anchors.leftMargin: 10 * screenScaleFactor
+            id: headerRepeater
+            model: columnHeaders
+            Rectangle
+            {
+                width: Math.round(tableScrollView.width / headerRepeater.count)
+                height: UM.Theme.getSize("section").height
+
+                color: UM.Theme.getColor("secondary")
+
+                Label
+                {
+                    id: contentText
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+
+                    text: modelData
+                    font: UM.Theme.getFont("medium_bold")
+                    color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
+                }
+                Rectangle
+                {
+                    anchors
+                    {
+                        right: parent.right
+                        top: parent.top
+                        bottom: parent.bottom
+                    }
+                    width: UM.Theme.getSize("thick_lining").width
+
+                    color: UM.Theme.getColor("thick_lining")
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+
+                        cursorShape: Qt.SizeHorCursor
+                        drag
+                        {
+                            target: parent
+                            axis: Drag.XAxis
+                        }
+                        onMouseXChanged:
+                        {
+                            if(drag.active)
+                            {
+                                parent.parent.width = Math.max(10, parent.parent.width + mouseX); //Don't go smaller than 10 pixels, to make sure you can still scale it back.
+                                let sum_widths = 0;
+                                for(let i = 0; i < headerBar.children.length; ++i)
+                                {
+                                    sum_widths += headerBar.children[i].width;
+                                }
+                                if(sum_widths > tableScrollView.width)
+                                {
+                                    parent.parent.width -= sum_widths - tableScrollView.width; //Limit the total width to not exceed the view.
+                                }
+                            }
+                            tableView.forceLayout();
+                        }
+                    }
+                }
+            }
         }
     }
-
-    rowDelegate: Rectangle
+    TableView
     {
-        color: styleData.selected ? UM.Theme.getColor("primary_button") : UM.Theme.getColor("main_background")
-        height: UM.Theme.getSize("table_row").height
-    }
-
-    // Use the old styling technique since it's the only way to make the scrollbars themed in the TableView
-    style: TableViewStyle
-    {
-        backgroundColor: UM.Theme.getColor("main_background")
-
-        handle: Rectangle
+        id: tableView
+        anchors
         {
-            // Both implicit width and height have to be set, since the handle is used by both the horizontal and the vertical scrollbars
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            implicitHeight: UM.Theme.getSize("scrollbar").width
-            radius: width / 2
-            color: UM.Theme.getColor(styleData.pressed ? "scrollbar_handle_down" : (styleData.hovered ? "scrollbar_handle_hover" : "scrollbar_handle"))
+            top: headerBar.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
         }
 
-        scrollBarBackground: Rectangle
+        clip: true
+        ScrollBar.vertical: UM.ScrollBar {}
+        columnWidthProvider: function(column)
         {
-            // Both implicit width and height have to be set, since the handle is used by both the horizontal and the vertical scrollbars
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            implicitHeight: UM.Theme.getSize("scrollbar").width
-            color: UM.Theme.getColor("main_background")
+            return headerBar.children[column].width; //Cells get the same width as their column header.
         }
 
-        // The little rectangle between the vertical and horizontal scrollbars
-        corner: Rectangle
+        delegate: Rectangle
         {
-            color: UM.Theme.getColor("main_background")
-        }
+            implicitHeight: Math.max(1, cellContent.height)
 
-        // Override the control arrows
-        incrementControl: Item { }
-        decrementControl: Item { }
+            color: UM.Theme.getColor((tableScrollView.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
+
+            Label
+            {
+                id: cellContent
+                width: parent.width
+
+                text: display
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
+            }
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    tableScrollView.currentRow = row; //Select this row.
+                }
+                onDoubleClicked:
+                {
+                    tableScrollView.onDoubleClicked(row);
+                }
+            }
+        }
     }
 }

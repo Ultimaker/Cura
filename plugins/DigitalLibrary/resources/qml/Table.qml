@@ -5,7 +5,6 @@ import Qt.labs.qmlmodels 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import DigitalFactory 1.0 as DF
 import UM 1.5 as UM
 
 /*
