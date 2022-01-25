@@ -4,7 +4,6 @@
 import Qt.labs.qmlmodels 1.0
 import QtQuick 2.15
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
