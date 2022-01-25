@@ -117,7 +117,7 @@ Item
 
         delegate: Rectangle
         {
-            implicitHeight: cellContent.height
+            implicitHeight: Math.max(1, cellContent.height)
 
             color: UM.Theme.getColor((tableScrollView.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
 
