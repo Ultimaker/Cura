@@ -1,6 +1,8 @@
-// Copyright (C) 2021 Ultimaker B.V.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import Qt.labs.qmlmodels 1.0
+import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
@@ -56,8 +58,24 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
+        //We can't use Cura's TableView here, since in Cura >= 5.0 this uses QtQuick.TableView, while in Cura < 5.0 this uses QtControls1.TableView.
+        //So we have to define our own. Once support for 4.13 and earlier is dropped, we can switch to Cura.TableView.
+        Table
+        {
+            id: filesTableView
+            anchors.fill: parent
 
-        Cura.TableView
+            columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
+            model: TableModel
+            {
+                TableModelColumn { display: "fileName" }
+                TableModelColumn { display: "username" }
+                TableModelColumn { display: "uploadedAt" }
+                rows: manager.digitalFactoryFileModel.items
+            }
+        }
+
+        /*Cura.TableView
         {
             id: filesTableView
             anchors.fill: parent
@@ -102,7 +120,7 @@ Item
                     manager.setSelectedFileIndices(newSelection);
                 }
             }
-        }
+        }*/
 
         Label
         {
