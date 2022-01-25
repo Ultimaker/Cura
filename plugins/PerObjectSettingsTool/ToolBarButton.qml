@@ -54,7 +54,7 @@ Button
                 }
                 return UM.Theme.getColor("toolbar_background")
             }
-            Behavior on color { ColorAnimation { duration: 50; } }
+            Behavior on color { ColorAnimation { duration: 50 } }
 
             border.width: (base.hasOwnProperty("needBorder") && base.needBorder) ? UM.Theme.getSize("default_lining").width : 0
             border.color: base.checked ? UM.Theme.getColor("icon") : UM.Theme.getColor("lining")

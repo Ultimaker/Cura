@@ -38,7 +38,7 @@ UM.ManagementPage
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate");
-            icon.name: "list-activate";
+            icon.name: "list-activate"
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachine.id
             onClicked: Cura.MachineManager.setActiveMachine(base.currentItem.id)
         },
