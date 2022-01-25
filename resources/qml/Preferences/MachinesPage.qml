@@ -46,7 +46,7 @@ UM.ManagementPage
         {
             id: addMenuButton
             text: catalog.i18nc("@action:button", "Add");
-            icon.name: "list-add";
+            icon.name: "list-add"
             onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
