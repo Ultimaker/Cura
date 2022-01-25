@@ -53,7 +53,7 @@ UM.ManagementPage
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove");
-            icon.name: "list-remove";
+            icon.name: "list-remove"
             enabled: base.currentItem != null && model.count > 1
             onClicked: confirmDialog.open();
         },
