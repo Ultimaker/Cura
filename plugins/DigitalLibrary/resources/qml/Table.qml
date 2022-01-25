@@ -108,7 +108,7 @@ Item
         {
             height: UM.Theme.getSize("section").height
 
-            color: UM.Theme.getColor((row % 2 == 0) ? "main_background": "viewport_background")
+            color: UM.Theme.getColor((tableScrollView.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
 
             Label
             {
@@ -121,7 +121,14 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
+            MouseArea
+            {
+                anchors.fill: parent
+                onClicked:
+                {
+                    tableScrollView.currentRow = row; //Select this row.
+                }
+            }
         }
-
     }
 }
