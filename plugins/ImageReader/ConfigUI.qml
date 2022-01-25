@@ -220,20 +220,30 @@ UM.Dialog
         }
     }
 
+    Item
+    {
+        ButtonGroup
+        {
+            buttons: [ok_button, cancel_button]
+            checkedButton: ok_button
+        }
+    }
+
+    onAccepted: manager.onOkButtonClicked()
+    onRejected: manager.onCancelButtonClicked()
+
     rightButtons: [
         Button
         {
             id:ok_button
             text: catalog.i18nc("@action:button","OK");
-            onClicked: { manager.onOkButtonClicked() }
-            enabled: true
+            onClicked: manager.onOkButtonClicked()
         },
         Button
         {
             id:cancel_button
             text: catalog.i18nc("@action:button","Cancel");
-            onClicked: { manager.onCancelButtonClicked() }
-            enabled: true
+            onClicked: manager.onCancelButtonClicked()
         }
     ]
 }
