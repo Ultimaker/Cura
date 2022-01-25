@@ -107,14 +107,14 @@ Item
 
         delegate: Rectangle
         {
-            height: UM.Theme.getSize("section").height
+            implicitHeight: cellContent.height
 
             color: UM.Theme.getColor((tableScrollView.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
 
             Label
             {
                 id: cellContent
-                anchors.fill: parent
+                width: parent.width
 
                 text: display
                 verticalAlignment: Text.AlignVCenter
