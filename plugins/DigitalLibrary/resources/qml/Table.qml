@@ -18,7 +18,7 @@ import UM 1.5 as UM
  */
 Item
 {
-    id: tableScrollView
+    id: tableBase
 
     required property var columnHeaders //The text to show in the headers of each column.
     property alias model: tableView.model //A TableModel to display in this table. To use a ListModel for the rows, use "rows: listModel.items"
@@ -35,7 +35,7 @@ Item
             model: columnHeaders
             Rectangle
             {
-                width: Math.round(tableScrollView.width / headerRepeater.count)
+                width: Math.round(tableBase.width / headerRepeater.count)
                 height: UM.Theme.getSize("section").height
 
                 color: UM.Theme.getColor("secondary")
@@ -85,9 +85,9 @@ Item
                                 {
                                     sum_widths += headerBar.children[i].width;
                                 }
-                                if(sum_widths > tableScrollView.width)
+                                if(sum_widths > tableBase.width)
                                 {
-                                    parent.parent.width -= sum_widths - tableScrollView.width; //Limit the total width to not exceed the view.
+                                    parent.parent.width -= sum_widths - tableBase.width; //Limit the total width to not exceed the view.
                                 }
                             }
                             tableView.forceLayout();
@@ -119,7 +119,7 @@ Item
         {
             implicitHeight: Math.max(1, cellContent.height)
 
-            color: UM.Theme.getColor((tableScrollView.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
+            color: UM.Theme.getColor((tableBase.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
 
             Label
             {
@@ -136,14 +136,14 @@ Item
             {
                 anchors.fill: parent
 
-                enabled: tableScrollView.allowSelection
+                enabled: tableBase.allowSelection
                 onClicked:
                 {
-                    tableScrollView.currentRow = row; //Select this row.
+                    tableBase.currentRow = row; //Select this row.
                 }
                 onDoubleClicked:
                 {
-                    tableScrollView.onDoubleClicked(row);
+                    tableBase.onDoubleClicked(row);
                 }
             }
         }
