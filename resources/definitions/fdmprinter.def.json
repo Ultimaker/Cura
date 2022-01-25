@@ -1148,8 +1148,8 @@
                 },
                 "wall_transition_angle":
                 {
-                    "label": "Wall Transition Angle",
-                    "description": "When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.",
+                    "label": "Wall Transitioning Threshold Angle",
+                    "description": "When to apply transitioning between even and odd number of walls. A wedge shape with an angle higher than this setting will not have transitioning applied and no odd number gap filler walls will be genertated. Reducing this setting reduces the number and length of gap filler walls at the cost of small overfills and underfills.",
                     "type": "float",
                     "unit": "°",
                     "default_value": 10,
