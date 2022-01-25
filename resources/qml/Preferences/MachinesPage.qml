@@ -61,7 +61,7 @@ UM.ManagementPage
         {
             id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename");
-            icon.name: "edit-rename";
+            icon.name: "edit-rename"
             enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
             onClicked: renameDialog.open();
         }
