@@ -1,5 +1,5 @@
-// Copyright (c) 2022 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
@@ -521,7 +521,13 @@ Item
 
             Column
             {
-                anchors.fill: parent
+                id: detailsPanelHeaderColumn
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                }
 
                 spacing: UM.Theme.getSize("default_margin").height
                 visible: base.currentItem != null
@@ -585,6 +591,7 @@ Item
 
                 UM.TabRow
                 {
+                    id: profileExtruderTabs
                     UM.TabRowButton //One extra tab for the global settings.
                     {
                         text: catalog.i18nc("@title:tab", "Global Settings")
@@ -600,6 +607,21 @@ Item
                         }
                     }
                 }
+            }
+
+            Cura.ProfileOverview
+            {
+                anchors
+                {
+                    top: detailsPanelHeaderColumn.bottom
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+
+                visible: detailsPanelHeaderColumn.visible
+                qualityItem: base.currentItem
+                extruderPosition: profileExtruderTabs.currentIndex - 1
             }
         }
     }
