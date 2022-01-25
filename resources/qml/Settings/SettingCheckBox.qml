@@ -151,7 +151,7 @@ SettingItem
                 width: UM.Theme.getSize("checkbox_mark").width
                 sourceSize.height: width
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
-                source: UM.Theme.getIcon("CheckMark", "low")
+                source: UM.Theme.getIcon("Check", "low")
                 opacity: control.checked ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100; } }
             }
