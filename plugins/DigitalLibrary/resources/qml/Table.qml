@@ -5,7 +5,7 @@ import Qt.labs.qmlmodels 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import UM 1.5 as UM
+import UM 1.2 as UM
 
 /*
  * A re-sizeable table of data.
@@ -109,7 +109,29 @@ Item
         }
 
         clip: true
-        ScrollBar.vertical: UM.ScrollBar {}
+        ScrollBar.vertical: ScrollBar
+        {
+            // Vertical ScrollBar, styled similarly to the scrollBar in the settings panel
+            id: verticalScrollBar
+            visible: flickableView.contentHeight > flickableView.height
+
+            background: Rectangle
+            {
+                implicitWidth: UM.Theme.getSize("scrollbar").width
+                radius: Math.round(implicitWidth / 2)
+                color: UM.Theme.getColor("scrollbar_background")
+            }
+
+            contentItem: Rectangle
+            {
+                id: scrollViewHandle
+                implicitWidth: UM.Theme.getSize("scrollbar").width
+                radius: Math.round(implicitWidth / 2)
+
+                color: verticalScrollBar.pressed ? UM.Theme.getColor("scrollbar_handle_down") : verticalScrollBar.hovered ? UM.Theme.getColor("scrollbar_handle_hover") : UM.Theme.getColor("scrollbar_handle")
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
         columnWidthProvider: function(column)
         {
             return headerBar.children[column].width; //Cells get the same width as their column header.
