@@ -147,5 +147,14 @@ Item
                 }
             }
         }
+
+        Connections
+        {
+            target: model
+            function onRowCountChanged()
+            {
+                tableView.contentY = 0; //When the number of rows is reduced, make sure to scroll back to the start.
+            }
+        }
     }
 }

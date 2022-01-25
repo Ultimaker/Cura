@@ -113,7 +113,7 @@ Item
         {
             // Vertical ScrollBar, styled similarly to the scrollBar in the settings panel
             id: verticalScrollBar
-            visible: flickableView.contentHeight > flickableView.height
+            visible: tableView.contentHeight > tableView.height
 
             background: Rectangle
             {
@@ -167,6 +167,15 @@ Item
                 {
                     tableBase.onDoubleClicked(row);
                 }
+            }
+        }
+
+        Connections
+        {
+            target: model
+            function onRowCountChanged()
+            {
+                tableView.contentY = 0; //When the number of rows is reduced, make sure to scroll back to the start.
             }
         }
     }
