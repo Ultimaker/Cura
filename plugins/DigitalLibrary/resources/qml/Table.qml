@@ -51,6 +51,7 @@ Item
                     text: modelData
                     font: UM.Theme.getFont("medium_bold")
                     color: UM.Theme.getColor("text")
+                    elide: Text.ElideRight
                 }
                 Rectangle
                 {
