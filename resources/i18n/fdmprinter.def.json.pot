@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-10-20 16:43+0000\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -158,6 +158,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr ""
@@ -196,16 +206,6 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -612,7 +612,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
+msgid "Maximum Speed E"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1988,9 +1988,7 @@ msgid ""
 "patterns are fully printed every layer. Gyroid, cubic, quarter cubic and "
 "octet infill change with every layer to provide a more equal distribution of "
 "strength over each direction. Lightning infill tries to minimize the infill, "
-"by only supporting the (internal) roofs of the object. As such, the infill "
-"percentage is only 'valid' one layer below whatever it needs to support of "
-"the model."
+"by only supporting the ceiling of the object."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2359,9 +2357,8 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid ""
-"The difference a lightning infill layer can have with the one immediately "
-"above w.r.t the pruning of the outer extremities of trees. Measured in the "
-"angle given the thickness."
+"The endpoints of infill lines are shortened to save on material. This "
+"setting is the angle of overhang of the endpoints of these lines."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2372,9 +2369,8 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid ""
-"The difference a lightning infill layer can have with the one immediately "
-"above w.r.t the smoothing of trees. Measured in the angle given the "
-"thickness."
+"The infill lines are straightened out to save on printing time. This is the "
+"maximum angle of overhang allowed across the length of the infill line."
 msgstr ""
 
 #: fdmprinter.def.json

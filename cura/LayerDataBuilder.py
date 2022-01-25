@@ -63,7 +63,6 @@ class LayerDataBuilder(MeshBuilder):
         feedrates = numpy.empty((vertex_count), numpy.float32)
         extruders = numpy.empty((vertex_count), numpy.float32)
         line_types = numpy.empty((vertex_count), numpy.float32)
-        vertex_indices = numpy.arange(0, vertex_count, 1, dtype = numpy.float32)
 
         vertex_offset = 0
         index_offset = 0
@@ -109,12 +108,6 @@ class LayerDataBuilder(MeshBuilder):
             "feedrates": {
                 "value": feedrates,
                 "opengl_name": "a_feedrate",
-                "opengl_type": "float"
-                },
-            # Can't use glDrawElements to index (due to oversight in (Py)Qt), can't use gl_PrimitiveID (due to legacy support):
-            "vertex_indices": {
-                "value": vertex_indices,
-                "opengl_name": "a_vertex_index",
                 "opengl_type": "float"
                 }
             }
