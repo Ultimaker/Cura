@@ -25,6 +25,7 @@ Item
     property int currentRow: -1 //The selected row index.
     property var onDoubleClicked: function(row) {} //Something to execute when double clicked. Accepts one argument: The index of the row that was clicked on.
     property bool allowSelection: true //Whether to allow the user to select items.
+    property string sectionRole: ""
 
     Row
     {
@@ -97,6 +98,7 @@ Item
             }
         }
     }
+
     TableView
     {
         id: tableView
@@ -166,6 +168,44 @@ Item
             {
                 tableView.contentY = 0; //When the number of rows is reduced, make sure to scroll back to the start.
             }
+        }
+    }
+
+    Connections
+    {
+        target: model
+        function onRowsChanged()
+        {
+            let first_column = model.columns[0].display;
+            if(model.rows.length > 0 && model.rows[0][first_column].startsWith("<b>")) //First item is already a section header.
+            {
+                return; //Assume we already added section headers. Prevent infinite recursion.
+            }
+            if(sectionRole === "" || model.rows.length == 0) //No section headers, or no items at all.
+            {
+                tableView.model.rows = model.rows;
+                return;
+            }
+
+            //Insert section headers in the rows.
+            let last_section = "";
+            let new_rows = [];
+            for(let i = 0; i < model.rows.length; ++i)
+            {
+                let item_section = model.rows[i][sectionRole];
+                if(item_section !== last_section) //Starting a new section.
+                {
+                    let section_header = {};
+                    for(let key in model.rows[i])
+                    {
+                        section_header[key] = (key === first_column) ? "<b>" + item_section + "</b>" : ""; //Put the section header in the first column.
+                    }
+                    new_rows.push(section_header); //Add a row representing a section header.
+                    last_section = item_section;
+                }
+                new_rows.push(model.rows[i]);
+            }
+            tableView.model.rows = new_rows;
         }
     }
 }

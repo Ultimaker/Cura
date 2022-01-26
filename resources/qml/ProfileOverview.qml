@@ -41,4 +41,5 @@ Cura.TableView
         TableModelColumn { display: "unit" }
         rows: qualitySettings.items
     }
+    sectionRole: "category"
 }
