@@ -36,7 +36,7 @@ Item
             model: columnHeaders
             Rectangle
             {
-                width: Math.round(tableBase.width / headerRepeater.count)
+                width: Math.max(1, Math.round(tableBase.width / headerRepeater.count))
                 height: UM.Theme.getSize("section").height
 
                 color: UM.Theme.getColor("secondary")
@@ -80,20 +80,26 @@ Item
                         {
                             if(drag.active)
                             {
-                                parent.parent.width = Math.max(10, parent.parent.width + mouseX); //Don't go smaller than 10 pixels, to make sure you can still scale it back.
-                                let sum_widths = 0;
+                                let new_width = parent.parent.width + mouseX; //Don't go smaller than 10 pixels, to make sure you can still scale it back.
+                                let sum_widths = mouseX;
                                 for(let i = 0; i < headerBar.children.length; ++i)
                                 {
                                     sum_widths += headerBar.children[i].width;
                                 }
                                 if(sum_widths > tableBase.width)
                                 {
-                                    parent.parent.width -= sum_widths - tableBase.width; //Limit the total width to not exceed the view.
+                                    new_width -= sum_widths - tableBase.width; //Limit the total width to not exceed the view.
                                 }
+                                let width_fraction = new_width / tableBase.width; //Scale with the same fraction along with the total width, if the table is resized.
+                                parent.parent.width = Qt.binding(function() { return tableBase.width * width_fraction });
                             }
-                            tableView.forceLayout();
                         }
                     }
+                }
+
+                onWidthChanged:
+                {
+                    tableView.forceLayout(); //Rescale table cells underneath as well.
                 }
             }
         }
