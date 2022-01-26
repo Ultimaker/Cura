@@ -10,6 +10,7 @@ from UM.Logger import Logger
 
 # Uranium/IO
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from . import DriveFilter
 from . import RemovableDriveOutputDevice
 
 # Uranium/l18n
@@ -26,6 +27,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
         self._check_updates = True
 
         self._drives = {}
+        self._filter = DriveFilter.DriveFilter()
 
     def start(self):
         self._update_thread.start()
@@ -61,6 +63,8 @@ class RemovableDrivePlugin(OutputDevicePlugin):
             time.sleep(5)
 
     def _addRemoveDrives(self, drives):
+        drives = self._filter.filterByValue(drives)
+
         # First, find and add all new or changed keys
         for key, value in drives.items():
             if key not in self._drives:
