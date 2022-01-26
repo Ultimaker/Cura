@@ -77,44 +77,60 @@ Item
             id: meshTypeButtons
             spacing: UM.Theme.getSize("default_margin").width
 
-            ToolBarButton
+            Cura.ToolbarButton
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                iconSource: UM.Theme.getIcon("Infill0");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("Infill0")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
                 z: 4
             }
 
-            ToolBarButton
+            Cura.ToolbarButton
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                iconSource: UM.Theme.getIcon("MeshTypeSupport");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("MeshTypeSupport")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
                 z: 3
             }
 
-            ToolBarButton
+            Cura.ToolbarButton
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                iconSource: UM.Theme.getIcon("MeshTypeIntersect");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("MeshTypeIntersect")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
                 z: 2
             }
 
-            ToolBarButton
+            Cura.ToolbarButton
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("BlockSupportOverlaps")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
