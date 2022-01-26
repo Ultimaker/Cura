@@ -13,8 +13,6 @@ ToolButton
 
     property alias tooltip: tooltip.text
 
-    contentItem: Label {}
-
     Cura.ToolTip
     {
         id: tooltip
