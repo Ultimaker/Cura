@@ -6,7 +6,7 @@ import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQ
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
