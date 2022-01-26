@@ -93,7 +93,8 @@ Cura.ExpandableComponent
 
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
-        ListModel  // matches SimulationView.py
+        // matches SimulationView.py
+        ListModel
         {
             id: layerViewTypes
         }
@@ -129,6 +130,8 @@ Cura.ExpandableComponent
         ComboBox
         {
             id: layerTypeCombobox
+            textRole: "text"
+            valueRole: "type_id"
             width: parent.width
             model: layerViewTypes
             visible: !UM.SimulationView.compatibilityMode
@@ -146,39 +149,33 @@ Cura.ExpandableComponent
                 radius: UM.Theme.getSize("setting_control_radius").width
             }
 
-            contentItem: Item
+            indicator: UM.RecolorImage
             {
-                Label
-                {
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.right: downArrow.left
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width
-                    anchors.verticalCenter: parent.verticalCenter
+                id: downArrow
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
+                anchors.verticalCenter: parent.verticalCenter
 
-                    text: ladyerTypeCombobox.currentText
-                    font: UM.Theme.getFont("default");
-                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+                source: UM.Theme.getIcon("ChevronSingleDown")
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                sourceSize.width: width + 5 * screenScaleFactor
+                sourceSize.height: width + 5 * screenScaleFactor
 
-                    elide: Text.ElideRight
-                    verticalAlignment: Text.AlignVCenter
-                }
+                color: UM.Theme.getColor("setting_control_button");
+            }
 
-                UM.RecolorImage
-                {
-                    id: downArrow
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
-                    anchors.verticalCenter: parent.verticalCenter
+            contentItem: UM.Label
+            {
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_lining").width
+                anchors.right: downArrow.left
+                anchors.rightMargin: UM.Theme.getSize("default_lining").width
+                anchors.verticalCenter: parent.verticalCenter
 
-                    source: UM.Theme.getIcon("ChevronSingleDown")
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5 * screenScaleFactor
-                    sourceSize.height: width + 5 * screenScaleFactor
-
-                    color: UM.Theme.getColor("setting_control_button");
-                }
+                text: layerTypeCombobox.currentText
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
             }
 
             onActivated:
