@@ -1,8 +1,12 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
+import json
 import re
+from json.decoder import JSONDecodeError
 from typing import Dict, List
+from cura.CuraApplication import CuraApplication
+from UM.Logger import Logger
 
 
 class DriveFilter:
@@ -10,7 +14,17 @@ class DriveFilter:
         """Creates the filter.
         """
 
+        # Set the initial filter steps to be empty.
         self.filterSteps: List[Dict[str, str]] = []
+
+        # Set up the preferences.
+        # A None check is done for the unit tests, which don't test the application.
+        curaApplication = CuraApplication.getInstance()
+        if curaApplication is not None:
+            preferences = curaApplication.getPreferences()
+            preferences.addPreference("removable_drive_output_device/filter_steps", "[]")
+            preferences.preferenceChanged.connect(self._onPreferencesChanged)
+            self.reloadFromPreferences()
 
     def reload(self, filterSteps: List[Dict[str, str]]) -> None:
         """Reloads the filter.
@@ -19,6 +33,30 @@ class DriveFilter:
         """
 
         self.filterSteps = filterSteps
+
+    def reloadFromPreferences(self) -> None:
+        """Reloads the drive filter from the Cura preferences.
+        """
+
+        preferences = CuraApplication.getInstance().getPreferences()
+        try:
+            # Load the filter steps.
+            self.filterSteps = json.loads(preferences.getValue("removable_drive_output_device/filter_steps"))
+            Logger.info("Loaded drive filter steps from preferences.")
+        except JSONDecodeError:
+            # Display an error that the stored filter steps aren't valid JSON.
+            Logger.error("Drive filter steps are invalid JSON. Unable to load from preferences.")
+
+    def _onPreferencesChanged(self, name: str) -> None:
+        """Handles a preference being changed.
+
+        :param name: Name of the preference that changed.
+        """
+
+        # Reload the filter steps if the filter steps preference changed.
+        if name != "removable_drive_output_device/filter_steps":
+            return
+        self.reloadFromPreferences()
 
     def passesFilter(self, string: str) -> bool:
         """Returns if a string can pass the filter.
