@@ -132,14 +132,25 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
-            MouseArea
+            TextMetrics
+            {
+                id: cellTextMetrics
+                text: cellContent.text
+                font: cellContent.font
+                elide: cellContent.elide
+                elideWidth: cellContent.width
+            }
+            UM.TooltipArea
             {
                 anchors.fill: parent
 
-                enabled: tableBase.allowSelection
+                text: (cellTextMetrics.elidedText == cellContent.text) ? "" : cellContent.text //Show full text in tooltip if it was elided.
                 onClicked:
                 {
-                    tableBase.currentRow = row; //Select this row.
+                    if(tableBase.allowSelection)
+                    {
+                        tableBase.currentRow = row; //Select this row.
+                    }
                 }
                 onDoubleClicked:
                 {
