@@ -85,18 +85,16 @@ ToolButton
             color: base.enabled ? UM.Theme.getColor("setting_control_button") : UM.Theme.getColor("setting_category_disabled_text")
             source: UM.Theme.getIcon("ChevronSingleDown")
         }
-        Label
+        UM.Label
         {
             id: printSetupComboBoxLabel
-            color: base.enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
-            text: base.text;
+            text: base.text
             elide: Text.ElideRight;
             anchors.left: parent.left;
             anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
-            anchors.right: downArrow.left;
-            anchors.rightMargin: base.rightMargin;
-            anchors.verticalCenter: parent.verticalCenter;
-            font: UM.Theme.getFont("default")
+            anchors.right: downArrow.lef
+            anchors.rightMargin: base.rightMargin
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 }
