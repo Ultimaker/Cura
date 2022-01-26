@@ -20,59 +20,74 @@ ToolButton
         targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
     }
 
-    background: Rectangle
-    {
-        color:
+    states:
+    [
+        State
         {
-            if(base.enabled)
+            name: "disabled"
+            when: !base.enabled;
+            PropertyChanges
             {
-                if(base.valueError)
-                {
-                    return UM.Theme.getColor("setting_validation_error_background");
-                }
-                else if(base.valueWarning)
-                {
-                    return UM.Theme.getColor("setting_validation_warning_background");
-                }
-                else
-                {
-                    return UM.Theme.getColor("setting_control");
-                }
+                target: background
+                color: UM.Theme.getColor("setting_control_disabled")
+                border.color: UM.Theme.getColor("setting_control_disabled_border")
             }
-            else
+        },
+        State
+        {
+            name: "value_error"
+            when: base.enabled && base.valueError
+            PropertyChanges
             {
-                return UM.Theme.getColor("setting_control_disabled");
+                target: background
+                color: UM.Theme.getColor("setting_validation_error_background")
+                border.color: UM.Theme.getColor("setting_validation_error")
+            }
+        },
+        State
+        {
+            name: "value_warning"
+            when: base.enabled && base.valueWarning
+            PropertyChanges
+            {
+                target: background
+                color: UM.Theme.getColor("setting_validation_warning_background")
+                border.color: UM.Theme.getColor("setting_validation_warning")
+            }
+        },
+        State
+        {
+            name: "highlight"
+            when: base.enabled && base.hovered
+            PropertyChanges
+            {
+                target: background
+                color: UM.Theme.getColor("setting_control")
+                border.color: UM.Theme.getColor("setting_control_border_highlight")
+            }
+        },
+        State
+        {
+            name: "neutral"
+            when: base.enabled && !base.hovered && !base.valueWarning && !base.valueError
+            PropertyChanges
+            {
+                target: background
+                color: UM.Theme.getColor("setting_control")
+                border.color: UM.Theme.getColor("setting_control_border")
             }
         }
+    ]
+
+    background: Rectangle
+    {
+        id: background
 
         radius: UM.Theme.getSize("setting_control_radius").width
         border.width: UM.Theme.getSize("default_lining").width
-        border.color:
-        {
-            if (base.enabled)
-            {
-                if (base.valueError)
-                {
-                    return UM.Theme.getColor("setting_validation_error");
-                }
-                else if (base.valueWarning)
-                {
-                    return UM.Theme.getColor("setting_validation_warning");
-                }
-                else if (base.hovered)
-                {
-                    return UM.Theme.getColor("setting_control_border_highlight");
-                }
-                else
-                {
-                    return UM.Theme.getColor("setting_control_border");
-                }
-            }
-            else
-            {
-                return UM.Theme.getColor("setting_control_disabled_border");
-            }
-        }
+        color: UM.Theme.getColor("setting_control")
+        border.color: UM.Theme.getColor("setting_control_border")
+
         UM.RecolorImage
         {
             id: downArrow
