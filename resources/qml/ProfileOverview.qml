@@ -32,7 +32,12 @@ Cura.TableView
         selectedQualityItem: profileOverview.qualityItem == null ? {} : profileOverview.qualityItem
     }
 
-    columnHeaders: [catalog.i18nc("@title:column", "Setting"), catalog.i18nc("@title:column", "Profile"), catalog.i18nc("@title:column", "Current"), catalog.i18nc("@title:column Unit of measurement", "Unit")]
+    columnHeaders: [
+        catalog.i18nc("@title:column", "Setting"),
+        catalog.i18nc("@title:column", "Profile"),
+        catalog.i18nc("@title:column", "Current"),
+        catalog.i18nc("@title:column Unit of measurement", "Unit")
+    ]
     model: TableModel
     {
         TableModelColumn { display: "label" }
