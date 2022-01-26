@@ -42,7 +42,7 @@
         "material_bed_temperature_layer_0": {  "value": 70 },
 		"material_flow_layer_0": {"value": 140},
 		"retraction_amount": {  "default_value": 10 },
-		"retraction_speed": {  "default_value": 70 },
+		"retraction_speed": {  "default_value": 50 },
         "speed_print": {  "default_value": 40 },
         "speed_travel": { "value": 60 },
         "cool_fan_enabled": { "default_value": true },
