@@ -53,7 +53,7 @@ Item
                     color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
-                Rectangle
+                Rectangle //Resize handle.
                 {
                     anchors
                     {

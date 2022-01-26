@@ -174,6 +174,8 @@ class QualitySettingsModel(ListModel):
             label = definition.label
             if self._i18n_catalog:
                 label = self._i18n_catalog.i18nc(definition.key + " label", label)
+            if profile_value_source == "quality_changes":
+                label = f"<i>{label}</i>"  # Make setting name italic if it's derived from the quality-changes profile.
 
             if isinstance(profile_value, SettingFunction):
                 profile_value_display = self._i18n_catalog.i18nc("@info:status", "Calculated")
