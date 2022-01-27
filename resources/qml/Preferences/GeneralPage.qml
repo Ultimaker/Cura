@@ -842,7 +842,8 @@ UM.PreferencesPage
                 }
             }
 
-            ButtonGroup {
+            ButtonGroup
+            {
                 id: curaUpdatesGroup
                 buttons: [checkUpdatesOptionBeta, checkUpdatesOptionStable]
             }
