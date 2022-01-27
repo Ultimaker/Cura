@@ -74,7 +74,8 @@ UM.Dialog
             name: "cura"
         }
 
-        ButtonGroup {
+        ButtonGroup
+        {
             buttons: [cancelButton, importAllAsModelsButton]
             checkedButton: importAllAsModelsButton
         }
