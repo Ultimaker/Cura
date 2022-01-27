@@ -6390,10 +6390,8 @@
                     "description": "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller.",
                     "type": "float",
                     "unit": "μm²",
-                    "default_value": 2000,
+                    "default_value": 50000,
                     "minimum_value": "0",
-                    "minimum_value_warning": "500",
-                    "maximum_value_warning": "50000",
                     "settable_per_mesh": true
                 }
             }
