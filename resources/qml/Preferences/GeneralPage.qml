@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -16,6 +16,8 @@ UM.PreferencesPage
     //: General configuration page title
     title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
+
+    width: parent.width
 
     function setDefaultLanguage(languageCode)
     {
@@ -128,14 +130,14 @@ UM.PreferencesPage
 
     ScrollView
     {
+        id: preferencesScrollView
         width: parent.width
         height: parent.height
 
         Column
         {
-
-            //: Language selection label
             UM.I18nCatalog{id: catalog; name: "cura"}
+            width: preferencesScrollView.viewport.width
 
             Label
             {
@@ -162,16 +164,14 @@ UM.PreferencesPage
                     Component.onCompleted:
                     {
                         append({ text: "English", code: "en_US" })
-//                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
-                        //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "日本語", code: "ja_JP" })
                         append({ text: "한국어", code: "ko_KR" })
                         append({ text: "Nederlands", code: "nl_NL" })
-                        //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
                         append({ text: "Português", code: "pt_PT" })
                         append({ text: "Русский", code: "ru_RU" })
@@ -184,6 +184,12 @@ UM.PreferencesPage
                         {
                             append({ text: "Pirate", code: "en_7S" })
                         }
+
+                        // incomplete and/or abandoned
+                        append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Magyar", code: "hu_HU" })
+                        append({ text: "Suomi", code: "fi_FI" })
+                        append({ text: "Polski", code: "pl_PL" })
                     }
                 }
 
@@ -195,8 +201,7 @@ UM.PreferencesPage
                     model: languageList
                     Layout.fillWidth: true
 
-                    currentIndex:
-                    {
+                    function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
                         for(var i = 0; i < languageList.count; ++i)
                         {
@@ -206,13 +211,23 @@ UM.PreferencesPage
                             }
                         }
                     }
-                    onActivated: UM.Preferences.setValue("general/language", model.get(index).code)
+
+                    currentIndex: setCurrentIndex()
+
+                    onActivated: if (model.get(index).code != "")
+                        {
+                            UM.Preferences.setValue("general/language", model.get(index).code);
+                        }
+                        else
+                        {
+                            currentIndex = setCurrentIndex();
+                        }
                 }
 
                 Label
                 {
                     id: currencyLabel
-                    text: catalog.i18nc("@label","Currency:")
+                    text: catalog.i18nc("@label", "Currency:")
                 }
 
                 TextField

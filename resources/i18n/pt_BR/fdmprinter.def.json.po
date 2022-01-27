@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2021-11-04 08:29+0100\n"
+"PO-Revision-Date: 2022-01-04 05:45+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -563,7 +563,7 @@ msgstr "A velocidade máxima para o motor da impressora na direção Z."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "Velocidade Máxima de Extrusão"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1733,7 +1733,7 @@ msgstr "Padrão de Preenchimento"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "O padrão do material de preenchimento da impressão. Os preenchimentos de linha e ziguezague trocam de direção em camadas alternadas, reduzindo custo de material. Os padrões de grade, triângulo, tri-hexágono, cúbico, octeto, quarto cúbico, cruzado e concêntrico são completamente impressos a cada camada. Os preenchimentos giroide, cúbico, quarto cúbico e octeto mudam a cada camada para prover uma distribuição de força mais uniforme em cada direção. O preenchimento de relâmpago tenta minimizar material somente suportando o teto do objeto."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2047,7 +2047,7 @@ msgstr "Ângulo de Poda do Preenchimento Relâmpago"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "As pontas dos filetes de preenchimento são encurtadas para poupar material. Este ajuste é o ângulo da seção pendente das pontas desses filetes."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2057,7 +2057,7 @@ msgstr "Ângulo de Retificação do Preenchimento Relâmpago"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "Os filetes de preenchimentos são retificados para poupar tempo de impressão. Este é o ângulo máximo de seção pendente permito através do comprimento do filete de preenchimento."
 
 #: fdmprinter.def.json
 msgctxt "material label"

@@ -57,7 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -69,7 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -559,7 +559,7 @@ msgstr "Z 轴方向电机的最大速度。"
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "E 轴最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1729,7 +1729,7 @@ msgstr "填充图案"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "打印的填充材料的图案。直线和锯齿形填充交替在各层上变换方向，从而降低材料成本。每层都完整地打印网格、三角形、三六边形、立方体、八角形、四分之一立方体、十字和同心图案。螺旋二十四面体、立方体、四分之一立方体和八角形填充随每层变化，以使各方向的强度分布更均衡。闪电形填充尝试通过仅支撑物体顶部，将填充程度降至最低。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2043,7 +2043,7 @@ msgstr "闪电形填充修剪角"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "为节省材料，填充线的端点将被缩短。此设置为这些线的端点形成的悬垂角度。"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2053,7 +2053,7 @@ msgstr "闪电形填充矫直角"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "为节省打印时间，填充线将被拉直。这是整条填充线上允许的最大悬垂角度。"
 
 #: fdmprinter.def.json
 msgctxt "material label"

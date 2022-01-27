@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2021-10-31 12:13+0800\n"
+"PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
 "Language: zh_TW\n"
@@ -563,7 +563,7 @@ msgstr "Z 軸方向馬達的最大速度。"
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "E 軸最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1733,7 +1733,7 @@ msgstr "填充列印樣式"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "內部填充層的圖案。線形、鋸齒形填充在交替層間交換方向，已降低材料成本。網格、三角形、三角-六邊形、立方體、八面體、四分立方體、十字和同心圖案每個層間皆有列印。螺旋型、立方體、四分立方體和八面體的填充隨著每一層而變化，以在每個方向上提供更均勻的強度分佈。閃電型填充透過僅支撐物體的頂層來最小化填充。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2047,7 +2047,7 @@ msgstr "閃電形填充生成角度"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "內部填充線的端點已被縮減以節省線材. 這個設定用於調整突出線的角度."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2057,7 +2057,7 @@ msgstr "閃電形填充層間垂直堆疊角度"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "填充線被拉直用以節省列印時間. 這是填充線長度上允許的最大突出角度."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2517,7 +2517,7 @@ msgstr "列印速度"
 #: fdmprinter.def.json
 msgctxt "speed_print description"
 msgid "The speed at which printing happens."
-msgstr "開始列印的速度。"
+msgstr "開始列印時的速度。"
 
 #: fdmprinter.def.json
 msgctxt "speed_infill label"
