@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
@@ -103,17 +103,27 @@ class PerObjectSettingsTool(Tool):
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
 
-        for property_key in ["top_bottom_thickness", "wall_thickness"]:
+        # Override some settings to ensure that the infill mesh by default adds no skin or walls. Or remove them if not an infill mesh.
+        specialized_settings = {
+            "top_bottom_thickness": 0,
+            "top_thickness": "=top_bottom_thickness",
+            "bottom_thickness": "=top_bottom_thickness",
+            "top_layers": "=0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+            "bottom_layers": "=0 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+            "wall_thickness": 0,
+            "wall_line_count": "=max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1) if wall_thickness != 0 else 0"
+        }
+        for property_key in specialized_settings:
             if mesh_type == "infill_mesh":
                 if settings.getInstance(property_key) is None:
                     definition = stack.getSettingDefinition(property_key)
                     new_instance = SettingInstance(definition, settings)
-                    new_instance.setProperty("value", 0)
+                    new_instance.setProperty("value", specialized_settings[property_key])
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
                     settings_visibility_changed = True
 
-            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and settings.getProperty(property_key, "value") == 0:
+            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and property_key in specialized_settings:
                 settings.removeInstance(property_key)
                 settings_visibility_changed = True
 

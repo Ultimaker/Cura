@@ -97,8 +97,7 @@ class MachineErrorChecker(QObject):
 
     def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
         """Start the error check for property changed
-
-        this is seperate from the startErrorCheck because it ignores a number property types
+        this is separate from the startErrorCheck because it ignores a number property types
 
         :param key:
         :param property_name:

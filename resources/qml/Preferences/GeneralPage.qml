@@ -1,13 +1,15 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.10
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
+import QtQuick.Controls 2.3 as NewControls
+
 import UM 1.1 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 UM.PreferencesPage
 {
@@ -15,9 +17,11 @@ UM.PreferencesPage
     title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
 
+    width: parent.width
+
     function setDefaultLanguage(languageCode)
     {
-        //loops trough the languageList and sets the language using the languageCode
+        //loops through the languageList and sets the language using the languageCode
         for(var i = 0; i < languageList.count; i++)
         {
             if (languageComboBox.model.get(i).code == languageCode)
@@ -74,6 +78,8 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("cura/single_instance")
         singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
+        UM.Preferences.resetPreference("cura/single_instance_clear_before_load")
+        singleInstanceClearBeforeLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
@@ -116,20 +122,22 @@ UM.PreferencesPage
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+
+        UM.Preferences.resetPreference("info/latest_update_source")
+        UM.Preferences.resetPreference("info/automatic_plugin_update_check")
+        pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
     }
 
     ScrollView
     {
+        id: preferencesScrollView
         width: parent.width
         height: parent.height
 
-        flickableItem.flickableDirection: Flickable.VerticalFlick;
-
         Column
         {
-
-            //: Language selection label
             UM.I18nCatalog{id: catalog; name: "cura"}
+            width: preferencesScrollView.viewport.width
 
             Label
             {
@@ -141,6 +149,7 @@ UM.PreferencesPage
             {
                 id: interfaceGrid
                 columns: 4
+                width: parent.width
 
                 Label
                 {
@@ -148,42 +157,51 @@ UM.PreferencesPage
                     text: "Language:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
                 }
 
-                ComboBox
+                ListModel
+                {
+                    id: languageList
+
+                    Component.onCompleted:
+                    {
+                        append({ text: "English", code: "en_US" })
+                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "Deutsch", code: "de_DE" })
+                        append({ text: "Español", code: "es_ES" })
+                        append({ text: "Français", code: "fr_FR" })
+                        append({ text: "Italiano", code: "it_IT" })
+                        append({ text: "日本語", code: "ja_JP" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        append({ text: "Português do Brasil", code: "pt_BR" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
+                        append({ text: "正體字", code: "zh_TW" })
+
+                        var date_object = new Date();
+                        if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
+                        {
+                            append({ text: "Pirate", code: "en_7S" })
+                        }
+
+                        // incomplete and/or abandoned
+                        append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Magyar", code: "hu_HU" })
+                        append({ text: "Suomi", code: "fi_FI" })
+                        append({ text: "Polski", code: "pl_PL" })
+                    }
+                }
+
+                NewControls.ComboBox
                 {
                     id: languageComboBox
-                    model: ListModel
-                    {
-                        id: languageList
 
-                        Component.onCompleted: {
-                            append({ text: "English", code: "en_US" })
-                            append({ text: "Čeština", code: "cs_CZ" })
-                            append({ text: "Deutsch", code: "de_DE" })
-                            append({ text: "Español", code: "es_ES" })
-                            //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
-                            append({ text: "Français", code: "fr_FR" })
-                            append({ text: "Italiano", code: "it_IT" })
-                            append({ text: "日本語", code: "ja_JP" })
-                            append({ text: "한국어", code: "ko_KR" })
-                            append({ text: "Nederlands", code: "nl_NL" })
-                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
-                            append({ text: "Português do Brasil", code: "pt_BR" })
-                            append({ text: "Português", code: "pt_PT" })
-                            append({ text: "Русский", code: "ru_RU" })
-                            append({ text: "Türkçe", code: "tr_TR" })
-                            append({ text: "简体中文", code: "zh_CN" })
-                            append({ text: "正體字", code: "zh_TW" })
+                    textRole: "text"
+                    model: languageList
+                    Layout.fillWidth: true
 
-                            var date_object = new Date();
-                            if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
-                            {
-                                append({ text: "Pirate", code: "en_7S" })
-                            }
-                        }
-                    }
-
-                    currentIndex:
-                    {
+                    function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
                         for(var i = 0; i < languageList.count; ++i)
                         {
@@ -193,27 +211,23 @@ UM.PreferencesPage
                             }
                         }
                     }
-                    onActivated: UM.Preferences.setValue("general/language", model.get(index).code)
 
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < languageList.count; ++i)
+                    currentIndex: setCurrentIndex()
+
+                    onActivated: if (model.get(index).code != "")
                         {
-                            languageList.setProperty(i, "text", catalog.i18n(languageList.get(i).text));
+                            UM.Preferences.setValue("general/language", model.get(index).code);
                         }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
+                        else
+                        {
+                            currentIndex = setCurrentIndex();
+                        }
                 }
 
                 Label
                 {
                     id: currencyLabel
-                    text: catalog.i18nc("@label","Currency:")
+                    text: catalog.i18nc("@label", "Currency:")
                 }
 
                 TextField
@@ -229,22 +243,26 @@ UM.PreferencesPage
                     text: catalog.i18nc("@label","Theme:")
                 }
 
-                ComboBox
+                ListModel
+                {
+                    id: themeList
+
+                    Component.onCompleted: {
+                        var themes = UM.Theme.getThemes()
+                        for (var i = 0; i < themes.length; i++)
+                        {
+                            append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
+                        }
+                    }
+                }
+
+                NewControls.ComboBox
                 {
                     id: themeComboBox
 
-                    model: ListModel
-                    {
-                        id: themeList
-
-                        Component.onCompleted: {
-                            var themes = UM.Theme.getThemes()
-                            for (var i = 0; i < themes.length; i++)
-                            {
-                                append({ text: themes[i].name.toString(), code: themes[i].id.toString() });
-                            }
-                        }
-                    }
+                    model: themeList
+                    textRole: "text"
+                    Layout.fillWidth: true
 
                     currentIndex:
                     {
@@ -259,21 +277,6 @@ UM.PreferencesPage
                         return 0;
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
-
-                    Component.onCompleted:
-                    {
-                        // Because ListModel is stupid and does not allow using qsTr() for values.
-                        for(var i = 0; i < themeList.count; ++i)
-                        {
-                            themeList.setProperty(i, "text", catalog.i18n(themeList.get(i).text));
-                        }
-
-                        // Glorious hack time. ComboBox does not update the text properly after changing the
-                        // model. So change the indices around to force it to update.
-                        currentIndex += 1;
-                        currentIndex -= 1;
-                    }
-
                 }
             }
 
@@ -416,7 +419,7 @@ UM.PreferencesPage
                 Connections
                 {
                     target: UM.Preferences
-                    onPreferenceChanged:
+                    function onPreferenceChanged(preference)
                     {
                         if(preference != "general/camera_perspective_mode")
                         {
@@ -519,19 +522,22 @@ UM.PreferencesPage
                     {
                         text: catalog.i18nc("@window:text", "Camera rendering:")
                     }
-                    ComboBox
+                    ListModel
+                    {
+                        id: comboBoxList
+                        Component.onCompleted:
+                        {
+                            append({ text: catalog.i18n("Perspective"), code: "perspective" })
+                            append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
+                        }
+                    }
+
+                    NewControls.ComboBox
                     {
                         id: cameraComboBox
 
-                        model: ListModel
-                        {
-                            id: comboBoxList
-
-                            Component.onCompleted: {
-                                append({ text: catalog.i18n("Perspective"), code: "perspective" })
-                                append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
-                            }
-                        }
+                        model: comboBoxList
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -575,6 +581,22 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Use a single instance of Cura")
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should the build plate be cleared before loading a new model in the single instance of Cura?")
+                enabled: singleInstanceCheckbox.checked
+
+                CheckBox
+                {
+                    id: singleInstanceClearBeforeLoadCheckbox
+                    text: catalog.i18nc("@option:check","Clear buildplate before loading model into the single instance")
+                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance_clear_before_load", checked)
                 }
             }
 
@@ -667,10 +689,10 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: 200 * screenScaleFactor
+                        width: Math.round(250 * screenScaleFactor)
 
                         model: ListModel
                         {
@@ -683,6 +705,7 @@ UM.PreferencesPage
                                 append({ text: catalog.i18nc("@option:openProject", "Always import models"), code: "open_as_model" })
                             }
                         }
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -733,11 +756,11 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    ComboBox
+                    NewControls.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: 200 * screenScaleFactor
-
+                        width: Math.round(250 * screenScaleFactor)
+                        popup.width: Math.round(350 * screenScaleFactor)
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
@@ -749,6 +772,7 @@ UM.PreferencesPage
                                 append({ text: catalog.i18nc("@option:discardOrKeep", "Always transfer changed settings to new profile"), code: "always_keep" })
                             }
                         }
+                        textRole: "text"
 
                         currentIndex:
                         {
@@ -779,30 +803,13 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                visible: checkUpdatesCheckbox.visible || sendDataCheckbox.visible
-                text: catalog.i18nc("@label","Privacy")
+                text: catalog.i18nc("@label", "Privacy")
             }
-
             UM.TooltipArea
             {
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
-
-                CheckBox
-                {
-                    id: checkUpdatesCheckbox
-                    text: catalog.i18nc("@option:check","Check for updates on start")
-                    checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-                    onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
+                text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
                 CheckBox
                 {
@@ -823,6 +830,83 @@ UM.PreferencesPage
                     }
                 }
             }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").height
+            }
+
+            Label
+            {
+                font.bold: true
+                text: catalog.i18nc("@label", "Updates")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should Cura check for updates when the program is started?")
+
+                CheckBox
+                {
+                    id: checkUpdatesCheckbox
+                    text: catalog.i18nc("@option:check","Check for updates on start")
+                    checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+                    onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
+                }
+            }
+
+            ExclusiveGroup { id: curaUpdatesGroup }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                RadioButton
+                {
+                    text: catalog.i18nc("@option:radio", "Stable releases only")
+                    exclusiveGroup: curaUpdatesGroup
+                    enabled: checkUpdatesCheckbox.checked
+                    checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
+                    onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                RadioButton
+                {
+                    text: catalog.i18nc("@option:radio", "Stable and Beta releases")
+                    exclusiveGroup: curaUpdatesGroup
+                    enabled: checkUpdatesCheckbox.checked
+                    checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
+                    onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!")
+
+                CheckBox
+                {
+                    id: pluginNotificationsUpdateCheckbox
+                    text: catalog.i18nc("@option:check", "Get notifications for plugin updates")
+                    checked: boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
+                    onCheckedChanged: UM.Preferences.setValue("info/automatic_plugin_update_check", checked)
+                }
+            }
+
 
             /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item
@@ -856,7 +940,7 @@ UM.PreferencesPage
             Connections
             {
                 target: UM.Preferences
-                onPreferenceChanged:
+                function onPreferenceChanged(preference)
                 {
                     if (preference !== "info/send_slice_info")
                     {

@@ -29,21 +29,21 @@ Item
             var density = parseInt(infillDensity.properties.value)
             if (parseInt(infillSteps.properties.value) != 0)
             {
-                return UM.Theme.getIcon("gradual")
+                return UM.Theme.getIcon("InfillGradual")
             }
             if (density <= 0)
             {
-                return UM.Theme.getIcon("hollow")
+                return UM.Theme.getIcon("Infill0")
             }
             if (density < 40)
             {
-                return UM.Theme.getIcon("sparse")
+                return UM.Theme.getIcon("Infill3")
             }
             if (density < 90)
             {
-                return UM.Theme.getIcon("dense")
+                return UM.Theme.getIcon("Infill2")
             }
-            return UM.Theme.getIcon("solid")
+            return UM.Theme.getIcon("Infill100")
         }
     }
 
@@ -61,10 +61,11 @@ Item
         id: infillRowTitle
         anchors.top: parent.top
         anchors.left: parent.left
-        source: UM.Theme.getIcon("category_infill")
+        source: UM.Theme.getIcon("Infill1")
         text: catalog.i18nc("@label", "Infill") + " (%)"
         font: UM.Theme.getFont("medium")
         width: labelColumnWidth
+        iconSize: UM.Theme.getSize("medium_button_icon").width
     }
 
     Item
@@ -119,6 +120,8 @@ Item
                     implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
                     implicitHeight: implicitWidth
                     radius: Math.round(implicitWidth / 2)
+                    border.color: UM.Theme.getColor("slider_groove_fill")
+                    border.width: UM.Theme.getSize("default_lining").height
                 }
 
                 tickmarks: Repeater
@@ -166,8 +169,8 @@ Item
                 // Update the slider value to represent the rounded value
                 infillSlider.value = roundedSliderValue
 
-                // Update value only if the Recomended mode is Active,
-                // Otherwise if I change the value in the Custom mode the Recomended view will try to repeat
+                // Update value only if the Recommended mode is Active,
+                // Otherwise if I change the value in the Custom mode the Recommended view will try to repeat
                 // same operation
                 var active_mode = UM.Preferences.getValue("cura/active_mode")
 

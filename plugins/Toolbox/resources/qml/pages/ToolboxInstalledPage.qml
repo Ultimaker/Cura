@@ -71,6 +71,7 @@ ScrollView
                 padding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@info", "No plugin has been installed.")
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("lining")
                 renderType: Text.NativeRendering
             }
         }
@@ -123,6 +124,7 @@ ScrollView
                 visible: toolbox.materialsInstalledModel.count < 1
                 padding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@info", "No material has been installed.")
+                color: UM.Theme.getColor("lining")
                 font: UM.Theme.getFont("medium")
                 renderType: Text.NativeRendering
             }

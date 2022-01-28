@@ -1,5 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2021 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -190,6 +190,20 @@ Item
                 exportMaterialDialog.open();
             }
             enabled: base.hasCurrentItem
+        }
+
+        //Sync button.
+        Button
+        {
+            id: syncMaterialsButton
+            text: catalog.i18nc("@action:button Sending materials to printers", "Sync with Printers")
+            iconName: "sync-synchronizing"
+            onClicked:
+            {
+                forceActiveFocus();
+                base.materialManagementModel.openSyncAllWindow();
+            }
+            visible: Cura.MachineManager.activeMachine.supportsMaterialExport
         }
     }
 

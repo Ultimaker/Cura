@@ -34,138 +34,204 @@ Item
         }
     }
 
-    Label
-    {
-        id: titleLabel
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Ultimaker Account")
-        color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
-    }
-
     // Area where the cloud contents can be put. Pictures, texts and such.
     Item
     {
         id: cloudContentsArea
         anchors
         {
-            top: titleLabel.bottom
+            top: parent.top
             bottom: skipButton.top
             left: parent.left
             right: parent.right
-            topMargin: UM.Theme.getSize("default_margin").height
         }
 
         // Pictures and texts are arranged using Columns with spacing. The whole picture and text area is centered in
         // the cloud contents area.
         Column
         {
-            anchors.centerIn: parent
+            anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width
             height: childrenRect.height
 
-            spacing: 20 * screenScaleFactor
+            spacing: UM.Theme.getSize("thick_margin").height
 
-            Image  // Cloud image
+            Label
+            {
+                id: titleLabel
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@label", "Sign in to the Ultimaker platform")
+                color: UM.Theme.getColor("primary_button")
+                font: UM.Theme.getFont("huge")
+                renderType: Text.NativeRendering
+            }
+
+            // Filler item
+            Item
+            {
+                height: UM.Theme.getSize("default_margin").height
+                width: parent.width
+            }
+
+            // Cloud image
+            Image
             {
                 id: cloudImage
                 anchors.horizontalCenter: parent.horizontalCenter
                 source: UM.Theme.getImage("first_run_ultimaker_cloud")
+                fillMode: Image.PreserveAspectFit
+                width: UM.Theme.getSize("welcome_wizard_content_image_big").width
+                sourceSize.width: width
+                sourceSize.height: height
             }
 
-            Label  // A title-ish text
+
+            // Filler item
+            Item
             {
-                id: highlightTextLabel
-                anchors.horizontalCenter: parent.horizontalCenter
-                horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "Your key to connected 3D printing")
-                textFormat: Text.RichText
-                color: UM.Theme.getColor("primary")
-                font: UM.Theme.getFont("medium")
-                renderType: Text.NativeRendering
+                height: UM.Theme.getSize("default_margin").height
+                width: parent.width
             }
 
-            Label  // A number of text items
+            // Motivational icons
+            Row
             {
-                id: textLabel
-                anchors.horizontalCenter: parent.horizontalCenter
-                text:
+                id: motivationRow
+                width: parent.width
+
+                Column
                 {
-                    // There are 3 text items, each of which is translated separately as a single piece of text.
-                    var full_text = ""
-                    var t = ""
+                    id: marketplaceColumn
+                    width: Math.round(parent.width / 3)
+                    spacing: UM.Theme.getSize("default_margin").height
 
-                    t = catalog.i18nc("@text", "- Customize your experience with more print profiles and plugins")
-                    full_text += "<p>" + t + "</p>"
-
-                    t = catalog.i18nc("@text", "- Stay flexible by syncing your setup and loading it anywhere")
-                    full_text += "<p>" + t + "</p>"
-
-                    t = catalog.i18nc("@text", "- Increase efficiency with a remote workflow on Ultimaker printers")
-                    full_text += "<p>" + t + "</p>"
-
-                    return full_text
+                    Image
+                    {
+                        id: marketplaceImage
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        fillMode: Image.PreserveAspectFit
+                        width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
+                        source: UM.Theme.getIcon("Plugin", "high")
+                        sourceSize.width: width
+                        sourceSize.height: height
+                    }
+                    Label
+                    {
+                        id: marketplaceTextLabel
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width
+                        text: catalog.i18nc("@text", "Add material settings and plugins from the Marketplace")
+                        wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignHCenter
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        renderType: Text.NativeRendering
+                    }
                 }
-                textFormat: Text.RichText
-                font: UM.Theme.getFont("medium")
-                color: UM.Theme.getColor("text")
-                renderType: Text.NativeRendering
-            }
 
-            // "Sign in" and "Create an account" exist inside the column
-            Cura.PrimaryButton
-            {
-                id: signInButton
-                height: createAccountButton.height
-                width: createAccountButton.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: catalog.i18nc("@button", "Sign in")
-                onClicked: Cura.API.account.login()
-                // Content Item is used in order to align the text inside the button. Without it, when resizing the
-                // button, the text will be aligned on the left
-                contentItem: Text {
-                    text: signInButton.text
-                    font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("primary_text")
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                Column
+                {
+                    id: syncColumn
+                    width: Math.round(parent.width / 3)
+                    spacing: UM.Theme.getSize("default_margin").height
+
+                    Image
+                    {
+                        id: syncImage
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        fillMode: Image.PreserveAspectFit
+                        width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
+                        source: UM.Theme.getIcon("Spool", "high")
+                        sourceSize.width: width
+                        sourceSize.height: height
+                    }
+                    Label
+                    {
+                        id: syncTextLabel
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width
+                        text: catalog.i18nc("@text", "Backup and sync your material settings and plugins")
+                        wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignHCenter
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        renderType: Text.NativeRendering
+                    }
                 }
-            }
 
-            Cura.SecondaryButton
-            {
-                id: createAccountButton
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: catalog.i18nc("@button","Create account")
-                onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
+                Column
+                {
+                    id: communityColumn
+                    width: Math.round(parent.width / 3)
+                    spacing: UM.Theme.getSize("default_margin").height
+
+                    Image
+                    {
+                        id: communityImage
+                        anchors.horizontalCenter: communityColumn.horizontalCenter
+                        fillMode: Image.PreserveAspectFit
+                        width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
+                        source: UM.Theme.getIcon("People", "high")
+                        sourceSize.width: width
+                        sourceSize.height: height
+                    }
+                    Label
+                    {
+                        id: communityTextLabel
+                        anchors.horizontalCenter: communityColumn.horizontalCenter
+                        width: parent.width
+                        text: catalog.i18nc("@text", "Share ideas and get help from 48,000+ users in the Ultimaker Community")
+                        wrapMode: Text.Wrap
+                        horizontalAlignment: Text.AlignHCenter
+                        color: UM.Theme.getColor("text")
+                        font: UM.Theme.getFont("default")
+                        renderType: Text.NativeRendering
+                    }
+                }
             }
         }
-
-
     }
 
-    // The "Skip" button exists on the bottom right
-    Label
+    // Skip button
+    Cura.TertiaryButton
     {
         id: skipButton
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        text: catalog.i18nc("@button", "Skip")
+        onClicked: base.showNextPage()
+    }
+
+    // Create an account button
+    Cura.SecondaryButton
+    {
+        id: createAccountButton
+        anchors.right: signInButton.left
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        anchors.bottom: parent.bottom
+
+        text: catalog.i18nc("@text", "Create a free Ultimaker Account")
+        onClicked:  Qt.openUrlExternally("https://ultimaker.com/app/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=onboarding-signup")
+    }
+
+    // Sign in Button
+    Cura.PrimaryButton
+    {
+        id: signInButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@button", "Skip")
-        color: UM.Theme.getColor("secondary_button_text")
-        font: UM.Theme.getFont("medium")
-        renderType: Text.NativeRendering
 
-        MouseArea
-        {
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: base.showNextPage()
-            onEntered: parent.font.underline = true
-            onExited: parent.font.underline = false
+        text: catalog.i18nc("@button", "Sign in")
+        onClicked: Cura.API.account.login()
+        // Content Item is used in order to align the text inside the button. Without it, when resizing the
+        // button, the text will be aligned on the left
+        contentItem: Text {
+            text: signInButton.text
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("primary_text")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 }

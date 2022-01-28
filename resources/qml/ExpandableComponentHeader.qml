@@ -59,7 +59,7 @@ Cura.RoundedRectangle
             anchors.fill: parent
             sourceSize.width: width
             color: closeButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-            source: UM.Theme.getIcon("cross1")
+            source: UM.Theme.getIcon("Cancel")
         }
 
         background: Item {}

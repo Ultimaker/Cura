@@ -13,7 +13,7 @@
         "has_variants": true,
         "has_materials": true,
         "has_machine_quality": true,
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone", "ultimaker_petg_red", "ultimaker_petg_blue", "ultimaker_petg_grey", "ultimaker_petg_black", "ultimaker_petg_green", "ultimaker_petg_white", "ultimaker_petg_orange", "ultimaker_petg_silver", "ultimaker_petg_yellow", "ultimaker_petg_transparent", "ultimaker_petg_red_translucent", "ultimaker_petg_blue_translucent", "ultimaker_petg_green_translucent", "ultimaker_petg_yellow_fluorescent"],
         "first_start_actions": [],
         "supported_actions": [],
         "machine_extruder_trains":
@@ -35,7 +35,7 @@
             "value": "round(machine_nozzle_size / 1.5, 2)"
         },
         "line_width": {
-            "value": "round(machine_nozzle_size * 0.875, 2)"
+            "value": "machine_nozzle_size"
         },
         "speed_support": {
             "value": "speed_wall_0"

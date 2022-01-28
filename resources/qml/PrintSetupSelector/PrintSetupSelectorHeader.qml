@@ -15,7 +15,8 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("category_layer_height")
+        source: UM.Theme.getIcon("Sliders", "medium")
+        iconSize: UM.Theme.getSize("button_icon").width
         text:
         {
             if (Cura.MachineManager.activeStack)
@@ -50,9 +51,10 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("category_infill")
+        source: UM.Theme.getIcon("Infill1")
         text: Cura.MachineManager.activeStack ? parseInt(infillDensity.properties.value) + "%" : "0%"
         font: UM.Theme.getFont("medium")
+        iconSize: UM.Theme.getSize("medium_button_icon").width
 
         UM.SettingPropertyProvider
         {
@@ -65,9 +67,10 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("category_support")
+        source: UM.Theme.getIcon("Support")
         text: supportEnabled.properties.value == "True" ? enabledText : disabledText
         font: UM.Theme.getFont("medium")
+        iconSize: UM.Theme.getSize("medium_button_icon").width
 
         UM.SettingPropertyProvider
         {
@@ -80,9 +83,10 @@ RowLayout
 
     Cura.IconWithText
     {
-        source: UM.Theme.getIcon("category_adhesion")
+        source: UM.Theme.getIcon("Adhesion")
         text: platformAdhesionType.properties.value != "skirt" && platformAdhesionType.properties.value != "none" ? enabledText : disabledText
         font: UM.Theme.getFont("medium")
+        iconSize: UM.Theme.getSize("medium_button_icon").width
 
         UM.SettingPropertyProvider
         {

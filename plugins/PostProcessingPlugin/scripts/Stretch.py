@@ -195,7 +195,7 @@ class Stretcher:
         i.e. it is a travel move
         """
         if i_pos == 0:
-            return True # Begining a layer always breaks filament (for simplicity)
+            return True # Beginning a layer always breaks filament (for simplicity)
         step = layer_steps[i_pos]
         prev_step = layer_steps[i_pos - 1]
         if step.step_e != prev_step.step_e:

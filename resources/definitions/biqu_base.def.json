@@ -5,7 +5,7 @@
     "metadata": {
         "visible": false,
         "author": "Luke Harrison",
-        "manufacturer": "BIQU",
+        "manufacturer": "Biqu",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
@@ -25,7 +25,7 @@
     "overrides": {
         "machine_name": { "default_value": "BIQU Base Printer" },
         "machine_start_gcode": { "default_value": "M201 X500.00 Y500.00 Z100.00 E5000.00 ;Setup machine max acceleration\nM203 X500.00 Y500.00 Z10.00 E50.00 ;Setup machine max feedrate\nM204 P500.00 R1000.00 T500.00 ;Setup Print/Retract/Travel acceleration\nM205 X8.00 Y8.00 Z0.40 E5.00 ;Setup Jerk\nM220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X10.4 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n" },
-        "machine_end_gcode": { "default_value": "                               ;BIQU Default End Gcode\nG91                            ;Relative positioning\nG1 E-2 F2700                   ;Retract a bit\nG1 E-2 Z0.2 F2400              ;Retract a bit more and raise Z\nG1 X5 Y5 F3000                 ;Wipe out\nG1 Z10                         ;Raise Z by 10mm\nG90                            ;Return to absolute positionning\n\nG1 X0 Y{machine_depth}         ;TaDaaaa\nM106 S0                        ;Turn-off fan\nM104 S0                        ;Turn-off hotend\nM140 S0                        ;Turn-off bed\n\nM84 X Y E                      ;Disable all steppers but Z\n" },
+        "machine_end_gcode": { "default_value": "                               ;BIQU Default End Gcode\nG91                            ;Relative positioning\nG1 E-2 F2700                   ;Retract a bit\nG1 E-2 Z0.2 F2400              ;Retract a bit more and raise Z\nG1 X5 Y5 F3000                 ;Wipe out\nG1 Z10                         ;Raise Z by 10mm\nG90                            ;Return to absolute positioning\n\nG1 X0 Y{machine_depth}         ;TaDaaaa\nM106 S0                        ;Turn-off fan\nM104 S0                        ;Turn-off hotend\nM140 S0                        ;Turn-off bed\n\nM84 X Y E                      ;Disable all steppers but Z\n" },
 
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
@@ -83,10 +83,9 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
-        "z_seam_type": { "value": "'back'" },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
 
         "infill_line_width": { "value": "line_width * 1.2" },
         "infill_sparse_density": { "value": "20" },
@@ -97,7 +96,6 @@
         "infill_wipe_dist": { "value": 0.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 
@@ -139,7 +137,7 @@
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
 
-        "meshfix_maximum_resolution": { "value": "0.05" },
+        "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
 
         "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },
@@ -156,7 +154,7 @@
 
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "layer_height * 4" },
-        "support_interface_density": { "value": 33.333 },
+        "support_interface_density": { "value": 75 },
         "support_interface_pattern": { "value": "'grid'" },
         "support_interface_skip_height": { "value": 0.2 },
         "minimum_support_area": { "value": 2 },

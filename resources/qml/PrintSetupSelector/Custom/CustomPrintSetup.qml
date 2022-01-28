@@ -158,7 +158,7 @@ Item
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
-                iconSource: UM.Theme.getIcon("star")
+                iconSource: UM.Theme.getIcon("StarFilled")
 
                 onClicked:
                 {
@@ -176,7 +176,7 @@ Item
             {
                 id: downArrow
 
-                source: UM.Theme.getIcon("arrow_bottom")
+                source: UM.Theme.getIcon("ChevronSingleDown")
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
 
@@ -226,9 +226,12 @@ Item
                 {
                     Cura.ExtruderIcon
                     {
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.centerIn: parent
                         materialColor: model.color
                         extruderEnabled: model.enabled
+                        iconVariant: "default"
+                        height: parent.height
+                        width: height
                     }
                 }
                 onClicked:
@@ -244,7 +247,7 @@ Item
         Connections
         {
             target: Cura.ExtruderManager
-            onActiveExtruderChanged:
+            function onActiveExtruderChanged()
             {
                 tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex);
             }
@@ -256,7 +259,7 @@ Item
         Connections
         {
             target: repeater.model
-            onModelChanged:
+            function onModelChanged()
             {
                 tabBar.setCurrentIndex(Cura.ExtruderManager.activeExtruderIndex)
             }

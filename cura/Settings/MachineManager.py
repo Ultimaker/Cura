@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -128,6 +128,7 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
 
         self.activeStackValueChanged.connect(self._reCalculateNumUserSettings)
+        self.numberExtrudersEnabledChanged.connect(self.correctPrintSequence)
 
     activeQualityDisplayNameChanged = pyqtSignal()
 
@@ -626,7 +627,7 @@ class MachineManager(QObject):
             return ""
         return global_container_stack.getIntentCategory()
 
-    # Provies a list of extruder positions that have a different intent from the active one.
+    # Provides a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
     def extruderPositionsWithNonActiveIntent(self):
         global_container_stack = self._application.getGlobalContainerStack()
@@ -826,11 +827,6 @@ class MachineManager(QObject):
         result = []  # type: List[str]
         for setting_instance in container.findInstances():
             setting_key = setting_instance.definition.key
-            if setting_key == "print_sequence":
-                old_value = container.getProperty(setting_key, "value")
-                Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
-                result.append(setting_key)
-                continue
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
 
@@ -857,10 +853,45 @@ class MachineManager(QObject):
             self._global_container_stack.userChanges.setProperty(setting_key, "value", self._default_extruder_position)
         if add_user_changes:
             caution_message = Message(
-                catalog.i18nc("@info:message Followed by a list of settings.", "Settings have been changed to match the current availability of extruders:") + " [{settings_list}]".format(settings_list = ", ".join(add_user_changes)),
-                lifetime = 0,
+                catalog.i18nc("@info:message Followed by a list of settings.",
+                              "Settings have been changed to match the current availability of extruders:") + " [{settings_list}]".format(settings_list = ", ".join(add_user_changes)),
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
+
+    def correctPrintSequence(self) -> None:
+        """
+        Sets the Print Sequence setting to "all-at-once" when there are more than one enabled extruders.
+
+        This setting has to be explicitly changed whenever we have more than one enabled extruders to make sure that the
+        Cura UI is properly updated to reset all the UI elements changes that occur due to the one-at-a-time mode (such
+        as the reduced build volume, the different convex hulls of the objects etc.).
+        """
+
+        setting_key = "print_sequence"
+        new_value = "all_at_once"
+
+        if self._global_container_stack is None \
+                or self._global_container_stack.getProperty(setting_key, "value") == new_value \
+                or self.numberExtrudersEnabled < 2:
+            return
+
+        user_changes_container = self._global_container_stack.userChanges
+        quality_changes_container = self._global_container_stack.qualityChanges
+        print_sequence_quality_changes = quality_changes_container.getProperty(setting_key, "value")
+        print_sequence_user_changes = user_changes_container.getProperty(setting_key, "value")
+
+        # If the user changes container has a value and its the incorrect value, then reset the setting in the user
+        # changes (so that the circular revert-changes arrow will now show up in the interface)
+        if print_sequence_user_changes and print_sequence_user_changes != new_value:
+            user_changes_container.removeInstance(setting_key)
+            Logger.log("d", "Resetting '{}' in container '{}' because there are more than 1 enabled extruders.".format(setting_key, user_changes_container))
+        # If the print sequence doesn't exist in either the user changes or the quality changes (yet it still has the
+        # wrong value in the global stack), or it exists in the quality changes and it has the wrong value, then set it
+        # in the user changes
+        elif (not print_sequence_quality_changes and not print_sequence_user_changes) \
+                or (print_sequence_quality_changes and print_sequence_quality_changes != new_value):
+            user_changes_container.setProperty(setting_key, "value", new_value)
+            Logger.log("d", "Setting '{}' in '{}' to '{}' because there are more than 1 enabled extruders.".format(setting_key, user_changes_container, new_value))
 
     def setActiveMachineExtruderCount(self, extruder_count: int) -> None:
         """Set the amount of extruders on the active machine (global stack)
@@ -1159,7 +1190,7 @@ class MachineManager(QObject):
 
         self.setIntentByCategory(quality_changes_group.intent_category)
         self._reCalculateNumUserSettings()
-
+        self.correctExtruderSettings()
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
@@ -1366,6 +1397,8 @@ class MachineManager(QObject):
         # previous one).
         self._global_container_stack.setUserChanges(global_user_changes)
         for i, user_changes in enumerate(per_extruder_user_changes):
+            if i >= len(self._global_container_stack.extruderList):  # New printer has fewer extruders.
+                break
             self._global_container_stack.extruderList[i].setUserChanges(per_extruder_user_changes[i])
 
     @pyqtSlot(QObject)
@@ -1502,7 +1535,7 @@ class MachineManager(QObject):
         machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
         variant_node = machine_node.variants.get(variant_name)
         if variant_node is None:
-            Logger.error("There is no variant with the name {variant_name}.")
+            Logger.error(f"There is no variant with the name {variant_name}.")
             return
         self.setVariant(position, variant_node)
 

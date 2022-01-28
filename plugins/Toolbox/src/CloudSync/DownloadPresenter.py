@@ -6,7 +6,7 @@ from typing import Dict, List, Any
 
 from PyQt5.QtNetwork import QNetworkReply
 
-from UM import i18n_catalog
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
@@ -14,6 +14,8 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
+
+i18n_catalog = i18nCatalog("cura")
 
 
 class DownloadPresenter:
@@ -90,7 +92,7 @@ class DownloadPresenter:
             lifetime = 0,
             use_inactivity_timer = False,
             progress = 0.0,
-            title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+            title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account"))
 
     def _onFinished(self, package_id: str, reply: QNetworkReply) -> None:
         self._progress[package_id]["received"] = self._progress[package_id]["total"]

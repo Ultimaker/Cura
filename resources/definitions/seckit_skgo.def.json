@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "SecKit SK-Go",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Ernest Lin",
+        "manufacturer": "SecKit 3DP Design",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "has_machine_quality": false,
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "seckit_skgo_extruder_0"
+        }
+    },
+
+
+    "overrides": {
+        "machine_name": { "default_value": "SecKit SK-Go" },
+        "machine_width": {
+            "default_value": 310
+        },
+        "machine_depth": {
+            "default_value": 310
+        },
+        "machine_height": {
+            "default_value": 350
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -10, 20 ],
+                [ -10, -20 ],
+                [ 10, 20 ],
+                [ 10, -20 ]
+            ]
+        },
+        "gantry_height": {
+            "value": "50"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "M569 S1 X Y ; enable StealthChop for Sensorless Homing\nG28 ; Home\nM569 S0 X Y ; disable StealthChop for normal print\nM900 K0.07 ; K factor of linear advance\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\nG90 ; abs position"
+        },
+        "machine_end_gcode": {
+            "default value": "M104 S0\nM140 S0\nG91 ; relative position\nG1 Z10 F450\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG90 ; abs position\nG1 X10 Y280 F6000\nM84"
+        }
+     }
+}

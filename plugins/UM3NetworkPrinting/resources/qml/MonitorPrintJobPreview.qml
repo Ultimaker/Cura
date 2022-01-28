@@ -71,20 +71,20 @@ Item
             }
             if (printJob.configurationChanges.length > 0)
             {
-                return "../svg/warning-icon.svg"
+                return "../svg/Warning.svg"
             }
             switch(printJob.state)
             {
                 case "error":
-                    return "../svg/aborted-icon.svg"
+                    return "../svg/CancelCircle.svg"
                 case "wait_cleanup":
-                    return printJob.timeTotal > printJob.timeElapsed ? "../svg/aborted-icon.svg" : ""
+                    return printJob.timeTotal > printJob.timeElapsed ? "../svg/CancelCircle.svg" : ""
                 case "pausing":
-                    return "../svg/paused-icon.svg"
+                    return "../svg/PauseCircle.svg"
                 case "paused":
-                    return "../svg/paused-icon.svg"
+                    return "../svg/PauseCircle.svg"
                 case "resuming":
-                    return "../svg/paused-icon.svg"
+                    return "../svg/PauseCircle.svg"
                 default:
                     return ""
             }

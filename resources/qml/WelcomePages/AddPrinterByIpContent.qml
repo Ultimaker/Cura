@@ -41,7 +41,7 @@ Item
     Connections
     {
         target: CuraApplication.getDiscoveredPrintersModel()
-        onDiscoveredPrintersChanged:
+        function onDiscoveredPrintersChanged()
         {
             if (hasRequestFinished && currentRequestAddress)
             {
@@ -203,12 +203,12 @@ Item
                     {
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
-                            return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/en/resources/52891-set-up-a-cloud-connection\">"
+                            return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
                                 + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
                         }
                         else
                         {
-                            return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://ultimaker.com/en/resources/52891-set-up-a-cloud-connection\">"
+                            return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer-error\">"
                                 + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
                         }
                     }
@@ -310,7 +310,7 @@ Item
                     Connections
                     {
                         target: CuraApplication.getDiscoveredPrintersModel()
-                        onManualDeviceRequestFinished:
+                        function onManualDeviceRequestFinished(success)
                         {
                             var discovered_printers_model = CuraApplication.getDiscoveredPrintersModel()
                             var printer = discovered_printers_model.discoveredPrintersByAddress[hostnameField.text]

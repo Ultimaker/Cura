@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To get the source directory from command line arguments.
@@ -190,6 +190,20 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
     return "\"\"\n"
 
 if __name__ == "__main__":
+    print("""Usage instructions:
+
+1. In Smartling, in the Cura project go to the "Files" tab.
+2. Select all four .pot files.
+3. In the expando above the file list, choose "Download Selected".
+4. In the pop-up, select:
+   - Current translations
+   - Select all languages
+   - Organize files: Folders for languages.
+5. Download that and extract the .zip archive somewhere.
+6. Start this script, with the location you extracted to as a parameter, e.g.:
+   python3 /path/to/lionbridge_import.py /home/username/Desktop/cura_translations
+""")
+
     argparser = argparse.ArgumentParser(description = "Import translation files from Lionbridge.")
     argparser.add_argument("source")
     args = argparser.parse_args()

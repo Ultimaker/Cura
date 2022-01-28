@@ -105,13 +105,13 @@ Button
     Connections
     {
         target: outputDevice
-        onUniqueConfigurationsChanged: updatePrinterTypesFunction()
+        function onUniqueConfigurationsChanged() { updatePrinterTypesFunction() }
     }
 
     Connections
     {
         target: Cura.MachineManager
-        onOutputDevicesChanged: updatePrinterTypesFunction()
+        function onOutputDevicesChanged() { updatePrinterTypesFunction() }
     }
 
     Component.onCompleted: updatePrinterTypesFunction()

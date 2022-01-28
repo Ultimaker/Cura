@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -6,6 +6,7 @@ import math
 
 from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
+from UM.Logger import Logger
 from UM.Mesh.MeshData import MeshData
 from UM.Mesh.MeshBuilder import MeshBuilder
 
@@ -65,6 +66,7 @@ class BuildVolume(SceneNode):
         self._height = 0  # type: float
         self._depth = 0  # type: float
         self._shape = ""  # type: str
+        self._scale_vector = Vector(1.0, 1.0, 1.0)
 
         self._shader = None
 
@@ -95,9 +97,11 @@ class BuildVolume(SceneNode):
         self._edge_disallowed_size = None
 
         self._build_volume_message = Message(catalog.i18nc("@info:status",
-            "The build volume height has been reduced due to the value of the"
-            " \"Print Sequence\" setting to prevent the gantry from colliding"
-            " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
+                "The build volume height has been reduced due to the value of the"
+                " \"Print Sequence\" setting to prevent the gantry from colliding"
+                " with printed models."),
+            title = catalog.i18nc("@info:title", "Build Volume"),
+            message_type = Message.MessageType.WARNING)
 
         self._global_container_stack = None  # type: Optional[GlobalStack]
 
@@ -281,13 +285,13 @@ class BuildVolume(SceneNode):
                     continue
                 # If the entire node is below the build plate, still mark it as outside.
                 node_bounding_box = node.getBoundingBox()
-                if node_bounding_box and node_bounding_box.top < 0:
+                if node_bounding_box and node_bounding_box.top < 0 and not node.getParent().callDecoration("isGroup"):
                     node.setOutsideBuildArea(True)
                     continue
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
                 try:
-                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled and not node.callDecoration("isGroup"):
                         node.setOutsideBuildArea(True)
                         continue
                 except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
@@ -344,7 +348,12 @@ class BuildVolume(SceneNode):
 
             # Mark the node as outside build volume if the set extruder is disabled
             extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+            try:
+                if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+                    node.setOutsideBuildArea(True)
+                    return
+            except IndexError:
+                # If the extruder doesn't exist, also mark it as unprintable.
                 node.setOutsideBuildArea(True)
                 return
 
@@ -505,6 +514,13 @@ class BuildVolume(SceneNode):
             self._disallowed_area_size = max(size, self._disallowed_area_size)
         return mb.build()
 
+    def _updateScaleFactor(self) -> None:
+        if not self._global_container_stack:
+            return
+        scale_xy = 100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"))
+        scale_z  = 100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_z" , "value"))
+        self._scale_vector = Vector(scale_xy, scale_xy, scale_z)
+
     def rebuild(self) -> None:
         """Recalculates the build volume & disallowed areas."""
 
@@ -546,9 +562,12 @@ class BuildVolume(SceneNode):
 
         self._error_mesh = self._buildErrorMesh(min_w, max_w, min_h, max_h, min_d, max_d, disallowed_area_height)
 
+        self._updateScaleFactor()
+
         self._volume_aabb = AxisAlignedBox(
-            minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d))
+            minimum = Vector(min_w, min_h - 1.0, min_d).scale(self._scale_vector),
+            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d).scale(self._scale_vector)
+        )
 
         bed_adhesion_size = self.getEdgeDisallowedSize()
 
@@ -556,15 +575,15 @@ class BuildVolume(SceneNode):
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1).scale(self._scale_vector),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1).scale(self._scale_vector)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
 
         self.updateNodeBoundaryCheck()
 
-    def getBoundingBox(self):
+    def getBoundingBox(self) -> Optional[AxisAlignedBox]:
         return self._volume_aabb
 
     def getRaftThickness(self) -> float:
@@ -625,18 +644,18 @@ class BuildVolume(SceneNode):
             for extruder in extruders:
                 extruder.propertyChanged.connect(self._onSettingPropertyChanged)
 
-            self._width = self._global_container_stack.getProperty("machine_width", "value")
+            self._width = self._global_container_stack.getProperty("machine_width", "value") * self._scale_vector.x
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
             if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                if self._height < machine_height:
+                self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
+                if self._height < (machine_height * self._scale_vector.z):
                     self._build_volume_message.show()
                 else:
                     self._build_volume_message.hide()
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
-            self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+            self._depth = self._global_container_stack.getProperty("machine_depth", "value") * self._scale_vector.y
             self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
             self._updateDisallowedAreas()
@@ -670,18 +689,18 @@ class BuildVolume(SceneNode):
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
                 if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
-                    if self._height < machine_height:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
+                    if self._height < (machine_height * self._scale_vector.z):
                         self._build_volume_message.show()
                     else:
                         self._build_volume_message.hide()
                 else:
-                    self._height = self._global_container_stack.getProperty("machine_height", "value")
+                    self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
                     self._build_volume_message.hide()
                 update_disallowed_areas = True
 
             # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
-            if setting_key in self._machine_settings:
+            if setting_key in self._machine_settings or setting_key in self._material_size_settings:
                 self._updateMachineSizeProperties()
                 update_extra_z_clearance = True
                 update_disallowed_areas = True
@@ -730,9 +749,10 @@ class BuildVolume(SceneNode):
     def _updateMachineSizeProperties(self) -> None:
         if not self._global_container_stack:
             return
-        self._height = self._global_container_stack.getProperty("machine_height", "value")
-        self._width = self._global_container_stack.getProperty("machine_width", "value")
-        self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+        self._updateScaleFactor()
+        self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
+        self._width = self._global_container_stack.getProperty("machine_width", "value") * self._scale_vector.x
+        self._depth = self._global_container_stack.getProperty("machine_depth", "value") * self._scale_vector.y
         self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
     def _updateDisallowedAreasAndRebuild(self):
@@ -748,6 +768,14 @@ class BuildVolume(SceneNode):
         self._updateRaftThickness()
         self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
         self.rebuild()
+
+    def _scaleAreas(self, result_areas: List[Polygon]) -> None:
+        if self._global_container_stack is None:
+            return
+        for i, polygon in enumerate(result_areas):
+            result_areas[i] = polygon.scale(
+                100.0 / max(100.0, self._global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"))
+            )
 
     def _updateDisallowedAreas(self) -> None:
         if not self._global_container_stack:
@@ -804,9 +832,11 @@ class BuildVolume(SceneNode):
 
         self._disallowed_areas = []
         for extruder_id in result_areas:
+            self._scaleAreas(result_areas[extruder_id])
             self._disallowed_areas.extend(result_areas[extruder_id])
         self._disallowed_areas_no_brim = []
         for extruder_id in result_areas_no_brim:
+            self._scaleAreas(result_areas_no_brim[extruder_id])
             self._disallowed_areas_no_brim.extend(result_areas_no_brim[extruder_id])
 
     def _computeDisallowedAreasPrinted(self, used_extruders):
@@ -818,10 +848,10 @@ class BuildVolume(SceneNode):
         """
 
         result = {}
-        adhesion_extruder = None #type: ExtruderStack
+        skirt_brim_extruder: ExtruderStack = None
         for extruder in used_extruders:
-            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value")):
-                adhesion_extruder = extruder
+            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")):
+                skirt_brim_extruder = extruder
             result[extruder.getId()] = []
 
         # Currently, the only normally printed object is the prime tower.
@@ -835,11 +865,11 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if adhesion_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
+            if skirt_brim_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                 brim_size = (
-                    adhesion_extruder.getProperty("brim_line_count", "value") *
-                    adhesion_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
-                    adhesion_extruder.getProperty("initial_layer_line_width_factor", "value")
+                    skirt_brim_extruder.getProperty("brim_line_count", "value") *
+                    skirt_brim_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
+                    skirt_brim_extruder.getProperty("initial_layer_line_width_factor", "value")
                 )
                 prime_tower_x -= brim_size
                 prime_tower_y += brim_size
@@ -911,6 +941,8 @@ class BuildVolume(SceneNode):
             return {}
 
         for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
+            if len(area) == 0:
+                continue  # Numpy doesn't deal well with 0-length arrays, since it can't determine the dimensionality of them.
             polygon = Polygon(numpy.array(area, numpy.float32))
             polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
             machine_disallowed_polygons.append(polygon)
@@ -1063,11 +1095,23 @@ class BuildVolume(SceneNode):
         adhesion_type = adhesion_override
         if adhesion_type is None:
             adhesion_type = container_stack.getProperty("adhesion_type", "value")
-        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
-        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
+
+        # Skirt_brim_line_width is a bit of an odd one out. The primary bit of the skirt/brim is printed
+        # with the adhesion extruder, but it also prints one extra line by all other extruders. As such, the
+        # setting does *not* have a limit_to_extruder setting (which means that we can't ask the global extruder what
+        # the value is.
+        skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
+        try:
+            skirt_brim_stack = self._global_container_stack.extruderList[int(skirt_brim_extruder_nr)]
+        except IndexError:
+            Logger.warning(f"Couldn't find extruder with index '{skirt_brim_extruder_nr}', defaulting to 0 instead.")
+            skirt_brim_stack = self._global_container_stack.extruderList[0]
+        skirt_brim_line_width = skirt_brim_stack.getProperty("skirt_brim_line_width", "value")
+
+        initial_layer_line_width_factor = skirt_brim_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
         if adhesion_type == "brim":
-            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            brim_line_count = skirt_brim_stack.getProperty("brim_line_count", "value")
             bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
             for extruder_stack in used_extruders:
@@ -1076,8 +1120,8 @@ class BuildVolume(SceneNode):
             # We don't create an additional line for the extruder we're printing the brim with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
         elif adhesion_type == "skirt":
-            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
-            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
+            skirt_distance = skirt_brim_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = skirt_brim_stack.getProperty("skirt_line_count", "value")
 
             bed_adhesion_size = skirt_distance + (
                         skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
@@ -1088,7 +1132,7 @@ class BuildVolume(SceneNode):
             # We don't create an additional line for the extruder we're printing the skirt with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
         elif adhesion_type == "raft":
-            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
+            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")  # Should refer to the raft extruder if set.
         elif adhesion_type == "none":
             bed_adhesion_size = 0
         else:
@@ -1176,6 +1220,7 @@ class BuildVolume(SceneNode):
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
-    _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
-    _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
-    _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings
+    _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "skirt_brim_extruder_nr", "raft_base_extruder_nr", "raft_interface_extruder_nr", "raft_surface_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
+    _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "skirt_brim_extruder_nr", "raft_base_extruder_nr", "raft_interface_extruder_nr", "raft_surface_extruder_nr"]
+    _material_size_settings = ["material_shrinkage_percentage", "material_shrinkage_percentage_xy", "material_shrinkage_percentage_z"]
+    _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings + _material_size_settings

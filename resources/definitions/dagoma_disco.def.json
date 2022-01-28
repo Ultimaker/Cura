@@ -73,6 +73,7 @@
         "machine_steps_per_mm_x": { "default_value": 80 },
         "machine_steps_per_mm_y": { "default_value": 80 },
         "machine_steps_per_mm_z": { "default_value": 2560 },
-        "machine_steps_per_mm_e": { "default_value": 98 }
+        "machine_steps_per_mm_e": { "default_value": 98 },
+        "speed_z_hop": {"default_value": 4}
     }
 }

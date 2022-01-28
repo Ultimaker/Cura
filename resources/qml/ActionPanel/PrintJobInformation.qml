@@ -144,7 +144,7 @@ Column
                         {
                             names.push(printMaterialNames[index])
                             lengths.push(printMaterialLengths[index].toFixed(2))
-                            weights.push(String(Math.round(printMaterialWeights[index])))
+                            weights.push(String(printMaterialWeights[index].toFixed(1)))
                             var cost = printMaterialCosts[index] == undefined ? 0 : printMaterialCosts[index].toFixed(2)
                             costs.push(cost)
                         }
@@ -153,7 +153,7 @@ Column
                 if(lengths.length == 0)
                 {
                     lengths = ["0.00"]
-                    weights = ["0"]
+                    weights = ["0.0"]
                     costs = ["0.00"]
                 }
 

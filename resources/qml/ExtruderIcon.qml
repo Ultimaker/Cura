@@ -1,7 +1,7 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.11
 import QtQuick.Controls 1.1
 import UM 1.2 as UM
 
@@ -16,31 +16,31 @@ Item
     property color materialColor
     property alias textColor: extruderNumberText.color
     property bool extruderEnabled: true
+    property alias iconSize: mainIcon.sourceSize
+    property string iconVariant: "medium"
 
-    UM.RecolorImage
+    Item
     {
-        id: mainIcon
+        opacity: extruderEnabled ? 1 : UM.Theme.getColor("extruder_disabled").a
         anchors.fill: parent
+        layer.enabled: true // Prevent weird opacity effects.
 
-        source: UM.Theme.getIcon("extruder_button")
-        color: extruderEnabled ? materialColor: UM.Theme.getColor("disabled")
-    }
-
-    Rectangle
-    {
-        id: extruderNumberCircle
-
-        width: height
-        height: Math.round(parent.height / 2)
-        radius: Math.round(width / 2)
-        color: UM.Theme.getColor("toolbar_background")
-
-        anchors
+        UM.RecolorImage
         {
-            horizontalCenter: parent.horizontalCenter
-            top: parent.top
-            // The circle needs to be slightly off center (so it sits in the middle of the square bit of the icon)
-            topMargin: (parent.height - height) / 2 - 0.1 * parent.height
+            anchors.fill: parent
+            sourceSize: mainIcon.sourceSize
+
+            source: UM.Theme.getIcon("ExtruderColor", iconVariant)
+            color: materialColor
+        }
+        UM.RecolorImage
+        {
+            id: mainIcon
+            anchors.fill: parent
+            sourceSize: UM.Theme.getSize("extruder_icon")
+
+            source: UM.Theme.getIcon("Extruder", iconVariant)
+            color: extruderNumberText.color
         }
 
         Label
@@ -48,25 +48,13 @@ Item
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("small_emphasis")
             color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
-            visible: extruderEnabled
             renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-        }
-
-        UM.RecolorImage
-        {
-            id: disabledIcon
-            anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("thick_lining").width
-            sourceSize.height: width
-            source: UM.Theme.getIcon("cross1")
-            visible: !extruderEnabled
-            color: UM.Theme.getColor("text")
         }
     }
 }

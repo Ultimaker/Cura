@@ -19,7 +19,8 @@ class LegacyDeviceNoLongerSupportedMessage(Message):
                                                       "running Ultimaker Connect. Please update the printer to the "
                                                       "latest firmware."),
             title = I18N_CATALOG.i18nc("@info:title", "Update your printer"),
-            lifetime = 10
+            lifetime = 10,
+            message_type = Message.MessageType.WARNING
         )
 
     def show(self) -> None:

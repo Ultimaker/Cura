@@ -122,7 +122,7 @@ Rectangle
                     }
                 }
             }
-            source: materialSlot.is_favorite ? UM.Theme.getIcon("favorites_star_full") : UM.Theme.getIcon("favorites_star_empty")
+            source: materialSlot.is_favorite ? UM.Theme.getIcon("StarFilled") : UM.Theme.getIcon("Star")
         }
     }
 }

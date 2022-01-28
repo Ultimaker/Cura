@@ -8,9 +8,9 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
-import QtGraphicalEffects 1.0
 
 import "../Account"
+import "../ApplicationSwitcher"
 
 Item
 {
@@ -63,7 +63,7 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 exclusiveGroup: mainWindowHeaderMenuGroup
                 style: UM.Theme.styles.main_window_header_tab
-                height: UM.Theme.getSize("main_window_header_button").height
+                height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
                 iconSource: model.stage.iconSource
 
                 property color overlayColor: "transparent"
@@ -71,7 +71,7 @@ Item
                 // This id is required to find the stage buttons through Squish
                 property string stageId: model.id
 
-                // This is a trick to assure the activeStage is correctly changed. It doesn't work propertly if done in the onClicked (see CURA-6028)
+                // This is a trick to assure the activeStage is correctly changed. It doesn't work properly if done in the onClicked (see CURA-6028)
                 MouseArea
                 {
                     anchors.fill: parent
@@ -95,10 +95,21 @@ Item
 
         background: Rectangle
         {
+            id: marketplaceButtonBorder
             radius: UM.Theme.getSize("action_button_radius").width
-            color: marketplaceButton.hovered ? UM.Theme.getColor("primary_text") : UM.Theme.getColor("main_window_header_background")
+            color: UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("primary_text")
+
+            Rectangle
+            {
+                id: marketplaceButtonFill
+                anchors.fill: parent
+                radius: parent.radius
+                color: UM.Theme.getColor("primary_text")
+                opacity: marketplaceButton.hovered ? 0.2 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+            }
         }
 
         contentItem: Label
@@ -106,7 +117,7 @@ Item
             id: label
             text: marketplaceButton.text
             font: UM.Theme.getFont("default")
-            color: marketplaceButton.hovered ? UM.Theme.getColor("main_window_header_background") : UM.Theme.getColor("primary_text")
+            color: UM.Theme.getColor("primary_text")
             width: contentWidth
             verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
@@ -114,7 +125,7 @@ Item
 
         anchors
         {
-            right: accountWidget.left
+            right: applicationSwitcher.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
@@ -136,6 +147,17 @@ Item
                 const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
                 return itemCount > 9 ? "9+" : itemCount
             }
+        }
+    }
+
+    ApplicationSwitcher
+    {
+        id: applicationSwitcher
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: accountWidget.left
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
     }
 

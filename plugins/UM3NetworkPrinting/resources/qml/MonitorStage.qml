@@ -6,7 +6,6 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.3 as UM
 import Cura 1.0 as Cura
-import QtGraphicalEffects 1.0
 
 // This is the root component for the monitor stage.
 Component
@@ -72,6 +71,7 @@ Component
                 top: printers.bottom
                 topMargin: 48 * screenScaleFactor // TODO: Theme!
             }
+            visible: OutputDevice.supportsPrintJobQueue
         }
 
         PrinterVideoStream

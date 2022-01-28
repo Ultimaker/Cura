@@ -1,3 +1,6 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 from typing import List, Dict, Any, cast
 
@@ -96,7 +99,10 @@ class SyncOrchestrator(Extension):
             else:
                 self._cloud_api.unsubscribe(item["package_id"])
             # delete temp file
-            os.remove(item["package_path"])
+            try:
+                os.remove(item["package_path"])
+            except EnvironmentError as e:  # File was already removed, no access rights, etc.
+                Logger.error("Can't delete temporary package file: {err}".format(err = str(e)))
 
         if has_changes:
             self._restart_presenter.present()
@@ -105,4 +111,4 @@ class SyncOrchestrator(Extension):
         """Logs an error and shows it to the user"""
 
         Logger.error(text)
-        Message(text, lifetime=0).show()
+        Message(text, lifetime = 0, message_type = Message.MessageType.ERROR).show()

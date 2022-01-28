@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING, cast, List
@@ -74,6 +74,7 @@ class PreviewPass(RenderPass):
                 self._shader.setUniformValue("u_faceId", -1)  # Don't render any selected faces in the preview.
             else:
                 Logger.error("Unable to compile shader program: overhang.shader")
+                return
 
         if not self._non_printing_shader:
             self._non_printing_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "transparent_object.shader"))

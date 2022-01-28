@@ -14,5 +14,6 @@ class PrintJobUploadBlockedMessage(Message):
         super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "Please wait until the current job has been sent."),
             title = I18N_CATALOG.i18nc("@info:title", "Print error"),
-            lifetime = 10
+            lifetime = 10,
+            message_type = Message.MessageType.ERROR
         )

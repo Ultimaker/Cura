@@ -61,6 +61,6 @@ Item
     Connections
     {
         target: model
-        onAllFinished: dialog.visible = false
+        function onAllFinished() { dialog.visible = false }
     }
 }

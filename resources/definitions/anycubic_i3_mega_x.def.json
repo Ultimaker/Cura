@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "Anycubic i3 Mega X",
+    "inherits": "anycubic_i3_mega_s",
+	"metadata":
+    {
+		"quality_definition": "anycubic_i3_mega_s",
+		"platform": "anycubic_i3_mega_x_platform.stl"
+	},
+    "overrides":
+    {
+        "machine_name": { "default_value": "Anycubic i3 Mega X" },
+        "machine_width": { "default_value": 300 },
+        "machine_height": { "default_value": 305 },
+        "machine_depth": { "default_value": 300 },
+
+        "acceleration_print": { "value": 400 },
+        "acceleration_travel": { "value": 400 }
+	}
+}

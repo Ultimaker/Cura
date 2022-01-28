@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # Remove the working directory from sys.path.
@@ -15,14 +15,9 @@ if "" in sys.path:
 import argparse
 import faulthandler
 import os
-
-# Workaround for a race condition on certain systems where there
-# is a race condition between Arcus and PyQt. Importing Arcus
-# first seems to prevent Sip from going into a state where it
-# tries to create PyQt objects on a non-main thread.
-import Arcus  # @UnusedImport
-import Savitar  # @UnusedImport
-import pynest2d # @UnusedImport
+if sys.platform != "linux":  # Turns out the Linux build _does_ use this, but we're not making an Enterprise release for that system anyway.
+    os.environ["QT_PLUGIN_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
+    os.environ["QML2_IMPORT_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
 
 from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
 
@@ -56,6 +51,8 @@ if with_sentry_sdk:
         sentry_env = "development"  # Master is always a development version.
     elif "beta" in ApplicationMetadata.CuraVersion or "BETA" in ApplicationMetadata.CuraVersion:
         sentry_env = "beta"
+    elif "alpha" in ApplicationMetadata.CuraVersion or "ALPHA" in ApplicationMetadata.CuraVersion:
+        sentry_env = "alpha"
     try:
         if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
             sentry_env = "nightly"
@@ -226,6 +223,12 @@ if Platform.isLinux() and getattr(sys, "frozen", False):
     import trimesh.exchange.load
     os.environ["LD_LIBRARY_PATH"] = old_env
 
+# WORKAROUND: Cura#5488
+# When using the KDE qqc2-desktop-style, the UI layout is completely broken, and
+# even worse, it crashes when switching to the "Preview" pane.
+if Platform.isLinux():
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "default"
+    
 if ApplicationMetadata.CuraDebugMode:
     ssl_conf = QSslConfiguration.defaultConfiguration()
     ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)

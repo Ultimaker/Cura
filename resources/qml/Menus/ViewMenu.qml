@@ -20,6 +20,7 @@ Menu
         MenuItem { action: Cura.Actions.view3DCamera; }
         MenuItem { action: Cura.Actions.viewFrontCamera; }
         MenuItem { action: Cura.Actions.viewTopCamera; }
+        MenuItem { action: Cura.Actions.viewBottomCamera; }
         MenuItem { action: Cura.Actions.viewLeftSideCamera; }
         MenuItem { action: Cura.Actions.viewRightSideCamera; }
     }
@@ -31,7 +32,7 @@ Menu
         Connections
         {
             target: UM.Preferences
-            onPreferenceChanged:
+            function onPreferenceChanged(preference)
             {
                 if (preference !== "general/camera_perspective_mode")
                 {
@@ -50,7 +51,6 @@ Menu
             onTriggered:
             {
                 UM.Preferences.setValue("general/camera_perspective_mode", "perspective")
-                checked = cameraViewMenu.cameraMode == "perspective"
             }
             exclusiveGroup: group
         }
@@ -62,7 +62,6 @@ Menu
             onTriggered:
             {
                 UM.Preferences.setValue("general/camera_perspective_mode", "orthographic")
-                checked = cameraViewMenu.cameraMode == "orthographic"
             }
             exclusiveGroup: group
         }

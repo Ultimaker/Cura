@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "Hellbot Hidra",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Hellbot Development Team",
+        "manufacturer": "Hellbot",
+        "file_formats": "text/x-gcode",
+        "platform": "hellbot_hidra.obj",
+        "platform_offset": [0, 0, 5],
+        "platform_texture": "hellbot_hidra.png",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "hellbot_hidra_extruder_0",
+            "1": "hellbot_hidra_extruder_1"
+        }
+
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Hellbot Hidra" },
+        "machine_width": {
+            "default_value": 220
+        },
+        "machine_depth": {
+            "default_value": 220
+        },  
+        "machine_height": {
+            "default_value": 250
+        },      
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -75, 35 ],
+                [ -75, -18 ],
+                [ 18, 35 ],
+                [ 18, -18 ]
+            ]
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "machine_start_gcode": {
+             "default_value": "G21;\nG90;\nM82;\nM107;\nG28;\nG1 Z15.0 F9000;"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 T0 S0;\nM104 T1 S0;\nM140 S0;\nG92 E1;\nG1 E-1 F300;\nG28 X0 Y0;\nM84;"
+        }
+
+    }
+}

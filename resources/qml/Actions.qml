@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -21,6 +21,7 @@ Item
     property alias view3DCamera: view3DCameraAction;
     property alias viewFrontCamera: viewFrontCameraAction;
     property alias viewTopCamera: viewTopCameraAction;
+    property alias viewBottomCamera: viewBottomCameraAction;
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
 
@@ -78,7 +79,7 @@ Item
     Action
     {
         id: showTroubleShootingAction
-        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting")
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
         text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide");
     }
 
@@ -121,7 +122,15 @@ Item
     Action
     {
         id: quitAction
-        text: catalog.i18nc("@action:inmenu menubar:file","&Quit")
+
+        //On MacOS, don't translate the "Quit" word.
+        //Qt moves the "quit" entry to a different place, and if it got renamed can't find it again when it attempts to
+        //delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "&Quit" : catalog.i18nc("@action:inmenu menubar:file", "&Quit")
         iconName: "application-exit"
         shortcut: StandardKey.Quit
     }
@@ -149,6 +158,13 @@ Item
 
     Action
     {
+        id: viewBottomCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Bottom View")
+        onTriggered: UM.Controller.setCameraRotation("y", -90)
+    }
+
+    Action
+    {
         id: viewLeftSideCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "Left Side View")
         onTriggered: UM.Controller.setCameraRotation("x", 90)
@@ -164,7 +180,14 @@ Item
     Action
     {
         id: preferencesAction
-        text: catalog.i18nc("@action:inmenu", "Configure Cura...")
+        //On MacOS, don't translate the "Configure" word.
+        //Qt moves the "configure" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
         iconName: "configure"
     }
 
@@ -192,14 +215,14 @@ Item
     Action
     {
         id: marketplaceMaterialsAction
-        text: catalog.i18nc("@action:inmenu", "Add more materials from Marketplace")
+        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate.", "Add more materials from Marketplace")
     }
 
     Action
     {
         id: updateProfileAction;
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings/overrides");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Update profile with current settings/overrides");
         onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
 
@@ -255,14 +278,22 @@ Item
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help", "About...");
+
+        //On MacOS, don't translate the "About" word.
+        //Qt moves the "about" entry to a different place, and if it got renamed can't find it again when it
+        //attempts to delete the item upon closing the application, causing a crash.
+        //In the new location, these items are translated automatically according to the system's language.
+        //For more information, see:
+        //- https://doc.qt.io/qt-5/macos-issues.html#menu-bar
+        //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
+        text: (Qt.platform.os == "osx") ? "About..." : catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
     }
 
     Action
     {
         id: deleteSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Delete Selected Model", "Delete Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Delete Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete | "Backspace"
@@ -272,7 +303,7 @@ Item
     Action
     {
         id: centerSelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Center Selected Model", "Center Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Center Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "align-vertical-center";
         onTriggered: CuraActions.centerSelection();
@@ -281,7 +312,7 @@ Item
     Action
     {
         id: multiplySelectionAction;
-        text: catalog.i18ncp("@action:inmenu menubar:edit", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount);
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Multiply Selected");
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "edit-duplicate";
         shortcut: "Ctrl+M"
@@ -416,9 +447,13 @@ Item
     Action
     {
         id: openAction;
+        property var fileProviderModel: CuraApplication.getFileProviderModel()
+
         text: catalog.i18nc("@action:inmenu menubar:file","&Open File(s)...");
         iconName: "document-open";
-        shortcut: StandardKey.Open;
+        // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
+        // enabled instead, and Ctrl+O is assigned to the local file provider
+        shortcut: fileProviderModel.count == 1 ? StandardKey.Open : "";
     }
 
     Action
@@ -445,7 +480,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "&Marketplace")
+        text: "&Marketplace"
         iconName: "plugins_browse"
     }
 }

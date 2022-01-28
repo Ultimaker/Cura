@@ -1,0 +1,17 @@
+{
+    "name":      "Zav Big",
+    "version":   2,
+    "inherits":  "zav_base",
+    "metadata":  {
+                  "author": "Kirill Nikolaev, Kim Evgeniy (C)",
+                  "visible": true,
+                  "quality_definition": "zav_base",
+                  "platform": "zav_big.stl",
+                  "platform_offset": [0, 0, 0]
+                 },
+    "overrides": {
+                  "machine_name":   {"default_value": "zav_big"},
+                  "machine_depth":  {"default_value": 300},
+                  "machine_height": {"default_value": 340}
+                 }
+}

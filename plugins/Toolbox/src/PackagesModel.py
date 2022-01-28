@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re
@@ -58,7 +58,6 @@ class PackagesModel(ListModel):
         items = []
 
         if self._metadata is None:
-            Logger.logException("w", "Failed to load packages for Marketplace")
             self.setItems(items)
             return
 
@@ -91,7 +90,7 @@ class PackagesModel(ListModel):
             items.append({
                 "id":                   package["package_id"],
                 "type":                 package["package_type"],
-                "name":                 package["display_name"],
+                "name":                 package["display_name"].strip(),
                 "version":              package["package_version"],
                 "author_id":            package["author"]["author_id"],
                 "author_name":          package["author"]["display_name"],

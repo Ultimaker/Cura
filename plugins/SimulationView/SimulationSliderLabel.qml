@@ -59,7 +59,7 @@ UM.PointingRectangle {
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignHCenter
 
-        // key bindings, work when label is currenctly focused (active handle in LayerSlider)
+        // key bindings, work when label is currently focused (active handle in LayerSlider)
         Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
         Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 

@@ -39,14 +39,14 @@ TabView
         }
         if (!base.containerId || !base.editingEnabled || !base.currentMaterialNode)
         {
-            return ""
+            return "";
         }
         var linkedMaterials = Cura.ContainerManager.getLinkedMaterials(base.currentMaterialNode, true);
         if (linkedMaterials.length == 0)
         {
-            return ""
+            return "";
         }
-        return linkedMaterials;
+        return linkedMaterials.join(", ");
     }
 
     function getApproximateDiameter(diameter)

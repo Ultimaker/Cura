@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "MAKEiT Pro-M",
+    "name": "Makeit Pro-M",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "unknown",
-        "manufacturer": "MAKEiT 3D",
+        "manufacturer": "Makeit 3D",
         "file_formats": "text/x-gcode",
         "has_materials": false,
         "machine_extruder_trains":

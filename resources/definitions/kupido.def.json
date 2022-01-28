@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "KUPIDO",
+    "name": "Kupido",
     "inherits": "fdmprinter",
     "metadata":
     {
         "visible": true,
-        "author": "ALYA",
+        "author": "Kupido",
         "manufacturer": "Kati Hal ARGE",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0],

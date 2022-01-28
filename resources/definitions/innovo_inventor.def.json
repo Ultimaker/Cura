@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Innovo INVENTOR",
+    "name": "Innovo Inventor",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

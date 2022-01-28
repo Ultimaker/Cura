@@ -25,22 +25,7 @@ Button
     {
         implicitWidth: UM.Theme.getSize("button").width
         implicitHeight: UM.Theme.getSize("button").height
-        color:
-        {
-            if (base.checked && base.hovered)
-            {
-                return UM.Theme.getColor("toolbar_button_active_hover")
-            }
-            else if (base.checked)
-            {
-                return UM.Theme.getColor("toolbar_button_active")
-            }
-            else if(base.hovered)
-            {
-                return UM.Theme.getColor("toolbar_button_hover")
-            }
-            return UM.Theme.getColor("toolbar_background")
-        }
+        color: UM.Theme.getColor("toolbar_background")
         radius: UM.Theme.getSize("default_radius").width
 
         Rectangle
@@ -84,16 +69,35 @@ Button
             color: parent.color
         }
     }
-
-    contentItem: Item
+    contentItem: Rectangle
     {
         opacity: parent.enabled ? 1.0 : 0.2
+        implicitWidth: Math.round(UM.Theme.getSize("button").width * 0.75)
+        implicitHeight: Math.round(UM.Theme.getSize("button").height * 0.75)
+        radius: Math.round(width * 0.5)
+
+        color:
+        {
+            if (base.checked && base.hovered)
+            {
+                return UM.Theme.getColor("toolbar_button_active_hover")
+            }
+            else if (base.checked)
+            {
+                return UM.Theme.getColor("toolbar_button_active")
+            }
+            else if(base.hovered)
+            {
+                return UM.Theme.getColor("toolbar_button_hover")
+            }
+            return UM.Theme.getColor("toolbar_background")
+        }
         Loader
         {
             id: contentItemLoader
             anchors.centerIn: parent
-            width: UM.Theme.getSize("button_icon").width
-            height: UM.Theme.getSize("button_icon").height
+            width: Math.round(UM.Theme.getSize("button").width / 2)
+            height: Math.round(UM.Theme.getSize("button").height / 2)
         }
     }
 

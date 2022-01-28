@@ -77,7 +77,7 @@ class DisplayProgressOnLCD(Script):
             current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
             # And now insert that into the GCODE
             lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
-        else:  # Must be m73.
+        else:
             mins = int(60 * h + m + s / 30)
             lines.insert(line_index, "M73 R{}".format(mins))
 

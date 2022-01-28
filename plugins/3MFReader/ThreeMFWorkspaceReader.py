@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
@@ -49,7 +49,9 @@ _ignored_machine_network_metadata = {
     "removal_warning",
     "group_name",
     "group_size",
-    "connection_type"
+    "connection_type",
+    "capabilities",
+    "octoprint_api_key",
 }  # type: Set[str]
 
 
@@ -377,7 +379,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         #  - the global stack DOESN'T exist but some/all of the extruder stacks exist
         # To simplify this, only check if the global stack exists or not
         global_stack_id = self._stripFileToId(global_stack_file)
+
         serialized = archive.open(global_stack_file).read().decode("utf-8")
+
         serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
         machine_name = self._getMachineNameFromSerializedStack(serialized)
         self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
@@ -412,7 +416,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
-            quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+            if quality_container_id in instance_container_info_dict:
+                quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+            else:  # If a version upgrade changed the quality profile in the stack, we'll need to look for it in the built-in profiles instead of the workspace.
+                quality_matches = ContainerRegistry.getInstance().findContainersMetadata(id = quality_container_id)
+                if quality_matches:  # If there's no profile with this ID, leave it empty_quality.
+                    quality_type = quality_matches[0]["quality_type"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")
@@ -535,7 +544,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                  "Project file <filename>{0}</filename> contains an unknown machine type"
                                                  " <message>{1}</message>. Cannot import the machine."
                                                  " Models will be imported instead.", file_name, machine_definition_id),
-                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"))
+                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"),
+                                                 message_type = Message.MessageType.WARNING)
             message.show()
 
             Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
@@ -632,7 +642,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         except EnvironmentError as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>.", file_name, str(e)),
-                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"))
+                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                                                 message_type = Message.MessageType.ERROR)
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
+        except zipfile.BadZipFile as e:
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.", file_name, str(e)),
+                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                                                 message_type = Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
@@ -684,7 +703,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
                                                      "Project file <filename>{0}</filename> is made using profiles that"
-                                                     " are unknown to this version of Ultimaker Cura.", file_name))
+                                                     " are unknown to this version of Ultimaker Cura.", file_name),
+                                                     message_type = Message.MessageType.ERROR)
                 message.show()
                 self.setWorkspaceName("")
                 return [], {}
@@ -804,6 +824,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
             Logger.logException("w", "Unable to retrieve metadata from {fname}: 3MF archive is corrupt.".format(fname = file_name))
+            return result
+        except EnvironmentError as e:
+            Logger.logException("w", "Unable to retrieve metadata from {fname}: File is inaccessible. Error: {err}".format(fname = file_name, err = str(e)))
             return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
@@ -1147,7 +1170,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 return
             machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
-            self._quality_type_to_apply = self._quality_type_to_apply.lower()
+            self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
             quality_group_dict = container_tree.getCurrentQualityGroups()
             if self._quality_type_to_apply in quality_group_dict:
                 quality_group = quality_group_dict[self._quality_type_to_apply]

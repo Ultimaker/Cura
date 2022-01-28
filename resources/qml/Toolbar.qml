@@ -44,7 +44,6 @@ Item
 
             anchors.top: parent.top
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
@@ -69,7 +68,8 @@ Item
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
 
-                        sourceSize: UM.Theme.getSize("button_icon")
+                        sourceSize.height: Math.round(UM.Theme.getSize("button").height / 2)
+                        sourceSize.width: Math.round(UM.Theme.getSize("button").width / 2)
                     }
 
                     onCheckedChanged:
@@ -131,7 +131,6 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
@@ -184,7 +183,7 @@ Item
         borderColor: UM.Theme.getColor("lining")
         borderWidth: UM.Theme.getSize("default_lining").width
 
-        MouseArea //Catch all mouse events (so scene doesnt handle them)
+        MouseArea //Catch all mouse events (so scene doesn't handle them)
         {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons

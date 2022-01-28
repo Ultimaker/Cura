@@ -3,6 +3,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.15 as NewControls
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
@@ -132,7 +133,7 @@ UM.Dialog
                 font.bold: true
             }
 
-            model: base.changesModel
+            model: userChangesModel
         }
     }
 
@@ -145,10 +146,11 @@ UM.Dialog
         anchors.margins: UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        ComboBox
+        NewControls.ComboBox
         {
             id: discardOrKeepProfileChangesDropDownButton
             width: 300
+            textRole: "text"
 
             model: ListModel
             {

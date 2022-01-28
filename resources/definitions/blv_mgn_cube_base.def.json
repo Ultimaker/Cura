@@ -1,5 +1,5 @@
 {
-  "name": "BLV mgn Cube Base",
+  "name": "BLV MGN Cube Base",
   "version": 2,
   "inherits": "anet3d",
   "metadata": {
@@ -44,9 +44,6 @@
     },
     "machine_gcode_flavor": {
       "default_value": "RepRap (RepRap)"
-    },
-    "fill_perimeter_gaps": {
-      "value": "'everywhere'"
     },
     "fill_outline_gaps": {
       "value": true

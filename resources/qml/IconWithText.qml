@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 
 // Reusable component that holds an (re-colorable) icon on the left with some text on the right.
 // This component is also designed to be used with layouts. It will use the width of the text + icon as preferred width
-// It sets the icon size + half of the content as its minium width (in which case it will elide the text)
+// It sets the icon size + half of the content as its minimum width (in which case it will elide the text)
 Item
 {
     property alias source: icon.source

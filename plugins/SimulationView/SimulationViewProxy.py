@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import TYPE_CHECKING
 
@@ -28,6 +28,7 @@ class SimulationViewProxy(QObject):
     globalStackChanged = pyqtSignal()
     preferencesChanged = pyqtSignal()
     busyChanged = pyqtSignal()
+    colorSchemeLimitsChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify=activityChanged)
     def layerActivity(self):
@@ -101,21 +102,37 @@ class SimulationViewProxy(QObject):
     def getSimulationRunning(self):
         return self._simulation_view.isSimulationRunning()
 
-    @pyqtSlot(result=float)
-    def getMinFeedrate(self):
+    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    def minFeedrate(self):
         return self._simulation_view.getMinFeedrate()
 
-    @pyqtSlot(result=float)
-    def getMaxFeedrate(self):
+    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    def maxFeedrate(self):
         return self._simulation_view.getMaxFeedrate()
 
-    @pyqtSlot(result=float)
-    def getMinThickness(self):
+    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    def minThickness(self):
         return self._simulation_view.getMinThickness()
 
-    @pyqtSlot(result=float)
-    def getMaxThickness(self):
+    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    def maxThickness(self):
         return self._simulation_view.getMaxThickness()
+
+    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    def maxLineWidth(self):
+        return self._simulation_view.getMaxLineWidth()
+
+    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    def minLineWidth(self):
+        return self._simulation_view.getMinLineWidth()
+
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
+    def maxFlowRate(self):
+        return self._simulation_view.getMaxFlowRate()
+
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
+    def minFlowRate(self):
+        return self._simulation_view.getMinFlowRate()
 
     # Opacity 0..1
     @pyqtSlot(int, float)
@@ -144,6 +161,9 @@ class SimulationViewProxy(QObject):
     def _onLayerChanged(self):
         self.currentLayerChanged.emit()
         self._layerActivityChanged()
+
+    def _onColorSchemeLimitsChanged(self):
+        self.colorSchemeLimitsChanged.emit()
 
     def _onPathChanged(self):
         self.currentPathChanged.emit()
@@ -174,6 +194,7 @@ class SimulationViewProxy(QObject):
         active_view = self._controller.getActiveView()
         if active_view == self._simulation_view:
             self._simulation_view.currentLayerNumChanged.connect(self._onLayerChanged)
+            self._simulation_view.colorSchemeLimitsChanged.connect(self._onColorSchemeLimitsChanged)
             self._simulation_view.currentPathNumChanged.connect(self._onPathChanged)
             self._simulation_view.maxLayersChanged.connect(self._onMaxLayersChanged)
             self._simulation_view.maxPathsChanged.connect(self._onMaxPathsChanged)
@@ -186,6 +207,7 @@ class SimulationViewProxy(QObject):
             # Disconnect all of em again.
             self.is_simulationView_selected = False
             self._simulation_view.currentLayerNumChanged.disconnect(self._onLayerChanged)
+            self._simulation_view.colorSchemeLimitsChanged.connect(self._onColorSchemeLimitsChanged)
             self._simulation_view.currentPathNumChanged.disconnect(self._onPathChanged)
             self._simulation_view.maxLayersChanged.disconnect(self._onMaxLayersChanged)
             self._simulation_view.maxPathsChanged.disconnect(self._onMaxPathsChanged)

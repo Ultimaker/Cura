@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -205,6 +205,7 @@ Item
             height: UM.Theme.getSize("message_action_button").height
             onClicked: {
                 CuraApplication.getDiscoveredCloudPrintersModel().clear()
+                Cura.API.account.sync(true)
                 base.addCloudPrinterButtonClicked()
             }
         }
@@ -214,22 +215,22 @@ Item
             id: troubleshootingButton
 
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("thin_margin").width
             anchors.verticalCenter: parent.verticalCenter
             height: troubleshootingLinkIcon.height
-            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("default_margin").width
+            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("thin_margin").width
 
             UM.RecolorImage
             {
                 id: troubleshootingLinkIcon
                 anchors.right: troubleshootingLabel.left
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
                 anchors.verticalCenter: parent.verticalCenter
                 height: troubleshootingLabel.height
                 width: height
                 sourceSize.height: width
                 color: UM.Theme.getColor("text_link")
-                source: UM.Theme.getIcon("external_link")
+                source: UM.Theme.getIcon("LinkExternal")
             }
 
             Label
@@ -251,7 +252,7 @@ Item
                 onClicked:
                 {
                     // open the troubleshooting URL with web browser
-                    const url = "https://ultimaker.com/in/cura/troubleshooting/network"
+                    const url = "https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=add-network-printer"
                     Qt.openUrlExternally(url)
                 }
                 onEntered:

@@ -1,0 +1,21 @@
+{
+    "name": "Goofoo Open",
+    "version": 2,
+    "inherits": "goofoo_base",
+    "metadata": {
+        "quality_definition": "goofoo_open",
+        "visible": false,
+        "exclude_materials": [
+            "goofoo_bronze_pla",
+            "goofoo_peek",
+            "goofoo_tpe_83a",
+            "goofoo_tpu_87a",
+            "goofoo_tpu_95a",
+            "goofoo_pa_cf",
+            "goofoo_pc",
+            "goofoo_pa",
+            "goofoo_asa",
+            "goofoo_abs"
+        ]
+    }
+}

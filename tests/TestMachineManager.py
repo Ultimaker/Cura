@@ -1,3 +1,4 @@
+import functools
 from unittest.mock import MagicMock, patch, PropertyMock
 import pytest
 
@@ -8,6 +9,23 @@ def createMockedStack(stack_id: str, name: str):
     stack = MagicMock(name=name)
     stack.getId = MagicMock(return_value=stack_id)
     return stack
+
+
+def getPropertyMocked(setting_key, setting_property, settings_dict):
+    """
+    Mocks the getProperty function of containers so that it returns the setting values needed for a test.
+
+    Use this function as follows:
+    container.getProperty = functools.partial(getPropertyMocked, settings_dict = {"print_sequence": "one_at_a_time"})
+
+    :param setting_key: The key of the setting to be returned (e.g. "print_sequence", "infill_sparse_density" etc)
+    :param setting_property: The setting property (usually "value")
+    :param settings_dict: All the settings and their values expected to be returned by this mocked function
+    :return: The mocked setting value specified by the settings_dict
+    """
+    if setting_property == "value":
+        return settings_dict.get(setting_key)
+    return None
 
 
 @pytest.fixture()
@@ -21,7 +39,8 @@ def machine_manager(application, extruder_manager, container_registry, global_st
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         manager = MachineManager(application)
-        manager._onGlobalContainerChanged()
+        with patch.object(MachineManager, "updateNumberExtrudersEnabled", return_value = None):
+            manager._onGlobalContainerChanged()
 
     return manager
 
@@ -254,3 +273,115 @@ def test_isActiveQualityNotSupported(machine_manager):
 def test_isActiveQualityNotSupported_noQualityGroup(machine_manager):
     machine_manager.activeQualityGroup = MagicMock(return_value=None)
     assert not machine_manager.isActiveQualitySupported
+
+
+def test_correctPrintSequence_globalStackHasAllAtOnce(machine_manager, application):
+
+    # Global container stack already has all_at_once
+    mocked_stack = application.getGlobalContainerStack()
+    mocked_global_settings = {"print_sequence": "all_at_once"}
+    mocked_stack.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_global_settings)
+
+    mocked_user_changes_container = MagicMock(name="UserChangesContainer")
+    mocked_stack.userChanges = mocked_user_changes_container
+
+    machine_manager.correctPrintSequence()
+
+    # After the function is called, the user changes container should not have tried to change any properties
+    assert not mocked_user_changes_container.setProperty.called, "The Print Sequence should not be attempted to be changed when it is already 'all-at-once'"
+
+
+def test_correctPrintSequence_OneEnabledExtruder(machine_manager, application):
+    # Global container stack reports print sequence as one_at_a_time
+    mocked_stack = application.getGlobalContainerStack()
+    mocked_global_settings = {"print_sequence": "one_at_a_time"}
+    mocked_stack.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_global_settings)
+
+    # The definition changes container reports 1 enabled extruders, so the correctPrintSequence should not attempt to
+    # change the print sequence
+    mocked_definition_changes_container = MagicMock(name = "DefinitionChangesContainer")
+    mocked_definition_changes_settings = {"extruders_enabled_count": 1}
+    mocked_definition_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_definition_changes_settings)
+    mocked_stack.definitionChanges = mocked_definition_changes_container
+
+    mocked_user_changes_container = MagicMock(name = "UserChangesContainer")
+    mocked_stack.userChanges = mocked_user_changes_container
+
+    machine_manager.correctPrintSequence()
+
+    # After the function is called, the user changes container should not have tried to change any properties
+    assert not mocked_user_changes_container.setProperty.called, "The Print Sequence should not be attempted to be changed when there is only one enabled extruder."
+
+
+def test_correctPrintSequence_TwoExtrudersEnabled_printSequenceIsOneAtATimeInUserSettings(machine_manager, application):
+    # Global container stack reports print sequence as one_at_a_time
+    mocked_stack = application.getGlobalContainerStack()
+    mocked_global_settings = {"print_sequence": "one_at_a_time"}
+    mocked_stack.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_global_settings)
+
+    # The definition changes container reports 2 enabled extruders. Also the print sequence change is not saved in the
+    # quality changes container.
+    mocked_definition_changes_container = MagicMock(name = "DefinitionChangesContainer")
+    mocked_definition_changes_settings = {"extruders_enabled_count": 2, "print_sequence": None}
+    mocked_definition_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_definition_changes_settings)
+    mocked_stack.definitionChanges = mocked_definition_changes_container
+
+    # The user changes container reports print sequence as "one-at-a-time"
+    mocked_user_changes_container = MagicMock(name = "UserChangesContainer")
+    mocked_user_changes_settings = {"print_sequence": "one_at_a_time"}
+    mocked_user_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_user_changes_settings)
+    mocked_stack.userChanges = mocked_user_changes_container
+
+    machine_manager.correctPrintSequence()
+
+    # After the function is called, the user changes container should have tried to remove the print sequence from the
+    # user changes container
+    mocked_user_changes_container.removeInstance.assert_called_once_with("print_sequence")
+
+
+def test_correctPrintSequence_TwoExtrudersEnabled_printSequenceIsOneAtATimeInDefinitionChangesSettings(machine_manager, application):
+    # Global container stack reports print sequence as one_at_a_time
+    mocked_stack = application.getGlobalContainerStack()
+    mocked_global_settings = {"print_sequence": "one_at_a_time"}
+    mocked_stack.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_global_settings)
+
+    # The definition changes container reports 2 enabled extruders and contains the print_sequence change to "one-at-a-time"
+    mocked_definition_changes_container = MagicMock(name = "DefinitionChangesContainer")
+    mocked_definition_changes_settings = {"extruders_enabled_count": 2, "print_sequence": "one_at_a_time"}
+    mocked_definition_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_definition_changes_settings)
+    mocked_stack.definitionChanges = mocked_definition_changes_container
+
+    # The user changes container doesn't contain print_sequence
+    mocked_user_changes_container = MagicMock(name = "UserChangesContainer")
+    mocked_user_changes_settings = {"print_sequence": None}
+    mocked_user_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_user_changes_settings)
+    mocked_stack.userChanges = mocked_user_changes_container
+
+    machine_manager.correctPrintSequence()
+
+    # After the function is called, the print sequence should be set to "all-at-once" in the user changes container
+    mocked_user_changes_container.setProperty.assert_called_once_with("print_sequence", "value", "all_at_once")
+
+
+def test_correctPrintSequence_TwoExtrudersEnabled_printSequenceInUserAndDefinitionChangesSettingsIsNone(machine_manager, application):
+    # Global container stack reports print sequence as one_at_a_time
+    mocked_stack = application.getGlobalContainerStack()
+    mocked_global_settings = {"print_sequence": "one_at_a_time"}
+    mocked_stack.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_global_settings)
+
+    # The definition changes container reports 2 enabled extruders but doesn't contain the print_sequence changes
+    mocked_definition_changes_container = MagicMock(name = "DefinitionChangesContainer")
+    mocked_definition_changes_settings = {"extruders_enabled_count": 2, "print_sequence": None}
+    mocked_definition_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_definition_changes_settings)
+    mocked_stack.definitionChanges = mocked_definition_changes_container
+
+    # The user changes container doesn't contain the print_sequence changes
+    mocked_user_changes_container = MagicMock(name = "UserChangesContainer")
+    mocked_user_changes_settings = {"print_sequence": None}
+    mocked_user_changes_container.getProperty = functools.partial(getPropertyMocked, settings_dict=mocked_user_changes_settings)
+    mocked_stack.userChanges = mocked_user_changes_container
+
+    machine_manager.correctPrintSequence()
+
+    # After the function is called, the print sequence should be set to "all-at-once" in the user changes container
+    mocked_user_changes_container.setProperty.assert_called_once_with("print_sequence", "value", "all_at_once")

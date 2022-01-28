@@ -1,0 +1,84 @@
+{
+    "version": 2,
+    "name": "Lulzbot TAZ Pro",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Tom Callaway <spot@fedoraproject.org>",
+        "manufacturer": "Fargo Additive Manufacturing Equipment 3D, LLC",
+        "visible": false,
+        "preferred_material": "generic_pla",
+        "exclude_materials": [ "structur3d_dap100silicone" ]
+    },
+    "overrides": {
+        "material_print_temperature": {
+            "minimum_value": "0"
+        },
+        "material_bed_temperature": {
+            "minimum_value": "0",
+            "maximum_value_warning": "125"
+        },
+        "material_bed_temperature_layer_0":
+        {
+            "maximum_value_warning": "125"
+        },
+        "material_standby_temperature": {
+            "minimum_value": "0"
+        },
+        "machine_center_is_zero":
+        {
+            "default_value": false
+        },
+        "machine_nozzle_size":
+        {
+            "default_value": 0.5
+        },
+        "machine_gcode_flavor":
+        {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_acceleration":
+        {
+            "default_value": 500
+        },
+        "acceleration_print":
+        {
+            "default_value": 500
+        },
+        "jerk_print":
+        {
+            "default_value": 12
+        },
+        "machine_max_feedrate_x":
+        {
+            "default_value": 800
+        },
+        "machine_max_feedrate_y":
+        {
+            "default_value": 800
+        },
+        "machine_max_feedrate_z":
+        {
+            "default_value": 3
+        },
+        "machine_max_feedrate_e":
+        {
+            "default_value": 40
+        },
+        "machine_max_acceleration_x":
+        {
+            "default_value": 9000
+        },
+        "machine_max_acceleration_y":
+        {
+            "default_value": 9000
+        },
+        "machine_max_acceleration_z":
+        {
+            "default_value": 100
+        },
+        "machine_max_acceleration_e":
+        {
+            "default_value": 1000
+        }
+    }
+}

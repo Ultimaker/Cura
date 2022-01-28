@@ -74,7 +74,6 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
@@ -87,7 +86,6 @@
         "infill_wipe_dist": { "value": 0 },
         "wall_0_wipe_dist": { "value": 0.2 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": true },
 
@@ -124,7 +122,7 @@
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
 
-        "meshfix_maximum_resolution": { "value": "0.05" },
+        "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
 
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },

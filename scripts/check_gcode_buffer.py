@@ -69,9 +69,9 @@ def calc_distance(pos1, pos2):
 
 def calc_acceleration_distance(init_speed: float, target_speed: float, acceleration: float) -> float:
     """Given the initial speed, the target speed, and the acceleration
-
-    calculate the distance that's neede for the acceleration to finish.
+    calculate the distance that's needed for the acceleration to finish.
     """
+
     if acceleration == 0:
         return 0.0
     return (target_speed ** 2 - init_speed ** 2) / (2 * acceleration)

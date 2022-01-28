@@ -1,3 +1,6 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 from collections import OrderedDict
 from typing import Dict, Optional, List, Any
@@ -95,7 +98,11 @@ class LicensePresenter(QObject):
 
         for package_id, item in packages.items():
             item["package_id"] = package_id
-            item["licence_content"] = self._package_manager.getPackageLicense(item["package_path"])
+            try:
+                item["licence_content"] = self._package_manager.getPackageLicense(item["package_path"])
+            except EnvironmentError as e:
+                Logger.error(f"Could not open downloaded package {package_id} to read license file! {type(e)} - {e}")
+                continue  # Skip this package.
             if item["licence_content"] is None:
                 # Implicitly accept when there is no license
                 item["accepted"] = True

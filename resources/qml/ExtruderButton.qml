@@ -22,6 +22,7 @@ Cura.ToolbarButton
     {
         materialColor: extruder.color
         extruderEnabled: extruder.stack.isEnabled
+        iconVariant: "default"
         property int index: extruder.index
     }
 

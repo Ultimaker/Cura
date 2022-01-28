@@ -15,13 +15,16 @@ ScrollView
 {
     property alias textArea: _textArea
 
+    property var back_color: UM.Theme.getColor("main_background")
+    property var do_borders: true
+
     clip: true
 
     background: Rectangle  // Border
     {
-        color: UM.Theme.getColor("main_background")
+        color: back_color
         border.color: UM.Theme.getColor("thick_lining")
-        border.width: UM.Theme.getSize("default_lining").width
+        border.width: do_borders ? UM.Theme.getSize("default_lining").width : 0
     }
 
     TextArea
@@ -31,6 +34,7 @@ ScrollView
         color: UM.Theme.getColor("text")
         textFormat: TextEdit.PlainText
         renderType: Text.NativeRendering
+        wrapMode: Text.Wrap
         selectByMouse: true
     }
 }

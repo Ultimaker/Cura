@@ -41,10 +41,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
         machine_manager.activeQualityGroupChanged.connect(self._onChange)
         machine_manager.activeMaterialChanged.connect(self._onChange)
         machine_manager.activeVariantChanged.connect(self._onChange)
-        machine_manager.extruderChanged.connect(self._onChange)
-
-        extruder_manager = application.getExtruderManager()
-        extruder_manager.extrudersChanged.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 

@@ -86,6 +86,14 @@ class GlobalStack(CuraContainerStack):
     def supportsNetworkConnection(self):
         return self.getMetaDataEntry("supports_network_connection", False)
 
+    @pyqtProperty(bool, constant = True)
+    def supportsMaterialExport(self):
+        """
+        Whether the printer supports Cura's export format of material profiles.
+        :return: ``True`` if it supports it, or ``False`` if not.
+        """
+        return self.getMetaDataEntry("supports_material_export", False)
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2

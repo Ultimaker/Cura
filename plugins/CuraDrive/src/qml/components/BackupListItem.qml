@@ -38,7 +38,7 @@ Item
             height: UM.Theme.getSize("section_icon").height
             color: UM.Theme.getColor("small_button_text")
             hoverColor: UM.Theme.getColor("small_button_text_hover")
-            iconSource: UM.Theme.getIcon("info")
+            iconSource: UM.Theme.getIcon("Information")
             onClicked: backupListItem.showDetails = !backupListItem.showDetails
         }
 
@@ -71,6 +71,7 @@ Item
             text: catalog.i18nc("@button", "Restore")
             enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
             onClicked: confirmRestoreDialog.visible = true
+            busy: CuraDrive.backupIdBeingRestored == modelData.backup_id && CuraDrive.isRestoringBackup
         }
 
         UM.SimpleButton
@@ -79,7 +80,7 @@ Item
             height: UM.Theme.getSize("message_close").height
             color: UM.Theme.getColor("small_button_text")
             hoverColor: UM.Theme.getColor("small_button_text_hover")
-            iconSource: UM.Theme.getIcon("cross1")
+            iconSource: UM.Theme.getIcon("Cancel")
             onClicked: confirmDeleteDialog.visible = true
         }
     }

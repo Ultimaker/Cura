@@ -1,20 +1,20 @@
 # Cura
-# Copyright (C) 2020 Ultimaker B.V.
+# Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.8\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-10-19 13:15+0000\n"
-"PO-Revision-Date: 2020-08-21 13:40+0200\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
+"PO-Revision-Date: 2021-04-16 15:04+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: fdmprinter.def.json
@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"在开始时执行的 G-code 命令 - 以 \n"
-" 分行。"
+msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"在结束前执行的 G-code 命令 - 以 \n"
-" 分行。"
+msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -156,6 +152,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "机器可打印区域深度（Y 坐标）"
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "机器高度"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "机器可打印区域高度（Z 坐标）"
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "打印平台形状"
@@ -194,16 +200,6 @@ msgstr "玻璃"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "铝"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "机器高度"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "机器可打印区域高度（Z 坐标）"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -421,6 +417,26 @@ msgid "Whether the extruders share a single heater rather than each extruder hav
 msgstr "挤出器是否共用一个加热器，而不是每个挤出器都有自己的加热器。"
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle label"
+msgid "Extruders Share Nozzle"
+msgstr "挤出器共用喷嘴"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle description"
+msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
+msgstr "挤出器是否共用一个喷嘴，而不是每个挤出器都有自己的喷嘴。当设置为 true 时，预计打印机启动 gcode 脚本会将所有挤出器正确设置为已知且相互兼容的初始缩回状态 (零根或一根细丝未缩回)；在这种情况下，会通过“machine_extruders_shared_nozzle_initial_retraction”参数描述每个挤出器的初始缩回状态。"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
+msgid "Shared Nozzle Initial Retraction"
+msgstr "共用喷嘴初始缩回"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
+msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
+msgstr "假定在打印机启动 gcode 脚本完成后，每个挤出器的细丝从共用喷嘴头缩回多少；该值应等于或大于喷嘴导管公共部分的长度。"
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "不允许区域"
@@ -487,8 +503,8 @@ msgstr "挤出机偏移量"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
-msgid "Apply the extruder offset to the coordinate system."
-msgstr "将挤出机偏移量应用到坐标轴系统。"
+msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr "将挤出器偏移量应用到坐标轴系统。影响所有挤出器。"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -542,8 +558,8 @@ msgstr "Z 轴方向电机的最大速度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "最大进料速率"
+msgid "Maximum Speed E"
+msgstr "E 轴最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -667,8 +683,8 @@ msgstr "每毫米步数 (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "步进电机前进多少步将导致挤出一毫米。"
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "步进电机前进多少步将导致进料器轮绕其周长移动一毫米。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -882,8 +898,8 @@ msgstr "第一层走线宽度乘数。 增大此乘数可改善热床粘着。"
 
 #: fdmprinter.def.json
 msgctxt "shell label"
-msgid "Shell"
-msgstr "外壳"
+msgid "Walls"
+msgstr "墙"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -949,166 +965,6 @@ msgstr "外壁擦嘴长度"
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
 msgstr "插入外壁后的空驶距离，旨在更好地隐藏 Z 缝。"
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr label"
-msgid "Top Surface Skin Extruder"
-msgstr "顶部皮肤挤出机"
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr description"
-msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr "用于打印最顶部皮肤的挤出机组。 用于多重挤出。"
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count label"
-msgid "Top Surface Skin Layers"
-msgstr "顶部表面皮肤层"
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count description"
-msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr "最顶部皮肤层数。 通常只需一层最顶层就足以生成较高质量的顶部表面。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr label"
-msgid "Top/Bottom Extruder"
-msgstr "顶部/底部挤出机"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr description"
-msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr "用于打印顶部和底部皮肤的挤出机组。 用于多重挤出。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness label"
-msgid "Top/Bottom Thickness"
-msgstr "顶层 / 底层厚度"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness description"
-msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
-msgstr "打印品中顶层/底层的厚度。 该值除以层高定义顶层/底层的数量。"
-
-#: fdmprinter.def.json
-msgctxt "top_thickness label"
-msgid "Top Thickness"
-msgstr "顶层厚度"
-
-#: fdmprinter.def.json
-msgctxt "top_thickness description"
-msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
-msgstr "打印品中顶层的厚度。 该值除以层高定义顶层的数量。"
-
-#: fdmprinter.def.json
-msgctxt "top_layers label"
-msgid "Top Layers"
-msgstr "顶部层数"
-
-#: fdmprinter.def.json
-msgctxt "top_layers description"
-msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
-msgstr "顶层的数量。 在按顶层厚度计算时，该值舍入为整数。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness label"
-msgid "Bottom Thickness"
-msgstr "底层厚度"
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness description"
-msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
-msgstr "打印品中底层的厚度。 此值除以层高定义底层数量。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers label"
-msgid "Bottom Layers"
-msgstr "底部层数"
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers description"
-msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "底层的数量。 在按底层厚度计算时，该值舍入为整数。"
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers label"
-msgid "Initial Bottom Layers"
-msgstr "初始底层数"
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers description"
-msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "从构建板向上算起的初始底层数。在按底层厚度计算时，该值四舍五入为整数。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern label"
-msgid "Top/Bottom Pattern"
-msgstr "顶部 / 底部走线图案"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern description"
-msgid "The pattern of the top/bottom layers."
-msgstr "顶层/底层图案。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option lines"
-msgid "Lines"
-msgstr "直线"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option concentric"
-msgid "Concentric"
-msgstr "同心圆"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "锯齿状"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 label"
-msgid "Bottom Pattern Initial Layer"
-msgstr "底层图案起始层"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 description"
-msgid "The pattern on the bottom of the print on the first layer."
-msgstr "打印品底部第一层上的图案。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option lines"
-msgid "Lines"
-msgstr "直线"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option concentric"
-msgid "Concentric"
-msgstr "同心圆"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option zigzag"
-msgid "Zig Zag"
-msgstr "锯齿状"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons label"
-msgid "Connect Top/Bottom Polygons"
-msgstr "连接顶部/底部多边形"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "在顶部/底部皮肤路径互相紧靠运行的地方连接它们。对于同心图案，启用此设置可大大减少空驶时间，但由于连接可在填充中途发生，此功能可能会降低顶部表面质量。"
-
-#: fdmprinter.def.json
-msgctxt "skin_angles label"
-msgid "Top/Bottom Line Directions"
-msgstr "顶层/底层走线方向"
-
-#: fdmprinter.def.json
-msgctxt "skin_angles description"
-msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "当顶层/底层采用线条或锯齿状图案时使用的整数走线方向的列表。 列表中的元素随层的进度依次使用，当达到列表末尾时，它将从头开始。 列表项以逗号分隔，整个列表包含在方括号中。 默认是一个空列表，即意味着使用传统的默认角度（45 和 135 度）。"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1416,6 +1272,186 @@ msgid "When enabled, the z seam coordinates are relative to each part's centre. 
 msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时，坐标定义打印平台上的一个绝对位置。"
 
 #: fdmprinter.def.json
+msgctxt "top_bottom label"
+msgid "Top/Bottom"
+msgstr "顶 / 底层"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom description"
+msgid "Top/Bottom"
+msgstr "顶 / 底层"
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr label"
+msgid "Top Surface Skin Extruder"
+msgstr "顶部皮肤挤出机"
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr description"
+msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
+msgstr "用于打印最顶部皮肤的挤出机组。 用于多重挤出。"
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count label"
+msgid "Top Surface Skin Layers"
+msgstr "顶部表面皮肤层"
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count description"
+msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
+msgstr "最顶部皮肤层数。 通常只需一层最顶层就足以生成较高质量的顶部表面。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr label"
+msgid "Top/Bottom Extruder"
+msgstr "顶部/底部挤出机"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr description"
+msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
+msgstr "用于打印顶部和底部皮肤的挤出机组。 用于多重挤出。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness label"
+msgid "Top/Bottom Thickness"
+msgstr "顶层 / 底层厚度"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness description"
+msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
+msgstr "打印品中顶层/底层的厚度。 该值除以层高定义顶层/底层的数量。"
+
+#: fdmprinter.def.json
+msgctxt "top_thickness label"
+msgid "Top Thickness"
+msgstr "顶层厚度"
+
+#: fdmprinter.def.json
+msgctxt "top_thickness description"
+msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
+msgstr "打印品中顶层的厚度。 该值除以层高定义顶层的数量。"
+
+#: fdmprinter.def.json
+msgctxt "top_layers label"
+msgid "Top Layers"
+msgstr "顶部层数"
+
+#: fdmprinter.def.json
+msgctxt "top_layers description"
+msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
+msgstr "顶层的数量。 在按顶层厚度计算时，该值舍入为整数。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness label"
+msgid "Bottom Thickness"
+msgstr "底层厚度"
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness description"
+msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
+msgstr "打印品中底层的厚度。 此值除以层高定义底层数量。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers label"
+msgid "Bottom Layers"
+msgstr "底部层数"
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers description"
+msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "底层的数量。 在按底层厚度计算时，该值舍入为整数。"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr "初始底层数"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "从构建板向上算起的初始底层数。在按底层厚度计算时，该值四舍五入为整数。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern label"
+msgid "Top/Bottom Pattern"
+msgstr "顶部 / 底部走线图案"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern description"
+msgid "The pattern of the top/bottom layers."
+msgstr "顶层/底层图案。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option lines"
+msgid "Lines"
+msgstr "直线"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option concentric"
+msgid "Concentric"
+msgstr "同心圆"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "锯齿状"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 label"
+msgid "Bottom Pattern Initial Layer"
+msgstr "底层图案起始层"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 description"
+msgid "The pattern on the bottom of the print on the first layer."
+msgstr "打印品底部第一层上的图案。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option lines"
+msgid "Lines"
+msgstr "直线"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option concentric"
+msgid "Concentric"
+msgstr "同心圆"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option zigzag"
+msgid "Zig Zag"
+msgstr "锯齿状"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr "连接顶部/底部多边形"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "在顶部/底部皮肤路径互相紧靠运行的地方连接它们。对于同心图案，启用此设置可大大减少空驶时间，但由于连接可在填充中途发生，此功能可能会降低顶部表面质量。"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "单调顶部/底部顺序"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "按照一定的顺序打印顶部/底部走线，使它们始终在一个方向上与相邻的走线重叠。这需要更长一些的打印时间，但会使平面看起来更一致。"
+
+#: fdmprinter.def.json
+msgctxt "skin_angles label"
+msgid "Top/Bottom Line Directions"
+msgstr "顶层/底层走线方向"
+
+#: fdmprinter.def.json
+msgctxt "skin_angles description"
+msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "当顶层/底层采用线条或锯齿状图案时使用的整数走线方向的列表。 列表中的元素随层的进度依次使用，当达到列表末尾时，它将从头开始。 列表项以逗号分隔，整个列表包含在方括号中。 默认是一个空列表，即意味着使用传统的默认角度（45 和 135 度）。"
+
+#: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
 msgstr "Z 间隙内无表层"
@@ -1474,6 +1510,16 @@ msgstr "同心"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "锯齿形"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "单调熨平顺序"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "按照一定的顺序打印熨平走线，使它们始终在一个方向上与相邻的走线重叠。这需要更长一些的打印时间，但会使平面看起来更一致。"
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1556,6 +1602,86 @@ msgid "Adjust the amount of overlap between the walls and (the endpoints of) the
 msgstr "调整壁和皮肤中心线的（端点）之间的重叠量。稍微重叠可让各个壁与皮肤牢固连接。请注意，对于相等的皮肤和壁线宽度，任何超过壁宽度一半的值可能已经导致任何皮肤越过壁，因为在该点，皮肤挤出机的喷嘴位置可能已经达到越过壁中间的位置。"
 
 #: fdmprinter.def.json
+msgctxt "skin_preshrink label"
+msgid "Skin Removal Width"
+msgstr "肤移除宽度"
+
+#: fdmprinter.def.json
+msgctxt "skin_preshrink description"
+msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
+msgstr "将被移除的皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印顶部/底部皮肤时所耗用的时间和材料。"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink label"
+msgid "Top Skin Removal Width"
+msgstr "顶部皮肤移除宽度"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink description"
+msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
+msgstr "将被移除的顶部皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印顶部皮肤时所耗用的时间和材料。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink label"
+msgid "Bottom Skin Removal Width"
+msgstr "底部皮肤移除宽度"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink description"
+msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
+msgstr "将被移除的底部皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印底部皮肤时所耗用的时间和材料。"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance label"
+msgid "Skin Expand Distance"
+msgstr "皮肤扩展距离"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance description"
+msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
+msgstr "皮肤扩展到填充物中的距离。 值越大会让皮肤与填充图案更好地附着，并让相邻层的层壁与皮肤更好地粘着。 较低的值将节省所用的材料量。"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance label"
+msgid "Top Skin Expand Distance"
+msgstr "顶部皮肤扩展距离"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance description"
+msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
+msgstr "顶部皮肤扩展到填充物中的距离。 值越大会让皮肤与填充图案更好地附着，并让上方层的层壁与皮肤更好地粘着。 较低的值将节省所用的材料量。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance label"
+msgid "Bottom Skin Expand Distance"
+msgstr "底部皮肤扩展距离"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance description"
+msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
+msgstr "底部皮肤扩展到填充物中的距离。 值越大会让皮肤与填充图案更好地附着，并让皮肤与下面层的壁更好地粘着。 较低的值将节省所用的材料量。"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion label"
+msgid "Maximum Skin Angle for Expansion"
+msgstr "最大扩展皮肤角度"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion description"
+msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
+msgstr "如果对象的顶部和/或底部表面的角度大于此设置，则不要扩展其顶部/底部皮肤。这会避免扩展在模型表面有接近垂直的坡度时所形成的狭窄皮肤区域。0° 的角为水平，将导致不扩展任何皮肤，而 90° 的角为垂直，将导致扩展所有皮肤。"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion label"
+msgid "Minimum Skin Width for Expansion"
+msgstr "最小扩展皮肤宽度"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion description"
+msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
+msgstr "如果皮肤区域宽度小于此值，则不会扩展。 这会避免扩展在模型表面的坡度接近垂直时所形成的狭窄皮肤区域。"
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr "填充"
@@ -1602,8 +1728,8 @@ msgstr "填充图案"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "打印填充材料的图案。线条和锯齿形填充在交替层上交换方向，从而降低材料成本。网格、三角形、内六角、立方体、八角形、四面体、交叉和同心图案在每层完整打印。螺旋二十四面体、立方体、四面体和八角形填充随每层变化，以在各个方向提供更均衡的强度分布。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "打印的填充材料的图案。直线和锯齿形填充交替在各层上变换方向，从而降低材料成本。每层都完整地打印网格、三角形、三六边形、立方体、八角形、四分之一立方体、十字和同心图案。螺旋二十四面体、立方体、四分之一立方体和八角形填充随每层变化，以使各方向的强度分布更均衡。闪电形填充尝试通过仅支撑物体顶部，将填充程度降至最低。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1669,6 +1795,11 @@ msgstr "交叉 3D"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "螺旋二十四面体"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "闪电形"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1865,86 +1996,6 @@ msgid "The minimum angle of internal overhangs for which infill is added. At a v
 msgstr "添加内填充的内部覆盖的最小角度。在一个0的值中，完全填满了填充，90将不提供任何填充。"
 
 #: fdmprinter.def.json
-msgctxt "skin_preshrink label"
-msgid "Skin Removal Width"
-msgstr "肤移除宽度"
-
-#: fdmprinter.def.json
-msgctxt "skin_preshrink description"
-msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "将被移除的皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印顶部/底部皮肤时所耗用的时间和材料。"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink label"
-msgid "Top Skin Removal Width"
-msgstr "顶部皮肤移除宽度"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink description"
-msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "将被移除的顶部皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印顶部皮肤时所耗用的时间和材料。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink label"
-msgid "Bottom Skin Removal Width"
-msgstr "底部皮肤移除宽度"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink description"
-msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr "将被移除的底部皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印底部皮肤时所耗用的时间和材料。"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance label"
-msgid "Skin Expand Distance"
-msgstr "皮肤扩展距离"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance description"
-msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "皮肤扩展到填充物中的距离。 值越大会让皮肤与填充图案更好地附着，并让相邻层的层壁与皮肤更好地粘着。 较低的值将节省所用的材料量。"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance label"
-msgid "Top Skin Expand Distance"
-msgstr "顶部皮肤扩展距离"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance description"
-msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "顶部皮肤扩展到填充物中的距离。 值越大会让皮肤与填充图案更好地附着，并让上方层的层壁与皮肤更好地粘着。 较低的值将节省所用的材料量。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance label"
-msgid "Bottom Skin Expand Distance"
-msgstr "底部皮肤扩展距离"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance description"
-msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "底部皮肤扩展到填充物中的距离。 值越大会让皮肤与填充图案更好地附着，并让皮肤与下面层的壁更好地粘着。 较低的值将节省所用的材料量。"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion label"
-msgid "Maximum Skin Angle for Expansion"
-msgstr "最大扩展皮肤角度"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion description"
-msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "如果模型的顶部和/或底部表面的角度大于此设置，则不要扩展其顶部/底部皮肤。 这会避免扩展在模型表面有接近垂直的坡度时所形成的狭窄皮肤区域。 0° 的角为水平，90° 的角为垂直。"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion label"
-msgid "Minimum Skin Width for Expansion"
-msgstr "最小扩展皮肤宽度"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion description"
-msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr "如果皮肤区域宽度小于此值，则不会扩展。 这会避免扩展在模型表面的坡度接近垂直时所形成的狭窄皮肤区域。"
-
-#: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
 msgstr "皮肤边缘支撑厚度"
@@ -1963,6 +2014,46 @@ msgstr "皮肤边缘支撑层数"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "支撑皮肤边缘的填充物的层数。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "闪电形填充支撑角"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "决定闪电形填充层何时必须支撑其上方的任何物体。在给定的层厚度下测得的角度。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "闪电形填充悬垂角"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "决定闪电形填充层何时必须支撑其上方的模型。在给定的厚度下测得的角度。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "闪电形填充修剪角"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "为节省材料，填充线的端点将被缩短。此设置为这些线的端点形成的悬垂角度。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "闪电形填充矫直角"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "为节省打印时间，填充线将被拉直。这是整条填充线上允许的最大悬垂角度。"
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2062,7 +2153,7 @@ msgstr "打印平台温度"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "用于加热构建板的温度。如果此项为 0，则保持不加热构建板。"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2072,7 +2163,7 @@ msgstr "打印平台温度起始层"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "打印第一层时用于加热构建板的温度。如果此项为 0，则在打印第一层期间保持不加热构建板。"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2097,12 +2188,12 @@ msgstr "表面能。"
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "缩放因子收缩补偿"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "为了补偿材料在冷却时的收缩，将用此因子缩放模型。"
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2561,8 +2652,8 @@ msgstr "起始层速度"
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
-msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
-msgstr "起始层的速度。 建议采用较低的值以便改善与打印平台的粘着。"
+msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
+msgstr "起始层的速度。建议采用较低的值以便改善与构建板的粘着。不会影响构建板自身的粘着结构，如边沿和筏。"
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3155,6 +3246,11 @@ msgid "All"
 msgstr "所有"
 
 #: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "不在外表面上"
+
+#: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "除了皮肤"
@@ -3171,8 +3267,8 @@ msgstr "最大梳距，无收缩"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "当非零的时候，梳理比这段距离更长的旅行移动将会使用撤回。"
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr "当大于零时，比这段距离更长的梳理空驶将会使用回抽。如果设置为零，则没有最大值，梳理空驶将不会使用回抽。"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5075,8 +5171,8 @@ msgstr "网格处理等级"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
+msgstr "在考虑多个重叠的填充网格时确定此网格的优先级。其中有多个填充网格重叠的区域将采用等级最高的网格的设置。具有较高等级的填充网格将修改具有较低等级的填充网格和普通网格的填充。"
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5105,8 +5201,8 @@ msgstr "最小模具宽度"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "模具外侧和模型外侧之间的最小距离。"
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "模具外侧与模型外侧之间的最短距离。"
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5274,6 +5370,16 @@ msgid "Zig Zag"
 msgstr "锯齿形"
 
 #: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "单调顶部表面顺序"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "按照一定的顺序打印顶部表面走线，使它们始终在一个方向上与相邻的走线重叠。这需要更长一些的打印时间，但会使平面看起来更一致。"
+
+#: fdmprinter.def.json
 msgctxt "roofing_angles label"
 msgid "Top Surface Skin Line Directions"
 msgstr "顶部表面皮肤走线方向"
@@ -5422,6 +5528,16 @@ msgstr "最大模型角度"
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "在悬垂变得可打印后悬垂的最大角度。 当该值为 0° 时，所有悬垂将被与打印平台连接的模型的一个部分替代，如果为 90° 时，不会以任何方式更改模型。"
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size label"
+msgid "Maximum Overhang Hole Area"
+msgstr "最大悬垂孔面积"
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size description"
+msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
+msgstr "在“使悬垂对象可打印”将其删除之前，模型底部的孔的最大面积。小于此面积的孔将会保留。值 0 mm² 将填充模型底部的所有孔。"
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
@@ -6361,6 +6477,66 @@ msgstr "网格旋转矩阵"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "在开始时执行的 G-code 命令 - 以 \\n 分行。"
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "在结束前执行的 G-code 命令 - 以 \\n 分行。"
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "最大进料速率"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "打印的填充材料的图案。直线和锯齿形填充交替在各层上变换方向，从而降低材料成本。每层都完整地打印网格、三角形、三六边形、立方体、八角形、四分之一立方体、十字和同心图案。螺旋二十四面体、立方体、四分之一立方体和八角形填充随每层变化，以使各方向的强度分布更均衡。闪电形填充尝试通过仅支撑物体的（内）顶部，将填充程度降至最低。因此，填充百分比仅在支撑模型所需的无论何种物体之下的一层“有效”。"
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "对于修剪树形外端的情况，闪电形填充层与紧接其上的一层可存在的区别。在给定的厚度下测得的角度。"
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "对于使树形平滑的情况，闪电形填充层与紧接其上的一层可存在的区别。在给定的厚度下测得的角度。"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "打印填充材料的图案。线条和锯齿形填充在交替层上交换方向，从而降低材料成本。网格、三角形、内六角、立方体、八角形、四面体、交叉和同心图案在每层完整打印。螺旋二十四面体、立方体、四面体和八角形填充随每层变化，以在各个方向提供更均衡的强度分布。"
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "模具外侧和模型外侧之间的最小距离。"
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "步进电机前进多少步将导致挤出一毫米。"
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "当非零的时候，梳理比这段距离更长的旅行移动将会使用撤回。"
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
+#~ msgid "Apply the extruder offset to the coordinate system."
+#~ msgstr "将挤出机偏移量应用到坐标轴系统。"
+
+#~ msgctxt "shell label"
+#~ msgid "Shell"
+#~ msgstr "外壳"
+
+#~ msgctxt "max_skin_angle_for_expansion description"
+#~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
+#~ msgstr "如果模型的顶部和/或底部表面的角度大于此设置，则不要扩展其顶部/底部皮肤。 这会避免扩展在模型表面有接近垂直的坡度时所形成的狭窄皮肤区域。 0° 的角为水平，90° 的角为垂直。"
+
+#~ msgctxt "speed_layer_0 description"
+#~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
+#~ msgstr "起始层的速度。 建议采用较低的值以便改善与打印平台的粘着。"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "在考虑多个重叠的填充网格时确定此网格的优先级。其中有多个填充网格重叠的区域将采用等级最低的网格的设置。具有较高顺序的填充网格将修改具有较低顺序的填充网格和普通网格的填充。"
 
 #~ msgctxt "material_bed_temperature description"
 #~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."

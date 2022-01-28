@@ -179,7 +179,6 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_none'" },
@@ -192,7 +191,6 @@
         "infill_wipe_dist": { "value": 0.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 
@@ -235,11 +233,11 @@
         "adaptive_layer_height_variation": { "value": 0.04 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
 
-        "meshfix_maximum_resolution": { "value": "0.05" },
+        "meshfix_maximum_resolution": { "value": "0.25" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
 
-		"support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },        
-		"support_pattern": { "value": "'zigzag'" },
+        "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },
+        "support_pattern": { "value": "'zigzag'" },
         "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 20" },
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },

@@ -37,7 +37,7 @@ Item
         }
         if(activePrintJob.timeTotal == 0)
         {
-            return 0  // Prevent devision by 0
+            return 0  // Prevent division by 0
         }
         return activePrintJob.timeElapsed / activePrintJob.timeTotal * 100
     }
@@ -252,9 +252,10 @@ Item
             buttonsRow.updateAdditionalComponents("monitorButtons")
         }
 
-        Connections {
+        Connections
+        {
             target: CuraApplication
-            onAdditionalComponentsChanged: buttonsRow.updateAdditionalComponents("monitorButtons")
+            function onAdditionalComponentsChanged() { buttonsRow.updateAdditionalComponents("monitorButtons") }
         }
 
         function updateAdditionalComponents (areaId) {

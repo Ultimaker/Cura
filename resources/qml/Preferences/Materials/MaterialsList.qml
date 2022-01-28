@@ -124,13 +124,13 @@ Item
     Connections
     {
         target: materialsModel
-        onItemsChanged: updateAfterModelChanges()
+        function onItemsChanged() { updateAfterModelChanges() }
     }
 
     Connections
     {
         target: genericMaterialsModel
-        onItemsChanged: updateAfterModelChanges()
+        function onItemsChanged() { updateAfterModelChanges() }
     }
     
     Column

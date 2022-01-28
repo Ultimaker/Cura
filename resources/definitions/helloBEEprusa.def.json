@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Hello BEE Prusa",
+    "name": "Hello Bee Prusa",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "BEEVERYCREATIVE",
-        "manufacturer": "BEEVERYCREATIVE",
+        "author": "Beeverycreative",
+        "manufacturer": "Beeverycreative",
         "platform": "BEEVERYCREATIVE-helloBEEprusa.3mf",
         "platform_offset": [-226, -75, -196],
         "file_formats": "text/x-gcode",

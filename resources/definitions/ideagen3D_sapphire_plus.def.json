@@ -1,0 +1,34 @@
+{
+    "version": 2,
+    "name": "Ideagen3D Sapphire Plus",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Ideagen3D",
+        "manufacturer": "Ideagen3D",
+        "file_formats": "text/x-gcode",
+        "platform": "ideagen3D_sapphire_plus.3mf",
+        "has_materials": true,
+        "has_machine_quality": false,
+        "machine_extruder_trains": { "0": "ideagen3D_sapphire_plus_0" }
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "ideagen3D Sapphire Plus" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 350 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-30, -20],
+                [-30, 40],
+                [30, -20],
+                [30, 40]
+            ]
+        },
+        "machine_start_gcode": { "default_value": ";Start GCode by ideagen3D\n\nG1 Z15.0 F6000 ;Move the platform down 15mm\n\n;Initialize Temperature\nM140 S{material_bed_temperature_layer_0} ;heat bed and continue\nM104 S{material_print_temperature_layer_0} ;heat nozzle and continue\nM190 S{material_bed_temperature_layer_0} ;wait for bed temperature to reach initial layer temperature\nM109 S{material_print_temperature_layer_0} ;wait for hot end temperature to reach initial layer temperature\n\nG28 M420 S1 ; Home & Enable Bed Levelling\n\n;Prime the extruder\nG92 E0\nG1 X1 Y280 Z0.2 ;Prepare to Purge\nG1 Y20 Z0.2 F1500.0 E15 ;Purge line\nG92 E0" },
+        "machine_end_gcode": { "default_value": ";End GCode by ideagen3D\n\nM104 S0 ;Set nozzle temperature to 0\nM140 S0 ;Set Bed temperature to 0\n\nG92 E1 ;Prepare to retract filament\nG1 E-1 F300 ;Retract filament\nG28 X0 Y0 ;Home X and Y\nM84 ;Disable Steppers" },
+        "gantry_height": { "value": 65 }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "name": "Longer LK5 Pro",
+    "version": 2,
+    "inherits": "longer_base",
+    "metadata": {
+        "quality_definition": "longer_base",
+        "visible": true,
+        "platform": "longer_310mm_platform.stl",
+        "platform_offset": [-155, -3 ,155]
+    },
+    "overrides": {
+        "machine_name": { "default_value": "LONGER LK5 Pro" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-22, 39],
+                [-22, -34],
+                [58, -34],
+                [58, 39]
+            ]
+        },
+
+        "gantry_height": { "value": 33 }
+    }
+}

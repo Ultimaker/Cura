@@ -1,13 +1,13 @@
 # Cura
-# Copyright (C) 2020 Ultimaker B.V.
+# Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.8\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-10-19 13:15+0000\n"
-"PO-Revision-Date: 2020-08-21 13:40+0200\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
+"PO-Revision-Date: 2021-04-16 15:00+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
 "Language: ja_JP\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -60,9 +60,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"最初に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -74,9 +72,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"最後に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -164,6 +160,18 @@ msgctxt "machine_depth description"
 msgid "The depth (Y-direction) of the printable area."
 msgstr "造形可能領域の幅（Y方向）。"
 
+# msgstr "楕円形"
+#: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "プリンターの高さ"
+
+# msgstr "プリンターの高さ"
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "造形可能領域の幅（Z方向）。"
+
 #: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
@@ -205,18 +213,6 @@ msgstr "ガラス"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "アルミニウム"
-
-# msgstr "楕円形"
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "プリンターの高さ"
-
-# msgstr "プリンターの高さ"
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "造形可能領域の幅（Z方向）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -448,6 +444,26 @@ msgid "Whether the extruders share a single heater rather than each extruder hav
 msgstr "各エクストルーダーが独自のヒーターを持つのではなく、単一のヒーターを共有するかどうか。"
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle label"
+msgid "Extruders Share Nozzle"
+msgstr "エクストルーダーの共有ノズル"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle description"
+msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
+msgstr "各エクストルーダーが独自のノズルを持つのではなく、単一のノズルを共有するかどうか。初期設定した場合、プリンター起動gcodeスクリプトにより、すべてのエクストルーダーが初期の引き戻し状態が互換性のあるように設定されます（引き戻されていない状態のフィラメントが0個または1個のいずれか）。この場合、初期引き戻しステータスは「machine_extruders_shared_nozzle_initial_retraction」パラメーターによってエクストルーダーごとに規定されます。"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
+msgid "Shared Nozzle Initial Retraction"
+msgstr "共有ノズルの初期引き戻し"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
+msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
+msgstr "プリンタ起動gcodeスクリプト完了時に、各エクストルーダーのフィラメントが共有ノズルの先端部分から引き戻されていると想定される量。この値は、ノズルのダクトの共通部分の長さ以上にする必要があります。"
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "拒否エリア"
@@ -515,8 +531,8 @@ msgstr "エクストルーダーのオフセット"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
-msgid "Apply the extruder offset to the coordinate system."
-msgstr "エクストルーダーのオフセットを座標システムに適用します。"
+msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr "エクストルーダーのオフセットを座標システムに適用します。すべてのエクストルーダーが影響を受けます。"
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -570,8 +586,8 @@ msgstr "Z方向のモーターの最大速度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "最大送り速度"
+msgid "Maximum Speed E"
+msgstr "最大速度E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -695,8 +711,8 @@ msgstr "ミリメートルあたりのステップ (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "フィーダーホイールを円周上で1ミリメートル移動させるのに、ステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -915,8 +931,8 @@ msgstr "最初のレイヤーに線幅の乗数です。この値を増やすと
 
 #: fdmprinter.def.json
 msgctxt "shell label"
-msgid "Shell"
-msgstr "外郭"
+msgid "Walls"
+msgstr "ウォール"
 
 # msgstr "外郭"
 #: fdmprinter.def.json
@@ -987,170 +1003,6 @@ msgstr "外壁移動距離"
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
 msgstr "外壁の後に挿入された移動の距離はZシームをよりよく隠します。"
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr label"
-msgid "Top Surface Skin Extruder"
-msgstr "上部表面用エクストルーダー"
-
-# msgstr "上層表面スキンエクストルーダー"
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr description"
-msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr "上部の表面印刷用のエクストルーダー。デュアルノズル印刷時に使用。"
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count label"
-msgid "Top Surface Skin Layers"
-msgstr "上部表面レイヤー"
-
-# msgstr "上の表皮層"
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count description"
-msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr "上部表面のレイヤー数。通常一層で綺麗に出来上がります。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr label"
-msgid "Top/Bottom Extruder"
-msgstr "上部/底面エクストルーダー"
-
-# msgstr "トップ/ボトムエクストルーダー"
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr description"
-msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr "上部と下部の表面を印刷する時に使われるエクストルーダー。デュアルノズル印刷時に使用。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness label"
-msgid "Top/Bottom Thickness"
-msgstr "上部/底面の厚さ"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness description"
-msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
-msgstr "プリント時の最上面、最底面の厚み。これを積層ピッチで割った値で最上面、最低面のレイヤーの数を定義します。"
-
-#: fdmprinter.def.json
-msgctxt "top_thickness label"
-msgid "Top Thickness"
-msgstr "上部厚さ"
-
-#: fdmprinter.def.json
-msgctxt "top_thickness description"
-msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
-msgstr "プリント時の最上面の厚み。これを積層ピッチで割った値で最上面のレイヤーの数を定義します。"
-
-#: fdmprinter.def.json
-msgctxt "top_layers label"
-msgid "Top Layers"
-msgstr "上部レイヤー"
-
-#: fdmprinter.def.json
-msgctxt "top_layers description"
-msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
-msgstr "最上面のレイヤー数。トップの厚さを計算する場合、この値は整数になります。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness label"
-msgid "Bottom Thickness"
-msgstr "底面厚さ"
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness description"
-msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
-msgstr "プリント時の最底面の厚み。これを積層ピッチで割った値で最低面のレイヤーの数を定義します。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers label"
-msgid "Bottom Layers"
-msgstr "底面レイヤー"
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers description"
-msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "最底面のレイヤー数。下の厚さで計算すると、この値は整数に変換されます。"
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers label"
-msgid "Initial Bottom Layers"
-msgstr "初期底面レイヤー"
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers description"
-msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "ビルドプレートから上にある初期底面レイヤーの数。下の厚さで計算すると、この値は整数に変換されます。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern label"
-msgid "Top/Bottom Pattern"
-msgstr "上層/底層パターン"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern description"
-msgid "The pattern of the top/bottom layers."
-msgstr "上層/底層のパターン。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option lines"
-msgid "Lines"
-msgstr "直線"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option concentric"
-msgid "Concentric"
-msgstr "同心円"
-
-# msgstr "同心"
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "ジグザグ"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 label"
-msgid "Bottom Pattern Initial Layer"
-msgstr "底層初期レイヤー"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 description"
-msgid "The pattern on the bottom of the print on the first layer."
-msgstr "第1層のプリントの底部のパターン。"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option lines"
-msgid "Lines"
-msgstr "直線"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option concentric"
-msgid "Concentric"
-msgstr "同心円"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option zigzag"
-msgid "Zig Zag"
-msgstr "ジグザグ"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons label"
-msgid "Connect Top/Bottom Polygons"
-msgstr "上層/底層ポリゴンに接合"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "互いに次に実行する上層/底層スキンパスに接合します。同心円のパターンの場合、この設定を有効にすることにより、移動時間が短縮されますが、インフィルまでの途中で接合があるため、この機能で上層面の品質が損なわれることがあります。"
-
-#: fdmprinter.def.json
-msgctxt "skin_angles label"
-msgid "Top/Bottom Line Directions"
-msgstr "上層/底層ラインの向き"
-
-#: fdmprinter.def.json
-msgctxt "skin_angles description"
-msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "上/下のレイヤーが線またはジグザグパターンを使う際の整数線の方向のリスト。リストの要素は、層が進行するにつれて順番に使用され、リストの終わりに達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは、従来のデフォルト角度（45度と135度）を使用する空のリストです。"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1468,6 +1320,190 @@ msgid "When enabled, the z seam coordinates are relative to each part's centre. 
 msgstr "有効時は、Zシームは各パーツの真ん中に設定されます。無効時はプラットフォームのサイズによって設定されます。"
 
 #: fdmprinter.def.json
+msgctxt "top_bottom label"
+msgid "Top/Bottom"
+msgstr "トップ/ボトム"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom description"
+msgid "Top/Bottom"
+msgstr "トップ/ボトム"
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr label"
+msgid "Top Surface Skin Extruder"
+msgstr "上部表面用エクストルーダー"
+
+# msgstr "上層表面スキンエクストルーダー"
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr description"
+msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
+msgstr "上部の表面印刷用のエクストルーダー。デュアルノズル印刷時に使用。"
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count label"
+msgid "Top Surface Skin Layers"
+msgstr "上部表面レイヤー"
+
+# msgstr "上の表皮層"
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count description"
+msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
+msgstr "上部表面のレイヤー数。通常一層で綺麗に出来上がります。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr label"
+msgid "Top/Bottom Extruder"
+msgstr "上部/底面エクストルーダー"
+
+# msgstr "トップ/ボトムエクストルーダー"
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr description"
+msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
+msgstr "上部と下部の表面を印刷する時に使われるエクストルーダー。デュアルノズル印刷時に使用。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness label"
+msgid "Top/Bottom Thickness"
+msgstr "上部/底面の厚さ"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness description"
+msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
+msgstr "プリント時の最上面、最底面の厚み。これを積層ピッチで割った値で最上面、最低面のレイヤーの数を定義します。"
+
+#: fdmprinter.def.json
+msgctxt "top_thickness label"
+msgid "Top Thickness"
+msgstr "上部厚さ"
+
+#: fdmprinter.def.json
+msgctxt "top_thickness description"
+msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
+msgstr "プリント時の最上面の厚み。これを積層ピッチで割った値で最上面のレイヤーの数を定義します。"
+
+#: fdmprinter.def.json
+msgctxt "top_layers label"
+msgid "Top Layers"
+msgstr "上部レイヤー"
+
+#: fdmprinter.def.json
+msgctxt "top_layers description"
+msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
+msgstr "最上面のレイヤー数。トップの厚さを計算する場合、この値は整数になります。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness label"
+msgid "Bottom Thickness"
+msgstr "底面厚さ"
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness description"
+msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
+msgstr "プリント時の最底面の厚み。これを積層ピッチで割った値で最低面のレイヤーの数を定義します。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers label"
+msgid "Bottom Layers"
+msgstr "底面レイヤー"
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers description"
+msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "最底面のレイヤー数。下の厚さで計算すると、この値は整数に変換されます。"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr "初期底面レイヤー"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "ビルドプレートから上にある初期底面レイヤーの数。下の厚さで計算すると、この値は整数に変換されます。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern label"
+msgid "Top/Bottom Pattern"
+msgstr "上層/底層パターン"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern description"
+msgid "The pattern of the top/bottom layers."
+msgstr "上層/底層のパターン。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option lines"
+msgid "Lines"
+msgstr "直線"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option concentric"
+msgid "Concentric"
+msgstr "同心円"
+
+# msgstr "同心"
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "ジグザグ"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 label"
+msgid "Bottom Pattern Initial Layer"
+msgstr "底層初期レイヤー"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 description"
+msgid "The pattern on the bottom of the print on the first layer."
+msgstr "第1層のプリントの底部のパターン。"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option lines"
+msgid "Lines"
+msgstr "直線"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option concentric"
+msgid "Concentric"
+msgstr "同心円"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option zigzag"
+msgid "Zig Zag"
+msgstr "ジグザグ"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr "上層/底層ポリゴンに接合"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "互いに次に実行する上層/底層スキンパスに接合します。同心円のパターンの場合、この設定を有効にすることにより、移動時間が短縮されますが、インフィルまでの途中で接合があるため、この機能で上層面の品質が損なわれることがあります。"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "上面/底面の方向一貫性"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "上面/底面のラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
+
+#: fdmprinter.def.json
+msgctxt "skin_angles label"
+msgid "Top/Bottom Line Directions"
+msgstr "上層/底層ラインの向き"
+
+#: fdmprinter.def.json
+msgctxt "skin_angles description"
+msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "上/下のレイヤーが線またはジグザグパターンを使う際の整数線の方向のリスト。リストの要素は、層が進行するにつれて順番に使用され、リストの終わりに達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは、従来のデフォルト角度（45度と135度）を使用する空のリストです。"
+
+#: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
 msgstr "Z 軸ギャップにスキンなし"
@@ -1530,6 +1566,16 @@ msgstr "同心円"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "ジグザグ"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "アイロン方向一貫性"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "アイロンラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
@@ -1619,6 +1665,91 @@ msgid "Adjust the amount of overlap between the walls and (the endpoints of) the
 msgstr "壁とスキンの中央ライン（のエンドポイント）が交差する量を調整します。わずかな交差によって、壁がスキンにしっかりつながります。スキンと壁のライン幅が同じで、壁の幅が半分以上の値になると、スキンが壁を通過している可能性があります。これは、その時点で、スキン押出機のノズルの位置が、すでに壁の真ん中を過ぎている可能性があるためです。"
 
 #: fdmprinter.def.json
+msgctxt "skin_preshrink label"
+msgid "Skin Removal Width"
+msgstr "表面除去幅"
+
+# msgstr "スキン除去幅"
+#: fdmprinter.def.json
+msgctxt "skin_preshrink description"
+msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
+msgstr "取り除くスキンエリアの最大幅。この値より小さいすべてのスキンエリアは消えます。これは、モデルの傾斜表面の上部/下部スキンに費やした時間のや材料の量を制限することができます。"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink label"
+msgid "Top Skin Removal Width"
+msgstr "上面除去幅"
+
+# msgstr "トップスキン除去幅"
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink description"
+msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
+msgstr "取り除くスキンエリアの最大幅。この値より小さいすべてのスキンエリアは消えます。これは、モデルの傾斜表面の上部/下部スキンに費やした時間のや材料の量を制限することができます。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink label"
+msgid "Bottom Skin Removal Width"
+msgstr "底面除去幅"
+
+# msgstr "ボトムのスキン除去幅"
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink description"
+msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
+msgstr "取り除くスキンエリアの最大幅。この値より小さいすべてのスキンエリアは消えます。これは、モデルの傾斜表面の上部/下部スキンに費やした時間のや材料の量を制限することができます。"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance label"
+msgid "Skin Expand Distance"
+msgstr "表面展開距離"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance description"
+msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
+msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance label"
+msgid "Top Skin Expand Distance"
+msgstr "上面展開距離"
+
+# msgstr "トップのスキンの展開距離"
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance description"
+msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
+msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance label"
+msgid "Bottom Skin Expand Distance"
+msgstr "底面展開距離"
+
+# msgstr "ボトムのスキンの展開距離"
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance description"
+msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
+msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion label"
+msgid "Maximum Skin Angle for Expansion"
+msgstr "表面展開最大角"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion description"
+msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
+msgstr "この設定より大きい角を持つオブジェクトの上部または底部の表面は、その表面のスキンを拡大しません。これにより、モデルの表面に垂直に近い斜面がある場合に作成される狭いスキン領域の拡大を回避します。0°の角度は水平方向で、スキンは拡大しません。90°の角度は垂直方向で、すべてのスキンが拡大します。"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion label"
+msgid "Minimum Skin Width for Expansion"
+msgstr "表面展開最小角"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion description"
+msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
+msgstr "これより狭いスキン領域は展開されません。モデル表面に、垂直に近い斜面がある場合に作成される狭いスキン領域の拡大を回避するためです。"
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr "インフィル"
@@ -1667,8 +1798,8 @@ msgstr "インフィルパターン"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "印刷用インフィル材料のパターン。代替層のラインとジグザグの面詰めスワップ方向、材料コストを削減します。グリッド、トライアングル、トライ六角、キュービック、オクテット、クォーターキュービック、クロスと同心円のパターンは、すべてのレイヤーを完全に印刷されます。ジャイロイド、キュービック、クォーターキュービック、オクテットのインフィルは、各レイヤーを変更して各方向の強度をより均等な分布にします。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "プリントのインフィル材料のパターンラインおよびジグザグインフィルはレイヤーごとに方向を入れ替え、材料コストを削減します。グリッド、トライアングル、トライヘキサゴン、キュービック、オクテット、クォーターキュービック、クロスおよび同心円パターンはレイヤーごとに完全にプリントされます。ジャイロイド、キュービック、クォーターキュービックおよびオクテットインフィルはレイヤーごとに変化し、各方向にかけてより均一な強度分布を実現します。ライトニングインフィルは造形物の天井のみを支えることで、インフィルを最低限にするよう試みます。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1737,6 +1868,11 @@ msgstr "3Dクロス"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "ジャイロイド"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "ライトニング"
 
 # msgstr "クロス3D"
 #: fdmprinter.def.json
@@ -1939,91 +2075,6 @@ msgid "The minimum angle of internal overhangs for which infill is added. At a v
 msgstr "インフィルが追加される内部オーバーハングの最小角度。0° のとき、対象物は完全にインフィルが充填され、90° ではインフィルが提供されません。"
 
 #: fdmprinter.def.json
-msgctxt "skin_preshrink label"
-msgid "Skin Removal Width"
-msgstr "表面除去幅"
-
-# msgstr "スキン除去幅"
-#: fdmprinter.def.json
-msgctxt "skin_preshrink description"
-msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "取り除くスキンエリアの最大幅。この値より小さいすべてのスキンエリアは消えます。これは、モデルの傾斜表面の上部/下部スキンに費やした時間のや材料の量を制限することができます。"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink label"
-msgid "Top Skin Removal Width"
-msgstr "上面除去幅"
-
-# msgstr "トップスキン除去幅"
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink description"
-msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "取り除くスキンエリアの最大幅。この値より小さいすべてのスキンエリアは消えます。これは、モデルの傾斜表面の上部/下部スキンに費やした時間のや材料の量を制限することができます。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink label"
-msgid "Bottom Skin Removal Width"
-msgstr "底面除去幅"
-
-# msgstr "ボトムのスキン除去幅"
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink description"
-msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr "取り除くスキンエリアの最大幅。この値より小さいすべてのスキンエリアは消えます。これは、モデルの傾斜表面の上部/下部スキンに費やした時間のや材料の量を制限することができます。"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance label"
-msgid "Skin Expand Distance"
-msgstr "表面展開距離"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance description"
-msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance label"
-msgid "Top Skin Expand Distance"
-msgstr "上面展開距離"
-
-# msgstr "トップのスキンの展開距離"
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance description"
-msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance label"
-msgid "Bottom Skin Expand Distance"
-msgstr "底面展開距離"
-
-# msgstr "ボトムのスキンの展開距離"
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance description"
-msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "スキンがインフィルまで到達する距離です。高い数値の場合、スキンはインフィルのパターンに隣接しやすく、近接する壁のレイヤーもスキンに密着しやすくなります。低値の場合、材料の使用量を節約します。"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion label"
-msgid "Maximum Skin Angle for Expansion"
-msgstr "表面展開最大角"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion description"
-msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "この設定より大きい角を持つオブジェクトの上部または底部の表面、その表面のスキンはを拡大しません。これは、モデルのサーフェスに近い垂直斜面がある場合に作成される狭いスキン領域の拡大を回避します。0 ° の角度は水平方向、90 ° の角度が垂直方向です。"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion label"
-msgid "Minimum Skin Width for Expansion"
-msgstr "表面展開最小角"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion description"
-msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr "これより狭いスキン領域は展開されません。モデル表面に、垂直に近い斜面がある場合に作成される狭いスキン領域の拡大を回避するためです。"
-
-#: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
 msgstr "スキンエッジサポートの厚さ"
@@ -2042,6 +2093,46 @@ msgstr "スキンエッジサポートレイヤー"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "スキンエッジをサポートするインフィルレイヤーの数。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "ライトニングインフィルサポート角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "ライトニングインフィルレイヤーがその上の物を支える必要がある場合を決定します。レイヤーの厚さを考慮して角度で指定されます。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "ライトニングインフィルオーバーハング角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "ライトニングインフィルレイヤーがその上のモデルを支える必要がある場合を決定します。厚さを考慮して角度で指定されます。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "ライトニングインフィル刈り込み角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "インフィルラインのエンドポイントは短縮され、材料が節約されます。この設定は、これらのラインのエンドポイントにおけるオーバーハングの角度です。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "ライトニングインフィル矯正角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "インフィルラインは矯正され、プリント時間が節約されます。これは、インフィルラインの全長にわたって許可されるオーバーハングの最大角度です。"
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2141,7 +2232,7 @@ msgstr "ビルドプレート温度"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "加熱式ビルドプレートの温度。これが0の場合、ビルドプレートは加熱されないままになります。"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2151,7 +2242,7 @@ msgstr "初期レイヤーのビルドプレート温度"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "最初のレイヤー印刷時の加熱式ビルドプレートの温度。これが0の場合、最初のレイヤー印刷時のビルドプレートは加熱されないままになります。"
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2176,12 +2267,12 @@ msgstr "表面エネルギー。"
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "スケールファクタ収縮補正"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "材料の冷却時の収縮を補正するために、モデルはこのスケールファクタでスケールされます。"
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2643,8 +2734,8 @@ msgstr "初期レイヤー速度"
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
-msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
-msgstr "一層目での速度。ビルトプレートへの接着を向上するため低速を推奨します。"
+msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
+msgstr "初期レイヤーでの速度。ビルドプレートへの接着を改善するため低速を推奨します。ブリムやラフトなどのビルドプレート接着構造自体には影響しません。"
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3243,6 +3334,11 @@ msgid "All"
 msgstr "すべて"
 
 #: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "外側表面には適用しない"
+
+#: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "スキン内にない"
@@ -3259,8 +3355,8 @@ msgstr "引き戻しのない最大コム距離"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "ゼロ以外の場合、この距離より移動量が多い場合は、引き戻しを使用します。"
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr "ゼロを超える場合、この距離より長い移動量をコーミングすると、引き戻しが使用されます。ゼロに設定した場合、最大値はなく、コーミング移動では引き戻しを使用しません。"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5195,8 +5291,8 @@ msgstr "メッシュ処理ランク"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
+msgstr "インフィルメッシュの重なりが複数生じた場合のこのメッシュの優先度を決定します。複数のインフィルメッシュの重なりがあるエリアでは、最もランクが高いメッシュの設定になります。ランクが高いインフィルメッシュは、ランクが低いインフィルメッシュのインフィルと通常のメッシュを変更します。"
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5225,11 +5321,10 @@ msgctxt "mold_width label"
 msgid "Minimal Mold Width"
 msgstr "最小型幅"
 
-# msgstr "最小のモールド幅"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "型用とモデルの外側の最短距離。"
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "型の外側とモデルの外側との間の最小距離です。"
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5402,6 +5497,16 @@ msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "ジグザグ"
 
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "上面方向一貫性"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "上面のラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
+
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -5556,6 +5661,16 @@ msgstr "最大モデル角度"
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "印刷可能になったオーバーハングの最大角度。 0°の値では、すべてのオーバーハングがビルドプレートに接続されたモデルの一部に置き換えられます。90°では、モデルは決して変更されません。"
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size label"
+msgid "Maximum Overhang Hole Area"
+msgstr "オーバーハングした穴の最大領域"
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size description"
+msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
+msgstr "モデル底部にある穴の最大領域（「オーバーハング印刷可能」で削除する前の値）。これより小さい穴は保持されます。値が0 mm²の場合、モデル底部にあるすべての穴は充填されます。"
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
@@ -6494,6 +6609,67 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "最初に実行するG-codeコマンドは、\\n で区切ります。"
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "最後に実行するG-codeコマンドは、\\n で区切ります。"
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "最大送り速度"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "プリントのインフィル材料のパターンラインおよびジグザグインフィルはレイヤーごとに方向を入れ替え、材料コストを削減します。グリッド、トライアングル、トライヘキサゴン、キュービック、オクテット、クォーターキュービック、クロスおよび同心円パターンはレイヤーごとに完全にプリントされます。ジャイロイド、キュービック、クォーターキュービックおよびオクテットインフィルはレイヤーごとに変化し、各方向にかけてより均一な強度分布を実現します。ライトニングインフィルは造形物の（内部）ルーフのみを支えることで、インフィルを最低限にするよう試みます。そのため、インフィル率はモデル内で支える必要がある物の1つ下のレイヤーでのみ有効です。"
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "ツリーの外側末端の刈り込みに関して、ライトニングインフィルレイヤーとそのすぐ上にあるレイヤーとの間に存在することのできる差異です。厚さを考慮して角度で指定されます。"
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "ツリーのスムージングに関して、ライトニングインフィルレイヤーとそのすぐ上にあるレイヤーとの間に存在することのできる差異です。厚さを考慮して角度で指定されます。"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "印刷用インフィル材料のパターン。代替層のラインとジグザグの面詰めスワップ方向、材料コストを削減します。グリッド、トライアングル、トライ六角、キュービック、オクテット、クォーターキュービック、クロスと同心円のパターンは、すべてのレイヤーを完全に印刷されます。ジャイロイド、キュービック、クォーターキュービック、オクテットのインフィルは、各レイヤーを変更して各方向の強度をより均等な分布にします。"
+
+# msgstr "最小のモールド幅"
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "型用とモデルの外側の最短距離。"
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "ゼロ以外の場合、この距離より移動量が多い場合は、引き戻しを使用します。"
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
+#~ msgid "Apply the extruder offset to the coordinate system."
+#~ msgstr "エクストルーダーのオフセットを座標システムに適用します。"
+
+#~ msgctxt "shell label"
+#~ msgid "Shell"
+#~ msgstr "外郭"
+
+#~ msgctxt "max_skin_angle_for_expansion description"
+#~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
+#~ msgstr "この設定より大きい角を持つオブジェクトの上部または底部の表面、その表面のスキンはを拡大しません。これは、モデルのサーフェスに近い垂直斜面がある場合に作成される狭いスキン領域の拡大を回避します。0 ° の角度は水平方向、90 ° の角度が垂直方向です。"
+
+#~ msgctxt "speed_layer_0 description"
+#~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
+#~ msgstr "一層目での速度。ビルトプレートへの接着を向上するため低速を推奨します。"
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "インフィルメッシュの重なりが複数生じた場合のこのメッシュの優先度を決定します。複数のインフィルメッシュの重なりがあるエリアでは、最もランクが低いメッシュの設定になります。順序が高いインフィルメッシュは、順序が低いインフィルメッシュのインフィルと通常のメッシュを変更します。"
 
 #~ msgctxt "material_bed_temperature description"
 #~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."

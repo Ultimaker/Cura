@@ -17,7 +17,7 @@ Item
     Connections
     {
         target: Cura.MachineManager
-        onGlobalContainerChanged:
+        function onGlobalContainerChanged()
         {
             outputDevice = Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null;
         }

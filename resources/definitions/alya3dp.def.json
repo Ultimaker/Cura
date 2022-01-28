@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "ALYA",
+    "name": "Alya",
     "inherits": "fdmprinter",
     "metadata":
     {
         "visible": true,
-        "author": "ALYA",
+        "author": "Alya",
         "manufacturer": "Kati Hal ARGE",
         "file_formats": "text/x-gcode",
         "platform": "alya_platform.3mf",

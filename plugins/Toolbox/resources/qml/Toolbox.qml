@@ -100,8 +100,8 @@ Window
         Connections
         {
             target: toolbox
-            onShowLicenseDialog: { licenseDialog.show() }
-            onCloseLicenseDialog: { licenseDialog.close() }
+            function onShowLicenseDialog() { licenseDialog.show() }
+            function onCloseLicenseDialog() { licenseDialog.close() }
         }
         
         ToolboxLicenseDialog

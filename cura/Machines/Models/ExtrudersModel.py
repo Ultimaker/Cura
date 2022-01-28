@@ -53,8 +53,13 @@ class ExtrudersModel(ListModel):
     EnabledRole = Qt.UserRole + 11
     """Is the extruder enabled?"""
 
+    MaterialTypeRole = Qt.UserRole + 12
+    """The type of the material (e.g. PLA, ABS, PETG, etc.)."""
+
     defaultColors = ["#ffc924", "#86ec21", "#22eeee", "#245bff", "#9124ff", "#ff24c8"]
     """List of colours to display if there is no material or the material has no known colour. """
+
+    MaterialNameRole = Qt.UserRole + 13
 
     def __init__(self, parent = None):
         """Initialises the extruders model, defining the roles and listening for changes in the data.
@@ -75,6 +80,8 @@ class ExtrudersModel(ListModel):
         self.addRoleName(self.StackRole, "stack")
         self.addRoleName(self.MaterialBrandRole, "material_brand")
         self.addRoleName(self.ColorNameRole, "color_name")
+        self.addRoleName(self.MaterialTypeRole, "material_type")
+        self.addRoleName(self.MaterialNameRole, "material_name")
         self._update_extruder_timer = QTimer()
         self._update_extruder_timer.setInterval(100)
         self._update_extruder_timer.setSingleShot(True)
@@ -193,9 +200,10 @@ class ExtrudersModel(ListModel):
                     "variant": extruder.variant.getName() if extruder.variant else "",  # e.g. print core
                     "stack": extruder,
                     "material_brand": material_brand,
-                    "color_name": color_name
+                    "color_name": color_name,
+                    "material_type": extruder.material.getMetaDataEntry("material") if extruder.material else "",
+                    "material_name": extruder.material.getMetaDataEntry("name") if extruder.material else "",
                 }
-
                 items.append(item)
                 extruders_changed = True
 
@@ -210,7 +218,7 @@ class ExtrudersModel(ListModel):
                     "id": "",
                     "name": catalog.i18nc("@menuitem", "Not overridden"),
                     "enabled": True,
-                    "color": "#ffffff",
+                    "color": "transparent",
                     "index": -1,
                     "definition": "",
                     "material": "",
@@ -218,6 +226,8 @@ class ExtrudersModel(ListModel):
                     "stack": None,
                     "material_brand": "",
                     "color_name": "",
+                    "material_type": "",
+                    "material_label": ""
                 }
                 items.append(item)
             if self._items != items:

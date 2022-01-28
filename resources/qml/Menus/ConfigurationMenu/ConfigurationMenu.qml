@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
 
@@ -40,15 +40,25 @@ Cura.ExpandablePopup
         // Horizontal list that shows the extruders and their materials
         RowLayout
         {
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            width: parent.width - UM.Theme.getSize("standard_arrow").width
             visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials : false
             Repeater
             {
                 model: extrudersModel
                 delegate: Item
                 {
+                    id: extruderItem
+
                     Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
+                    Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
+
+                    property var extruderStack: Cura.MachineManager.activeMachine.extruders[model.index]
+                    property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
+                    property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon
@@ -56,50 +66,181 @@ Cura.ExpandablePopup
                         id: extruderIcon
                         materialColor: model.color
                         extruderEnabled: model.enabled
-                        height: parent.height
-                        width: height
+                        anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    // Label for the brand of the material
-                    Label
+                    MouseArea // Connection status tooltip hover area
                     {
-                        id: typeAndBrandNameLabel
+                        id: tooltipHoverArea
+                        anchors.fill: parent
+                        hoverEnabled: tooltip.text != ""
+                        acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
-                        text: model.material_brand + " " + model.material
-                        elide: Text.ElideRight
-                        font: UM.Theme.getFont("default")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
-
-                        anchors
+                        onEntered:
                         {
-                            top: extruderIcon.top
-                            left: extruderIcon.right
-                            leftMargin: UM.Theme.getSize("default_margin").width
-                            right: parent.right
-                            rightMargin: UM.Theme.getSize("default_margin").width
+                            base.mouseArea.entered() // we want both this and the outer area to be entered
+                            tooltip.show()
+                        }
+                        onExited: { tooltip.hide() }
+                    }
+
+                    Cura.ToolTip
+                    {
+                        id: tooltip
+                        x: 0
+                        y: parent.height + UM.Theme.getSize("default_margin").height
+                        width: UM.Theme.getSize("tooltip").width
+                        targetPoint: Qt.point(Math.round(extruderIcon.width / 2), 0)
+                        text:
+                        {
+                            if (!model.enabled)
+                            {
+                                return ""
+                            }
+                            if (extruderItem.valueError)
+                            {
+                                return catalog.i18nc("@tooltip", "The configuration of this extruder is not allowed, and prohibits slicing.")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return catalog.i18nc("@tooltip", "There are no profiles matching the configuration of this extruder.")
+                            }
+                            return ""
                         }
                     }
-                    // Label that shows the name of the variant
-                    Label
+
+                    // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
+                    UM.RecolorImage
                     {
-                        id: variantLabel
+                        id: badge
+                        anchors
+                        {
+                            top: parent.top
+                            topMargin: - Math.round(height * 1 / 6)
+                            left: parent.left
+                            leftMargin: extruderIcon.width - Math.round(width * 5 / 6)
+                        }
 
-                        visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
+                        width: UM.Theme.getSize("icon_indicator").width
+                        height: UM.Theme.getSize("icon_indicator").height
 
-                        text: model.variant
-                        elide: Text.ElideRight
-                        font: UM.Theme.getFont("default_bold")
-                        color: UM.Theme.getColor("text")
-                        renderType: Text.NativeRendering
+                        visible: model.enabled && (extruderItem.valueError || extruderItem.valueWarning)
 
+                        source:
+                        {
+                            if (extruderItem.valueError)
+                            {
+                                return UM.Theme.getIcon("ErrorBadge", "low")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return UM.Theme.getIcon("WarningBadge", "low")
+                            }
+                            return ""
+                        }
+
+                        color:
+                        {
+                            if (extruderItem.valueError)
+                            {
+                                return UM.Theme.getColor("error")
+                            }
+                            if (extruderItem.valueWarning)
+                            {
+                                return UM.Theme.getColor("warning")
+                            }
+                            return "transparent"
+                        }
+
+                        // Make a themable circle in the background so we can change it in other themes
+                        Rectangle
+                        {
+                            id: iconBackground
+                            anchors.centerIn: parent
+                            width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                            height: parent.height - 1.5
+                            radius: width / 2
+                            z: parent.z - 1
+                            color:
+                            {
+                                if (extruderItem.valueError)
+                                {
+                                    return UM.Theme.getColor("error_badge_background")
+                                }
+                                if (extruderItem.valueWarning)
+                                {
+                                    return UM.Theme.getColor("warning_badge_background")
+                                }
+                                return "transparent"
+                            }
+                        }
+                    }
+
+                    Column
+                    {
+                        opacity: model.enabled ? 1 : UM.Theme.getColor("extruder_disabled").a
+                        spacing: 0
+                        visible: width > 0
                         anchors
                         {
                             left: extruderIcon.right
                             leftMargin: UM.Theme.getSize("default_margin").width
-                            top: typeAndBrandNameLabel.bottom
+                            verticalCenter: parent.verticalCenter
                             right: parent.right
                             rightMargin:  UM.Theme.getSize("default_margin").width
+                        }
+                        // Label for the brand of the material
+                        Label
+                        {
+                            id: materialBrandNameLabel
+
+                            text:  model.material_brand + " " + model.material_name
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                            width: parent.width
+                            visible: !truncated
+                        }
+
+                        Label
+                        {
+                            id: materialNameLabel
+
+                            text: model.material_name
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                            width: parent.width
+                            visible: !materialBrandNameLabel.visible && !truncated
+                        }
+
+                        Label
+                        {
+                            id: materialTypeLabel
+
+                            text: model.material_type
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                            width: parent.width
+                            visible: !materialBrandNameLabel.visible && !materialNameLabel.visible
+                        }
+                        // Label that shows the name of the variant
+                        Label
+                        {
+                            id: variantLabel
+
+                            visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
+
+                            text: model.variant
+                            elide: Text.ElideRight
+                            font: UM.Theme.getFont("default_bold")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                            Layout.preferredWidth: parent.width
                         }
                     }
                 }
@@ -206,7 +347,7 @@ Cura.ExpandablePopup
 
                 anchors.right: parent.right
 
-                iconSource: UM.Theme.getIcon("arrow_right")
+                iconSource: UM.Theme.getIcon("ChevronSingleRight")
                 isIconOnRightSide: true
 
                 onClicked:
@@ -222,7 +363,7 @@ Cura.ExpandablePopup
                 visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
                 text: catalog.i18nc("@label", "Configurations")
 
-                iconSource: UM.Theme.getIcon("arrow_left")
+                iconSource: UM.Theme.getIcon("ChevronSingleLeft")
 
                 onClicked:
                 {
@@ -236,6 +377,6 @@ Cura.ExpandablePopup
     Connections
     {
         target: Cura.MachineManager
-        onGlobalContainerChanged: popupItem.manual_selected_method = -1  // When switching printers, reset the value of the manual selected method
+        function onGlobalContainerChanged() { popupItem.manual_selected_method = -1 }  // When switching printers, reset the value of the manual selected method
     }
 }

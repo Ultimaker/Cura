@@ -66,7 +66,7 @@ Item
                         sourceSize.width: width
                         sourceSize.height: width
                         color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                        source: UM.Theme.getIcon("pencil")
+                        source: UM.Theme.getIcon("Pen")
                     }
                 }
             }
@@ -149,7 +149,7 @@ Item
     Connections
     {
         target: CuraApplication
-        onAdditionalComponentsChanged: base.addAdditionalComponents("jobSpecsButton")
+        function onAdditionalComponentsChanged(areaId) { base.addAdditionalComponents("jobSpecsButton") }
     }
 
     function addAdditionalComponents(areaId)

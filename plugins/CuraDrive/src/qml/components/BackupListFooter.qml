@@ -20,7 +20,7 @@ RowLayout
     {
         id: infoButton
         text: catalog.i18nc("@button", "Want more?")
-        iconSource: UM.Theme.getIcon("info")
+        iconSource: UM.Theme.getIcon("Information")
         onClicked: Qt.openUrlExternally("https://goo.gl/forms/QACEP8pP3RV60QYG2")
         visible: backupListFooter.showInfoButton
     }
@@ -29,7 +29,7 @@ RowLayout
     {
         id: createBackupButton
         text: catalog.i18nc("@button", "Backup Now")
-        iconSource: UM.Theme.getIcon("plus")
+        iconSource: UM.Theme.getIcon("Plus")
         enabled: !CuraDrive.isCreatingBackup && !CuraDrive.isRestoringBackup
         onClicked: CuraDrive.createBackup()
         busy: CuraDrive.isCreatingBackup

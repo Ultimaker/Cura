@@ -142,7 +142,9 @@ class PostProcessingPlugin(QObject, Extension):
         # The PostProcessingPlugin path is for built-in scripts.
         # The Resources path is where the user should store custom scripts.
         # The Preferences path is legacy, where the user may previously have stored scripts.
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
+        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
+        for root in resource_folders:
             if root is None:
                 continue
             path = os.path.join(root, "scripts")

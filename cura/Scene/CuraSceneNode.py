@@ -119,21 +119,23 @@ class CuraSceneNode(SceneNode):
         self._aabb = None
         if self._mesh_data:
             self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy = False))
-        else:  # If there is no mesh_data, use a bounding box that encompasses the local (0,0,0)
-            position = self.getWorldPosition()
-            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
 
         for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
                 # Non-printing-meshes inside a group should not affect push apart or drop to build plate
                 continue
-            if not child.getMeshData():
-                # Nodes without mesh data should not affect bounding boxes of their parents.
+            child_bb = child.getBoundingBox()
+            if child_bb is None or child_bb.minimum == child_bb.maximum:
+                # Child had a degenerate bounding box, such as an empty group. Don't count it along.
                 continue
             if self._aabb is None:
-                self._aabb = child.getBoundingBox()
+                self._aabb = child_bb
             else:
-                self._aabb = self._aabb + child.getBoundingBox()
+                self._aabb = self._aabb + child_bb
+
+        if self._aabb is None:  # No children that should be included? Just use your own position then, but it's an invalid AABB.
+            position = self.getWorldPosition()
+            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
 
     def __deepcopy__(self, memo: Dict[int, object]) -> "CuraSceneNode":
         """Taken from SceneNode, but replaced SceneNode with CuraSceneNode"""
@@ -142,6 +144,7 @@ class CuraSceneNode(SceneNode):
         copy.setTransformation(self.getLocalTransformation(copy= False))
         copy.setMeshData(self._mesh_data)
         copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
+        copy.source_mime_type = cast(str, deepcopy(self.source_mime_type, memo))
         copy._selectable = cast(bool, deepcopy(self._selectable, memo))
         copy._name = cast(str, deepcopy(self._name, memo))
         for decorator in self._decorators:

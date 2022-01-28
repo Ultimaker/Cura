@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QCoreApplication, QTimer
@@ -17,7 +17,9 @@ class CuraSplashScreen(QSplashScreen):
         self._scale = 0.7
         self._version_y_offset = 0  # when extra visual elements are in the background image, move version text down
 
-        if ApplicationMetadata.IsEnterpriseVersion:
+        if ApplicationMetadata.IsAlternateVersion:
+            splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_wip.png"))
+        elif ApplicationMetadata.IsEnterpriseVersion:
             splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_enterprise.png"))
             self._version_y_offset = 26
         else:
@@ -70,20 +72,20 @@ class CuraSplashScreen(QSplashScreen):
         font = QFont()  # Using system-default font here
         font.setPixelSize(18)
         painter.setFont(font)
-        painter.drawText(60, 70 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(60, 70 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0] if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)
             painter.setPen(QColor(200, 200, 200, 255))
-            painter.drawText(247, 105 + self._version_y_offset, 330 * self._scale, 255 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[1])
+            painter.drawText(247, 105 + self._version_y_offset, round(330 * self._scale), round(255 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[1])
         painter.setPen(QColor(255, 255, 255, 255))
 
         # Draw the loading image
         pen = QPen()
-        pen.setWidth(6 * self._scale)
+        pen.setWidthF(6 * self._scale)
         pen.setColor(QColor(32, 166, 219, 255))
         painter.setPen(pen)
-        painter.drawArc(60, 150, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
+        painter.drawArc(60, 150, round(32 * self._scale), round(32 * self._scale), round(self._loading_image_rotation_angle * 16), 300 * 16)
 
         # Draw message text
         if self._current_message:

@@ -22,7 +22,7 @@ Item
     property int size: 32 * screenScaleFactor // TODO: Theme!
 
     // THe extruder icon source; NOTE: This shouldn't need to be changed
-    property string iconSource: "../svg/icons/extruder.svg"
+    property string iconSource: "../svg/icons/Extruder.svg"
 
     height: size
     width: size
@@ -38,6 +38,7 @@ Item
     Label
     {
         id: positionLabel
+        anchors.centerIn: icon
         font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text")
         height: Math.round(size / 2)
@@ -45,8 +46,6 @@ Item
         text: position + 1
         verticalAlignment: Text.AlignVCenter
         width: Math.round(size / 2)
-        x: Math.round(size * 0.25)
-        y: Math.round(size * 0.15625)
         visible: position >= 0
         renderType: Text.NativeRendering
     }

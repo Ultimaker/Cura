@@ -4,13 +4,14 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.0 as Cura
 
 Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
+    property var fileProviderModel: CuraApplication.getFileProviderModel()
 
     MenuItem
     {
@@ -22,6 +23,13 @@ Menu
     {
         id: openMenu
         action: Cura.Actions.open
+        visible: (base.fileProviderModel.count == 1)
+    }
+
+    OpenFilesMenu
+    {
+        id: openFilesMenu
+        visible: (base.fileProviderModel.count > 1)
     }
 
     RecentFilesMenu { }
@@ -29,8 +37,10 @@ Menu
     MenuItem
     {
         id: saveWorkspaceMenu
-        shortcut: StandardKey.Save
+        shortcut: visible ? StandardKey.Save : ""
         text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
+        visible: saveProjectMenu.model.count == 1
+        enabled: UM.WorkspaceFileHandler.enabled
         onTriggered:
         {
             var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };
@@ -44,6 +54,16 @@ Menu
                 UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
             }
         }
+    }
+
+    UM.ProjectOutputDevicesModel { id: projectOutputDevicesModel }
+
+    SaveProjectMenu
+    {
+        id: saveProjectMenu
+        model: projectOutputDevicesModel
+        visible: model.count > 1
+        enabled: UM.WorkspaceFileHandler.enabled
     }
 
     MenuSeparator { }

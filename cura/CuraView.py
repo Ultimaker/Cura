@@ -12,7 +12,7 @@ from cura.CuraApplication import CuraApplication
 # Since Cura has a few pre-defined "space claims" for the locations of certain components, we've provided some structure
 # to indicate this.
 #   MainComponent works in the same way the MainComponent of a stage.
-#   the stageMenuComponent returns an item that should be used somehwere in the stage menu. It's up to the active stage
+#   the stageMenuComponent returns an item that should be used somewhere in the stage menu. It's up to the active stage
 #   to actually do something with this.
 class CuraView(View):
     def __init__(self, parent = None, use_empty_menu_placeholder: bool = False) -> None:

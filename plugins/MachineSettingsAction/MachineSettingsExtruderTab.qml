@@ -137,6 +137,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: ""
+                decimals: 0
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
         }

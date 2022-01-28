@@ -1,0 +1,51 @@
+{
+    "version": 2,
+    "name": "MP Mini Delta V2",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "mpminidelta subreddit",
+        "manufacturer": "Monoprice",
+        "file_formats": "text/x-gcode",
+        "platform": "mp_mini_delta_platform.3mf",
+        "supports_usb_connection": true,
+        "has_machine_quality": false,
+        "visible": true,
+        "platform_offset": [0, 0, 0],
+        "has_materials": true,
+        "has_variants": false,
+        "has_machine_materials": false,
+        "has_variant_materials": false,
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "mp_mini_delta_v2_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_start_gcode":
+        {
+          "default_value": ";(**** start.gcode for MP Mini Delta V2****)\nG21\nG90\nM82\nM107\nM104 S170\nG28 X0 Y0\nG28 Z0\nG29 Z0.4\nG1 Z15 F300\nM109 S{material_print_temperature_layer_0}\nG92 E0\nG1 F200 E3\nG92 E0\nG1 F2000\n"
+        },
+        "machine_end_gcode": {
+          "default_value": ";(**** end.gcode for MP Mini Delta V2****)\nG28;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)"
+        },
+        "material_print_temp_prepend":{"default_value":false},
+        "material_bed_temperature": { "value": 40 },
+        "machine_width": { "default_value": 110 },
+        "machine_depth": { "default_value": 110 },
+        "machine_height": { "default_value": 120 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_nozzle_size": {
+            "default_value": 0.4
+        },
+        "line_width": { "value": "round(machine_nozzle_size, 2)" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "retraction_amount": { "default_value": 5 },
+        "retraction_speed": { "default_value": 28 },
+        "retraction_hop_enabled": { "default_value": false },
+        "retract_at_layer_change": { "default_value": true }
+    }
+}

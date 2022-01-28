@@ -2,9 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
+import pytest
 
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ShapeArray import ShapeArray
+
+pytestmark = pytest.mark.skip()
 
 def gimmeTriangle():
     """Triangle of area 12"""

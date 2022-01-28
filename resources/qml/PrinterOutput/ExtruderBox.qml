@@ -173,7 +173,7 @@ Item
                     {
                         base.showTooltip(
                             base,
-                            {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, 0).y},
+                            {x: 0, y: preheatTemperatureInputMouseArea.mapToItem(base, 0, -parent.height/2).y},
                             catalog.i18nc("@tooltip of temperature input", "The temperature to pre-heat the hotend to.")
                         );
                     }
@@ -366,7 +366,7 @@ Item
                 {
                     base.showTooltip(
                         base,
-                        {x: 0, y: preheatButton.mapToItem(base, 0, 0).y},
+                        {x: 0, y: preheatButton.mapToItem(base, 0, -parent.height).y},
                         catalog.i18nc("@tooltip of pre-heat", "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print.")
                     );
                 }

@@ -29,7 +29,8 @@ class NotClusterHostMessage(Message):
                                                       "it as a group host.", device.name),
             title = I18N_CATALOG.i18nc("@info:title", "Not a group host"),
             lifetime = 0,
-            dismissable = True
+            dismissable = True,
+            message_type = Message.MessageType.ERROR
         )
         self._address = device.address
         self.addAction("", I18N_CATALOG.i18nc("@action", "Configure group"), "", "")

@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -123,6 +123,9 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         for changed_setting_key in changed_setting_keys:
+            if not stack.getProperty(changed_setting_key, "enabled"):
+                continue
+
             validation_state = stack.getProperty(changed_setting_key, "validationState")
 
             if validation_state is None:
@@ -195,7 +198,7 @@ class StartSliceJob(Job):
         # Remove old layer data.
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                # Singe we walk through all nodes in the scene, they always have a parent.
+                # Since we walk through all nodes in the scene, they always have a parent.
                 cast(SceneNode, node.getParent()).removeChild(node)
                 break
 
@@ -353,10 +356,19 @@ class StartSliceJob(Job):
             result[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
-        result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
+        # Material identification in addition to non-human-readable GUID
+        result["material_id"] = stack.material.getMetaDataEntry("base_file", "")
+        result["material_type"] = stack.material.getMetaDataEntry("material", "")
+        result["material_name"] = stack.material.getMetaDataEntry("name", "")
+        result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
+
+        # Renamed settings.
+        result["print_bed_temperature"] = result["material_bed_temperature"]
         result["print_temperature"] = result["material_print_temperature"]
         result["travel_speed"] = result["speed_travel"]
-        result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
+
+        #Some extra settings.
+        result["time"] = time.strftime("%H:%M:%S")
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
         result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
@@ -455,9 +467,9 @@ class StartSliceJob(Job):
         bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
         pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
         settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
-        print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"]
+        print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature", "print_temperature"]
         pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
-        settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) == None
+        settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) is None
 
         # Replace the setting tokens in start and end g-code.
         # Use values from the first used extruder by default so we get the expected temperatures

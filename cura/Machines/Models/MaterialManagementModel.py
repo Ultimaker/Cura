@@ -1,35 +1,95 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt5.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Resources import Resources  # To find QML files.
 from UM.Signal import postponeSignals, CompressTechnique
 
-import cura.CuraApplication  # Imported like this to prevent circular imports.
+import cura.CuraApplication  # Imported like this to prevent cirmanagecular imports.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
+from cura.UltimakerCloud.CloudMaterialSync import CloudMaterialSync
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialNode import MaterialNode
 
 catalog = i18nCatalog("cura")
 
+
 class MaterialManagementModel(QObject):
-    """Proxy class to the materials page in the preferences.
-
-    This class handles the actions in that page, such as creating new materials, renaming them, etc.
-    """
-
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
 
     :param The base file of the material is provided as parameter when this emits
     """
+
+    def __init__(self, parent: Optional[QObject] = None) -> None:
+        super().__init__(parent = parent)
+        self._material_sync = CloudMaterialSync(parent=self)
+        self._checkIfNewMaterialsWereInstalled()
+
+    def _checkIfNewMaterialsWereInstalled(self) -> None:
+        """
+        Checks whether new material packages were installed in the latest startup. If there were, then it shows
+        a message prompting the user to sync the materials with their printers.
+        """
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        for package_id, package_data in application.getPackageManager().getPackagesInstalledOnStartup().items():
+            if package_data["package_info"]["package_type"] == "material":
+                # At least one new material was installed
+                # TODO: This should be enabled again once CURA-8609 is merged
+                #self._showSyncNewMaterialsMessage()
+                break
+
+    def _showSyncNewMaterialsMessage(self) -> None:
+        sync_materials_message = Message(
+                text = catalog.i18nc("@action:button",
+                                     "Please sync the material profiles with your printers before starting to print."),
+                title = catalog.i18nc("@action:button", "New materials installed"),
+                message_type = Message.MessageType.WARNING,
+                lifetime = 0
+        )
+
+        sync_materials_message.addAction(
+                "sync",
+                name = catalog.i18nc("@action:button", "Sync materials"),
+                icon = "",
+                description = "Sync your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
+        )
+
+        sync_materials_message.addAction(
+                "learn_more",
+                name = catalog.i18nc("@action:button", "Learn more"),
+                icon = "",
+                description = "Learn more about syncing your newly installed materials with your printers.",
+                button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
+                button_style = Message.ActionButtonStyle.LINK
+        )
+        sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
+
+        # Show the message only if there are printers that support material export
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        global_stacks = container_registry.findContainerStacks(type = "machine")
+        if any([stack.supportsMaterialExport for stack in global_stacks]):
+            sync_materials_message.show()
+
+    def _onSyncMaterialsMessageActionTriggered(self, sync_message: Message, sync_message_action: str):
+        if sync_message_action == "sync":
+            QDesktopServices.openUrl(QUrl("https://example.com/openSyncAllWindow"))
+            # self.openSyncAllWindow()
+            sync_message.hide()
+        elif sync_message_action == "learn_more":
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
+
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
@@ -79,6 +139,7 @@ class MaterialManagementModel(QObject):
 
         :param material_node: The material to remove.
         """
+        Logger.info(f"Removing material {material_node.container_id}")
 
         container_registry = CuraContainerRegistry.getInstance()
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
@@ -194,6 +255,7 @@ class MaterialManagementModel(QObject):
 
         :return: The root material ID of the duplicate material.
         """
+        Logger.info(f"Duplicating material {material_node.base_file} to {new_base_id}")
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
     @pyqtSlot(result = str)
@@ -262,3 +324,11 @@ class MaterialManagementModel(QObject):
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
             Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+
+    @pyqtSlot()
+    def openSyncAllWindow(self) -> None:
+        """
+        Opens the window to sync all materials.
+        """
+        self._material_sync.openSyncAllWindow()
+

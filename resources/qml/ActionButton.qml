@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -18,19 +18,17 @@ Button
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.tooltipText
-    property alias cornerSide: backgroundRect.cornerSide
+    property alias tooltipWidth: tooltip.width
 
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
     property color disabledColor: color
     property color textColor: UM.Theme.getColor("button_text")
     property color textHoverColor: textColor
-    property color textDisabledColor: textColor
+    property color textDisabledColor: disabledColor
     property color outlineColor: color
-    property color outlineHoverColor: hoverColor
-    property color outlineDisabledColor: outlineColor
-    property alias shadowColor: shadow.color
-    property alias shadowEnabled: shadow.visible
+    property color outlineHoverColor: outlineColor
+    property color outlineDisabledColor: disabledColor
     property alias busy: busyIndicator.visible
 
     property bool underlineTextOnHover: false
@@ -45,6 +43,49 @@ Button
     // This property is used when the space for the button is limited. In case the button needs to grow with the text,
     // but it can exceed a maximum, then this value have to be set.
     property int maximumWidth: 0
+
+    // These properties are deprecated.
+    // To (maybe) prevent a major SDK upgrade, mark them as deprecated instead of just outright removing them.
+    // Note, if you still want rounded corners, use (something based on) Cura.RoundedRectangle.
+    property alias cornerSide: deprecatedProperties.cornerSide
+    property alias shadowColor: deprecatedProperties.shadowColor
+    property alias shadowEnabled: deprecatedProperties.shadowEnabled
+
+    Item
+    {
+        id: deprecatedProperties
+
+        visible: false
+        enabled: false
+        width: 0
+        height: 0
+
+        property var cornerSide: null
+        property var shadowColor: null
+        property var shadowEnabled: null
+
+        onCornerSideChanged:
+        {
+            if (cornerSide != null)
+            {
+                CuraApplication.writeToLog("w", "'ActionButton.cornerSide' is deprecated since 4.11. Rounded corners can still be made with 'Cura.RoundedRectangle'.");
+            }
+        }
+        onShadowColorChanged:
+        {
+            if (shadowColor != null)
+            {
+                CuraApplication.writeToLog("w", "'ActionButton.shadowColor' is deprecated since 4.11.")
+            }
+        }
+        onShadowEnabledChanged:
+        {
+            if (shadowEnabled != null)
+            {
+                CuraApplication.writeToLog("w", "'ActionButton.shadowEnabled' is deprecated since 4.11.")
+            }
+        }
+    }
 
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
@@ -102,13 +143,13 @@ Button
 
             Binding
             {
-                // When settting width directly, an unjust binding loop warning would be triggered,
+                // When setting width directly, an unjust binding loop warning would be triggered,
                 // because button.width is part of this expression.
                 // Using parent.width is fine in fixedWidthMode.
                 target: buttonText
                 property: "width"
-                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
-                                             : ((maximumWidth != 0 && button.contentWidth > maximumWidth) ? maximumWidth : undefined)
+                value: button.fixedWidthMode ? (button.width - button.leftPadding - button.rightPadding)
+                                             : ((button.maximumWidth != 0 && button.implicitContentWidth > button.maximumWidth) ? (button.maximumWidth - (button.width - button.implicitContentWidth) * 2) : undefined)
             }
         }
 
@@ -130,24 +171,13 @@ Button
     background: Cura.RoundedRectangle
     {
         id: backgroundRect
-        cornerSide: Cura.RoundedRectangle.Direction.All
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
-        radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
-    }
 
-    DropShadow
-    {
-        id: shadow
-        // Don't blur the shadow
+        // Disable the rounded-ness of this rectangle. We can't use a normal Rectangle here yet, as the API/SDK has only just been deprecated.
         radius: 0
-        anchors.fill: backgroundRect
-        source: backgroundRect
-        verticalOffset: 2
-        visible: false
-        // Should always be drawn behind the background.
-        z: backgroundRect.z - 1
+        cornerSide: Cura.RoundedRectangle.Direction.None
     }
 
     Cura.ToolTip

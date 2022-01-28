@@ -217,7 +217,7 @@ class Test_Update:
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
             objects_model._update()
             assert objects_model.items == [{
-                'name': 'Group #1',
+                'name': 'Group',
                 'selected': False,
                 'outside_build_area': True,
                 'buildplate_number': None,

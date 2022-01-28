@@ -34,6 +34,9 @@ ToolTip
         NumberAnimation { duration: 100; }
     }
 
+    onAboutToShow: show()
+    onAboutToHide: hide()
+
     // If the text is not set, just set the height to 0 to prevent it from showing
     height: text != "" ? label.contentHeight + 2 * UM.Theme.getSize("thin_margin").width: 0
 
@@ -56,6 +59,7 @@ ToolTip
         color: UM.Theme.getColor("tooltip")
         target: Qt.point(targetPoint.x - tooltip.x, targetPoint.y - tooltip.y)
         arrowSize: UM.Theme.getSize("default_arrow").width
+        visible: tooltip.height != 0
     }
 
     contentItem: Label

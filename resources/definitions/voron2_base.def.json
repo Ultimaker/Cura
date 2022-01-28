@@ -1,12 +1,12 @@
 {
-    "name": "VORON2 Base",
+    "name": "Voron2 Base",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": 
     {
         "visible": false,
         "author": "Fulg, Maglin, pizzle_Dizzle",
-        "manufacturer": "VORONDesign",
+        "manufacturer": "VoronDesign",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
         "preferred_quality_type": "fast",
@@ -104,7 +104,7 @@
         "retraction_prime_speed":                       { "value": "math.ceil(retraction_speed * 0.4)", "maximum_value_warning": 130 },
         "retraction_hop_enabled":                       { "default_value": true },
         "retraction_hop":                               { "default_value": 0.2 },
-        "retraction_combing":                           { "default_value": "noskin" },
+        "retraction_combing":                           { "value": "'noskin'" },
         "retraction_combing_max_distance":              { "default_value": 10 },
         "travel_avoid_other_parts":                     { "default_value": false },
         "speed_travel":                                 { "maximum_value": 300, "value": 300, "maximum_value_warning": 501 },
@@ -136,7 +136,6 @@
         "layer_height_0":                               { "resolve": "max(0.2, min(extruderValues('layer_height')))" },
         "line_width":                                   { "value": "machine_nozzle_size * 1.125" },
         "wall_line_width":                              { "value": "machine_nozzle_size" },
-        "fill_perimeter_gaps":                          { "default_value": "nowhere" },
         "fill_outline_gaps":                            { "default_value": true },
         "meshfix_maximum_resolution":                   { "default_value": 0.01 },
         "infill_before_walls":                          { "default_value": false },

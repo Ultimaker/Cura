@@ -1,0 +1,49 @@
+{
+    "version": 2,
+    "name": "Arjun 300 Duplication",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Venkat Kamesh",
+        "manufacturer": "Sri Vignan Technologies",
+        "weight": 3,
+        "file_formats": "text/x-gcode",
+        "has_material": true,
+        "has_variants": true,
+        "preferred_variant_name": "0.4 mm Nozzle",
+        "machine_extruder_trains":
+        {
+            "0": "arjun_dm_extruder"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Arjun 300 Duplication" },
+        "machine_width": { "default_value": 158.5 },
+        "machine_height": { "default_value": 290 },
+        "machine_depth": { "default_value": 310 },
+        "machine_center_is_zero": {"default_value": false},
+        "machine_heated_bed": { "default_value": true },
+        "machine_nozzle_size": {"default_value": 0.4},
+        "machine_show_variants": {"default_value": true},
+        "machine_acceleration": {"default_value": 2000},
+        "machine_max_feedrate_x": { "value": 300 },
+        "machine_max_feedrate_y": { "value": 300 },
+        "machine_max_feedrate_z": { "value": 15 },
+        "machine_max_feedrate_e": { "value": 150 },
+        "machine_use_extruder_offset_to_offset_coords": {"default_value": false},
+        "line_width": {"value": "machine_nozzle_size"},
+        "speed_travel": {"maximum_value": "300", "value": "200"},
+        "optimize_wall_printing_order": { "value": "True" },
+        "material_diameter": { "default_value": 1.75},
+        "retraction_amount": {"default_value": 6.5},
+        "retraction_speed": { "default_value": 30},
+        
+		"adhesion_type": { "default_value": "skirt" },
+        "machine_gcode_flavor": { "default_value": "Marlin"},
+	    "ironing_enabled":{"default_value": true},
+        "machine_start_gcode": {"default_value": "M605 S2 R0 X155\nG21\nG90\nM82\nM107\nM104 S{material_print_temperature}\nM105\nM109 S{material_print_temperature}\nG28 Z0\nG1 Z15 F150\nG28 Y0\nG1 Y20 F6000\nG28 X0\nG1 X80 F9000\nT0\nG92 E0\nG1 E35 F250\nG1 E45 F120\nG92 E0\nG1 X100 Z0 F5000\nG1 X145 F9000\nM117\n"},
+        "machine_end_gcode": {"default_value": "G91\nG1 Z+0.5 E-16 Y+10 F9000\nG90\nM107\nM107 P1\nM104 S0\nM140 S0\nM117\nM605 S0\nG28 X0 Y0\nM84"},
+        "machine_extruder_count": { "default_value": 1 }
+    }
+}

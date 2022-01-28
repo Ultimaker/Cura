@@ -48,7 +48,7 @@ Item
                 sourceSize.width: width
                 anchors.left: parent.left
                 color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
-                source: objectSelector.opened ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_top")
+                source: objectSelector.opened ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleUp")
             }
 
             Label

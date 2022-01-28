@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -15,6 +15,8 @@ TextField
 {
     id: textField
 
+    property alias leftIcon: iconLeft.source
+
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     hoverEnabled: true
@@ -22,6 +24,7 @@ TextField
     font: UM.Theme.getFont("default")
     color: UM.Theme.getColor("text")
     renderType: Text.NativeRendering
+    leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
 
     states: [
         State
@@ -52,7 +55,6 @@ TextField
 
         color: UM.Theme.getColor("main_background")
 
-        anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
         radius: UM.Theme.getSize("setting_control_radius").width
 
         border.color:
@@ -66,6 +68,24 @@ TextField
                 return UM.Theme.getColor("setting_control_border_highlight")
             }
             return UM.Theme.getColor("setting_control_border")
+        }
+
+        //Optional icon added on the left hand side.
+        UM.RecolorImage
+        {
+            id: iconLeft
+
+            anchors
+            {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_margin").width
+            }
+
+            visible: source != ""
+            height: UM.Theme.getSize("small_button_icon").height
+            width: visible ? height : 0
+            color: textField.color
         }
     }
 }
