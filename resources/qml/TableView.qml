@@ -80,7 +80,7 @@ Item
                         {
                             if(drag.active)
                             {
-                                let new_width = parent.parent.width + mouseX; //Don't go smaller than 10 pixels, to make sure you can still scale it back.
+                                let new_width = parent.parent.width + mouseX;
                                 let sum_widths = mouseX;
                                 for(let i = 0; i < headerBar.children.length; ++i)
                                 {
