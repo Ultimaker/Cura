@@ -2,20 +2,21 @@
     "version": 2,
     "id": "julia_plus",
     "name": "Julia Plus",
-    "inherits": "fdmprinter",
+    "inherits": "julia_extended",
     "metadata": {
-        "author": "Vijay Raghav Varada",
+        "author": "Ganesh V",
         "manufacturer": "Fracktal Works",
         "category": "Legacy Machines",
+        "quality_definition": "julia_extended",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0 ],
-        "has_machine_materials": false,
+        "has_machine_materials": true,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "has_variants": true,
         "variants_name": "Nozzle",
         "preferred_variant_name": "Model 0.4 mm",
-        "preferred_material": "fracktal_pla_175",
+        "preferred_material": "fracktal_abs_175,fracktal_aquatek-bvoh_175,fracktal_breakaway_175,fracktal_cf-nylon_175,fracktal_cpe_175,fracktal_hips_175,fracktal_nylon_175,fracktal_pc_175,fracktal_petg_175,fracktal_pla_175fracktal_pva_175,fracktal_tpu85a_175,fracktal_tpu95a_175",
         "machine_extruder_trains": {
             "0": "julia_plus_extruder_0"
         },
@@ -72,7 +73,7 @@
         "brim_width" : { "value": "2"},
 
         "retraction_combing_max_distance" : { "value": "10"},
-        "cool_min_layer_time": { "default_value": 15 },
+        "cool_min_layer_time": { "default_value": 75 },
         "bridge_settings_enabled": { "default_value": true},
         "z_seam_corner": { "default_value": "z_seam_corner_weighted"},
 

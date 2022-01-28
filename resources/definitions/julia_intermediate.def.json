@@ -2,14 +2,15 @@
     "version": 2,
     "id": "julia_intermediate",
     "name": "Julia Intermediate",
-    "inherits": "fdmprinter",
+    "inherits": "julia_extended",
     "metadata": {
-        "author": "Vijay Raghav Varada",
+        "author": "Ganesh V",
         "manufacturer": "Fracktal Works",
         "category": "Julia Series",
+        "quality_definition": "julia_extended",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0 ],
-        "has_machine_materials": false,
+        "has_machine_materials": true,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "has_variants": true,
@@ -72,7 +73,7 @@
         "brim_width" : { "value": "2"},
 
         "retraction_combing_max_distance" : { "value": "10"},
-        "cool_min_layer_time": { "default_value": 15 },
+        "cool_min_layer_time": { "default_value": 75 },
         "bridge_settings_enabled": { "default_value": true},
         "z_seam_corner": { "default_value": "z_seam_corner_weighted"},
 
@@ -123,6 +124,7 @@
         "wall_overhang_angle" : {"value": 40},
         "wall_overhang_speed_factor" : {"value": 60},
         "wall_overhang_over_support" : {"value": true},
-        "support_fan_enable" : {"value": true}
+        "support_fan_enable" : {"value": true},
+        "skin_monotonic" : {"value": "True"}
     }
 }
