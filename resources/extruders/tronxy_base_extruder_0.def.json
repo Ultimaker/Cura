@@ -14,6 +14,6 @@
         },
         "machine_nozzle_size": { "default_value": 0.4 },
         "material_diameter": { "default_value": 1.75 }
-        
+
     }
 }
