@@ -1,6 +1,8 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
+// Button component to be used within the
+
 import QtQuick 2.1
 import QtQuick.Controls 2.1
 

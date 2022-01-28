@@ -7,6 +7,9 @@ import QtQuick.Controls 2.0
 import Cura 1.0 as Cura
 import UM 1.5 as UM
 
+// Simple button for displaying text and changes appearance for various states: enabled, valueError, valueWarning
+// - and hovered. Mainly used in CustomConfiguration.qml
+
 Item
 {
     UM.I18nCatalog
@@ -283,10 +286,7 @@ Item
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                         updateModels: materialSelection.visible
                     }
-                    onClicked:
-                    {
-                        materialsMenu.popup();
-                    }
+                    onClicked: materialsMenu.popup()
                 }
                 Item
                 {
@@ -338,10 +338,7 @@ Item
                         id: nozzlesMenu
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                     }
-                    onClicked:
-                    {
-                        nozzlesMenu.popup();
-                    }
+                    onClicked: nozzlesMenu.popup()
                 }
             }
 
