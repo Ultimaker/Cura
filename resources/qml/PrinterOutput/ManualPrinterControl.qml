@@ -1,9 +1,8 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
 import UM 1.5 as UM
@@ -258,7 +257,7 @@ Item
                         width: height + UM.Theme.getSize("default_margin").width
 
                         text: model.label
-                        exclusiveGroup: distanceGroup
+                        ButtonGroup.group: distanceGroup
                         checkable: true
                         checked: distancesRow.currentDistance == model.value
                         onClicked: distancesRow.currentDistance = model.value
@@ -390,6 +389,6 @@ Item
             ListElement { label: "10";  value: 10  }
             ListElement { label: "100"; value: 100 }
         }
-        ExclusiveGroup { id: distanceGroup }
+        ButtonGroup { id: distanceGroup }
     }
 }
