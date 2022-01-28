@@ -1,3 +1,8 @@
+[4.13.1]
+* Bug fixes 
+- Fixed a bug where tree support could go through the model
+- Fixed a bug where there were imcomplete layer in surface mode 
+
 [4.13.0]
 <i>For an overview of the new features in Cura 4.13, please watch <a href="https://youtu.be/chvAuI6Eqto">our video</a>.</i>
 
