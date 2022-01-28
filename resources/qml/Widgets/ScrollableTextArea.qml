@@ -26,17 +26,8 @@ Flickable
 
         background: Rectangle //Providing the background color and border.
         {
-            anchors
-            {
-                top: parent.top
-                topMargin: -border.width
-                bottom: parent.bottom
-                bottomMargin: -border.width
-                left: parent.left
-                leftMargin: -border.width
-                right: parent.right
-                rightMargin: -border.width
-            }
+            anchors.fill: parent
+            anchors.margins: -border.width
 
             color: scrollableTextAreaBase.back_color
             border.color: UM.Theme.getColor("thick_lining")
