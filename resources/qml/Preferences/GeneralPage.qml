@@ -2,12 +2,11 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.1 as OldControls
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.1
 
-import QtQuick.Controls 2.3 as NewControls
-
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 UM.PreferencesPage
@@ -133,10 +132,22 @@ UM.PreferencesPage
         width: parent.width
         height: parent.height
 
+        ScrollBar.vertical: UM.ScrollBar
+        {
+            id: preferencesScrollBar
+            parent: preferencesScrollView
+            anchors
+            {
+                top: parent.top
+                bottom: parent.bottom
+                right: parent.right
+            }
+        }
+
         Column
         {
             UM.I18nCatalog{id: catalog; name: "cura"}
-            width: preferencesScrollView.viewport.width
+            width: preferencesScrollView.width - preferencesScrollBar.width
 
             Label
             {
@@ -192,7 +203,7 @@ UM.PreferencesPage
                     }
                 }
 
-                NewControls.ComboBox
+                ComboBox
                 {
                     id: languageComboBox
 
@@ -255,7 +266,7 @@ UM.PreferencesPage
                     }
                 }
 
-                NewControls.ComboBox
+                ComboBox
                 {
                     id: themeComboBox
 
@@ -531,7 +542,7 @@ UM.PreferencesPage
                         }
                     }
 
-                    NewControls.ComboBox
+                    ComboBox
                     {
                         id: cameraComboBox
 
@@ -688,7 +699,7 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    NewControls.ComboBox
+                    ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
                         width: Math.round(250 * screenScaleFactor)
@@ -755,7 +766,7 @@ UM.PreferencesPage
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    NewControls.ComboBox
+                    ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
                         width: Math.round(250 * screenScaleFactor)
@@ -858,7 +869,7 @@ UM.PreferencesPage
                 }
             }
 
-            ExclusiveGroup { id: curaUpdatesGroup }
+            OldControls.ExclusiveGroup { id: curaUpdatesGroup }
             UM.TooltipArea
             {
                 width: childrenRect.width
@@ -866,7 +877,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                OldControls.RadioButton
                 {
                     text: catalog.i18nc("@option:radio", "Stable releases only")
                     exclusiveGroup: curaUpdatesGroup
@@ -882,7 +893,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                OldControls.RadioButton
                 {
                     text: catalog.i18nc("@option:radio", "Stable and Beta releases")
                     exclusiveGroup: curaUpdatesGroup

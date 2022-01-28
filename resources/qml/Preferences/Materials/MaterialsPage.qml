@@ -1,12 +1,13 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
+import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.5 as Cura
 
 Item
@@ -102,7 +103,7 @@ Item
         height: childrenRect.height
 
         // Activate button
-        Button
+        OldControls.Button
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
@@ -120,7 +121,7 @@ Item
         }
 
         // Create button
-        Button
+        OldControls.Button
         {
             id: createMenuButton
             text: catalog.i18nc("@action:button", "Create")
@@ -135,7 +136,7 @@ Item
         }
 
         // Duplicate button
-        Button
+        OldControls.Button
         {
             id: duplicateMenuButton
             text: catalog.i18nc("@action:button", "Duplicate");
@@ -150,7 +151,7 @@ Item
         }
 
         // Remove button
-        Button
+        OldControls.Button
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
@@ -165,7 +166,7 @@ Item
         }
 
         // Import button
-        Button
+        OldControls.Button
         {
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
@@ -179,7 +180,7 @@ Item
         }
 
         // Export button
-        Button
+        OldControls.Button
         {
             id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
@@ -193,7 +194,7 @@ Item
         }
 
         //Sync button.
-        Button
+        OldControls.Button
         {
             id: syncMaterialsButton
             text: catalog.i18nc("@action:button Sending materials to printers", "Sync with Printers")
@@ -207,7 +208,8 @@ Item
         }
     }
 
-    Item {
+    Item
+    {
         id: contentsItem
         anchors
         {
@@ -271,22 +273,26 @@ Item
                 bottom: parent.bottom
                 left: parent.left
             }
-
-            Rectangle
-            {
-                parent: viewport
-                anchors.fill: parent
-                color: palette.light
-            }
-
             width: (parent.width * 0.4) | 0
-            frameVisible: true
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                id: materialScrollBar
+                parent: materialScrollView
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
+            contentHeight: materialListView.height //For some reason, this is not determined automatically with this ScrollView. Very weird!
 
             MaterialsList
             {
                 id: materialListView
-                width: materialScrollView.viewport.width
+                width: materialScrollView.width - materialScrollBar.width
             }
         }
 

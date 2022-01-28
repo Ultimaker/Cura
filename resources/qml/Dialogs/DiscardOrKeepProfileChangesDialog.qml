@@ -1,14 +1,15 @@
-// Copyright (c) 2020 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
+import Qt.labs.qmlmodels 1.0
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls 2.15 as NewControls
+import QtQuick.Controls 1.1 as OldControls
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.6 as Cura
 
 UM.Dialog
 {
@@ -17,6 +18,8 @@ UM.Dialog
 
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
+    width: minimumWidth
+    height: minimumHeight
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -68,72 +71,31 @@ UM.Dialog
         anchors.bottom: optionRow.top
         anchors.left: parent.left
         anchors.right: parent.right
-        TableView
+
+        Cura.TableView
         {
-            anchors.fill: parent
-            height: base.height - 150
             id: tableView
-            Component
+            anchors
             {
-                id: labelDelegate
-                Label
-                {
-                    property var extruder_name: userChangesModel.getItem(styleData.row).extruder
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                    anchors.right: parent.right
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("system")
-                    text:
-                    {
-                        var result = styleData.value
-                        if (extruder_name != "")
-                        {
-                            result += " (" + extruder_name + ")"
-                        }
-                        return result
-                    }
-                }
+                top: parent.top
+                left: parent.left
+                right: parent.right
             }
+            height: base.height - 150
 
-            Component
+            columnHeaders: [
+                catalog.i18nc("@title:column", "Profile settings"),
+                Cura.MachineManager.activeQualityDisplayNameMap["main"],
+                catalog.i18nc("@title:column", "Current changes")
+            ]
+            model: TableModel
             {
-                id: defaultDelegate
-                Label
-                {
-                    text: styleData.value
-                    font: UM.Theme.getFont("system")
-                }
+                TableModelColumn { display: "label" }
+                TableModelColumn { display: "original_value" }
+                TableModelColumn { display: "user_value" }
+                rows: userChangesModel.items
             }
-
-            TableViewColumn
-            {
-                role: "label"
-                title: catalog.i18nc("@title:column", "Profile settings")
-                delegate: labelDelegate
-                width: (tableView.width * 0.4) | 0
-            }
-            TableViewColumn
-            {
-                role: "original_value"
-                title: Cura.MachineManager.activeQualityDisplayNameMap["main"]
-                width: (tableView.width * 0.3) | 0
-                delegate: defaultDelegate
-            }
-            TableViewColumn
-            {
-                role: "user_value"
-                title: catalog.i18nc("@title:column", "Current changes")
-                width: (tableView.width * 0.3) | 0
-            }
-            section.property: "category"
-            section.delegate: Label
-            {
-                text: section
-                font.bold: true
-            }
-
-            model: userChangesModel
+            sectionRole: "category"
         }
     }
 
@@ -146,7 +108,7 @@ UM.Dialog
         anchors.margins: UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        NewControls.ComboBox
+        ComboBox
         {
             id: discardOrKeepProfileChangesDropDownButton
             width: 300
@@ -193,7 +155,7 @@ UM.Dialog
         anchors.margins: UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
-        Button
+        OldControls.Button
         {
             id: discardButton
             text: catalog.i18nc("@action:button", "Discard changes");
@@ -206,7 +168,7 @@ UM.Dialog
             isDefault: true
         }
 
-        Button
+        OldControls.Button
         {
             id: keepButton
             text: catalog.i18nc("@action:button", "Keep changes");

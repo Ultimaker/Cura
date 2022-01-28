@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Jaime van Kessel, Ultimaker B.V.
+// Copyright (c) 2022 Jaime van Kessel, Ultimaker B.V.
 // The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
 import QtQuick 2.2
@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 UM.Dialog
@@ -34,7 +34,7 @@ UM.Dialog
         UM.I18nCatalog{id: catalog; name: "cura"}
         id: base
         property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
-        property int textMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
+        property int textMargin: UM.Theme.getSize("narrow_margin").width
         property string activeScriptName
         SystemPalette{ id: palette }
         SystemPalette{ id: disabledPalette; colorGroup: SystemPalette.Disabled }
@@ -44,19 +44,18 @@ UM.Dialog
         {
             id: selectedScriptGroup
         }
-        Item
+        Column
         {
             id: activeScripts
-            anchors.left: parent.left
             width: base.columnWidth
             height: parent.height
+
+            spacing: base.textMargin
 
             Label
             {
                 id: activeScriptsHeader
                 text: catalog.i18nc("@label", "Post Processing Scripts")
-                anchors.top: parent.top
-                anchors.topMargin: base.textMargin
                 anchors.left: parent.left
                 anchors.leftMargin: base.textMargin
                 anchors.right: parent.right
@@ -67,22 +66,24 @@ UM.Dialog
             ListView
             {
                 id: activeScriptsList
-
                 anchors
                 {
-                    top: activeScriptsHeader.bottom
                     left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
                     right: parent.right
                     rightMargin: base.textMargin
-                    topMargin: base.textMargin
-                    leftMargin: UM.Theme.getSize("default_margin").width
                 }
+                height: Math.min(contentHeight, parent.height - parent.spacing * 2 - activeScriptsHeader.height - addButton.height) //At the window height, start scrolling this one.
 
-                height: childrenRect.height
+                clip: true
+                ScrollBar.vertical: UM.ScrollBar
+                {
+                    id: activeScriptsScrollBar
+                }
                 model: manager.scriptList
                 delegate: Item
                 {
-                    width: parent.width
+                    width: parent.width - activeScriptsScrollBar.width
                     height: activeScriptButton.height
                     Button
                     {
@@ -132,8 +133,7 @@ UM.Dialog
                         text: "x"
                         width: 20 * screenScaleFactor
                         height: 20 * screenScaleFactor
-                        anchors.right:parent.right
-                        anchors.rightMargin: base.textMargin
+                        anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         onClicked: manager.removeScriptByIndex(index)
                         contentItem: Item
@@ -221,8 +221,6 @@ UM.Dialog
                 text: catalog.i18nc("@action", "Add a script")
                 anchors.left: parent.left
                 anchors.leftMargin: base.textMargin
-                anchors.top: activeScriptsList.bottom
-                anchors.topMargin: base.textMargin
                 onClicked: scriptsMenu.open()
             }
             Menu
@@ -275,9 +273,9 @@ UM.Dialog
                 color: UM.Theme.getColor("text")
             }
 
-            ScrollView
+            ListView
             {
-                id: scrollView
+                id: listview
                 anchors
                 {
                     top: scriptSpecsHeader.bottom
@@ -288,123 +286,121 @@ UM.Dialog
                     bottom: parent.bottom
                 }
 
+                ScrollBar.vertical: UM.ScrollBar {}
+                clip: true
                 visible: manager.selectedScriptDefinitionId != ""
+                spacing: UM.Theme.getSize("default_lining").height
 
-                ListView
+                model: UM.SettingDefinitionsModel
                 {
-                    id: listview
-                    spacing: UM.Theme.getSize("default_lining").height
-                    model: UM.SettingDefinitionsModel
-                    {
-                        id: definitionsModel
-                        containerId: manager.selectedScriptDefinitionId
-                        showAll: true
-                    }
+                    id: definitionsModel
+                    containerId: manager.selectedScriptDefinitionId
+                    showAll: true
+                }
 
-                    delegate: Loader
-                    {
-                        id: settingLoader
+                delegate: Loader
+                {
+                    id: settingLoader
 
-                        width: parent.width
-                        height:
+                    width: listview.width
+                    height:
+                    {
+                        if(provider.properties.enabled == "True")
                         {
-                            if(provider.properties.enabled == "True")
+                            if(model.type != undefined)
                             {
-                                if(model.type != undefined)
-                                {
-                                    return UM.Theme.getSize("section").height
-                                }
-                                else
-                                {
-                                    return 0
-                                }
+                                return UM.Theme.getSize("section").height
                             }
                             else
                             {
                                 return 0
                             }
                         }
-                        Behavior on height { NumberAnimation { duration: 100 } }
-                        opacity: provider.properties.enabled == "True" ? 1 : 0
-
-                        Behavior on opacity { NumberAnimation { duration: 100 } }
-                        enabled: opacity > 0
-
-                        property var definition: model
-                        property var settingDefinitionsModel: definitionsModel
-                        property var propertyProvider: provider
-                        property var globalPropertyProvider: inheritStackProvider
-
-                        //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-                        //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-                        //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                        asynchronous: model.type != "enum" && model.type != "extruder"
-
-                        onLoaded:
+                        else
                         {
-                            settingLoader.item.showRevertButton = false
-                            settingLoader.item.showInheritButton = false
-                            settingLoader.item.showLinkedSettingIcon = false
-                            settingLoader.item.doDepthIndentation = false
-                            settingLoader.item.doQualityUserSettingEmphasis = false
+                            return 0
+                        }
+                    }
+                    Behavior on height { NumberAnimation { duration: 100 } }
+                    opacity: provider.properties.enabled == "True" ? 1 : 0
+
+                    Behavior on opacity { NumberAnimation { duration: 100 } }
+                    enabled: opacity > 0
+
+                    property var definition: model
+                    property var settingDefinitionsModel: definitionsModel
+                    property var propertyProvider: provider
+                    property var globalPropertyProvider: inheritStackProvider
+
+                    //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                    //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                    //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                    asynchronous: model.type != "enum" && model.type != "extruder"
+
+                    onLoaded:
+                    {
+                        settingLoader.item.showRevertButton = false
+                        settingLoader.item.showInheritButton = false
+                        settingLoader.item.showLinkedSettingIcon = false
+                        settingLoader.item.doDepthIndentation = false
+                        settingLoader.item.doQualityUserSettingEmphasis = false
+                    }
+
+                    sourceComponent:
+                    {
+                        switch(model.type)
+                        {
+                            case "int":
+                                return settingTextField
+                            case "float":
+                                return settingTextField
+                            case "enum":
+                                return settingComboBox
+                            case "extruder":
+                                return settingExtruder
+                            case "bool":
+                                return settingCheckBox
+                            case "str":
+                                return settingTextField
+                            case "category":
+                                return settingCategory
+                            default:
+                                return settingUnknown
+                        }
+                    }
+
+                    UM.SettingPropertyProvider
+                    {
+                        id: provider
+                        containerStackId: manager.selectedScriptStackId
+                        key: model.key ? model.key : "None"
+                        watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                        storeIndex: 0
+                    }
+
+                    // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
+                    // so we bypass that to make a dedicated provider).
+                    UM.SettingPropertyProvider
+                    {
+                        id: inheritStackProvider
+                        containerStack: Cura.MachineManager.activeMachine
+                        key: model.key ? model.key : "None"
+                        watchedProperties: [ "limit_to_extruder" ]
+                    }
+
+                    Connections
+                    {
+                        target: item
+
+                        function onShowTooltip(text)
+                        {
+                            tooltip.text = text
+                            var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0)
+                            tooltip.show(position)
+                            tooltip.target.x = position.x + 1
                         }
 
-                        sourceComponent:
-                        {
-                            switch(model.type)
-                            {
-                                case "int":
-                                    return settingTextField
-                                case "float":
-                                    return settingTextField
-                                case "enum":
-                                    return settingComboBox
-                                case "extruder":
-                                    return settingExtruder
-                                case "bool":
-                                    return settingCheckBox
-                                case "str":
-                                    return settingTextField
-                                case "category":
-                                    return settingCategory
-                                default:
-                                    return settingUnknown
-                            }
-                        }
-
-                        UM.SettingPropertyProvider
-                        {
-                            id: provider
-                            containerStackId: manager.selectedScriptStackId
-                            key: model.key ? model.key : "None"
-                            watchedProperties: [ "value", "enabled", "state", "validationState" ]
-                            storeIndex: 0
-                        }
-
-                        // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
-                        // so we bypass that to make a dedicated provider).
-                        UM.SettingPropertyProvider
-                        {
-                            id: inheritStackProvider
-                            containerStack: Cura.MachineManager.activeMachine
-                            key: model.key ? model.key : "None"
-                            watchedProperties: [ "limit_to_extruder" ]
-                        }
-
-                        Connections
-                        {
-                            target: item
-
-                            function onShowTooltip(text)
-                            {
-                                tooltip.text = text
-                                var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0)
-                                tooltip.show(position)
-                                tooltip.target.x = position.x + 1
-                            }
-
-                            function onHideTooltip() { tooltip.hide() }
-                        }
+                        function onHideTooltip() { tooltip.hide() }
                     }
                 }
             }

@@ -1,4 +1,4 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -43,17 +43,29 @@ Popup
         // This repeater adds the intent labels
         ScrollView
         {
+            id: qualityListScrollView
             property real maximumHeight: screenScaleFactor * 400
             contentHeight: dataColumn.height
             height: Math.min(contentHeight, maximumHeight)
-            clip: true
+            width: parent.width
 
-            ScrollBar.vertical.policy: height == maximumHeight ? ScrollBar.AlwaysOn: ScrollBar.AlwaysOff
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                id: qualityListScrollBar
+                parent: qualityListScrollView
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
 
             Column
             {
                 id: dataColumn
-                width: parent.width
+                width: qualityListScrollView.width - qualityListScrollBar.width
                 Repeater
                 {
                     model: dataModel
@@ -64,7 +76,7 @@ Popup
                         property variant subItemModel: model.qualities
 
                         height: childrenRect.height
-                        width: popup.contentWidth
+                        width: dataColumn.width
 
                         UM.Label
                         {
@@ -137,7 +149,7 @@ Popup
                 Item
                 {
                     height: childrenRect.height
-                    width: popup.contentWidth
+                    width: dataColumn.width
 
                     UM.Label
                     {

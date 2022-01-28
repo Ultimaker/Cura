@@ -37,8 +37,6 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
 
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
         textArea.text: CuraApplication.getTextManager().getChangeLogText()
         textArea.textFormat: Text.RichText
         textArea.wrapMode: Text.WordWrap

@@ -1,8 +1,9 @@
-// Copyright (C) 2021 Ultimaker B.V.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import Qt.labs.qmlmodels 1.0
+import QtQuick 2.15
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
@@ -56,51 +57,31 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-
-        Cura.TableView
+        //We can't use Cura's TableView here, since in Cura >= 5.0 this uses QtQuick.TableView, while in Cura < 5.0 this uses QtControls1.TableView.
+        //So we have to define our own. Once support for 4.13 and earlier is dropped, we can switch to Cura.TableView.
+        Table
         {
             id: filesTableView
             anchors.fill: parent
-            model: manager.digitalFactoryFileModel
-            visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
-            selectionMode: OldControls.SelectionMode.SingleSelection
-            onDoubleClicked:
+            anchors.margins: parent.border.width
+
+            columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
+            model: TableModel
+            {
+                TableModelColumn { display: "fileName" }
+                TableModelColumn { display: "username" }
+                TableModelColumn { display: "uploadedAt" }
+                rows: manager.digitalFactoryFileModel.items
+            }
+
+            onCurrentRowChanged:
+            {
+                manager.setSelectedFileIndices([currentRow]);
+            }
+            onDoubleClicked: function(row)
             {
                 manager.setSelectedFileIndices([row]);
                 openFilesButton.clicked();
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: fileNameColumn
-                role: "fileName"
-                title: "Name"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: usernameColumn
-                role: "username"
-                title: "Uploaded by"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                role: "uploadedAt"
-                title: "Uploaded at"
-            }
-
-            Connections
-            {
-                target: filesTableView.selection
-                function onSelectionChanged()
-                {
-                    let newSelection = [];
-                    filesTableView.selection.forEach(function(rowIndex) { newSelection.push(rowIndex); });
-                    manager.setSelectedFileIndices(newSelection);
-                }
             }
         }
 
@@ -160,7 +141,6 @@ Item
             {
                 // Make sure no files are selected when the file model changes
                 filesTableView.currentRow = -1
-                filesTableView.selection.clear()
             }
         }
     }
@@ -186,7 +166,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         text: "Open"
-        enabled: filesTableView.selection.count > 0
+        enabled: filesTableView.currentRow >= 0
         onClicked:
         {
             manager.openSelectedFiles()
