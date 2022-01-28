@@ -15,15 +15,7 @@ Cura.TableView
 
     property var qualityItem //The quality profile to display here.
     property int extruderPosition: -1 //The extruder to display. -1 denotes the global stack.
-
-    property bool isQualityItemCurrentlyActivated:
-    {
-        if (qualityItem == null)
-        {
-            return false;
-        }
-        return qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName;
-    }
+    property bool isQualityItemCurrentlyActivated: qualityItem != null && qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
 
     Cura.QualitySettingsModel
     {
