@@ -22,7 +22,7 @@
 
         "machine_max_feedrate_x": { "default_value": 120 },
         "machine_max_feedrate_y": { "default_value": 120 },
-        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_feedrate_z": { "default_value": 20 },
 
         "speed_travel": { "value": 100.0,  "maximum_value": 120.0 },
 

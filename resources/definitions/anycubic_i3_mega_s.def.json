@@ -40,7 +40,7 @@
 
         "machine_max_feedrate_x": { "default_value": 500 },
         "machine_max_feedrate_y": { "default_value": 500 },
-        "machine_max_feedrate_z": { "default_value": 6 },
+        "machine_max_feedrate_z": { "default_value": 8 },
 
         "machine_max_jerk_xy": { "value": 10 },
         "machine_max_jerk_z": { "value": 0.4 },
@@ -76,7 +76,7 @@
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
-        "speed_z_hop": { "value": 6 },
+        "speed_z_hop": { "value": 8 },
 
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
