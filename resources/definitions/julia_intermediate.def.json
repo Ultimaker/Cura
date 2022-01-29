@@ -124,7 +124,6 @@
         "wall_overhang_angle" : {"value": 40},
         "wall_overhang_speed_factor" : {"value": 60},
         "wall_overhang_over_support" : {"value": true},
-        "support_fan_enable" : {"value": true},
-        "skin_monotonic" : {"value": "True"}
+        "support_fan_enable" : {"value": true}
     }
 }
