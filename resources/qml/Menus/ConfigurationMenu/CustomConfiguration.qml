@@ -278,7 +278,7 @@ Item
                     width: selectors.controlWidth
                     height: parent.height
 
-                    focusPolicy: ClickFocus
+                    focusPolicy: Qt.ClickFocus
 
                     Cura.MaterialMenu
                     {
@@ -330,7 +330,7 @@ Item
                     tooltip: text
                     height: parent.height
                     width: selectors.controlWidth
-                    focusPolicy: ClickFocus
+                    focusPolicy: Qt.ClickFocus
                     enabled: enabledCheckbox.checked
 
                     Cura.NozzleMenu
