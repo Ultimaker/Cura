@@ -1,7 +1,7 @@
 {
 	"version": 2,
 	"name": "Left Extruder",
-	"inherits": "trex_extruder_0",
+    "inherits": "fdmextruder",
 	"metadata": {
         "machine": "vivedino_trex2plus",
 		"position": "0"
