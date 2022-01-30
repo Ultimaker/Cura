@@ -133,6 +133,7 @@ Cura.ExpandableComponent
             textRole: "text"
             valueRole: "type_id"
             width: parent.width
+            implicitHeight: UM.Theme.getSize("setting_control").height;
             model: layerViewTypes
             visible: !UM.SimulationView.compatibilityMode
 
