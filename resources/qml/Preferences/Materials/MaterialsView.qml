@@ -270,7 +270,7 @@ OldControls.TabView
 
                     valueFromText: function(text) {
                         // remove all non-number tokens from input string so value can be parsed correctly
-                        var value = Number(text.replace(/[^0-9.-]+/g, ""));
+                        var value = Number(text.replace(",", ".").replace(/[^0-9.-]+/g, ""));
                         var precision = Math.pow(10, spoolCostSpinBox.decimals);
                         return Math.round(value * precision) / precision;
                     }
@@ -298,7 +298,7 @@ OldControls.TabView
 
                     valueFromText: function(text, locale) {
                         // remove all non-number tokens from input string so value can be parsed correctly
-                        var value = Number(text.replace(/[^0-9.-]+/g, ""));
+                        var value = Number(text.replace(",", ".").replace(/[^0-9.-]+/g, ""));
                         return Math.round(value);
                     }
 
