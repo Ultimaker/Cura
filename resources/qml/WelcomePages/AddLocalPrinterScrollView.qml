@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -74,118 +74,93 @@ Item
     Row
     {
         id: localPrinterSelectionItem
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
+        anchors.fill: parent
 
-        // ScrollView + ListView for selecting a local printer to add
-        Cura.ScrollView
+        //Selecting a local printer to add from this list.
+        ListView
         {
-            id: scrollView
-
-            height: childrenHeight
+            id: machineList
             width: Math.floor(parent.width * 0.48)
+            height: parent.height
 
-            ListView
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar {}
+
+            model: UM.DefinitionContainersModel
             {
-                id: machineList
-
-                // CURA-6793
-                // Enabling the buffer seems to cause the blank items issue. When buffer is enabled, if the ListView's
-                // individual item has a dynamic change on its visibility, the ListView doesn't redraw itself.
-                // The default value of cacheBuffer is platform-dependent, so we explicitly disable it here.
-                cacheBuffer: 0
-                boundsBehavior: Flickable.StopAtBounds
-                flickDeceleration: 20000  // To prevent the flicking behavior.
-                model: UM.DefinitionContainersModel
-                {
-                    id: machineDefinitionsModel
-                    filter: { "visible": true }
-                    sectionProperty: "manufacturer"
-                    preferredSections: preferredCategories
-                }
-
-                section.property: "section"
-                section.delegate: sectionHeader
-                delegate: machineButton
+                id: machineDefinitionsModel
+                filter: { "visible": true }
+                sectionProperty: "manufacturer"
+                preferredSections: preferredCategories
             }
 
-            Component
+            section.property: "section"
+            section.delegate: Button
             {
-                id: sectionHeader
+                id: button
+                width: machineList.width
+                height: UM.Theme.getSize("action_button").height
+                text: section
 
-                Button
+                property bool isActive: base.currentSection == section
+
+                background: Rectangle
                 {
-                    id: button
-                    width: ListView.view.width
+                    anchors.fill: parent
+                    color: isActive ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                }
+
+                contentItem: Item
+                {
+                    width: childrenRect.width
                     height: UM.Theme.getSize("action_button").height
-                    text: section
 
-                    property bool isActive: base.currentSection == section
-
-                    background: Rectangle
+                    UM.RecolorImage
                     {
-                        anchors.fill: parent
-                        color: isActive ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                        id: arrow
+                        anchors.left: parent.left
+                        width: UM.Theme.getSize("standard_arrow").width
+                        height: UM.Theme.getSize("standard_arrow").height
+                        sourceSize.width: width
+                        sourceSize.height: height
+                        color: UM.Theme.getColor("text")
+                        source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
                     }
 
-                    contentItem: Item
+                    UM.Label
                     {
-                        width: childrenRect.width
-                        height: UM.Theme.getSize("action_button").height
-
-                        UM.RecolorImage
-                        {
-                            id: arrow
-                            anchors.left: parent.left
-                            width: UM.Theme.getSize("standard_arrow").width
-                            height: UM.Theme.getSize("standard_arrow").height
-                            sourceSize.width: width
-                            sourceSize.height: height
-                            color: UM.Theme.getColor("text")
-                            source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
-                        }
-
-                        UM.Label
-                        {
-                            id: label
-                            anchors.left: arrow.right
-                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                            text: button.text
-                            font: UM.Theme.getFont("default_bold")
-                        }
+                        id: label
+                        anchors.left: arrow.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        text: button.text
+                        font: UM.Theme.getFont("default_bold")
                     }
+                }
 
-                    onClicked:
-                    {
-                        base.currentSection = section
-                        base.updateCurrentItemUponSectionChange()
-                    }
+                onClicked:
+                {
+                    base.currentSection = section
+                    base.updateCurrentItemUponSectionChange()
                 }
             }
 
-            Component
+            delegate: Cura.RadioButton
             {
-                id: machineButton
-
-                Cura.RadioButton
+                id: radioButton
+                anchors
                 {
-                    id: radioButton
-                    anchors
-                    {
-                        left:  parent !== null ? parent.left: undefined
-                        leftMargin: UM.Theme.getSize("standard_list_lineheight").width
+                    left: parent !== null ? parent.left : undefined
+                    leftMargin: UM.Theme.getSize("standard_list_lineheight").width
 
-                        right: parent !== null ? parent.right: undefined
-                        rightMargin: UM.Theme.getSize("default_margin").width
-                    }
-                    height: visible ? UM.Theme.getSize("standard_list_lineheight").height : 0
-
-                    checked: ListView.view.currentIndex == index
-                    text: name
-                    visible: base.currentSection == section
-                    onClicked: ListView.view.currentIndex = index
+                    right: parent !== null ? parent.right : undefined
+                    rightMargin: UM.Theme.getSize("default_margin").width
                 }
+                height: visible ? UM.Theme.getSize("standard_list_lineheight").height : 0 //This causes the scrollbar to vary in length due to QTBUG-76830.
+
+                checked: machineList.currentIndex == index
+                text: name
+                visible: base.currentSection.toLowerCase() === section.toLowerCase()
+                onClicked: machineList.currentIndex = index
             }
         }
 
@@ -194,7 +169,7 @@ Item
         {
             id: verticalLine
             anchors.top: parent.top
-            height: childrenHeight - UM.Theme.getSize("default_lining").height
+            height: parent.height - UM.Theme.getSize("default_lining").height
             width: UM.Theme.getSize("default_lining").height
             color: UM.Theme.getColor("lining")
         }

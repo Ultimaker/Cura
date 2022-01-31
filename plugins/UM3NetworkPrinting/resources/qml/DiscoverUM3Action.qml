@@ -1,7 +1,7 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.5 as Cura
 
 import QtQuick 2.2
@@ -109,53 +109,51 @@ Cura.MachineAction
                 width: Math.round(parent.width * 0.5)
                 spacing: UM.Theme.getSize("default_margin").height
 
-                ScrollView
+                ListView
                 {
-                    id: objectListContainer
+                    id: listview
 
                     width: parent.width
                     height: base.height - contentRow.y - discoveryTip.height
-                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                    ListView
-                    {
-                        id: listview
-                        model: manager.foundDevices
-                        width: parent.width
-                        currentIndex: -1
-                        onCurrentIndexChanged:
-                        {
-                            base.selectedDevice = listview.model[currentIndex];
-                            // Only allow connecting if the printer has responded to API query since the last refresh
-                            base.completeProperties = base.selectedDevice != null && base.selectedDevice.getProperty("incomplete") != "true";
-                        }
-                        Component.onCompleted: manager.startDiscovery()
-                        delegate: Rectangle
-                        {
-                            height: printNameLabel.height
-                            color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
-                            width: listview.width
-                            Label
-                            {
-                                id: printNameLabel
-                                height: contentHeight
-                                anchors.left: parent.left
-                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                                anchors.right: parent.right
-                                text: listview.model[index].name
-                                color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
-                                elide: Text.ElideRight
-                                renderType: Text.NativeRendering
-                            }
 
-                            MouseArea
+                    ScrollBar.vertical: UM.ScrollBar {}
+                    clip: true
+
+                    model: manager.foundDevices
+                    currentIndex: -1
+                    onCurrentIndexChanged:
+                    {
+                        base.selectedDevice = listview.model[currentIndex];
+                        // Only allow connecting if the printer has responded to API query since the last refresh
+                        base.completeProperties = base.selectedDevice != null && base.selectedDevice.getProperty("incomplete") != "true";
+                    }
+                    Component.onCompleted: manager.startDiscovery()
+                    delegate: Rectangle
+                    {
+                        height: printNameLabel.height
+                        color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                        width: listview.width
+                        Label
+                        {
+                            id: printNameLabel
+                            height: contentHeight
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            anchors.right: parent.right
+                            text: listview.model[index].name
+                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
+                            elide: Text.ElideRight
+                            renderType: Text.NativeRendering
+                        }
+
+                        MouseArea
+                        {
+                            anchors.fill: parent;
+                            onClicked:
                             {
-                                anchors.fill: parent;
-                                onClicked:
+                                if(!parent.ListView.isCurrentItem)
                                 {
-                                    if(!parent.ListView.isCurrentItem)
-                                    {
-                                        parent.ListView.view.currentIndex = index;
-                                    }
+                                    parent.ListView.view.currentIndex = index;
                                 }
                             }
                         }

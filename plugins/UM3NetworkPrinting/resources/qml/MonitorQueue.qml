@@ -1,8 +1,8 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
@@ -22,7 +22,7 @@ Item
         id: queuedLabel
         anchors
         {
-            left: queuedPrintJobs.left
+            left: printJobList.left
             top: parent.top
         }
         font: UM.Theme.getFont("large")
@@ -34,7 +34,7 @@ Item
         id: manageQueueLabel
         anchors
         {
-            right: queuedPrintJobs.right
+            right: printJobList.right
             verticalCenter: queuedLabel.verticalCenter
         }
         height: 18 * screenScaleFactor // TODO: Theme!
@@ -78,7 +78,7 @@ Item
         id: printJobQueueHeadings
         anchors
         {
-            left: queuedPrintJobs.left
+            left: printJobList.left
             leftMargin: UM.Theme.getSize("narrow_margin").width
             top: queuedLabel.bottom
             topMargin: 24 * screenScaleFactor // TODO: Theme!
@@ -121,41 +121,42 @@ Item
         }
     }
 
-    ScrollView
+    ListView
     {
-        id: queuedPrintJobs
+        id: printJobList
         anchors
         {
             bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
             top: printJobQueueHeadings.bottom
-            topMargin: 12 * screenScaleFactor // TODO: Theme!
+            topMargin: UM.Theme.getSize("default_margin").width
         }
-        style: UM.Theme.styles.scrollview
         width: parent.width
 
-        ListView
+        ScrollBar.vertical: UM.ScrollBar
         {
-            id: printJobList
-            anchors.fill: parent
-            delegate: MonitorPrintJobCard
+            id: printJobScrollBar
+        }
+        spacing: UM.Theme.getSize("narrow_margin").width
+        clip: true
+
+        delegate: MonitorPrintJobCard
+        {
+            anchors
             {
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                }
-                printJob: modelData
+                left: parent.left
+                right: parent.right
+                rightMargin: printJobScrollBar.width
             }
-            model:
+            printJob: modelData
+        }
+        model:
+        {
+            if (OutputDevice.receivedData)
             {
-                if (OutputDevice.receivedData)
-                {
-                    return OutputDevice.queuedPrintJobs
-                }
-                return [null, null]
+                return OutputDevice.queuedPrintJobs
             }
-            spacing: 6  // TODO: Theme!
+            return [null, null]
         }
     }
 }

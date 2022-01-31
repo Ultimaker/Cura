@@ -96,7 +96,12 @@ class TestCalculateBedAdhesionSize:
         self.createAndSetGlobalStack(build_volume)
         patched_dictionary = self.setting_property_dict.copy()
         patched_dictionary.update(setting_dict)
-        patched_dictionary.update({"adhesion_extruder_nr": {"value": 0}})
+        patched_dictionary.update({
+            "skirt_brim_extruder_nr": {"value": 0},
+            "raft_base_extruder_nr": {"value": 0},
+            "raft_interface_extruder_nr": {"value": 0},
+            "raft_surface_extruder_nr": {"value": 0}
+        })
         with patch.dict(self.setting_property_dict, patched_dictionary):
             assert build_volume._calculateBedAdhesionSize([]) == result
 

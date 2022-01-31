@@ -57,7 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -69,7 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "맨 마지막에 실행될 G 코드 명령 \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -559,7 +559,7 @@ msgstr "Z 방향의 모터 최대 속도입니다."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "최대 속도 E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1729,7 +1729,8 @@ msgstr "내부채움 패턴"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그형 내부채움이 서로 다른 레이어에서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 트라이 헥사곤 (tri-hexagon), 큐빅, 옥텟 (octet), 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다."
+" 자이로이드 (Gyroid), 큐빅, 쿼터 큐빅, 옥텟 (octet) 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 천장만 서포트하여 내부채움을 최소화합니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2043,7 +2044,7 @@ msgstr "라이트닝 내부채움 가지치기 각도"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "내부채움 선의 종점이 재료를 절약하기 위해 단축됩니다. 이 설정은 해당 선의 종점에 대한 오버행(경사면)의 각도입니다."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2053,7 +2054,7 @@ msgstr "라이트닝 내부채움 정리 각도"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "내부채움 선이 인쇄 시간을 절약하기 위해 정리됩니다. 이는 내부채움 선 길이 전체에 허용되는 오버행(경사면)의 최대 각도입니다."
 
 #: fdmprinter.def.json
 msgctxt "material label"

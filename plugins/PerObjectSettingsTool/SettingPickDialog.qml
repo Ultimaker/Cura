@@ -1,11 +1,10 @@
-// Copyright (c) 2022 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2 as OldControls
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 import ".."
 
@@ -72,10 +71,9 @@ UM.Dialog
         text: catalog.i18nc("@label:checkbox", "Show all")
     }
 
-    OldControls.ScrollView
+    ListView
     {
-        id: scrollView
-
+        id: listview
         anchors
         {
             top: filterInput.bottom
@@ -83,47 +81,47 @@ UM.Dialog
             right: parent.right
             bottom: parent.bottom
         }
-        ListView
+
+        ScrollBar.vertical: UM.ScrollBar {}
+        clip: true
+
+        model: UM.SettingDefinitionsModel
         {
-            id: listview
-            model: UM.SettingDefinitionsModel
+            id: definitionsModel
+            containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+            expanded: [ "*" ]
+            exclude:
             {
-                id: definitionsModel
-                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
-                expanded: [ "*" ]
-                exclude:
-                {
-                    var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
-                    excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings)
-                    return excluded_settings
-                }
-                showAll: toggleShowAll.checked || filterInput.text !== ""
+                var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings)
+                return excluded_settings
             }
-            delegate: Loader
-            {
-                id: loader
-
-                width: listview.width
-                height: model.type != undefined ? UM.Theme.getSize("section").height : 0
-
-                property var definition: model
-                property var settingDefinitionsModel: definitionsModel
-
-                asynchronous: true
-                source:
-                {
-                    switch(model.type)
-                    {
-                        case "category":
-                            return "PerObjectCategory.qml"
-                        default:
-                            return "PerObjectItem.qml"
-                    }
-                }
-            }
-            Component.onCompleted: settingPickDialog.updateFilter()
+            showAll: toggleShowAll.checked || filterInput.text !== ""
         }
+        delegate: Loader
+        {
+            id: loader
+
+            width: listview.width
+            height: model.type != undefined ? UM.Theme.getSize("section").height : 0
+
+            property var definition: model
+            property var settingDefinitionsModel: definitionsModel
+
+            asynchronous: true
+            source:
+            {
+                switch(model.type)
+                {
+                    case "category":
+                        return "PerObjectCategory.qml"
+                    default:
+                        return "PerObjectItem.qml"
+                }
+            }
+        }
+        Component.onCompleted: settingPickDialog.updateFilter()
     }
 
     rightButtons: [

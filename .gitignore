@@ -10,6 +10,8 @@ resources/i18n/en_7S
 resources/i18n/x-test
 resources/firmware
 resources/materials
+resources/images/whats_new
+resources/texts/whats_new
 CuraEngine.exe
 LC_MESSAGES
 .cache
@@ -37,6 +39,7 @@ cura.desktop
 
 #Externally located plug-ins commonly installed by our devs.
 plugins/cura-big-flame-graph
+plugins/cura-camera-position
 plugins/cura-god-mode-plugin
 plugins/cura-siemensnx-plugin
 plugins/CuraBlenderPlugin

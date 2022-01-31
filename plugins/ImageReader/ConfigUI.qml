@@ -2,7 +2,8 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
-import QtQuick.Controls 2.3
+<<<<<<< HEAD
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.1
 
@@ -63,7 +64,8 @@ UM.Dialog
             text: catalog.i18nc("@action:label", "Base (mm)")
             Layout.alignment: Qt.AlignVCenter
 
-            MouseArea {
+            MouseArea
+            {
                 id: base_height_label
                 anchors.fill: parent
                 hoverEnabled: true
@@ -251,7 +253,8 @@ UM.Dialog
             text: catalog.i18nc("@action:label", "Smoothing")
             Layout.alignment: Qt.AlignVCenter
 
-            MouseArea {
+            MouseArea
+            {
                 id: smoothing_label
                 anchors.fill: parent
                 hoverEnabled: true

@@ -14,10 +14,15 @@ ListView
     section.property: "hasRemoteConnection"
     property real contentHeight: childrenRect.height
 
+    ScrollBar.vertical: UM.ScrollBar
+    {
+        id: scrollBar
+    }
+
     section.delegate: UM.Label
     {
         text: section == "true" ? catalog.i18nc("@label", "Connected printers") : catalog.i18nc("@label", "Preset printers")
-        width: parent.width
+        width: parent.width - scrollBar.width
         height: UM.Theme.getSize("action_button").height
         leftPadding: UM.Theme.getSize("default_margin").width
         font: UM.Theme.getFont("medium")
@@ -27,7 +32,7 @@ ListView
     delegate: MachineSelectorButton
     {
         text: model.name ? model.name : ""
-        width: listView.width
+        width: listView.width - scrollBar.width
         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
         checked: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.id == model.id : false

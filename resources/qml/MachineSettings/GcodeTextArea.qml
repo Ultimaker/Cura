@@ -1,11 +1,11 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -45,7 +45,7 @@ UM.TooltipArea
         renderType: Text.NativeRendering
     }
 
-    ScrollView
+    Flickable
     {
         anchors.top: titleLabel.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -53,26 +53,9 @@ UM.TooltipArea
         anchors.left: parent.left
         anchors.right: parent.right
 
-        background: Rectangle
-        {
-            color: UM.Theme.getColor("main_background")
-            anchors.fill: parent
+        ScrollBar.vertical: UM.ScrollBar {}
 
-            border.color:
-            {
-                if (!gcodeTextArea.enabled)
-                {
-                    return UM.Theme.getColor("setting_control_disabled_border")
-                }
-                if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_control_border_highlight")
-                }
-                return UM.Theme.getColor("setting_control_border")
-            }
-        }
-
-        TextArea
+        TextArea.flickable: TextArea
         {
             id: gcodeTextArea
 
@@ -91,6 +74,27 @@ UM.TooltipArea
                 {
                     propertyProvider.setPropertyValue("value", text)
                 }
+            }
+
+            background: Rectangle
+            {
+                color: UM.Theme.getColor("main_background")
+                anchors.fill: parent
+                anchors.margins: -border.width //Wrap the border around the parent.
+
+                border.color:
+                {
+                    if (!gcodeTextArea.enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border")
+                    }
+                    if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control_border")
+                }
+                border.width: UM.Theme.getSize("default_lining").width
             }
         }
     }

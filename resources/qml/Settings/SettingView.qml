@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -191,6 +191,7 @@ Item
         }
         clip: true
         cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
+        ScrollBar.vertical: UM.ScrollBar {}
 
         model: UM.SettingDefinitionsModel
         {

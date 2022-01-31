@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -6,7 +6,7 @@ import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 UM.Dialog
@@ -81,6 +81,19 @@ UM.Dialog
                 bottom: controls.top
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
+
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                parent: scroll
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
+            clip: true
+
             ColumnLayout
             {
                 spacing: UM.Theme.getSize("default_margin").height

@@ -56,7 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "Commandes G-Code à exécuter au tout début, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -68,7 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "Commandes G-Code à exécuter tout à la fin, séparées par \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -558,7 +558,7 @@ msgstr "La vitesse maximale pour le moteur du sens Z."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "Vitesse maximale E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1728,7 +1728,10 @@ msgstr "Motif de remplissage"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "Le motif du matériau de remplissage de l'impression. La ligne et le remplissage en zigzag changent de sens à chaque alternance de couche, réduisant ainsi"
+" les coûts matériels. Les motifs en grille, en triangle, tri-hexagonaux, cubiques, octaédriques, quart cubiques, entrecroisés et concentriques sont entièrement"
+" imprimés sur chaque couche. Les remplissages gyroïdes, cubiques, quart cubiques et octaédriques changent à chaque couche afin d'offrir une répartition"
+" plus égale de la solidité dans chaque direction. Le remplissage éclair tente de minimiser le remplissage, en ne supportant que le plafond de l'objet."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2042,7 +2045,7 @@ msgstr "Angle d'élagage du remplissage éclair"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "Les extrémités des lignes de remplissage sont raccourcies pour économiser du matériau. Ce paramètre est l'angle de saillie des extrémités de ces lignes."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2052,7 +2055,8 @@ msgstr "Angle de redressement du remplissage éclair"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "Les lignes de remplissage sont redressées pour gagner du temps d'impression. Il s'agit de l'angle maximal de saillie autorisé sur la longueur de la ligne"
+" de remplissage."
 
 #: fdmprinter.def.json
 msgctxt "material label"

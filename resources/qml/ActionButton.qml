@@ -146,8 +146,8 @@ Button
                 // Using parent.width is fine in fixedWidthMode.
                 target: buttonText
                 property: "width"
-                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
-                                             : ((maximumWidth != 0 && button.contentWidth > maximumWidth) ? maximumWidth : undefined)
+                value: button.fixedWidthMode ? (button.width - button.leftPadding - button.rightPadding)
+                                             : ((button.maximumWidth != 0 && button.implicitContentWidth > button.maximumWidth) ? (button.maximumWidth - (button.width - button.implicitContentWidth) * 2) : undefined)
             }
         }
 

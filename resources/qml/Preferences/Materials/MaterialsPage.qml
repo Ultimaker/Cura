@@ -1,13 +1,12 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4 as OldControls
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.5 as Cura
 
 Item
@@ -208,7 +207,8 @@ Item
         }
     }
 
-    Item {
+    Item
+    {
         id: contentsItem
         anchors
         {
@@ -262,7 +262,7 @@ Item
             elide: Text.ElideRight
         }
 
-        OldControls.ScrollView
+        ScrollView
         {
             id: materialScrollView
             anchors
@@ -272,22 +272,26 @@ Item
                 bottom: parent.bottom
                 left: parent.left
             }
-
-            Rectangle
-            {
-                parent: viewport
-                anchors.fill: parent
-                color: palette.light
-            }
-
             width: (parent.width * 0.4) | 0
-            frameVisible: true
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                id: materialScrollBar
+                parent: materialScrollView
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
+            contentHeight: materialListView.height //For some reason, this is not determined automatically with this ScrollView. Very weird!
 
             MaterialsList
             {
                 id: materialListView
-                width: materialScrollView.viewport.width
+                width: materialScrollView.width - materialScrollBar.width
             }
         }
 

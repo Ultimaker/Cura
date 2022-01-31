@@ -2,16 +2,16 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.15
 import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import ".." // Access to ReadOnlyTextArea.qml
 
-OldControls.TabView
+Item
 {
     id: base
 
@@ -68,437 +68,457 @@ OldControls.TabView
         }
     }
 
-    OldControls.Tab
+    UM.TabRow
     {
-        title: catalog.i18nc("@title", "Information")
-
-        anchors.margins: UM.Theme.getSize("default_margin").width
-
-        OldControls.ScrollView
+        id: pageSelectorTabRow
+        UM.TabRowButton
         {
-            id: scrollView
-            anchors.fill: parent
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-            flickableItem.flickableDirection: Flickable.VerticalFlick
-            frameVisible: true
-
-            property real columnWidth: (viewport.width * 0.5 - UM.Theme.getSize("default_margin").width) | 0
-
-            Flow
-            {
-                id: containerGrid
-
-                x: UM.Theme.getSize("default_margin").width
-                y: UM.Theme.getSize("default_lining").height
-
-                width: base.width
-                property real rowHeight: brandTextField.height + UM.Theme.getSize("default_lining").height
-
-                MessageDialog
-                {
-                    id: confirmDiameterChangeDialog
-
-                    icon: StandardIcon.Question;
-                    title: catalog.i18nc("@title:window", "Confirm Diameter Change")
-                    text: catalog.i18nc("@label (%1 is a number)", "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?".arg(new_diameter_value))
-                    standardButtons: StandardButton.Yes | StandardButton.No
-                    modality: Qt.ApplicationModal
-
-                    property var new_diameter_value: null;
-                    property var old_diameter_value: null;
-                    property var old_approximate_diameter_value: null;
-
-                    onYes:
-                    {
-                        base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
-                        base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
-                        // CURA-6868 Make sure to update the extruder to user a diameter-compatible material.
-                        Cura.MachineManager.updateMaterialWithVariant()
-                        base.resetSelectedMaterial()
-                    }
-
-                    onNo:
-                    {
-                        base.properties.diameter = old_diameter_value;
-                        diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
-                    }
-
-                    onRejected: no()
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
-                ReadOnlyTextField
-                {
-                    id: displayNameTextField;
-                    width: scrollView.columnWidth;
-                    text: properties.name;
-                    readOnly: !base.editingEnabled;
-                    onEditingFinished: base.updateMaterialDisplayName(properties.name, text)
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
-                ReadOnlyTextField
-                {
-                    id: brandTextField;
-                    width: scrollView.columnWidth;
-                    text: properties.brand;
-                    readOnly: !base.editingEnabled;
-                    onEditingFinished: base.updateMaterialBrand(properties.brand, text)
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
-                ReadOnlyTextField
-                {
-                    id: materialTypeField;
-                    width: scrollView.columnWidth;
-                    text: properties.material;
-                    readOnly: !base.editingEnabled;
-                    onEditingFinished: base.updateMaterialType(properties.material, text)
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
-                Row
-                {
-                    width: scrollView.columnWidth
-                    height:  parent.rowHeight
-                    spacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
-
-                    // color indicator square
-                    Rectangle
-                    {
-                        id: colorSelector
-                        color: properties.color_code
-
-                        width: Math.round(colorLabel.height * 0.75)
-                        height: Math.round(colorLabel.height * 0.75)
-                        border.width: UM.Theme.getSize("default_lining").height
-
-                        anchors.verticalCenter: parent.verticalCenter
-
-                        // open the color selection dialog on click
-                        MouseArea
-                        {
-                            anchors.fill: parent
-                            onClicked: colorDialog.open()
-                            enabled: base.editingEnabled
-                        }
-                    }
-
-                    // pretty color name text field
-                    ReadOnlyTextField
-                    {
-                        id: colorLabel;
-                        width: parent.width - colorSelector.width - parent.spacing
-                        text: properties.color_name;
-                        readOnly: !base.editingEnabled
-                        onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
-                    }
-
-                    // popup dialog to select a new color
-                    // if successful it sets the properties.color_code value to the new color
-                    ColorDialog
-                    {
-                        id: colorDialog
-                        color: properties.color_code
-                        onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
-                    }
-                }
-
-                Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
-
-                Label { width: parent.width; height: parent.rowHeight; font.bold: true; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Properties") }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
-                ReadOnlySpinBox
-                {
-                    id: densitySpinBox
-                    width: scrollView.columnWidth
-                    value: properties.density
-                    decimals: 2
-                    suffix: " g/cm³"
-                    stepSize: 0.01
-                    readOnly: !base.editingEnabled
-
-                    onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
-                    onValueChanged: updateCostPerMeter()
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
-                ReadOnlySpinBox
-                {
-                    id: diameterSpinBox
-                    width: scrollView.columnWidth
-                    value: properties.diameter
-                    decimals: 2
-                    suffix: " mm"
-                    stepSize: 0.01
-                    readOnly: !base.editingEnabled
-
-                    onEditingFinished:
-                    {
-                        // This does not use a SettingPropertyProvider, because we need to make the change to all containers
-                        // which derive from the same base_file
-                        var old_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/diameter");
-                        var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
-                        var new_approximate_diameter = getApproximateDiameter(value);
-                        if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
-                        {
-                            confirmDiameterChangeDialog.old_diameter_value = old_diameter;
-                            confirmDiameterChangeDialog.new_diameter_value = value;
-                            confirmDiameterChangeDialog.old_approximate_diameter_value = old_approximate_diameter;
-
-                            confirmDiameterChangeDialog.open()
-                        }
-                        else {
-                            base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
-                            base.setMetaDataEntry("properties/diameter", properties.diameter, value);
-                        }
-                    }
-                    onValueChanged: updateCostPerMeter()
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
-                SpinBox
-                {
-                    id: spoolCostSpinBox
-                    width: scrollView.columnWidth
-                    value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
-                    to: 100000000
-                    editable: true
-
-                    contentItem: TextField
-                    {
-                        text: spoolCostSpinBox.textFromValue(spoolCostSpinBox.value, spoolCostSpinBox.locale)
-                        selectByMouse: true
-                        background: Item {}
-                        validator: RegExpValidator { regExp: new RegExp("^" + base.currency + " ([0-9]+[.]?[0-9]*)?$") }
-                    }
-
-                    property int decimals: 2
-
-                    valueFromText: function(text) {
-                        // remove all non-number tokens from input string so value can be parsed correctly
-                        var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
-                        var precision = Math.pow(10, spoolCostSpinBox.decimals);
-                        return Math.round(value * precision) / precision;
-                    }
-
-                    textFromValue: function(value) {
-                        return base.currency + " " + value.toFixed(spoolCostSpinBox.decimals)
-                    }
-
-                    onValueChanged:
-                    {
-                        base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value, decimals))
-                        updateCostPerMeter()
-                    }
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
-                SpinBox
-                {
-                    id: spoolWeightSpinBox
-                    width: scrollView.columnWidth
-                    value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
-                    stepSize: 100
-                    to: 10000
-                    editable: true
-
-                    contentItem: TextField
-                    {
-                        text: spoolWeightSpinBox.textFromValue(spoolWeightSpinBox.value, spoolWeightSpinBox.locale)
-                        selectByMouse: true
-                        background: Item {}
-                        validator: RegExpValidator { regExp: new RegExp("^([0-9]+[.]?[0-9]*)? g$") }
-                    }
-
-                    valueFromText: function(text, locale) {
-                        // remove all non-number tokens from input string so value can be parsed correctly
-                        var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
-                        return Math.round(value);
-                    }
-
-                    textFromValue: function(value, locale) {
-                        return value + " g"
-                    }
-
-                    onValueChanged:
-                    {
-                        base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
-                        updateCostPerMeter()
-                    }
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
-                Label
-                {
-                    width: scrollView.columnWidth
-                    text: "~ %1 m".arg(Math.round(base.spoolLength))
-                    verticalAlignment: Qt.AlignVCenter
-                    height: parent.rowHeight
-                }
-
-                Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter") }
-                Label
-                {
-                    width: scrollView.columnWidth
-                    text: "~ %1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
-                    verticalAlignment: Qt.AlignVCenter
-                    height: parent.rowHeight
-                }
-
-                Item { width: parent.width; height: UM.Theme.getSize("default_margin").height; visible: unlinkMaterialButton.visible }
-                Label
-                {
-                    width: 2 * scrollView.columnWidth
-                    verticalAlignment: Qt.AlignVCenter
-                    text: catalog.i18nc("@label", "This material is linked to %1 and shares some of its properties.").arg(base.linkedMaterialNames)
-                    wrapMode: Text.WordWrap
-                    visible: unlinkMaterialButton.visible
-                }
-                Button
-                {
-                    id: unlinkMaterialButton
-                    text: catalog.i18nc("@label", "Unlink Material")
-                    visible: base.linkedMaterialNames != ""
-                    onClicked:
-                    {
-                        Cura.ContainerManager.unlinkMaterial(base.currentMaterialNode)
-                        base.reevaluateLinkedMaterials = true
-                    }
-                }
-
-                Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
-
-                Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Description") }
-
-                ReadOnlyTextArea
-                {
-                    text: properties.description;
-                    width: 2 * scrollView.columnWidth
-                    wrapMode: Text.WordWrap
-
-                    readOnly: !base.editingEnabled;
-
-                    onEditingFinished: base.setMetaDataEntry("description", properties.description, text)
-                }
-
-                Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Adhesion Information") }
-
-                ReadOnlyTextArea
-                {
-                    text: properties.adhesion_info;
-                    width: 2 * scrollView.columnWidth
-                    wrapMode: Text.WordWrap
-
-                    readOnly: !base.editingEnabled;
-
-                    onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
-                }
-
-                Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
-            }
-
-            function updateCostPerMeter()
-            {
-                base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
-                base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
-            }
+            text: catalog.i18nc("@title", "Information")
+            property string activeView: "information" //To determine which page gets displayed.
+        }
+        UM.TabRowButton
+        {
+            text: catalog.i18nc("@label", "Print settings")
+            property string activeView: "settings"
         }
     }
 
-    OldControls.Tab
+    ScrollView
     {
-        title: catalog.i18nc("@label", "Print settings")
+        id: informationPage
         anchors
         {
-            leftMargin: UM.Theme.getSize("default_margin").width
-            topMargin: UM.Theme.getSize("default_margin").height
-            bottomMargin: UM.Theme.getSize("default_margin").height
-            rightMargin: 0
+            top: pageSelectorTabRow.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
         }
 
-        OldControls.ScrollView
+        ScrollBar.vertical: UM.ScrollBar
         {
-            anchors.fill: parent;
-
-            ListView
+            parent: informationPage
+            anchors
             {
-                model: UM.SettingDefinitionsModel
+                top: parent.top
+                right: parent.right
+                bottom: parent.bottom
+            }
+        }
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        clip: true
+        visible: pageSelectorTabRow.currentItem.activeView === "information"
+
+        property real columnWidth: (width * 0.5 - UM.Theme.getSize("default_margin").width) | 0
+
+        Flow
+        {
+            id: containerGrid
+
+            x: UM.Theme.getSize("default_margin").width
+            y: UM.Theme.getSize("default_lining").height
+
+            width: base.width
+            property real rowHeight: brandTextField.height + UM.Theme.getSize("default_lining").height
+
+            MessageDialog
+            {
+                id: confirmDiameterChangeDialog
+
+                icon: StandardIcon.Question;
+                title: catalog.i18nc("@title:window", "Confirm Diameter Change")
+                text: catalog.i18nc("@label (%1 is a number)", "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?".arg(new_diameter_value))
+                standardButtons: StandardButton.Yes | StandardButton.No
+                modality: Qt.ApplicationModal
+
+                property var new_diameter_value: null;
+                property var old_diameter_value: null;
+                property var old_approximate_diameter_value: null;
+
+                onYes:
                 {
-                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
-                    expanded: ["*"]
+                    base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
+                    base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
+                    // CURA-6868 Make sure to update the extruder to user a diameter-compatible material.
+                    Cura.MachineManager.updateMaterialWithVariant()
+                    base.resetSelectedMaterial()
                 }
 
-                delegate: UM.TooltipArea
+                onNo:
                 {
-                    width: childrenRect.width
-                    height: childrenRect.height
-                    text: model.description
-                    Label
-                    {
-                        id: label
-                        width: base.firstColumnWidth;
-                        height: spinBox.height + UM.Theme.getSize("default_lining").height
-                        text: model.label
-                        elide: Text.ElideRight
-                        verticalAlignment: Qt.AlignVCenter
-                    }
-                    ReadOnlySpinBox
-                    {
-                        id: spinBox
-                        anchors.left: label.right
-                        value:
-                        {
-                            // In case the setting is not in the material...
-                            if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
-                            {
-                                return parseFloat(materialPropertyProvider.properties.value);
-                            }
-                            // ... we search in the variant, and if it is not there...
-                            if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
-                            {
-                                return parseFloat(variantPropertyProvider.properties.value);
-                            }
-                            // ... then look in the definition container.
-                            if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
-                            {
-                                return parseFloat(machinePropertyProvider.properties.value);
-                            }
-                            return 0;
-                        }
-                        width: base.secondColumnWidth
-                        readOnly: !base.editingEnabled
-                        suffix: " " + model.unit
-                        maximumValue: 99999
-                        decimals: model.unit == "mm" ? 2 : 0
+                    base.properties.diameter = old_diameter_value;
+                    diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
+                }
 
-                        onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
-                    }
+                onRejected: no()
+            }
 
-                    UM.ContainerPropertyProvider
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
+            ReadOnlyTextField
+            {
+                id: displayNameTextField;
+                width: informationPage.columnWidth;
+                text: properties.name;
+                readOnly: !base.editingEnabled;
+                onEditingFinished: base.updateMaterialDisplayName(properties.name, text)
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
+            ReadOnlyTextField
+            {
+                id: brandTextField;
+                width: informationPage.columnWidth;
+                text: properties.brand;
+                readOnly: !base.editingEnabled;
+                onEditingFinished: base.updateMaterialBrand(properties.brand, text)
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
+            ReadOnlyTextField
+            {
+                id: materialTypeField;
+                width: informationPage.columnWidth;
+                text: properties.material;
+                readOnly: !base.editingEnabled;
+                onEditingFinished: base.updateMaterialType(properties.material, text)
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Color") }
+            Row
+            {
+                width: informationPage.columnWidth
+                height:  parent.rowHeight
+                spacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
+
+                // color indicator square
+                Rectangle
+                {
+                    id: colorSelector
+                    color: properties.color_code
+
+                    width: Math.round(colorLabel.height * 0.75)
+                    height: Math.round(colorLabel.height * 0.75)
+                    border.width: UM.Theme.getSize("default_lining").height
+
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    // open the color selection dialog on click
+                    MouseArea
                     {
-                        id: materialPropertyProvider
-                        containerId: base.containerId
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider
-                    {
-                        id: variantPropertyProvider
-                        containerId: Cura.MachineManager.activeStack.variant.id
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider
-                    {
-                        id: machinePropertyProvider
-                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                        watchedProperties: [ "value" ]
-                        key: model.key
+                        anchors.fill: parent
+                        onClicked: colorDialog.open()
+                        enabled: base.editingEnabled
                     }
                 }
+
+                // pretty color name text field
+                ReadOnlyTextField
+                {
+                    id: colorLabel;
+                    width: parent.width - colorSelector.width - parent.spacing
+                    text: properties.color_name;
+                    readOnly: !base.editingEnabled
+                    onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
+                }
+
+                // popup dialog to select a new color
+                // if successful it sets the properties.color_code value to the new color
+                ColorDialog
+                {
+                    id: colorDialog
+                    color: properties.color_code
+                    onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
+                }
+            }
+
+            Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
+
+            Label { width: parent.width; height: parent.rowHeight; font.bold: true; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Properties") }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
+            ReadOnlySpinBox
+            {
+                id: densitySpinBox
+                width: informationPage.columnWidth
+                value: properties.density
+                decimals: 2
+                suffix: " g/cm³"
+                stepSize: 0.01
+                readOnly: !base.editingEnabled
+
+                onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
+                onValueChanged: updateCostPerMeter()
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
+            ReadOnlySpinBox
+            {
+                id: diameterSpinBox
+                width: informationPage.columnWidth
+                value: properties.diameter
+                decimals: 2
+                suffix: " mm"
+                stepSize: 0.01
+                readOnly: !base.editingEnabled
+
+                onEditingFinished:
+                {
+                    // This does not use a SettingPropertyProvider, because we need to make the change to all containers
+                    // which derive from the same base_file
+                    var old_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/diameter");
+                    var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
+                    var new_approximate_diameter = getApproximateDiameter(value);
+                    if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
+                    {
+                        confirmDiameterChangeDialog.old_diameter_value = old_diameter;
+                        confirmDiameterChangeDialog.new_diameter_value = value;
+                        confirmDiameterChangeDialog.old_approximate_diameter_value = old_approximate_diameter;
+
+                        confirmDiameterChangeDialog.open()
+                    }
+                    else {
+                        base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
+                        base.setMetaDataEntry("properties/diameter", properties.diameter, value);
+                    }
+                }
+                onValueChanged: updateCostPerMeter()
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
+            SpinBox
+            {
+                id: spoolCostSpinBox
+                width: informationPage.columnWidth
+                value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
+                to: 100000000
+                editable: true
+
+                contentItem: TextField
+                {
+                    text: spoolCostSpinBox.textFromValue(spoolCostSpinBox.value, spoolCostSpinBox.locale)
+                    selectByMouse: true
+                    background: Item {}
+                    validator: RegExpValidator { regExp: new RegExp("^" + base.currency + " ([0-9]+[.]?[0-9]*)?$") }
+                }
+
+                property int decimals: 2
+
+                valueFromText: function(text) {
+                    // remove all non-number tokens from input string so value can be parsed correctly
+                    var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
+                    var precision = Math.pow(10, spoolCostSpinBox.decimals);
+                    return Math.round(value * precision) / precision;
+                }
+
+                textFromValue: function(value) {
+                    return base.currency + " " + value.toFixed(spoolCostSpinBox.decimals)
+                }
+
+                onValueChanged:
+                {
+                    base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value, decimals))
+                    updateCostPerMeter()
+                }
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
+            SpinBox
+            {
+                id: spoolWeightSpinBox
+                width: informationPage.columnWidth
+                value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
+                suffix: " g"
+                stepSize: 100
+                to: 10000
+                editable: true
+
+                contentItem: TextField
+                {
+                    text: spoolWeightSpinBox.textFromValue(spoolWeightSpinBox.value, spoolWeightSpinBox.locale)
+                    selectByMouse: true
+                    background: Item {}
+                    validator: RegExpValidator { regExp: new RegExp("^([0-9]+[.]?[0-9]*)? g$") }
+                }
+
+                valueFromText: function(text, locale) {
+                    // remove all non-number tokens from input string so value can be parsed correctly
+                    var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
+                    return Math.round(value);
+                }
+
+                textFromValue: function(value, locale) {
+                    return value + " g"
+                }
+
+                onValueChanged:
+                {
+                    base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
+                    updateCostPerMeter()
+                }
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament length") }
+            Label
+            {
+                width: informationPage.columnWidth
+                text: "~ %1 m".arg(Math.round(base.spoolLength))
+                verticalAlignment: Qt.AlignVCenter
+                height: parent.rowHeight
+            }
+
+            Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Cost per Meter") }
+            Label
+            {
+                width: informationPage.columnWidth
+                text: "~ %1 %2/m".arg(base.costPerMeter.toFixed(2)).arg(base.currency)
+                verticalAlignment: Qt.AlignVCenter
+                height: parent.rowHeight
+            }
+
+            Item { width: parent.width; height: UM.Theme.getSize("default_margin").height; visible: unlinkMaterialButton.visible }
+            Label
+            {
+                width: 2 * informationPage.columnWidth
+                verticalAlignment: Qt.AlignVCenter
+                text: catalog.i18nc("@label", "This material is linked to %1 and shares some of its properties.").arg(base.linkedMaterialNames)
+                wrapMode: Text.WordWrap
+                visible: unlinkMaterialButton.visible
+            }
+            Button
+            {
+                id: unlinkMaterialButton
+                text: catalog.i18nc("@label", "Unlink Material")
+                visible: base.linkedMaterialNames != ""
+                onClicked:
+                {
+                    Cura.ContainerManager.unlinkMaterial(base.currentMaterialNode)
+                    base.reevaluateLinkedMaterials = true
+                }
+            }
+
+            Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
+
+            Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Description") }
+
+            ReadOnlyTextArea
+            {
+                text: properties.description;
+                width: 2 * informationPage.columnWidth
+                wrapMode: Text.WordWrap
+
+                readOnly: !base.editingEnabled;
+
+                onEditingFinished: base.setMetaDataEntry("description", properties.description, text)
+            }
+
+            Label { width: parent.width; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Adhesion Information") }
+
+            ReadOnlyTextArea
+            {
+                text: properties.adhesion_info;
+                width: 2 * informationPage.columnWidth
+                wrapMode: Text.WordWrap
+
+                readOnly: !base.editingEnabled;
+
+                onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
+            }
+
+            Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
+        }
+
+        function updateCostPerMeter()
+        {
+            base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
+            base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
+        }
+    }
+
+    ListView
+    {
+        anchors
+        {
+            top: pageSelectorTabRow.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        model: UM.SettingDefinitionsModel
+        {
+            containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+            visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
+            expanded: ["*"]
+        }
+        ScrollBar.vertical: UM.ScrollBar {}
+        clip: true
+        visible: pageSelectorTabRow.currentItem.activeView === "settings"
+
+        delegate: UM.TooltipArea
+        {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: model.description
+            Label
+            {
+                id: label
+                width: base.firstColumnWidth;
+                height: spinBox.height + UM.Theme.getSize("default_lining").height
+                text: model.label
+                elide: Text.ElideRight
+                verticalAlignment: Qt.AlignVCenter
+            }
+            ReadOnlySpinBox
+            {
+                id: spinBox
+                anchors.left: label.right
+                value:
+                {
+                    // In case the setting is not in the material...
+                    if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
+                    {
+                        return parseFloat(materialPropertyProvider.properties.value);
+                    }
+                    // ... we search in the variant, and if it is not there...
+                    if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
+                    {
+                        return parseFloat(variantPropertyProvider.properties.value);
+                    }
+                    // ... then look in the definition container.
+                    if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
+                    {
+                        return parseFloat(machinePropertyProvider.properties.value);
+                    }
+                    return 0;
+                }
+                width: base.secondColumnWidth
+                readOnly: !base.editingEnabled
+                suffix: " " + model.unit
+                maximumValue: 99999
+                decimals: model.unit == "mm" ? 2 : 0
+
+                onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
+            }
+
+            UM.ContainerPropertyProvider
+            {
+                id: materialPropertyProvider
+                containerId: base.containerId
+                watchedProperties: [ "value" ]
+                key: model.key
+            }
+            UM.ContainerPropertyProvider
+            {
+                id: variantPropertyProvider
+                containerId: Cura.MachineManager.activeStack.variant.id
+                watchedProperties: [ "value" ]
+                key: model.key
+            }
+            UM.ContainerPropertyProvider
+            {
+                id: machinePropertyProvider
+                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                watchedProperties: [ "value" ]
+                key: model.key
             }
         }
     }
