@@ -12,7 +12,7 @@ from typing import Optional, List
     Removes any rows that are not a face, vertex or vertex texture
 """
 
-def process_obj(input_file, output_file):
+def process_obj(input_file: str, output_file: str) -> None:
     with open(input_file, "r") as in_obj, open("temp", "w") as temp:
         trim_lines(in_obj, temp)
 
