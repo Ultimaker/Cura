@@ -16,6 +16,9 @@ ToolButton
 
     property alias tooltip: tooltip.text
 
+    property bool valueError: false;
+    property bool valueWarning: false;
+
     Cura.ToolTip
     {
         id: tooltip
