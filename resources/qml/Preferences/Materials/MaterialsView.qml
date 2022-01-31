@@ -266,6 +266,13 @@ OldControls.TabView
                     to: 100000000
                     editable: true
 
+                    contentItem: TextField
+                    {
+                        text: spoolCostSpinBox.textFromValue(spoolCostSpinBox.value, spoolCostSpinBox.locale)
+                        selectByMouse: true
+                        background: Item {}
+                    }
+
                     property int decimals: 2
 
                     valueFromText: function(text) {
@@ -295,6 +302,13 @@ OldControls.TabView
                     stepSize: 100
                     to: 10000
                     editable: true
+
+                    contentItem: TextField
+                    {
+                        text: spoolWeightSpinBox.textFromValue(spoolWeightSpinBox.value, spoolWeightSpinBox.locale)
+                        selectByMouse: true
+                        background: Item {}
+                    }
 
                     valueFromText: function(text, locale) {
                         // remove all non-number tokens from input string so value can be parsed correctly
