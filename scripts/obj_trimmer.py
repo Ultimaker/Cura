@@ -30,7 +30,7 @@ def trim_lines(in_obj, out_obj):
 
 
 def trim_line(line: str) -> Optional[str]:
-    # Discards all rows that are not a vertex ("v"), face ("f") or vertex texture ("v")
+    # Discards all rows that are not a vertex ("v"), face ("f") or vertex texture ("vt")
     values = line.split()
 
     if values[0] == "vt":
