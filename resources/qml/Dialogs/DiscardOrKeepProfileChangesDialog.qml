@@ -3,7 +3,6 @@
 
 import Qt.labs.qmlmodels 1.0
 import QtQuick 2.1
-import QtQuick.Controls 1.1 as OldControls
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1

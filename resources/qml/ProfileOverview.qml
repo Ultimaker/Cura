@@ -3,7 +3,6 @@
 
 import Qt.labs.qmlmodels 1.0
 import QtQuick 2.7
-import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM

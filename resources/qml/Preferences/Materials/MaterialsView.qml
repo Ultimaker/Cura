@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Dialogs 1.2
 
 import UM 1.5 as UM
@@ -326,7 +325,6 @@ Item
                 id: spoolWeightSpinBox
                 width: informationPage.columnWidth
                 value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
-                suffix: " g"
                 stepSize: 100
                 to: 10000
                 editable: true
