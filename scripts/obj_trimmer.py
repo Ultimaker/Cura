@@ -22,7 +22,7 @@ def process_obj(input_file: str, output_file: str) -> None:
     os.remove("temp")
 
 
-def trim_lines(in_obj, out_obj):
+def trim_lines(in_obj: TextIO, out_obj: TextIO) -> None:
     for line in in_obj:
         line = trim_line(line)
         if line:
