@@ -82,7 +82,7 @@ Button
                 right: parent.right
                 rightMargin: 0
             }
-            width: contentItem.width
+            width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
             height: parent.height
             padding: 0
             leftPadding: UM.Theme.getSize("thin_margin").width
@@ -131,7 +131,7 @@ Button
             contentItem: Item
             {
                 height: parent.height
-                width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
+                width: perObjectSettingsInfo.width
 
                 Cura.NotificationIcon
                 {

@@ -2,7 +2,6 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.1 as OldControls
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.1
 
@@ -243,6 +242,7 @@ UM.PreferencesPage
                 TextField
                 {
                     id: currencyField
+                    selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
@@ -869,7 +869,12 @@ UM.PreferencesPage
                 }
             }
 
-            OldControls.ExclusiveGroup { id: curaUpdatesGroup }
+            ButtonGroup
+            {
+                id: curaUpdatesGroup
+                buttons: [checkUpdatesOptionBeta, checkUpdatesOptionStable]
+            }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
@@ -877,10 +882,10 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                OldControls.RadioButton
+                RadioButton
                 {
+                    id: checkUpdatesOptionStable
                     text: catalog.i18nc("@option:radio", "Stable releases only")
-                    exclusiveGroup: curaUpdatesGroup
                     enabled: checkUpdatesCheckbox.checked
                     checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
                     onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
@@ -893,10 +898,10 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                OldControls.RadioButton
+                RadioButton
                 {
+                    id: checkUpdatesOptionBeta
                     text: catalog.i18nc("@option:radio", "Stable and Beta releases")
-                    exclusiveGroup: curaUpdatesGroup
                     enabled: checkUpdatesCheckbox.checked
                     checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
                     onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")

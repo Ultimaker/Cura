@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Dialogs 1.2
 
 import UM 1.5 as UM
@@ -284,32 +283,69 @@ Item
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
-            OldControls.SpinBox
+            SpinBox
             {
                 id: spoolCostSpinBox
                 width: informationPage.columnWidth
                 value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
-                prefix: base.currency + " "
-                decimals: 2
-                maximumValue: 100000000
+                to: 100000000
+                editable: true
+
+                contentItem: TextField
+                {
+                    text: spoolCostSpinBox.textFromValue(spoolCostSpinBox.value, spoolCostSpinBox.locale)
+                    selectByMouse: true
+                    background: Item {}
+                    validator: RegExpValidator { regExp: new RegExp("^" + base.currency + " ([0-9]+[.]?[0-9]*)?$") }
+                }
+
+                property int decimals: 2
+
+                valueFromText: function(text) {
+                    // remove all non-number tokens from input string so value can be parsed correctly
+                    var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
+                    var precision = Math.pow(10, spoolCostSpinBox.decimals);
+                    return Math.round(value * precision) / precision;
+                }
+
+                textFromValue: function(value) {
+                    return base.currency + " " + value.toFixed(spoolCostSpinBox.decimals)
+                }
 
                 onValueChanged:
                 {
-                    base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
+                    base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value, decimals))
                     updateCostPerMeter()
                 }
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
-            OldControls.SpinBox
+            SpinBox
             {
                 id: spoolWeightSpinBox
                 width: informationPage.columnWidth
                 value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
-                suffix: " g"
                 stepSize: 100
-                decimals: 0
-                maximumValue: 10000
+                to: 10000
+                editable: true
+
+                contentItem: TextField
+                {
+                    text: spoolWeightSpinBox.textFromValue(spoolWeightSpinBox.value, spoolWeightSpinBox.locale)
+                    selectByMouse: true
+                    background: Item {}
+                    validator: RegExpValidator { regExp: new RegExp("^([0-9]+[.]?[0-9]*)? g$") }
+                }
+
+                valueFromText: function(text, locale) {
+                    // remove all non-number tokens from input string so value can be parsed correctly
+                    var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
+                    return Math.round(value);
+                }
+
+                textFromValue: function(value, locale) {
+                    return value + " g"
+                }
 
                 onValueChanged:
                 {
@@ -345,7 +381,7 @@ Item
                 wrapMode: Text.WordWrap
                 visible: unlinkMaterialButton.visible
             }
-            OldControls.Button
+            Button
             {
                 id: unlinkMaterialButton
                 text: catalog.i18nc("@label", "Unlink Material")

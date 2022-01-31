@@ -1,10 +1,9 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
 
 import UM 1.5 as UM
@@ -94,7 +93,8 @@ Cura.ExpandableComponent
 
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
-        ListModel  // matches SimulationView.py
+        // matches SimulationView.py
+        ListModel
         {
             id: layerViewTypes
         }
@@ -127,18 +127,17 @@ Cura.ExpandableComponent
             })
         }
 
-        ComboBox
+        Cura.ComboBox
         {
             id: layerTypeCombobox
+            textRole: "text"
+            valueRole: "type_id"
             width: parent.width
+            implicitHeight: UM.Theme.getSize("setting_control").height
             model: layerViewTypes
             visible: !UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.combobox
 
-            onActivated:
-            {
-                UM.Preferences.setValue("layerview/layer_view_type", index);
-            }
+            onActivated: UM.Preferences.setValue("layerview/layer_view_type", index)
 
             Component.onCompleted:
             {

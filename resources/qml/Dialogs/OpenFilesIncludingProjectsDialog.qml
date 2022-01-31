@@ -1,9 +1,8 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
@@ -69,45 +68,44 @@ UM.Dialog
             width: height
         }
 
-        // Buttons
-        Item
-        {
-            anchors.right: parent.right
-            anchors.left: parent.left
-            height: childrenRect.height
-
-            Button
-            {
-                id: cancelButton
-                text: catalog.i18nc("@action:button", "Cancel");
-                anchors.right: importAllAsModelsButton.left
-                onClicked:
-                {
-                    // cancel
-                    base.hide();
-                }
-            }
-
-            Button
-            {
-                id: importAllAsModelsButton
-                text: catalog.i18nc("@action:button", "Import all as models");
-                anchors.right: parent.right
-                isDefault: true
-                onClicked:
-                {
-                    // load models from all selected file
-                    loadModelFiles(base.fileUrls);
-
-                    base.hide();
-                }
-            }
-        }
-
         UM.I18nCatalog
         {
             id: catalog
             name: "cura"
         }
+
+        ButtonGroup
+        {
+            buttons: [cancelButton, importAllAsModelsButton]
+            checkedButton: importAllAsModelsButton
+        }
     }
+
+    onAccepted: loadModelFiles(base.fileUrls)
+
+    // Buttons
+    rightButtons:
+    [
+        Button
+        {
+            id: cancelButton
+            text: catalog.i18nc("@action:button", "Cancel");
+            onClicked:
+            {
+                // cancel
+                base.hide();
+            }
+        },
+        Button
+        {
+            id: importAllAsModelsButton
+            text: catalog.i18nc("@action:button", "Import all as models");
+            onClicked:
+            {
+                // load models from all selected file
+                loadModelFiles(base.fileUrls);
+                base.hide();
+            }
+        }
+    ]
 }

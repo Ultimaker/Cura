@@ -1,9 +1,8 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
 import UM 1.5 as UM
@@ -92,14 +91,13 @@ Item
                     Layout.preferredHeight: height
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 1
                     Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleUp");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -109,14 +107,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 0
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleLeft");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -126,14 +123,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 2
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleRight");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -143,14 +139,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 3
                     Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("ChevronSingleDown");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -160,14 +155,13 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 1
                     Layout.preferredWidth: width
                     Layout.preferredHeight: height
                     iconSource: UM.Theme.getIcon("House");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -192,10 +186,9 @@ Item
                     horizontalAlignment: Text.AlignHCenter
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     iconSource: UM.Theme.getIcon("ChevronSingleUp");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -205,10 +198,9 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     iconSource: UM.Theme.getIcon("House");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -218,10 +210,9 @@ Item
                     }
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     iconSource: UM.Theme.getIcon("ChevronSingleDown");
-                    style: UM.Theme.styles.monitor_button_style
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
@@ -266,12 +257,10 @@ Item
                         width: height + UM.Theme.getSize("default_margin").width
 
                         text: model.label
-                        exclusiveGroup: distanceGroup
+                        ButtonGroup.group: distanceGroup
                         checkable: true
                         checked: distancesRow.currentDistance == model.value
                         onClicked: distancesRow.currentDistance = model.value
-
-                        style: UM.Theme.styles.monitor_checkable_button_style
                     }
                 }
             }
@@ -400,6 +389,6 @@ Item
             ListElement { label: "10";  value: 10  }
             ListElement { label: "100"; value: 100 }
         }
-        ExclusiveGroup { id: distanceGroup }
+        ButtonGroup { id: distanceGroup }
     }
 }

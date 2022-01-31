@@ -1,10 +1,9 @@
-// Copyright (c) 2022 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2 as OldControls
-import QtQuick.Controls.Styles 1.2
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Styles 1.2
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -77,51 +76,63 @@ Item
             id: meshTypeButtons
             spacing: UM.Theme.getSize("default_margin").width
 
-            OldControls.Button
+            Cura.ToolbarButton
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                iconSource: UM.Theme.getIcon("Infill0");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("Infill0")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
-                style: UM.Theme.styles.tool_button;
                 z: 4
             }
 
-            OldControls.Button
+            Cura.ToolbarButton
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                iconSource: UM.Theme.getIcon("MeshTypeSupport");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("MeshTypeSupport")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 3
             }
 
-            OldControls.Button
+            Cura.ToolbarButton
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                iconSource: UM.Theme.getIcon("MeshTypeIntersect");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("MeshTypeIntersect")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 2
             }
 
-            OldControls.Button
+            Cura.ToolbarButton
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("BlockSupportOverlaps")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 1
             }
 
@@ -285,26 +296,23 @@ Item
                         }
                     }
 
-                    OldControls.Button
+                    Button
                     {
                         width: Math.round(UM.Theme.getSize("setting").height / 2)
                         height: UM.Theme.getSize("setting").height
 
                         onClicked: addedSettingsModel.setVisible(model.key, false)
 
-                        style: ButtonStyle
+                        background: Item
                         {
-                            background: Item
+                            UM.RecolorImage
                             {
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    width: parent.width
-                                    height: width
-                                    sourceSize.height: width
-                                    color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                    source: UM.Theme.getIcon("Minus")
-                                }
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: parent.width
+                                height: width
+                                sourceSize.height: width
+                                color: parent.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                source: UM.Theme.getIcon("Minus")
                             }
                         }
                     }

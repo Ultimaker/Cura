@@ -214,7 +214,7 @@ Item
             }
         }
 
-        Button // The pre-heat button.
+        Cura.SecondaryButton // The pre-heat button.
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height
@@ -246,96 +246,19 @@ Item
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             anchors.margins: UM.Theme.getSize("default_margin").width
-            style: ButtonStyle {
-                background: Rectangle
-                {
-                    border.width: UM.Theme.getSize("default_lining").width
-                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
-                    border.color:
-                    {
-                        if(!control.enabled)
-                        {
-                            return UM.Theme.getColor("action_button_disabled_border");
-                        }
-                        else if(control.pressed)
-                        {
-                            return UM.Theme.getColor("action_button_active_border");
-                        }
-                        else if(control.hovered)
-                        {
-                            return UM.Theme.getColor("action_button_hovered_border");
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("action_button_border");
-                        }
-                    }
-                    color:
-                    {
-                        if(!control.enabled)
-                        {
-                            return UM.Theme.getColor("action_button_disabled");
-                        }
-                        else if(control.pressed)
-                        {
-                            return UM.Theme.getColor("action_button_active");
-                        }
-                        else if(control.hovered)
-                        {
-                            return UM.Theme.getColor("action_button_hovered");
-                        }
-                        else
-                        {
-                            return UM.Theme.getColor("action_button");
-                        }
-                    }
-                    Behavior on color
-                    {
-                        ColorAnimation
-                        {
-                            duration: 50
-                        }
-                    }
 
-                    Label
-                    {
-                        id: actualLabel
-                        anchors.centerIn: parent
-                        color:
-                        {
-                            if(!control.enabled)
-                            {
-                                return UM.Theme.getColor("action_button_disabled_text");
-                            }
-                            else if(control.pressed)
-                            {
-                                return UM.Theme.getColor("action_button_active_text");
-                            }
-                            else if(control.hovered)
-                            {
-                                return UM.Theme.getColor("action_button_hovered_text");
-                            }
-                            else
-                            {
-                                return UM.Theme.getColor("action_button_text");
-                            }
-                        }
-                        font: UM.Theme.getFont("medium")
-                        text:
-                        {
-                            if(printerModel == null)
-                            {
-                                return ""
-                            }
-                            if(printerModel.isPreheating )
-                            {
-                                return catalog.i18nc("@button Cancel pre-heating", "Cancel")
-                            } else
-                            {
-                                return catalog.i18nc("@button", "Pre-heat")
-                            }
-                        }
-                    }
+            text:
+            {
+                if(printerModel == null)
+                {
+                    return ""
+                }
+                if(printerModel.isPreheating )
+                {
+                    return catalog.i18nc("@button Cancel pre-heating", "Cancel")
+                } else
+                {
+                    return catalog.i18nc("@button", "Pre-heat")
                 }
             }
 

@@ -1,9 +1,8 @@
-// Copyright (C) 2021 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.1
 

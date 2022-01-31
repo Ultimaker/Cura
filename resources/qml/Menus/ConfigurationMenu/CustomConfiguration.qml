@@ -3,10 +3,12 @@
 
 import QtQuick 2.6
 import QtQuick.Controls 2.0
-import QtQuick.Controls 1.1 as OldControls
 
 import Cura 1.0 as Cura
 import UM 1.5 as UM
+
+// Simple button for displaying text and changes appearance for various states: enabled, valueError, valueWarning
+// - and hovered. Mainly used in CustomConfiguration.qml
 
 Item
 {
@@ -263,7 +265,7 @@ Item
                     width: selectors.textWidth
                 }
 
-                OldControls.ToolButton
+                Cura.PrintSetupHeaderButton
                 {
                     id: materialSelection
 
@@ -277,18 +279,15 @@ Item
                     width: selectors.controlWidth
                     height: parent.height
 
-                    style: UM.Theme.styles.print_setup_header_button
-                    activeFocusOnPress: true
+                    focusPolicy: Qt.ClickFocus
+
                     Cura.MaterialMenu
                     {
                         id: materialsMenu
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                         updateModels: materialSelection.visible
                     }
-                    onClicked:
-                    {
-                        materialsMenu.popup();
-                    }
+                    onClicked: materialsMenu.popup()
                 }
                 Item
                 {
@@ -325,15 +324,14 @@ Item
                     width: selectors.textWidth
                 }
 
-                OldControls.ToolButton
+                Cura.PrintSetupHeaderButton
                 {
                     id: variantSelection
                     text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
                     tooltip: text
                     height: parent.height
                     width: selectors.controlWidth
-                    style: UM.Theme.styles.print_setup_header_button
-                    activeFocusOnPress: true
+                    focusPolicy: Qt.ClickFocus
                     enabled: enabledCheckbox.checked
 
                     Cura.NozzleMenu
@@ -341,10 +339,7 @@ Item
                         id: nozzlesMenu
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                     }
-                    onClicked:
-                    {
-                        nozzlesMenu.popup();
-                    }
+                    onClicked: nozzlesMenu.popup()
                 }
             }
 

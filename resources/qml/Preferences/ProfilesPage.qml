@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
@@ -79,11 +78,11 @@ Item
         height: childrenRect.height
 
         // Activate button
-        OldControls.Button
+        Button
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
-            iconName: "list-activate"
+            icon.name: "list-activate"
             enabled: !isCurrentItemActivated && base.currentItem
             onClicked:
             {
@@ -99,11 +98,11 @@ Item
         }
 
         // Create button
-        OldControls.Button
+        Button
         {
             id: createMenuButton
             text: catalog.i18nc("@label", "Create")
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: base.canCreateProfile && !Cura.MachineManager.stacksHaveErrors
             visible: base.canCreateProfile
 
@@ -116,11 +115,11 @@ Item
         }
 
         // Duplicate button
-        OldControls.Button
+        Button
         {
             id: duplicateMenuButton
             text: catalog.i18nc("@label", "Duplicate")
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: !base.canCreateProfile
             visible: !base.canCreateProfile
 
@@ -133,11 +132,11 @@ Item
         }
 
         // Remove button
-        OldControls.Button
+        Button
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
-            iconName: "list-remove"
+            icon.name: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
             onClicked:
             {
@@ -147,11 +146,11 @@ Item
         }
 
         // Rename button
-        OldControls.Button
+        Button
         {
             id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename")
-            iconName: "edit-rename"
+            icon.name: "edit-rename"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
             onClicked:
             {
@@ -162,11 +161,11 @@ Item
         }
 
         // Import button
-        OldControls.Button
+        Button
         {
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
-            iconName: "document-import"
+            icon.name: "document-import"
             onClicked:
             {
                 importDialog.open();
@@ -174,11 +173,11 @@ Item
         }
 
         // Export button
-        OldControls.Button
+        Button
         {
             id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
-            iconName: "document-export"
+            icon.name: "document-export"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
             onClicked:
             {

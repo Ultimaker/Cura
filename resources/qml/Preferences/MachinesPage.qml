@@ -1,8 +1,8 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.1
 import QtQuick.Window 2.1
 
 import UM 1.5 as UM
@@ -38,7 +38,7 @@ UM.ManagementPage
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate");
-            iconName: "list-activate";
+            icon.name: "list-activate"
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachine.id
             onClicked: Cura.MachineManager.setActiveMachine(base.currentItem.id)
         },
@@ -46,14 +46,14 @@ UM.ManagementPage
         {
             id: addMenuButton
             text: catalog.i18nc("@action:button", "Add");
-            iconName: "list-add";
+            icon.name: "list-add"
             onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove");
-            iconName: "list-remove";
+            icon.name: "list-remove"
             enabled: base.currentItem != null && model.count > 1
             onClicked: confirmDialog.open();
         },
@@ -61,7 +61,7 @@ UM.ManagementPage
         {
             id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename");
-            iconName: "edit-rename";
+            icon.name: "edit-rename"
             enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
             onClicked: renameDialog.open();
         }
@@ -125,7 +125,7 @@ UM.ManagementPage
             rightButtons: Button
             {
                 text: catalog.i18nc("@action:button", "Close")
-                iconName: "dialog-close"
+                icon.name: "dialog-close"
                 onClicked: actionDialog.reject()
             }
         }

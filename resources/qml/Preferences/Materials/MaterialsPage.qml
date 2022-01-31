@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Controls 1.4 as OldControls
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
@@ -103,11 +102,11 @@ Item
         height: childrenRect.height
 
         // Activate button
-        OldControls.Button
+        Button
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
-            iconName: "list-activate"
+            icon.name: "list-activate"
             enabled: !isCurrentItemActivated && Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
@@ -121,11 +120,11 @@ Item
         }
 
         // Create button
-        OldControls.Button
+        Button
         {
             id: createMenuButton
             text: catalog.i18nc("@action:button", "Create")
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
@@ -136,11 +135,11 @@ Item
         }
 
         // Duplicate button
-        OldControls.Button
+        Button
         {
             id: duplicateMenuButton
             text: catalog.i18nc("@action:button", "Duplicate");
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: base.hasCurrentItem
             onClicked:
             {
@@ -151,11 +150,11 @@ Item
         }
 
         // Remove button
-        OldControls.Button
+        Button
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
-            iconName: "list-remove"
+            icon.name: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManagementModel.canMaterialBeRemoved(base.currentItem.container_node)
 
             onClicked:
@@ -166,11 +165,11 @@ Item
         }
 
         // Import button
-        OldControls.Button
+        Button
         {
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
-            iconName: "document-import"
+            icon.name: "document-import"
             onClicked:
             {
                 forceActiveFocus();
@@ -180,11 +179,11 @@ Item
         }
 
         // Export button
-        OldControls.Button
+        Button
         {
             id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
-            iconName: "document-export"
+            icon.name: "document-export"
             onClicked:
             {
                 forceActiveFocus();
@@ -194,11 +193,11 @@ Item
         }
 
         //Sync button.
-        OldControls.Button
+        Button
         {
             id: syncMaterialsButton
             text: catalog.i18nc("@action:button Sending materials to printers", "Sync with Printers")
-            iconName: "sync-synchronizing"
+            icon.name: "sync-synchronizing"
             onClicked:
             {
                 forceActiveFocus();
