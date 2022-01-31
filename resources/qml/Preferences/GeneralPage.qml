@@ -216,6 +216,7 @@ UM.PreferencesPage
                 TextField
                 {
                     id: currencyField
+                    selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }

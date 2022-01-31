@@ -42,6 +42,7 @@ UM.Dialog
 
                 TextField {
                     id: peak_height
+                    selectByMouse: true
                     objectName: "Peak_Height"
                     validator: RegExpValidator {regExp: /^\d{0,3}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
@@ -65,6 +66,7 @@ UM.Dialog
 
                 TextField {
                     id: base_height
+                    selectByMouse: true
                     objectName: "Base_Height"
                     validator: RegExpValidator {regExp: /^\d{0,3}([\,|\.]\d*)?$/}
                     width: 180 * screenScaleFactor
@@ -88,6 +90,7 @@ UM.Dialog
 
                 TextField {
                     id: width
+                    selectByMouse: true
                     objectName: "Width"
                     focus: true
                     validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
@@ -111,6 +114,7 @@ UM.Dialog
                 }
                 TextField {
                     id: depth
+                    selectByMouse: true
                     objectName: "Depth"
                     focus: true
                     validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
@@ -180,6 +184,7 @@ UM.Dialog
                 }
                 TextField {
                     id: transmittance
+                    selectByMouse: true
                     objectName: "Transmittance"
                     focus: true
                     validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}

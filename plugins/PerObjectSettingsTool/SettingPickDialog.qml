@@ -46,6 +46,7 @@ UM.Dialog
     TextField
     {
         id: filterInput
+        selectByMouse: true
 
         anchors
         {

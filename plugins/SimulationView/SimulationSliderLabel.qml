@@ -1,5 +1,6 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.5
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
@@ -62,6 +63,7 @@ UM.PointingRectangle
         font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
         background: Item {}
+        selectByMouse: true
 
         onEditingFinished: {
 
