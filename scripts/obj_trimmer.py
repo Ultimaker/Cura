@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import argparse
 import os
-from typing import Optional, List
+from typing import Optional, List, TextIO
 
 """
     Used to reduce the size of obj files used for printer platform models.
@@ -11,6 +11,7 @@ from typing import Optional, List
     Removes duplicate vertex texture coordinates
     Removes any rows that are not a face, vertex or vertex texture
 """
+
 
 def process_obj(input_file: str, output_file: str) -> None:
     with open(input_file, "r") as in_obj, open("temp", "w") as temp:
@@ -67,6 +68,7 @@ def trim_vertex_texture(values: List[str]) -> str:
     for i, coordinate in enumerate(values[1:]):
         values[i + 1] = str(float(coordinate))
     return " ".join(values)
+
 
 def merge_duplicate_vt(in_obj, out_obj):
     # Removes duplicate vertex texture ("vt")
