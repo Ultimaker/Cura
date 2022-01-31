@@ -271,13 +271,14 @@ OldControls.TabView
                         text: spoolCostSpinBox.textFromValue(spoolCostSpinBox.value, spoolCostSpinBox.locale)
                         selectByMouse: true
                         background: Item {}
+                        validator: RegExpValidator { regExp: new RegExp("^" + base.currency + " ([0-9]+[.]?[0-9]*)?$") }
                     }
 
                     property int decimals: 2
 
                     valueFromText: function(text) {
                         // remove all non-number tokens from input string so value can be parsed correctly
-                        var value = Number(text.replace(",", ".").replace(/[^0-9.-]+/g, ""));
+                        var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
                         var precision = Math.pow(10, spoolCostSpinBox.decimals);
                         return Math.round(value * precision) / precision;
                     }
@@ -308,11 +309,12 @@ OldControls.TabView
                         text: spoolWeightSpinBox.textFromValue(spoolWeightSpinBox.value, spoolWeightSpinBox.locale)
                         selectByMouse: true
                         background: Item {}
+                        validator: RegExpValidator { regExp: new RegExp("^([0-9]+[.]?[0-9]*)? g$") }
                     }
 
                     valueFromText: function(text, locale) {
                         // remove all non-number tokens from input string so value can be parsed correctly
-                        var value = Number(text.replace(",", ".").replace(/[^0-9.-]+/g, ""));
+                        var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
                         return Math.round(value);
                     }
 
