@@ -91,7 +91,7 @@ Item
                                     new_width -= sum_widths - tableBase.width; //Limit the total width to not exceed the view.
                                 }
                                 let width_fraction = new_width / tableBase.width; //Scale with the same fraction along with the total width, if the table is resized.
-                                parent.parent.width = Qt.binding(function() { return tableBase.width * width_fraction });
+                                parent.parent.width = Qt.binding(function() { return Math.max(10, Math.round(tableBase.width * width_fraction)) });
                             }
                         }
                     }
