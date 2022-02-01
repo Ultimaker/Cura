@@ -115,6 +115,7 @@ Item
             bottom: parent.bottom
         }
 
+        flickableDirection: Flickable.AutoFlickIfNeeded
         clip: true
         ScrollBar.vertical: ScrollBar
         {
@@ -173,6 +174,7 @@ Item
             {
                 anchors.fill: parent
 
+                acceptedButtons: Qt.LeftButton
                 text: (cellTextMetrics.elidedText == cellContent.text) ? "" : cellContent.text //Show full text in tooltip if it was elided.
                 onClicked:
                 {

@@ -116,6 +116,7 @@ Item
             bottom: parent.bottom
         }
 
+        flickableDirection: Flickable.AutoFlickIfNeeded
         clip: true
         ScrollBar.vertical: UM.ScrollBar {}
         columnWidthProvider: function(column)
@@ -152,6 +153,7 @@ Item
             {
                 anchors.fill: parent
 
+                acceptedButtons: Qt.LeftButton
                 text: (cellTextMetrics.elidedText == cellContent.text) ? "" : cellContent.text //Show full text in tooltip if it was elided.
                 onClicked:
                 {
