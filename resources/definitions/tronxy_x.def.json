@@ -69,7 +69,8 @@
 
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
-        "material_flow": { "value": 96 },
+        "material_flow": { "value": 95 },
+        "material_flow_layer_0": { "value": 95 },
 
         "z_seam_type": { "value": "'sharpest_corner'" },
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
