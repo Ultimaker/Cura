@@ -1149,7 +1149,7 @@
                 "wall_transition_angle":
                 {
                     "label": "Wall Transitioning Threshold Angle",
-                    "description": "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length these center walls, but may leave gaps or overextrude.",
+                    "description": "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude.",
                     "type": "float",
                     "unit": "°",
                     "default_value": 10,
