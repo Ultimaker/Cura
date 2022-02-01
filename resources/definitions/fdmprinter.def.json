@@ -1149,7 +1149,7 @@
                 "wall_transition_angle":
                 {
                     "label": "Wall Transitioning Threshold Angle",
-                    "description": "When to apply transitioning between even and odd number of walls. A wedge shape with an angle higher than this setting will not have transitioning applied and no odd number gap filler walls will be genertated. Reducing this setting reduces the number and length of gap filler walls at the cost of small overfills and underfills.",
+                    "description": "When to apply transitioning between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitioning applied and no odd number gap filler walls will be generated. Reducing this setting reduces the number and length of gap filler walls at the cost of small overfills and underfills.",
                     "type": "float",
                     "unit": "°",
                     "default_value": 10,
