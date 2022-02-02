@@ -38,7 +38,7 @@ class SearchAndReplace(Script):
                 "is_regex":
                 {
                     "label": "Use Regular Expressions",
-                    "description": "When enabled, the search text will be interpreted as a regular expression.",
+                    "description": "When enabled, the search text will be interpreted as a regular expression using python's re  module.",
                     "type": "bool",
                     "default_value": false
                 }
