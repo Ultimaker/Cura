@@ -16,7 +16,7 @@ Item
     property var printerModel: null
     property var activePrintJob: printerModel != null ? printerModel.activePrintJob : null
     property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
-
+    property var _buttonSize: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("thin_margin").height
     implicitWidth: parent.width
     implicitHeight: childrenRect.height
 
@@ -95,8 +95,8 @@ Item
                 {
                     Layout.row: 1
                     Layout.column: 1
-                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
-                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: _buttonSize
+                    Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleUp")
 
                     onClicked: printerModel.moveHead(0, distancesRow.currentDistance, 0)
@@ -106,8 +106,8 @@ Item
                 {
                     Layout.row: 2
                     Layout.column: 0
-                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
-                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: _buttonSize
+                    Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleLeft")
 
                     onClicked: printerModel.moveHead(-distancesRow.currentDistance, 0, 0)
@@ -117,8 +117,8 @@ Item
                 {
                     Layout.row: 2
                     Layout.column: 2
-                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
-                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: _buttonSize
+                    Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleRight")
 
                     onClicked:  printerModel.moveHead(distancesRow.currentDistance, 0, 0)
@@ -128,8 +128,8 @@ Item
                 {
                     Layout.row: 3
                     Layout.column: 1
-                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
-                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: _buttonSize
+                    Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleDown")
 
                     onClicked: printerModel.moveHead(0, -distancesRow.currentDistance, 0)
@@ -139,8 +139,8 @@ Item
                 {
                     Layout.row: 2
                     Layout.column: 1
-                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
-                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: _buttonSize
+                    Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("House")
 
                     onClicked:  printerModel.homeHead()
@@ -165,7 +165,7 @@ Item
                 {
                     iconSource: UM.Theme.getIcon("ChevronSingleUp")
                     width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    height: _buttonSize
 
                     onClicked: printerModel.moveHead(0, 0, distancesRow.currentDistance)
 
@@ -175,7 +175,7 @@ Item
                 {
                     iconSource: UM.Theme.getIcon("House")
                     width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    height: _buttonSize
 
                     onClicked: printerModel.homeBed()
                 }
@@ -184,7 +184,7 @@ Item
                 {
                     iconSource: UM.Theme.getIcon("ChevronSingleDown")
                     width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    height: _buttonSize
 
                     onClicked: printerModel.moveHead(0, 0, -distancesRow.currentDistance)
                 }
