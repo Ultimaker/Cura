@@ -408,7 +408,7 @@ QtObject
 
                 color: (control.hovered || control._hovered) ? UM.Theme.getColor("checkbox_hover") : (control.enabled ? UM.Theme.getColor("checkbox") : UM.Theme.getColor("checkbox_disabled"))
                 Behavior on color { ColorAnimation { duration: 50; } }
-
+                anchors.verticalCenter: parent.verticalCenter
                 radius: control.exclusiveGroup ? Math.round(UM.Theme.getSize("checkbox").width / 2) : UM.Theme.getSize("checkbox_radius").width
 
                 border.width: UM.Theme.getSize("default_lining").width
@@ -418,11 +418,11 @@ QtObject
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: Math.round(parent.width / 2.5)
-                    height: Math.round(parent.height / 2.5)
+                    height: UM.Theme.getSize("checkbox_mark").height
+                    width: UM.Theme.getSize("checkbox_mark").width
                     sourceSize.height: width
                     color: UM.Theme.getColor("checkbox_mark")
-                    source: control.exclusiveGroup ? UM.Theme.getIcon("Dot") : UM.Theme.getIcon("Check")
+                    source: control.exclusiveGroup ? UM.Theme.getIcon("Dot") : UM.Theme.getIcon("Check", "low")
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
@@ -460,8 +460,8 @@ QtObject
                 {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: Math.round(parent.width / 2.5)
-                    height: Math.round(parent.height / 2.5)
+                    height: UM.Theme.getSize("checkbox_mark").height
+                    width: UM.Theme.getSize("checkbox_mark").width
                     sourceSize.height: width
                     color: UM.Theme.getColor("checkbox_mark")
                     source:
@@ -472,7 +472,7 @@ QtObject
                         }
                         else
                         {
-                            return control.exclusiveGroup ? UM.Theme.getIcon("Dot", "low") : UM.Theme.getIcon("Check");
+                            return control.exclusiveGroup ? UM.Theme.getIcon("Dot", "low") : UM.Theme.getIcon("Check", "low");
                         }
                     }
                     opacity: control.checked

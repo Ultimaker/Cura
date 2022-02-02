@@ -350,11 +350,12 @@
 
         "checkbox": [255, 255, 255, 255],
         "checkbox_hover": [255, 255, 255, 255],
-        "checkbox_border": [199, 199, 199, 255],
-        "checkbox_border_hover": [50, 130, 255, 255],
+        "checkbox_border": [180, 180, 180, 255],
+        "checkbox_border_hover": [25, 110, 240, 255],
         "checkbox_mark": [35, 35, 35, 255],
+        "checkbox_square": [180, 180, 180, 255],
         "checkbox_disabled": [223, 223, 223, 255],
-        "checkbox_text": [35, 35, 35, 255],
+        "checkbox_text": [0, 12, 26, 255],
 
         "tooltip": [25, 25, 25, 255],
         "tooltip_text": [255, 255, 255, 255],
@@ -607,8 +608,11 @@
         "layerview_row": [11.0, 1.5],
         "layerview_row_spacing": [0.0, 0.5],
 
-        "checkbox": [1.5, 1.5],
-        "checkbox_radius": [0.08, 0.08],
+        "checkbox": [1.33, 1.33],
+        "checkbox_mark": [1, 1],
+        "checkbox_square": [0.83, 0.83],
+        "checkbox_radius": [0.25, 0.25],
+        "checkbox_label_padding": [0.5, 0.5],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
