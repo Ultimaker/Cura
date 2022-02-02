@@ -1107,7 +1107,7 @@
                             "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
                             "type": "float",
                             "unit": "%",
-                            "default_value": 50,
+                            "default_value": 90,
                             "value": "wall_transition_threshold",
                             "minimum_value": "1",
                             "maximum_value": "99"
@@ -1117,7 +1117,7 @@
                             "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
                             "type": "float",
                             "unit": "%",
-                            "default_value": 50,
+                            "default_value": 80,
                             "value": "wall_transition_threshold * 8 / 9",
                             "minimum_value": "1",
                             "maximum_value": "99"
