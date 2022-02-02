@@ -95,80 +95,55 @@ Item
                 {
                     Layout.row: 1
                     Layout.column: 1
-                    Layout.preferredWidth: width
-                    Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("ChevronSingleUp");
-                    width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
+                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    iconSource: UM.Theme.getIcon("ChevronSingleUp")
 
-                    onClicked:
-                    {
-                        printerModel.moveHead(0, distancesRow.currentDistance, 0)
-                    }
+                    onClicked: printerModel.moveHead(0, distancesRow.currentDistance, 0)
                 }
 
                 Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 0
-                    Layout.preferredWidth: width
-                    Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("ChevronSingleLeft");
-                    width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
+                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    iconSource: UM.Theme.getIcon("ChevronSingleLeft")
 
-                    onClicked:
-                    {
-                        printerModel.moveHead(-distancesRow.currentDistance, 0, 0)
-                    }
+                    onClicked: printerModel.moveHead(-distancesRow.currentDistance, 0, 0)
                 }
 
                 Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 2
-                    Layout.preferredWidth: width
-                    Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("ChevronSingleRight");
-                    width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
+                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    iconSource: UM.Theme.getIcon("ChevronSingleRight")
 
-                    onClicked:
-                    {
-                        printerModel.moveHead(distancesRow.currentDistance, 0, 0)
-                    }
+                    onClicked:  printerModel.moveHead(distancesRow.currentDistance, 0, 0)
                 }
 
                 Cura.SecondaryButton
                 {
                     Layout.row: 3
                     Layout.column: 1
-                    Layout.preferredWidth: width
-                    Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("ChevronSingleDown");
-                    width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
+                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    iconSource: UM.Theme.getIcon("ChevronSingleDown")
 
-                    onClicked:
-                    {
-                        printerModel.moveHead(0, -distancesRow.currentDistance, 0)
-                    }
+                    onClicked: printerModel.moveHead(0, -distancesRow.currentDistance, 0)
                 }
 
                 Cura.SecondaryButton
                 {
                     Layout.row: 2
                     Layout.column: 1
-                    Layout.preferredWidth: width
-                    Layout.preferredHeight: height
-                    iconSource: UM.Theme.getIcon("House");
-                    width: height
-                    height: UM.Theme.getSize("setting_control").height
+                    Layout.preferredWidth: UM.Theme.getSize("setting_control").height
+                    Layout.preferredHeight: UM.Theme.getSize("setting_control").height
+                    iconSource: UM.Theme.getIcon("House")
 
-                    onClicked:
-                    {
-                        printerModel.homeHead()
-                    }
+                    onClicked:  printerModel.homeHead()
                 }
             }
 
@@ -188,38 +163,30 @@ Item
 
                 Cura.SecondaryButton
                 {
-                    iconSource: UM.Theme.getIcon("ChevronSingleUp");
+                    iconSource: UM.Theme.getIcon("ChevronSingleUp")
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
-                    onClicked:
-                    {
-                        printerModel.moveHead(0, 0, distancesRow.currentDistance)
-                    }
+                    onClicked: printerModel.moveHead(0, 0, distancesRow.currentDistance)
+
                 }
 
                 Cura.SecondaryButton
                 {
-                    iconSource: UM.Theme.getIcon("House");
+                    iconSource: UM.Theme.getIcon("House")
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
-                    onClicked:
-                    {
-                        printerModel.homeBed()
-                    }
+                    onClicked: printerModel.homeBed()
                 }
 
                 Cura.SecondaryButton
                 {
-                    iconSource: UM.Theme.getIcon("ChevronSingleDown");
+                    iconSource: UM.Theme.getIcon("ChevronSingleDown")
                     width: height
                     height: UM.Theme.getSize("setting_control").height
 
-                    onClicked:
-                    {
-                        printerModel.moveHead(0, 0, -distancesRow.currentDistance)
-                    }
+                    onClicked: printerModel.moveHead(0, 0, -distancesRow.currentDistance)
                 }
             }
         }
