@@ -311,19 +311,8 @@ Item
         onAccepted:
         {
             var result = Cura.ContainerManager.importProfile(fileUrl);
+            messageDialog.title = catalog.i18nc("@title:window", "Import Profile")
             messageDialog.text = result.message;
-            if (result.status == "ok")
-            {
-                messageDialog.icon = StandardIcon.Information;
-            }
-            else if (result.status == "warning" || result.status == "duplicate")
-            {
-                messageDialog.icon = StandardIcon.Warning;
-            }
-            else
-            {
-                messageDialog.icon = StandardIcon.Critical;
-            }
             messageDialog.open();
             CuraApplication.setDefaultPath("dialog_profile_path", folder);
         }
@@ -344,7 +333,7 @@ Item
 
             if (result && result.status == "error")
             {
-                messageDialog.icon = StandardIcon.Critical;
+                messageDialog.title = catalog.i18nc("@title:window", "Export Profile")
                 messageDialog.text = result.message;
                 messageDialog.open();
             }
@@ -352,6 +341,13 @@ Item
             // else pop-up Message thing from python code
             CuraApplication.setDefaultPath("dialog_profile_path", folder);
         }
+    }
+
+    //Dialogue box for showing the result of importing or exporting profiles.
+    UM.MessageDialog
+    {
+        id: messageDialog
+        standardButtons: Dialog.Ok
     }
 
     Item

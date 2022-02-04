@@ -813,35 +813,6 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
-    {
-        id: messageDialog
-        modality: Qt.ApplicationModal
-        onAccepted: CuraApplication.messageBoxClosed(clickedButton)
-        onApply: CuraApplication.messageBoxClosed(clickedButton)
-        onDiscard: CuraApplication.messageBoxClosed(clickedButton)
-        onHelp: CuraApplication.messageBoxClosed(clickedButton)
-        onNo: CuraApplication.messageBoxClosed(clickedButton)
-        onRejected: CuraApplication.messageBoxClosed(clickedButton)
-        onReset: CuraApplication.messageBoxClosed(clickedButton)
-        onYes: CuraApplication.messageBoxClosed(clickedButton)
-    }
-
-    Connections
-    {
-        target: CuraApplication
-        function onShowMessageBox(title, text, informativeText, detailedText, buttons, icon)
-        {
-            messageDialog.title = title
-            messageDialog.text = text
-            messageDialog.informativeText = informativeText
-            messageDialog.detailedText = detailedText
-            messageDialog.standardButtons = buttons
-            messageDialog.icon = icon
-            messageDialog.visible = true
-        }
-    }
-
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent
