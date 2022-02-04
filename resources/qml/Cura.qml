@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -253,7 +253,6 @@ UM.MainWindow
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
-                                packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();
                             }
                             else
@@ -586,18 +585,15 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
+    UM.MessageDialog
     {
         id: exitConfirmationDialog
         title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
         text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
-        icon: StandardIcon.Question
-        modality: Qt.ApplicationModal
-        standardButtons: StandardButton.Yes | StandardButton.No
-        onYes: CuraApplication.callConfirmExitDialogCallback(true)
-        onNo: CuraApplication.callConfirmExitDialogCallback(false)
+        standardButtons: Dialog.Yes | Dialog.No
+        onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
         onRejected: CuraApplication.callConfirmExitDialogCallback(false)
-        onVisibilityChanged:
+        onClosed:
         {
             if (!visible)
             {
@@ -747,20 +743,18 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
+    UM.MessageDialog
     {
         id: packageInstallDialog
         title: catalog.i18nc("@window:title", "Install Package");
         standardButtons: StandardButton.Ok
-        modality: Qt.ApplicationModal
     }
 
-    MessageDialog
+    UM.MessageDialog
     {
         id: infoMultipleFilesWithGcodeDialog
         title: catalog.i18nc("@title:window", "Open File(s)")
-        icon: StandardIcon.Information
-        standardButtons: StandardButton.Ok
+        standardButtons: Dialog.Ok
         text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
 
         property var selectedMultipleFiles
