@@ -119,21 +119,20 @@ Item
             width: base.width
             property real rowHeight: brandTextField.height + UM.Theme.getSize("default_lining").height
 
-            MessageDialog
+            UM.MessageDialog
             {
                 id: confirmDiameterChangeDialog
+                anchors.centerIn: base
 
-                icon: StandardIcon.Question;
                 title: catalog.i18nc("@title:window", "Confirm Diameter Change")
                 text: catalog.i18nc("@label (%1 is a number)", "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?".arg(new_diameter_value))
-                standardButtons: StandardButton.Yes | StandardButton.No
-                modality: Qt.ApplicationModal
+                standardButtons: Dialog.Yes | Dialog.No
 
                 property var new_diameter_value: null;
                 property var old_diameter_value: null;
                 property var old_approximate_diameter_value: null;
 
-                onYes:
+                onAccepted:
                 {
                     base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                     base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
@@ -142,13 +141,11 @@ Item
                     base.resetSelectedMaterial()
                 }
 
-                onNo:
+                onRejected:
                 {
                     base.properties.diameter = old_diameter_value;
                     diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
                 }
-
-                onRejected: no()
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }

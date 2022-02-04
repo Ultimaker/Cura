@@ -269,7 +269,7 @@ Item
     }
 
     // Confirmation dialog for removing a profile
-    MessageDialog
+    UM.MessageDialog
     {
         id: confirmRemoveQualityDialog
 

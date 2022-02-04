@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -61,15 +61,15 @@ Item
         onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
     }
 
-    MessageDialog
+    UM.MessageDialog
     {
         id: newProjectDialog
-        modality: Qt.ApplicationModal
+        anchors.centerIn: base
+
         title: catalog.i18nc("@title:window", "New project")
         text: catalog.i18nc("@info:question", "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings.")
-        standardButtons: StandardButton.Yes | StandardButton.No
-        icon: StandardIcon.Question
-        onYes:
+        standardButtons: Dialog.Yes | Dialog.No
+        onAccepted:
         {
             CuraApplication.resetWorkspace()
             Cura.Actions.resetProfile.trigger()

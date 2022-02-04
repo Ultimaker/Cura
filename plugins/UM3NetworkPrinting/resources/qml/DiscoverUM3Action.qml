@@ -8,7 +8,6 @@ import QtQuick 2.2
 import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
-import QtQuick.Dialogs 1.2
 
 Cura.MachineAction
 {
@@ -281,15 +280,12 @@ Cura.MachineAction
         }
     }
 
-    MessageDialog
+    UM.MessageDialog
     {
         id: invalidIPAddressMessageDialog
-        x: parent ? (parent.x + (parent.width) / 2) : 0
-        y: parent ? (parent.y + (parent.height) / 2) : 0
         title: catalog.i18nc("@title:window", "Invalid IP address")
         text: catalog.i18nc("@text", "Please enter a valid IP address.")
-        icon: StandardIcon.Warning
-        standardButtons: StandardButton.Ok
+        standardButtons: Dialog.Ok
     }
 
     UM.Dialog
