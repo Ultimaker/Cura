@@ -340,7 +340,7 @@ Item
                     }
                     function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
                     function onHideTooltip() { base.hideTooltip() }
-                    function onShowAllHiddenInheritedSettings()
+                    function onShowAllHiddenInheritedSettings(category_id)
                     {
                         var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
                         for(var i = 0; i < children_with_override.length; i++)
