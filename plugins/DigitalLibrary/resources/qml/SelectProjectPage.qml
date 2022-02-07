@@ -49,7 +49,6 @@ Item
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
-            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             focus: true
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
         }
