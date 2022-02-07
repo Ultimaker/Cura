@@ -91,14 +91,14 @@ SettingItem
             width: UM.Theme.getSize("checkbox").width
             height: width
 
-            radius: UM.Theme.getSize("setting_control_radius").width
+            radius: UM.Theme.getSize("checkbox_radius").width
             border.width: UM.Theme.getSize("default_lining").width
 
             border.color:
             {
                 if(!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    return UM.Theme.getColor("checkbox_border")
                 }
                 switch (propertyProvider.properties.validationState)
                 {
@@ -114,7 +114,7 @@ SettingItem
                 // Validation is OK.
                 if (control.containsMouse || control.activeFocus || hovered)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("checkbox_border_hover")
                 }
                 return UM.Theme.getColor("setting_control_border")
             }
@@ -122,7 +122,7 @@ SettingItem
             color: {
                 if (!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled")
+                    return UM.Theme.getColor("checkbox_disabled")
                 }
                 switch (propertyProvider.properties.validationState)
                 {
@@ -140,7 +140,7 @@ SettingItem
                 {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
-                return UM.Theme.getColor("setting_control")
+                return UM.Theme.getColor("checkbox")
             }
 
             UM.RecolorImage
