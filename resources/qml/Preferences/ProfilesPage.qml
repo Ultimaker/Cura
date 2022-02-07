@@ -273,13 +273,12 @@ Item
     {
         id: confirmRemoveQualityDialog
 
-        icon: StandardIcon.Question;
         title: catalog.i18nc("@title:window", "Confirm Remove")
         text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
         standardButtons: StandardButton.Yes | StandardButton.No
-        modality: Qt.ApplicationModal
+        modal: true
 
-        onYes:
+        onAccepted:
         {
             base.qualityManagementModel.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
