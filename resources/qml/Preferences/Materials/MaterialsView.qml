@@ -420,12 +420,6 @@ Item
 
             Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
         }
-
-        function updateCostPerMeter()
-        {
-            base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
-            base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
-        }
     }
 
     ListView
@@ -516,6 +510,12 @@ Item
                 key: model.key
             }
         }
+    }
+
+    function updateCostPerMeter()
+    {
+        base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
+        base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
     }
 
     function calculateSpoolLength(diameter, density, spoolWeight)
