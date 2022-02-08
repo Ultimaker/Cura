@@ -64,6 +64,7 @@ UM.Dialog
         {
             top: parent.top
             right: parent.right
+            verticalCenter: filterInput.verticalCenter
         }
         text: catalog.i18nc("@label:checkbox", "Show all")
     }
