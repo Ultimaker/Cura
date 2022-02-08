@@ -51,7 +51,7 @@ Item
 
         valueFromText: function(text)
         {
-            return parseFloat(text.substring(prefix.length, text.length - suffix.length)) / base.stepSize;
+            return parseFloat(text.substring(prefix.length, text.length - suffix.length).replace(",", ".")) / base.stepSize;
         }
 
         textFromValue: function(value)
