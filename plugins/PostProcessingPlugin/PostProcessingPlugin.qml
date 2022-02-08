@@ -232,7 +232,7 @@ UM.Dialog
                 {
                     model: manager.loadedScriptList
 
-                    MenuItem
+                    Cura.MenuItem
                     {
                         text: manager.getScriptLabelByKey(modelData.toString())
                         onTriggered: manager.addScriptToList(modelData.toString())
