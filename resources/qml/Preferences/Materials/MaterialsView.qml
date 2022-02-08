@@ -243,7 +243,7 @@ Item
                 value: properties.density
                 decimals: 2
                 suffix: " g/cm³"
-                stepSize: 0.01 // spinboxes can only cointain reals, a non-integer value can not be entered as the step size
+//                stepSize: 0.01 // spinboxes can only cointain reals, a non-integer value can not be entered as the step size
 
                 onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
                 onValueChanged: updateCostPerMeter()
@@ -258,7 +258,7 @@ Item
                 value: properties.diameter
                 decimals: 2
                 suffix: " mm"
-                stepSize: 0.01 // spinboxes can only cointain reals, a non-integer value can not be entered as the step size
+//                stepSize: 0.01 // spinboxes can only cointain reals, a non-integer value can not be entered as the step size
 
                 onEditingFinished:
                 {
