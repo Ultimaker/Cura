@@ -4,6 +4,11 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.15
 
+// This component extends the funtionality of QtControls 2.x Spinboxes to
+// - be able to contain fractional values
+// - hava a "prefix" and a "suffix". A validator is added that recognizes this pre-, suf-fix combo. When adding a custom
+//    validator the pre-, suf-fix should be added (e.g. new RegExp("^" + prefix + \regex\ + suffix + "$")
+
 Item
 {
     id: base
@@ -33,13 +38,16 @@ Item
     {
         id: spinBox
         anchors.fill: base
+        editable: base.editable
 
+        // The stepSize of the SpinBox is intentionally set to be always `1`
+        // As SpinBoxes can only contain integer values the `base.stepSize` is concidered the precision/resolution
+        // increasing the spinBox.value by one increases the actual/real value of the component by `base.stepSize`
+        // as such spinBox.value * base.stepSizes produces the real value of the component
         stepSize: 1
-
         value: Math.floor(base.value / base.stepSize)
         from: Math.floor(base.from / base.stepSize)
         to: Math.floor(base.to / base.stepSize)
-        editable: base.editable
 
         valueFromText: function(text)
         {
