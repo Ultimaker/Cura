@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -120,9 +120,10 @@ Menu
                 anchors.verticalCenter: copiesField.verticalCenter
             }
 
-            SpinBox
+            Cura.SpinBox
             {
                 id: copiesField
+                editable: true
                 focus: true
                 from: 1
                 to: 99
