@@ -243,7 +243,7 @@ Item
                 value: properties.density
                 decimals: 2
                 suffix: " g/cm³"
-//                stepSize: 0.01 // spinboxes can only cointain reals, a non-integer value can not be entered as the step size
+                stepSize: 0.01
 
                 onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
                 onValueChanged: updateCostPerMeter()
@@ -258,7 +258,7 @@ Item
                 value: properties.diameter
                 decimals: 2
                 suffix: " mm"
-//                stepSize: 0.01 // spinboxes can only cointain reals, a non-integer value can not be entered as the step size
+                stepSize: 0.01
 
                 onEditingFinished:
                 {
@@ -388,12 +388,6 @@ Item
             }
 
             Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
-        }
-
-        function updateCostPerMeter()
-        {
-            base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
-            base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
         }
     }
 
@@ -605,5 +599,11 @@ Item
     {
         base.setMetaDataEntry("brand", old_brand, new_brand)
         properties.brand = new_brand
+    }
+
+    function updateCostPerMeter()
+    {
+        base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
+        base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
     }
 }

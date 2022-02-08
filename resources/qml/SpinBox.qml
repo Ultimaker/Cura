@@ -4,43 +4,73 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.15
 
-SpinBox
+Item
 {
     id: base
+
+    height: spinBox.height
 
     property string prefix: ""
     property string suffix: ""
     property int decimals: 0
+    property real stepSize: 1
+    property real value: 0
+    property real from: 0
+    property real to: 99
 
-    signal editingFinished()
+    property alias wrap: spinBox.wrap
 
-    valueFromText: function(text)
-    {
-        return parseFloat(text.substring(prefix.length, text.length - suffix.length), decimals);
-    }
+    property bool editable: true
 
-    textFromValue: function(value)
-    {
-        return prefix + value.toFixed(decimals) + suffix
-    }
-
-    validator: RegExpValidator
+    property var validator: RegExpValidator
     {
         regExp: new RegExp("^" + prefix + "([0-9]+[.|,]?[0-9]*)?" + suffix + "$")
     }
 
-    contentItem: TextField
+    signal editingFinished()
+
+    SpinBox
     {
-        text: base.textFromValue(base.value, base.locale)
-        selectByMouse: true
-        background: Item {}
+        id: spinBox
+        anchors.fill: base
+
+        stepSize: 1
+
+        value: Math.floor(base.value / base.stepSize)
+        from: Math.floor(base.from / base.stepSize)
+        to: Math.floor(base.to / base.stepSize)
+        editable: base.editable
+
+        valueFromText: function(text)
+        {
+            return parseFloat(text.substring(prefix.length, text.length - suffix.length)) / base.stepSize;
+        }
+
+        textFromValue: function(value)
+        {
+            return prefix + (value * base.stepSize).toFixed(decimals) + suffix;
+        }
+
         validator: base.validator
 
-        onActiveFocusChanged:
+        onValueModified:
         {
-            if(!activeFocus)
+            base.value = value * base.stepSize;
+        }
+
+        contentItem: TextField
+        {
+            text: spinBox.textFromValue(spinBox.value, spinBox.locale)
+            selectByMouse: base.editable
+            background: Item {}
+            validator: base.validator
+
+            onActiveFocusChanged:
             {
-                base.editingFinished()
+                if(!activeFocus)
+                {
+                    base.editingFinished();
+                }
             }
         }
     }
