@@ -63,7 +63,6 @@ Item
     UM.MessageDialog
     {
         id: newProjectDialog
-        anchors.centerIn: base
 
         title: catalog.i18nc("@title:window", "New project")
         text: catalog.i18nc("@info:question", "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings.")
