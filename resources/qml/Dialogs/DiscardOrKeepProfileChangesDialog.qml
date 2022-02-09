@@ -42,33 +42,25 @@ UM.Dialog
         }
     }
 
-    Row
+    UM.Label
     {
-        id: infoTextRow
-        height: childrenRect.height
+        id: infoText
+        text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
         anchors.left: parent.left
         anchors.right: parent.right
-        spacing: UM.Theme.getSize("default_margin").width
+        wrapMode: Text.WordWrap
 
         UM.I18nCatalog
         {
-            id: catalog;
+            id: catalog
             name: "cura"
-        }
-
-        UM.Label
-        {
-            text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings.\nWould you like to Keep these changed settings after switching profiles?\nAlternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
-            anchors.left: parent.left
-            anchors.right: parent.right
-            wrapMode: Text.WordWrap
         }
     }
 
     Item
     {
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.top: infoTextRow.bottom
+        anchors.top: infoText.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
