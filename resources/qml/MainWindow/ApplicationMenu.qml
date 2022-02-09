@@ -58,7 +58,7 @@ Item
     {
         id: saveWorkspaceDialog
         property var args
-        onYes: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+        onAccepted: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
     }
 
     UM.MessageDialog

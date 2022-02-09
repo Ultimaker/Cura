@@ -4,7 +4,6 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.3
-import QtQuick.Window 2.2
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -14,26 +13,14 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Save Project")
 
-    minimumWidth: 500 * screenScaleFactor
-    minimumHeight: 400 * screenScaleFactor
+    minimumWidth: UM.Theme.getSize("popup_dialog").width
+    minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
     height: minimumHeight
 
-    property int spacerHeight: 10 * screenScaleFactor
-
     property bool dontShowAgain: true
 
-    signal yes();
-
-    function accept() {  // pressing enter will call this function
-        close();
-        yes();
-    }
-
-    onClosing:
-    {
-        UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
-    }
+    onClosing: UM.Preferences.setValue("cura/dialog_on_project_save", !dontShowAgainCheckbox.checked)
 
     onVisibleChanged:
     {
@@ -78,7 +65,7 @@ UM.Dialog
             {
                 top: mainHeading.bottom
                 topMargin: UM.Theme.getSize("default_margin").height
-                bottom: controls.top
+                bottom: parent.bottom
                 bottomMargin: UM.Theme.getSize("default_margin").height
             }
 
@@ -280,43 +267,32 @@ UM.Dialog
                 }
             }
         }
-        Item
-        {
-            id: controls
-            width: parent.width
-            height: childrenRect.height
-            anchors.bottom: parent.bottom
-            CheckBox
-            {
-                id: dontShowAgainCheckbox
-                anchors.left: parent.left
-                text: catalog.i18nc("@action:label", "Don't show project summary on save again")
-                checked: dontShowAgain
-            }
-            Button
-            {
-                id: cancel_button
-                anchors
-                {
-                    right: ok_button.left
-                    rightMargin: UM.Theme.getSize("default_margin").width
-                }
-                text: catalog.i18nc("@action:button","Cancel");
-                enabled: true
-                onClicked: close()
-            }
-            Button
-            {
-                id: ok_button
-                anchors.right: parent.right
-                text: catalog.i18nc("@action:button","Save");
-                enabled: true
-                onClicked:
-                {
-                    close()
-                    yes()
-                }
-            }
-        }
     }
+
+    buttonSpacing: UM.Theme.getSize("thin_margin").width
+
+    leftButtons:
+    [
+        CheckBox
+        {
+            id: dontShowAgainCheckbox
+            anchors.left: parent.left
+            text: catalog.i18nc("@action:label", "Don't show project summary on save again")
+            checked: dontShowAgain
+        }
+    ]
+
+    rightButtons:
+    [
+        Cura.SecondaryButton
+        {
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked: base.reject()
+        },
+        Cura.PrimaryButton
+        {
+            text: catalog.i18nc("@action:button", "Save")
+            onClicked: base.accept()
+        }
+    ]
 }
