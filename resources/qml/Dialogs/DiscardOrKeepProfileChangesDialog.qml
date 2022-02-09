@@ -4,10 +4,8 @@
 import Qt.labs.qmlmodels 1.0
 import QtQuick 2.1
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.2
-import QtQuick.Window 2.1
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 UM.Dialog
@@ -22,7 +20,9 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
     height: minimumHeight
-    property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
+
+    property var changesModel: Cura.UserChangesModel { id: userChangesModel }
+
     onVisibilityChanged:
     {
         if(visible)
@@ -46,7 +46,6 @@ UM.Dialog
     {
         id: infoTextRow
         height: childrenRect.height
-        anchors.margins: UM.Theme.getSize("default_margin").width
         anchors.left: parent.left
         anchors.right: parent.right
         spacing: UM.Theme.getSize("default_margin").width
@@ -57,32 +56,27 @@ UM.Dialog
             name: "cura"
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings.\nWould you like to Keep these changed settings after switching profiles?\nAlternatively, you can discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
-            anchors.margins: UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.right: parent.right
             wrapMode: Text.WordWrap
         }
     }
 
     Item
     {
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.top: infoTextRow.bottom
-        anchors.bottom: optionRow.top
+        anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
 
         Cura.TableView
         {
             id: tableView
-            anchors
-            {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-            }
-            height: base.height - 150
+            anchors.fill: parent
 
             columnHeaders: [
                 catalog.i18nc("@title:column", "Profile settings"),
@@ -100,15 +94,9 @@ UM.Dialog
         }
     }
 
-    Item
-    {
-        id: optionRow
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.margins: UM.Theme.getSize("default_margin").width
-        height: childrenRect.height
+    buttonSpacing: UM.Theme.getSize("thin_margin").width
 
+    leftButtons: [
         ComboBox
         {
             id: discardOrKeepProfileChangesDropDownButton
@@ -145,37 +133,21 @@ UM.Dialog
                 }
             }
         }
-    }
+    ]
 
-    Item
-    {
-        ButtonGroup
-        {
-            buttons: [discardButton, keepButton]
-            checkedButton: discardButton
-        }
-    }
-
-    rightButtons: [
-        Button
+    rightButtons:
+    [
+        Cura.PrimaryButton
         {
             id: discardButton
-            text: catalog.i18nc("@action:button", "Discard changes");
-            onClicked:
-            {
-                CuraApplication.discardOrKeepProfileChangesClosed("discard")
-                base.hide()
-            }
+            text: catalog.i18nc("@action:button", "Discard changes")
+            onClicked: base.accept()
         },
-        Button
+        Cura.SecondaryButton
         {
             id: keepButton
-            text: catalog.i18nc("@action:button", "Keep changes");
-            onClicked:
-            {
-                CuraApplication.discardOrKeepProfileChangesClosed("keep")
-                base.hide()
-            }
+            text: catalog.i18nc("@action:button", "Keep changes")
+            onClicked: base.reject()
         }
     ]
 }
