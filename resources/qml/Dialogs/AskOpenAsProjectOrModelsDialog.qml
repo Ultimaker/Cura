@@ -4,12 +4,9 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.1
 
 import UM 1.3 as UM
-import Cura 1.0 as Cura
-
+import Cura 1.5 as Cura
 
 UM.Dialog
 {
@@ -76,17 +73,13 @@ UM.Dialog
     Column
     {
         anchors.fill: parent
-        anchors.leftMargin: 20 * screenScaleFactor
-        anchors.rightMargin: 20 * screenScaleFactor
-        anchors.bottomMargin: 10 * screenScaleFactor
-        spacing: 10 * screenScaleFactor
+        spacing: UM.Theme.getSize("default_margin").height
 
         Label
         {
             id: questionText
+            width: parent.width
             text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
-            anchors.left: parent.left
-            anchors.right: parent.right
             font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
         }
@@ -99,28 +92,20 @@ UM.Dialog
         }
     }
 
-    Item
-    {
-        ButtonGroup
-        {
-            buttons: [openAsProjectButton, importModelsButton]
-            checkedButton: openAsProjectButton
-        }
-    }
-
     onAccepted: loadProjectFile()
     onRejected: loadModelFiles()
 
-    rightButtons: [
-        Button
+    buttonSpacing: UM.Theme.getSize("thin_margin").width
+
+    rightButtons:
+    [
+        Cura.PrimaryButton
         {
-            id: openAsProjectButton
             text: catalog.i18nc("@action:button", "Open as project")
             onClicked: loadProjectFile()
         },
-        Button
+        Cura.SecondaryButton
         {
-            id: importModelsButton
             text: catalog.i18nc("@action:button", "Import models")
             onClicked: loadModelFiles()
         }
