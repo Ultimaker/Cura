@@ -1,11 +1,11 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 2.9
-import QtQuick.Window 2.1
 
 import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 UM.Dialog
 {
@@ -165,11 +165,11 @@ UM.Dialog
         }
     }
 
-    rightButtons: Button
+    rightButtons: Cura.SecondaryButton
     {
         //: Close about dialog button
         id: closeButton
-        text: catalog.i18nc("@action:button","Close");
+        text: catalog.i18nc("@action:button", "Close");
 
         onClicked: base.visible = false;
     }
