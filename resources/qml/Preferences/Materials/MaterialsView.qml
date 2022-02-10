@@ -217,7 +217,7 @@ Item
 
                 // popup dialog to select a new color
                 // if successful it sets the properties.color_code value to the new color
-                UM.ColorDialog
+                Cura.ColorDialog
                 {
                     id: colorDialog
                     color: properties.color_code
