@@ -217,7 +217,7 @@ Item
 
                 // popup dialog to select a new color
                 // if successful it sets the properties.color_code value to the new color
-                ColorDialog
+                UM.ColorDialog
                 {
                     id: colorDialog
                     color: properties.color_code
@@ -567,6 +567,11 @@ Item
             var key = list[list.length - 1]
             properties[key] = new_value
         }
+    }
+
+    function getMetaDataEntry(entry_name)
+    {
+        return
     }
 
     function setMaterialPreferenceValue(material_guid, entry_name, new_value)
