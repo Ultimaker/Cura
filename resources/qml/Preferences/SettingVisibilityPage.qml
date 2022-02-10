@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 
 UM.PreferencesPage
 {
-    title: catalog.i18nc("@title:tab", "Setting Visibility");
+    title: catalog.i18nc("@title:tab", "Setting Visibility")
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
 
@@ -31,16 +31,16 @@ UM.PreferencesPage
 
     Item
     {
-        id: base;
-        anchors.fill: parent;
+        id: base
+        anchors.fill: parent
 
         OldControls.CheckBox
         {
             id: toggleVisibleSettings
             anchors
             {
-                verticalCenter: filter.verticalCenter;
-                left: parent.left;
+                verticalCenter: filter.verticalCenter
+                left: parent.left
                 leftMargin: UM.Theme.getSize("default_margin").width
             }
             text: catalog.i18nc("@label:textbox", "Check all")
@@ -80,7 +80,7 @@ UM.PreferencesPage
 
         TextField
         {
-            id: filter;
+            id: filter
 
             anchors
             {
@@ -96,7 +96,7 @@ UM.PreferencesPage
             onTextChanged: definitionsModel.filter = {"i18n_label|i18n_description": "*" + text}
         }
 
-        ComboBox
+        Cura.ComboBox
         {
             id: visibilityPreset
             width: 150 * screenScaleFactor
@@ -104,7 +104,7 @@ UM.PreferencesPage
             {
                 top: parent.top
                 right: parent.right
-                bottom: settingsListView.top
+                verticalCenter: filter.verticalCenter
             }
 
             model: settingVisibilityPresetsModel.items
@@ -136,11 +136,11 @@ UM.PreferencesPage
             id: settingsListView
             anchors
             {
-                top: filter.bottom;
+                top: filter.bottom
                 topMargin: UM.Theme.getSize("default_margin").height
-                left: parent.left;
-                right: parent.right;
-                bottom: parent.bottom;
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
             }
 
             clip: true
@@ -182,8 +182,8 @@ UM.PreferencesPage
             }
         }
 
-        UM.I18nCatalog { name: "cura"; }
-        SystemPalette { id: palette; }
+        UM.I18nCatalog { name: "cura" }
+        SystemPalette { id: palette }
 
         Component
         {
