@@ -44,7 +44,7 @@ Item
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
-
+        wrapMode: Text.NoWrap
         // FIXED-LINE-HEIGHT:
         height: UM.Theme.getSize("monitor_text_line").height
     }
@@ -57,6 +57,7 @@ Item
             leftMargin: UM.Theme.getSize("monitor_margin").width
             verticalCenter: parent.verticalCenter
         }
+        wrapMode: Text.NoWrap
         text:
         {
             if (!printJob)
