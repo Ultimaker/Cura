@@ -569,11 +569,6 @@ Item
         }
     }
 
-    function getMetaDataEntry(entry_name)
-    {
-        return
-    }
-
     function setMaterialPreferenceValue(material_guid, entry_name, new_value)
     {
         if(!(material_guid in materialPreferenceValues))
