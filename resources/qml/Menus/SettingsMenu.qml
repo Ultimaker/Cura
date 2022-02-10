@@ -19,7 +19,7 @@ Cura.Menu
     {
         id: extruderInstantiator
         model: activeMachine == null ? null : activeMachine.extruderList
-        Menu
+        Cura.Menu
         {
             title: modelData.name
             property var extruder: (base.activeMachine === null) ? null : activeMachine.extruderList[model.index]
