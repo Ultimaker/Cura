@@ -195,6 +195,7 @@ Cura.ExpandablePopup
 
                             text:  model.material_brand + " " + model.material_name
                             elide: Text.ElideRight
+                            wrapMode: Text.NoWrap
                             width: parent.width
                             visible: !truncated
                         }
