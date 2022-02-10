@@ -13,8 +13,6 @@ Item
 {
     id: base
 
-    height: spinBox.height
-
     property string prefix: ""
     property string suffix: ""
     property int decimals: 0
@@ -33,7 +31,8 @@ Item
     }
 
     signal editingFinished()
-
+    implicitWidth: spinBox.implicitWidth
+    implicitHeight: spinBox.implicitHeight
     SpinBox
     {
         id: spinBox

@@ -114,10 +114,12 @@ Menu
         {
             spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Number of Copies")
                 anchors.verticalCenter: copiesField.verticalCenter
+                width: contentWidth
+                wrapMode: Text.NoWrap
             }
 
             Cura.SpinBox
