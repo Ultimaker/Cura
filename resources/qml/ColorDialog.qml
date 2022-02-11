@@ -41,7 +41,13 @@ UM.Dialog
         selectByMouse: true
         anchors.top: colorLabel.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
-        validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{6})$/ }
+        onTextChanged: {
+            if (!text.startsWith("#"))
+            {
+                text = `#${text}`;
+            }
+        }
+        validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{0,6})$/ }
     }
 
     Rectangle
