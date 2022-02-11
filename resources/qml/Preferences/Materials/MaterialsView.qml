@@ -230,30 +230,31 @@ Item
             Label { width: parent.width; height: parent.rowHeight; font.bold: true; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Properties") }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Density") }
-            ReadOnlySpinBox
+
+            Cura.SpinBox
             {
+                enabled: base.editingEnabled
                 id: densitySpinBox
                 width: informationPage.columnWidth
                 value: properties.density
                 decimals: 2
                 suffix: " g/cm³"
                 stepSize: 0.01
-                readOnly: !base.editingEnabled
 
                 onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
                 onValueChanged: updateCostPerMeter()
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Diameter") }
-            ReadOnlySpinBox
+            Cura.SpinBox
             {
+                enabled: base.editingEnabled
                 id: diameterSpinBox
                 width: informationPage.columnWidth
                 value: properties.diameter
                 decimals: 2
                 suffix: " mm"
                 stepSize: 0.01
-                readOnly: !base.editingEnabled
 
                 onEditingFinished:
                 {
@@ -279,44 +280,26 @@ Item
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament Cost") }
-            SpinBox
+
+            Cura.SpinBox
             {
                 id: spoolCostSpinBox
                 width: informationPage.columnWidth
                 value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
                 to: 100000000
                 editable: true
-
-                contentItem: TextField
-                {
-                    text: spoolCostSpinBox.textFromValue(spoolCostSpinBox.value, spoolCostSpinBox.locale)
-                    selectByMouse: true
-                    background: Item {}
-                    validator: RegExpValidator { regExp: new RegExp("^" + base.currency + " ([0-9]+[.]?[0-9]*)?$") }
-                }
-
-                property int decimals: 2
-
-                valueFromText: function(text) {
-                    // remove all non-number tokens from input string so value can be parsed correctly
-                    var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
-                    var precision = Math.pow(10, spoolCostSpinBox.decimals);
-                    return Math.round(value * precision) / precision;
-                }
-
-                textFromValue: function(value) {
-                    return base.currency + " " + value.toFixed(spoolCostSpinBox.decimals)
-                }
+                prefix: base.currency + " "
+                decimals: 2
 
                 onValueChanged:
                 {
-                    base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value, decimals))
+                    base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
                     updateCostPerMeter()
                 }
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Filament weight") }
-            SpinBox
+            Cura.SpinBox
             {
                 id: spoolWeightSpinBox
                 width: informationPage.columnWidth
@@ -324,24 +307,7 @@ Item
                 stepSize: 100
                 to: 10000
                 editable: true
-
-                contentItem: TextField
-                {
-                    text: spoolWeightSpinBox.textFromValue(spoolWeightSpinBox.value, spoolWeightSpinBox.locale)
-                    selectByMouse: true
-                    background: Item {}
-                    validator: RegExpValidator { regExp: new RegExp("^([0-9]+[.]?[0-9]*)? g$") }
-                }
-
-                valueFromText: function(text, locale) {
-                    // remove all non-number tokens from input string so value can be parsed correctly
-                    var value = Number(text.replace(",", ".").replace(/[^0-9.]+/g, ""));
-                    return Math.round(value);
-                }
-
-                textFromValue: function(value, locale) {
-                    return value + " g"
-                }
+                suffix: " g"
 
                 onValueChanged:
                 {
@@ -455,7 +421,7 @@ Item
                 elide: Text.ElideRight
                 verticalAlignment: Qt.AlignVCenter
             }
-            ReadOnlySpinBox
+            Cura.SpinBox
             {
                 id: spinBox
                 anchors.left: label.right
@@ -479,9 +445,8 @@ Item
                     return 0;
                 }
                 width: base.secondColumnWidth
-                readOnly: !base.editingEnabled
                 suffix: " " + model.unit
-                maximumValue: 99999
+                to: 99999
                 decimals: model.unit == "mm" ? 2 : 0
 
                 onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
@@ -636,5 +601,11 @@ Item
     {
         base.setMetaDataEntry("brand", old_brand, new_brand)
         properties.brand = new_brand
+    }
+
+    function updateCostPerMeter()
+    {
+        base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
+        base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
     }
 }

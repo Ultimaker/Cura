@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -118,15 +118,18 @@ Menu
         {
             spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Number of Copies")
                 anchors.verticalCenter: copiesField.verticalCenter
+                width: contentWidth
+                wrapMode: Text.NoWrap
             }
 
-            SpinBox
+            Cura.SpinBox
             {
                 id: copiesField
+                editable: true
                 focus: true
                 from: 1
                 to: 99

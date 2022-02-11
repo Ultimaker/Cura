@@ -84,6 +84,8 @@ Row // Sync state icon + message
             font: UM.Theme.getFont("medium")
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            wrapMode: Text.NoWrap
+            height: contentHeight
             visible: !Cura.API.account.manualSyncEnabled && !Cura.API.account.updatePackagesEnabled
         }
 
@@ -94,6 +96,7 @@ Row // Sync state icon + message
             color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium")
             height: contentHeight
+            wrapMode: Text.NoWrap
             width: contentWidth + UM.Theme.getSize("default_margin").height
             visible: Cura.API.account.updatePackagesEnabled
 
@@ -113,6 +116,7 @@ Row // Sync state icon + message
             text: catalog.i18nc("@button", "Check for account updates")
             color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium")
+            wrapMode: Text.NoWrap
             height: contentHeight
             width: contentWidth + UM.Theme.getSize("default_margin").height
             visible: Cura.API.account.manualSyncEnabled
