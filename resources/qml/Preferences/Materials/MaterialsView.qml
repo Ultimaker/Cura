@@ -602,10 +602,4 @@ Item
         base.setMetaDataEntry("brand", old_brand, new_brand)
         properties.brand = new_brand
     }
-
-    function updateCostPerMeter()
-    {
-        base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
-        base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
-    }
 }
