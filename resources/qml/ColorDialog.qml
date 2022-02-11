@@ -15,6 +15,8 @@ UM.Dialog
 {
     id: base
 
+    property variant catalog: UM.I18nCatalog { name: "cura" }
+
     minimumHeight: UM.Theme.getSize("small_popup_dialog").height
     minimumWidth: UM.Theme.getSize("small_popup_dialog").width / 1.5
     height: minimumHeight
@@ -29,7 +31,7 @@ UM.Dialog
     {
         id: colorLabel
         font: UM.Theme.getFont("large")
-        text: "Color Code (HEX)"
+        text: catalog.i18nc("@label", "Color Code (HEX)")
     }
 
     TextField
