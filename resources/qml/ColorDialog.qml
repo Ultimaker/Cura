@@ -38,6 +38,7 @@ UM.Dialog
     {
         id: colorInput
         text: "#FFFFFF"
+        selectByMouse: true
         anchors.top: colorLabel.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{6})$/ }
