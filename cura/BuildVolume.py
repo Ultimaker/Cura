@@ -850,10 +850,14 @@ class BuildVolume(SceneNode):
 
         result = {}
         skirt_brim_extruder: ExtruderStack = None
-        for extruder in used_extruders:
-            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")):
-                skirt_brim_extruder = extruder
-            result[extruder.getId()] = []
+        skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
+        if skirt_brim_extruder_nr == -1:
+            skirt_brim_extruder = used_extruders[0]  # The prime tower brim is always printed with the first extruder
+        else:
+            for extruder in used_extruders:
+                if int(extruder.getProperty("extruder_nr", "value")) == int(skirt_brim_extruder_nr):
+                    skirt_brim_extruder = extruder
+                result[extruder.getId()] = []
 
         # Currently, the only normally printed object is the prime tower.
         if self._global_container_stack.getProperty("prime_tower_enable", "value"):
@@ -1101,27 +1105,39 @@ class BuildVolume(SceneNode):
         # with the adhesion extruder, but it also prints one extra line by all other extruders. As such, the
         # setting does *not* have a limit_to_extruder setting (which means that we can't ask the global extruder what
         # the value is.
-        skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
-        try:
-            skirt_brim_stack = self._global_container_stack.extruderList[int(skirt_brim_extruder_nr)]
-        except IndexError:
-            Logger.warning(f"Couldn't find extruder with index '{skirt_brim_extruder_nr}', defaulting to 0 instead.")
-            skirt_brim_stack = self._global_container_stack.extruderList[0]
-        skirt_brim_line_width = skirt_brim_stack.getProperty("skirt_brim_line_width", "value")
 
-        initial_layer_line_width_factor = skirt_brim_stack.getProperty("initial_layer_line_width_factor", "value")
         # Use brim width if brim is enabled OR the prime tower has a brim.
         if adhesion_type == "brim":
-            brim_line_count = skirt_brim_stack.getProperty("brim_line_count", "value")
-            brim_gap = skirt_brim_stack.getProperty("brim_gap", "value")
-            bed_adhesion_size = brim_gap + skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+            skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
+            bed_adhesion_size = -999
+            for extruder_stack in used_extruders:
+                extruder_nr = int(extruder_stack.getProperty("extruder_nr", "value"))
+                if extruder_nr == skirt_brim_extruder_nr or skirt_brim_extruder_nr == -1:
+                    initial_layer_line_width_factor = extruder_stack.getProperty("initial_layer_line_width_factor", "value")
+                    brim_line_count = extruder_stack.getProperty("brim_line_count", "value")
+                    skirt_brim_line_width = extruder_stack.getProperty("skirt_brim_line_width", "value")
+                    brim_gap = extruder_stack.getProperty("brim_gap", "value")
+                    bed_adhesion_size_here = brim_gap + skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+                    # We don't create an additional line for the extruder we're printing the brim with.
+                    bed_adhesion_size_here -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+                    bed_adhesion_size = max(bed_adhesion_size, bed_adhesion_size_here)
+
+            if bed_adhesion_size == -999:
+                Logger.warning(f"Couldn't find skirt/brim extruder among used extruders.")
 
             for extruder_stack in used_extruders:
                 bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the brim with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
         elif adhesion_type == "skirt":
+            skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
+            try:
+                skirt_brim_stack = self._global_container_stack.extruderList[int(skirt_brim_extruder_nr)]
+            except IndexError:
+                Logger.warning(
+                    f"Couldn't find extruder with index '{skirt_brim_extruder_nr}', defaulting to 0 instead.")
+                skirt_brim_stack = self._global_container_stack.extruderList[0]
+            skirt_brim_line_width = skirt_brim_stack.getProperty("skirt_brim_line_width", "value")
+
+            initial_layer_line_width_factor = skirt_brim_stack.getProperty("initial_layer_line_width_factor", "value")
             skirt_distance = skirt_brim_stack.getProperty("skirt_gap", "value")
             skirt_line_count = skirt_brim_stack.getProperty("skirt_line_count", "value")
 
