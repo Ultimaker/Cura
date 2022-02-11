@@ -52,6 +52,6 @@ Cura.Menu
         id: saveWorkspaceDialog
         property var args
         property var deviceId
-        onYes: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+        onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
     }
 }

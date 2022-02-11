@@ -5,7 +5,6 @@ import QtQuick 2.2
 import QtQuick.Controls 2.15
 import QtQml.Models 2.15 as Models
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 
 import UM 1.5 as UM

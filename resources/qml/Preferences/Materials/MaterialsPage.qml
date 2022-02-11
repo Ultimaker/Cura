@@ -310,17 +310,15 @@ Item
     }
 
     // Dialogs
-    MessageDialog
+    UM.MessageDialog
     {
         id: confirmRemoveMaterialDialog
-        icon: StandardIcon.Question;
         title: catalog.i18nc("@title:window", "Confirm Remove")
         property string materialName: base.currentItem !== null ? base.currentItem.name : ""
 
         text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(materialName)
-        standardButtons: StandardButton.Yes | StandardButton.No
-        modality: Qt.ApplicationModal
-        onYes:
+        standardButtons: Dialog.Yes | Dialog.No
+        onAccepted:
         {
             // Set the active material as the fallback. It will be selected when the current material is deleted
             base.newRootMaterialIdToSwitchTo = base.active_root_material_id
@@ -340,19 +338,13 @@ Item
             var result = Cura.ContainerManager.importMaterialContainer(fileUrl);
 
             messageDialog.title = catalog.i18nc("@title:window", "Import Material");
-            messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
-            if (result.status == "success")
+            if(result.status == "success")
             {
-                messageDialog.icon = StandardIcon.Information;
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl);
-            }
-            else if (result.status == "duplicate")
-            {
-                messageDialog.icon = StandardIcon.Warning;
             }
             else
             {
-                messageDialog.icon = StandardIcon.Critical;
+                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
             }
             messageDialog.open();
             CuraApplication.setDefaultPath("dialog_material_path", folder);
@@ -371,15 +363,13 @@ Item
             var result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
 
             messageDialog.title = catalog.i18nc("@title:window", "Export Material");
-            if (result.status == "error")
+            if(result.status == "error")
             {
-                messageDialog.icon = StandardIcon.Critical;
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
                 messageDialog.open();
             }
-            else if (result.status == "success")
+            else if(result.status == "success")
             {
-                messageDialog.icon = StandardIcon.Information;
                 messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
                 messageDialog.open();
             }
@@ -387,7 +377,7 @@ Item
         }
     }
 
-    MessageDialog
+    UM.MessageDialog
     {
         id: messageDialog
     }

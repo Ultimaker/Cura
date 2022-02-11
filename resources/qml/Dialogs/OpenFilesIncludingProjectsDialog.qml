@@ -4,11 +4,9 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.1
-import QtQuick.Window 2.1
 
-import UM 1.3 as UM
-import Cura 1.0 as Cura
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 UM.Dialog
 {
@@ -16,9 +14,9 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open file(s)")
-    width: 420 * screenScaleFactor
-    height: 170 * screenScaleFactor
 
+    width: UM.Theme.getSize("small_popup_dialog").width
+    height: UM.Theme.getSize("small_popup_dialog").height
     maximumHeight: height
     maximumWidth: width
     minimumHeight: height
@@ -28,12 +26,6 @@ UM.Dialog
 
     property var fileUrls: []
     property var addToRecent: true
-    property int spacerHeight: 10 * screenScaleFactor
-
-    function loadProjectFile(projectFile)
-    {
-        UM.WorkspaceFileHandler.readLocalFile(projectFile, base.addToRecent);
-    }
 
     function loadModelFiles(fileUrls)
     {
@@ -43,69 +35,29 @@ UM.Dialog
         }
     }
 
-    Column
+    onAccepted: loadModelFiles(base.fileUrls)
+
+    UM.Label
     {
-        anchors.fill: parent
-        anchors.leftMargin: 20 * screenScaleFactor
-        anchors.rightMargin: 20 * screenScaleFactor
-        anchors.bottomMargin: 20 * screenScaleFactor
+        text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?")
         anchors.left: parent.left
         anchors.right: parent.right
-        spacing: 10 * screenScaleFactor
-
-        Label
-        {
-            text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?")
-            anchors.left: parent.left
-            anchors.right: parent.right
-            font: UM.Theme.getFont("default")
-            wrapMode: Text.WordWrap
-        }
-
-        Item // Spacer
-        {
-            height: base.spacerHeight
-            width: height
-        }
-
-        UM.I18nCatalog
-        {
-            id: catalog
-            name: "cura"
-        }
-
-        ButtonGroup
-        {
-            buttons: [cancelButton, importAllAsModelsButton]
-            checkedButton: importAllAsModelsButton
-        }
     }
 
-    onAccepted: loadModelFiles(base.fileUrls)
+    buttonSpacing: UM.Theme.getSize("thin_margin").width
 
     // Buttons
     rightButtons:
     [
-        Button
+        Cura.SecondaryButton
         {
-            id: cancelButton
             text: catalog.i18nc("@action:button", "Cancel");
-            onClicked:
-            {
-                // cancel
-                base.hide();
-            }
+            onClicked: base.reject()
         },
-        Button
+        Cura.PrimaryButton
         {
-            id: importAllAsModelsButton
             text: catalog.i18nc("@action:button", "Import all as models");
-            onClicked:
-            {
-                // load models from all selected file
-                loadModelFiles(base.fileUrls);
-                base.hide();
-            }
+            onClicked: base.accept()
         }
     ]
 }

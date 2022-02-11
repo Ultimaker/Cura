@@ -1,13 +1,12 @@
-//Copyright (c) 2018 Ultimaker B.V.
+//Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
-import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -325,16 +324,14 @@ Item
             onClicked: confirmationDialog.visible = true
         }
 
-        MessageDialog
+        UM.MessageDialog
         {
             id: confirmationDialog
 
             title: catalog.i18nc("@window:title", "Abort print")
-            icon: StandardIcon.Warning
             text: catalog.i18nc("@label", "Are you sure you want to abort the print?")
-            standardButtons: StandardButton.Yes | StandardButton.No
-            Component.onCompleted: visible = false
-            onYes: activePrintJob.setState("abort")
+            standardButtons: Dialog.Yes | Dialog.No
+            onAccepted: activePrintJob.setState("abort")
         }
     }
 }

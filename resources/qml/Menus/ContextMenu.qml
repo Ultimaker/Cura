@@ -3,7 +3,6 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.1
-import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
 import UM 1.5 as UM
@@ -86,29 +85,34 @@ Menu
         watchedProperties: [ "value" ]
     }
 
-    Dialog
+    UM.Dialog
     {
         id: multiplyDialog
-        modality: Qt.ApplicationModal
 
         title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 
+        width: UM.Theme.getSize("small_popup_dialog").width
+        height: UM.Theme.getSize("small_popup_dialog").height
+        minimumWidth: UM.Theme.getSize("small_popup_dialog").width
+        minimumHeight: UM.Theme.getSize("small_popup_dialog").height
 
         onAccepted: CuraActions.multiplySelection(copiesField.value)
 
-        signal reset()
-        onReset:
-        {
-            copiesField.value = 1;
-            copiesField.focus = true;
-        }
+        buttonSpacing: UM.Theme.getSize("thin_margin").width
 
-        onVisibleChanged:
-        {
-            copiesField.forceActiveFocus();
-        }
-
-        standardButtons: StandardButton.Ok | StandardButton.Cancel
+        rightButtons:
+        [
+            Cura.SecondaryButton
+            {
+                text: "Cancel"
+                onClicked: multiplyDialog.reject()
+            },
+            Cura.PrimaryButton
+            {
+                text: "Ok"
+                onClicked: multiplyDialog.accept()
+            }
+        ]
 
         Row
         {

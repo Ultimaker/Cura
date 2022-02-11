@@ -82,7 +82,8 @@ Row // Sync state icon + message
             id: stateLabel
             // text is determined by State
             font: UM.Theme.getFont("medium")
-            width: contentWidth + UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             wrapMode: Text.NoWrap
             height: contentHeight
             visible: !Cura.API.account.manualSyncEnabled && !Cura.API.account.updatePackagesEnabled

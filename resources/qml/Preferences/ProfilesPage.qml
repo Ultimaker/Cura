@@ -269,17 +269,16 @@ Item
     }
 
     // Confirmation dialog for removing a profile
-    MessageDialog
+    UM.MessageDialog
     {
         id: confirmRemoveQualityDialog
 
-        icon: StandardIcon.Question;
         title: catalog.i18nc("@title:window", "Confirm Remove")
         text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
         standardButtons: StandardButton.Yes | StandardButton.No
-        modality: Qt.ApplicationModal
+        modal: true
 
-        onYes:
+        onAccepted:
         {
             base.qualityManagementModel.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
@@ -311,19 +310,8 @@ Item
         onAccepted:
         {
             var result = Cura.ContainerManager.importProfile(fileUrl);
+            messageDialog.title = catalog.i18nc("@title:window", "Import Profile")
             messageDialog.text = result.message;
-            if (result.status == "ok")
-            {
-                messageDialog.icon = StandardIcon.Information;
-            }
-            else if (result.status == "warning" || result.status == "duplicate")
-            {
-                messageDialog.icon = StandardIcon.Warning;
-            }
-            else
-            {
-                messageDialog.icon = StandardIcon.Critical;
-            }
             messageDialog.open();
             CuraApplication.setDefaultPath("dialog_profile_path", folder);
         }
@@ -344,7 +332,7 @@ Item
 
             if (result && result.status == "error")
             {
-                messageDialog.icon = StandardIcon.Critical;
+                messageDialog.title = catalog.i18nc("@title:window", "Export Profile")
                 messageDialog.text = result.message;
                 messageDialog.open();
             }
@@ -352,6 +340,13 @@ Item
             // else pop-up Message thing from python code
             CuraApplication.setDefaultPath("dialog_profile_path", folder);
         }
+    }
+
+    //Dialogue box for showing the result of importing or exporting profiles.
+    UM.MessageDialog
+    {
+        id: messageDialog
+        standardButtons: Dialog.Ok
     }
 
     Item
