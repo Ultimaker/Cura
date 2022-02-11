@@ -169,7 +169,7 @@ UM.Dialog
     {
         //: Close about dialog button
         id: closeButton
-        text: catalog.i18nc("@action:button", "Close");
+        text: catalog.i18nc("@action:button", "Close")
 
         onClicked: base.visible = false;
     }
