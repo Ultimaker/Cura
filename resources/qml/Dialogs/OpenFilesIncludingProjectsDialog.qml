@@ -42,8 +42,6 @@ UM.Dialog
         text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?")
         anchors.left: parent.left
         anchors.right: parent.right
-        font: UM.Theme.getFont("default")
-        wrapMode: Text.WordWrap
     }
 
     buttonSpacing: UM.Theme.getSize("thin_margin").width
