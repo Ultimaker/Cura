@@ -288,7 +288,7 @@ Cura.MachineAction
         standardButtons: Dialog.Ok
     }
 
-    UM.Dialog
+    Dialog
     {
         id: manualPrinterDialog
         property string printerKey
@@ -296,17 +296,18 @@ Cura.MachineAction
 
         title: catalog.i18nc("@title:window", "Printer Address")
 
-        minimumWidth: 400 * screenScaleFactor
-        minimumHeight: 130 * screenScaleFactor
-        width: minimumWidth
-        height: minimumHeight
+        width: UM.Theme.getSize("small_popup_dialog").width
+
+        anchors.centerIn: Overlay.overlay
+
+        standardButtons: Dialog.Yes | Dialog.No
 
         signal showDialog(string key, string address)
         onShowDialog:
         {
             printerKey = key;
             addressText = address;
-            manualPrinterDialog.show();
+            manualPrinterDialog.open();
             addressField.selectAll();
             addressField.focus = true;
         }
@@ -327,54 +328,40 @@ Cura.MachineAction
             {
                 id: addressField
                 width: parent.width
-                validator: RegExpValidator
-                {
-                    regExp: /[a-zA-Z0-9\.\-\_]*/
-                }
-
+                validator: RegExpValidator { regExp: /[a-zA-Z0-9\.\-\_]*/ }
                 onAccepted: btnOk.clicked()
             }
         }
 
-        rightButtons: [
-            Button {
-                text: catalog.i18nc("@action:button","Cancel")
-                onClicked:
-                {
-                    manualPrinterDialog.reject()
-                    manualPrinterDialog.hide()
-                }
-            },
-            Button {
-                id: btnOk
-                text: catalog.i18nc("@action:button", "OK")
-                onClicked:
-                {
-                    // Validate the input first
-                    if (!networkingUtil.isValidIP(manualPrinterDialog.addressText))
-                    {
-                        invalidIPAddressMessageDialog.open()
-                        return
-                    }
-
-                    // if the entered IP address has already been discovered, switch the current item to that item
-                    // and do nothing else.
-                    for (var i = 0; i < manager.foundDevices.length; i++)
-                    {
-                        var device = manager.foundDevices[i]
-                        if (device.address == manualPrinterDialog.addressText)
-                        {
-                            currentItemIndex = i
-                            manualPrinterDialog.hide()
-                            return
-                        }
-                    }
-
-                    manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
-                    manualPrinterDialog.hide()
-                }
-                enabled: manualPrinterDialog.addressText.trim() != ""
+        onRejected:
+        {
+            manualPrinterDialog.reject()
+            manualPrinterDialog.hide()
+        }
+        onAccepted:
+        {
+            // Validate the input first
+            if (!networkingUtil.isValidIP(manualPrinterDialog.addressText))
+            {
+                invalidIPAddressMessageDialog.open()
+                return
             }
-        ]
+
+            // if the entered IP address has already been discovered, switch the current item to that item
+            // and do nothing else.
+            for (var i = 0; i < manager.foundDevices.length; i++)
+            {
+                var device = manager.foundDevices[i]
+                if (device.address == manualPrinterDialog.addressText)
+                {
+                    currentItemIndex = i
+                    manualPrinterDialog.hide()
+                    return
+                }
+            }
+
+            manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
+            manualPrinterDialog.hide()
+        }
     }
 }
