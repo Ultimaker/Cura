@@ -127,9 +127,9 @@ Item
                 text: catalog.i18nc("@label (%1 is a number)", "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?".arg(new_diameter_value))
                 standardButtons: Dialog.Yes | Dialog.No
 
-                property var new_diameter_value: null;
-                property var old_diameter_value: null;
-                property var old_approximate_diameter_value: null;
+                property var new_diameter_value: null
+                property var old_diameter_value: null
+                property var old_approximate_diameter_value: null
 
                 onAccepted:
                 {
