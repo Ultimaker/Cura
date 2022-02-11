@@ -6,6 +6,11 @@ import QtQuick.Layouts 1.1
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 
+
+/*
+*   A dialog that provides the option to pick a color. Currently it only asks for a hex code and shows the color
+*   in a color swath
+*/
 UM.Dialog
 {
     id: base
