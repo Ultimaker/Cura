@@ -5429,7 +5429,7 @@
                         {
                             "label": "Skirt/Brim Extruder",
                             "description": "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion.",
-                            "type": "extruder",
+                            "type": "optional_extruder",
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable'))",

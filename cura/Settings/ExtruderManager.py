@@ -275,7 +275,7 @@ class ExtruderManager(QObject):
         for extruder_setting in used_adhesion_extruders:
             extruder_str_nr = str(global_stack.getProperty(extruder_setting, "value"))
             if extruder_str_nr == "-1":
-                extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
+                continue  # An optional extruder doesn't force any extruder to be used if it isn't used already
             if extruder_str_nr in self.extruderIds:
                 used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
