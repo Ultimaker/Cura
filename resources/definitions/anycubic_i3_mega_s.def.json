@@ -82,8 +82,6 @@
 
         "optimize_wall_printing_order": { "value": "True" },
 
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
-
         "infill_sparse_density": { "value": 25 },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 15.0 },
