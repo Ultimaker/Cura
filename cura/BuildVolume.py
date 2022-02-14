@@ -820,9 +820,7 @@ class BuildVolume(SceneNode):
                         break
                     if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                         brim_size = self._calculateBedAdhesionSize(used_extruders, "brim")
-                        # Use 2x the brim size, since we need 1x brim size distance due to the object brim and another
-                        # times the brim due to the brim of the prime tower
-                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(2 * brim_size, num_segments = 24))
+                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(brim_size, num_segments = 24))
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                     result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
