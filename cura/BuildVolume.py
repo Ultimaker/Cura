@@ -851,13 +851,13 @@ class BuildVolume(SceneNode):
         result = {}
         skirt_brim_extruder: ExtruderStack = None
         skirt_brim_extruder_nr = self._global_container_stack.getProperty("skirt_brim_extruder_nr", "value")
-        if skirt_brim_extruder_nr == -1:
-            skirt_brim_extruder = used_extruders[0]  # The prime tower brim is always printed with the first extruder
-        else:
-            for extruder in used_extruders:
-                if int(extruder.getProperty("extruder_nr", "value")) == int(skirt_brim_extruder_nr):
+
+        for extruder in used_extruders:
+            if skirt_brim_extruder_nr == -1:
+                skirt_brim_extruder = used_extruders[0]  # The prime tower brim is always printed with the first extruder
+            elif int(extruder.getProperty("extruder_nr", "value")) == int(skirt_brim_extruder_nr):
                     skirt_brim_extruder = extruder
-                result[extruder.getId()] = []
+            result[extruder.getId()] = []
 
         # Currently, the only normally printed object is the prime tower.
         if self._global_container_stack.getProperty("prime_tower_enable", "value"):
@@ -1112,7 +1112,7 @@ class BuildVolume(SceneNode):
             bed_adhesion_size = -999
             for extruder_stack in used_extruders:
                 extruder_nr = int(extruder_stack.getProperty("extruder_nr", "value"))
-                if extruder_nr == skirt_brim_extruder_nr or skirt_brim_extruder_nr == -1:
+                if extruder_nr == skirt_brim_extruder_nr or int(skirt_brim_extruder_nr) == -1:
                     initial_layer_line_width_factor = extruder_stack.getProperty("initial_layer_line_width_factor", "value")
                     brim_line_count = extruder_stack.getProperty("brim_line_count", "value")
                     skirt_brim_line_width = extruder_stack.getProperty("skirt_brim_line_width", "value")
