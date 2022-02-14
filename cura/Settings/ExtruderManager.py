@@ -298,7 +298,7 @@ class ExtruderManager(QObject):
         # Starts with the adhesion extruder.
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type in {"skirt", "brim"}:
-            return global_stack.getProperty("skirt_brim_extruder_nr", "value")
+            return max(0, int(global_stack.getProperty("skirt_brim_extruder_nr", "value")))  # optional skirt/brim extruder defaults to zero
         if adhesion_type == "raft":
             return global_stack.getProperty("raft_base_extruder_nr", "value")
 
