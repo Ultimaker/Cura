@@ -4,8 +4,8 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 
-import UM 1.1 as UM
-
+import UM 1.5 as UM
+import Cura 1.0 as Cura
 import ".."
 
 Button {
@@ -33,7 +33,7 @@ Button {
             source: UM.Theme.getIcon(definition.icon)
             color: base.hovered ? palette.highlight : palette.buttonText
         }
-        Label
+        UM.Label
         {
             id: label
             anchors.verticalCenter: parent.verticalCenter

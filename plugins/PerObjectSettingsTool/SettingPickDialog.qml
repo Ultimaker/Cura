@@ -42,7 +42,7 @@ UM.Dialog
         listview.model.filter = new_filter
     }
 
-    TextField
+    Cura.TextField
     {
         id: filterInput
         selectByMouse: true
@@ -60,7 +60,7 @@ UM.Dialog
         onTextChanged: settingPickDialog.updateFilter()
     }
 
-    CheckBox
+    Cura.CheckBox
     {
         id: toggleShowAll
         anchors
