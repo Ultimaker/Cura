@@ -5,6 +5,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 2.1
 import UM 1.5 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -19,23 +20,16 @@ Item
     width: textField.width
     height: textField.height
 
-    TextField
+    Cura.TextField
     {
         id: textField
 
         enabled: !base.readOnly
 
-        color: UM.Theme.getColor("text")
-        font: UM.Theme.getFont("default")
         anchors.fill: parent
 
         onEditingFinished: base.editingFinished()
         Keys.onEnterPressed: base.editingFinished()
         Keys.onReturnPressed: base.editingFinished()
-        background: Rectangle
-        {
-            radius: UM.Theme.getSize("setting_control_radius").width
-            color: textField.enabled ? UM.Theme.getColor("setting_control") : UM.Theme.getColor("setting_control_disabled")
-        }
     }
 }
