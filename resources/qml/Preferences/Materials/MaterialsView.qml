@@ -363,10 +363,11 @@ Item
             ReadOnlyTextArea
             {
                 text: properties.description;
-                width: 2 * informationPage.columnWidth
+                width: informationPage.columnWidth * 2
+                height: 0.75 * informationPage.columnWidth
                 wrapMode: Text.WordWrap
 
-                readOnly: !base.editingEnabled;
+                readOnly: !base.editingEnabled
 
                 onEditingFinished: base.setMetaDataEntry("description", properties.description, text)
             }
@@ -375,11 +376,11 @@ Item
 
             ReadOnlyTextArea
             {
-                text: properties.adhesion_info;
+                text: properties.adhesion_info
                 width: 2 * informationPage.columnWidth
                 wrapMode: Text.WordWrap
-
-                readOnly: !base.editingEnabled;
+                height: 0.75 * informationPage.columnWidth
+                readOnly: !base.editingEnabled
 
                 onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
             }
