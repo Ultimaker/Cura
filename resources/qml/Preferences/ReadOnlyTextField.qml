@@ -3,7 +3,8 @@
 // Different than the name suggests, it is not always read-only.
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.1
+import UM 1.5 as UM
 
 Item
 {
@@ -23,26 +24,18 @@ Item
         id: textField
 
         enabled: !base.readOnly
-        opacity: base.readOnly ? 0.5 : 1.0
 
+        color: UM.Theme.getColor("text")
+        font: UM.Theme.getFont("default")
         anchors.fill: parent
 
         onEditingFinished: base.editingFinished()
         Keys.onEnterPressed: base.editingFinished()
         Keys.onReturnPressed: base.editingFinished()
+        background: Rectangle
+        {
+            radius: UM.Theme.getSize("setting_control_radius").width
+            color: textField.enabled ? UM.Theme.getColor("setting_control") : UM.Theme.getColor("setting_control_disabled")
+        }
     }
-
-    Label
-    {
-        visible: base.readOnly
-        text: textField.text
-
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: textField.__panel ? textField.__panel.leftMargin : 0
-
-        color: palette.buttonText
-    }
-
-    SystemPalette { id: palette }
 }

@@ -3,6 +3,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 2.15
+import UM 1.5 as UM
 
 ScrollView
 {
@@ -26,7 +27,7 @@ ScrollView
         background: Rectangle
         {
             radius: UM.Theme.getSize("setting_control_radius").width
-            color: enabled ? UM.Theme.getColor("setting_control_disabled") : UM.Theme.getColor("setting_control")
+            color: textArea.enabled ? UM.Theme.getColor("setting_control") : UM.Theme.getColor("setting_control_disabled")
         }
 
         color: UM.Theme.getColor("text")
