@@ -18,6 +18,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
+
+
     GridLayout
     {
         UM.I18nCatalog { id: catalog; name: "cura" }
