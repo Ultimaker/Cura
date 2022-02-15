@@ -16,7 +16,7 @@ TextField
     id: textField
 
     property alias leftIcon: iconLeft.source
-    
+
     hoverEnabled: true
     selectByMouse: true
     font: UM.Theme.getFont("default")

@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Dialogs 1.2 // For filedialog
 
-import UM 1.2 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 
@@ -157,7 +157,7 @@ Cura.MachineAction
                 wrapMode: Text.Wrap
             }
 
-            ProgressBar
+            UM.ProgressBar
             {
                 id: prog
                 value: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareProgress / 100 : 0
