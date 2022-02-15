@@ -72,7 +72,7 @@ class BuildVolume(SceneNode):
 
         self._origin_mesh = None  # type: Optional[MeshData]
         self._origin_line_length = 20
-        self._origin_line_width = 1.5
+        self._origin_line_width = 1
         self._enabled = False
 
         self._grid_mesh = None   # type: Optional[MeshData]
