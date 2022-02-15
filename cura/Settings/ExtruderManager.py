@@ -268,7 +268,8 @@ class ExtruderManager(QObject):
             used_adhesion_extruders.add("skirt_brim_extruder_nr")  # There's a brim or prime tower brim.
         if adhesion_type == "raft":
             used_adhesion_extruders.add("raft_base_extruder_nr")
-            used_adhesion_extruders.add("raft_interface_extruder_nr")
+            if global_stack.getProperty("raft_interface_layers", "value") > 0:
+                used_adhesion_extruders.add("raft_interface_extruder_nr")
             if global_stack.getProperty("raft_surface_layers", "value") > 0:
                 used_adhesion_extruders.add("raft_surface_extruder_nr")
         for extruder_setting in used_adhesion_extruders:

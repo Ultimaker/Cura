@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -92,17 +92,11 @@ UM.Dialog
             wrapMode: Text.WordWrap
         }
 
-        CheckBox
+        UM.CheckBox
         {
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")
             checked: UM.Preferences.getValue("cura/choice_on_open_project") != "always_ask"
-            style: CheckBoxStyle {
-                label: Label {
-                    text: control.text
-                    font: UM.Theme.getFont("default")
-                }
-            }
         }
 
         // Buttons

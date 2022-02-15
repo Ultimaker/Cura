@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Ultimaker B.V.
+// Copyright (C) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -9,7 +9,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
-import Cura 1.6 as Cura
+import Cura 1.7 as Cura
 
 import DigitalFactory 1.0 as DF
 
@@ -44,33 +44,13 @@ Item
         height: childrenRect.height
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.TextField
+        Cura.SearchBar
         {
             id: searchBar
             Layout.fillWidth: true
             implicitHeight: createNewProjectButton.height
-            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             focus: true
-
             onTextEdited: manager.projectFilter = text //Update the search filter when editing this text field.
-
-            placeholderText: "Search"
-
-            UM.RecolorImage
-            {
-                id: searchIcon
-
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
-                source: UM.Theme.getIcon("search")
-                height: UM.Theme.getSize("small_button_icon").height
-                width: height
-                color: UM.Theme.getColor("text")
-            }
         }
 
         Cura.SecondaryButton
@@ -222,7 +202,7 @@ Item
                 LoadMoreProjectsCard
                 {
                     id: loadMoreProjectsCard
-                    height: UM.Theme.getSize("toolbox_thumbnail_small").height
+                    height: UM.Theme.getSize("card_icon").height
                     width: parent.width
                     visible: manager.digitalFactoryProjectModel.count > 0
                     hasMoreProjectsToLoad: manager.hasMoreProjectsToLoad

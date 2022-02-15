@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.1
 
 import QtQuick.Controls 2.3 as NewControls
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 UM.PreferencesPage
@@ -304,7 +304,7 @@ UM.PreferencesPage
 
                 text: catalog.i18nc("@info:tooltip", "Slice automatically when changing settings.")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: autoSliceCheckbox
                     checked: boolCheck(UM.Preferences.getValue("general/auto_slice"))
@@ -334,7 +334,7 @@ UM.PreferencesPage
 
                 text: catalog.i18nc("@info:tooltip", "Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: showOverhangCheckbox
 
@@ -353,7 +353,7 @@ UM.PreferencesPage
 
                 text: catalog.i18nc("@info:tooltip", "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry.")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: showXrayErrorCheckbox
 
@@ -370,7 +370,7 @@ UM.PreferencesPage
                 height: childrenRect.height;
                 text: catalog.i18nc("@info:tooltip", "Moves the camera so the model is in the center of the view when a model is selected")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: centerOnSelectCheckbox
                     text: catalog.i18nc("@action:button","Center camera when item is selected");
@@ -385,7 +385,7 @@ UM.PreferencesPage
                 height: childrenRect.height;
                 text: catalog.i18nc("@info:tooltip", "Should the default zoom behavior of cura be inverted?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: invertZoomCheckbox
                     text: catalog.i18nc("@action:button", "Invert the direction of camera zoom.");
@@ -406,7 +406,7 @@ UM.PreferencesPage
                 height: childrenRect.height;
                 text: zoomToMouseCheckbox.enabled ? catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?") : catalog.i18nc("@info:tooltip", "Zooming towards the mouse is not supported in the orthographic perspective.")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: zoomToMouseCheckbox
                     text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
@@ -437,7 +437,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved so that they no longer intersect?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: pushFreeCheckbox
                     text: catalog.i18nc("@option:check", "Ensure models are kept apart")
@@ -451,7 +451,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should models on the platform be moved down to touch the build plate?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: dropDownCheckbox
                     text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
@@ -468,7 +468,7 @@ UM.PreferencesPage
 
                 text: catalog.i18nc("@info:tooltip","Show caution message in g-code reader.")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: gcodeShowCautionCheckbox
 
@@ -485,7 +485,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should layer be forced into compatibility mode?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: forceLayerViewCompatibilityModeCheckbox
                     text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
@@ -500,7 +500,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should Cura open at the location it was closed?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: restoreWindowPositionCheckbox
                     text: catalog.i18nc("@option:check", "Restore window position on start")
@@ -575,7 +575,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: singleInstanceCheckbox
                     text: catalog.i18nc("@option:check","Use a single instance of Cura")
@@ -591,7 +591,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip","Should the build plate be cleared before loading a new model in the single instance of Cura?")
                 enabled: singleInstanceCheckbox.checked
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: singleInstanceClearBeforeLoadCheckbox
                     text: catalog.i18nc("@option:check","Clear buildplate before loading model into the single instance")
@@ -606,7 +606,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: scaleToFitCheckbox
                     text: catalog.i18nc("@option:check","Scale large models")
@@ -621,7 +621,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: scaleTinyCheckbox
                     text: catalog.i18nc("@option:check","Scale extremely small models")
@@ -636,7 +636,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should models be selected after they are loaded?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: selectModelsOnLoadCheckbox
                     text: catalog.i18nc("@option:check","Select models when loaded")
@@ -651,7 +651,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: prefixJobNameCheckbox
                     text: catalog.i18nc("@option:check", "Add machine prefix to job name")
@@ -666,7 +666,7 @@ UM.PreferencesPage
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should a summary be shown when saving a project file?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     text: catalog.i18nc("@option:check", "Show summary dialog when saving project")
                     checked: boolCheck(UM.Preferences.getValue("cura/dialog_on_project_save"))
@@ -811,7 +811,7 @@ UM.PreferencesPage
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: sendDataCheckbox
                     text: catalog.i18nc("@option:check","Send (anonymous) print information")
@@ -850,7 +850,7 @@ UM.PreferencesPage
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip", "Should Cura check for updates when the program is started?")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: checkUpdatesCheckbox
                     text: catalog.i18nc("@option:check","Check for updates on start")
@@ -898,7 +898,7 @@ UM.PreferencesPage
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip", "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!")
 
-                CheckBox
+                UM.CheckBox
                 {
                     id: pluginNotificationsUpdateCheckbox
                     text: catalog.i18nc("@option:check", "Get notifications for plugin updates")

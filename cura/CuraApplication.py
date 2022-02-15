@@ -494,7 +494,7 @@ class CuraApplication(QtApplication):
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
-            "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "Marketplace", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
             "PrepareStage", #Cura is useless without this one since you can't load models.
             "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
             "MonitorStage", #Major part of Cura's functionality.
@@ -572,6 +572,10 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/expanded_types", "")
 
         preferences.addPreference("general/accepted_user_agreement", False)
+
+        preferences.addPreference("cura/market_place_show_plugin_banner", True)
+        preferences.addPreference("cura/market_place_show_material_banner", True)
+        preferences.addPreference("cura/market_place_show_manage_packages_banner", True)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin

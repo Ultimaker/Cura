@@ -41,39 +41,19 @@ Item
             repeat: false
         }
 
-        Cura.TextField
+        Cura.SearchBar
         {
             id: filter
             height: parent.height
             anchors.left: parent.left
             anchors.right: parent.right
-            leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-            placeholderText:  catalog.i18nc("@label:textbox", "Search settings")
-            font.italic: true
+
+            placeholderText:  catalog.i18nc("@label:textbox", "Search settings")  // Overwrite
 
             property var expandedCategories
             property bool lastFindingSettings: false
 
-            UM.RecolorImage
-            {
-                id: searchIcon
-
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
-                }
-                source: UM.Theme.getIcon("search")
-                height: UM.Theme.getSize("small_button_icon").height
-                width: height
-                color: UM.Theme.getColor("text")
-            }
-
-            onTextChanged:
-            {
-                settingsSearchTimer.restart()
-            }
+            onTextChanged: settingsSearchTimer.restart()
 
             onEditingFinished:
             {
@@ -86,10 +66,7 @@ Item
                 }
             }
 
-            Keys.onEscapePressed:
-            {
-                filter.text = ""
-            }
+            Keys.onEscapePressed: filter.text = ""
 
             function updateDefinitionModel()
             {
@@ -363,7 +340,7 @@ Item
                     }
                     function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
                     function onHideTooltip() { base.hideTooltip() }
-                    function onShowAllHiddenInheritedSettings()
+                    function onShowAllHiddenInheritedSettings(category_id)
                     {
                         var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
                         for(var i = 0; i < children_with_override.length; i++)
