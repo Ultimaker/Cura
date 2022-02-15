@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -7,13 +7,13 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Dialogs 1.2 // For filedialog
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
 Cura.MachineAction
 {
-    anchors.fill: parent;
+    anchors.fill: parent
     property bool printerConnected: Cura.MachineManager.printerConnected
     property var activeOutputDevice: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
     property bool canUpdateFirmware: activeOutputDevice ? activeOutputDevice.activePrinter.canUpdateFirmware : false
@@ -25,25 +25,22 @@ Cura.MachineAction
         UM.I18nCatalog { id: catalog; name: "cura"}
         spacing: UM.Theme.getSize("default_margin").height
 
-        Label
+        UM.Label
         {
             width: parent.width
             text: catalog.i18nc("@title", "Update Firmware")
-            wrapMode: Text.WordWrap
             font.pointSize: 18
         }
-        Label
+        UM.Label
         {
             width: parent.width
-            wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work.")
         }
 
-        Label
+        UM.Label
         {
             width: parent.width
-            wrapMode: Text.WordWrap
-            text: catalog.i18nc("@label", "The firmware shipping with new printers works, but new versions tend to have more features and improvements.");
+            text: catalog.i18nc("@label", "The firmware shipping with new printers works, but new versions tend to have more features and improvements.")
         }
 
         Row
@@ -55,7 +52,7 @@ Cura.MachineAction
             Button
             {
                 id: autoUpgradeButton
-                text: catalog.i18nc("@action:button", "Automatically upgrade Firmware");
+                text: catalog.i18nc("@action:button", "Automatically upgrade Firmware")
                 enabled: parent.firmwareName != "" && canUpdateFirmware
                 onClicked:
                 {
@@ -66,7 +63,7 @@ Cura.MachineAction
             Button
             {
                 id: manualUpgradeButton
-                text: catalog.i18nc("@action:button", "Upload custom Firmware");
+                text: catalog.i18nc("@action:button", "Upload custom Firmware")
                 enabled: canUpdateFirmware
                 onClicked:
                 {
@@ -75,20 +72,18 @@ Cura.MachineAction
             }
         }
 
-        Label
+        UM.Label
         {
             width: parent.width
-            wrapMode: Text.WordWrap
             visible: !printerConnected && !updateProgressDialog.visible
-            text: catalog.i18nc("@label", "Firmware can not be updated because there is no connection with the printer.");
+            text: catalog.i18nc("@label", "Firmware can not be updated because there is no connection with the printer.")
         }
 
         Label
         {
             width: parent.width
-            wrapMode: Text.WordWrap
             visible: printerConnected && !canUpdateFirmware
-            text: catalog.i18nc("@label", "Firmware can not be updated because the connection with the printer does not support upgrading firmware.");
+            text: catalog.i18nc("@label", "Firmware can not be updated because the connection with the printer does not support upgrading firmware.")
         }
     }
 
@@ -122,7 +117,7 @@ Cura.MachineAction
         {
             anchors.fill: parent
 
-            Label
+            UM.Label
             {
                 anchors
                 {
@@ -171,8 +166,8 @@ Cura.MachineAction
                 }
                 anchors
                 {
-                    left: parent.left;
-                    right: parent.right;
+                    left: parent.left
+                    right: parent.right
                 }
             }
         }
@@ -180,9 +175,9 @@ Cura.MachineAction
         rightButtons: [
             Button
             {
-                text: catalog.i18nc("@action:button","Close");
-                enabled: (manager.firmwareUpdater != null) ? manager.firmwareUpdater.firmwareUpdateState != 1 : true;
-                onClicked: updateProgressDialog.visible = false;
+                text: catalog.i18nc("@action:button", "Close")
+                enabled: manager.firmwareUpdater != null ? manager.firmwareUpdater.firmwareUpdateState != 1 : true
+                onClicked: updateProgressDialog.visible = false
             }
         ]
     }
