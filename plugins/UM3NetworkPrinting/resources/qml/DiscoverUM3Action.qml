@@ -37,22 +37,17 @@ Cura.MachineAction
 
         SystemPalette { id: palette }
         UM.I18nCatalog { id: catalog; name:"cura" }
-        Label
+        UM.Label
         {
             id: pageTitle
             width: parent.width
             text: catalog.i18nc("@title:window", "Connect to Networked Printer")
-            wrapMode: Text.WordWrap
-            renderType: Text.NativeRendering
-            font.pointSize: 18
         }
 
-        Label
+        UM.Label
         {
             id: pageDescription
             width: parent.width
-            wrapMode: Text.WordWrap
-            renderType: Text.NativeRendering
             text: catalog.i18nc("@label", "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.") + "\n\n" + catalog.i18nc("@label", "Select your printer from the list below:")
         }
 
@@ -158,13 +153,11 @@ Cura.MachineAction
                         }
                     }
                 }
-                Label
+                UM.Label
                 {
                     id: discoveryTip
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    wrapMode: Text.WordWrap
-                    renderType: Text.NativeRendering
                     text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=manage-network-printer");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
@@ -175,32 +168,27 @@ Cura.MachineAction
                 width: Math.round(parent.width * 0.5)
                 visible: base.selectedDevice ? true : false
                 spacing: UM.Theme.getSize("default_margin").height
-                Label
+                UM.Label
                 {
                     width: parent.width
-                    wrapMode: Text.WordWrap
                     text: base.selectedDevice ? base.selectedDevice.name : ""
                     font: UM.Theme.getFont("large_bold")
                     elide: Text.ElideRight
-                    renderType: Text.NativeRendering
                 }
                 Grid
                 {
                     visible: base.completeProperties
                     width: parent.width
                     columns: 2
-                    Label
+                    property real labelWidth: Math.round(width * 0.5)
+                    UM.Label
                     {
-                        width: Math.round(parent.width * 0.5)
-                        wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
+                        width: labelWidth
                         text: catalog.i18nc("@label", "Type")
                     }
-                    Label
+                    UM.Label
                     {
-                        width: Math.round(parent.width * 0.5)
-                        wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
+                        width: labelWidth
                         text:
                         {
                             if (base.selectedDevice) {
@@ -209,41 +197,31 @@ Cura.MachineAction
                             return ""
                         }
                     }
-                    Label
+                    UM.Label
                     {
-                        width: Math.round(parent.width * 0.5)
-                        wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
+                        width: labelWidth
                         text: catalog.i18nc("@label", "Firmware version")
                     }
-                    Label
+                    UM.Label
                     {
-                        width: Math.round(parent.width * 0.5)
-                        wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
+                        width: labelWidth
                         text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
-                    Label
+                    UM.Label
                     {
-                        width: Math.round(parent.width * 0.5)
-                        wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
+                        width: labelWidth
                         text: catalog.i18nc("@label", "Address")
                     }
-                    Label
+                    UM.Label
                     {
-                        width: Math.round(parent.width * 0.5)
-                        wrapMode: Text.WordWrap
-                        renderType: Text.NativeRendering
+                        width: labelWidth
                         text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }
                 }
 
-                Label
+                UM.Label
                 {
                     width: parent.width
-                    wrapMode: Text.WordWrap
-                    renderType: Text.NativeRendering
                     text:{
                         // The property cluster size does not exist for older UM3 devices.
                         if(!base.selectedDevice || base.selectedDevice.clusterSize == null || base.selectedDevice.clusterSize == 1)
@@ -261,11 +239,9 @@ Cura.MachineAction
                     }
 
                 }
-                Label
+                UM.Label
                 {
                     width: parent.width
-                    wrapMode: Text.WordWrap
-                    renderType: Text.NativeRendering
                     visible: base.selectedDevice != null && !base.completeProperties
                     text: catalog.i18nc("@label", "The printer at this address has not yet responded." )
                 }
@@ -316,15 +292,13 @@ Cura.MachineAction
             anchors.fill: parent
             spacing: UM.Theme.getSize("default_margin").height
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
-                width: parent.width
-                wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering
             }
 
-            TextField
+            Cura.TextField
             {
                 id: addressField
                 width: parent.width
