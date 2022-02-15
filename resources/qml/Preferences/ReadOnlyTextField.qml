@@ -13,7 +13,7 @@ Item
 
     property alias text: textField.text
 
-    signal editingFinished();
+    signal editingFinished()
 
     property bool readOnly: false
 
