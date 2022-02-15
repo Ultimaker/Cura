@@ -13,7 +13,7 @@ UM.MenuItem
 {
     id: menuItem
 
-    implicitHeight: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("narrow_margin").height
+    height: UM.Theme.getSize("context_menu").height
     opacity: enabled ? 1.0 : 0.5
 
     arrow: UM.RecolorImage

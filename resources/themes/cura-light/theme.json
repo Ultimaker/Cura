@@ -573,6 +573,8 @@
         "medium_button": [2.5, 2.5],
         "medium_button_icon": [2, 2],
 
+        "context_menu": [20, 2],
+
         "favorites_row": [2, 2],
         "favorites_button": [2, 2],
         "favorites_button_icon": [1.2, 1.2],

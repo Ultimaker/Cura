@@ -14,12 +14,12 @@ UM.Menu
     id: menu
     padding: 0
 
-    implicitWidth: UM.Theme.getSize("setting_control").width
+    width: UM.Theme.getSize("context_menu").width
 
     delegate: Cura.MenuItem {}
     background: Rectangle
     {
-        color: UM.Theme.getColor("setting_control")
-        border.color: UM.Theme.getColor("setting_control_border")
+        color: UM.Theme.getColor("main_background")
+        border.color: UM.Theme.getColor("lining")
     }
 }
