@@ -7,7 +7,7 @@ import QtQuick.Controls 2.4
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     id: preferencesMenu
 

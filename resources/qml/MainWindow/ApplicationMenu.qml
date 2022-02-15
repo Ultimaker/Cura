@@ -20,13 +20,12 @@ Item
     {
         id: applicationMenu
         width: parent.width
-        FileMenu {}
+        height: UM.Theme.getSize("context_menu").height
+        background: Item {}
 
+        FileMenu {}
         EditMenu {}
         ViewMenu {}
-
-        background: Rectangle {}
-
         SettingsMenu
         {
             //On MacOS, don't translate the "Settings" word.
@@ -38,13 +37,9 @@ Item
             //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
             title: (Qt.platform.os == "osx") ? "&Settings" : catalog.i18nc("@title:menu menubar:toplevel", "&Settings")
         }
-
         ExtensionMenu { id: extensionMenu }
-
         PreferencesMenu {}
-
         HelpMenu {}
-
     }
 
 

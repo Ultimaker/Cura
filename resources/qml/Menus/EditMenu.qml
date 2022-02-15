@@ -7,7 +7,7 @@ import QtQuick.Controls 2.1
 import UM 1.6 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&Edit")
 
