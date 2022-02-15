@@ -388,8 +388,8 @@
         "viewport_background": [250, 250, 250, 255],
         "volume_outline": [50, 130, 255, 255],
         "buildplate": [244, 244, 244, 255],
-        "buildplate_grid": [129, 131, 134, 255],
-        "buildplate_grid_minor": [230, 230, 231, 255],
+        "buildplate_grid": [180, 180, 180, 255],
+        "buildplate_grid_minor": [228, 228, 228, 255],
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 40],
