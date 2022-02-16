@@ -5515,7 +5515,6 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr",
                     "children":
                     {
                         "brim_line_count":
@@ -5529,8 +5528,7 @@
                             "value": "math.ceil(brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
                             "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "limit_to_extruder": "skirt_brim_extruder_nr"
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -5545,8 +5543,7 @@
                     "maximum_value_warning": "skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "brim_replaces_support":
                 {
@@ -5556,8 +5553,7 @@
                     "default_value": true,
                     "enabled": "resolveOrValue('adhesion_type') == 'brim' and (support_enable or support_meshes_present)",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "support_infill_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "brim_outside_only":
                 {
@@ -5567,8 +5563,7 @@
                     "default_value": true,
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "raft_margin":
                 {

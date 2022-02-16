@@ -1094,6 +1094,8 @@ class BuildVolume(SceneNode):
         if self._global_container_stack is None:
             return None
 
+        return 0
+
         container_stack = self._global_container_stack
         adhesion_type = adhesion_override
         if adhesion_type is None:
