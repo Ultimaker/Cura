@@ -2148,7 +2148,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "1 if (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2))",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning', 'gyroid']",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2161,7 +2161,7 @@
                     "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
+                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning', 'gyroid']",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
