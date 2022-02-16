@@ -17,61 +17,118 @@ UM.Dialog
 
     property variant catalog: UM.I18nCatalog { name: "cura" }
 
-    minimumHeight: UM.Theme.getSize("small_popup_dialog").height
-    minimumWidth: UM.Theme.getSize("small_popup_dialog").width / 1.5
-    height: minimumHeight
-    width: minimumWidth
+    margin: UM.Theme.getSize("wide_margin").width
 
     property alias color: colorInput.text
+    property var defaultColors: [
+        "#2161AF", "#57AFB2", "#F7B32D", "#E33D4A", "#C088AD",
+        "#5D88BE", "#5ABD0E", "#E17239", "#F74E46", "#874AF9",
+        "#50C2EC", "#8DC15A", "#C3977A", "#CD7776", "#9086BA",
+        "#FFFFFF", "#D3D3D3", "#9E9E9E", "#5A5A5A", "#000000",
+    ]
 
-    margin: UM.Theme.getSize("default_margin").width
-    buttonSpacing: UM.Theme.getSize("default_margin").width
-
-    UM.Label
+    Component.onCompleted:
     {
-        id: colorLabel
-        font: UM.Theme.getFont("large")
-        text: catalog.i18nc("@label", "Color Code (HEX)")
+        for (let i = 0; i < base.defaultColors.length; i ++)
+        {
+            const swatchColor = base.defaultColors[i];
+            defaultColorsModel.append({ swatchColor });
+        }
     }
 
-    TextField
+    Column
     {
-        id: colorInput
-        text: "#FFFFFF"
-        selectByMouse: true
-        anchors.top: colorLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        onTextChanged: {
-            if (!text.startsWith("#"))
+        id: content
+        width: childrenRect.width
+        height: childrenRect.height
+        spacing: UM.Theme.getSize("wide_margin").height
+
+        GridLayout {
+            columns: 5
+            width: childrenRect.width
+            height: childrenRect.height
+            columnSpacing: UM.Theme.getSize("thick_margin").width
+            rowSpacing: UM.Theme.getSize("thick_margin").height
+
+            Repeater
             {
-                text = `#${text}`;
+                model: ListModel
+                {
+                    id: defaultColorsModel
+                }
+
+                delegate: Rectangle
+                {
+                    color: swatchColor
+                    width: 24
+                    height: 24
+                    radius: width / 2
+
+                    UM.RecolorImage
+                    {
+                        anchors.fill: parent
+                        visible: swatchColor == base.color
+                        source: UM.Theme.getIcon("Check", "low")
+                        color: UM.Theme.getColor("checkbox")
+                    }
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked:
+                        {
+                            base.color = swatchColor;
+                        }
+                    }
+                }
             }
         }
-        validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{0,6})$/ }
+
+        RowLayout
+        {
+            width: parent.width
+            spacing: UM.Theme.getSize("default_margin").width
+
+            UM.Label
+            {
+                text: catalog.i18nc("@label", "Hex")
+            }
+
+            TextField
+            {
+                id: colorInput
+                Layout.fillWidth: true
+                text: "#FFFFFF"
+                selectByMouse: true
+                onTextChanged: {
+                    if (!text.startsWith("#"))
+                    {
+                        text = `#${text}`;
+                    }
+                }
+                validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{0,6})$/ }
+            }
+
+            Rectangle
+            {
+                color: base.color
+                Layout.preferredHeight: parent.height
+                Layout.preferredWidth: height
+            }
+        }
     }
 
-    Rectangle
-    {
-        id: swatch
-        color: base.color
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        anchors {
-            left: colorInput.right
-            top: colorInput.top
-            bottom: colorInput.bottom
-        }
-        width: height
-    }
+    buttonSpacing: UM.Theme.getSize("default_margin").width
 
     rightButtons:
     [
+        Cura.TertiaryButton {
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked: base.close()
+        },
         Cura.PrimaryButton {
             text: catalog.i18nc("@action:button", "OK")
             onClicked: base.accept()
-        },
-        Cura.SecondaryButton {
-            text: catalog.i18nc("@action:button", "Cancel")
-            onClicked: base.close()
         }
     ]
 }
