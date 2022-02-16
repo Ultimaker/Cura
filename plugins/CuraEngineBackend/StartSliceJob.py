@@ -208,7 +208,8 @@ class StartSliceJob(Job):
             modifier_mesh_nodes = []
 
             for node in DepthFirstIterator(self._scene.getRoot()):
-                if node.callDecoration("isNonPrintingMesh"):
+                build_plate_number = node.callDecoration("getBuildPlateNumber")
+                if node.callDecoration("isNonPrintingMesh") and build_plate_number == self._build_plate_number:
                     modifier_mesh_nodes.append(node)
 
             for node in OneAtATimeIterator(self._scene.getRoot()):
