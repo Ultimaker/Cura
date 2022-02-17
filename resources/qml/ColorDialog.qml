@@ -20,7 +20,7 @@ UM.Dialog
     margin: UM.Theme.getSize("wide_margin").width
 
     property alias color: colorInput.text
-    property var defaultColors: [
+    property var swatchColors: [
         "#2161AF", "#57AFB2", "#F7B32D", "#E33D4A", "#C088AD",
         "#5D88BE", "#5ABD0E", "#E17239", "#F74E46", "#874AF9",
         "#50C2EC", "#8DC15A", "#C3977A", "#CD7776", "#9086BA",
@@ -29,10 +29,9 @@ UM.Dialog
 
     Component.onCompleted:
     {
-        for (let i = 0; i < base.defaultColors.length; i ++)
+        for (let i = 0; i < base.swatchColors.length; i ++)
         {
-            const swatchColor = base.defaultColors[i];
-            defaultColorsModel.append({ swatchColor });
+            swatchColorsModel.append({ swatchColor: base.swatchColors[i] });
         }
     }
 
@@ -54,7 +53,7 @@ UM.Dialog
             {
                 model: ListModel
                 {
-                    id: defaultColorsModel
+                    id: swatchColorsModel
                 }
 
                 delegate: Rectangle
