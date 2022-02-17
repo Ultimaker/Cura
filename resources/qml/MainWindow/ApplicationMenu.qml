@@ -21,7 +21,7 @@ Item
         id: applicationMenu
         width: parent.width
         height: UM.Theme.getSize("context_menu").height
-        background: Item {}
+        background: Rectangle {}
 
         FileMenu {}
         EditMenu {}
