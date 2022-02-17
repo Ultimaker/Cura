@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -33,7 +33,7 @@ Cura.MachineAction
             renderType: Text.NativeRendering
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             anchors.top: pageDescription.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height

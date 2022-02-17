@@ -5,8 +5,14 @@ import QtQuick 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 
+<<<<<<< HEAD
 import UM 1.3 as UM
 import Cura 1.5 as Cura
+=======
+import UM 1.5 as UM
+import Cura 1.0 as Cura
+
+>>>>>>> e66628e2da80d38637b58288f5e478f8ae4a74ba
 
 UM.Dialog
 {
@@ -84,7 +90,7 @@ UM.Dialog
             wrapMode: Text.WordWrap
         }
 
-        CheckBox
+        UM.CheckBox
         {
             id: rememberChoiceCheckBox
             text: catalog.i18nc("@text:window", "Remember my choice")

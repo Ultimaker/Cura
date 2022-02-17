@@ -6,6 +6,7 @@
 
     "colors": {
         "main_background": [39, 44, 48, 255],
+        "detail_background": [63, 63, 63, 255],
         "message_background": [39, 44, 48, 255],
         "wide_lining": [31, 36, 39, 255],
         "thick_lining": [255, 255, 255, 60],
@@ -151,6 +152,7 @@
         "checkbox_border": [255, 255, 255, 38],
         "checkbox_border_hover": [255, 255, 255, 38],
         "checkbox_mark": [255, 255, 255, 181],
+        "checkbox_square": [118, 118, 118, 255],
         "checkbox_text": [255, 255, 255, 181],
 
         "tooltip": [39, 44, 48, 255],
@@ -174,10 +176,6 @@
         "material_compatibility_warning": [255, 255, 255, 255],
 
         "quality_slider_available": [255, 255, 255, 255],
-
-        "toolbox_header_button_text_active": [255, 255, 255, 255],
-        "toolbox_header_button_text_inactive": [128, 128, 128, 255],
-        "toolbox_premium_packages_background": [57, 57, 57, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],
         "monitor_text_disabled": [102, 102, 102, 255],
