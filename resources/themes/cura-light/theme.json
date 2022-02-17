@@ -183,6 +183,7 @@
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
         "border": [127, 127, 127, 255],
+        "text_selection": [156,195, 255, 127],
         "secondary": [240, 240, 240, 255],
         "secondary_shadow": [216, 216, 216, 255],
 

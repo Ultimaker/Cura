@@ -153,8 +153,9 @@ SettingItem
             }
 
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+            selectedTextColor: UM.Theme.getColor("setting_control_text")
             font: UM.Theme.getFont("default")
-
+            selectionColor: UM.Theme.getColor("text_selection")
             selectByMouse: true
 
             maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 10
