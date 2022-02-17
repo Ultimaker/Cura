@@ -380,16 +380,16 @@
         "status_unknown": [127, 127, 127, 255],
 
         "disabled_axis": [127, 127, 127, 255],
-        "x_axis": [255, 0, 0, 255],
-        "y_axis": [0, 0, 255, 255],
-        "z_axis": [0, 255, 0, 255],
+        "x_axis": [218, 30, 40, 255],
+        "y_axis": [36, 162, 73, 255],
+        "z_axis": [25, 110, 240, 255],
         "all_axis": [255, 255, 255, 255],
 
         "viewport_background": [250, 250, 250, 255],
         "volume_outline": [50, 130, 255, 255],
         "buildplate": [244, 244, 244, 255],
-        "buildplate_grid": [129, 131, 134, 255],
-        "buildplate_grid_minor": [230, 230, 231, 255],
+        "buildplate_grid": [180, 180, 180, 255],
+        "buildplate_grid_minor": [228, 228, 228, 255],
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 40],
