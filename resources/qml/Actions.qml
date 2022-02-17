@@ -488,6 +488,6 @@ Item
     {
         id: openMarketplaceAction
         text: catalog.i18nc("@action:menu", "&Marketplace")
-        iconName: "plugins_browse"
+        icon.name: "plugins_browse"
     }
 }
