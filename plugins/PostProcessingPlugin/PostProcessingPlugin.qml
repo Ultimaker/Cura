@@ -499,10 +499,8 @@ UM.Dialog
             visible: activeScriptsList.count > 0
             anchors
             {
-                top: parent.top
-                right: parent.right
-                rightMargin: (-0.5 * width) | 0
-                topMargin: (-0.5 * height) | 0
+                horizontalCenter: parent.right
+                verticalCenter: parent.top
             }
 
             labelText: activeScriptsList.count

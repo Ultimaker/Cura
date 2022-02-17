@@ -13,7 +13,7 @@
         "supports_usb_connection": true,
         "preferred_quality_type": "normal",
 		"quality_definition": "xyzprinting_da_vinci_jr_w_pro",
-		"preferred_variant_name": "Hardened Steel 0.4mm Nozzle",
+		"preferred_variant_name": "Stainless Steel 0.4mm Nozzle",
         "variants_name": "Nozzle Type",
 		"machine_extruder_trains": {
             "0": "xyzprinting_da_vinci_jr_w_pro_extruder_0"
@@ -23,7 +23,7 @@
     "overrides": {
 	    "machine_name": { "default_value": "XYZprinting da Vinci Jr. WiFi Pro" },
         "machine_shape": { "default_value": "rectangular"},
-        "machine_heated_bed": { "default_value": true },
+        "machine_heated_bed": { "default_value": false },
         "machine_width": { "default_value": 150.00 },
         "machine_depth": { "default_value": 150.00 },
         "machine_height": { "default_value":150.00 },

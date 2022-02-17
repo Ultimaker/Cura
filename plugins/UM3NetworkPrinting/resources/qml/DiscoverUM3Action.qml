@@ -329,22 +329,19 @@ Cura.MachineAction
                 id: addressField
                 width: parent.width
                 validator: RegExpValidator { regExp: /[a-zA-Z0-9\.\-\_]*/ }
-                onAccepted: btnOk.clicked()
             }
         }
 
-        onRejected:
-        {
-            manualPrinterDialog.reject()
-            manualPrinterDialog.hide()
-        }
         onAccepted:
         {
             // Validate the input first
             if (!networkingUtil.isValidIP(manualPrinterDialog.addressText))
             {
-                invalidIPAddressMessageDialog.open()
-                return
+                // prefent closing of element, as we want to keep the dialog active after a wrongly entered IP adress
+                manualPrinterDialog.open()
+                // show invalid ip warning
+                invalidIPAddressMessageDialog.open();
+                return;
             }
 
             // if the entered IP address has already been discovered, switch the current item to that item
@@ -354,14 +351,12 @@ Cura.MachineAction
                 var device = manager.foundDevices[i]
                 if (device.address == manualPrinterDialog.addressText)
                 {
-                    currentItemIndex = i
-                    manualPrinterDialog.hide()
-                    return
+                    currentItemIndex = i;
+                    return;
                 }
             }
 
-            manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
-            manualPrinterDialog.hide()
+            manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText);
         }
     }
 }
