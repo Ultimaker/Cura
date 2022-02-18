@@ -104,12 +104,6 @@ UM.ManagementPage
             minimumHeight: UM.Theme.getSize("modal_window_minimum").height
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
-            rightButtons: Button
-            {
-                text: catalog.i18nc("@action:button", "Close")
-                icon.name: "dialog-close"
-                onClicked: actionDialog.reject()
-            }
         }
 
         UM.I18nCatalog { id: catalog; name: "cura"; }
