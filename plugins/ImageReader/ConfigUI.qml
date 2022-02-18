@@ -18,6 +18,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
+
+
     GridLayout
     {
         UM.I18nCatalog { id: catalog; name: "cura" }
@@ -26,7 +28,7 @@ UM.Dialog
         rowSpacing: UM.Theme.getSize("thin_margin").height
         columns: 2
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "Height (mm)")
@@ -39,7 +41,7 @@ UM.Dialog
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: peak_height
             Layout.fillWidth: true
@@ -57,7 +59,7 @@ UM.Dialog
             y: peak_height.y + peak_height.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "Base (mm)")
@@ -71,7 +73,7 @@ UM.Dialog
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: base_height
             selectByMouse: true
@@ -89,7 +91,7 @@ UM.Dialog
             y: base_height.y + base_height.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "Width (mm)")
@@ -102,7 +104,7 @@ UM.Dialog
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: width
             selectByMouse: true
@@ -121,7 +123,7 @@ UM.Dialog
             y: width.y + width.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "Depth (mm)")
@@ -134,7 +136,7 @@ UM.Dialog
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: depth
             Layout.fillWidth: true
@@ -153,7 +155,7 @@ UM.Dialog
             y: depth.y + depth.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: ""
@@ -166,7 +168,7 @@ UM.Dialog
             }
         }
 
-        ComboBox
+        Cura.ComboBox
         {
             id: lighter_is_higher
             Layout.fillWidth: true
@@ -184,7 +186,7 @@ UM.Dialog
             y: lighter_is_higher.y + lighter_is_higher.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "Color Model")
@@ -197,7 +199,7 @@ UM.Dialog
             }
         }
 
-        ComboBox
+        Cura.ComboBox
         {
             id: color_model
             Layout.fillWidth: true
@@ -215,7 +217,7 @@ UM.Dialog
             y: color_model.y + color_model.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "1mm Transmittance (%)")
@@ -228,7 +230,7 @@ UM.Dialog
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: transmittance
             Layout.fillWidth: true
@@ -246,7 +248,7 @@ UM.Dialog
             y: transmittance.y + transmittance.height + UM.Theme.getSize("default_margin").height
         }
 
-        Label
+        UM.Label
         {
             Layout.fillWidth: true
             text: catalog.i18nc("@action:label", "Smoothing")

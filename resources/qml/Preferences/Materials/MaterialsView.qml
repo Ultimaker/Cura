@@ -148,32 +148,32 @@ Item
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
-            ReadOnlyTextField
+            Cura.TextField
             {
                 id: displayNameTextField;
                 width: informationPage.columnWidth;
                 text: properties.name;
-                readOnly: !base.editingEnabled;
+                enabled: base.editingEnabled;
                 onEditingFinished: base.updateMaterialDisplayName(properties.name, text)
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Brand") }
-            ReadOnlyTextField
+            Cura.TextField
             {
-                id: brandTextField;
-                width: informationPage.columnWidth;
-                text: properties.brand;
-                readOnly: !base.editingEnabled;
+                id: brandTextField
+                width: informationPage.columnWidth
+                text: properties.brand
+                enabled: base.editingEnabled
                 onEditingFinished: base.updateMaterialBrand(properties.brand, text)
             }
 
             Label { width: informationPage.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Material Type") }
-            ReadOnlyTextField
+            Cura.TextField
             {
-                id: materialTypeField;
-                width: informationPage.columnWidth;
-                text: properties.material;
-                readOnly: !base.editingEnabled;
+                id: materialTypeField
+                width: informationPage.columnWidth
+                text: properties.material
+                enabled: base.editingEnabled
                 onEditingFinished: base.updateMaterialType(properties.material, text)
             }
 
@@ -206,12 +206,12 @@ Item
                 }
 
                 // pretty color name text field
-                ReadOnlyTextField
+                Cura.TextField
                 {
                     id: colorLabel;
                     width: parent.width - colorSelector.width - parent.spacing
                     text: properties.color_name;
-                    readOnly: !base.editingEnabled
+                    enabled: base.editingEnabled
                     onEditingFinished: base.setMetaDataEntry("color_name", properties.color_name, text)
                 }
 
@@ -363,10 +363,11 @@ Item
             ReadOnlyTextArea
             {
                 text: properties.description;
-                width: 2 * informationPage.columnWidth
+                width: informationPage.columnWidth * 2
+                height: 0.75 * informationPage.columnWidth
                 wrapMode: Text.WordWrap
 
-                readOnly: !base.editingEnabled;
+                readOnly: !base.editingEnabled
 
                 onEditingFinished: base.setMetaDataEntry("description", properties.description, text)
             }
@@ -375,11 +376,11 @@ Item
 
             ReadOnlyTextArea
             {
-                text: properties.adhesion_info;
+                text: properties.adhesion_info
                 width: 2 * informationPage.columnWidth
                 wrapMode: Text.WordWrap
-
-                readOnly: !base.editingEnabled;
+                height: 0.75 * informationPage.columnWidth
+                readOnly: !base.editingEnabled
 
                 onEditingFinished: base.setMetaDataEntry("adhesion_info", properties.adhesion_info, text)
             }
