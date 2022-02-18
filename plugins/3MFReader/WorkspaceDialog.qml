@@ -432,44 +432,24 @@ UM.Dialog
             }
         }
     }
-    Item
-    {
-        id: buttonsItem
-        width: parent.width
-        height: childrenRect.height
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        Button
+
+    buttonSpacing: UM.Theme.getSize("default_margin").width
+
+    rightButtons: [
+        Cura.TertiaryButton
         {
             id: cancel_button
-            text: catalog.i18nc("@action:button","Cancel");
-            onClicked: { manager.onCancelButtonClicked() }
-            enabled: true
-            anchors.bottom: parent.bottom
-            anchors.right: ok_button.left
-            anchors.rightMargin: 2 * screenScaleFactor
-        }
-        Button
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked: reject()
+        },
+        Cura.PrimaryButton
         {
             id: ok_button
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            text: catalog.i18nc("@action:button","Open");
-            onClicked: { manager.closeBackend(); manager.onOkButtonClicked() }
+            text: catalog.i18nc("@action:button", "Open")
+            onClicked: accept()
         }
-    }
+    ]
 
-
-    function accept() {
-        manager.closeBackend();
-        manager.onOkButtonClicked();
-        base.visible = false;
-        base.accept();
-    }
-
-    function reject() {
-        manager.onCancelButtonClicked();
-        base.visible = false;
-        base.rejected();
-    }
+    onRejected: manager.onCancelButtonClicked()
+    onAccepted: manager.onOkButtonClicked()
 }
