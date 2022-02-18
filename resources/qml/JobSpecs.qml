@@ -1,9 +1,8 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.1
 
 import UM 1.5 as UM
@@ -29,7 +28,8 @@ Item
     {
         if (!activity)
         {
-            //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
+            // When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't
+            // set an empty string as a jobName (which is later used for saving the file)
             PrintInformation.baseName = ""
         }
     }
@@ -64,9 +64,9 @@ Item
             anchors.left: printJobPencilIcon.right
             anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
             height: UM.Theme.getSize("jobspecs_line").height
-            width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
+            width: Math.max(contentWidth + UM.Theme.getSize("default_margin").width, 50)
             maximumLength: 120
-            text: (PrintInformation === null) ? "" : PrintInformation.jobName
+            text: PrintInformation === null ? "" : PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
 
             property string textBeforeEdit: ""
@@ -91,17 +91,10 @@ Item
             validator: RegExpValidator {
                 regExp: /^[^\\\/\*\?\|\[\]]*$/
             }
-
-            style: TextFieldStyle
-            {
-                textColor: UM.Theme.getColor("text_scene")
-                font: UM.Theme.getFont("default")
-                background: Rectangle
-                {
-                    opacity: 0
-                    border.width: 0
-                }
-            }
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_scene")
+            background: Item {}
+            selectByMouse: true
         }
     }
 
@@ -125,10 +118,7 @@ Item
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
     }
 
-    Component.onCompleted:
-    {
-        base.addAdditionalComponents("jobSpecsButton")
-    }
+    Component.onCompleted: base.addAdditionalComponents("jobSpecsButton")
 
     Connections
     {

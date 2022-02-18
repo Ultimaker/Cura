@@ -9,57 +9,6 @@ import UM 1.1 as UM
 
 QtObject
 {
-    property Component progressbar: Component
-    {
-        ProgressBarStyle
-        {
-            background: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("message").width - (UM.Theme.getSize("default_margin").width * 2)
-                implicitHeight: UM.Theme.getSize("progressbar").height
-                color: control.hasOwnProperty("backgroundColor") ? control.backgroundColor : UM.Theme.getColor("progressbar_background")
-                radius: UM.Theme.getSize("progressbar_radius").width
-            }
-            progress: Rectangle
-            {
-                color:
-                {
-                    if(control.indeterminate)
-                    {
-                        return "transparent";
-                    }
-                    else if(control.hasOwnProperty("controlColor"))
-                    {
-                        return  control.controlColor;
-                    }
-                    else
-                    {
-                        return UM.Theme.getColor("progressbar_control");
-                    }
-                }
-                radius: UM.Theme.getSize("progressbar_radius").width
-                Rectangle
-                {
-                    radius: UM.Theme.getSize("progressbar_radius").width
-                    color: control.hasOwnProperty("controlColor") ? control.controlColor : UM.Theme.getColor("progressbar_control")
-                    width: UM.Theme.getSize("progressbar_control").width
-                    height: UM.Theme.getSize("progressbar_control").height
-                    visible: control.indeterminate
-
-                    SequentialAnimation on x
-                    {
-                        id: xAnim
-                        property int animEndPoint: UM.Theme.getSize("message").width - Math.round((UM.Theme.getSize("default_margin").width * 2.5)) - UM.Theme.getSize("progressbar_control").width
-                        running: control.indeterminate && control.visible
-                        loops: Animation.Infinite
-                        NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
-                        NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
-                    }
-                }
-            }
-        }
-    }
-
     property Component scrollview: Component
     {
         ScrollViewStyle
