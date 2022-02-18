@@ -389,6 +389,7 @@ UM.ManagementPage
             }
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("thick_lining")
+            visible: base.hasCurrentItem
         }
 
         Cura.ProfileOverview
