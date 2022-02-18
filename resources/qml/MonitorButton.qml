@@ -183,7 +183,7 @@ Item
         visible: showProgress
     }
 
-    ProgressBar
+    UM.ProgressBar
     {
         id: progressBar;
         minimumValue: 0;
@@ -218,8 +218,6 @@ Item
                     return false;
             }
         }
-        style: UM.Theme.styles.progressbar;
-
         property string backgroundColor: UM.Theme.getColor("progressbar_background");
         property string controlColor: base.statusColor;
 

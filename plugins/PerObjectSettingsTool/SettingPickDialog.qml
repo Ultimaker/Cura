@@ -42,7 +42,7 @@ UM.Dialog
         listview.model.filter = new_filter
     }
 
-    TextField
+    Cura.TextField
     {
         id: filterInput
         selectByMouse: true

@@ -17,8 +17,6 @@ TextField
 
     property alias leftIcon: iconLeft.source
 
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
     hoverEnabled: true
     selectByMouse: true
     font: UM.Theme.getFont("default")
