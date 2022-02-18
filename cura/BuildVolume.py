@@ -868,15 +868,6 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if skirt_brim_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
-                brim_size = (
-                    skirt_brim_extruder.getProperty("brim_line_count", "value") *
-                    skirt_brim_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
-                    skirt_brim_extruder.getProperty("initial_layer_line_width_factor", "value")
-                )
-                prime_tower_x -= brim_size
-                prime_tower_y += brim_size
-
             radius = prime_tower_size / 2
             prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 24)
             prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
