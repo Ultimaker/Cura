@@ -19,7 +19,8 @@ UM.TooltipArea
     Item
     {
         id: spacer
-        width: 5
+        // Align checkbox with PerObjectCategory icon
+        width: UM.Theme.getSize("default_margin").width
     }
 
     UM.CheckBox
