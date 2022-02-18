@@ -32,9 +32,4 @@ Cura.Menu
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(object)
     }
-
-    Cura.AskOpenAsProjectOrModelsDialog
-    {
-        id: askOpenAsProjectOrModelsDialog
-    }
 }

@@ -38,7 +38,7 @@ ToolTip
     onAboutToHide: hide()
 
     // If the text is not set, just set the height to 0 to prevent it from showing
-    height: text != "" ? label.contentHeight + 2 * UM.Theme.getSize("thin_margin").width: 0
+    height: label.contentHeight + 2 * UM.Theme.getSize("thin_margin").width
 
     x:
     {
@@ -73,7 +73,7 @@ ToolTip
     }
 
     function show() {
-        opacity = 1
+        opacity = text != "" ? 1 : 0
     }
 
     function hide() {

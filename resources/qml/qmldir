@@ -17,7 +17,6 @@ ViewsSelector 1.0 ViewsSelector.qml
 ToolbarButton 1.0 ToolbarButton.qml
 SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
-CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
 ToolTip 1.0 ToolTip.qml
 
 
@@ -29,7 +28,6 @@ WizardDialog        1.0 WizardDialog.qml
 
 # Cura/Widgets
 
-CheckBox            1.0 CheckBox.qml
 ComboBox            1.0 ComboBox.qml
 NotificationIcon    1.0 NotificationIcon.qml
 RadioButton         1.0 RadioButton.qml

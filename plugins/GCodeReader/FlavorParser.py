@@ -24,7 +24,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 catalog = i18nCatalog("cura")
 
-PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
+PositionOptional = NamedTuple("PositionOptional", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
 
 

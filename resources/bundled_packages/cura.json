@@ -526,13 +526,13 @@
             }
         }
     },
-    "Toolbox": {
+    "Marketplace": {
         "package_info": {
-            "package_id": "Toolbox",
+            "package_id": "Marketplace",
             "package_type": "plugin",
-            "display_name": "Toolbox",
+            "display_name": "Marketplace",
             "description": "Find, manage and install new Cura packages.",
-            "package_version": "1.0.1",
+            "package_version": "1.0.0",
             "sdk_version": "7.9.0",
             "website": "https://ultimaker.com",
             "author": {

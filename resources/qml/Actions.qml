@@ -71,6 +71,7 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePackages: browsePackagesAction
+    property alias openMarketplace: openMarketplaceAction
 
     UM.I18nCatalog{id: catalog; name: "cura"}
 
@@ -480,6 +481,13 @@ Item
     {
         id: browsePackagesAction
         text: "&Marketplace"
+        icon.name: "plugins_browse"
+    }
+
+    Action
+    {
+        id: openMarketplaceAction
+        text: catalog.i18nc("@action:menu", "&Marketplace")
         icon.name: "plugins_browse"
     }
 }

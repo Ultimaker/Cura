@@ -6,7 +6,7 @@ import QtQuick 2.10
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -214,7 +214,7 @@ Item
         width: childrenRect.width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asProjectCheckbox
             height: UM.Theme.getSize("checkbox").height
@@ -224,7 +224,7 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asSlicedCheckbox
             height: UM.Theme.getSize("checkbox").height

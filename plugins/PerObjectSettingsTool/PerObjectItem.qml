@@ -5,7 +5,7 @@ import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 UM.TooltipArea
@@ -16,7 +16,7 @@ UM.TooltipArea
     width: childrenRect.width;
     height: childrenRect.height;
 
-    Cura.CheckBox
+    UM.CheckBox
     {
         id: check
 
