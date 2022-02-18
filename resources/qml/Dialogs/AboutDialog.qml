@@ -165,12 +165,11 @@ UM.Dialog
         }
     }
 
-    rightButtons: Cura.SecondaryButton
+    rightButtons: Cura.TertiaryButton
     {
         //: Close about dialog button
         id: closeButton
         text: catalog.i18nc("@action:button", "Close")
-
-        onClicked: base.visible = false;
+        onClicked: reject()
     }
 }
