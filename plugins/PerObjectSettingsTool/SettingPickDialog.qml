@@ -13,7 +13,6 @@ UM.Dialog
     id: settingPickDialog
 
     title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-    width: screenScaleFactor * 360
 
     property var additional_excluded_settings
 
@@ -126,10 +125,10 @@ UM.Dialog
     }
 
     rightButtons: [
-        Button
+        Cura.TertiaryButton
         {
             text: catalog.i18nc("@action:button", "Close")
-            onClicked: settingPickDialog.visible = false
+            onClicked: reject()
         }
     ]
 }
