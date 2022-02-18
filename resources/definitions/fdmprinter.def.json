@@ -5472,8 +5472,7 @@
                     "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "skirt_gap":
                 {
@@ -5486,8 +5485,7 @@
                     "maximum_value_warning": "10",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt'",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "skirt_brim_extruder_nr"
+                    "settable_per_extruder": true
                 },
                 "skirt_brim_minimal_length":
                 {
@@ -5500,8 +5498,7 @@
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
                     "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_mesh": false
                 },
                 "brim_width":
                 {
