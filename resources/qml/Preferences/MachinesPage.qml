@@ -85,10 +85,14 @@ UM.ManagementPage
         {
             id: machineActions
             visible: currentItem && currentItem.id == Cura.MachineManager.activeMachine.id
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: machineName.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                top: machineName.bottom
+                topMargin: UM.Theme.getSize("default_margin").height
+            }
+            spacing: UM.Theme.getSize("default_margin").height
 
             Repeater
             {
@@ -99,7 +103,7 @@ UM.ManagementPage
                 {
                     width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                     height: childrenRect.height
-                    Button
+                    Cura.SecondaryButton
                     {
                         text: machineActionRepeater.model[index].label
                         onClicked:
