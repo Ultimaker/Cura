@@ -20,6 +20,7 @@ UM.ManagementPage
 
     activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
+    onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
 
     function activeMachineIndex()
     {
@@ -34,43 +35,20 @@ UM.ManagementPage
     }
 
     buttons: [
-        Button
-        {
-            id: activateMenuButton
-            text: catalog.i18nc("@action:button", "Activate")
-            icon.name: "list-activate"
-            enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachine.id
-            onClicked: Cura.MachineManager.setActiveMachine(base.currentItem.id)
-        },
-        Button
+        Cura.SecondaryButton
         {
             id: addMenuButton
-            text: catalog.i18nc("@action:button", "Add")
-            icon.name: "list-add"
+            text: catalog.i18nc("@action:button", "Add New")
             onClicked: Cura.Actions.addMachine.trigger()
-        },
-        Button
-        {
-            id: removeMenuButton
-            text: catalog.i18nc("@action:button", "Remove")
-            icon.name: "list-remove"
-            enabled: base.currentItem != null && model.count > 1
-            onClicked: confirmDialog.open()
-        },
-        Button
-        {
-            id: renameMenuButton
-            text: catalog.i18nc("@action:button", "Rename")
-            icon.name: "edit-rename"
-            enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
-            onClicked: renameDialog.open()
         }
     ]
 
     Item
     {
+        id: content_item
         visible: base.currentItem != null
         anchors.fill: parent
+
 
         UM.Label
         {
@@ -167,6 +145,28 @@ UM.ManagementPage
                 objectList.onCurrentIndexChanged()
             }
         }
+        Cura.Menu
+        {
+            id: menu
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:button", "Activate")
+                enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachine.id
+                onTriggered: Cura.MachineManager.setActiveMachine(base.currentItem.id)
+            }
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:button", "Remove")
+                enabled: base.currentItem != null && model.count > 1
+                onTriggered: confirmDialog.open()
+            }
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:button", "Rename")
+                enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
+                onTriggered:  renameDialog.open()
+            }
+       }
 
         Connections
         {
