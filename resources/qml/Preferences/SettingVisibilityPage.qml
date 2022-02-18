@@ -17,6 +17,15 @@ UM.PreferencesPage
 
     property int scrollToIndex: 0
 
+    buttons: [
+        Cura.SecondaryButton
+        {
+            id: addMenuButton
+            text: catalog.i18nc("@action:button", "Defaults")
+            onClicked: reset()
+        }
+    ]
+
     signal scrollToSection( string key )
     onScrollToSection:
     {
