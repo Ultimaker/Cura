@@ -21,6 +21,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
+    margin: UM.Theme.getSize("thick_margin").width
+
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
 
     onVisibilityChanged:
