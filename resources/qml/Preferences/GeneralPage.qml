@@ -157,7 +157,7 @@ UM.PreferencesPage
             GridLayout
             {
                 id: interfaceGrid
-                columns: 4
+                columns: 2
                 width: parent.width
 
                 UM.Label
@@ -208,7 +208,8 @@ UM.PreferencesPage
 
                     textRole: "text"
                     model: languageList
-                    Layout.fillWidth: true
+                    implicitWidth: UM.Theme.getSize("setting_control").width
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -223,7 +224,9 @@ UM.PreferencesPage
 
                     currentIndex: setCurrentIndex()
 
-                    onActivated: if (model.get(index).code != "")
+                    onActivated:
+                    {
+                        if (model.get(index).code != "")
                         {
                             UM.Preferences.setValue("general/language", model.get(index).code);
                         }
@@ -231,6 +234,7 @@ UM.PreferencesPage
                         {
                             currentIndex = setCurrentIndex();
                         }
+                    }
                 }
 
                 UM.Label
@@ -244,6 +248,7 @@ UM.PreferencesPage
                     id: currencyField
                     selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
+                    implicitWidth: UM.Theme.getSize("setting_control").width
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
 
@@ -272,7 +277,8 @@ UM.PreferencesPage
 
                     model: themeList
                     textRole: "text"
-                    Layout.fillWidth: true
+                    implicitWidth: UM.Theme.getSize("setting_control").width
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {
@@ -526,11 +532,12 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "What type of camera rendering should be used?")
                 Column
                 {
-                    spacing: 4 * screenScaleFactor
+                    spacing: UM.Theme.getSize("narrow_margin").height
 
                     UM.Label
                     {
                         text: catalog.i18nc("@window:text", "Camera rendering:")
+                        font: UM.Theme.getFont("medium_bold")
                     }
                     ListModel
                     {
@@ -548,6 +555,8 @@ UM.PreferencesPage
 
                         model: comboBoxList
                         textRole: "text"
+                        width: UM.Theme.getSize("setting_control").width
+                        height: UM.Theme.getSize("setting_control").height
 
                         currentIndex:
                         {
@@ -589,6 +598,7 @@ UM.PreferencesPage
                 {
                     id: singleInstanceCheckbox
                     text: catalog.i18nc("@option:check","Use a single instance of Cura")
+
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
                 }
@@ -692,7 +702,7 @@ UM.PreferencesPage
 
                 Column
                 {
-                    spacing: 4 * screenScaleFactor
+                    spacing: UM.Theme.getSize("narrow_margin").height
 
                     UM.Label
                     {
@@ -702,7 +712,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: Math.round(250 * screenScaleFactor)
+                        width: UM.Theme.getSize("setting_control").width
+                        height: UM.Theme.getSize("setting_control").height
 
                         model: ListModel
                         {
@@ -746,14 +757,14 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                width: childrenRect.width;
-                height: childrenRect.height;
+                width: childrenRect.width
+                height: childrenRect.height
 
                 text: catalog.i18nc("@info:tooltip", "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again.")
 
                 Column
                 {
-                    spacing: 4 * screenScaleFactor
+                    spacing: UM.Theme.getSize("narrow_margin").height
 
                     UM.Label
                     {
@@ -769,8 +780,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: Math.round(250 * screenScaleFactor)
-                        popup.width: Math.round(350 * screenScaleFactor)
+                        width: UM.Theme.getSize("setting_control").width
+                        height: UM.Theme.getSize("setting_control").height
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
@@ -829,7 +840,7 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     id: showMoreInfo
                     anchors.top: sendDataCheckbox.bottom
