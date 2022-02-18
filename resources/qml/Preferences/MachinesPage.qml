@@ -120,9 +120,7 @@ UM.ManagementPage
             id: actionDialog
             minimumWidth: UM.Theme.getSize("modal_window_minimum").width
             minimumHeight: UM.Theme.getSize("modal_window_minimum").height
-            maximumWidth: minimumWidth * 3
-            maximumHeight: minimumHeight * 3
-            rightButtons: Button
+            rightButtons: Cura.TertiaryButton
             {
                 text: catalog.i18nc("@action:button", "Close")
                 icon.name: "dialog-close"
