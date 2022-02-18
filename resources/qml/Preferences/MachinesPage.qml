@@ -11,9 +11,9 @@ import Cura 1.0 as Cura
 
 UM.ManagementPage
 {
-    id: base;
+    id: base
 
-    title: catalog.i18nc("@title:tab", "Printers");
+    title: catalog.i18nc("@title:tab", "Printers")
     model: Cura.GlobalStacksModel { }
 
     sectionRole: "discoverySource"
@@ -37,7 +37,7 @@ UM.ManagementPage
         Button
         {
             id: activateMenuButton
-            text: catalog.i18nc("@action:button", "Activate");
+            text: catalog.i18nc("@action:button", "Activate")
             icon.name: "list-activate"
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMachine.id
             onClicked: Cura.MachineManager.setActiveMachine(base.currentItem.id)
@@ -45,25 +45,25 @@ UM.ManagementPage
         Button
         {
             id: addMenuButton
-            text: catalog.i18nc("@action:button", "Add");
+            text: catalog.i18nc("@action:button", "Add")
             icon.name: "list-add"
             onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
         {
             id: removeMenuButton
-            text: catalog.i18nc("@action:button", "Remove");
+            text: catalog.i18nc("@action:button", "Remove")
             icon.name: "list-remove"
             enabled: base.currentItem != null && model.count > 1
-            onClicked: confirmDialog.open();
+            onClicked: confirmDialog.open()
         },
         Button
         {
             id: renameMenuButton
-            text: catalog.i18nc("@action:button", "Rename");
+            text: catalog.i18nc("@action:button", "Rename")
             icon.name: "edit-rename"
             enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
-            onClicked: renameDialog.open();
+            onClicked: renameDialog.open()
         }
     ]
 
@@ -156,13 +156,13 @@ UM.ManagementPage
 
         UM.RenameDialog
         {
-            id: renameDialog;
-            object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
+            id: renameDialog
+            object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
             property var machine_name_validator: Cura.MachineNameValidator { }
-            validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null;
+            validName: renameDialog.newName.match(renameDialog.machine_name_validator.machineNameRegex) != null
             onAccepted:
             {
-                Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim());
+                Cura.MachineManager.renameMachine(base.currentItem.id, newName.trim())
                 //Force updating currentItem and the details panel
                 objectList.onCurrentIndexChanged()
             }
@@ -177,6 +177,5 @@ UM.ManagementPage
                 objectList.onCurrentIndexChanged()
             }
         }
-
     }
 }
