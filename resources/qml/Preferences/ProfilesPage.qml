@@ -376,6 +376,21 @@ UM.ManagementPage
             }
         }
 
+        Rectangle
+        {
+            color: UM.Theme.getColor("main_background")
+            anchors
+            {
+                top: detailsPanelHeaderColumn.bottom
+                topMargin: -UM.Theme.getSize("default_lining").width
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: UM.Theme.getColor("thick_lining")
+        }
+
         Cura.ProfileOverview
         {
             anchors
