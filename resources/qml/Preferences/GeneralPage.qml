@@ -150,7 +150,7 @@ UM.PreferencesPage
 
             UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Interface")
             }
 
@@ -333,7 +333,7 @@ UM.PreferencesPage
 
             UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Viewport behavior")
             }
 
@@ -575,7 +575,7 @@ UM.PreferencesPage
 
             UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label","Opening and saving files")
             }
 
@@ -757,7 +757,7 @@ UM.PreferencesPage
 
                     UM.Label
                     {
-                        font.bold: true
+                        font: UM.Theme.getFont("medium_bold")
                         text: catalog.i18nc("@label", "Profiles")
                     }
 
@@ -812,7 +812,7 @@ UM.PreferencesPage
 
             UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Privacy")
             }
             UM.TooltipArea
@@ -850,7 +850,7 @@ UM.PreferencesPage
 
             UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Updates")
             }
 
