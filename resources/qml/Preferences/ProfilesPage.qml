@@ -381,6 +381,7 @@ UM.ManagementPage
             anchors
             {
                 top: detailsPanelHeaderColumn.bottom
+                margins: UM.Theme.getSize("default_margin").height
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
