@@ -12,8 +12,6 @@ import UM 1.5 as UM
 UM.MenuItem
 {
     id: menuItem
-
-    height: UM.Theme.getSize("context_menu").height
     opacity: enabled ? 1.0 : 0.5
 
     arrow: UM.RecolorImage
