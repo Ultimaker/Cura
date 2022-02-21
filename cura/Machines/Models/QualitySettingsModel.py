@@ -178,7 +178,10 @@ class QualitySettingsModel(ListModel):
                 label = f"<i>{label}</i>"  # Make setting name italic if it's derived from the quality-changes profile.
 
             if isinstance(profile_value, SettingFunction):
-                profile_value_display = self._i18n_catalog.i18nc("@info:status", "Calculated")
+                if self._i18n_catalog:
+                    profile_value_display = self._i18n_catalog.i18nc("@info:status", "Calculated")
+                else:
+                    profile_value_display = "Calculated"
             else:
                 profile_value_display = "" if profile_value is None else str(profile_value)
 
