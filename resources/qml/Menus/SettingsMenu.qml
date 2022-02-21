@@ -39,7 +39,7 @@ Cura.Menu
                 onAboutToHide: updateModels = false
             }
 
-            MenuSeparator
+            Cura.MenuSeparator
             {
                 visible: Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials
             }
