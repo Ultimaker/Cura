@@ -37,7 +37,6 @@ UM.ManagementPage
     buttons: [
         Cura.SecondaryButton
         {
-            id: addMenuButton
             text: catalog.i18nc("@action:button", "Add New")
             onClicked: Cura.Actions.addMachine.trigger()
         }

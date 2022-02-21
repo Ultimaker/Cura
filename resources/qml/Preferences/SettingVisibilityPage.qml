@@ -19,7 +19,6 @@ UM.PreferencesPage
     buttons: [
         Cura.SecondaryButton
         {
-            id: addMenuButton
             text: catalog.i18nc("@action:button", "Defaults")
             onClicked: reset()
         }
