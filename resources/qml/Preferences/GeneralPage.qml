@@ -840,15 +840,17 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
                 }
 
-                Cura.SecondaryButton
+
+                UM.SimpleButton
                 {
-                    id: showMoreInfo
-                    anchors.top: sendDataCheckbox.bottom
-                    text: catalog.i18nc("@action:button", "More information")
-                    onClicked:
-                    {
-                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection();
-                    }
+                    onClicked: CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
+                    iconSource: UM.Theme.getIcon("Information")
+                    anchors.left: sendDataCheckbox.right
+                    anchors.verticalCenter: sendDataCheckbox.verticalCenter
+                    hoverBackgroundColor: UM.Theme.getColor("secondary_button_hover")
+                    backgroundRadius: width / 2
+                    height: UM.Theme.getSize("small_button_icon").height
+                    width: height
                 }
             }
 
