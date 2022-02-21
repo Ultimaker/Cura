@@ -49,22 +49,22 @@ Cura.MachineAction
             width: childrenRect.width
             spacing: UM.Theme.getSize("default_margin").width
             property string firmwareName: Cura.MachineManager.activeMachine.getDefaultFirmwareName()
-            Button
+            Cura.SecondaryButton
             {
                 id: autoUpgradeButton
                 text: catalog.i18nc("@action:button", "Automatically upgrade Firmware")
-                enabled: parent.firmwareName != "" && canUpdateFirmware
+                //enabled: parent.firmwareName != "" && canUpdateFirmware
                 onClicked:
                 {
                     updateProgressDialog.visible = true;
                     activeOutputDevice.updateFirmware(parent.firmwareName);
                 }
             }
-            Button
+            Cura.SecondaryButton
             {
                 id: manualUpgradeButton
                 text: catalog.i18nc("@action:button", "Upload custom Firmware")
-                enabled: canUpdateFirmware
+                //enabled: canUpdateFirmware
                 onClicked:
                 {
                     customFirmwareDialog.open()
@@ -173,7 +173,7 @@ Cura.MachineAction
         }
 
         rightButtons: [
-            Button
+            Cura.SecondaryButton
             {
                 text: catalog.i18nc("@action:button", "Close")
                 enabled: manager.firmwareUpdater != null ? manager.firmwareUpdater.firmwareUpdateState != 1 : true
