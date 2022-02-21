@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -72,6 +72,7 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePackages: browsePackagesAction
+    property alias openMarketplace: openMarketplaceAction
 
     UM.I18nCatalog{id: catalog; name: "cura"}
 
@@ -215,14 +216,14 @@ Item
     Action
     {
         id: marketplaceMaterialsAction
-        text: catalog.i18nc("@action:inmenu", "Add more materials from Marketplace")
+        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate.", "Add more materials from Marketplace")
     }
 
     Action
     {
         id: updateProfileAction;
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Update profile with current settings/overrides");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Update profile with current settings/overrides");
         onTriggered: Cura.ContainerManager.updateQualityChanges();
     }
 
@@ -480,6 +481,13 @@ Item
     Action
     {
         id: browsePackagesAction
+        text: "&Marketplace"
+        iconName: "plugins_browse"
+    }
+
+    Action
+    {
+        id: openMarketplaceAction
         text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
     }

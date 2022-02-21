@@ -1,8 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import QTimer
-from shapely.errors import TopologicalError  # To capture errors if Shapely messes up.
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -138,11 +137,7 @@ class PlatformPhysics:
                             own_convex_hull = node.callDecoration("getConvexHull")
                             other_convex_hull = other_node.callDecoration("getConvexHull")
                             if own_convex_hull and other_convex_hull:
-                                try:
-                                    overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
-                                except TopologicalError as e:  # Can happen if the convex hull is degenerate?
-                                    Logger.warning("Got a topological error when calculating convex hull intersection: {err}".format(err = str(e)))
-                                    overlap = False
+                                overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
                                 if overlap:  # Moving ensured that overlap was still there. Try anew!
                                     temp_move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
                                                                        z = move_vector.z + overlap[1] * self._move_factor)

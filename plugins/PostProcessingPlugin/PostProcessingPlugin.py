@@ -193,6 +193,8 @@ class PostProcessingPlugin(QObject, Extension):
 
                     spec = importlib.util.spec_from_file_location(__name__ + "." + script_name,
                                                                   file_path)
+                    if spec is None:
+                        continue
                     loaded_script = importlib.util.module_from_spec(spec)
                     if spec.loader is None:
                         continue

@@ -83,19 +83,31 @@ Item
         ExclusiveGroup { id: mainWindowHeaderMenuGroup }
     }
 
-    // Shortcut button to quick access the Toolbox
     Controls2.Button
     {
         id: marketplaceButton
-        text: catalog.i18nc("@action:button", "Marketplace")
         height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
-        onClicked: Cura.Actions.browsePackages.trigger()
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: applicationSwitcher.left
+            rightMargin: UM.Theme.getSize("default_margin").width
+        }
 
         hoverEnabled: true
+        onClicked: Cura.Actions.openMarketplace.trigger()
+
+        contentItem: Label
+        {
+            text: "Marketplace" //Ultimaker considers this a product name, so it shouldn't be translated.
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("primary_text")
+            width: contentWidth
+            verticalAlignment: Text.AlignVCenter
+        }
 
         background: Rectangle
         {
-            id: marketplaceButtonBorder
             radius: UM.Theme.getSize("action_button_radius").width
             color: UM.Theme.getColor("main_window_header_background")
             border.width: UM.Theme.getSize("default_lining").width
@@ -103,7 +115,6 @@ Item
 
             Rectangle
             {
-                id: marketplaceButtonFill
                 anchors.fill: parent
                 radius: parent.radius
                 color: UM.Theme.getColor("primary_text")
@@ -112,33 +123,12 @@ Item
             }
         }
 
-        contentItem: Label
-        {
-            id: label
-            text: marketplaceButton.text
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("primary_text")
-            width: contentWidth
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
-        }
-
-        anchors
-        {
-            right: applicationSwitcher.left
-            rightMargin: UM.Theme.getSize("default_margin").width
-            verticalCenter: parent.verticalCenter
-        }
-
         Cura.NotificationIcon
         {
-            id: marketplaceNotificationIcon
             anchors
             {
-                top: parent.top
-                right: parent.right
-                rightMargin: (-0.5 * width) | 0
-                topMargin: (-0.5 * height) | 0
+                horizontalCenter: parent.right
+                verticalCenter: parent.top
             }
             visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
 

@@ -56,7 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
+msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -68,7 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
+msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -558,7 +558,7 @@ msgstr "De maximale snelheid van de motor in de Z-richting."
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
 msgid "Maximum Speed E"
-msgstr ""
+msgstr "Maximale Snelheid E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1728,7 +1728,10 @@ msgstr "Vulpatroon"
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
+msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor u bespaart op materiaalkosten. De"
+" raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden per laag volledig geprint. Gyroïde,"
+" kubische, afgeknotte kubus- en achtvlaksvullingen veranderen per laag voor een meer gelijke krachtverdeling in elke richting. Bliksemvulling minimaliseert"
+" de vulling doordat deze alleen het plafond van het object ondersteunt."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2042,7 +2045,7 @@ msgstr "Snoeihoek bliksemvulling"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "De eindpunten van de vullijnen worden verkort om materiaal te besparen. Deze instelling is de overhanghoek van de eindpunten van deze lijnen."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
@@ -2052,7 +2055,7 @@ msgstr "Rechtbuighoek bliksemvulling"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
-msgstr ""
+msgstr "De vullijnen zijn rechtgetrokken om printtijd te besparen. Dit is de grootste overhanghoek die over de lengte van de vullijn is toegestaan."
 
 #: fdmprinter.def.json
 msgctxt "material label"
