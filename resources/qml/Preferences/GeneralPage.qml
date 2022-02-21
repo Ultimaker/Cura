@@ -537,7 +537,6 @@ UM.PreferencesPage
                     UM.Label
                     {
                         text: catalog.i18nc("@window:text", "Camera rendering:")
-                        font: UM.Theme.getFont("medium_bold")
                     }
                     ListModel
                     {
