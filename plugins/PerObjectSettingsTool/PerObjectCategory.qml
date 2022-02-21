@@ -11,19 +11,26 @@ import ".."
 Button {
     id: base;
 
-    background: Item { }
+    background: Item {}
 
     contentItem: Row
     {
         spacing: UM.Theme.getSize("default_lining").width
 
-        UM.RecolorImage
+        Item //Wrapper to give space before icon with fixed width. This allows aligning checkbox with category icon.
         {
-            anchors.verticalCenter: parent.verticalCenter
-            height: (label.height / 2) | 0
+            height: label.height
             width: height
-            source: base.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight");
-            color: base.hovered ? palette.highlight : palette.buttonText
+            anchors.verticalCenter: parent.verticalCenter
+
+            UM.RecolorImage
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                height: (label.height / 2) | 0
+                width: height
+                source: base.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight");
+                color: base.hovered ? palette.highlight : palette.buttonText
+            }
         }
         UM.RecolorImage
         {
