@@ -184,9 +184,11 @@
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
         "border": [127, 127, 127, 255],
-        "text_selection": [156,195, 255, 127],
+        "text_selection": [156, 195, 255, 127],
         "secondary": [240, 240, 240, 255],
         "secondary_shadow": [216, 216, 216, 255],
+
+        "text_lighter": [108, 108, 108, 255],
 
         "icon": [8, 7, 63, 255],
 
@@ -639,6 +641,7 @@
         "message_action_button": [0, 2.5],
         "message_image": [15.0, 10.0],
         "message_type_icon": [2, 2],
+        "menu": [18, 2],
 
         "infill_button_margin": [0.5, 0.5],
 

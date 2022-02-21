@@ -14,7 +14,7 @@ UM.Menu
     id: menu
     padding: 0
 
-    implicitWidth: UM.Theme.getSize("setting_control").width
+    implicitWidth: UM.Theme.getSize("menu").width
 
     delegate: Cura.MenuItem {}
     background: Rectangle
