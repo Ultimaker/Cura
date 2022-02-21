@@ -16,7 +16,7 @@ Column
     {
         id: title
         anchors.horizontalCenter: parent.horizontalCenter
-        text: catalog.i18nc("@label",  "Sign in to the Ultimaker platform")
+        text: catalog.i18nc("@label", "Sign in to the Ultimaker platform")
         font: UM.Theme.getFont("large_bold")
     }
 
@@ -38,6 +38,7 @@ Column
         horizontalAlignment: Text.AlignLeft
         text: catalog.i18nc("@text", "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the Ultimaker community")
         lineHeight: 1.4
+        wrapMode: Text.NoWrap
     }
 
     Cura.PrimaryButton
