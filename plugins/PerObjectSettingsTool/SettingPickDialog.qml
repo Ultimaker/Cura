@@ -13,6 +13,7 @@ UM.Dialog
     id: settingPickDialog
 
     title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
+    width: UM.Theme.getSize("small_popup_dialog").width
 
     property var additional_excluded_settings
 
