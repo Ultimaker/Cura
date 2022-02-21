@@ -7,13 +7,13 @@ import QtQuick.Controls 2.1
 import UM 1.6 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&Edit")
 
     Cura.MenuItem { action: Cura.Actions.undo }
     Cura.MenuItem { action: Cura.Actions.redo }
-    MenuSeparator { }
+    Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.selectAll }
     Cura.MenuItem { action: Cura.Actions.arrangeAll }
     Cura.MenuItem { action: Cura.Actions.multiplySelection }
@@ -21,7 +21,7 @@ Menu
     Cura.MenuItem { action: Cura.Actions.deleteAll }
     Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
     Cura.MenuItem { action: Cura.Actions.resetAll }
-    MenuSeparator { }
+    Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.groupObjects }
     Cura.MenuItem { action: Cura.Actions.mergeObjects }
     Cura.MenuItem { action: Cura.Actions.unGroupObjects }
