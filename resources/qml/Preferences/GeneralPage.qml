@@ -170,7 +170,7 @@ UM.PreferencesPage
                 UM.Label
                 {
                     id: languageLabel
-                    text: "Language:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
+                    text: "Language*:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
                 }
 
                 ListModel
@@ -262,7 +262,7 @@ UM.PreferencesPage
                 UM.Label
                 {
                     id: themeLabel
-                    text: catalog.i18nc("@label","Theme:")
+                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme*:")
                 }
 
                 ListModel
@@ -303,23 +303,6 @@ UM.PreferencesPage
                 }
             }
 
-            UM.Label
-            {
-                id: languageCaption
-
-                //: Language change warning
-                text: catalog.i18nc("@label", "You will need to restart the application for these changes to have effect.")
-                wrapMode: Text.WordWrap
-                font.italic: true
-            }
-
-            Item
-            {
-                //: Spacer
-                height: UM.Theme.getSize("default_margin").height
-                width: UM.Theme.getSize("default_margin").width
-            }
-
             UM.TooltipArea
             {
                 width: childrenRect.width;
@@ -335,6 +318,16 @@ UM.PreferencesPage
 
                     text: catalog.i18nc("@option:check", "Slice automatically");
                 }
+            }
+
+            UM.Label
+            {
+                id: languageCaption
+
+                //: Language change warning
+                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
+                wrapMode: Text.WordWrap
+                font.italic: true
             }
 
             Item
