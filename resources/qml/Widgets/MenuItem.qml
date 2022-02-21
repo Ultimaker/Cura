@@ -49,7 +49,6 @@ UM.MenuItem
         width: menuItem.width - 2 * UM.Theme.getSize("default_lining").width
         height: menuItem.height - 2 * UM.Theme.getSize("default_lining").height
 
-        color: menuItem.highlighted ?  UM.Theme.getColor("setting_control_highlight") : "transparent"
-        border.color: menuItem.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
+        color: menuItem.highlighted ? UM.Theme.getColor("secondary"): UM.Theme.getColor("setting_control_highlight")
     }
 }
