@@ -101,8 +101,8 @@ Window
             // Search & Top-Level Tabs
             Item
             {
-                Layout.preferredHeight: childrenRect.height
-                Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("default_margin").width
+                implicitHeight: childrenRect.height
+                implicitWidth: parent.width - 2 * UM.Theme.getSize("default_margin").width
                 Layout.alignment: Qt.AlignHCenter
                 RowLayout
                 {
@@ -113,7 +113,7 @@ Window
                     Cura.SearchBar
                     {
                         id: searchBar
-                        Layout.preferredHeight: UM.Theme.getSize("button_icon").height
+                        implicitHeight: UM.Theme.getSize("button_icon").height
                         Layout.fillWidth: true
                         onTextEdited: searchStringChanged(text)
                     }
@@ -173,19 +173,6 @@ Window
                                 }
                             }
                         }
-                    }
-
-                    TextMetrics
-                    {
-                        id: pluginTabTextMetrics
-                        text: pluginTabText.text
-                        font: pluginTabText.font
-                    }
-                    TextMetrics
-                    {
-                        id: materialsTabTextMetrics
-                        text: materialsTabText.text
-                        font: materialsTabText.font
                     }
                 }
             }
