@@ -53,8 +53,8 @@ ListView
         // Vertical ScrollBar, styled similarly to the scrollBar in the settings panel
         id: verticalScrollBar
         visible: packages.contentHeight > packages.height
-
-        background: Item{}
+        anchors.right: parent.right
+        background: Item {}
 
         contentItem: Rectangle
         {
@@ -83,7 +83,16 @@ ListView
         {
             manageableInListView: packages.packagesManageableInListView
             packageData: model.package
-            width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
+            width: {
+                if(verticalScrollBar.visible)
+                {
+                    return parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("default_margin").width
+                }
+                else
+                {
+                    return parent.width - UM.Theme.getSize("default_margin").width
+                }
+            }
             color: cardMouseArea.containsMouse ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("main_background")
         }
     }
