@@ -34,7 +34,7 @@ Build scripts
 -------------
 Please check out [cura-build](https://github.com/Ultimaker/cura-build) for detailed building instructions.
 
-If you want to build the entire environment from scratch before building Cura as well, [cura-build-environment](https://github.com/Ultimaker/cura-build) might be a starting point before cura-build. (Again, see cura-build for more details.)
+If you want to build the entire environment from scratch before building Cura as well, [cura-build-environment](https://github.com/Ultimaker/cura-build-environment) might be a starting point before cura-build. (Again, see cura-build for more details.)
 
 Running from Source
 -------------
