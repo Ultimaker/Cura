@@ -9,34 +9,6 @@ import UM 1.1 as UM
 
 QtObject
 {
-    property Component scrollview: Component
-    {
-        ScrollViewStyle
-        {
-            decrementControl: Item { }
-            incrementControl: Item { }
-
-            transientScrollBars: false
-
-            scrollBarBackground: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("scrollbar").width
-                radius: Math.round(implicitWidth / 2)
-                color: UM.Theme.getColor("scrollbar_background")
-            }
-
-            handle: Rectangle
-            {
-                id: scrollViewHandle
-                implicitWidth: UM.Theme.getSize("scrollbar").width
-                radius: Math.round(implicitWidth / 2)
-
-                color: styleData.pressed ? UM.Theme.getColor("scrollbar_handle_down") : styleData.hovered ? UM.Theme.getColor("scrollbar_handle_hover") : UM.Theme.getColor("scrollbar_handle")
-                Behavior on color { ColorAnimation { duration: 50; } }
-            }
-        }
-    }
-
     property Component partially_checkbox: Component
     {
         CheckBoxStyle
