@@ -53,7 +53,7 @@ Cura.MachineAction
             {
                 id: autoUpgradeButton
                 text: catalog.i18nc("@action:button", "Automatically upgrade Firmware")
-                //enabled: parent.firmwareName != "" && canUpdateFirmware
+                enabled: parent.firmwareName != "" && canUpdateFirmware
                 onClicked:
                 {
                     updateProgressDialog.visible = true;
@@ -64,7 +64,7 @@ Cura.MachineAction
             {
                 id: manualUpgradeButton
                 text: catalog.i18nc("@action:button", "Upload custom Firmware")
-                //enabled: canUpdateFirmware
+                enabled: canUpdateFirmware
                 onClicked:
                 {
                     customFirmwareDialog.open()
