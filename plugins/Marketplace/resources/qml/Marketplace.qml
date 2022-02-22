@@ -98,19 +98,13 @@ Window
                 Item
                 {
                     Layout.preferredHeight: childrenRect.height
-                    Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("thin_margin").width
+                    Layout.preferredWidth: parent.width - 2 * UM.Theme.getSize("default_margin").width
+                    Layout.alignment: Qt.AlignHCenter
                     RowLayout
                     {
                         width: parent.width
                         height: UM.Theme.getSize("button_icon").height + UM.Theme.getSize("default_margin").height
                         spacing: UM.Theme.getSize("thin_margin").width
-
-                        Item
-                        {
-                            Layout.preferredHeight: parent.height
-                            Layout.preferredWidth: searchBar.visible ? UM.Theme.getSize("thin_margin").width : 0
-                            Layout.fillWidth: ! searchBar.visible
-                        }
 
                         Cura.SearchBar
                         {
