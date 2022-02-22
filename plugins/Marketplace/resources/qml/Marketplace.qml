@@ -59,7 +59,7 @@ Window
             {
                 id: packageBrowse
 
-                spacing: UM.Theme.getSize("default_margin").height
+                spacing: UM.Theme.getSize("narrow_margin").height
 
                 // Page title.
                 Item
