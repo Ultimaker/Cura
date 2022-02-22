@@ -72,7 +72,7 @@ ComboBox
         anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: downArrow.left
-
+        wrapMode: Text.NoWrap
         text:
         {
             if (control.delegateModel.count == 0)
@@ -149,6 +149,7 @@ ComboBox
             textFormat: Text.PlainText
             color: UM.Theme.getColor("setting_control_text")
             elide: Text.ElideRight
+            wrapMode: Text.NoWrap
         }
 
         background: UM.TooltipArea

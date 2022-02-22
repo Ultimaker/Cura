@@ -39,22 +39,23 @@ Item
                 width: Math.max(1, Math.round(tableBase.width / headerRepeater.count))
                 height: UM.Theme.getSize("section").height
 
-                color: UM.Theme.getColor("secondary")
+                color: UM.Theme.getColor("main_background")
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color: UM.Theme.getColor("thick_lining")
 
-                Label
+                UM.Label
                 {
                     id: contentText
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-
+                    wrapMode: Text.NoWrap
                     text: modelData
                     font: UM.Theme.getFont("medium_bold")
-                    color: UM.Theme.getColor("text")
                     elide: Text.ElideRight
                 }
-                Rectangle //Resize handle.
+                Item //Resize handle.
                 {
                     anchors
                     {
@@ -62,9 +63,7 @@ Item
                         top: parent.top
                         bottom: parent.bottom
                     }
-                    width: UM.Theme.getSize("thick_lining").width
-
-                    color: UM.Theme.getColor("thick_lining")
+                    width: UM.Theme.getSize("default_lining").width
 
                     MouseArea
                     {
@@ -97,12 +96,23 @@ Item
                     }
                 }
 
-                onWidthChanged:
-                {
-                    tableView.forceLayout(); //Rescale table cells underneath as well.
-                }
+                onWidthChanged: tableView.forceLayout(); //Rescale table cells underneath as well.
             }
         }
+    }
+    Rectangle
+    {
+        color: UM.Theme.getColor("main_background")
+        anchors
+        {
+            top: headerBar.bottom
+            topMargin: -UM.Theme.getSize("default_lining").width
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("thick_lining")
     }
 
     TableView
@@ -114,6 +124,7 @@ Item
             left: parent.left
             right: parent.right
             bottom: parent.bottom
+            margins: UM.Theme.getSize("default_lining").width
         }
 
         flickableDirection: Flickable.AutoFlickIfNeeded
@@ -128,18 +139,21 @@ Item
         {
             implicitHeight: Math.max(1, cellContent.height)
 
-            color: UM.Theme.getColor((tableBase.currentRow == row) ? "primary" : ((row % 2 == 0) ? "main_background" : "viewport_background"))
+            color: UM.Theme.getColor((tableBase.currentRow == row) ? "text_selection" : "main_background")
 
-            Label
+            UM.Label
             {
                 id: cellContent
-                width: parent.width
-
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    right: parent.right
+                }
+                wrapMode: Text.NoWrap
                 text: display
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideRight
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
             }
             TextMetrics
             {
