@@ -129,6 +129,7 @@ Item
         }
 
         flickableDirection: Flickable.AutoFlickIfNeeded
+        contentWidth: -1 // AUto calculate the contendWidth
         clip: true
         ScrollBar.vertical: UM.ScrollBar {}
         columnWidthProvider: function(column)
