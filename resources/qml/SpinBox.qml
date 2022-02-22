@@ -43,7 +43,7 @@ Item
         editable: base.editable
         topPadding: 0
         bottomPadding: 0
-        padding: UM.Theme.getSize("spinbox").height / 4
+        padding: UM.Theme.getSize("narrow_margin").width
 
         // The stepSize of the SpinBox is intentionally set to be always `1`
         // As SpinBoxes can only contain integer values the `base.stepSize` is concidered the precision/resolution
@@ -71,12 +71,7 @@ Item
             base.value = value * base.stepSize;
         }
 
-        background: Item
-        {
-            // Makes space between buttons and textfield transparent
-            opacity: 0
-        }
-
+        background: Item {}
 
         //TextField should be swapped with UM.TextField when it is restyled
         contentItem: TextField
