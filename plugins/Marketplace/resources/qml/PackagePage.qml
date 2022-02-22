@@ -40,7 +40,7 @@ Rectangle
                     id: downloadCount
                     Layout.preferredWidth: parent.width
                     Layout.fillHeight: true
-
+                    visible: packageData.downloadCount != "0"
                     UM.RecolorImage
                     {
                         id: downloadsIcon
@@ -53,6 +53,7 @@ Rectangle
 
                     Label
                     {
+
                         anchors.verticalCenter: downloadsIcon.verticalCenter
 
                         color: UM.Theme.getColor("text")

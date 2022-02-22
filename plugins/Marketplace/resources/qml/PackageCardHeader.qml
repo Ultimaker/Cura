@@ -12,7 +12,7 @@ import Cura 1.6 as Cura
 // are combined into the reusable "PackageCardHeader" component
 Item
 {
-    default property alias contents: contentItem.children;
+    default property alias contents: contentItem.children
 
     property var packageData
     property bool showManageButtons: false
