@@ -88,7 +88,7 @@ Rectangle
                 textFont: descriptionLabel.font
                 isIconOnRightSide: true
 
-                onClicked: Qt.openUrlExternally(packageData.packageInfoUrl)
+                onClicked: Qt.openUrlExternally(packageData.marketplaceURL)
             }
         }
     }
