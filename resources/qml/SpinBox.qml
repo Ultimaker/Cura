@@ -102,14 +102,13 @@ Item
                 color: spinBox.up.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
-            // Minus icon
-            Rectangle
+            UM.RecolorImage
             {
-                x: (parent.width - width) / 2
-                y: (parent.height - height) / 2
-                width: parent.width / 4
-                height: 2
+                anchors.centerIn: parent
+                height: parent.height / 2.5
+                width: height
                 color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
+                source: UM.Theme.getIcon("Minus")
             }
         }
 
@@ -123,22 +122,13 @@ Item
                 color: spinBox.up.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
-            // Plus Icon
-            Rectangle
+            UM.RecolorImage
             {
-                x: (parent.width - width) / 2
-                y: (parent.height - height) / 2
-                width: parent.width / 3.5
-                height: 2
+                anchors.centerIn: parent
+                height: parent.height / 2.5
+                width: height
                 color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
-            }
-            Rectangle
-            {
-                x: (parent.width - width) / 2
-                y: (parent.height - height) / 2
-                width: 2
-                height: parent.width / 3.5
-                color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
+                source: UM.Theme.getIcon("Plus")
             }
         }
     }
