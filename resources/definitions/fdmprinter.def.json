@@ -1199,8 +1199,8 @@
                 },
                 "optimize_wall_printing_order":
                 {
-                    "label": "Order Inner Walls By Inset",
-                    "description": "Order inner wall printing by inset-index, instead of by (hole) region.",
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
