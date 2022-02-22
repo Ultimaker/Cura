@@ -32,8 +32,24 @@ Item
         }
         width: UM.Theme.getSize("card_icon").width
         height: width
-
-        source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
+        sourceSize.height: height
+        sourceSize.width: width
+        source:
+        {
+            if(packageData.iconUrl != "")
+            {
+                return packageData.iconUrl
+            }
+            if(packageData.packageType == "plugin")
+            {
+                return "../images/Plugin.svg"
+            }
+            if(packageData.packageType == "material")
+            {
+                return "../images/Spool.svg"
+            }
+            return "../images/placeholder.svg"
+        }
     }
 
     ColumnLayout
