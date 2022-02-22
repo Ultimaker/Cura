@@ -3,7 +3,6 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 2.15
-import QtQuick.Controls 1.1 as OldControls
 
 import UM 1.5 as UM
 
@@ -16,6 +15,14 @@ UM.PreferencesPage
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
 
     property int scrollToIndex: 0
+
+    buttons: [
+        Cura.SecondaryButton
+        {
+            text: catalog.i18nc("@action:button", "Defaults")
+            onClicked: reset()
+        }
+    ]
 
     signal scrollToSection( string key )
     onScrollToSection:
@@ -34,7 +41,7 @@ UM.PreferencesPage
         id: base
         anchors.fill: parent
 
-        OldControls.CheckBox
+        UM.CheckBox
         {
             id: toggleVisibleSettings
             anchors
@@ -44,7 +51,7 @@ UM.PreferencesPage
                 leftMargin: UM.Theme.getSize("default_margin").width
             }
             text: catalog.i18nc("@label:textbox", "Check all")
-            checkedState:
+            checkState:
             {
                 if(definitionsModel.visibleCount == definitionsModel.categoryCount)
                 {
@@ -59,8 +66,7 @@ UM.PreferencesPage
                     return Qt.PartiallyChecked
                 }
             }
-            partiallyCheckedEnabled: true
-
+            tristate: true
             MouseArea
             {
                 anchors.fill: parent;
