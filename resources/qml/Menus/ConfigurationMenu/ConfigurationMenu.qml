@@ -207,6 +207,7 @@ Cura.ExpandablePopup
                             text: model.material_name
                             elide: Text.ElideRight
                             width: parent.width
+                            wrapMode: Text.NoWrap
                             visible: !materialBrandNameLabel.visible && !truncated
                         }
 
@@ -217,6 +218,7 @@ Cura.ExpandablePopup
                             text: model.material_type
                             elide: Text.ElideRight
                             width: parent.width
+                            wrapMode: Text.NoWrap
                             visible: !materialBrandNameLabel.visible && !materialNameLabel.visible
                         }
                         // Label that shows the name of the variant
@@ -228,6 +230,7 @@ Cura.ExpandablePopup
 
                             text: model.variant
                             elide: Text.ElideRight
+                            wrapMode: Text.NoWrap
                             font: UM.Theme.getFont("default_bold")
                             Layout.preferredWidth: parent.width
                         }
