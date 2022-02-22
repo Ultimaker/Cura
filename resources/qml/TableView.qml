@@ -27,6 +27,7 @@ Item
     property bool allowSelection: true //Whether to allow the user to select items.
     property string sectionRole: ""
 
+    property alias flickableDirection: tableView.flickableDirection
     Row
     {
         id: headerBar
