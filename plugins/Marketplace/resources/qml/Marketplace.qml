@@ -92,6 +92,10 @@ Window
                     icon: content.item && content.item.bannerIcon
                     onRemove: content.item && content.item.onRemoveBanner
                     readMoreUrl: content.item && content.item.bannerReadMoreUrl
+
+                    Layout.fillWidth: true
+                    Layout.leftMargin: UM.Theme.getSize("default_margin").width
+                    Layout.rightMargin: UM.Theme.getSize("default_margin").width
                 }
 
                 // Search & Top-Level Tabs
