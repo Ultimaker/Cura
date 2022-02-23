@@ -11,7 +11,9 @@ import Cura 1.6 as Cura
 Rectangle
 {
     property alias packageData: packageCardHeader.packageData
-    property alias manageableInListView: packageCardHeader.showManageButtons
+    property alias showUpdateButton:  packageCardHeader.showUpdateButton
+    property alias showDisableButton:  packageCardHeader.showDisableButton
+    property alias showInstallButton: packageCardHeader.showInstallButton
 
     height: childrenRect.height
     color: UM.Theme.getColor("main_background")

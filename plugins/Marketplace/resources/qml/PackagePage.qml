@@ -31,7 +31,9 @@ Rectangle
             PackageCardHeader
             {
                 id: packageCardHeader
-                showManageButtons: true
+                showUpdateButton: true
+                showInstallButton: true
+                showDisableButton: true
 
                 anchors.fill: parent
 
