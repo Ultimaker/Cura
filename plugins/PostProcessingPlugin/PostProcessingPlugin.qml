@@ -68,7 +68,6 @@ UM.Dialog
                 anchors
                 {
                     left: parent.left
-                    leftMargin: UM.Theme.getSize("default_margin").width
                     right: parent.right
                     rightMargin: base.textMargin
                 }
@@ -214,7 +213,7 @@ UM.Dialog
                     }
                 }
             }
-            Button
+            Cura.SecondaryButton
             {
                 id: addButton
                 text: catalog.i18nc("@action", "Add a script")
@@ -453,7 +452,7 @@ UM.Dialog
         }
     }
 
-    rightButtons: Button
+    rightButtons: Cura.PrimaryButton
     {
         text: catalog.i18nc("@action:button", "Close")
         onClicked: dialog.accept()
