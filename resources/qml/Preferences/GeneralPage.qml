@@ -894,7 +894,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                Cura.RadioButton
                 {
                     id: checkUpdatesOptionStable
                     text: catalog.i18nc("@option:radio", "Stable releases only")
@@ -910,7 +910,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                Cura.RadioButton
                 {
                     id: checkUpdatesOptionBeta
                     text: catalog.i18nc("@option:radio", "Stable and Beta releases")
