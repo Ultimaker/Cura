@@ -99,7 +99,7 @@ Item
             width: height
 
             UM.UnderlineBackground {
-                color: spinBox.up.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
+                color: spinBox.down.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
             UM.RecolorImage
