@@ -620,6 +620,7 @@
         "checkbox_label_padding": [0.5, 0.5],
 
         "spinbox": [6.0, 3.0],
+        "combobox_dialog": [14, 2],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
