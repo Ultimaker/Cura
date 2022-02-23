@@ -119,7 +119,7 @@ Item
                     color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered"): "transparent"
                     radius: externalLinkButton.width / 2
                 }
-                onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
+                onClicked: Qt.openUrlExternally(packageData.marketplaceURL)
             }
         }
 
