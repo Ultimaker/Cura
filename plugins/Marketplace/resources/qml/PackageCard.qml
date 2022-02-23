@@ -41,54 +41,6 @@ Rectangle
                 wrapMode: Text.Wrap
                 elide: Text.ElideRight
                 visible: text !== ""
-
-                onLineLaidOut:
-                {
-                    if(truncated && line.isLast)
-                    {
-                        let max_line_width = parent.width - readMoreButton.width - fontMetrics.advanceWidth("… ") - 2 * UM.Theme.getSize("default_margin").width;
-                        if(line.implicitWidth > max_line_width)
-                        {
-                            line.width = max_line_width;
-                        }
-                        else
-                        {
-                            line.width = line.implicitWidth - fontMetrics.advanceWidth("…"); //Truncate the ellipsis. We're adding this ourselves.
-                        }
-                        descriptionLabel.lastLineWidth = line.implicitWidth;
-                    }
-                }
-            }
-            Label
-            {
-                id: tripleDotLabel
-                anchors.left: parent.left
-                anchors.leftMargin: descriptionLabel.lastLineWidth
-                anchors.bottom: descriptionLabel.bottom
-
-                text: "… "
-                font: descriptionLabel.font
-                color: descriptionLabel.color
-                visible: descriptionLabel.truncated && descriptionLabel.text !== ""
-            }
-            Cura.TertiaryButton
-            {
-                id: readMoreButton
-                anchors.right: parent.right
-                anchors.bottom: descriptionLabel.bottom
-                height: fontMetrics.height //Height of a single line.
-
-                text: catalog.i18nc("@info", "Read more")
-                iconSource: UM.Theme.getIcon("LinkExternal")
-
-                visible: descriptionLabel.truncated && descriptionLabel.text !== ""
-                enabled: visible
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("wide_margin").width
-                textFont: descriptionLabel.font
-                isIconOnRightSide: true
-
-                onClicked: Qt.openUrlExternally(packageData.marketplaceURL)
             }
         }
     }
