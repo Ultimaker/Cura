@@ -141,7 +141,6 @@
         "jerk_wall_0":                                  { "value": 10 },
         "jerk_roofing":                                 { "value": 10 },
         "cool_fan_speed":                               {"default_value": 25},
-        "infill_sparse_density":                        {"default_value": 10},
-
+        "infill_sparse_density":                        {"default_value": 10}
     }
 }
