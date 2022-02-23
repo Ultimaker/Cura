@@ -32,11 +32,11 @@
         "machine_start_gcode": { "default_value": "G21                                        ; metric values \nG90                                        ; absolute positioning \nM82                                        ; set extruder to absolute mode \nM107                                       ; start with the fan off \nM104 S{material_initial_print_temperature} ; start heating the hot end \nM190 S{material_bed_temperature_layer_0}   ; wait for bed to heat\nM109 S{material_initial_print_temperature} ; wait for hotend to finish heating\nM300 S1000 P500                            ; BEEP heating done \nG28 X0 Y10 Z0                              ; move X/Y to min endstops \nM420 S1                                    ; Enable leveling \nM420 Z2.0                                  ; Set leveling fading height to 2 mm \nG0 Z0.15                                   ; lift nozzle a bit \nG92 E0                                     ; zero the extruded length \nG1 X50 E25 F500                            ; Extrude 25mm of filament in a 5cm line. \nG92 E0                                     ; zero the extruded length again \nG1 E-2 F500                                ; Retract a little \nG1 X120 F4000                              ; Quickly wipe away from the filament line" },
         "machine_end_gcode": { "default_value": "M104 S0                                    ; Extruder off \nM140 S0                                    ; Heatbed off \nM107                                       ; Fan off \nG91                                        ; relative positioning \nG1 E-5 F300                                ; retract a little \nG1 Z+10 E-5                                ; lift print head \nG28 X0 Y0                                  ; homing \nG1 Y180 F2000                              ; reset feedrate \nM84                                        ; disable stepper motors \nG90                                        ; absolute positioning \nM300 S440 P200                             ; Make Print Completed Tones \nM300 S660 P250                             ; beep \nM300 S880 P300                             ; beep" },
 
-		"machine_max_feedrate_x": { "value": 500 },
-		"machine_max_feedrate_y": { "value": 500 },
-		"machine_max_feedrate_z": { "value": 8 },
-		"machine_max_feedrate_e": { "value": 60 },
-		
+        "machine_max_feedrate_x": { "value": 500 },
+        "machine_max_feedrate_y": { "value": 500 },
+        "machine_max_feedrate_z": { "value": 8 },
+        "machine_max_feedrate_e": { "value": 60 },
+
         "machine_max_acceleration_x": { "value": 3000 },
         "machine_max_acceleration_y": { "value": 2000 },
         "machine_max_acceleration_z": { "value": 60 },
@@ -75,7 +75,8 @@
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_print" },
         "speed_support_interface": { "value": "speed_topbottom" },
-        
+		"speed_z_hop": { "value": 8 },
+
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
         "optimize_wall_printing_order": { "value": "True" },
@@ -83,16 +84,16 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        
+
         "infill_sparse_density": { "value": 25 },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 15.0 },
-       
-       
+
+
         "retraction_speed": { "value": 25, "maximum_value": 40 },
         "retraction_retract_speed": { "maximum_value": 40 },
         "retraction_prime_speed": { "maximum_value": 40 },
-        
+
         "retraction_hop_enabled": { "value": true },
         "retraction_hop": { "value": 0.075 },
         "retraction_hop_only_when_collides": { "value": true },
@@ -119,7 +120,7 @@
         "skirt_gap": { "value": 5.0 },
         "skirt_line_count": { "value": 4 },
 
-		"meshfix_extensive_stitching" { "value": true },
+		"meshfix_extensive_stitching": { "value": true },
         "meshfix_maximum_deviation": { "value": 0.05 },
         "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },
         "support_pattern": { "value": "'zigzag'" },
