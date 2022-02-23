@@ -91,10 +91,12 @@ UM.Dialog
     buttonSpacing: UM.Theme.getSize("thin_margin").width
 
     leftButtons: [
-        ComboBox
+        Cura.ComboBox
         {
+            implicitHeight: UM.Theme.getSize("combobox_dialog").height
+            implicitWidth: UM.Theme.getSize("combobox_dialog").width
+
             id: discardOrKeepProfileChangesDropDownButton
-            width: 300
             textRole: "text"
 
             model: ListModel
