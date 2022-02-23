@@ -554,8 +554,8 @@ UM.PreferencesPage
 
                         model: comboBoxList
                         textRole: "text"
-                        width: UM.Theme.getSize("setting_control").width
-                        height: UM.Theme.getSize("setting_control").height
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
 
                         currentIndex:
                         {
@@ -711,8 +711,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: UM.Theme.getSize("setting_control").width
-                        height: UM.Theme.getSize("setting_control").height
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
 
                         model: ListModel
                         {
@@ -779,8 +779,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: UM.Theme.getSize("setting_control").width
-                        height: UM.Theme.getSize("setting_control").height
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
