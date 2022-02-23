@@ -137,7 +137,7 @@ UM.ManagementPage
                 base.toActivateNewQuality = false;
             }
         }
-        UM.MessageDialog
+        Cura.MessageDialog
         {
             id: messageDialog
             standardButtons: Dialog.Ok
@@ -245,7 +245,7 @@ UM.ManagementPage
         }
 
         // Confirmation dialog for removing a profile
-        UM.MessageDialog
+        Cura.MessageDialog
         {
             id: confirmRemoveQualityDialog
 

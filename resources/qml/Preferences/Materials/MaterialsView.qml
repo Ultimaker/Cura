@@ -119,7 +119,7 @@ Item
             width: base.width
             property real rowHeight: brandTextField.height + UM.Theme.getSize("default_lining").height
 
-            UM.MessageDialog
+            Cura.MessageDialog
             {
                 id: confirmDiameterChangeDialog
 

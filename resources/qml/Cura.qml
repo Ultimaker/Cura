@@ -585,7 +585,7 @@ UM.MainWindow
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: exitConfirmationDialog
         title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
@@ -743,14 +743,14 @@ UM.MainWindow
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: packageInstallDialog
         title: catalog.i18nc("@window:title", "Install Package")
         standardButtons: StandardButton.Ok
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: infoMultipleFilesWithGcodeDialog
         title: catalog.i18nc("@title:window", "Open File(s)")

@@ -322,7 +322,7 @@ Item
             onClicked: confirmationDialog.visible = true
         }
 
-        UM.MessageDialog
+        Cura.MessageDialog
         {
             id: confirmationDialog
 

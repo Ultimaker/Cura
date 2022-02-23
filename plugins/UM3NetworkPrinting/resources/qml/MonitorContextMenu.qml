@@ -133,7 +133,7 @@ Item
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: sendToTopConfirmationDialog
         onAccepted: OutputDevice.sendJobToTop(printJob.key)
@@ -142,7 +142,7 @@ Item
         title: catalog.i18nc("@window:title", "Move print job to top")
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: deleteConfirmationDialog
         onAccepted: OutputDevice.deleteJobFromQueue(printJob.key)
@@ -151,7 +151,7 @@ Item
         title: catalog.i18nc("@window:title", "Delete print job")
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: abortConfirmationDialog
         onAccepted: printJob.setState("abort")

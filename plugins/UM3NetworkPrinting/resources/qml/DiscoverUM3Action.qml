@@ -256,7 +256,7 @@ Cura.MachineAction
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: invalidIPAddressMessageDialog
         title: catalog.i18nc("@title:window", "Invalid IP address")
