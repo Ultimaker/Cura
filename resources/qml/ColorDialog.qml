@@ -19,6 +19,8 @@ UM.Dialog
 
     margin: UM.Theme.getSize("default_margin").width
 
+    property alias swatchGridColumns: colorSwatchGrid.columns
+
     // In this case we would like to let the content of the dialog determine the size of the dialog
     // however with the current implementation of the dialog this is not possible, so instead we calculate
     // the size of the dialog ourselves.
@@ -56,6 +58,7 @@ UM.Dialog
         spacing: UM.Theme.getSize("wide_margin").height
 
         GridLayout {
+            id: colorSwatchGrid
             columns: 5
             width: childrenRect.width
             height: childrenRect.height
