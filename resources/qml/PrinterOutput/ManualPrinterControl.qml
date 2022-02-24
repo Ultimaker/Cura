@@ -226,15 +226,15 @@ Item
                 Repeater
                 {
                     model: distancesModel
-                    delegate: Button
+                    delegate: Cura.SecondaryButton
                     {
                         height: UM.Theme.getSize("setting_control").height
-                        width: height + UM.Theme.getSize("default_margin").width
 
                         text: model.label
                         ButtonGroup.group: distanceGroup
-                        checkable: true
-                        checked: distancesRow.currentDistance == model.value
+                        color: distancesRow.currentDistance == model.value ? UM.Theme.getColor("primary_button") : UM.Theme.getColor("secondary_button")
+                        textColor: distancesRow.currentDistance == model.value ? UM.Theme.getColor("primary_button_text"): UM.Theme.getColor("secondary_button_text")
+                        hoverColor: distancesRow.currentDistance == model.value ? UM.Theme.getColor("primary_button_hover"): UM.Theme.getColor("secondary_button_hover")
                         onClicked: distancesRow.currentDistance = model.value
                     }
                 }
