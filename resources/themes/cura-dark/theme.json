@@ -162,8 +162,6 @@
 
         "tool_button_border": [255, 255, 255, 38],
 
-        "y_axis": [96, 96, 255, 255],
-
         "viewport_background": [31, 36, 39, 255],
         "volume_outline": [12, 169, 227, 128],
         "buildplate": [169, 169, 169, 255],

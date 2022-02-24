@@ -138,6 +138,7 @@
         "retraction_hop_only_when_collides": { "value": "True" },
         "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
+        "retraction_speed": {"value": "45" },
         "skin_overlap": { "value": "10" },
         "speed_layer_0": { "value": "20" },
         "speed_prime_tower": { "value": "speed_topbottom" },
