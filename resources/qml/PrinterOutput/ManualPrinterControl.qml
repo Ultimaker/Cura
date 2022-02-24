@@ -98,6 +98,7 @@ Item
                     Layout.preferredWidth: _buttonSize
                     Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleUp")
+                    leftPadding: (Layout.preferredWidth - iconSize) / 2
 
                     onClicked: printerModel.moveHead(0, distancesRow.currentDistance, 0)
                 }
@@ -109,6 +110,7 @@ Item
                     Layout.preferredWidth: _buttonSize
                     Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleLeft")
+                    leftPadding: (Layout.preferredWidth - iconSize) / 2
 
                     onClicked: printerModel.moveHead(-distancesRow.currentDistance, 0, 0)
                 }
@@ -120,6 +122,7 @@ Item
                     Layout.preferredWidth: _buttonSize
                     Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleRight")
+                    leftPadding: (Layout.preferredWidth - iconSize) / 2
 
                     onClicked:  printerModel.moveHead(distancesRow.currentDistance, 0, 0)
                 }
@@ -131,6 +134,7 @@ Item
                     Layout.preferredWidth: _buttonSize
                     Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("ChevronSingleDown")
+                    leftPadding: (Layout.preferredWidth - iconSize) / 2
 
                     onClicked: printerModel.moveHead(0, -distancesRow.currentDistance, 0)
                 }
@@ -142,6 +146,7 @@ Item
                     Layout.preferredWidth: _buttonSize
                     Layout.preferredHeight: _buttonSize
                     iconSource: UM.Theme.getIcon("House")
+                    leftPadding: (Layout.preferredWidth - iconSize) / 2
 
                     onClicked:  printerModel.homeHead()
                 }
@@ -166,6 +171,7 @@ Item
                     iconSource: UM.Theme.getIcon("ChevronSingleUp")
                     width: height
                     height: _buttonSize
+                    leftPadding: (width - iconSize) / 2
 
                     onClicked: printerModel.moveHead(0, 0, distancesRow.currentDistance)
 
@@ -176,6 +182,7 @@ Item
                     iconSource: UM.Theme.getIcon("House")
                     width: height
                     height: _buttonSize
+                    leftPadding: (width - iconSize) / 2
 
                     onClicked: printerModel.homeBed()
                 }
@@ -185,6 +192,7 @@ Item
                     iconSource: UM.Theme.getIcon("ChevronSingleDown")
                     width: height
                     height: _buttonSize
+                    leftPadding: (width - iconSize) / 2
 
                     onClicked: printerModel.moveHead(0, 0, -distancesRow.currentDistance)
                 }
@@ -218,15 +226,15 @@ Item
                 Repeater
                 {
                     model: distancesModel
-                    delegate: Button
+                    delegate: Cura.SecondaryButton
                     {
                         height: UM.Theme.getSize("setting_control").height
-                        width: height + UM.Theme.getSize("default_margin").width
 
                         text: model.label
                         ButtonGroup.group: distanceGroup
-                        checkable: true
-                        checked: distancesRow.currentDistance == model.value
+                        color: distancesRow.currentDistance == model.value ? UM.Theme.getColor("primary_button") : UM.Theme.getColor("secondary_button")
+                        textColor: distancesRow.currentDistance == model.value ? UM.Theme.getColor("primary_button_text"): UM.Theme.getColor("secondary_button_text")
+                        hoverColor: distancesRow.currentDistance == model.value ? UM.Theme.getColor("primary_button_hover"): UM.Theme.getColor("secondary_button_hover")
                         onClicked: distancesRow.currentDistance = model.value
                     }
                 }
