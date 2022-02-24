@@ -84,7 +84,7 @@ ListView
             manageableInListView: packages.packagesManageableInListView
             packageData: model.package
             width: {
-                if(verticalScrollBar.visible)
+                if (verticalScrollBar.visible)
                 {
                     return parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("default_margin").width
                 }

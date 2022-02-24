@@ -36,19 +36,16 @@ Item
         sourceSize.width: width
         source:
         {
-            if(packageData.iconUrl != "")
+            if (packageData.iconUrl != "")
             {
                 return packageData.iconUrl
             }
-            if(packageData.packageType == "plugin")
+            switch (packageData.packageType)
             {
-                return "../images/Plugin.svg"
+                case "plugin": return "../images/Plugin.svg";
+                case "material": return "../images/Spool.svg";
+                default: return "../images/placeholder.svg";
             }
-            if(packageData.packageType == "material")
-            {
-                return "../images/Spool.svg"
-            }
-            return "../images/placeholder.svg"
         }
     }
 
