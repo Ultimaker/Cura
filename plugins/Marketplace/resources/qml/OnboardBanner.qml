@@ -16,10 +16,7 @@ Rectangle
     property var onRemove
     property string readMoreUrl
 
-    Layout.preferredHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
-    Layout.fillWidth: true
-    Layout.margins: UM.Theme.getSize("default_margin").width
-
+    implicitHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
     color: UM.Theme.getColor("action_panel_secondary")
 
     // Icon

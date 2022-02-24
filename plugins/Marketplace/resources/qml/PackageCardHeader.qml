@@ -12,7 +12,7 @@ import Cura 1.6 as Cura
 // are combined into the reusable "PackageCardHeader" component
 Item
 {
-    default property alias contents: contentItem.children;
+    default property alias contents: contentItem.children
 
     property var packageData
     property bool showManageButtons: false
@@ -32,8 +32,21 @@ Item
         }
         width: UM.Theme.getSize("card_icon").width
         height: width
-
-        source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
+        sourceSize.height: height
+        sourceSize.width: width
+        source:
+        {
+            if (packageData.iconUrl != "")
+            {
+                return packageData.iconUrl
+            }
+            switch (packageData.packageType)
+            {
+                case "plugin": return "../images/Plugin.svg";
+                case "material": return "../images/Spool.svg";
+                default: return "../images/placeholder.svg";
+            }
+        }
     }
 
     ColumnLayout
@@ -103,7 +116,7 @@ Item
                     color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered"): "transparent"
                     radius: externalLinkButton.width / 2
                 }
-                onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
+                onClicked: Qt.openUrlExternally(packageData.marketplaceURL)
             }
         }
 
