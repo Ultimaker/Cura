@@ -40,6 +40,9 @@ Rectangle
                     id: downloadCount
                     Layout.preferredWidth: parent.width
                     Layout.fillHeight: true
+                    // It's not the perfect way to handle this, since a package really can have 0 downloads
+                    // But we re-use the package page for the manage plugins as well. The one user that doesn't see
+                    // the num downloads is an acceptable "sacrifice" to make this easy to fix. 
                     visible: packageData.downloadCount != "0"
                     UM.RecolorImage
                     {
