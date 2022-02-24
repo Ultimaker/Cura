@@ -183,8 +183,8 @@ Item
     UM.ProgressBar
     {
         id: progressBar
-        minimumValue: 0
-        maximumValue: 100
+        from: 0
+        to: 100
         value: 0
 
         //Doing this in an explicit binding since the implicit binding breaks on occasion.
