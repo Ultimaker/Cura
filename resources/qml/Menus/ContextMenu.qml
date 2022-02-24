@@ -8,7 +8,7 @@ import QtQuick.Window 2.1
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     id: base
 

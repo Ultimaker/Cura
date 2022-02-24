@@ -72,7 +72,7 @@ Cura.Menu
 
     Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0}
 
-    Menu
+    Cura.Menu
     {
         id: genericMenu
         title: catalog.i18nc("@label:category menu label", "Generic")
