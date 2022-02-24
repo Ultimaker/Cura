@@ -27,11 +27,15 @@ UM.Dialog
         "#FFFFFF", "#D3D3D3", "#9E9E9E", "#5A5A5A", "#000000",
     ]
 
-    Component.onCompleted:
+    Component.onCompleted: updateSwatches()
+    onSwatchColorsChanged: updateSwatches()
+
+    function updateSwatches()
     {
-        for (let i = 0; i < base.swatchColors.length; i ++)
+        swatchColorsModel.clear();
+        for (const swatchColor of base.swatchColors)
         {
-            swatchColorsModel.append({ swatchColor: base.swatchColors[i] });
+            swatchColorsModel.append({ swatchColor });
         }
     }
 

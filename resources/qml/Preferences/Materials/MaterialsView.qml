@@ -222,7 +222,22 @@ Item
                     id: colorDialog
                     title: catalog.i18nc("@title", "Material color picker")
                     color: properties.color_code
-                    onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
+//                    swatchColors: ["#2161AF", "#57AFB2", "#F7B32D", "#E33D4A", "#C088AD"]
+                    onAccepted: {
+                        base.setMetaDataEntry("color_code", properties.color_code, color);
+                        console.log("color_code");
+
+                        const timer = Qt.createQmlObject("import QtQuick 2.0; Timer {}", base);
+                        timer.interval = 10000;
+                        timer.repeat = true;
+                        timer.triggered.connect(function () {
+                            console.log("updating colors");
+                            colorDialog.swatchColors = ["#2161AF", "#57AFB2", "#F7B32D", "#E33D4A", "#C088AD"];
+                        })
+
+                        console.log("starting timers");
+                        timer.start();
+                    }
                 }
             }
 
