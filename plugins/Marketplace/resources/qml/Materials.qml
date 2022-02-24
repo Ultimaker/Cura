@@ -16,7 +16,8 @@ Packages
         bannerVisible = false;
     }
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/materials?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-materials-browser"
-    packagesManageableInListView: false
+    showUpdateButton: true
+    showInstallButton: true
 
     model: manager.MaterialPackageList
 }

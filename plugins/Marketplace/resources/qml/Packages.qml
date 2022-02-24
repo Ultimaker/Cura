@@ -19,7 +19,10 @@ ListView
     property string bannerText
     property string bannerReadMoreUrl
     property var onRemoveBanner
-    property bool packagesManageableInListView
+
+    property bool showUpdateButton
+    property bool showDisableButton
+    property bool showInstallButton
 
     clip: true
 
@@ -81,7 +84,9 @@ ListView
 
         PackageCard
         {
-            manageableInListView: packages.packagesManageableInListView
+            showUpdateButton: packages.showUpdateButton
+            showDisableButton: packages.showDisableButton
+            showInstallButton: packages.showInstallButton
             packageData: model.package
             width: {
                 if (verticalScrollBar.visible)
