@@ -17,6 +17,8 @@ UM.Dialog
 
     property variant catalog: UM.I18nCatalog { name: "cura" }
 
+    margin: UM.Theme.getSize("default_margin").width
+
     // In this case we would like to let the content of the dialog determine the size of the dialog
     // however with the current implementation of the dialog this is not possible, so instead we calculate
     // the size of the dialog ourselves.
@@ -128,7 +130,7 @@ UM.Dialog
         }
     }
 
-    buttonSpacing: UM.Theme.getSize("default_margin").width
+    buttonSpacing: UM.Theme.getSize("thin_margin").width
 
     rightButtons:
     [
