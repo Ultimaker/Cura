@@ -17,7 +17,14 @@ UM.Dialog
 
     property variant catalog: UM.I18nCatalog { name: "cura" }
 
-    margin: UM.Theme.getSize("wide_margin").width
+    // In this case we would like to let the content of the dialog determine the size of the dialog
+    // however with the current implementation of the dialog this is not possible, so instead we calculate
+    // the size of the dialog ourselves.
+    minimumWidth: content.width + 2 * margin
+    minimumHeight:
+        content.height                                 // content height
+      + buttonRow.height                               // button row height
+      + 3 * margin                                     // top and bottom margin and margin between buttons and content
 
     property alias color: colorInput.text
     property var swatchColors: [
