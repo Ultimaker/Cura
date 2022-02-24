@@ -31,10 +31,8 @@ Rectangle
             {
                 id: descriptionLabel
                 width: parent.width
-                property real lastLineWidth: 0; //Store the width of the last line, to properly position the elision.
 
                 text: packageData.description
-                textFormat: Text.PlainText //Must be plain text, or we won't get onLineLaidOut signals. Don't auto-detect!
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 maximumLineCount: 2
