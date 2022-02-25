@@ -18,7 +18,7 @@ Button
     {
         anchors.fill: parent
         radius: 0.5 * width
-        color: parent.enabled ? (parent.hovered ? UM.Theme.getColor("monitor_secondary_button_hover") : "transparent") : UM.Theme.getColor("monitor_icon_disabled")
+        color: parent.enabled ? (parent.hovered ? UM.Theme.getColor("monitor_card_hover") : "transparent") : UM.Theme.getColor("monitor_icon_disabled")
     }
 
     UM.RecolorImage

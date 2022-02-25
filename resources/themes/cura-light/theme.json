@@ -374,11 +374,6 @@
         "monitor_icon_accent": [255, 255, 255, 255],
         "monitor_icon_disabled": [238, 238, 238, 255],
 
-        "monitor_secondary_button_hover": [232, 242, 252, 255],
-        "monitor_secondary_button": [240, 240, 240, 255],
-        "monitor_secondary_button_text": [30, 102, 215, 255],
-        "monitor_secondary_button_shadow": [216, 216, 216, 255],
-
         "monitor_card_border": [192, 193, 194, 255],
         "monitor_card_background": [255, 255, 255, 255],
         "monitor_card_hover": [232, 242, 252, 255],

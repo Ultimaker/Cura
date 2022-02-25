@@ -149,10 +149,6 @@
         "monitor_icon_disabled": [102, 102, 102, 255],
 
         "monitor_secondary_button_hover": [80, 80, 80, 255],
-        "monitor_secondary_button": [92, 92, 92, 255],
-        "monitor_secondary_button_text": [250, 250, 250, 255],
-        "monitor_secondary_button_shadow": [74, 74, 74, 255],
-
         "monitor_card_border": [102, 102, 102, 255],
         "monitor_card_background": [51, 53, 54, 255],
         "monitor_card_hover": [84, 89, 95, 255],

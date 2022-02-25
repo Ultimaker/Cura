@@ -63,7 +63,7 @@ Item
                 leftMargin: 36 * screenScaleFactor // TODO: Theme!
                 verticalCenter: parent.verticalCenter
             }
-            spacing: 18 * screenScaleFactor // TODO: Theme!
+            spacing: UM.Theme.getSize("default_margin").width
 
             Rectangle
             {
@@ -95,9 +95,9 @@ Item
                 {
                     id: printerNameLabel
                     color: printer ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
-                    height: 18 * screenScaleFactor // TODO: Theme!
+                    height: UM.Theme.getSize("default_margin").width
                     width: parent.width
-                    radius: 2 * screenScaleFactor // TODO: Theme!
+                    radius: UM.Theme.getSize("default_radius").width
 
                     UM.Label
                     {
@@ -106,8 +106,6 @@ Item
                         font: UM.Theme.getFont("large") // 16pt, bold
                         width: parent.width
                         visible: printer
-
-                        // FIXED-LINE-HEIGHT:
                         height: parent.height
                     }
                 }
@@ -116,7 +114,7 @@ Item
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
                     height: 18 * screenScaleFactor // TODO: Theme!
-                    radius: 2 * screenScaleFactor // TODO: Theme!
+                    radius: UM.Theme.getSize("default_radius").width
                     visible: !printer
                     width: 48 * screenScaleFactor // TODO: Theme!
                 }
@@ -160,22 +158,16 @@ Item
                         }
                         color: UM.Theme.getColor("text_link")
                         source: UM.Theme.getIcon("LinkExternal")
-                        width: 12 * screenScaleFactor
-                        height: 12 * screenScaleFactor
+                        width: UM.Theme.getSize("icon").width
+                        height: UM.Theme.getSize("icon").height
                     }
                 }
                 MouseArea
                 {
                     anchors.fill: managePrinterLink
                     onClicked: OutputDevice.openPrinterControlPanel()
-                    onEntered:
-                    {
-                        manageQueueText.font.underline = true
-                    }
-                    onExited:
-                    {
-                        manageQueueText.font.underline = false
-                    }
+                    onEntered: manageQueueText.font.underline = true
+                    onExited: manageQueueText.font.underline = false
                 }
             }
 
@@ -327,7 +319,7 @@ Item
                 leftMargin: 36 * screenScaleFactor // TODO: Theme!
             }
             height: childrenRect.height
-            spacing: 18 * screenScaleFactor // TODO: Theme!
+            spacing: UM.Theme.getSize("default_margin").width
 
             UM.Label
             {
@@ -403,9 +395,6 @@ Item
                     font: UM.Theme.getFont("large") // 16pt, bold
                     text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
                     width: parent.width
-
-                    // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
                 }
 
                 UM.Label
@@ -421,9 +410,6 @@ Item
                     elide: Text.ElideRight
                     text: printer && printer.activePrintJob ? printer.activePrintJob.owner : catalog.i18nc("@label", "Anonymous")
                     width: parent.width
-
-                    // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
                 }
             }
 
@@ -445,45 +431,19 @@ Item
                 }
                 text: catalog.i18nc("@label:status", "Requires configuration changes")
                 visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
-
-                // FIXED-LINE-HEIGHT:
-                height: 18 * screenScaleFactor // TODO: Theme!
             }
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: detailsButton
             anchors
             {
                 verticalCenter: parent.verticalCenter
                 right: parent.right
-                rightMargin: 18 * screenScaleFactor // TODO: Theme!
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
-            background: Rectangle
-            {
-                color: UM.Theme.getColor("monitor_secondary_button_shadow")
-                radius: 2 * screenScaleFactor // Todo: Theme!
-                Rectangle
-                {
-                    anchors.fill: parent
-                    anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                    color: detailsButton.hovered ? UM.Theme.getColor("monitor_secondary_button_hover") : UM.Theme.getColor("monitor_secondary_button")
-                    radius: 2 * screenScaleFactor // Todo: Theme!
-                }
-            }
-            contentItem: UM.Label
-            {
-                anchors.fill: parent
-                anchors.bottomMargin: 2 * screenScaleFactor // TODO: Theme!
-                color: UM.Theme.getColor("monitor_secondary_button_text")
-                font: UM.Theme.getFont("medium") // 14pt, regular
-                text: catalog.i18nc("@action:button", "Details");
-                horizontalAlignment: Text.AlignHCenter
-                height: 18 * screenScaleFactor // TODO: Theme!
-            }
-            implicitHeight: 32 * screenScaleFactor // TODO: Theme!
-            implicitWidth: 96 * screenScaleFactor // TODO: Theme!
+            text: catalog.i18nc("@action:button", "Details")
             visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
             onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
             enabled: OutputDevice.supportsPrintJobActions
