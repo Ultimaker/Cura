@@ -31,7 +31,7 @@ from cura.Utils.Threading import call_on_qt_thread
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
 
-import Arcus
+import pyArcus
 
 if TYPE_CHECKING:
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
@@ -102,8 +102,8 @@ class CuraEngineBackend(QObject, Backend):
         self._layer_view_active = False #type: bool
         self._onActiveViewChanged()
 
-        self._stored_layer_data = []  # type: List[Arcus.PythonMessage]
-        self._stored_optimized_layer_data = {}  # type: Dict[int, List[Arcus.PythonMessage]] # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
+        self._stored_layer_data = []  # type: List[pyArcus.PythonMessage]
+        self._stored_optimized_layer_data = {}  # type: Dict[int, List[pyArcus.PythonMessage]] # key is build plate number, then arrays are stored until they go to the ProcessSlicesLayersJob
 
         self._scene = application.getController().getScene() #type: Scene
         self._scene.sceneChanged.connect(self._onSceneChanged)
@@ -607,7 +607,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._invokeSlice()
 
-    def _onSocketError(self, error: Arcus.Error) -> None:
+    def _onSocketError(self, error: pyArcus.Error) -> None:
         """Called when an error occurs in the socket connection towards the engine.
 
         :param error: The exception that occurred.
@@ -617,18 +617,18 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         super()._onSocketError(error)
-        if error.getErrorCode() == Arcus.ErrorCode.Debug:
+        if error.getErrorCode() == pyArcus.ErrorCode.Debug:
             return
 
         self._terminate()
         self._createSocket()
 
-        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
+        if error.getErrorCode() not in [pyArcus.ErrorCode.BindFailedError, pyArcus.ErrorCode.ConnectionResetError, pyArcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
 
         # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
         # needs to be updated. Otherwise backendState is "Unable To Slice"
-        if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
+        if error.getErrorCode() == pyArcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
             self._start_slice_job.setIsCancelled(False)
 
     # Check if there's any slicable object in the scene.
@@ -695,7 +695,7 @@ class CuraEngineBackend(QObject, Backend):
             self.needsSlicing()
             self._onChanged()
 
-    def _onLayerMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onLayerMessage(self, message: pyArcus.PythonMessage) -> None:
         """Called when a sliced layer data message is received from the engine.
 
         :param message: The protobuf message containing sliced layer data.
@@ -703,7 +703,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._stored_layer_data.append(message)
 
-    def _onOptimizedLayerMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onOptimizedLayerMessage(self, message: pyArcus.PythonMessage) -> None:
         """Called when an optimized sliced layer data message is received from the engine.
 
         :param message: The protobuf message containing sliced layer data.
@@ -714,7 +714,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
             self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
-    def _onProgressMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onProgressMessage(self, message: pyArcus.PythonMessage) -> None:
         """Called when a progress message is received from the engine.
 
         :param message: The protobuf message containing the slicing progress.
@@ -736,7 +736,7 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self._change_timer.start()
 
-    def _onSlicingFinishedMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onSlicingFinishedMessage(self, message: pyArcus.PythonMessage) -> None:
         """Called when the engine sends a message that slicing is finished.
 
         :param message: The protobuf message signalling that slicing is finished.
@@ -784,7 +784,7 @@ class CuraEngineBackend(QObject, Backend):
             self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
             self._invokeSlice()
 
-    def _onGCodeLayerMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onGCodeLayerMessage(self, message: pyArcus.PythonMessage) -> None:
         """Called when a g-code message is received from the engine.
 
         :param message: The protobuf message containing g-code, encoded as UTF-8.
@@ -795,7 +795,7 @@ class CuraEngineBackend(QObject, Backend):
         except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
             pass  # Throw the message away.
 
-    def _onGCodePrefixMessage(self, message: Arcus.PythonMessage) -> None:
+    def _onGCodePrefixMessage(self, message: pyArcus.PythonMessage) -> None:
         """Called when a g-code prefix message is received from the engine.
 
         :param message: The protobuf message containing the g-code prefix,
@@ -841,7 +841,7 @@ class CuraEngineBackend(QObject, Backend):
             else:
                 self._change_timer.start()
 
-    def _onPrintTimeMaterialEstimates(self, message: Arcus.PythonMessage) -> None:
+    def _onPrintTimeMaterialEstimates(self, message: pyArcus.PythonMessage) -> None:
         """Called when a print time message is received from the engine.
 
         :param message: The protobuf message containing the print time per feature and
@@ -855,7 +855,7 @@ class CuraEngineBackend(QObject, Backend):
         times = self._parseMessagePrintTimes(message)
         self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts)
 
-    def _parseMessagePrintTimes(self, message: Arcus.PythonMessage) -> Dict[str, float]:
+    def _parseMessagePrintTimes(self, message: pyArcus.PythonMessage) -> Dict[str, float]:
         """Called for parsing message to retrieve estimated time per feature
 
         :param message: The protobuf message containing the print time per feature
