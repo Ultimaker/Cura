@@ -18,7 +18,7 @@ Item
     property var printJob: null
 
     width: childrenRect.width
-    height: UM.Theme.getSize("monitor_text_line").height
+    height: percentLabel.height
 
     UM.ProgressBar
     {
@@ -39,14 +39,11 @@ Item
         {
             left: progressBar.right
             leftMargin: UM.Theme.getSize("default_margin").width
-            verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
         wrapMode: Text.NoWrap
-        // FIXED-LINE-HEIGHT:
-        height: UM.Theme.getSize("monitor_text_line").height
     }
     UM.Label
     {
@@ -55,7 +52,6 @@ Item
         {
             left: percentLabel.right
             leftMargin: UM.Theme.getSize("default_margin").width
-            verticalCenter: parent.verticalCenter
         }
         wrapMode: Text.NoWrap
         text:
@@ -111,8 +107,5 @@ Item
             }
         }
         width: contentWidth
-
-        // FIXED-LINE-HEIGHT:
-        height: UM.Theme.getSize("monitor_text_line").height
     }
 }
