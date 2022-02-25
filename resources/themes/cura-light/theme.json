@@ -656,14 +656,9 @@
 
         "avatar_image": [6.8, 6.8],
 
-        "monitor_config_override_box": [1.0, 14.0],
-        "monitor_extruder_circle": [2.75, 2.75],
         "monitor_text_line": [1.5, 1.5],
         "monitor_text_line_large": [2.33, 2.33],
-        "monitor_thick_lining": [0.16, 0.16],
-        "monitor_corner_radius": [0.3, 0.3],
         "monitor_shadow_radius": [0.4, 0.4],
-        "monitor_shadow_offset": [0.15, 0.15],
         "monitor_empty_state_offset": [5.6, 5.6],
         "monitor_empty_state_size": [35.0, 25.0],
         "monitor_external_link_icon": [1.16, 1.16],
