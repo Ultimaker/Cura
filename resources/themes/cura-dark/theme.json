@@ -34,8 +34,6 @@
 
         "account_sync_state_icon": [255, 255, 255, 204],
 
-        "machine_selector_bar": [39, 44, 48, 255],
-        "machine_selector_active": [39, 44, 48, 255],
         "machine_selector_printer_icon": [204, 204, 204, 255],
 
         "text": [255, 255, 255, 204],
@@ -43,8 +41,6 @@
         "text_link": [25, 110, 240, 255],
         "text_inactive": [255, 255, 255, 88],
         "text_hover": [255, 255, 255, 204],
-        "text_pressed": [255, 255, 255, 204],
-        "text_subtext": [255, 255, 255, 172],
         "text_scene": [255, 255, 255, 162],
         "text_scene_hover": [255, 255, 255, 204],
 
@@ -55,22 +51,14 @@
 
         "button": [39, 44, 48, 255],
         "button_hover": [39, 44, 48, 255],
-        "button_active": [67, 72, 75, 255],
-        "button_active_hover": [67, 72, 75, 255],
         "button_text": [255, 255, 255, 197],
         "button_disabled": [39, 44, 48, 255],
         "button_disabled_text": [255, 255, 255, 101],
 
-        "small_button": [39, 44, 48, 0],
-        "small_button_hover": [39, 44, 48, 255],
-        "small_button_active": [67, 72, 75, 255],
-        "small_button_active_hover": [67, 72, 75, 255],
         "small_button_text": [255, 255, 255, 197],
         "small_button_text_hover": [255, 255, 255, 255],
 
         "button_tooltip": [39, 44, 48, 255],
-        "button_tooltip_border": [39, 44, 48, 255],
-        "button_tooltip_text": [255, 255, 255, 172],
 
         "tab_checked": [39, 44, 48, 255],
         "tab_checked_border": [255, 255, 255, 30],
@@ -87,17 +75,9 @@
         "tab_background": [39, 44, 48, 255],
 
         "action_button": [39, 44, 48, 255],
-        "action_button_text": [255, 255, 255, 200],
-        "action_button_border": [255, 255, 255, 30],
         "action_button_hovered": [79, 85, 89, 255],
-        "action_button_hovered_text": [255, 255, 255, 255],
-        "action_button_hovered_border": [255, 255, 255, 30],
-        "action_button_active": [39, 44, 48, 30],
-        "action_button_active_text": [255, 255, 255, 255],
-        "action_button_active_border": [255, 255, 255, 100],
         "action_button_disabled": [85, 85, 87, 255],
         "action_button_disabled_text": [103, 103, 104, 255],
-        "action_button_disabled_border": [255, 255, 255, 30],
 
         "scrollbar_background": [39, 44, 48, 0],
         "scrollbar_handle": [255, 255, 255, 105],
@@ -107,21 +87,11 @@
         "setting_category": [75, 80, 83, 255],
         "setting_category_disabled": [75, 80, 83, 255],
         "setting_category_hover": [75, 80, 83, 255],
-        "setting_category_active": [75, 80, 83, 255],
-        "setting_category_active_hover": [75, 80, 83, 255],
         "setting_category_text": [255, 255, 255, 152],
         "setting_category_disabled_text": [255, 255, 255, 101],
-        "setting_category_hover_text": [255, 255, 255, 204],
         "setting_category_active_text": [255, 255, 255, 204],
-        "setting_category_active_hover_text": [255, 255, 255, 204],
-        "setting_category_border": [39, 44, 48, 0],
-        "setting_category_disabled_border": [39, 44, 48, 0],
-        "setting_category_hover_border": [12, 169, 227, 255],
-        "setting_category_active_border": [39, 44, 48, 0],
-        "setting_category_active_hover_border": [12, 169, 227, 255],
 
         "setting_control": [43, 48, 52, 255],
-        "setting_control_selected": [34, 39, 42, 38],
         "setting_control_highlight": [43, 48, 52, 255],
         "setting_control_border": [255, 255, 255, 38],
         "setting_control_border_highlight": [12, 169, 227, 255],
