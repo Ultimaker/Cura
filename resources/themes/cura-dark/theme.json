@@ -152,15 +152,12 @@
         "checkbox_border": [255, 255, 255, 38],
         "checkbox_border_hover": [255, 255, 255, 38],
         "checkbox_mark": [255, 255, 255, 181],
-        "checkbox_square": [118, 118, 118, 255],
         "checkbox_text": [255, 255, 255, 181],
 
         "tooltip": [39, 44, 48, 255],
         "tooltip_text": [255, 255, 255, 204],
 
         "tool_panel_background": [39, 44, 48, 255],
-
-        "tool_button_border": [255, 255, 255, 38],
 
         "viewport_background": [31, 36, 39, 255],
         "volume_outline": [12, 169, 227, 128],
