@@ -15,7 +15,7 @@ from cura.Snapshot import Snapshot
 
 from PyQt6.QtCore import QBuffer
 
-import Savitar
+import pySavitar
 
 import numpy
 import datetime
@@ -85,7 +85,7 @@ class ThreeMFWriter(MeshWriter):
         if um_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
             return
 
-        savitar_node = Savitar.SceneNode()
+        savitar_node = pySavitar.SceneNode()
         savitar_node.setName(um_node.getName())
 
         node_matrix = um_node.getLocalTransformation()
@@ -169,7 +169,7 @@ class ThreeMFWriter(MeshWriter):
                 # Add thumbnail relation to _rels/.rels file
                 thumbnail_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/Metadata/thumbnail.png", Id = "rel1", Type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
 
-            savitar_scene = Savitar.Scene()
+            savitar_scene = pySavitar.Scene()
 
             metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
 
@@ -215,7 +215,7 @@ class ThreeMFWriter(MeshWriter):
                     if savitar_node:
                         savitar_scene.addSceneNode(savitar_node)
 
-            parser = Savitar.ThreeMFParser()
+            parser = pySavitar.ThreeMFParser()
             scene_string = parser.sceneToString(savitar_scene)
 
             archive.writestr(model_file, scene_string)
