@@ -1,8 +1,8 @@
 #  Copyright (c) 2021 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtNetwork import QNetworkReply
 from typing import Optional, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
@@ -14,7 +14,7 @@ from .PackageList import PackageList
 from .PackageModel import PackageModel  # The contents of this list.
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
 
 catalog = i18nCatalog("cura")
 
