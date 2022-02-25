@@ -4,8 +4,30 @@
         "inherits": "cura-light"
     },
 
+    "base_colors":
+    {
+        "background_1": [212, 212, 212, 255],
+        "background_2": [57, 57, 58, 255],
+        "background_3": [85, 85, 87, 255],
+        "background_4": [23, 23, 23, 255],
+
+        "accent_1": [25, 110, 240, 255],
+        "accent_2": [16, 70, 156, 255],
+        "border_main": [212, 212, 212, 255],
+        "border_accent_1": [255, 255, 255, 255],
+        "border_accent_2": [16, 70, 156, 255],
+        "border_field": [57, 57, 58, 255],
+
+        "text_default": [255, 255, 255, 255],
+        "text_disabled": [118, 118, 118, 255],
+        "text_primary_button": [255, 255, 255, 255],
+        "text_secondary_button": [255, 255, 255, 255],
+        "text_link_hover": [156, 195, 255, 255],
+        "text_lighter": [243, 243, 243, 255]
+    },
+
     "colors": {
-        "main_background": [39, 44, 48, 255],
+        "main_background": "background_1",
         "detail_background": [63, 63, 63, 255],
         "message_background": [39, 44, 48, 255],
         "wide_lining": [31, 36, 39, 255],

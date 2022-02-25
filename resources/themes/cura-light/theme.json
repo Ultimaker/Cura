@@ -170,10 +170,31 @@
         }
     },
 
+    "base_colors": {
+        "background_1": [255, 255, 255, 255],
+        "background_2": [243, 243, 243, 255],
+        "background_3": [232, 240, 253, 255],
+        "background_4": [3, 12, 66, 255],
+
+        "accent_1": [25, 110, 240, 255],
+        "accent_2": [16, 70, 156, 255],
+        "border_main": [212, 212, 212, 255],
+        "border_accent_1": [25, 110, 240, 255],
+        "border_accent_2": [16, 70, 156, 255],
+        "border_field": [180, 180, 180, 255],
+
+        "text_default": [0, 14, 26, 255],
+        "text_disabled": [180, 180, 180, 255],
+        "text_primary_button": [255, 255, 255, 255],
+        "text_secondary_button": [25, 110, 240, 255],
+        "text_link_hover": [16, 70, 156, 255],
+        "text_lighter": [108, 108, 108, 255]
+    },
+
     "colors": {
 
-        "main_background": [255, 255, 255, 255],
-        "detail_background": [243, 243, 243, 255],
+        "main_background": "background_1",
+        "detail_background": "background_2",
         "wide_lining": [245, 245, 245, 255],
         "thick_lining": [180, 180, 180, 255],
         "lining": [192, 193, 194, 255],
