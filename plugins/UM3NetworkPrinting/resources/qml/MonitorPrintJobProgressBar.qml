@@ -38,7 +38,7 @@ Item
         anchors
         {
             left: progressBar.right
-            leftMargin: UM.Theme.getSize("monitor_margin").width
+            leftMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
@@ -54,7 +54,7 @@ Item
         anchors
         {
             left: percentLabel.right
-            leftMargin: UM.Theme.getSize("monitor_margin").width
+            leftMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
         wrapMode: Text.NoWrap

@@ -669,7 +669,6 @@
         "monitor_external_link_icon": [1.16, 1.16],
         "monitor_column": [18.0, 1.0],
         "monitor_progress_bar": [16.5, 1.0],
-        "monitor_margin": [1.5, 1.5],
 
         "table_row": [2.0, 2.0],
 
