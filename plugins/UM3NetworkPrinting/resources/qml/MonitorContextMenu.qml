@@ -4,6 +4,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.15
 import UM 1.5 as UM
+import Cura 1.6 as Cura
 
 /**
  * A MonitorInfoBlurb is an extension of the GenericPopUp used to show static information (vs. interactive context
