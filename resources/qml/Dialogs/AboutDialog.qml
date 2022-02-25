@@ -19,8 +19,6 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
-    backgroundColor: UM.Theme.getColor("main_background")
-
     Rectangle
     {
         id: header
