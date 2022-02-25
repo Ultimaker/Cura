@@ -129,8 +129,8 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 color: UM.Theme.getColor("text_link")
                 source: UM.Theme.getIcon("LinkExternal")
-                width: UM.Theme.getSize("monitor_external_link_icon").width
-                height: UM.Theme.getSize("monitor_external_link_icon").height
+                width: UM.Theme.getSize("icon_indicator").width
+                height: UM.Theme.getSize("icon_indicator").height
             }
             Label
             {
