@@ -643,14 +643,9 @@
         "message_type_icon": [2, 2],
         "menu": [18, 2],
 
-        "infill_button_margin": [0.5, 0.5],
-
         "jobspecs_line": [2.0, 2.0],
 
         "objects_menu_size": [15, 15],
-        "objects_menu_size_collapsed": [20, 17],
-        "build_plate_selection_size": [15, 5],
-        "objects_menu_button": [0.3, 2.7],
 
         "notification_icon": [1.5, 1.5],
 
