@@ -18,7 +18,7 @@
     "metadata": {
         "quality_definition": "mingda_base",
         "visible": true,
-        "platform": "mingda_d4pro_base.stl",
-        "platform_offset": [ -177, -140, 170]
+        "platform": "mingda_magician_pro_base.stl",
+        "platform_offset": [ 0, 0, -4]
     }
 }
