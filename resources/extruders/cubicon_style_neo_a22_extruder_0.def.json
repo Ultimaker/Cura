@@ -5,7 +5,7 @@
     "metadata": {
         "machine": "cubicon_style_neo_a22",
         "position": "0",
-        "quality_definition": "ultimaker3_extruder_left"
+        "quality_definition": "cubicon_style_neo_a22_extruder_0"
     },
 
     "overrides": {
