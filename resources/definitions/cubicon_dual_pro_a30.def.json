@@ -35,10 +35,31 @@
             "default_value": 300
         },
         "material_bed_temp_wait":{
-            "default_value": false
+            "default_value": true
         },
         "machine_extruder_count": {
             "default_value": 2
+        },
+        "machine_heated_chamber": {
+            "default_value": true
+        },
+        "default_material_print_temperature": {
+            "maximum_value_warning": "450",
+            "maximum_value": "540"
+        },
+        "material_print_temperature": {
+            "maximum_value_warning": "450",
+            "maximum_value": "540"
+        },
+        "material_print_temperature_layer_0": {
+            "maximum_value_warning": "450",
+            "maximum_value": "540"
+        },
+        "material_initial_print_temperature": {
+            "maximum_value": "540"
+        },
+        "material_final_print_temperature": {
+            "maximum_value": "540"
         }
     }
 }
