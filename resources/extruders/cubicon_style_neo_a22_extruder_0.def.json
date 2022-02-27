@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "cubicon_style_neo_a22",
+        "machine": "ultimaker2_plus",
         "position": "0"
     },
 
