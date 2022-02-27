@@ -7,10 +7,36 @@
         "manufacturer": "Ultimaker B.V.",
         "visible": true,
         "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker_s3_platform.obj",
+        "platform_texture": "UltimakerS3backplate.png",
+        "platform_offset": [0, 0, 0],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variant_buildplates": false,
+        "has_variants": true,
+        "exclude_materials": [ "generic_hips", "generic_petg", "structur3d_dap100silicone" ],
+        "preferred_variant_name": "AA 0.4",
+        "preferred_quality_type": "normal",
+        "variants_name": "Print core",
+        "nozzle_offsetting_for_disallowed_areas": false,
         "machine_extruder_trains":
         {
-            "0": "ultimaker_original_extruder_0"
+            "0": "ultimaker_s3_extruder_left",
+            "1": "ultimaker_s3_extruder_right"
         },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_usb_connection": false,
+        "supports_material_export": true,
+        "weight": -1,
+        "firmware_update_info": {
+            "id": 213482,
+            "check_urls": ["https://software.ultimaker.com/releases/firmware/213482/stable/um-update.swu.version"],
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
+        },
+        "bom_numbers": [
+            213482
+        ]
     },
 
     "overrides": {
