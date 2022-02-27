@@ -21,8 +21,7 @@
         "nozzle_offsetting_for_disallowed_areas": false,
         "machine_extruder_trains":
         {
-            "0": "ultimaker_s3_extruder_left",
-            "1": "ultimaker_s3_extruder_right"
+            "0": "cubicon_style_neo_a22_extruder_0"
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
