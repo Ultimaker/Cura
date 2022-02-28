@@ -117,9 +117,6 @@ class RemotePackageList(PackageList):
             return
 
         for package_data in response_data["data"]:
-            package_id = package_data["package_id"]
-            if package_id in self._package_manager.local_packages_ids:
-                continue  # We should only show packages which are not already installed
             try:
                 package = PackageModel(package_data, parent = self)
                 self._connectManageButtonSignals(package)

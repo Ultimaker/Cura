@@ -13,7 +13,7 @@ Cura.Menu
 
     Cura.MenuItem { action: Cura.Actions.undo }
     Cura.MenuItem { action: Cura.Actions.redo }
-    MenuSeparator { }
+    Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.selectAll }
     Cura.MenuItem { action: Cura.Actions.arrangeAll }
     Cura.MenuItem { action: Cura.Actions.multiplySelection }
@@ -21,7 +21,7 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.deleteAll }
     Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
     Cura.MenuItem { action: Cura.Actions.resetAll }
-    MenuSeparator { }
+    Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.groupObjects }
     Cura.MenuItem { action: Cura.Actions.mergeObjects }
     Cura.MenuItem { action: Cura.Actions.unGroupObjects }

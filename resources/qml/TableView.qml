@@ -27,6 +27,7 @@ Item
     property bool allowSelection: true //Whether to allow the user to select items.
     property string sectionRole: ""
 
+    property alias flickableDirection: tableView.flickableDirection
     Row
     {
         id: headerBar
@@ -128,6 +129,7 @@ Item
         }
 
         flickableDirection: Flickable.AutoFlickIfNeeded
+        contentWidth: -1 // AUto calculate the contendWidth
         clip: true
         ScrollBar.vertical: UM.ScrollBar {}
         columnWidthProvider: function(column)

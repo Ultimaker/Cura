@@ -13,13 +13,14 @@ Packages
     bannerVisible: UM.Preferences.getValue("cura/market_place_show_manage_packages_banner");
     bannerIcon: UM.Theme.getIcon("ArrowDoubleCircleRight")
     bannerText: catalog.i18nc("@text", "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly.")
-    bannerReadMoreUrl: "" // TODO add when support page is ready
+    bannerReadMoreUrl: "https://support.ultimaker.com/hc/en-us/articles/4411125921426/?utm_source=cura&utm_medium=software&utm_campaign=marketplace-learn-manage"
     onRemoveBanner: function() {
         UM.Preferences.setValue("cura/market_place_show_manage_packages_banner", false);
         bannerVisible = false;
     }
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
-    packagesManageableInListView: true
-
+    showUpdateButton: true
+    showInstallButton: true
+    showDisableButton: true
     model: manager.LocalPackageList
 }

@@ -12,9 +12,11 @@ import Cura 1.0 as Cura
 UM.Menu
 {
     id: menu
+    topPadding: UM.Theme.getSize("narrow_margin").height
+    bottomPadding: UM.Theme.getSize("narrow_margin").height
     padding: 0
 
-    width: UM.Theme.getSize("context_menu").width
+    implicitWidth: UM.Theme.getSize("menu").width
 
     delegate: Cura.MenuItem {}
     background: Rectangle

@@ -12,6 +12,9 @@ import UM 1.5 as UM
 UM.MenuItem
 {
     id: menuItem
+
+    implicitHeight: UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height
+    implicitWidth: UM.Theme.getSize("menu").width
     opacity: enabled ? 1.0 : 0.5
 
     arrow: UM.RecolorImage
@@ -46,6 +49,6 @@ UM.MenuItem
         width: menuItem.width - 2 * UM.Theme.getSize("default_lining").width
         height: menuItem.height - 2 * UM.Theme.getSize("default_lining").height
 
-        color: menuItem.highlighted ?  UM.Theme.getColor("setting_control_highlight") : "transparent"
+        color: menuItem.highlighted ? UM.Theme.getColor("secondary"): UM.Theme.getColor("setting_control_highlight")
     }
 }

@@ -69,7 +69,7 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled
     }
 
-    MenuSeparator { }
+    Cura.MenuSeparator { }
 
     Cura.MenuItem
     {
@@ -91,7 +91,7 @@ Cura.Menu
         onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
     }
 
-    MenuSeparator { }
+    Cura.MenuSeparator { }
 
     Cura.MenuItem
     {
@@ -99,7 +99,7 @@ Cura.Menu
         action: Cura.Actions.reloadAll
     }
 
-    MenuSeparator { }
+    Cura.MenuSeparator { }
 
     Cura.MenuItem { action: Cura.Actions.quit }
 }

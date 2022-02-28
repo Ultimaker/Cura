@@ -58,8 +58,6 @@
 
         "account_sync_state_icon": [255, 255, 255, 204],
 
-        "machine_selector_bar": [39, 44, 48, 255],
-        "machine_selector_active": [39, 44, 48, 255],
         "machine_selector_printer_icon": [204, 204, 204, 255],
 
         "text": "text_default",
@@ -67,8 +65,6 @@
         "text_link": "accent_1",
         "text_inactive": [255, 255, 255, 88],
         "text_hover": [255, 255, 255, 204],
-        "text_pressed": [255, 255, 255, 204],
-        "text_subtext": [255, 255, 255, 172],
         "text_scene": [255, 255, 255, 162],
         "text_scene_hover": [255, 255, 255, 204],
 
@@ -79,22 +75,14 @@
 
         "button": [39, 44, 48, 255],
         "button_hover": [39, 44, 48, 255],
-        "button_active": [67, 72, 75, 255],
-        "button_active_hover": [67, 72, 75, 255],
         "button_text": "text_default",
         "button_disabled": [39, 44, 48, 255],
         "button_disabled_text": [255, 255, 255, 101],
 
-        "small_button": [39, 44, 48, 0],
-        "small_button_hover": [39, 44, 48, 255],
-        "small_button_active": [67, 72, 75, 255],
-        "small_button_active_hover": [67, 72, 75, 255],
         "small_button_text": [255, 255, 255, 197],
         "small_button_text_hover": [255, 255, 255, 255],
 
         "button_tooltip": [39, 44, 48, 255],
-        "button_tooltip_border": [39, 44, 48, 255],
-        "button_tooltip_text": [255, 255, 255, 172],
 
         "tab_checked": [39, 44, 48, 255],
         "tab_checked_border": [255, 255, 255, 30],
@@ -131,19 +119,12 @@
         "setting_category": [75, 80, 83, 255],
         "setting_category_disabled": [75, 80, 83, 255],
         "setting_category_hover": [75, 80, 83, 255],
-        "setting_category_active": [75, 80, 83, 255],
-        "setting_category_active_hover": [75, 80, 83, 255],
         "setting_category_text": [255, 255, 255, 152],
         "setting_category_disabled_text": [255, 255, 255, 101],
-        "setting_category_hover_text": [255, 255, 255, 204],
         "setting_category_active_text": [255, 255, 255, 204],
-        "setting_category_active_hover_text": [255, 255, 255, 204],
-        "setting_category_border": [39, 44, 48, 0],
-        "setting_category_disabled_border": [39, 44, 48, 0],
-        "setting_category_hover_border": [12, 169, 227, 255],
-        "setting_category_active_border": [39, 44, 48, 0],
-        "setting_category_active_hover_border": [12, 169, 227, 255],
 
+        "setting_control": [43, 48, 52, 255],
+        "setting_control_highlight": [43, 48, 52, 255],
         "setting_control": "background_2",
         "setting_control_selected": [34, 39, 42, 38],
         "setting_control_highlight": "background_2",
@@ -184,10 +165,6 @@
 
         "tool_panel_background": "background_1",
 
-        "tool_button_border": [255, 255, 255, 38],
-
-        "y_axis": [96, 96, 255, 255],
-
         "viewport_background": "background_1",
         "volume_outline": [12, 169, 227, 128],
         "buildplate": [169, 169, 169, 255],
@@ -208,10 +185,6 @@
         "monitor_icon_disabled": [102, 102, 102, 255],
 
         "monitor_secondary_button_hover": [80, 80, 80, 255],
-        "monitor_secondary_button": [92, 92, 92, 255],
-        "monitor_secondary_button_text": [250, 250, 250, 255],
-        "monitor_secondary_button_shadow": [74, 74, 74, 255],
-
         "monitor_card_border": [102, 102, 102, 255],
         "monitor_card_background": [51, 53, 54, 255],
         "monitor_card_hover": [84, 89, 95, 255],

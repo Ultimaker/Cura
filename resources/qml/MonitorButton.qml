@@ -2,16 +2,13 @@
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
 {
-    id: base;
+    id: base
     UM.I18nCatalog { id: catalog; name: "cura"}
 
     height: childrenRect.height + UM.Theme.getSize("thick_margin").height
@@ -158,7 +155,7 @@ Item
         }
     }
 
-    Label
+    UM.Label
     {
         id: statusLabel
         width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
@@ -171,7 +168,7 @@ Item
         text: statusText
     }
 
-    Label
+    UM.Label
     {
         id: percentageLabel
         anchors.top: parent.top
@@ -185,20 +182,20 @@ Item
 
     UM.ProgressBar
     {
-        id: progressBar;
-        minimumValue: 0;
-        maximumValue: 100;
-        value: 0;
+        id: progressBar
+        from: 0
+        to: 100
+        value: 0
 
         //Doing this in an explicit binding since the implicit binding breaks on occasion.
         Binding
         {
-            target: progressBar;
-            property: "value";
-            value: base.progress;
+            target: progressBar
+            property: "value"
+            value: base.progress
         }
 
-        visible: showProgress;
+        visible: showProgress
         indeterminate:
         {
             if(!printerConnected)
@@ -218,15 +215,15 @@ Item
                     return false;
             }
         }
-        property string backgroundColor: UM.Theme.getColor("progressbar_background");
-        property string controlColor: base.statusColor;
+        property string backgroundColor: UM.Theme.getColor("progressbar_background")
+        property string controlColor: base.statusColor
 
-        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width;
-        height: UM.Theme.getSize("progressbar").height;
-        anchors.top: statusLabel.bottom;
-        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 4);
-        anchors.left: parent.left;
-        anchors.leftMargin: UM.Theme.getSize("thick_margin").width;
+        width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
+        height: UM.Theme.getSize("progressbar").height
+        anchors.top: statusLabel.bottom
+        anchors.topMargin: Math.round(UM.Theme.getSize("thick_margin").height / 4)
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("thick_margin").width
     }
 
     Row
