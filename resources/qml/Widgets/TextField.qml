@@ -24,6 +24,7 @@ TextField
     font: UM.Theme.getFont("default")
     color: UM.Theme.getColor("text")
     renderType: Text.NativeRendering
+    selectionColor: UM.Theme.getColor("text_selection")
     leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
 
     states: [
