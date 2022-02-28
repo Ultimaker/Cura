@@ -97,7 +97,8 @@ Item
         target: Cura.Actions.browsePackages
         function onTriggered()
         {
-            extensionMenu.extensionModel.callExtensionMethod("Toolbox", "launch")
+        print("beepboop")
+            extensionMenu.extensionModel.callExtensionMethod("Marketplace", "show")
         }
     }
 
@@ -107,8 +108,8 @@ Item
         target: Cura.Actions.marketplaceMaterials
         function onTriggered()
         {
-            extensionMenu.extensionModel.callExtensionMethod("Toolbox", "launch")
-            extensionMenu.extensionModel.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
+            extensionMenu.extensionModel.callExtensionMethod("Marketplace", "show")
+            extensionMenu.extensionModel.callExtensionMethod("Marketplace", "setVisibleTabToMaterials")
         }
     }
 }
