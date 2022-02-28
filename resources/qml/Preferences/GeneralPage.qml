@@ -849,6 +849,7 @@ UM.PreferencesPage
                     hoverBackgroundColor: UM.Theme.getColor("secondary_button_hover")
                     backgroundRadius: width / 2
                     height: UM.Theme.getSize("small_button_icon").height
+                    color: UM.Theme.getColor("small_button_text")
                     width: height
                 }
             }
