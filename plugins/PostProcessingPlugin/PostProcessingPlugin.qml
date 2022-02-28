@@ -15,14 +15,15 @@ UM.Dialog
     id: dialog
 
     title: catalog.i18nc("@title:window", "Post Processing Plugin")
-    width: 700 * screenScaleFactor;
-    height: 500 * screenScaleFactor;
-    minimumWidth: 400 * screenScaleFactor;
-    minimumHeight: 250 * screenScaleFactor;
+    width: 700 * screenScaleFactor
+    height: 500 * screenScaleFactor
+    minimumWidth: 400 * screenScaleFactor
+    minimumHeight: 250 * screenScaleFactor
 
     onVisibleChanged:
     {
-        if(!visible) //Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
+        // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
+        if (!visible)
         {
             manager.writeScriptsToStack()
         }
@@ -35,8 +36,7 @@ UM.Dialog
         property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
         property int textMargin: UM.Theme.getSize("narrow_margin").width
         property string activeScriptName
-        SystemPalette{ id: palette }
-        SystemPalette{ id: disabledPalette; colorGroup: SystemPalette.Disabled }
+
         anchors.fill: parent
 
         ButtonGroup
@@ -51,14 +51,12 @@ UM.Dialog
 
             spacing: base.textMargin
 
-            Label
+            UM.Label
             {
                 id: activeScriptsHeader
                 text: catalog.i18nc("@label", "Post Processing Scripts")
                 anchors.left: parent.left
-                anchors.leftMargin: base.textMargin
                 anchors.right: parent.right
-                anchors.rightMargin: base.textMargin
                 font: UM.Theme.getFont("large_bold")
                 elide: Text.ElideRight
             }
@@ -79,135 +77,140 @@ UM.Dialog
                     id: activeScriptsScrollBar
                 }
                 model: manager.scriptList
-                delegate: Item
+
+                delegate: Button
                 {
+                    id: activeScriptButton
+
                     width: parent.width - activeScriptsScrollBar.width
-                    height: activeScriptButton.height
-                    Button
-                    {
-                        id: activeScriptButton
-                        text: manager.getScriptLabelByKey(modelData.toString())
-                        ButtonGroup.group: selectedScriptGroup
-                        width: parent.width
-                        height: UM.Theme.getSize("setting").height
-                        checkable: true
+                    height: UM.Theme.getSize("standard_list_lineheight").height
 
-                        checked:
+                    ButtonGroup.group: selectedScriptGroup
+                    checkable: true
+
+                    checked:
+                    {
+                        if (manager.selectedScriptIndex == index)
                         {
-                            if (manager.selectedScriptIndex == index)
-                            {
-                                base.activeScriptName = manager.getScriptLabelByKey(modelData.toString())
-                                return true
-                            }
-                            else
-                            {
-                                return false
-                            }
-                        }
-                        onClicked:
-                        {
-                            forceActiveFocus()
-                            manager.setSelectedScriptIndex(index)
                             base.activeScriptName = manager.getScriptLabelByKey(modelData.toString())
+                            return true
                         }
-
-                        background: Rectangle
+                        else
                         {
-                            color: activeScriptButton.checked ? palette.highlight : "transparent"
+                            return false
                         }
-                        contentItem: Label
-                        {
-                            wrapMode: Text.Wrap
-                            text: activeScriptButton.text
-                            elide: Text.ElideRight
-                            color: activeScriptButton.checked ? palette.highlightedText : palette.text
-                        }
-
                     }
 
-                    Button
+                    background: Rectangle
                     {
-                        id: removeButton
-                        text: "x"
-                        width: 20 * screenScaleFactor
-                        height: 20 * screenScaleFactor
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        onClicked: manager.removeScriptByIndex(index)
-                        contentItem: Item
+                        color: activeScriptButton.checked ? UM.Theme.getColor("background_3") : "transparent"
+                    }
+
+                    onClicked:
+                    {
+                        forceActiveFocus()
+                        manager.setSelectedScriptIndex(index)
+                        base.activeScriptName = manager.getScriptLabelByKey(modelData.toString())
+                    }
+
+                    RowLayout
+                    {
+                        anchors.fill: parent
+                        height: childrenRect.height
+
+                        UM.Label
                         {
+                            Layout.fillWidth: true
+                            text: manager.getScriptLabelByKey(modelData.toString())
+                        }
+
+                        Item
+                        {
+                            id: downButton
+                            Layout.preferredWidth: height
+                            Layout.fillHeight: true
+                            enabled: index != manager.scriptList.length - 1
+
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                onClicked:
+                                {
+                                    if (manager.selectedScriptIndex == index)
+                                    {
+                                        manager.setSelectedScriptIndex(index + 1)
+                                    }
+                                    return manager.moveScript(index, index + 1)
+                                }
+                            }
+
                             UM.RecolorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                width: Math.round(removeButton.width / 2.7)
-                                height: Math.round(removeButton.height / 2.7)
-                                sourceSize.height: width
-                                color: palette.text
-                                source: UM.Theme.getIcon("Cancel")
-                            }
-                        }
-
-                    }
-                    Button
-                    {
-                        id: downButton
-                        text: ""
-                        anchors.right: removeButton.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        enabled: index != manager.scriptList.length - 1
-                        width: 20 * screenScaleFactor
-                        height: 20 * screenScaleFactor
-                        onClicked:
-                        {
-                            if (manager.selectedScriptIndex == index)
-                            {
-                                manager.setSelectedScriptIndex(index + 1)
-                            }
-                            return manager.moveScript(index, index + 1)
-                        }
-                        contentItem: Item
-                        {
-                            UM.RecolorImage
-                            {
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: Math.round(downButton.width / 2.5)
-                                height: Math.round(downButton.height / 2.5)
-                                sourceSize.height: width
-                                color: downButton.enabled ? palette.text : disabledPalette.text
+                                width: UM.Theme.getSize("standard_arrow").width
+                                height: UM.Theme.getSize("standard_arrow").height
+                                sourceSize.width: width
+                                sourceSize.height: height
+                                color: parent.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
                                 source: UM.Theme.getIcon("ChevronSingleDown")
                             }
                         }
-                    }
-                    Button
-                    {
-                        id: upButton
-                        text: ""
-                        enabled: index != 0
-                        width: 20 * screenScaleFactor
-                        height: 20 * screenScaleFactor
-                        anchors.right: downButton.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        onClicked:
+                        Item
                         {
-                            if (manager.selectedScriptIndex == index)
+                            id: upButton
+                            Layout.preferredWidth: height
+                            Layout.fillHeight: true
+                            enabled: index != 0
+
+                            MouseArea
                             {
-                                manager.setSelectedScriptIndex(index - 1)
+                                anchors.fill: parent
+                                onClicked:
+                                {
+                                    if (manager.selectedScriptIndex == index)
+                                    {
+                                        manager.setSelectedScriptIndex(index - 1)
+                                    }
+                                    return manager.moveScript(index, index - 1)
+                                }
                             }
-                            return manager.moveScript(index, index - 1)
-                        }
-                        contentItem: Item
-                        {
+
                             UM.RecolorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                width: Math.round(upButton.width / 2.5)
-                                height: Math.round(upButton.height / 2.5)
-                                sourceSize.height: width
-                                color: upButton.enabled ? palette.text : disabledPalette.text
+                                width: UM.Theme.getSize("standard_arrow").width
+                                height: UM.Theme.getSize("standard_arrow").height
+                                sourceSize.width: width
+                                sourceSize.height: height
+                                color: upButton.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
                                 source: UM.Theme.getIcon("ChevronSingleUp")
+                            }
+                        }
+
+                        Item
+                        {
+                            id: removeButton
+                            Layout.preferredWidth: height
+                            Layout.fillHeight: true
+
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                onClicked: manager.removeScriptByIndex(index)
+                            }
+
+                            UM.RecolorImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: UM.Theme.getSize("standard_arrow").width
+                                height: UM.Theme.getSize("standard_arrow").height
+                                sourceSize.width: width
+                                sourceSize.height: height
+                                color: UM.Theme.getColor("text")
+                                source: UM.Theme.getIcon("Cancel")
                             }
                         }
                     }
@@ -217,28 +220,26 @@ UM.Dialog
             {
                 id: addButton
                 text: catalog.i18nc("@action", "Add a script")
-                anchors.left: parent.left
-                anchors.leftMargin: base.textMargin
                 onClicked: scriptsMenu.open()
             }
-            Menu
+        }
+
+        Cura.Menu
+        {
+            id: scriptsMenu
+
+            Models.Instantiator
             {
-                id: scriptsMenu
-                width: parent.width
+                model: manager.loadedScriptList
 
-                Models.Instantiator
+                Cura.MenuItem
                 {
-                    model: manager.loadedScriptList
-
-                    MenuItem
-                    {
-                        text: manager.getScriptLabelByKey(modelData.toString())
-                        onTriggered: manager.addScriptToList(modelData.toString())
-                    }
-
-                    onObjectAdded: scriptsMenu.insertItem(index, object)
-                    onObjectRemoved: scriptsMenu.removeItem(object)
+                    text: manager.getScriptLabelByKey(modelData.toString())
+                    onTriggered: manager.addScriptToList(modelData.toString())
                 }
+
+                onObjectAdded: scriptsMenu.insertItem(index, object)
+                onObjectRemoved: scriptsMenu.removeItem(object)
             }
         }
 
@@ -303,16 +304,9 @@ UM.Dialog
                     width: listview.width
                     height:
                     {
-                        if(provider.properties.enabled == "True")
+                        if (provider.properties.enabled == "True" && model.type != undefined)
                         {
-                            if(model.type != undefined)
-                            {
-                                return UM.Theme.getSize("section").height
-                            }
-                            else
-                            {
-                                return 0
-                            }
+                            return UM.Theme.getSize("section").height;
                         }
                         else
                         {
@@ -392,10 +386,10 @@ UM.Dialog
 
                         function onShowTooltip(text)
                         {
-                            tooltip.text = text
-                            var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0)
-                            tooltip.show(position)
-                            tooltip.target.x = position.x + 1
+                            tooltip.text = text;
+                            var position = settingLoader.mapToItem(settingsPanel, settingsPanel.x, 0);
+                            tooltip.show(position);
+                            tooltip.target.x = position.x + 1;
                         }
 
                         function onHideTooltip() { tooltip.hide() }
@@ -452,7 +446,7 @@ UM.Dialog
         }
     }
 
-    rightButtons: Cura.PrimaryButton
+    rightButtons: Cura.TertiaryButton
     {
         text: catalog.i18nc("@action:button", "Close")
         onClicked: dialog.accept()
