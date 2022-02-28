@@ -159,6 +159,7 @@
         "checkbox_mark": "text_default",
         "checkbox_square": "text_disabled",
         "checkbox_text": "text_default",
+        "checkbox_disabled": "background_2",
 
         "tooltip": "background_2",
         "tooltip_text": "text_default",
