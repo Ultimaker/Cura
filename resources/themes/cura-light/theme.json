@@ -210,12 +210,11 @@
 
         "icon": [8, 7, 63, 255],
 
-        "primary_button": [25, 110, 240, 255],
         "primary_button": "accent_1",
         "primary_button_hover": [16, 70, 156, 255],
         "primary_button_text": [255, 255, 255, 255],
 
-        "secondary_button": "text_default",
+        "secondary_button": "background_1",
         "secondary_button_shadow": [216, 216, 216, 255],
         "secondary_button_hover": [232, 240, 253, 255],
         "secondary_button_text": "accent_1",
@@ -323,7 +322,7 @@
         "quality_slider_available": [0, 0, 0, 255],
 
         "checkbox": [255, 255, 255, 255],
-        "checkbox_hover": [255, 255, 255, 255],
+        "checkbox_hover": "border_main",
         "checkbox_border": [180, 180, 180, 255],
         "checkbox_border_hover": [25, 110, 240, 255],
         "checkbox_mark": [35, 35, 35, 255],
@@ -423,7 +422,10 @@
         "cloud_unavailable": [153, 153, 153, 255],
         "connection_badge_background": [255, 255, 255, 255],
         "warning_badge_background": [0, 0, 0, 255],
-        "error_badge_background": [255, 255, 255, 255]
+        "error_badge_background": [255, 255, 255, 255],
+
+        "border_field_light": [180, 180, 180, 255],
+        "border_main_light": [212, 212, 212, 255]
     },
 
     "sizes": {
