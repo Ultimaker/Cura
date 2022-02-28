@@ -272,7 +272,6 @@ UM.Dialog
         UM.CheckBox
         {
             id: dontShowAgainCheckbox
-            anchors.left: parent.left
             text: catalog.i18nc("@action:label", "Don't show project summary on save again")
             checked: dontShowAgain
         }
