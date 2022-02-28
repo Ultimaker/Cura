@@ -409,7 +409,7 @@ Item
             }
         }
 
-        Menu
+        Cura.Menu
         {
             id: contextMenu
 

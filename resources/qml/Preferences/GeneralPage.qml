@@ -14,7 +14,7 @@ UM.PreferencesPage
     title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
 
-    width: parent.width
+    width: parent ? parent.width: 0
 
     function setDefaultLanguage(languageCode)
     {

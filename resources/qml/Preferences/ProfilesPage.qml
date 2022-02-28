@@ -144,7 +144,7 @@ UM.ManagementPage
         }
 
         // Dialog to request a name when creating a new profile
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: createQualityDialog
             title: catalog.i18nc("@title:window", "Create Profile")
@@ -233,7 +233,7 @@ UM.ManagementPage
         }
 
         // Dialog to request a name when duplicating a new profile
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: duplicateQualityDialog
             title: catalog.i18nc("@title:window", "Duplicate Profile")
@@ -263,7 +263,7 @@ UM.ManagementPage
         }
 
         // Dialog to rename a quality profile
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: renameQualityDialog
             title: catalog.i18nc("@title:window", "Rename Profile")
