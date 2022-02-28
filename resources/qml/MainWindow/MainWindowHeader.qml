@@ -78,7 +78,6 @@ Item
                 background: Rectangle
                 {
                     radius: UM.Theme.getSize("action_button_radius").width
-                    width: contents.width
                     color:
                     {
                         if (stageSelectorButton.checked)

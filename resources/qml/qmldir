@@ -47,3 +47,4 @@ GcodeTextArea               1.0 GcodeTextArea.qml
 NumericTextFieldWithUnit    1.0 NumericTextFieldWithUnit.qml
 PrintHeadMinMaxTextField    1.0 PrintHeadMinMaxTextField.qml
 SimpleCheckBox              1.0 SimpleCheckBox.qml
+RenameDialog                1.0 RenameDialog.qml
