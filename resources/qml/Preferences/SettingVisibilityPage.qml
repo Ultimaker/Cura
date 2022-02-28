@@ -84,7 +84,7 @@ UM.PreferencesPage
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: filter
 
