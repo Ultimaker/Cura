@@ -56,6 +56,8 @@
         "main_window_header_background_gradient": "background_4",
         "main_window_header_button_background_hovered": [46, 46, 46, 255],
 
+        "secondary_button_text": "text_secondary_button",
+
         "account_sync_state_icon": [255, 255, 255, 204],
 
         "machine_selector_printer_icon": [204, 204, 204, 255],
