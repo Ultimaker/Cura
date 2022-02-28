@@ -1,5 +1,5 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2015-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
 from UM.Mesh.MeshWriter import MeshWriter
@@ -15,7 +15,7 @@ from cura.Snapshot import Snapshot
 
 from PyQt6.QtCore import QBuffer
 
-import pySavitar
+import pySavitar as Savitar
 
 import numpy
 import datetime
@@ -85,7 +85,7 @@ class ThreeMFWriter(MeshWriter):
         if um_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
             return
 
-        savitar_node = pySavitar.SceneNode()
+        savitar_node = Savitar.SceneNode()
         savitar_node.setName(um_node.getName())
 
         node_matrix = um_node.getLocalTransformation()
@@ -169,7 +169,7 @@ class ThreeMFWriter(MeshWriter):
                 # Add thumbnail relation to _rels/.rels file
                 thumbnail_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/Metadata/thumbnail.png", Id = "rel1", Type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
 
-            savitar_scene = pySavitar.Scene()
+            savitar_scene = Savitar.Scene()
 
             metadata_to_store = CuraApplication.getInstance().getController().getScene().getMetaData()
 
@@ -215,7 +215,7 @@ class ThreeMFWriter(MeshWriter):
                     if savitar_node:
                         savitar_scene.addSceneNode(savitar_node)
 
-            parser = pySavitar.ThreeMFParser()
+            parser = Savitar.ThreeMFParser()
             scene_string = parser.sceneToString(savitar_scene)
 
             archive.writestr(model_file, scene_string)

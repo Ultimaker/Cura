@@ -1,11 +1,11 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import zipfile
 from typing import List, Optional, Union, TYPE_CHECKING, cast
 
-import pySavitar
+import pySavitar as Savitar
 import numpy
 
 from UM.Logger import Logger
@@ -90,7 +90,7 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    def _convertSavitarNodeToUMNode(self, savitar_node: pySavitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
         """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
 
         :returns: Scene node.
@@ -206,7 +206,7 @@ class ThreeMFReader(MeshReader):
         try:
             archive = zipfile.ZipFile(file_name, "r")
             self._base_name = os.path.basename(file_name)
-            parser = pySavitar.ThreeMFParser()
+            parser = Savitar.ThreeMFParser()
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
 
