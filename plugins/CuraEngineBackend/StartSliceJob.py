@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
 from string import Formatter
@@ -7,7 +7,7 @@ from enum import IntEnum
 import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
-import Arcus #For typing.
+import pyArcus as Arcus  # For typing.
 from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
@@ -94,7 +94,7 @@ class StartSliceJob(Job):
         super().__init__()
 
         self._scene = CuraApplication.getInstance().getController().getScene() #type: Scene
-        self._slice_message = slice_message #type: Arcus.PythonMessage
+        self._slice_message: Arcus.PythonMessage = slice_message
         self._is_cancelled = False #type: bool
         self._build_plate_number = None #type: Optional[int]
 

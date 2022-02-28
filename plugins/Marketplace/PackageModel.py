@@ -5,8 +5,8 @@ import re
 from enum import Enum
 from typing import Any, cast, Dict, List, Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
-from PyQt5.QtQml import QQmlEngine
+from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
+from PyQt6.QtQml import QQmlEngine
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager

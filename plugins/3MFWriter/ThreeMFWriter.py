@@ -1,5 +1,5 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2015-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
 from UM.Mesh.MeshWriter import MeshWriter
@@ -15,7 +15,7 @@ from cura.Snapshot import Snapshot
 
 from PyQt6.QtCore import QBuffer
 
-import Savitar
+import pySavitar as Savitar
 
 import numpy
 import datetime
