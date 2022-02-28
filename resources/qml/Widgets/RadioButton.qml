@@ -38,7 +38,7 @@ RadioButton
         {
             name: "highlighted"
             when: radioButton.hovered || radioButton.activeFocus
-            PropertyChanges { target: indicator; border.color: UM.Theme.getColor("accent_1")}
+            PropertyChanges { target: indicator; border.color: UM.Theme.getColor("border_main_light")}
         }
     ]
 
