@@ -92,7 +92,6 @@ Item
         target: Cura.Actions.browsePackages
         function onTriggered()
         {
-        print("beepboop")
             extensionMenu.extensionModel.callExtensionMethod("Marketplace", "show")
         }
     }
