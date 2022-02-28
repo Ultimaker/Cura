@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -16,6 +16,8 @@ TextField
     id: textField
 
     property alias leftIcon: iconLeft.source
+
+    height: UM.Theme.getSize("setting_control").height
 
     hoverEnabled: true
     selectByMouse: true
@@ -29,45 +31,24 @@ TextField
         {
             name: "disabled"
             when: !textField.enabled
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_disabled_border")}
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
         },
         State
         {
             name: "invalid"
             when: !textField.acceptableInput
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_validation_error")}
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_validation_error_background")}
         },
         State
         {
             name: "hovered"
             when: textField.hovered || textField.activeFocus
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_border_highlight") }
         }
     ]
 
-    background: Rectangle
+    background: UM.UnderlineBackground
     {
         id: backgroundRectangle
-
-        color: UM.Theme.getColor("main_background")
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-
-        border.color:
-        {
-            if (!textField.enabled)
-            {
-                return UM.Theme.getColor("setting_control_disabled_border")
-            }
-            if (textField.hovered || textField.activeFocus)
-            {
-                return UM.Theme.getColor("setting_control_border_highlight")
-            }
-            return UM.Theme.getColor("setting_control_border")
-        }
-
         //Optional icon added on the left hand side.
         UM.RecolorImage
         {

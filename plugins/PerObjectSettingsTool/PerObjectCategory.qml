@@ -28,8 +28,8 @@ Button {
                 anchors.verticalCenter: parent.verticalCenter
                 height: (label.height / 2) | 0
                 width: height
-                source: base.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight");
-                color: base.hovered ? palette.highlight : palette.buttonText
+                source: base.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
+                color: base.hovered ? UM.Theme.getColor("primary_button_hover"): UM.Theme.getColor("primary_button_text")
             }
         }
         UM.RecolorImage
@@ -38,22 +38,20 @@ Button {
             height: label.height
             width: height
             source: UM.Theme.getIcon(definition.icon)
-            color: base.hovered ? palette.highlight : palette.buttonText
+            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button_text")
         }
         UM.Label
         {
             id: label
             anchors.verticalCenter: parent.verticalCenter
             text: base.text
-            color: base.hovered ? palette.highlight : palette.buttonText
+            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button_text")
             font.bold: true
         }
-
-        SystemPalette { id: palette }
     }
 
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal contextMenuRequested()
 
     text: definition.label

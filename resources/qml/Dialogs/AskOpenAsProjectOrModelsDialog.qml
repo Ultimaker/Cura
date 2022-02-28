@@ -76,7 +76,7 @@ UM.Dialog
         anchors.fill: parent
         spacing: UM.Theme.getSize("default_margin").height
 
-        Label
+        UM.Label
         {
             id: questionText
             width: parent.width

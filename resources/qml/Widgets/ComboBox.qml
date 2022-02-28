@@ -26,7 +26,6 @@ ComboBox
         {
             name: "disabled"
             when: !control.enabled
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_disabled_border")}
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
             PropertyChanges { target: contentLabel; color: UM.Theme.getColor("setting_control_disabled_text")}
         },
@@ -34,20 +33,13 @@ ComboBox
         {
             name: "highlighted"
             when: control.hovered || control.activeFocus
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_border_highlight") }
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_highlight")}
         }
     ]
 
-    background: Rectangle
+    background: UM.UnderlineBackground
     {
         id: backgroundRectangle
-        color: UM.Theme.getColor("setting_control")
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("setting_control_border")
-
     }
 
     indicator: UM.RecolorImage
