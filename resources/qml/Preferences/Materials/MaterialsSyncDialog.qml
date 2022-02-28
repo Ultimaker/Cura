@@ -266,7 +266,7 @@ Window
                         border.color: UM.Theme.getColor("lining")
                         border.width: UM.Theme.getSize("default_lining").width
                         width: printerList.width - printerListScrollBar.width
-                        height: UM.Theme.getSize("card").height
+                        height: UM.Theme.getSize("machine_selector_icon").height + 2 * UM.Theme.getSize("default_margin").height
 
                         property string syncStatus:
                         {
