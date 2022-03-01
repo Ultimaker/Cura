@@ -21,7 +21,27 @@ Item
         id: applicationMenu
         width: parent.width
         height: UM.Theme.getSize("context_menu").height
-        background: Rectangle {}
+
+        background: Rectangle {
+            color: UM.Theme.getColor("background_1")
+        }
+
+        delegate: MenuBarItem
+        {
+            id: menuBarItem
+
+            contentItem: UM.Label
+            {
+                text: menuBarItem.text
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            background: Rectangle
+            {
+                color: menuBarItem.highlighted ? UM.Theme.getColor("background_2") : "transparent"
+            }
+        }
 
         FileMenu {}
         EditMenu {}
