@@ -72,7 +72,7 @@ UM.PreferencesPage
                 anchors.fill: parent;
                 onClicked:
                 {
-                    if(parent.checkedState == Qt.Unchecked || parent.checkedState == Qt.PartiallyChecked)
+                    if (parent.checkState == Qt.Unchecked || parent.checkState == Qt.PartiallyChecked)
                     {
                         definitionsModel.setAllExpandedVisible(true)
                     }
