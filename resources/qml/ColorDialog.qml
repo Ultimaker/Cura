@@ -90,10 +90,7 @@ UM.Dialog
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked:
-                        {
-                            base.color = swatchColor;
-                        }
+                        onClicked: base.color = swatchColor
                     }
                 }
             }
