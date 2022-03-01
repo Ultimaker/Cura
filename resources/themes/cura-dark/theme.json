@@ -33,7 +33,7 @@
         "wide_lining": [31, 36, 39, 255],
         "thick_lining": [255, 255, 255, 60],
         "lining": "border_main",
-        "viewport_overlay": [30, 36, 39, 255],
+        "viewport_overlay": "background_1",
 
         "primary": [12, 169, 227, 255],
         "primary_text": "text_default",
