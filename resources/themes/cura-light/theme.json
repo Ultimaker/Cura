@@ -293,8 +293,8 @@
         "setting_category_disabled_text": [24, 41, 77, 101],
         "setting_category_active_text": [35, 35, 35, 255],
 
-        "setting_control": [255, 255, 255, 255],
-        "setting_control_highlight": [255, 255, 255, 255],
+        "setting_control": "background_2",
+        "setting_control_highlight": "background_2",
         "setting_control_border": [199, 199, 199, 255],
         "setting_control_border_highlight": [50, 130, 255, 255],
         "setting_control_text": [35, 35, 35, 255],
@@ -308,7 +308,7 @@
         "setting_validation_error": [127, 127, 127, 255],
         "setting_validation_warning_background": [255, 145, 62, 255],
         "setting_validation_warning": [127, 127, 127, 255],
-        "setting_validation_ok": [255, 255, 255, 255],
+        "setting_validation_ok": "background_2",
 
         "material_compatibility_warning": [243, 166, 59, 255],
 
