@@ -11,7 +11,9 @@ import ".."
 Button {
     id: base;
 
-    background: Item {}
+    background: Rectangle {
+        color: UM.Theme.getColor("background_3")
+    }
 
     contentItem: Row
     {
