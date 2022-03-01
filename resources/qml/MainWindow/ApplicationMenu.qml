@@ -32,7 +32,10 @@ Item
 
             contentItem: UM.Label
             {
-                text: menuBarItem.text
+                text: menuBarItem.text.replace(new RegExp("&([A-Za-z])"), function (match, character)
+                {
+                    return `<u>${character}</u>`;
+                })
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
             }
