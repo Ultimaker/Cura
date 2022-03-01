@@ -30,8 +30,8 @@ Item
     property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
-    property color headerActiveColor: UM.Theme.getColor("secondary")
-    property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
+    property color headerActiveColor: UM.Theme.getColor("expandable_active")
+    property color headerHoverColor: UM.Theme.getColor("expandable_hover")
 
     property alias mouseArea: headerMouseArea
     property alias enabled: headerMouseArea.enabled

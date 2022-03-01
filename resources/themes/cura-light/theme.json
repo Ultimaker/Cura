@@ -208,6 +208,9 @@
         "border_field": [180, 180, 180, 255],
         "secondary": [240, 240, 240, 255],
 
+        "expandable_active": [240, 240, 240, 255],
+        "expandable_hover": [232, 242, 252, 255],
+
         "icon": [8, 7, 63, 255],
 
         "primary_button": "accent_1",
