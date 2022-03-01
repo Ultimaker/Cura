@@ -75,8 +75,8 @@ UM.Dialog
                 delegate: Rectangle
                 {
                     color: swatchColor
-                    width: 24
-                    height: 24
+                    implicitWidth: UM.Theme.getSize("medium_button_icon").width
+                    implicitHeight: UM.Theme.getSize("medium_button_icon").height
                     radius: width / 2
 
                     UM.RecolorImage
