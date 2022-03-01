@@ -16,7 +16,7 @@ Cura.RoundedRectangle
     property alias xPosCloseButton: closeButton.left
 
     height: UM.Theme.getSize("expandable_component_content_header").height
-    color: UM.Theme.getColor("secondary")
+    color: UM.Theme.getColor("background_1")
     cornerSide: Cura.RoundedRectangle.Direction.Up
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
@@ -27,7 +27,6 @@ Cura.RoundedRectangle
         id: headerLabel
         text: ""
         font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("small_button_text")
         height: parent.height
 
         anchors

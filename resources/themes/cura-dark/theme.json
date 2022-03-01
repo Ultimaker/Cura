@@ -39,6 +39,9 @@
         "primary_text": "text_default",
         "secondary": [95, 95, 95, 255],
 
+        "expandable_active": "background_2",
+        "expandable_hover": "background_2",
+
         "secondary_button": "background_1",
         "secondary_button_hover": "background_3",
         "secondary_button_text": [255, 255, 255, 255],
