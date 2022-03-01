@@ -83,13 +83,12 @@ UM.TooltipArea
         height: numericTextFieldWithUnit.controlHeight
 
         // Background is a rounded-cornered box with filled color as state indication (normal, warning, error, etc.)
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             anchors.fill: parent
             anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
-            radius: UM.Theme.getSize("setting_control_radius").width
 
-            border.color:
+            liningColor:
             {
                 if (!textFieldWithUnit.enabled)
                 {
@@ -108,9 +107,9 @@ UM.TooltipArea
                 // Validation is OK.
                 if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("border_main_light")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("border_field_light")
             }
 
             color:

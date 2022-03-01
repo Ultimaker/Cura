@@ -26,15 +26,13 @@ SettingItem
         }
     }
 
-    contents: Rectangle
+    contents: UM.UnderlineBackground
     {
         id: control
 
         anchors.fill: parent
 
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color:
+        liningColor:
         {
             if(!enabled)
             {
@@ -54,9 +52,9 @@ SettingItem
             //Validation is OK.
             if(hovered || input.activeFocus)
             {
-                return UM.Theme.getColor("setting_control_border_highlight")
+                return UM.Theme.getColor("border_main_light")
             }
-            return UM.Theme.getColor("setting_control_border")
+            return UM.Theme.getColor("border_field_light")
         }
 
         color: {
