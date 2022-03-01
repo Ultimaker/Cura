@@ -130,7 +130,7 @@
 
         "setting_control": "background_2",
         "setting_control_selected": [34, 39, 42, 38],
-        "setting_control_highlight": "background_2",
+        "setting_control_highlight": "background_3",
         "setting_control_border": [255, 255, 255, 38],
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": "text_default",

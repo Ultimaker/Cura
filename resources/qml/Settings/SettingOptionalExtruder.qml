@@ -235,7 +235,6 @@ SettingItem
             background: Rectangle
             {
                 color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-                border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
             }
         }
     }
