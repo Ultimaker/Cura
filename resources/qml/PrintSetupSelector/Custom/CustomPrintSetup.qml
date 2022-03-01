@@ -126,13 +126,10 @@ Item
                 }
             }
 
-            background: Rectangle
+            background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                border.color: intentSelection.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
-                border.width: UM.Theme.getSize("default_lining").width
-                radius: UM.Theme.getSize("default_radius").width
-                color: UM.Theme.getColor("main_background")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main_light") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
