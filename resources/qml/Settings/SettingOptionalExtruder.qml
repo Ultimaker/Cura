@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 
 import UM 1.5 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 SettingItem
 {
@@ -19,7 +19,7 @@ SettingItem
     // this extra property to keep the ExtrudersModel and use this in the rest of the code.
     property var extrudersWithOptionalModel: CuraApplication.getExtrudersModelWithOptional()
 
-    contents: ComboBox
+    contents: Cura.ComboBox
     {
         id: control
         anchors.fill: parent
@@ -111,26 +111,24 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_button");
+            color: UM.Theme.getColor("setting_control_button")
         }
 
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             color:
             {
                 if (!enabled)
                 {
-                    return UM.Theme.getColor("setting_control_disabled");
+                    return UM.Theme.getColor("setting_control_disabled")
                 }
-                if (control.hovered || control.activeFocus)
+                if (control.hovered || base.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_highlight");
+                    return UM.Theme.getColor("setting_control_highlight")
                 }
-                return UM.Theme.getColor("setting_control");
+                return UM.Theme.getColor("setting_control")
             }
-            radius: UM.Theme.getSize("setting_control_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color:
+            liningColor:
             {
                 if (!enabled)
                 {
@@ -138,9 +136,9 @@ SettingItem
                 }
                 if (control.hovered || control.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("border_main_light")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("border_field_light")
             }
         }
 
@@ -214,7 +212,7 @@ SettingItem
                     if (model.enabled) {
                         UM.Theme.getColor("setting_control_text")
                     } else {
-                        UM.Theme.getColor("action_button_disabled_text");
+                        UM.Theme.getColor("action_button_disabled_text")
                     }
                 }
                 elide: Text.ElideRight

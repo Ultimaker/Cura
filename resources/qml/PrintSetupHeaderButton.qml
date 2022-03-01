@@ -36,7 +36,7 @@ ToolButton
             {
                 target: background
                 color: UM.Theme.getColor("setting_control_disabled")
-                border.color: UM.Theme.getColor("setting_control_disabled_border")
+                liningColor: UM.Theme.getColor("setting_control_disabled_border")
             }
         },
         State
@@ -47,7 +47,7 @@ ToolButton
             {
                 target: background
                 color: UM.Theme.getColor("setting_validation_error_background")
-                border.color: UM.Theme.getColor("setting_validation_error")
+                liningColor: UM.Theme.getColor("setting_validation_error")
             }
         },
         State
@@ -58,7 +58,7 @@ ToolButton
             {
                 target: background
                 color: UM.Theme.getColor("setting_validation_warning_background")
-                border.color: UM.Theme.getColor("setting_validation_warning")
+                liningColor: UM.Theme.getColor("setting_validation_warning")
             }
         },
         State
@@ -69,7 +69,7 @@ ToolButton
             {
                 target: background
                 color: UM.Theme.getColor("setting_control")
-                border.color: UM.Theme.getColor("setting_control_border_highlight")
+                liningColor: UM.Theme.getColor("border_main_light")
             }
         },
         State
@@ -80,19 +80,14 @@ ToolButton
             {
                 target: background
                 color: UM.Theme.getColor("setting_control")
-                border.color: UM.Theme.getColor("setting_control_border")
+                liningColor: UM.Theme.getColor("border_field_light")
             }
         }
     ]
 
-    background: Rectangle
+    background: UM.UnderlineBackground
     {
         id: background
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        color: UM.Theme.getColor("setting_control")
-        border.color: UM.Theme.getColor("setting_control_border")
 
         UM.RecolorImage
         {

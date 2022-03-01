@@ -5,14 +5,14 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 
 import UM 1.5 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 SettingItem
 {
     id: base
     property var focusItem: control
 
-    contents: ComboBox
+    contents: Cura.ComboBox
     {
         id: control
         anchors.fill: parent
@@ -113,7 +113,7 @@ SettingItem
             color: UM.Theme.getColor("setting_control_button");
         }
 
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             color:
             {
@@ -127,9 +127,7 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control")
             }
-            radius: UM.Theme.getSize("setting_control_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color:
+            liningColor:
             {
                 if (!enabled)
                 {
@@ -137,9 +135,9 @@ SettingItem
                 }
                 if (control.hovered || control.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("border_main_light")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("border_field_light")
             }
         }
 
