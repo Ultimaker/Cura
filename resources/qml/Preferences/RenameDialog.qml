@@ -11,6 +11,9 @@ import Cura 1.0 as Cura
 UM.Dialog
 {
     id: base
+
+    buttonSpacing: UM.Theme.getSize("default_margin").width
+
     property string object: ""
 
     property alias newName: nameField.text
@@ -61,14 +64,6 @@ UM.Dialog
         {
             visible: !base.validName
             text: base.validationError
-        }
-    }
-
-    Item
-    {
-        ButtonGroup {
-            buttons: [cancelButton, okButton]
-            checkedButton: okButton
         }
     }
 
