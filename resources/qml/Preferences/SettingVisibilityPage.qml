@@ -189,7 +189,6 @@ UM.PreferencesPage
         }
 
         UM.I18nCatalog { name: "cura" }
-        SystemPalette { id: palette }
 
         Component
         {

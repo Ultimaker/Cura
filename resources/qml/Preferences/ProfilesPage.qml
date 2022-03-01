@@ -293,11 +293,6 @@ UM.ManagementPage
             }
         }
 
-        SystemPalette
-        {
-            id: palette
-        }
-
         Column
         {
             id: detailsPanelHeaderColumn
