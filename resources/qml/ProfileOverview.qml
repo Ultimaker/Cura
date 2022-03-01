@@ -16,6 +16,16 @@ Cura.TableView
     property int extruderPosition: -1 //The extruder to display. -1 denotes the global stack.
     property bool isQualityItemCurrentlyActivated: qualityItem != null && qualityItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
 
+    // Hack to make sure that when the data of our model changes the tablemodel is also updated
+    // If we directly set the rows (So without the clear being called) it doesn't seem to
+    // get updated correctly.
+    property var modelRows: qualitySettings.items
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
+    }
+
     Cura.QualitySettingsModel
     {
         id: qualitySettings
@@ -31,11 +41,12 @@ Cura.TableView
     ]
     model: TableModel
     {
+        id: tableModel
         TableModelColumn { display: "label" }
         TableModelColumn { display: "profile_value" }
         TableModelColumn { display: "user_value" }
         TableModelColumn { display: "unit" }
-        rows: qualitySettings.items
+        rows: modelRows
     }
     sectionRole: "category"
 }
