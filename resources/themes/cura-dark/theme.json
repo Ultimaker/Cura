@@ -193,8 +193,8 @@
         "monitor_card_background": [51, 53, 54, 255],
         "monitor_card_hover": [84, 89, 95, 255],
 
-        "monitor_stage_background": [30, 36, 39, 255],
-        "monitor_stage_background_fade": [30, 36, 39, 102],
+        "monitor_stage_background": "background_1",
+        "monitor_stage_background_fade": "background_1",
 
         "monitor_progress_bar_deactive": [102, 102, 102, 255],
         "monitor_progress_bar_empty": [67, 67, 67, 255],
