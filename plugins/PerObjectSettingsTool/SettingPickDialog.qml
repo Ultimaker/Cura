@@ -14,6 +14,7 @@ UM.Dialog
 
     title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
     width: UM.Theme.getSize("small_popup_dialog").width
+    backgroundColor: UM.Theme.getColor("background_1")
 
     property var additional_excluded_settings
 
@@ -78,12 +79,13 @@ UM.Dialog
         anchors
         {
             top: filterInput.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
 
-        ScrollBar.vertical: UM.ScrollBar {}
+        ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
         clip: true
 
         model: UM.SettingDefinitionsModel
@@ -104,7 +106,7 @@ UM.Dialog
         {
             id: loader
 
-            width: listview.width
+            width: listview.width - scrollBar.width
             height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
             property var definition: model
