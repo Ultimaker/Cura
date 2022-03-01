@@ -5,6 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 // This component extends the funtionality of QtControls 2.x Spinboxes to
 // - be able to contain fractional values
@@ -73,19 +74,14 @@ Item
 
         background: Item {}
 
-        //TextField should be swapped with UM.TextField when it is restyled
-        contentItem: TextField
+        contentItem: Cura.TextField
         {
             text: spinBox.textFromValue(spinBox.value, spinBox.locale)
-            color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
-            background: UM.UnderlineBackground {}
-
-            selectByMouse: base.editable
             validator: base.validator
 
             onActiveFocusChanged:
             {
-                if(!activeFocus)
+                if (!activeFocus)
                 {
                     base.editingFinished();
                 }
