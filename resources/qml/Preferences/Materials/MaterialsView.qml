@@ -222,6 +222,7 @@ Item
                     id: colorDialog
                     title: catalog.i18nc("@title", "Material color picker")
                     color: properties.color_code
+                    onAccepted: base.setMetaDataEntry("color_code", properties.color_code, color)
                 }
             }
 
