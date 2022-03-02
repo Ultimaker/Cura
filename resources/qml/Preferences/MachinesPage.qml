@@ -125,7 +125,7 @@ UM.ManagementPage
             }
         }
 
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: renameDialog
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""

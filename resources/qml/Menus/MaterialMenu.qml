@@ -108,7 +108,7 @@ Cura.Menu
             Instantiator
             {
                 model: brandMaterials
-                delegate: Menu
+                delegate: Cura.Menu
                 {
                     id: brandMaterialsMenu
                     title: materialName

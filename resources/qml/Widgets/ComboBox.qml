@@ -26,29 +26,18 @@ ComboBox
         {
             name: "disabled"
             when: !control.enabled
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_disabled_border")}
-            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
+            PropertyChanges { target: background; color: UM.Theme.getColor("setting_control_disabled")}
             PropertyChanges { target: contentLabel; color: UM.Theme.getColor("setting_control_disabled_text")}
         },
         State
         {
             name: "highlighted"
             when: control.hovered || control.activeFocus
-            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_border_highlight") }
-            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_highlight")}
+            PropertyChanges { target: background; liningColor: UM.Theme.getColor("border_main_light")}
         }
     ]
 
-    background: Rectangle
-    {
-        id: backgroundRectangle
-        color: UM.Theme.getColor("setting_control")
-
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("setting_control_border")
-
-    }
+    background: UM.UnderlineBackground{}
 
     indicator: UM.RecolorImage
     {
@@ -157,7 +146,6 @@ ComboBox
             Rectangle
             {
                 color: delegateItem.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-                border.color: delegateItem.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
                 anchors.fill: parent
             }
             text: delegateLabel.truncated ? delegateItem.text : ""

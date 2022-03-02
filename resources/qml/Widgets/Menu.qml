@@ -21,7 +21,7 @@ UM.Menu
     delegate: Cura.MenuItem {}
     background: Rectangle
     {
-        color: UM.Theme.getColor("setting_control")
-        border.color: UM.Theme.getColor("setting_control_border")
+        color: UM.Theme.getColor("main_background")
+        border.color: UM.Theme.getColor("lining")
     }
 }

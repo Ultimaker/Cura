@@ -84,7 +84,7 @@ UM.PreferencesPage
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: filter
 
@@ -105,7 +105,7 @@ UM.PreferencesPage
         Cura.ComboBox
         {
             id: visibilityPreset
-            width: 150 * screenScaleFactor
+            width: UM.Theme.getSize("action_button").width
             anchors
             {
                 top: parent.top
@@ -189,7 +189,6 @@ UM.PreferencesPage
         }
 
         UM.I18nCatalog { name: "cura" }
-        SystemPalette { id: palette }
 
         Component
         {

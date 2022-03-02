@@ -87,7 +87,7 @@ Item
         anchors.top: dataRow.bottom
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: confirmDeleteDialog
         title: catalog.i18nc("@dialog:title", "Delete Backup")
@@ -96,7 +96,7 @@ Item
         onAccepted: CuraDrive.deleteBackup(modelData.backup_id)
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: confirmRestoreDialog
         title: catalog.i18nc("@dialog:title", "Restore Backup")

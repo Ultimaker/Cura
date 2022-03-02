@@ -392,6 +392,7 @@ Item
                     id: printerJobNameLabel
                     color: printer && printer.activePrintJob && printer.activePrintJob.isActive ? UM.Theme.getColor("text") : UM.Theme.getColor("monitor_text_disabled")
                     elide: Text.ElideRight
+                    wrapMode: Text.NoWrap
                     font: UM.Theme.getFont("large") // 16pt, bold
                     text: printer && printer.activePrintJob ? printer.activePrintJob.name : catalog.i18nc("@label", "Untitled")
                     width: parent.width

@@ -21,6 +21,8 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
 
+    margin: UM.Theme.getSize("thick_margin").width
+
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
 
     onVisibilityChanged:
@@ -91,6 +93,9 @@ UM.Dialog
     leftButtons: [
         Cura.ComboBox
         {
+            implicitHeight: UM.Theme.getSize("combobox_wide").height
+            implicitWidth: UM.Theme.getSize("combobox_wide").width
+
             id: discardOrKeepProfileChangesDropDownButton
             textRole: "text"
 

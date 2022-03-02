@@ -310,7 +310,7 @@ Item
     }
 
     // Dialogs
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: confirmRemoveMaterialDialog
         title: catalog.i18nc("@title:window", "Confirm Remove")
@@ -337,7 +337,7 @@ Item
         {
             const result = Cura.ContainerManager.importMaterialContainer(fileUrl);
 
-            const messageDialog = Qt.createQmlObject("import UM 1.5 as UM; UM.MessageDialog { onClosed: destroy() }", base);
+            const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
             messageDialog.standardButtons = Dialog.Ok;
             messageDialog.title = catalog.i18nc("@title:window", "Import Material");
             switch (result.status)
@@ -365,7 +365,7 @@ Item
         {
             const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
 
-            const messageDialog = Qt.createQmlObject("import UM 1.5 as UM; UM.MessageDialog { onClosed: destroy() }", base);
+            const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
             messageDialog.title = catalog.i18nc("@title:window", "Export Material");
             messageDialog.standardButtons = Dialog.Ok;
             switch (result.status)

@@ -35,8 +35,8 @@ Cura.MachineAction
         id: discoverUM3Action
         spacing: UM.Theme.getSize("default_margin").height
 
-        SystemPalette { id: palette }
         UM.I18nCatalog { id: catalog; name:"cura" }
+
         UM.Label
         {
             id: pageTitle
@@ -53,9 +53,9 @@ Cura.MachineAction
 
         Row
         {
-            spacing: UM.Theme.getSize("default_lining").width
+            spacing: UM.Theme.getSize("thin_margin").width
 
-            Button
+            Cura.SecondaryButton
             {
                 id: addButton
                 text: catalog.i18nc("@action:button", "Add");
@@ -65,7 +65,7 @@ Cura.MachineAction
                 }
             }
 
-            Button
+            Cura.SecondaryButton
             {
                 id: editButton
                 text: catalog.i18nc("@action:button", "Edit")
@@ -76,7 +76,7 @@ Cura.MachineAction
                 }
             }
 
-            Button
+            Cura.SecondaryButton
             {
                 id: removeButton
                 text: catalog.i18nc("@action:button", "Remove")
@@ -84,7 +84,7 @@ Cura.MachineAction
                 onClicked: manager.removeManualDevice(base.selectedDevice.key, base.selectedDevice.ipAddress)
             }
 
-            Button
+            Cura.SecondaryButton
             {
                 id: rediscoverButton
                 text: catalog.i18nc("@action:button", "Refresh")
@@ -122,23 +122,18 @@ Cura.MachineAction
                         base.completeProperties = base.selectedDevice != null && base.selectedDevice.getProperty("incomplete") != "true";
                     }
                     Component.onCompleted: manager.startDiscovery()
-                    delegate: Rectangle
+
+                    delegate: UM.Label
                     {
-                        height: printNameLabel.height
-                        color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                        id: printNameLabel
                         width: listview.width
-                        Label
-                        {
-                            id: printNameLabel
-                            height: contentHeight
-                            anchors.left: parent.left
-                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                            anchors.right: parent.right
-                            text: listview.model[index].name
-                            color: parent.ListView.isCurrentItem ? palette.highlightedText : palette.text
-                            elide: Text.ElideRight
-                            renderType: Text.NativeRendering
-                        }
+                        height: contentHeight
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+                        anchors.right: parent.right
+                        text: listview.model[index].name
+                        elide: Text.ElideRight
 
                         MouseArea
                         {
@@ -150,6 +145,11 @@ Cura.MachineAction
                                     parent.ListView.view.currentIndex = index;
                                 }
                             }
+                        }
+
+                        background: Rectangle
+                        {
+                            color: parent.ListView.isCurrentItem ? UM.Theme.getColor("background_3") : "transparent"
                         }
                     }
                 }
@@ -175,20 +175,19 @@ Cura.MachineAction
                     font: UM.Theme.getFont("large_bold")
                     elide: Text.ElideRight
                 }
-                Grid
+                GridLayout
                 {
                     visible: base.completeProperties
                     width: parent.width
                     columns: 2
-                    property real labelWidth: Math.round(width * 0.5)
                     UM.Label
                     {
-                        width: labelWidth
+                        Layout.fillWidth: true
                         text: catalog.i18nc("@label", "Type")
                     }
                     UM.Label
                     {
-                        width: labelWidth
+                        Layout.fillWidth: true
                         text:
                         {
                             if (base.selectedDevice) {
@@ -199,22 +198,22 @@ Cura.MachineAction
                     }
                     UM.Label
                     {
-                        width: labelWidth
+                        Layout.fillWidth: true
                         text: catalog.i18nc("@label", "Firmware version")
                     }
                     UM.Label
                     {
-                        width: labelWidth
+                        Layout.fillWidth: true
                         text: base.selectedDevice ? base.selectedDevice.firmwareVersion : ""
                     }
                     UM.Label
                     {
-                        width: labelWidth
+                        Layout.fillWidth: true
                         text: catalog.i18nc("@label", "Address")
                     }
                     UM.Label
                     {
-                        width: labelWidth
+                        Layout.fillWidth: true
                         text: base.selectedDevice ? base.selectedDevice.ipAddress : ""
                     }
                 }
@@ -246,7 +245,7 @@ Cura.MachineAction
                     text: catalog.i18nc("@label", "The printer at this address has not yet responded." )
                 }
 
-                Button
+                Cura.SecondaryButton
                 {
                     text: catalog.i18nc("@action:button", "Connect")
                     enabled: (base.selectedDevice && base.completeProperties && base.selectedDevice.clusterSize > 0) ? true : false
@@ -256,7 +255,7 @@ Cura.MachineAction
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: invalidIPAddressMessageDialog
         title: catalog.i18nc("@title:window", "Invalid IP address")
@@ -264,7 +263,7 @@ Cura.MachineAction
         standardButtons: Dialog.Ok
     }
 
-    Dialog
+    Cura.MessageDialog
     {
         id: manualPrinterDialog
         property string printerKey
@@ -273,6 +272,7 @@ Cura.MachineAction
         title: catalog.i18nc("@title:window", "Printer Address")
 
         width: UM.Theme.getSize("small_popup_dialog").width
+        height: UM.Theme.getSize("small_popup_dialog").height
 
         anchors.centerIn: Overlay.overlay
 

@@ -278,6 +278,7 @@ Item
 
                     width: selectors.controlWidth
                     height: parent.height
+                    anchors.verticalCenter: parent.verticalCenter
 
                     focusPolicy: Qt.ClickFocus
 
@@ -289,6 +290,7 @@ Item
                     }
                     onClicked: materialsMenu.popup()
                 }
+
                 Item
                 {
                     width: instructionButton.width + 2 * UM.Theme.getSize("narrow_margin").width
@@ -331,6 +333,7 @@ Item
                     tooltip: text
                     height: parent.height
                     width: selectors.controlWidth
+                    anchors.verticalCenter: parent.verticalCenter
                     focusPolicy: Qt.ClickFocus
                     enabled: enabledCheckbox.checked
 

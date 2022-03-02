@@ -425,8 +425,6 @@ Item
         storeIndex: 0
     }
 
-    SystemPalette { id: palette }
-
     Component
     {
         id: settingTextField

@@ -4,6 +4,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 2.15
 import UM 1.5 as UM
+import Cura 1.6 as Cura
 
 /**
  * A MonitorInfoBlurb is an extension of the GenericPopUp used to show static information (vs. interactive context
@@ -133,7 +134,7 @@ Item
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: sendToTopConfirmationDialog
         onAccepted: OutputDevice.sendJobToTop(printJob.key)
@@ -142,7 +143,7 @@ Item
         title: catalog.i18nc("@window:title", "Move print job to top")
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: deleteConfirmationDialog
         onAccepted: OutputDevice.deleteJobFromQueue(printJob.key)
@@ -151,7 +152,7 @@ Item
         title: catalog.i18nc("@window:title", "Delete print job")
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: abortConfirmationDialog
         onAccepted: printJob.setState("abort")

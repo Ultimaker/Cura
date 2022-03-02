@@ -2,11 +2,9 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 2.15 as NewControls
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 
@@ -585,7 +583,7 @@ UM.MainWindow
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: exitConfirmationDialog
         title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
@@ -743,14 +741,14 @@ UM.MainWindow
         }
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: packageInstallDialog
         title: catalog.i18nc("@window:title", "Install Package")
         standardButtons: StandardButton.Ok
     }
 
-    UM.MessageDialog
+    Cura.MessageDialog
     {
         id: infoMultipleFilesWithGcodeDialog
         title: catalog.i18nc("@title:window", "Open File(s)")

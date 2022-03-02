@@ -14,7 +14,7 @@ UM.PreferencesPage
     title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
 
-    width: parent.width
+    width: parent ? parent.width: 0
 
     function setDefaultLanguage(languageCode)
     {
@@ -554,8 +554,8 @@ UM.PreferencesPage
 
                         model: comboBoxList
                         textRole: "text"
-                        width: UM.Theme.getSize("setting_control").width
-                        height: UM.Theme.getSize("setting_control").height
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
 
                         currentIndex:
                         {
@@ -711,8 +711,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: UM.Theme.getSize("setting_control").width
-                        height: UM.Theme.getSize("setting_control").height
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
 
                         model: ListModel
                         {
@@ -779,8 +779,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: UM.Theme.getSize("setting_control").width
-                        height: UM.Theme.getSize("setting_control").height
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
@@ -849,6 +849,7 @@ UM.PreferencesPage
                     hoverBackgroundColor: UM.Theme.getColor("secondary_button_hover")
                     backgroundRadius: width / 2
                     height: UM.Theme.getSize("small_button_icon").height
+                    color: UM.Theme.getColor("small_button_text")
                     width: height
                 }
             }
@@ -894,7 +895,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                Cura.RadioButton
                 {
                     id: checkUpdatesOptionStable
                     text: catalog.i18nc("@option:radio", "Stable releases only")
@@ -910,7 +911,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                Cura.RadioButton
                 {
                     id: checkUpdatesOptionBeta
                     text: catalog.i18nc("@option:radio", "Stable and Beta releases")

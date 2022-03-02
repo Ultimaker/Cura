@@ -137,14 +137,14 @@ UM.ManagementPage
                 base.toActivateNewQuality = false;
             }
         }
-        UM.MessageDialog
+        Cura.MessageDialog
         {
             id: messageDialog
             standardButtons: Dialog.Ok
         }
 
         // Dialog to request a name when creating a new profile
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: createQualityDialog
             title: catalog.i18nc("@title:window", "Create Profile")
@@ -233,7 +233,7 @@ UM.ManagementPage
         }
 
         // Dialog to request a name when duplicating a new profile
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: duplicateQualityDialog
             title: catalog.i18nc("@title:window", "Duplicate Profile")
@@ -245,7 +245,7 @@ UM.ManagementPage
         }
 
         // Confirmation dialog for removing a profile
-        UM.MessageDialog
+        Cura.MessageDialog
         {
             id: confirmRemoveQualityDialog
 
@@ -263,7 +263,7 @@ UM.ManagementPage
         }
 
         // Dialog to rename a quality profile
-        UM.RenameDialog
+        Cura.RenameDialog
         {
             id: renameQualityDialog
             title: catalog.i18nc("@title:window", "Rename Profile")
@@ -291,11 +291,6 @@ UM.ManagementPage
                 messageDialog.open();
                 CuraApplication.setDefaultPath("dialog_profile_path", folder);
             }
-        }
-
-        SystemPalette
-        {
-            id: palette
         }
 
         Column

@@ -50,7 +50,7 @@ UM.Dialog
             UM.I18nCatalog{id: catalog; name: "cura"}
         }
 
-        Label
+        UM.Label
         {
             id: version
 
@@ -63,7 +63,7 @@ UM.Dialog
         }
     }
 
-    Label
+    UM.Label
     {
         id: description
         width: parent.width
@@ -76,7 +76,7 @@ UM.Dialog
         anchors.topMargin: UM.Theme.getSize("default_margin").height
     }
 
-    Label
+    UM.Label
     {
         id: creditsNotes
         width: parent.width
@@ -105,20 +105,20 @@ UM.Dialog
         delegate: Row
         {
             spacing: UM.Theme.getSize("narrow_margin").width
-            Label
+            UM.Label
             {
                 text: "<a href='%1' title='%2'>%2</a>".arg(model.url).arg(model.name)
                 width: (projectsList.width * 0.25) | 0
                 elide: Text.ElideRight
                 onLinkActivated: Qt.openUrlExternally(link)
             }
-            Label
+            UM.Label
             {
                 text: model.description
                 elide: Text.ElideRight
                 width: ((projectsList.width * 0.6) | 0) - parent.spacing * 2 - projectsListScrollBar.width
             }
-            Label
+            UM.Label
             {
                 text: model.license
                 elide: Text.ElideRight
@@ -165,12 +165,11 @@ UM.Dialog
         }
     }
 
-    rightButtons: Cura.SecondaryButton
+    rightButtons: Cura.TertiaryButton
     {
         //: Close about dialog button
         id: closeButton
         text: catalog.i18nc("@action:button", "Close")
-
-        onClicked: base.visible = false;
+        onClicked: reject()
     }
 }

@@ -35,7 +35,8 @@ Item
             model: columnHeaders
             Rectangle
             {
-                width: Math.max(1, Math.round(tableBase.width / headerRepeater.count))
+                //minimumWidth: Math.max(1, Math.round(tableBase.width / headerRepeater.count))
+                width: 300
                 height: UM.Theme.getSize("section").height
 
                 color: UM.Theme.getColor("secondary")

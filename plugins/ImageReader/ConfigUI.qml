@@ -11,26 +11,25 @@ import Cura 1.0 as Cura
 
 UM.Dialog
 {
-    title: catalog.i18nc("@title:window", "Convert Image...")
+    title: catalog.i18nc("@title:window", "Convert Image")
 
     minimumWidth: grid.width + 2 * UM.Theme.getSize("default_margin").height
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
 
-
-
     GridLayout
     {
         UM.I18nCatalog { id: catalog; name: "cura" }
         id: grid
-        columnSpacing: UM.Theme.getSize("default_margin").width
-        rowSpacing: UM.Theme.getSize("thin_margin").height
+        columnSpacing: UM.Theme.getSize("narrow_margin").width
+        rowSpacing: UM.Theme.getSize("narrow_margin").height
         columns: 2
 
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Height (mm)")
             Layout.alignment: Qt.AlignVCenter
 
@@ -45,6 +44,7 @@ UM.Dialog
         {
             id: peak_height
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Peak_Height"
             validator: RegExpValidator { regExp: /^\d{0,3}([\,|\.]\d*)?$/ }
@@ -62,6 +62,7 @@ UM.Dialog
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Base (mm)")
             Layout.alignment: Qt.AlignVCenter
 
@@ -78,6 +79,7 @@ UM.Dialog
             id: base_height
             selectByMouse: true
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             objectName: "Base_Height"
             validator: RegExpValidator { regExp: /^\d{0,3}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onBaseHeightChanged(text)
@@ -94,6 +96,7 @@ UM.Dialog
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Width (mm)")
             Layout.alignment: Qt.AlignVCenter
 
@@ -110,6 +113,7 @@ UM.Dialog
             selectByMouse: true
             objectName: "Width"
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             focus: true
             validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onWidthChanged(text)
@@ -126,6 +130,7 @@ UM.Dialog
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Depth (mm)")
             Layout.alignment: Qt.AlignVCenter
 
@@ -140,6 +145,7 @@ UM.Dialog
         {
             id: depth
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Depth"
             focus: true
@@ -158,6 +164,7 @@ UM.Dialog
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: ""
             Layout.alignment: Qt.AlignVCenter
 
@@ -172,9 +179,14 @@ UM.Dialog
         {
             id: lighter_is_higher
             Layout.fillWidth: true
-            Layout.preferredHeight: UM.Theme.getSize("toolbox_action_button").height
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
+            Layout.preferredHeight: UM.Theme.getSize("setting_control").height
             objectName: "Lighter_Is_Higher"
-            model: [catalog.i18nc("@item:inlistbox", "Darker is higher"), catalog.i18nc("@item:inlistbox", "Lighter is higher")]
+            textRole: "text"
+            model: [
+                { text: catalog.i18nc("@item:inlistbox", "Darker is higher") },
+                { text: catalog.i18nc("@item:inlistbox", "Lighter is higher") }
+            ]
             onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
         }
 
@@ -189,6 +201,7 @@ UM.Dialog
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Color Model")
             Layout.alignment: Qt.AlignVCenter
 
@@ -203,10 +216,15 @@ UM.Dialog
         {
             id: color_model
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
+            Layout.preferredHeight: UM.Theme.getSize("setting_control").height
             objectName: "ColorModel"
-            model: [catalog.i18nc("@item:inlistbox", "Linear"), catalog.i18nc("@item:inlistbox", "Translucency")]
+            textRole: "text"
+            model: [
+                { text: catalog.i18nc("@item:inlistbox", "Linear") },
+                { text: catalog.i18nc("@item:inlistbox", "Translucency") }
+            ]
             onCurrentIndexChanged: { manager.onColorModelChanged(currentIndex) }
-            Layout.preferredHeight: UM.Theme.getSize("toolbox_action_button").height
         }
 
         Cura.ToolTip
@@ -220,6 +238,7 @@ UM.Dialog
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "1mm Transmittance (%)")
             Layout.alignment: Qt.AlignVCenter
 
@@ -232,25 +251,26 @@ UM.Dialog
 
         Cura.TextField
         {
-            id: transmittance
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Transmittance"
             validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onTransmittanceChanged(text)
-        }
 
-        Cura.ToolTip
-        {
-            text: catalog.i18nc("@info:tooltip", "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image.")
-            visible: transmittance.hovered || transmittance_label.containsMouse
-            targetPoint: Qt.point(transmittance.x + Math.round(transmittance.width / 2), 0)
-            y: transmittance.y + transmittance.height + UM.Theme.getSize("default_margin").height
+            Cura.ToolTip
+            {
+                text: catalog.i18nc("@info:tooltip", "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image.")
+                visible: parent.hovered || transmittance_label.containsMouse
+                targetPoint: Qt.point(parent.x + Math.round(parent.width / 2), 0)
+                y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+            }
         }
 
         UM.Label
         {
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             text: catalog.i18nc("@action:label", "Smoothing")
             Layout.alignment: Qt.AlignVCenter
 
@@ -262,14 +282,15 @@ UM.Dialog
             }
         }
 
-        Slider
+        Cura.SpinBox
         {
             id: smoothing
             Layout.fillWidth: true
+            Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             objectName: "Smoothing"
             to: 100.0
             stepSize: 1.0
-            onValueChanged: { manager.onSmoothingChanged(value) }
+            onValueChanged: manager.onSmoothingChanged(value)
         }
 
         Cura.ToolTip
@@ -293,18 +314,20 @@ UM.Dialog
     onAccepted: manager.onOkButtonClicked()
     onRejected: manager.onCancelButtonClicked()
 
+    buttonSpacing: UM.Theme.getSize("default_margin").width
+
     rightButtons: [
-        Button
-        {
-            id: ok_button
-            text: catalog.i18nc("@action:button", "OK")
-            onClicked: manager.onOkButtonClicked()
-        },
-        Button
+        Cura.TertiaryButton
         {
             id: cancel_button
             text: catalog.i18nc("@action:button", "Cancel")
             onClicked: manager.onCancelButtonClicked()
+        },
+        Cura.PrimaryButton
+        {
+            id: ok_button
+            text: catalog.i18nc("@action:button", "OK")
+            onClicked: manager.onOkButtonClicked()
         }
     ]
 }
