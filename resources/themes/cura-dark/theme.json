@@ -164,6 +164,8 @@
         "checkbox_text": "text_default",
         "checkbox_disabled": "background_2",
 
+        "category_background": "background_3",
+
         "tooltip": "background_2",
         "tooltip_text": "text_default",
 

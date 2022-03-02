@@ -332,6 +332,8 @@
         "checkbox_disabled": "background_2",
         "checkbox_text": [0, 12, 26, 255],
 
+        "category_background": "background_2",
+
         "tooltip": [25, 25, 25, 255],
         "tooltip_text": [255, 255, 255, 255],
 

@@ -12,7 +12,7 @@ Button {
     id: base;
 
     background: Rectangle {
-        color: UM.Theme.getColor("background_3")
+        color: UM.Theme.getColor("category_background")
     }
 
     contentItem: Row
@@ -31,7 +31,7 @@ Button {
                 height: (label.height / 2) | 0
                 width: height
                 source: base.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
-                color: base.hovered ? UM.Theme.getColor("primary_button_hover"): UM.Theme.getColor("primary_button_text")
+                color: base.hovered ? UM.Theme.getColor("primary_button_hover"): UM.Theme.getColor("text")
             }
         }
         UM.RecolorImage
@@ -40,14 +40,14 @@ Button {
             height: label.height
             width: height
             source: UM.Theme.getIcon(definition.icon)
-            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button_text")
+            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("text")
         }
         UM.Label
         {
             id: label
             anchors.verticalCenter: parent.verticalCenter
             text: base.text
-            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button_text")
+            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("text")
             font.bold: true
         }
     }
