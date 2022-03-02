@@ -116,7 +116,6 @@ UM.Dialog
                     RowLayout
                     {
                         anchors.fill: parent
-                        height: childrenRect.height
 
                         UM.Label
                         {
