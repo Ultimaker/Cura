@@ -18,11 +18,11 @@ Button
     property string labelText: ""
     id: button
     hoverEnabled: true
-    leftPadding:UM.Theme.getSize("wide_margin").width
+    leftPadding: UM.Theme.getSize("default_margin").width
 
     background: Rectangle
     {
-        id: backgroundRectangle
+        id: backgroundRectanglewide_margin
         color: button.hovered ? UM.Theme.getColor("background_2"): UM.Theme.getColor("background_1")
     }
 
