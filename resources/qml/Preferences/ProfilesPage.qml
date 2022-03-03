@@ -21,8 +21,9 @@ UM.ManagementPage
 
     onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
 
+    property bool hasCurrentItem: base.currentItem != null
+    hamburgerButtonVisible: hasCurrentItem
 
-    property var hasCurrentItem: base.currentItem != null
     sectionRole: "section_name"
 
     property var currentItem:
