@@ -355,7 +355,7 @@ class FlavorParser:
 
         Logger.log("d", "Parsing g-code...")
 
-        current_position = Position(0, 0, 0, 0, [0,0,0,0])
+        current_position = Position(0, 0, 0, 0, [0] * 8)
         current_path = [] #type: List[List[float]]
         min_layer_number = 0
         negative_layers = 0
