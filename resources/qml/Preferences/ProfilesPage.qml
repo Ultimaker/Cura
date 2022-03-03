@@ -17,7 +17,7 @@ UM.ManagementPage
     property var extrudersModel: CuraApplication.getExtrudersModel()
     property var qualityManagementModel: CuraApplication.getQualityManagementModel()
 
-    scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<b>" + Cura.MachineManager.activeMachine.name + "</b>"
+    scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<br><b>" + Cura.MachineManager.activeMachine.name + "</b>"
 
     onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
 
