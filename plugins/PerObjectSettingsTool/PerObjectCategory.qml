@@ -1,59 +1,62 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.1
 
-import UM 1.1 as UM
-
+import UM 1.5 as UM
+import Cura 1.0 as Cura
 import ".."
 
 Button {
     id: base;
 
-    style: ButtonStyle {
-        background: Item { }
-        label: Row
+    background: Rectangle {
+        color: UM.Theme.getColor("category_background")
+    }
+
+    contentItem: Row
+    {
+        spacing: UM.Theme.getSize("default_lining").width
+
+        Item //Wrapper to give space before icon with fixed width. This allows aligning checkbox with category icon.
         {
-            spacing: UM.Theme.getSize("default_lining").width
+            height: label.height
+            width: height
+            anchors.verticalCenter: parent.verticalCenter
 
             UM.RecolorImage
             {
                 anchors.verticalCenter: parent.verticalCenter
                 height: (label.height / 2) | 0
                 width: height
-                source: control.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight");
-                color: control.hovered ? palette.highlight : palette.buttonText
+                source: base.checked ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
+                color: base.hovered ? UM.Theme.getColor("primary_button_hover"): UM.Theme.getColor("text")
             }
-            UM.RecolorImage
-            {
-                anchors.verticalCenter: parent.verticalCenter
-                height: label.height
-                width: height
-                source: control.iconSource
-                color: control.hovered ? palette.highlight : palette.buttonText
-            }
-            Label
-            {
-                id: label
-                anchors.verticalCenter: parent.verticalCenter
-                text: control.text
-                color: control.hovered ? palette.highlight : palette.buttonText
-                font.bold: true
-            }
-
-            SystemPalette { id: palette }
+        }
+        UM.RecolorImage
+        {
+            anchors.verticalCenter: parent.verticalCenter
+            height: label.height
+            width: height
+            source: UM.Theme.getIcon(definition.icon)
+            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("text")
+        }
+        UM.Label
+        {
+            id: label
+            anchors.verticalCenter: parent.verticalCenter
+            text: base.text
+            color: base.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("text")
+            font.bold: true
         }
     }
 
-    signal showTooltip(string text);
-    signal hideTooltip();
+    signal showTooltip(string text)
+    signal hideTooltip()
     signal contextMenuRequested()
 
     text: definition.label
-    iconSource: UM.Theme.getIcon(definition.icon)
 
     checkable: true
     checked: definition.expanded

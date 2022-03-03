@@ -3,10 +3,9 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -19,7 +18,7 @@ Cura.ExpandablePopup
     id: base
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
-
+    property var activeMachine: Cura.MachineManager.activeMachine
     UM.I18nCatalog
     {
         id: catalog
@@ -33,7 +32,7 @@ Cura.ExpandablePopup
     }
 
     contentPadding: UM.Theme.getSize("default_lining").width
-    enabled: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials || Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates : false; //Only let it drop down if there is any configuration that you could change.
+    enabled: activeMachine ? activeMachine.hasMaterials || activeMachine.hasVariants || activeMachine.hasVariantBuildplates : false; //Only let it drop down if there is any configuration that you could change.
 
     headerItem: Item
     {
@@ -44,7 +43,7 @@ Cura.ExpandablePopup
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             width: parent.width - UM.Theme.getSize("standard_arrow").width
-            visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials : false
+            visible: activeMachine ? activeMachine.hasMaterials : false
             Repeater
             {
                 model: extrudersModel
@@ -56,9 +55,9 @@ Cura.ExpandablePopup
                     Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
 
-                    property var extruderStack: Cura.MachineManager.activeMachine.extruders[model.index]
+                    property var extruderStack: activeMachine ? activeMachine.extruders[model.index]: null
                     property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
-                    property bool valueError: Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True"
+                    property bool valueError: activeMachine ? Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True" : false
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon
@@ -190,56 +189,49 @@ Cura.ExpandablePopup
                             rightMargin:  UM.Theme.getSize("default_margin").width
                         }
                         // Label for the brand of the material
-                        Label
+                        UM.Label
                         {
                             id: materialBrandNameLabel
 
                             text:  model.material_brand + " " + model.material_name
                             elide: Text.ElideRight
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
+                            wrapMode: Text.NoWrap
                             width: parent.width
                             visible: !truncated
                         }
 
-                        Label
+                        UM.Label
                         {
                             id: materialNameLabel
 
                             text: model.material_name
                             elide: Text.ElideRight
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             width: parent.width
+                            wrapMode: Text.NoWrap
                             visible: !materialBrandNameLabel.visible && !truncated
                         }
 
-                        Label
+                        UM.Label
                         {
                             id: materialTypeLabel
 
                             text: model.material_type
                             elide: Text.ElideRight
-                            font: UM.Theme.getFont("default")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             width: parent.width
+                            wrapMode: Text.NoWrap
                             visible: !materialBrandNameLabel.visible && !materialNameLabel.visible
                         }
                         // Label that shows the name of the variant
-                        Label
+                        UM.Label
                         {
                             id: variantLabel
 
-                            visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
+                            visible: activeMachine ? activeMachine.hasVariants : false
 
                             text: model.variant
                             elide: Text.ElideRight
+                            wrapMode: Text.NoWrap
                             font: UM.Theme.getFont("default_bold")
-                            color: UM.Theme.getColor("text")
-                            renderType: Text.NativeRendering
                             Layout.preferredWidth: parent.width
                         }
                     }
@@ -248,15 +240,13 @@ Cura.ExpandablePopup
         }
 
         // Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Select configuration")
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
 
-            visible: Cura.MachineManager.activeMachine ? !Cura.MachineManager.activeMachine.hasMaterials && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates) : false
+            visible: activeMachine ? !activeMachine.hasMaterials && (activeMachine.hasVariants || activeMachine.hasVariantBuildplates) : false
 
             anchors
             {
@@ -281,7 +271,7 @@ Cura.ExpandablePopup
 
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachine.hasRemoteConnection && Cura.MachineManager.printerConnected && Cura.MachineManager.printerOutputDevices[0].uniqueConfigurations.length > 0 //Re-evaluate.
+            is_connected = activeMachine.hasRemoteConnection && Cura.MachineManager.printerConnected && Cura.MachineManager.printerOutputDevices[0].uniqueConfigurations.length > 0 //Re-evaluate.
 
             // If the printer is not connected or does not have configurations, we switch always to the custom mode. If is connected instead, the auto mode
             // or the previous state is selected

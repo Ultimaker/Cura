@@ -4,6 +4,7 @@ MachineSelector 1.0 MachineSelector.qml
 MachineSelectorButton 1.0 MachineSelectorButton.qml
 CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
 PrintSetupSelector 1.0 PrintSetupSelector.qml
+ProfileOverview 1.6 ProfileOverview.qml
 ActionButton 1.0 ActionButton.qml
 MaterialMenu 1.0 MaterialMenu.qml
 NozzleMenu 1.0 NozzleMenu.qml
@@ -46,3 +47,4 @@ GcodeTextArea               1.0 GcodeTextArea.qml
 NumericTextFieldWithUnit    1.0 NumericTextFieldWithUnit.qml
 PrintHeadMinMaxTextField    1.0 PrintHeadMinMaxTextField.qml
 SimpleCheckBox              1.0 SimpleCheckBox.qml
+RenameDialog                1.0 RenameDialog.qml

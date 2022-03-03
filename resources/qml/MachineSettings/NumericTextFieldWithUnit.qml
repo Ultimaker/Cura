@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -83,13 +83,12 @@ UM.TooltipArea
         height: numericTextFieldWithUnit.controlHeight
 
         // Background is a rounded-cornered box with filled color as state indication (normal, warning, error, etc.)
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             anchors.fill: parent
             anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
-            radius: UM.Theme.getSize("setting_control_radius").width
 
-            border.color:
+            liningColor:
             {
                 if (!textFieldWithUnit.enabled)
                 {
@@ -108,9 +107,9 @@ UM.TooltipArea
                 // Validation is OK.
                 if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("border_main_light")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("border_field_light")
             }
 
             color:
@@ -222,7 +221,7 @@ UM.TooltipArea
             }
         }
 
-        Label
+        UM.Label
         {
             id: unitLabel
             anchors.right: parent.right
@@ -230,10 +229,7 @@ UM.TooltipArea
             anchors.verticalCenter: parent.verticalCenter
             text: unitText
             textFormat: Text.PlainText
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
-            font: UM.Theme.getFont("default")
         }
     }
 }

@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -16,6 +16,31 @@ RadioButton
     id: radioButton
 
     font: UM.Theme.getFont("default")
+
+    states: [
+        State {
+            name: "checked"
+            when: radioButton.checked
+            PropertyChanges
+            {
+                target: indicator
+                color: UM.Theme.getColor("accent_1")
+                border.width: 0
+            }
+        },
+        State
+        {
+            name: "disabled"
+            when: !radioButton.enabled
+            PropertyChanges { target: indicator; color: UM.Theme.getColor("background_1")}
+        },
+        State
+        {
+            name: "highlighted"
+            when: radioButton.hovered || radioButton.activeFocus
+            PropertyChanges { target: indicator; border.color: UM.Theme.getColor("border_main_light")}
+        }
+    ]
 
     background: Item
     {
@@ -29,8 +54,9 @@ RadioButton
         anchors.verticalCenter: parent.verticalCenter
         anchors.alignWhenCentered: false
         radius: width / 2
+        color: UM.Theme.getColor("background_2")
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: radioButton.hovered ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("small_button_text_hover")
+        border.color: UM.Theme.getColor("text_disabled")
 
         Rectangle
         {
@@ -38,18 +64,15 @@ RadioButton
             height: width
             anchors.centerIn: parent
             radius: width / 2
-            color: radioButton.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
+            color: radioButton.enabled ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
             visible: radioButton.checked
         }
     }
 
-    contentItem: Label
+    contentItem: UM.Label
     {
-        verticalAlignment: Text.AlignVCenter
         leftPadding: radioButton.indicator.width + radioButton.spacing
         text: radioButton.text
         font: radioButton.font
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
     }
 }
