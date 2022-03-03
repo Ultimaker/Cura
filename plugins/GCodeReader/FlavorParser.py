@@ -53,7 +53,7 @@ class FlavorParser:
 
     def _clearValues(self) -> None:
         self._extruder_number = 0
-        self._extrusion_length_offset = [0,0,0,0] # type: List[float]
+        self._extrusion_length_offset = [0] * 8 # type: List[float]
         self._layer_type = LayerPolygon.Inset0Type
         self._layer_number = 0
         self._previous_z = 0 # type: float
