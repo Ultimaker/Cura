@@ -13,7 +13,7 @@ import Cura 1.6 as Cura
 UM.ManagementPage
 {
     id: base
-
+    title: catalog.i18nc("@title:tab", "Profiles")
     property var extrudersModel: CuraApplication.getExtrudersModel()
     property var qualityManagementModel: CuraApplication.getQualityManagementModel()
 
