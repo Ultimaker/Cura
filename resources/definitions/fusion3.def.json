@@ -1,0 +1,25 @@
+{
+    "name": "Fusion3 Base Printer",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": false,
+        "author": "Keith Varin",
+        "manufacturer": "Fusion3Design",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": ["MachineSettingsAction"],
+
+        "machine_extruder_trains": {
+            "0": "fusion3_extruder_0"
+        },
+
+        "has_materials": true,
+        "has_variants": true,
+        "has_machine_quality": true,
+        "variants_name": "Nozzle Size",
+
+        "preferred_variant_name": "0.4mm Nozzle",
+        "preferred_quality_type": "normal",
+        "preferred_material": "generic_pla"
+    }
+}
