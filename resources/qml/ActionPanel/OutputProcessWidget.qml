@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -128,7 +128,7 @@ Column
             tooltip: text
             fixedWidthMode: true
 
-            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+            toolTipContentAlignment: Text.AlignLeft
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
         }

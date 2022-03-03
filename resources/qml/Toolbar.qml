@@ -4,7 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -53,7 +53,7 @@ Item
                 width: childrenRect.width
                 height: childrenRect.height
 
-                delegate: ToolbarButton
+                delegate: UM.ToolbarButton
                 {
                     text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
                     checkable: true

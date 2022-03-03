@@ -19,7 +19,7 @@ ToolButton
     property bool valueError: false;
     property bool valueWarning: false;
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         visible: base.hovered
