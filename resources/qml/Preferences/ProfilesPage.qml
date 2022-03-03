@@ -180,6 +180,16 @@ UM.ManagementPage
             }
             Cura.MenuItem
             {
+                text: catalog.i18nc("@action:button", "Duplicate")
+                enabled: base.hasCurrentItem
+                onTriggered:
+                {
+                    forceActiveFocus()
+                    duplicateQualityDialog.open()
+                }
+            }
+            Cura.MenuItem
+            {
                 text: catalog.i18nc("@action:button", "Remove")
                 enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
                 onTriggered:
