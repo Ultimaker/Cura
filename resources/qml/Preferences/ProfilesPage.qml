@@ -50,10 +50,7 @@ UM.ManagementPage
         }
     }
 
-    property var canCreateProfile:
-    {
-        return isCurrentItemActivated && Cura.MachineManager.hasUserSettings;
-    }
+    property var canCreateProfile:  Cura.MachineManager.hasUserSettings
 
     model: qualityManagementModel
     buttons: [
