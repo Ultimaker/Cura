@@ -29,6 +29,7 @@ ToolTip
     visible: opacity != 0.0
     opacity: 0.0 // initially hidden
 
+
     Behavior on opacity
     {
         NumberAnimation { duration: 100; }
