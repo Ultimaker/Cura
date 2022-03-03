@@ -130,7 +130,7 @@ Popup
                                     checkable: true
                                     visible: model.available
                                     text: model.name + " - " + model.layer_height + " mm"
-                                    leftPadding: UM.Theme.getSize("wide_margin").width
+                                    leftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                                     checked:
                                     {
                                         if (Cura.MachineManager.hasCustomQuality)
@@ -196,7 +196,7 @@ Popup
                                 checkable: true
                                 visible: model.available
                                 text: model.name
-                                leftPadding: UM.Theme.getSize("wide_margin").width
+                                leftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                                 checked:
                                 {
                                     var active_quality_group = Cura.MachineManager.activeQualityChangesGroup
