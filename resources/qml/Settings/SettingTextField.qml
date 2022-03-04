@@ -36,7 +36,7 @@ SettingItem
         {
             if(!enabled)
             {
-                return UM.Theme.getColor("setting_control_disabled_border")
+                return UM.Theme.getColor("text_field_border_disabled")
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -52,15 +52,15 @@ SettingItem
             //Validation is OK.
             if(hovered || input.activeFocus)
             {
-                return UM.Theme.getColor("border_main")
+                return UM.Theme.getColor("text_field_border_hovered")
             }
-            return UM.Theme.getColor("border_field_light")
+            return UM.Theme.getColor("text_field_border")
         }
 
         color: {
             if(!enabled)
             {
-                return UM.Theme.getColor("setting_control_disabled")
+                return UM.Theme.getColor("text_field")
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -76,7 +76,7 @@ SettingItem
                     return UM.Theme.getColor("setting_validation_ok")
 
                 default:
-                    return UM.Theme.getColor("setting_control")
+                    return UM.Theme.getColor("text_field")
             }
         }
 
