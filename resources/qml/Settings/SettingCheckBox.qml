@@ -11,7 +11,7 @@ SettingItem
 {
     id: base
     property var focusItem: control
-    enabled: false
+
     contents: MouseArea
     {
         id: control
