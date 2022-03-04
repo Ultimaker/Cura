@@ -324,13 +324,16 @@
         "quality_slider_unavailable": [179, 179, 179, 255],
         "quality_slider_available": [0, 0, 0, 255],
 
-        "checkbox": [255, 255, 255, 255],
-        "checkbox_hover": "border_main",
-        "checkbox_border": [180, 180, 180, 255],
-        "checkbox_border_hover": [25, 110, 240, 255],
-        "checkbox_mark": [35, 35, 35, 255],
+        "checkbox": "background_1",
+        "checkbox_hover": "background_1",
         "checkbox_disabled": "background_2",
-        "checkbox_text": [0, 12, 26, 255],
+        "checkbox_border": [180, 180, 180, 255],
+        "checkbox_border_hover": "border_main",
+        "checkbox_border_disabled": "text_disabled",
+        "checkbox_mark": "text_default",
+        "checkbox_mark_disabled": "text_disabled",
+        "checkbox_text": "text_default",
+        "checkbox_text_disabled": "text_disabled",
 
         "category_background": "background_2",
 

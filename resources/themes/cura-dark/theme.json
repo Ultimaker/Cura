@@ -155,15 +155,6 @@
         "slider_handle": [255, 255, 255, 255],
         "slider_handle_active": [68, 192, 255, 255],
 
-        "checkbox": "background_1",
-        "checkbox_hover": [43, 48, 52, 255],
-        "checkbox_border": "text_disabled",
-        "checkbox_border_hover": "border_main",
-        "checkbox_mark": "text_default",
-        "checkbox_square": "text_disabled",
-        "checkbox_text": "text_default",
-        "checkbox_disabled": "background_2",
-
         "category_background": "background_3",
 
         "tooltip": "background_2",
