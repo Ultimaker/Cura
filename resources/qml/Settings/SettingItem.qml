@@ -13,8 +13,7 @@ import "."
 Item
 {
     id: base
-
-    height: UM.Theme.getSize("section").height
+    height: enabled ? UM.Theme.getSize("section").height +  UM.Theme.getSize("narrow_margin").height: 0
     anchors.left: parent.left
     anchors.right: parent.right
     // To avoid overlapping with the scrollBars

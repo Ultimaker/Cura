@@ -16,26 +16,41 @@ Button
     anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
     hoverEnabled: true
 
-    height: UM.Theme.getSize("section_icon_column").height
+    height: enabled ? UM.Theme.getSize("section").height : 0
 
     background: Rectangle
     {
         id: backgroundRectangle
-        height: UM.Theme.getSize("section").height
+        height: base.height
         anchors.verticalCenter: parent.verticalCenter
-        color:
-        {
-            if (!base.enabled)
-            {
-                return UM.Theme.getColor("setting_category_disabled")
-            }
-            else if (base.hovered)
-            {
-                return UM.Theme.getColor("setting_category_hover")
-            }
-            return UM.Theme.getColor("setting_category")
-        }
+
+        color: UM.Theme.getColor("setting_category")
         Behavior on color { ColorAnimation { duration: 50; } }
+
+        Rectangle
+        {
+            //Lining on top
+            anchors.top: parent.top
+            color: UM.Theme.getColor("border_main")
+            height: UM.Theme.getSize("default_lining").height
+            width: parent.width
+        }
+
+        states:
+        [
+            State
+            {
+                name: "disabled"
+                when: !base.enabled
+                PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_category_disabled")}
+            },
+            State
+            {
+                name: "hovered"
+                when: base.hovered
+                PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_category_hover")}
+            }
+        ]
     }
 
     signal showTooltip(string text)
@@ -73,7 +88,7 @@ Button
             anchors
             {
                 left: parent.left
-                leftMargin: 2 * UM.Theme.getSize("default_margin").width + UM.Theme.getSize("section_icon").width
+                leftMargin: (0.9 * UM.Theme.getSize("default_margin").width) + UM.Theme.getSize("section_icon").width
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
@@ -91,7 +106,7 @@ Button
             id: category_arrow
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.height: width
@@ -105,7 +120,6 @@ Button
         id: icon
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("thin_margin").width
         color: base.text_color
         source: UM.Theme.getIcon(definition.icon)
         width: UM.Theme.getSize("section_icon").width
