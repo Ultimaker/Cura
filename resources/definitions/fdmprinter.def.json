@@ -1092,35 +1092,91 @@
                     "default_value": "inward_distributed",
                     "limit_to_extruder": "wall_0_extruder_nr"
                 },
-                "wall_transition_threshold": {
-                    "label": "Middle Line Threshold",
-                    "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space the wall needs to occupy. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                "max_odd_wall_line_width":
+                {
+                    "label": "Maximum Wall Line Width of Middle Walls",
+                    "description": "TODO.",
+                    "unit": "mm",
+                    "minimum_value": "max(wall_line_width_0, wall_line_width_x)",
+                    "maximum_value": "2 * min(wall_line_width_0, wall_line_width_x)",
+                    "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
+                    "maximum_value_warning": "2 * machine_nozzle_size",
+                    "default_value": 0.6,
+                    "value": "wall_line_width * 1.5",
                     "type": "float",
-                    "unit": "%",
-                    "default_value": 90,
-                    "minimum_value": "1",
-                    "maximum_value": "99",
+                    "settable_per_mesh": true,
                     "children":
                     {
-                        "wall_split_middle_threshold": {
-                            "label": "Split Middle Line Threshold",
-                            "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                        "min_even_wall_line_width":
+                        {
+                            "label": "Minimum Wall Line Width of Even Walls",
+                            "description": "TODO.",
+                            "unit": "mm",
+                            "minimum_value": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                            "maximum_value": "min(wall_line_width_0, wall_line_width_x)",
+                            "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "default_value": 0.3,
+                            "value": "max_odd_wall_line_width / 2",
                             "type": "float",
-                            "unit": "%",
-                            "default_value": 90,
-                            "value": "wall_transition_threshold",
-                            "minimum_value": "1",
-                            "maximum_value": "99"
-                        },
-                        "wall_add_middle_threshold": {
-                            "label": "Add Middle Line Threshold",
-                            "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_split_middle_threshold": {
+                                    "label": "Split Middle Line Threshold",
+                                    "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                                    "type": "float",
+                                    "unit": "%",
+                                    "default_value": 90,
+                                    "value": "100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0",
+                                    "minimum_value": "1",
+                                    "maximum_value": "99"
+                                }
+                            }
+                        }
+                    }
+                },
+                "max_even_wall_line_width":
+                {
+                    "label": "Maximum Wall Line Width of Even Walls",
+                    "description": "TODO.",
+                    "unit": "mm",
+                    "minimum_value": "max(wall_line_width_0, wall_line_width_x)",
+                    "maximum_value": "2 * min(wall_line_width_0, wall_line_width_x)",
+                    "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
+                    "maximum_value_warning": "2 * machine_nozzle_size",
+                    "default_value": 0.6,
+                    "value": "wall_line_width * 1.5",
+                    "type": "float",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "min_odd_wall_line_width":
+                        {
+                            "label": "Minimum Wall Line Width of Odd Walls",
+                            "description": "TODO.",
+                            "unit": "mm",
+                            "minimum_value": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                            "maximum_value": "min(wall_line_width_0, wall_line_width_x)",
+                            "minimum_value_warning": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "default_value": 0.3,
+                            "value": "max_even_wall_line_width * 2 - 2 * wall_line_width_0",
                             "type": "float",
-                            "unit": "%",
-                            "default_value": 80,
-                            "value": "wall_transition_threshold * 8 / 9",
-                            "minimum_value": "1",
-                            "maximum_value": "99"
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_add_middle_threshold": {
+                                    "label": "Add Middle Line Threshold",
+                                    "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                                    "type": "float",
+                                    "unit": "%",
+                                    "default_value": 80,
+                                    "value": "100 * min_odd_wall_line_width / wall_line_width_x",
+                                    "minimum_value": "1",
+                                    "maximum_value": "99"
+                                }
+                            }
                         }
                     }
                 },
