@@ -188,7 +188,20 @@
         "text_primary_button": [255, 255, 255, 255],
         "text_secondary_button": [25, 110, 240, 255],
         "text_link_hover": [16, 70, 156, 255],
-        "text_lighter": [108, 108, 108, 255]
+        "text_lighter": [108, 108, 108, 255],
+
+        "um_green_1": [233, 245, 237, 255],
+        "um_green_5": [36, 162, 73, 255],
+        "um_green_9": [31, 44, 36, 255],
+        "um_red_1": [251, 232, 233, 255],
+        "um_red_5": [218, 30, 40, 255],
+        "um_red_9": [59, 31, 33, 255],
+        "um_orange_1": [255, 235, 221, 255],
+        "um_orange_5": [252, 123, 30, 255],
+        "um_orange_9": [64, 45, 32, 255],
+        "um_yellow_1": [255, 248, 225, 255],
+        "um_yellow_5": [253, 209, 58, 255],
+        "um_yellow_9": [64, 58, 36, 255]
     },
 
     "colors": {
@@ -304,10 +317,10 @@
         "setting_control_disabled_text": [127, 127, 127, 255],
         "setting_control_disabled_border": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
-        "setting_validation_error_background": [255, 66, 60, 255],
-        "setting_validation_error": [127, 127, 127, 255],
-        "setting_validation_warning_background": [255, 145, 62, 255],
-        "setting_validation_warning": [127, 127, 127, 255],
+        "setting_validation_error_background": "um_red_1",
+        "setting_validation_error": "um_red_5",
+        "setting_validation_warning_background": "um_yellow_1",
+        "setting_validation_warning": "um_yellow_5",
         "setting_validation_ok": "background_2",
 
         "material_compatibility_warning": [243, 166, 59, 255],

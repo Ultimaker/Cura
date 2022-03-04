@@ -23,7 +23,20 @@
         "text_primary_button": [255, 255, 255, 255],
         "text_secondary_button": [255, 255, 255, 255],
         "text_link_hover": [156, 195, 255, 255],
-        "text_lighter": [243, 243, 243, 255]
+        "text_lighter": [243, 243, 243, 255],
+
+        "um_green_1": [233, 245, 237, 255],
+        "um_green_5": [36, 162, 73, 255],
+        "um_green_9": [31, 44, 36, 255],
+        "um_red_1": [251, 232, 233, 255],
+        "um_red_5": [218, 30, 40, 255],
+        "um_red_9": [59, 31, 33, 255],
+        "um_orange_1": [255, 235, 221, 255],
+        "um_orange_5": [252, 123, 30, 255],
+        "um_orange_9": [64, 45, 32, 255],
+        "um_yellow_1": [255, 248, 225, 255],
+        "um_yellow_5": [253, 209, 58, 255],
+        "um_yellow_9": [64, 58, 36, 255]
     },
 
     "colors": {
@@ -140,10 +153,8 @@
         "setting_control_disabled_text": [255, 255, 255, 101],
         "setting_control_disabled_border": [255, 255, 255, 101],
         "setting_unit": [255, 255, 255, 127],
-        "setting_validation_error_background": [59, 31, 53, 255],
-        "setting_validation_error": [212, 31, 53, 255],
-        "setting_validation_warning_background": [62, 54, 46, 255],
-        "setting_validation_warning": [245, 166, 35, 255],
+        "setting_validation_error_background": "um_red_9",
+        "setting_validation_warning_background": "um_yellow_9",
         "setting_validation_ok": "background_2",
 
         "progressbar_background": [255, 255, 255, 48],

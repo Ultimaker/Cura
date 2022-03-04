@@ -80,14 +80,6 @@ SettingItem
             }
         }
 
-        Rectangle
-        {
-            anchors.fill: parent
-            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
-            color: UM.Theme.getColor("setting_control_highlight")
-            opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35
-        }
-
         UM.Label
         {
             anchors
