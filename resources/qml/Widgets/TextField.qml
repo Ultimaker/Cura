@@ -44,7 +44,7 @@ TextField
         {
             name: "hovered"
             when: textField.hovered || textField.activeFocus
-            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("border_main_light")}
+            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("border_main")}
         }
     ]
 
