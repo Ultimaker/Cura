@@ -332,6 +332,7 @@
         "checkbox_border_disabled": "text_disabled",
         "checkbox_mark": "text_default",
         "checkbox_mark_disabled": "text_disabled",
+        "checkbox_square": [180, 180, 180, 255],
         "checkbox_text": "text_default",
         "checkbox_text_disabled": "text_disabled",
 
