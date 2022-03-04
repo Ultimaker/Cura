@@ -347,6 +347,14 @@
         "radio_text": "text_default",
         "radio_text_disabled": "text_disabled",
 
+        "text_field": "background_1",
+        "text_field_border": [180, 180, 180, 255],
+        "text_field_border_hovered": "border_main",
+        "text_field_border_disabled": "border_main",
+        "text_field_text": "text_default",
+        "text_field_text_disabled": "text_disabled",
+
+
 
         "category_background": "background_2",
 

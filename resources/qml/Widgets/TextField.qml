@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -13,7 +13,7 @@ import Cura 1.1 as Cura
 //
 TextField
 {
-    id: textField
+    id: control
 
     property alias leftIcon: iconLeft.source
 
@@ -22,7 +22,7 @@ TextField
     hoverEnabled: true
     selectByMouse: true
     font: UM.Theme.getFont("default")
-    color: UM.Theme.getColor("text")
+    color: UM.Theme.getColor("text_field_text")
     renderType: Text.NativeRendering
     selectionColor: UM.Theme.getColor("text_selection")
     leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
@@ -31,20 +31,21 @@ TextField
         State
         {
             name: "disabled"
-            when: !textField.enabled
-            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
+            when: !control.enabled
+            PropertyChanges { target: control; color: UM.Theme.getColor("text_field_text_disabled")}
+            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("text_field_border_disabled")}
         },
         State
         {
             name: "invalid"
-            when: !textField.acceptableInput
+            when: !control.acceptableInput
             PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_validation_error_background")}
         },
         State
         {
             name: "hovered"
-            when: textField.hovered || textField.activeFocus
-            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("border_main")}
+            when: control.hovered || control.activeFocus
+            PropertyChanges { target: backgroundRectangle; liningColor: UM.Theme.getColor("text_field_border_hovered")}
         }
     ]
 
@@ -66,7 +67,7 @@ TextField
             visible: source != ""
             height: UM.Theme.getSize("small_button_icon").height
             width: visible ? height : 0
-            color: textField.color
+            color: control.color
         }
     }
 }
