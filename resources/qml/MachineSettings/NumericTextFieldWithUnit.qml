@@ -77,6 +77,8 @@ UM.TooltipArea
         anchors.left: fieldLabel.right
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         verticalAlignment: Text.AlignVCenter
+        selectionColor: UM.Theme.getColor("text_selection")
+        selectedTextColor: UM.Theme.getColor("setting_control_text")
         padding: 0
         leftPadding: UM.Theme.getSize("narrow_margin").width
         width: numericTextFieldWithUnit.controlWidth
