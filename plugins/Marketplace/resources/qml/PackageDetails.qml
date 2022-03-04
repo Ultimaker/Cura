@@ -38,7 +38,7 @@ Item
             onClicked: contextStack.pop() //Remove this page, returning to the main package list or whichever thing is beneath it.
 
             tooltip: catalog.i18nc("@button:tooltip", "Back")
-            toolTipContentAlignment: Text.AlignRight
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignRight
             leftPadding: UM.Theme.getSize("narrow_margin").width
             rightPadding: leftPadding
             iconSource: UM.Theme.getIcon("ArrowLeft")

@@ -128,7 +128,7 @@ Column
             tooltip: text
             fixedWidthMode: true
 
-            toolTipContentAlignment: Text.AlignLeft
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
         }

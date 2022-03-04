@@ -479,7 +479,7 @@ UM.Dialog
                 }
                 return tipText
             }
-            toolTipContentAlignment: Text.AlignLeft
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
             iconSource: "Script.svg"
             fixedWidthMode: false
