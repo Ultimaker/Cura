@@ -13,11 +13,12 @@ import "."
 Item
 {
     id: base
-    height: enabled ? UM.Theme.getSize("section").height +  UM.Theme.getSize("narrow_margin").height: 0
+    height: enabled ? UM.Theme.getSize("section").height : 0
     anchors.left: parent.left
     anchors.right: parent.right
+
     // To avoid overlapping with the scrollBars
-    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
+    //anchors.rightMargin:  UM.Theme.getSize("thin_margin").width
 
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse

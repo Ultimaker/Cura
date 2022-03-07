@@ -524,9 +524,11 @@
 
         "extruder_icon": [2.5, 2.5],
 
-        "section": [0.0, 2],
+        "section": [0.0, 2.5],
+        "section_header": [0.0, 2.5],
+
         "section_control": [0, 1],
-        "section_icon": [2, 2],
+        "section_icon": [1.5, 1.5],
         "section_icon_column": [2.5, 2.5],
 
         "setting": [25.0, 1.8],

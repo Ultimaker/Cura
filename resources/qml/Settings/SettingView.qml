@@ -180,7 +180,6 @@ Item
     ListView
     {
         id: contents
-
         anchors
         {
             top: filterContainer.bottom
@@ -218,7 +217,7 @@ Item
         {
             id: delegate
 
-            width: contents.width - scrollBar.width
+            width: contents.width - (scrollBar.width +UM.Theme.getSize("narrow_margin").width)
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: enabled ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
