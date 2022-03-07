@@ -21,6 +21,7 @@ UM.ManagementPage
     activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
     onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
+    hamburgerButtonVisible: Cura.MachineManager.activeMachine !== null
 
     function activeMachineIndex()
     {
