@@ -150,7 +150,7 @@ UM.PreferencesPage
             }
 
             clip: true
-            ScrollBar.vertical: UM.ScrollBar {}
+            ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
 
             model: UM.SettingDefinitionsModel
             {
@@ -167,7 +167,7 @@ UM.PreferencesPage
             {
                 id: loader
 
-                width: settingsListView.width
+                width: settingsListView.width - scrollBar.width
                 height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
                 property var definition: model

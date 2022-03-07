@@ -10,18 +10,11 @@ import Cura 1.0 as Cura
 
 UM.TooltipArea
 {
-    x: model.depth * UM.Theme.getSize("default_margin").width
+    x: model.depth * UM.Theme.getSize("narrow_margin").width
     text: model.description
 
     width: childrenRect.width
     height: childrenRect.height
-
-    Item
-    {
-        id: spacer
-        // Align checkbox with PerObjectCategory icon
-        width: UM.Theme.getSize("default_margin").width
-    }
 
     UM.CheckBox
     {

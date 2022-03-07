@@ -191,7 +191,7 @@ Item
         }
         clip: true
         cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
-        ScrollBar.vertical: UM.ScrollBar {}
+        ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
 
         model: UM.SettingDefinitionsModel
         {
@@ -218,7 +218,7 @@ Item
         {
             id: delegate
 
-            width: contents.width
+            width: contents.width - scrollBar.width
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: enabled ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
