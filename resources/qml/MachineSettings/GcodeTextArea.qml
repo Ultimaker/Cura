@@ -35,23 +35,24 @@ UM.TooltipArea
         watchedProperties: [ "value", "description" ]
     }
 
-    Label   // Title Label
+    UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
         anchors.left: parent.left
         font: UM.Theme.getFont("medium_bold")
-        color: UM.Theme.getColor("text")
-        renderType: Text.NativeRendering
     }
 
     Flickable
     {
-        anchors.top: titleLabel.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors
+        {
+            top: titleLabel.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
 
         ScrollBar.vertical: UM.ScrollBar {}
 
@@ -78,10 +79,10 @@ UM.TooltipArea
 
             background: Rectangle
             {
-                color: UM.Theme.getColor("main_background")
                 anchors.fill: parent
                 anchors.margins: -border.width //Wrap the border around the parent.
 
+                color: UM.Theme.getColor("detail_background")
                 border.color:
                 {
                     if (!gcodeTextArea.enabled)
@@ -90,9 +91,9 @@ UM.TooltipArea
                     }
                     if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
                     {
-                        return UM.Theme.getColor("setting_control_border_highlight")
+                        return UM.Theme.getColor("border_main")
                     }
-                    return UM.Theme.getColor("setting_control_border")
+                    return UM.Theme.getColor("border_field_light")
                 }
                 border.width: UM.Theme.getSize("default_lining").width
             }

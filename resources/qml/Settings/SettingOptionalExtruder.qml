@@ -136,7 +136,7 @@ SettingItem
                 }
                 if (control.hovered || control.activeFocus)
                 {
-                    return UM.Theme.getColor("border_main_light")
+                    return UM.Theme.getColor("border_main")
                 }
                 return UM.Theme.getColor("border_field_light")
             }

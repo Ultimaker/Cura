@@ -53,7 +53,7 @@ class FlavorParser:
 
     def _clearValues(self) -> None:
         self._extruder_number = 0
-        self._extrusion_length_offset = [0] # type: List[float]
+        self._extrusion_length_offset = [0] * 8 # type: List[float]
         self._layer_type = LayerPolygon.Inset0Type
         self._layer_number = 0
         self._previous_z = 0 # type: float
@@ -283,8 +283,9 @@ class FlavorParser:
             return func(position, params, path)
         return position
 
-    def processTCode(self, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
+    def processTCode(self, global_stack, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         self._extruder_number = T
+        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
         if self._extruder_number + 1 > len(position.e):
             self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
@@ -354,7 +355,7 @@ class FlavorParser:
 
         Logger.log("d", "Parsing g-code...")
 
-        current_position = Position(0, 0, 0, 0, [0])
+        current_position = Position(0, 0, 0, 0, [0] * 8)
         current_path = [] #type: List[List[float]]
         min_layer_number = 0
         negative_layers = 0
@@ -444,7 +445,7 @@ class FlavorParser:
                     # When changing tool, store the end point of the previous path, then process the code and finally
                     # add another point with the new position of the head.
                     current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
-                    current_position = self.processTCode(T, line, current_position, current_path)
+                    current_position = self.processTCode(global_stack, T, line, current_position, current_path)
                     current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
 
             if line.startswith("M"):

@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -13,32 +13,58 @@ import Cura 1.0 as Cura
 //
 RadioButton
 {
-    id: radioButton
+    id: control
 
     font: UM.Theme.getFont("default")
 
     states: [
         State {
-            name: "checked"
-            when: radioButton.checked
+            name: "selected-hover"
+            when: control.enabled && control.checked && control.hovered
             PropertyChanges
             {
-                target: indicator
-                color: UM.Theme.getColor("accent_1")
-                border.width: 0
+                target: indicator_background
+                color: UM.Theme.getColor("radio_selected")
+                border.color: UM.Theme.getColor("radio_border_hover")
             }
         },
-        State
-        {
-            name: "disabled"
-            when: !radioButton.enabled
-            PropertyChanges { target: indicator; color: UM.Theme.getColor("background_1")}
+        State {
+            name: "selected"
+            when: control.enabled && control.checked
+            PropertyChanges
+            {
+                target: indicator_background
+                color: UM.Theme.getColor("radio_selected")
+            }
         },
-        State
-        {
-            name: "highlighted"
-            when: radioButton.hovered || radioButton.activeFocus
-            PropertyChanges { target: indicator; border.color: UM.Theme.getColor("border_main_light")}
+        State {
+            name: "hovered"
+            when: control.enabled && control.hovered
+            PropertyChanges
+            {
+                target: indicator_background
+                border.color: UM.Theme.getColor("radio_border_hover")
+            }
+        },
+        State {
+            name: "selected_disabled"
+            when: !control.enabled && control.checked
+            PropertyChanges
+            {
+                target: indicator_background
+                color: UM.Theme.getColor("radio_selected_disabled")
+                border.color: UM.Theme.getColor("radio_border_disabled")
+            }
+        },
+        State {
+            name: "disabled"
+            when: !control.enabled
+            PropertyChanges
+            {
+                target: indicator_background
+                color: UM.Theme.getColor("radio_disabled")
+                border.color: UM.Theme.getColor("radio_border_disabled")
+            }
         }
     ]
 
@@ -49,30 +75,35 @@ RadioButton
 
     indicator: Rectangle
     {
+        id: indicator_background
         implicitWidth: UM.Theme.getSize("radio_button").width
         implicitHeight: UM.Theme.getSize("radio_button").height
         anchors.verticalCenter: parent.verticalCenter
         anchors.alignWhenCentered: false
         radius: width / 2
-        color: UM.Theme.getColor("background_2")
+        color: UM.Theme.getColor("radio")
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("text_disabled")
+        border.color: UM.Theme.getColor("radio_border")
 
         Rectangle
         {
+            id: indicator_dot
             width: (parent.width / 2) | 0
             height: width
             anchors.centerIn: parent
             radius: width / 2
-            color: radioButton.enabled ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
-            visible: radioButton.checked
+            color: control.enabled ? UM.Theme.getColor("radio_dot") : UM.Theme.getColor("radio_dot_disabled")
+            visible: control.checked
+
+
         }
     }
 
     contentItem: UM.Label
     {
-        leftPadding: radioButton.indicator.width + radioButton.spacing
-        text: radioButton.text
-        font: radioButton.font
+        leftPadding: control.indicator.width + control.spacing
+        text: control.text
+        font: control.font
+        color: control.enabled ? UM.Theme.getColor("radio_text"): UM.Theme.getColor("radio_text_disabled")
     }
 }

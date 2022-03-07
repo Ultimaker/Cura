@@ -33,7 +33,7 @@ ComboBox
         {
             name: "highlighted"
             when: control.hovered || control.activeFocus
-            PropertyChanges { target: background; liningColor: UM.Theme.getColor("border_main_light")}
+            PropertyChanges { target: background; liningColor: UM.Theme.getColor("border_main")}
         }
     ]
 

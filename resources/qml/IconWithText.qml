@@ -21,6 +21,7 @@ Item
     property alias font: label.font
     property alias elide: label.elide
     property real margin: UM.Theme.getSize("narrow_margin").width
+    property alias wrapMode: label.wrapMode
 
     // These properties can be used in combination with layouts.
     readonly property real contentWidth: icon.width + margin + label.contentWidth

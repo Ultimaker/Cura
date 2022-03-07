@@ -27,6 +27,11 @@ UM.Dialog
     property var fileUrls: []
     property var addToRecent: true
 
+    function loadProjectFile(projectFile)
+    {
+        UM.WorkspaceFileHandler.readLocalFile(projectFile, base.addToRecent);
+    }
+
     function loadModelFiles(fileUrls)
     {
         for (var i in fileUrls)
