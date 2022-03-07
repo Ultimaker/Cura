@@ -524,7 +524,7 @@
 
         "extruder_icon": [2.5, 2.5],
 
-        "section": [0.0, 2.5],
+        "section": [0.0, 2],
         "section_header": [0.0, 2.5],
 
         "section_control": [0, 1],
