@@ -26,7 +26,7 @@ Button
     {
         height: button.height
         width: button.width
-        color: button.hovered ? UM.Theme.getColor("background_2"): UM.Theme.getColor("background_1")
+        color: button.hovered ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
     }
 
     // Workaround to ensure that the mnemonic highlighting happens correctly
