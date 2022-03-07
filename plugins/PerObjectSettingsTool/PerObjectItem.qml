@@ -19,9 +19,6 @@ UM.TooltipArea
     UM.CheckBox
     {
         id: check
-
-        anchors.left: spacer.right
-
         text: definition.label
         checked: addedSettingsModel.getVisible(model.key)
 
