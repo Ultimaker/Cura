@@ -75,7 +75,7 @@ Item
             id: meshTypeButtons
             spacing: UM.Theme.getSize("default_margin").width
 
-            Cura.ToolbarButton
+            UM.ToolbarButton
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
@@ -90,7 +90,7 @@ Item
                 z: 4
             }
 
-            Cura.ToolbarButton
+            UM.ToolbarButton
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
@@ -105,7 +105,7 @@ Item
                 z: 3
             }
 
-            Cura.ToolbarButton
+            UM.ToolbarButton
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
@@ -120,7 +120,7 @@ Item
                 z: 2
             }
 
-            Cura.ToolbarButton
+            UM.ToolbarButton
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")

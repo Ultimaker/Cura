@@ -179,7 +179,7 @@ Button
         cornerSide: Cura.RoundedRectangle.Direction.None
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         visible:

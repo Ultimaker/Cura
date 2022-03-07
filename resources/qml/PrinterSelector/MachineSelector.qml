@@ -172,7 +172,7 @@ Cura.ExpandablePopup
             onExited: { tooltip.hide() }
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             id: tooltip
 
