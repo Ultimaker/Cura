@@ -19,7 +19,7 @@ ToolButton
     property bool valueError: false;
     property bool valueWarning: false;
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         visible: base.hovered
@@ -69,7 +69,7 @@ ToolButton
             {
                 target: background
                 color: UM.Theme.getColor("setting_control")
-                liningColor: UM.Theme.getColor("border_main_light")
+                liningColor: UM.Theme.getColor("border_main")
             }
         },
         State

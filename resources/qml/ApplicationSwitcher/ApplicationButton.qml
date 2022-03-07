@@ -31,7 +31,7 @@ Button
         border.width: UM.Theme.getSize("default_lining").width
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         tooltipText: base.text

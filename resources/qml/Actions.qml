@@ -222,7 +222,7 @@ Item
         id: updateProfileAction
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
         text: catalog.i18nc("@action:inmenu menubar:profile", "&Update profile with current settings/overrides");
-        onTriggered: Cura.ContainerManager.updateQualityChanges();
+        onTriggered: Cura.ContainerManager.updateQualityChanges()
     }
 
     Action

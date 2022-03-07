@@ -479,7 +479,7 @@ UM.Dialog
                 }
                 return tipText
             }
-            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
             iconSource: "Script.svg"
             fixedWidthMode: false

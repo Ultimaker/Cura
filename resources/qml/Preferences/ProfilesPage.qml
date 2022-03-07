@@ -16,25 +16,14 @@ UM.ManagementPage
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
     property var qualityManagementModel: CuraApplication.getQualityManagementModel()
+    property bool hasCurrentItem: base.currentItem != null
 
-    scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<b>" + Cura.MachineManager.activeMachine.name + "</b>"
+    property var currentItem: objectList.currentIndex == -1 ? null : base.qualityManagementModel.getItem(objectList.currentIndex)
 
-    onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
+    property string currentItemName: hasCurrentItem ? base.currentItem.name : ""
+    property string currentItemDisplayName: hasCurrentItem ? base.qualityManagementModel.getQualityItemDisplayName(base.currentItem) : ""
 
-
-    property var hasCurrentItem: base.currentItem != null
-    sectionRole: "section_name"
-
-    property var currentItem:
-    {
-        var current_index = objectList.currentIndex;
-        return (current_index == -1) ? null : base.qualityManagementModel.getItem(current_index);
-    }
-
-    property var currentItemName: hasCurrentItem ? base.currentItem.name : ""
-    property var currentItemDisplayName: hasCurrentItem ? base.qualityManagementModel.getQualityItemDisplayName(base.currentItem) : ""
-
-    property var isCurrentItemActivated:
+    property bool isCurrentItemActivated:
     {
         if (!base.currentItem)
         {
@@ -50,10 +39,28 @@ UM.ManagementPage
         }
     }
 
-    property var canCreateProfile:
+    property bool canCreateProfile:  Cura.MachineManager.hasUserSettings
+
+    signal createProfile() // Click create profile from ... in Profile context menu
+
+    property string newQualityNameToSelect: ""
+    property bool toActivateNewQuality: false
+
+    onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
+
+    onCreateProfile:
     {
-        return isCurrentItemActivated && Cura.MachineManager.hasUserSettings;
+        createQualityDialog.object = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
+        createQualityDialog.open();
+        createQualityDialog.selectText();
     }
+
+    title: catalog.i18nc("@title:tab", "Profiles")
+    scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<br><b>" + Cura.MachineManager.activeMachine.name + "</b>"
+
+    hamburgerButtonVisible: hasCurrentItem
+
+    sectionRole: "section_name"
 
     model: qualityManagementModel
     buttons: [
@@ -78,18 +85,6 @@ UM.ManagementPage
             }
         }
     ]
-
-    // Click create profile from ... in Profile context menu
-    signal createProfile()
-    onCreateProfile:
-    {
-        createQualityDialog.object = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
-        createQualityDialog.open();
-        createQualityDialog.selectText();
-    }
-
-    property string newQualityNameToSelect: ""
-    property bool toActivateNewQuality: false
 
     Item
     {
@@ -180,6 +175,16 @@ UM.ManagementPage
             }
             Cura.MenuItem
             {
+                text: catalog.i18nc("@action:button", "Duplicate")
+                enabled: base.hasCurrentItem
+                onTriggered:
+                {
+                    forceActiveFocus()
+                    duplicateQualityDialog.open()
+                }
+            }
+            Cura.MenuItem
+            {
                 text: catalog.i18nc("@action:button", "Remove")
                 enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
                 onTriggered:
@@ -238,10 +243,7 @@ UM.ManagementPage
             id: duplicateQualityDialog
             title: catalog.i18nc("@title:window", "Duplicate Profile")
             object: "<new name>"
-            onAccepted:
-            {
-                base.qualityManagementModel.duplicateQualityChanges(newName, base.currentItem);
-            }
+            onAccepted: base.qualityManagementModel.duplicateQualityChanges(newName, base.currentItem)
         }
 
         // Confirmation dialog for removing a profile
@@ -330,9 +332,9 @@ UM.ManagementPage
 
                 Cura.SecondaryButton
                 {
-                    text: catalog.i18nc("@action:button", "Discard current changes");
+                    text: catalog.i18nc("@action:button", "Discard current changes")
                     enabled: Cura.MachineManager.hasUserSettings
-                    onClicked: Cura.ContainerManager.clearUserContainers();
+                    onClicked: Cura.ContainerManager.clearUserContainers()
                 }
             }
 
@@ -354,7 +356,7 @@ UM.ManagementPage
             UM.TabRow
             {
                 id: profileExtruderTabs
-                UM.TabRowButton //One extra tab for the global settings.
+                UM.TabRowButton // One extra tab for the global settings.
                 {
                     text: catalog.i18nc("@title:tab", "Global Settings")
                 }

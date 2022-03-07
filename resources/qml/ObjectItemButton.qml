@@ -188,7 +188,7 @@ Button
         elideWidth: buttonText.width
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText
