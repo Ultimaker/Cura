@@ -24,7 +24,6 @@ Button
 
     background: Rectangle
     {
-        id: backgroundRectanglewide_margin
         height: button.height
         width: button.width
         color: button.hovered ? UM.Theme.getColor("background_2"): UM.Theme.getColor("background_1")
