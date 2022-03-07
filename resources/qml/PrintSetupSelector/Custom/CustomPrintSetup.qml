@@ -129,7 +129,7 @@ Item
             background: UM.UnderlineBackground
             {
                 id: backgroundItem
-                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main_light") : UM.Theme.getColor("border_field_light")
+                liningColor: intentSelection.hovered ? UM.Theme.getColor("border_main") : UM.Theme.getColor("border_field_light")
             }
 
             UM.SimpleButton
