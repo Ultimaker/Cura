@@ -4,54 +4,18 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Button
+UM.CategoryButton
 {
     id: base
     anchors.left: parent.left
     anchors.right: parent.right
-    // To avoid overlapping with the scrollBars
-    anchors.rightMargin: 2 * UM.Theme.getSize("thin_margin").width
-    hoverEnabled: true
 
-    height: enabled ? UM.Theme.getSize("section").height : 0
-
-    background: Rectangle
-    {
-        id: backgroundRectangle
-        height: base.height
-        anchors.verticalCenter: parent.verticalCenter
-
-        color: UM.Theme.getColor("setting_category")
-        Behavior on color { ColorAnimation { duration: 50; } }
-
-        Rectangle
-        {
-            //Lining on top
-            anchors.top: parent.top
-            color: UM.Theme.getColor("border_main")
-            height: UM.Theme.getSize("default_lining").height
-            width: parent.width
-        }
-
-        states:
-        [
-            State
-            {
-                name: "disabled"
-                when: !base.enabled
-                PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_category_disabled")}
-            },
-            State
-            {
-                name: "hovered"
-                when: base.hovered
-                PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_category_hover")}
-            }
-        ]
-    }
+    categoryIcon: UM.Theme.getIcon(definition.icon)
+    expanded: definition.expanded
+    labelText: definition.label
 
     signal showTooltip(string text)
     signal hideTooltip()
@@ -61,72 +25,6 @@ Button
     signal setActiveFocusToNextSetting(bool forward)
 
     property var focusItem: base
-    property bool expanded: definition.expanded
-
-
-    property color text_color:
-    {
-        if (!base.enabled)
-        {
-            return UM.Theme.getColor("setting_category_disabled_text")
-        } else if (base.hovered || base.pressed || base.activeFocus)
-        {
-            return UM.Theme.getColor("setting_category_active_text")
-        }
-
-        return UM.Theme.getColor("setting_category_text")
-
-    }
-
-    contentItem: Item
-    {
-        anchors.fill: parent
-
-        Label
-        {
-            id: settingNameLabel
-            anchors
-            {
-                left: parent.left
-                leftMargin: (0.9 * UM.Theme.getSize("default_margin").width) + UM.Theme.getSize("section_icon").width
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-            }
-            text: definition.label
-            textFormat: Text.PlainText
-            renderType: Text.NativeRendering
-            font: UM.Theme.getFont("medium_bold")
-            color: base.text_color
-            fontSizeMode: Text.HorizontalFit
-            minimumPointSize: 8
-        }
-
-        UM.RecolorImage
-        {
-            id: category_arrow
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
-            width: UM.Theme.getSize("standard_arrow").width
-            height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.height: width
-            color: UM.Theme.getColor("setting_control_button")
-            source: definition.expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
-        }
-    }
-
-    UM.RecolorImage
-    {
-        id: icon
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        color: base.text_color
-        source: UM.Theme.getIcon(definition.icon)
-        width: UM.Theme.getSize("section_icon").width
-        height: UM.Theme.getSize("section_icon").height
-        sourceSize.width: width
-        sourceSize.height: width
-    }
 
     onClicked:
     {
@@ -165,7 +63,7 @@ Button
         {
             right: inheritButton.visible ? inheritButton.left : parent.right
             // Use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
-            rightMargin: inheritButton.visible ? Math.round(UM.Theme.getSize("default_margin").width / 2) : category_arrow.width + Math.round(UM.Theme.getSize("default_margin").width * 1.9)
+            rightMargin: inheritButton.visible ? Math.round(UM.Theme.getSize("default_margin").width / 2) : arrow.width + Math.round(UM.Theme.getSize("default_margin").width * 1.9)
             verticalCenter: parent.verticalCenter
         }
 
@@ -182,7 +80,7 @@ Button
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: category_arrow.width + UM.Theme.getSize("default_margin").width * 2
+        anchors.rightMargin: arrow.width + UM.Theme.getSize("default_margin").width * 2
 
         visible:
         {
