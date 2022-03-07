@@ -58,7 +58,7 @@ Item
             }
         }
 
-        TextField
+        Cura.TextField
         {
             id: printJobTextfield
             anchors.left: printJobPencilIcon.right
