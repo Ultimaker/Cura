@@ -55,7 +55,7 @@ Item
 
                 delegate: UM.ToolbarButton
                 {
-                    text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
+                    text: model.name + (model.shortcut ? ` ("${model.shortcut}")` : "")
                     checkable: true
                     checked: model.active
                     enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
