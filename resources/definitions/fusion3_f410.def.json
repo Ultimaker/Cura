@@ -157,15 +157,6 @@
         "minimum_interface_area": { "value": 10 },
 		"top_bottom_pattern": {"value": "'zigzag'" },
 		"top_bottom_pattern_0": {"value": "'zigzag'" },
-        "top_bottom_thickness": {
-		    "value":  "bottom_layers * layer_height",
-            "minimum_value_warning": "0.05",
-            "enabled": false			
-			},
-        "initial_bottom_layers":
-            {
-            "value": "bottom_layers",
-            "enabled": false
-		    }
+        "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" }
     }
 }
