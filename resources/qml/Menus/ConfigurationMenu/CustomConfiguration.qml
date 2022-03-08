@@ -285,10 +285,11 @@ Item
                     Cura.MaterialMenu
                     {
                         id: materialsMenu
+                        width: materialSelection.width
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
                         updateModels: materialSelection.visible
                     }
-                    onClicked: materialsMenu.popup()
+                    onClicked: materialsMenu.popup(0, height - UM.Theme.getSize("default_lining").height)
                 }
 
                 Item
@@ -341,8 +342,9 @@ Item
                     {
                         id: nozzlesMenu
                         extruderIndex: Cura.ExtruderManager.activeExtruderIndex
+                        width: variantSelection.width
                     }
-                    onClicked: nozzlesMenu.popup()
+                    onClicked: nozzlesMenu.popup(0, height - UM.Theme.getSize("default_lining").height)
                 }
             }
 
