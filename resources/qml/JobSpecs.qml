@@ -68,6 +68,14 @@ Item
             maximumLength: 120
             text: PrintInformation === null ? "" : PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
+            onTextChanged:
+            {
+                if (!activeFocus)
+                {
+                    // Text is changed from outside, reset the cursor position.
+                    cursorPosition = 0
+                }
+            }
 
             property string textBeforeEdit: ""
 
@@ -86,12 +94,12 @@ Item
                     PrintInformation.setJobName(new_name, true)
                 }
                 printJobTextfield.focus = false
+                cursorPosition = 0
             }
 
             validator: RegExpValidator {
                 regExp: /^[^\\\/\*\?\|\[\]]*$/
             }
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_scene")
             background: Item {}
             selectByMouse: true
