@@ -20,7 +20,7 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
     height: minimumHeight
-
+    backgroundColor: UM.Theme.getColor("background_1")
     margin: UM.Theme.getSize("thick_margin").width
 
     property var changesModel: Cura.UserChangesModel { id: userChangesModel }
