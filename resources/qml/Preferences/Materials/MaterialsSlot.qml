@@ -5,8 +5,8 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
-import Cura 1.0 as Cura
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 // A single material row, typically used in a MaterialsBrandSection
 
@@ -19,17 +19,16 @@ Rectangle
 
     height: UM.Theme.getSize("favorites_row").height
     width: parent.width
-    //color: material != null ? (base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent") : "transparent"
     color:
     {
-        if(material !== null && base.currentItem !== null)
+        if (material !== null && base.currentItem !== null)
         {
-            if(base.currentItem.root_material_id === material.root_material_id)
+            if (base.currentItem.root_material_id === material.root_material_id)
             {
-                return UM.Theme.getColor("favorites_row_selected")
+                return UM.Theme.getColor("favorites_row_selected");
             }
         }
-        return "transparent"
+        return "transparent";
     }
     Rectangle
     {
@@ -42,7 +41,7 @@ Rectangle
         anchors.left: materialSlot.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
     }
-    Label
+    UM.Label
     {
         text: material != null ? material.brand + " " + material.name : ""
         verticalAlignment: Text.AlignVCenter

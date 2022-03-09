@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -26,7 +26,7 @@ Item
         id: brand_header_background
         color:
         {
-            if(!expanded && sectionName == materialList.currentBrand)
+            if (!expanded && sectionName == materialList.currentBrand)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
@@ -47,7 +47,7 @@ Item
             text: sectionName
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
-            leftPadding: (UM.Theme.getSize("default_margin").width / 2) | 0
+            leftPadding: Math.round(UM.Theme.getSize("default_margin").width / 2)
         }
         Item
         {

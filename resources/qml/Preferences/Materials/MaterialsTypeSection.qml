@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -18,14 +18,14 @@ Item
     property var expanded: materialList.expandedTypes.indexOf(materialBrand + "_" + materialName) > -1
     property var colorsModel: materialType != null ? materialType.colors: null
     height: childrenRect.height
-    width: parent ? parent.width :undefined
+    width: parent ? parent.width : undefined
     anchors.left: parent ? parent.left : undefined
     Rectangle
     {
         id: material_type_header_background
         color:
         {
-            if(!expanded && materialBrand + "_" + materialName == materialList.currentType)
+            if (!expanded && `${materialBrand}_${materialName}` == materialList.currentType)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
