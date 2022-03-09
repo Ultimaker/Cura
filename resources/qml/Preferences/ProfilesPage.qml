@@ -315,7 +315,13 @@ UM.ManagementPage
                 font: UM.Theme.getFont("large_bold")
                 elide: Text.ElideRight
             }
-
+            UM.Label
+            {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: catalog.i18nc("@action:label", "Some settings from current profile were overwritten.")
+                visible: currentSettingsActions.visible
+            }
 
             Flow
             {
