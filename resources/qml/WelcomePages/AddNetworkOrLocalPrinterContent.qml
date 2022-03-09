@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -45,11 +45,9 @@ Item
         }
 
         contentComponent: networkPrinterListComponent
-
         Component
         {
             id: networkPrinterListComponent
-
             AddNetworkPrinterScrollView
             {
                 id: networkPrinterScrollView
@@ -95,20 +93,13 @@ Item
         }
 
         contentComponent: localPrinterListComponent
-
         Component
         {
             id: localPrinterListComponent
-
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
-                property int childrenHeight: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
-
-                onChildrenHeightChanged:
-                {
-                    addLocalPrinterDropDown.children[1].height = childrenHeight
-                }
+                height: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
             }
         }
     }

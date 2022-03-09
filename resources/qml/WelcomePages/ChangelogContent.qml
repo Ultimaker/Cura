@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -15,7 +15,7 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    Label
+    UM.Label
     {
         id: titleLabel
         anchors.top: parent.top
@@ -24,7 +24,6 @@ Item
         text: catalog.i18nc("@label", "Release Notes")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
-        renderType: Text.NativeRendering
     }
 
     Cura.ScrollableTextArea
@@ -37,8 +36,6 @@ Item
         anchors.bottomMargin: UM.Theme.getSize("wide_margin").height
         anchors.left: parent.left
         anchors.right: parent.right
-
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
         textArea.text: CuraApplication.getTextManager().getChangeLogText()
         textArea.textFormat: Text.RichText

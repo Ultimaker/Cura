@@ -1,6 +1,8 @@
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.2
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -11,7 +13,8 @@ UM.Dialog
     id: settingPickDialog
 
     title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-    width: screenScaleFactor * 360
+    width: UM.Theme.getSize("small_popup_dialog").width
+    backgroundColor: UM.Theme.getColor("background_1")
 
     property var additional_excluded_settings
 
@@ -40,9 +43,10 @@ UM.Dialog
         listview.model.filter = new_filter
     }
 
-    TextField
+    Cura.TextField
     {
         id: filterInput
+        selectByMouse: true
 
         anchors
         {
@@ -69,65 +73,65 @@ UM.Dialog
         text: catalog.i18nc("@label:checkbox", "Show all")
     }
 
-    ScrollView
+    ListView
     {
-        id: scrollView
-
+        id: listview
         anchors
         {
             top: filterInput.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
-        ListView
+
+        ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
+        clip: true
+
+        model: UM.SettingDefinitionsModel
         {
-            id: listview
-            model: UM.SettingDefinitionsModel
+            id: definitionsModel
+            containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+            expanded: [ "*" ]
+            exclude:
             {
-                id: definitionsModel
-                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
-                expanded: [ "*" ]
-                exclude:
-                {
-                    var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
-                    excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings)
-                    return excluded_settings
-                }
-                showAll: toggleShowAll.checked || filterInput.text !== ""
+                var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings)
+                return excluded_settings
             }
-            delegate: Loader
-            {
-                id: loader
-
-                width: listview.width
-                height: model.type != undefined ? UM.Theme.getSize("section").height : 0
-
-                property var definition: model
-                property var settingDefinitionsModel: definitionsModel
-
-                asynchronous: true
-                source:
-                {
-                    switch(model.type)
-                    {
-                        case "category":
-                            return "PerObjectCategory.qml"
-                        default:
-                            return "PerObjectItem.qml"
-                    }
-                }
-            }
-            Component.onCompleted: settingPickDialog.updateFilter()
+            showAll: toggleShowAll.checked || filterInput.text !== ""
         }
+        delegate: Loader
+        {
+            id: loader
+
+            width: listview.width - scrollBar.width
+            height: model.type != undefined ? UM.Theme.getSize("section").height : 0
+
+            property var definition: model
+            property var settingDefinitionsModel: definitionsModel
+
+            asynchronous: true
+            source:
+            {
+                switch(model.type)
+                {
+                    case "category":
+                        return "PerObjectCategory.qml"
+                    default:
+                        return "PerObjectItem.qml"
+                }
+            }
+        }
+        Component.onCompleted: settingPickDialog.updateFilter()
     }
 
     rightButtons: [
-        Button
+        Cura.TertiaryButton
         {
             text: catalog.i18nc("@action:button", "Close")
-            onClicked: settingPickDialog.visible = false
+            onClicked: reject()
         }
     ]
 }

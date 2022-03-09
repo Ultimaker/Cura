@@ -679,22 +679,6 @@ class CuraApplication(QtApplication):
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing Active Machine..."))
         super().setGlobalContainerStack(stack)
 
-    showMessageBox = pyqtSignal(str,str, str, str, int, int,
-                                arguments = ["title", "text", "informativeText", "detailedText","buttons", "icon"])
-    """A reusable dialogbox"""
-
-    def messageBox(self, title, text,
-                   informativeText = "",
-                   detailedText = "",
-                   buttons = QMessageBox.Ok,
-                   icon = QMessageBox.NoIcon,
-                   callback = None,
-                   callback_arguments = []
-                   ):
-        self._message_box_callback = callback
-        self._message_box_callback_arguments = callback_arguments
-        self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
-
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
     def discardOrKeepProfileChanges(self) -> bool:

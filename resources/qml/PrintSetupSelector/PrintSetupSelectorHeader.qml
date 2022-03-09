@@ -39,7 +39,7 @@ RowLayout
         }
         font: UM.Theme.getFont("medium")
         elide: Text.ElideMiddle
-
+        wrapMode: Text.NoWrap
         UM.SettingPropertyProvider
         {
             id: layerHeight

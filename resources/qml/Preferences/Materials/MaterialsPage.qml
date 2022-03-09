@@ -1,12 +1,12 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.5 as Cura
 
 Item
@@ -106,7 +106,7 @@ Item
         {
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
-            iconName: "list-activate"
+            icon.name: "list-activate"
             enabled: !isCurrentItemActivated && Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
@@ -124,7 +124,7 @@ Item
         {
             id: createMenuButton
             text: catalog.i18nc("@action:button", "Create")
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
@@ -139,7 +139,7 @@ Item
         {
             id: duplicateMenuButton
             text: catalog.i18nc("@action:button", "Duplicate");
-            iconName: "list-add"
+            icon.name: "list-add"
             enabled: base.hasCurrentItem
             onClicked:
             {
@@ -154,7 +154,7 @@ Item
         {
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
-            iconName: "list-remove"
+            icon.name: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManagementModel.canMaterialBeRemoved(base.currentItem.container_node)
 
             onClicked:
@@ -169,7 +169,7 @@ Item
         {
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
-            iconName: "document-import"
+            icon.name: "document-import"
             onClicked:
             {
                 forceActiveFocus();
@@ -183,7 +183,7 @@ Item
         {
             id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
-            iconName: "document-export"
+            icon.name: "document-export"
             onClicked:
             {
                 forceActiveFocus();
@@ -197,7 +197,7 @@ Item
         {
             id: syncMaterialsButton
             text: catalog.i18nc("@action:button Sending materials to printers", "Sync with Printers")
-            iconName: "sync-synchronizing"
+            icon.name: "sync-synchronizing"
             onClicked:
             {
                 forceActiveFocus();
@@ -207,7 +207,8 @@ Item
         }
     }
 
-    Item {
+    Item
+    {
         id: contentsItem
         anchors
         {
@@ -271,22 +272,26 @@ Item
                 bottom: parent.bottom
                 left: parent.left
             }
-
-            Rectangle
-            {
-                parent: viewport
-                anchors.fill: parent
-                color: palette.light
-            }
-
             width: (parent.width * 0.4) | 0
-            frameVisible: true
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                id: materialScrollBar
+                parent: materialScrollView
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
+            contentHeight: materialListView.height //For some reason, this is not determined automatically with this ScrollView. Very weird!
 
             MaterialsList
             {
                 id: materialListView
-                width: materialScrollView.viewport.width
+                width: materialScrollView.width - materialScrollBar.width
             }
         }
 
@@ -305,17 +310,15 @@ Item
     }
 
     // Dialogs
-    MessageDialog
+    Cura.MessageDialog
     {
         id: confirmRemoveMaterialDialog
-        icon: StandardIcon.Question;
         title: catalog.i18nc("@title:window", "Confirm Remove")
         property string materialName: base.currentItem !== null ? base.currentItem.name : ""
 
         text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(materialName)
-        standardButtons: StandardButton.Yes | StandardButton.No
-        modality: Qt.ApplicationModal
-        onYes:
+        standardButtons: Dialog.Yes | Dialog.No
+        onAccepted:
         {
             // Set the active material as the fallback. It will be selected when the current material is deleted
             base.newRootMaterialIdToSwitchTo = base.active_root_material_id
@@ -332,22 +335,19 @@ Item
         folder: CuraApplication.getDefaultPath("dialog_material_path")
         onAccepted:
         {
-            var result = Cura.ContainerManager.importMaterialContainer(fileUrl);
+            const result = Cura.ContainerManager.importMaterialContainer(fileUrl);
 
+            const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
+            messageDialog.standardButtons = Dialog.Ok;
             messageDialog.title = catalog.i18nc("@title:window", "Import Material");
-            messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
-            if (result.status == "success")
+            switch (result.status)
             {
-                messageDialog.icon = StandardIcon.Information;
-                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl);
-            }
-            else if (result.status == "duplicate")
-            {
-                messageDialog.icon = StandardIcon.Warning;
-            }
-            else
-            {
-                messageDialog.icon = StandardIcon.Critical;
+                case "success":
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl);
+                    break;
+                default:
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
+                    break;
             }
             messageDialog.open();
             CuraApplication.setDefaultPath("dialog_material_path", folder);
@@ -363,27 +363,23 @@ Item
         folder: CuraApplication.getDefaultPath("dialog_material_path")
         onAccepted:
         {
-            var result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
+            const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
 
+            const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
             messageDialog.title = catalog.i18nc("@title:window", "Export Material");
-            if (result.status == "error")
+            messageDialog.standardButtons = Dialog.Ok;
+            switch (result.status)
             {
-                messageDialog.icon = StandardIcon.Critical;
-                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
-                messageDialog.open();
+                case "error":
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
+                    break;
+                case "success":
+                    messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
+                    break;
             }
-            else if (result.status == "success")
-            {
-                messageDialog.icon = StandardIcon.Information;
-                messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
-                messageDialog.open();
-            }
+            messageDialog.open();
+
             CuraApplication.setDefaultPath("dialog_material_path", folder);
         }
-    }
-
-    MessageDialog
-    {
-        id: messageDialog
     }
 }

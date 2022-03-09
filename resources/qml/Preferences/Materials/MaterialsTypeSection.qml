@@ -3,11 +3,9 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -57,13 +55,12 @@ Item
         {
             left: parent ? parent.left : undefined
         }
-        Label
+        UM.Label
         {
             text: materialName
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - parent.leftPadding - UM.Theme.getSize("favorites_button").width
             id: material_type_name
-            verticalAlignment: Text.AlignVCenter
         }
         Item // this one causes lots of warnings
         {

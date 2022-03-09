@@ -64,8 +64,8 @@ Window
             // Page title.
             Item
             {
-                implicitWidth: parent.width
-                implicitHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
+                Layout.preferredWidth: parent.width
+                Layout.preferredHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
 
                 Label
                 {
