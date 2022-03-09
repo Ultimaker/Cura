@@ -4366,6 +4366,7 @@
                             "default_value": "0",
                             "value": "support_extruder_nr",
                             "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                            "resolve": "max(extruderValues('support_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
@@ -4378,6 +4379,7 @@
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
                                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "resolve": "max(extruderValues('support_roof_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 },
@@ -4389,6 +4391,7 @@
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
                                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "resolve": "max(extruderValues('support_bottom_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -5421,6 +5424,7 @@
                     "default_value": "0",
                     "value": "int(defaultExtruderPosition())",
                     "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
+                    "resolve": "max(extruderValues('adhesion_extruder_nr'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -5444,6 +5448,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_base_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5455,6 +5460,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5466,6 +5472,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_surface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
