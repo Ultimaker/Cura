@@ -76,7 +76,7 @@ UM.ManagementPage
 
             enabled: !Cura.MachineManager.stacksHaveErrors
             visible: base.canCreateProfile
-
+            tooltip: catalog.i18nc("@action:tooltip", "Create new profile from current settings/overrides")
             onClicked:
             {
                 createQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name)
