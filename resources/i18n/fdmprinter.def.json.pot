@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0000\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -158,6 +158,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr ""
@@ -196,16 +206,6 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -612,7 +612,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
+msgid "Maximum Speed E"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -744,8 +744,8 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
 msgid ""
-"How many steps of the stepper motors will result in one millimeter of "
-"extrusion."
+"How many steps of the stepper motors will result in moving the feeder wheel "
+"by one millimeter around its circumference."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1605,6 +1605,19 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid ""
+"Print top/bottom lines in an ordering that causes them to always overlap "
+"with adjacent lines in a single direction. This takes slightly more time to "
+"print, but makes flat surfaces look more consistent."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr ""
@@ -1692,6 +1705,19 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid ""
+"Print ironing lines in an ordering that causes them to always overlap with "
+"adjacent lines in a single direction. This takes slightly more time to "
+"print, but makes flat surfaces look more consistent."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1961,7 +1987,8 @@ msgid ""
 "triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric "
 "patterns are fully printed every layer. Gyroid, cubic, quarter cubic and "
 "octet infill change with every layer to provide a more equal distribution of "
-"strength over each direction."
+"strength over each direction. Lightning infill tries to minimize the infill, "
+"by only supporting the ceiling of the object."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2027,6 +2054,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2291,6 +2323,54 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid ""
+"Determines when a lightning infill layer has to support anything above it. "
+"Measured in the angle given the thickness of a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid ""
+"Determines when a lightning infill layer has to support the model above it. "
+"Measured in the angle given the thickness."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid ""
+"The endpoints of infill lines are shortened to save on material. This "
+"setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid ""
+"The infill lines are straightened out to save on printing time. This is the "
+"maximum angle of overhang allowed across the length of the infill line."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3636,6 +3716,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "retraction_combing option all"
 msgid "All"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5963,7 +6048,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid ""
-"The minimal distance between the ouside of the mold and the outside of the "
+"The minimal distance between the outside of the mold and the outside of the "
 "model."
 msgstr ""
 
@@ -6162,6 +6247,19 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid ""
+"Print top surface lines in an ordering that causes them to always overlap "
+"with adjacent lines in a single direction. This takes slightly more time to "
+"print, but makes flat surfaces look more consistent."
 msgstr ""
 
 #: fdmprinter.def.json

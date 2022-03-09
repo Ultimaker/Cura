@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -43,7 +43,7 @@ Button
         width: machineSelectorButton.width - machineSelectorButton.leftPadding
         height: UM.Theme.getSize("action_button").height
 
-        Label
+        UM.Label
         {
             id: buttonText
             anchors
@@ -56,8 +56,6 @@ Button
             color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("small_button_text")
             font: UM.Theme.getFont("medium")
             visible: text != ""
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
         }
 

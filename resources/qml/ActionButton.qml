@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0 // For the dropshadow
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -15,6 +15,7 @@ Button
     property bool isIconOnRightSide: false
 
     property alias iconSource: buttonIconLeft.source
+    property real iconSize: UM.Theme.getSize("action_button_icon").height
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.tooltipText
@@ -109,7 +110,7 @@ Button
         {
             id: buttonIconLeft
             source: ""
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
@@ -127,29 +128,27 @@ Button
             elideWidth: buttonText.width
         }
 
-        Label
+        UM.Label
         {
             id: buttonText
             text: button.text
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor): button.textDisabledColor
             font: UM.Theme.getFont("medium")
             visible: text != ""
-            renderType: Text.NativeRendering
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
 
             Binding
             {
-                // When settting width directly, an unjust binding loop warning would be triggered,
+                // When setting width directly, an unjust binding loop warning would be triggered,
                 // because button.width is part of this expression.
                 // Using parent.width is fine in fixedWidthMode.
                 target: buttonText
                 property: "width"
-                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
-                                             : ((maximumWidth != 0 && button.contentWidth > maximumWidth) ? maximumWidth : undefined)
+                value: button.fixedWidthMode ? (button.width - button.leftPadding - button.rightPadding)
+                                             : ((button.maximumWidth != 0 && button.implicitContentWidth > button.maximumWidth) ? (button.maximumWidth - (button.width - button.implicitContentWidth) * 2) : undefined)
             }
         }
 
@@ -158,7 +157,7 @@ Button
         {
             id: buttonIconRight
             source: buttonIconLeft.source
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
             sourceSize.width: width
             sourceSize.height: height
@@ -180,7 +179,7 @@ Button
         cornerSide: Cura.RoundedRectangle.Direction.None
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         visible:

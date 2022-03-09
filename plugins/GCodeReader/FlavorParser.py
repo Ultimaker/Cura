@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import math
@@ -24,7 +24,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 
 catalog = i18nCatalog("cura")
 
-PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
+PositionOptional = NamedTuple("PositionOptional", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
 
 
@@ -53,7 +53,7 @@ class FlavorParser:
 
     def _clearValues(self) -> None:
         self._extruder_number = 0
-        self._extrusion_length_offset = [0] # type: List[float]
+        self._extrusion_length_offset = [0] * 8 # type: List[float]
         self._layer_type = LayerPolygon.Inset0Type
         self._layer_number = 0
         self._previous_z = 0 # type: float
@@ -153,7 +153,7 @@ class FlavorParser:
         Af = (self._filament_diameter / 2) ** 2 * numpy.pi
         # Length of the extruded filament
         de = current_extrusion - previous_extrusion
-        # Volumne of the extruded filament
+        # Volume of the extruded filament
         dVe = de * Af
         # Length of the printed line
         dX = numpy.sqrt((current_point[0] - previous_point[0])**2 + (current_point[2] - previous_point[2])**2)
@@ -198,7 +198,7 @@ class FlavorParser:
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
             # Also, 1.5 is a heuristic for any priming or whatsoever, we skip those.
-            if z > self._previous_z and (z - self._previous_z < 1.5):
+            if z > self._previous_z and (z - self._previous_z < 1.5) and (params.x is not None or params.y is not None):
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
         elif self._previous_extrusion_value > e[self._extruder_number]:
@@ -283,8 +283,9 @@ class FlavorParser:
             return func(position, params, path)
         return position
 
-    def processTCode(self, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
+    def processTCode(self, global_stack, T: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
         self._extruder_number = T
+        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
         if self._extruder_number + 1 > len(position.e):
             self._extrusion_length_offset.extend([0] * (self._extruder_number - len(position.e) + 1))
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
@@ -354,7 +355,7 @@ class FlavorParser:
 
         Logger.log("d", "Parsing g-code...")
 
-        current_position = Position(0, 0, 0, 0, [0])
+        current_position = Position(0, 0, 0, 0, [0] * 8)
         current_path = [] #type: List[List[float]]
         min_layer_number = 0
         negative_layers = 0
@@ -428,7 +429,7 @@ class FlavorParser:
 
             G = self._getInt(line, "G")
             if G is not None:
-                # When find a movement, the new posistion is calculated and added to the current_path, but
+                # When find a movement, the new position is calculated and added to the current_path, but
                 # don't need to create a polygon until the end of the layer
                 current_position = self.processGCode(G, line, current_position, current_path)
                 continue
@@ -444,7 +445,7 @@ class FlavorParser:
                     # When changing tool, store the end point of the previous path, then process the code and finally
                     # add another point with the new position of the head.
                     current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
-                    current_position = self.processTCode(T, line, current_position, current_path)
+                    current_position = self.processTCode(global_stack, T, line, current_position, current_path)
                     current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
 
             if line.startswith("M"):

@@ -40,7 +40,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
-    build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
+    build_plate_bounding_box = Box(int(machine_width * factor), int(machine_depth * factor))
 
     if fixed_nodes is None:
         fixed_nodes = []
@@ -91,7 +91,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
         if hull_polygon is not None and hull_polygon.getPoints() is not None and len(hull_polygon.getPoints()) > 2:  # numpy array has to be explicitly checked against None
             for point in hull_polygon.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
+                converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
             item = Item(converted_points)
             item.markAsFixedInBin(0)
             node_items.append(item)
@@ -110,18 +110,11 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     return found_solution_for_all, node_items
 
 
-def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: Optional[List["SceneNode"]] = None, factor = 10000, add_new_nodes_in_scene: bool = False) -> bool:
-    """
-    Find placement for a set of scene nodes, and move them by using a single grouped operation.
-    :param nodes_to_arrange: The list of nodes that need to be moved.
-    :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
-    :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
-                        are placed.
-    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
-    :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
-
-    :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
-    """
+def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
+                                   build_volume: "BuildVolume",
+                                   fixed_nodes: Optional[List["SceneNode"]] = None,
+                                   factor = 10000,
+                                   add_new_nodes_in_scene: bool = False)  -> Tuple[GroupedOperation, int]:
     scene_root = Application.getInstance().getController().getScene().getRoot()
     found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
 
@@ -143,6 +136,27 @@ def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fi
             grouped_operation.addOperation(
                 TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
             not_fit_count += 1
-    grouped_operation.push()
 
-    return found_solution_for_all
+    return grouped_operation, not_fit_count
+
+
+def arrange(nodes_to_arrange: List["SceneNode"],
+            build_volume: "BuildVolume",
+            fixed_nodes: Optional[List["SceneNode"]] = None,
+            factor = 10000,
+            add_new_nodes_in_scene: bool = False) -> bool:
+    """
+    Find placement for a set of scene nodes, and move them by using a single grouped operation.
+    :param nodes_to_arrange: The list of nodes that need to be moved.
+    :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
+    :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
+                        are placed.
+    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
+    :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
+
+    :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
+    """
+
+    grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes, factor, add_new_nodes_in_scene)
+    grouped_operation.push()
+    return not_fit_count == 0

@@ -17,7 +17,9 @@ class CuraSplashScreen(QSplashScreen):
         self._scale = 0.7
         self._version_y_offset = 0  # when extra visual elements are in the background image, move version text down
 
-        if ApplicationMetadata.IsEnterpriseVersion:
+        if ApplicationMetadata.IsAlternateVersion:
+            splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_wip.png"))
+        elif ApplicationMetadata.IsEnterpriseVersion:
             splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_enterprise.png"))
             self._version_y_offset = 26
         else:
@@ -70,7 +72,7 @@ class CuraSplashScreen(QSplashScreen):
         font = QFont()  # Using system-default font here
         font.setPixelSize(18)
         painter.setFont(font)
-        painter.drawText(60, 70 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(60, 70 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0] if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)

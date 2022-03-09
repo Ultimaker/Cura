@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.10\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0000\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 15:03+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Dutch <info@lionbridge.com>, Dutch <info@bothof.nl>\n"
@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -155,6 +151,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "De diepte (Y-richting) van het printbare gebied."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Machinehoogte"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "De hoogte (Z-richting) van het printbare gebied."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Vorm van het platform"
@@ -193,16 +199,6 @@ msgstr "Glas"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Aluminium"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Machinehoogte"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "De hoogte (Z-richting) van het printbare gebied."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -561,8 +557,8 @@ msgstr "De maximale snelheid van de motor in de Z-richting."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Maximale Doorvoersnelheid"
+msgid "Maximum Speed E"
+msgstr "Maximale Snelheid E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -686,8 +682,8 @@ msgstr "Stappen per millimeter (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "Hoeveel stappen van de stappenmotor nodig zijn voor een doorvoer van één millimeter."
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "Hoeveel stappen van de stappenmotor nodig zijn voor een verplaatsing van het feederwiel van één millimeter rond de omtrek."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1435,6 +1431,16 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "Verbind skinpaden aan de boven-/onderkant waar ze naast elkaar lopen. Met deze instelling wordt bij concentrische patronen de bewegingstijd aanzienlijk verkort. Dit kan echter ten koste gaan van de kwaliteit van de bovenste laag aangezien de verbindingen in het midden van de vulling kunnen komen te liggen."
 
 #: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "Monotone volgorde van boven naar beneden"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Print boven- en onderlijnen in een volgorde die ervoor zorgt dat ze altijd in één richting overlappen met aangrenzende lijnen. Hierdoor duurt het iets langer om te printen, maar platte oppervlakken zien er dan consistenter uit."
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "Lijnrichtingen boven-/onderkant"
@@ -1503,6 +1509,16 @@ msgstr "Concentrisch"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zigzag"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "Monotone strijkvolgorde"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Print strijklijnen in een volgorde die ervoor zorgt dat ze altijd in één richting overlappen met aangrenzende lijnen. Hierdoor duurt het iets langer om te printen, maar platte oppervlakken zien er dan consistenter uit."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1711,8 +1727,11 @@ msgstr "Vulpatroon"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor wordt bespaard op materiaalkosten. De raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden elke laag volledig geprint. Gyroïde, kubische, afgeknotte kubus- en achtvlaksvullingen veranderen elke laag voor een meer gelijke krachtverdeling in elke richting."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor u bespaart op materiaalkosten. De"
+" raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden per laag volledig geprint. Gyroïde,"
+" kubische, afgeknotte kubus- en achtvlaksvullingen veranderen per laag voor een meer gelijke krachtverdeling in elke richting. Bliksemvulling minimaliseert"
+" de vulling doordat deze alleen het plafond van het object ondersteunt."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1778,6 +1797,11 @@ msgstr "Kruis 3D"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Gyroïde"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "Bliksem"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1992,6 +2016,46 @@ msgstr "Lagen skinrandondersteuning"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "Het aantal opvullagen dat skinranden ondersteunt."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "Hoek supportstructuur bliksemvulling"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Bepaalt wanneer een bliksemvullaag iets moet ondersteunen dat zich boven de vullaag bevindt. Gemeten in de hoek bepaald door de laagdikte."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "Hoek overhang bliksemvulling"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "Bepaalt wanneer een bliksemvullaag het model boven de laag moet ondersteunen. Gemeten in de hoek bepaald door de laagdikte."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "Snoeihoek bliksemvulling"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "De eindpunten van de vullijnen worden verkort om materiaal te besparen. Deze instelling is de overhanghoek van de eindpunten van deze lijnen."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "Rechtbuighoek bliksemvulling"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "De vullijnen zijn rechtgetrokken om printtijd te besparen. Dit is de grootste overhanghoek die over de lengte van de vullijn is toegestaan."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3184,6 +3248,11 @@ msgid "All"
 msgstr "Alles"
 
 #: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "Niet op buitenzijde"
+
+#: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "Niet in skin"
@@ -3201,8 +3270,7 @@ msgstr "Max. combing-afstand zonder intrekken"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr "Wanneer dit groter dan nul is, vindt bij een combing-beweging die langer is dan deze afstand, intrekking plaats. Wanneer dit nul is, is er geen maximum"
-" en vindt bij combing-bewegingen geen intrekking plaats."
+msgstr "Wanneer dit groter dan nul is, vindt bij een combing-beweging die langer is dan deze afstand, intrekking plaats. Wanneer dit nul is, is er geen maximum en vindt bij combing-bewegingen geen intrekking plaats."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5135,7 +5203,7 @@ msgstr "Minimale matrijsbreedte"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
 msgstr "De minimale afstand tussen de buitenzijde van de matrijs en de buitenzijde van het model."
 
 #: fdmprinter.def.json
@@ -5302,6 +5370,16 @@ msgstr "Concentrisch"
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zigzag"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "Monotone volgorde bovenlaag"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Print de lijnen van de bovenlaag in een volgorde die ervoor zorgt dat ze altijd in één richting overlappen met aangrenzende lijnen. Hierdoor duurt het iets langer om te printen, maar platte oppervlakken zien er dan consistenter uit."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -6401,6 +6479,42 @@ msgstr "Matrix rasterrotatie"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Omzettingsmatrix die moet worden toegepast op het model wanneer dit wordt geladen vanuit een bestand."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Maximale Doorvoersnelheid"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor u bespaart op materiaalkosten. De raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden per laag volledig geprint. Gyroïde, kubische, afgeknotte kubus- en achtvlaksvullingen veranderen per laag voor een meer gelijke krachtverdeling in elke richting. Bliksemvulling minimaliseert de vulling, doordat deze alleen de (interne) supportdaken ondersteunt. Daarom geldt het invulpercentage slechts voor één laag onder wat er nodig is om het model te ondersteunen."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "Het mogelijke verschil van een bliksemvullaag met de laag onmiddellijk daarboven m.b.t. het snoeien van de buitenste uiteinden van bomen. Gemeten in de hoek bepaald door de laagdikte."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "Het mogelijke verschil van een bliksemvullaag met de laag onmiddellijk daarboven m.b.t. het effenen van bomen. Gemeten in de hoek bepaald door de laagdikte."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "Het patroon van het vulmateriaal van de print. De lijn- en zigzagvulling veranderen per vullaag van richting, waardoor wordt bespaard op materiaalkosten. De raster-, driehoeks-, tri-hexagonale, kubische, achtvlaks-, afgeknotte kubus-, kruis- en concentrische patronen worden elke laag volledig geprint. Gyroïde, kubische, afgeknotte kubus- en achtvlaksvullingen veranderen elke laag voor een meer gelijke krachtverdeling in elke richting."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "De minimale afstand tussen de buitenzijde van de matrijs en de buitenzijde van het model."
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "Hoeveel stappen van de stappenmotor nodig zijn voor een doorvoer van één millimeter."
 
 #~ msgctxt "retraction_combing_max_distance description"
 #~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."

@@ -23,6 +23,7 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
+from .BackwardsCompatibleMessage import getBackwardsCompatibleMessage
 from .DFFileExportAndUploadManager import DFFileExportAndUploadManager
 from .DigitalFactoryApiClient import DigitalFactoryApiClient
 from .DigitalFactoryFileModel import DigitalFactoryFileModel
@@ -260,7 +261,10 @@ class DigitalFactoryController(QObject):
         """
         Error function, called whenever the retrieval of the files in a library project fails.
         """
-        Logger.log("w", "Failed to retrieve the list of files in project '{}' from the Digital Library".format(self._project_model._projects[self._selected_project_idx]))
+        try:
+            Logger.warning(f"Failed to retrieve the list of files in project '{self._project_model._projects[self._selected_project_idx]}' from the Digital Library")
+        except IndexError:
+            Logger.warning(f"Failed to retrieve the list of files in a project from the Digital Library. And failed to get the project too.")
         self.setRetrievingFilesStatus(RetrievalStatus.Failed)
 
     @pyqtSlot()
@@ -527,11 +531,11 @@ class DigitalFactoryController(QObject):
             except IOError as ex:
                 Logger.logException("e", "Can't write Digital Library file {0}/{1} download to temp-directory {2}.",
                                     ex, project_name, file_name, temp_dir)
-                Message(
+                getBackwardsCompatibleMessage(
                         text = "Failed to write to temporary file for '{}'.".format(file_name),
                         title = "File-system error",
-                        lifetime = 10,
-                        message_type=Message.MessageType.ERROR
+                        message_type_str="ERROR",
+                        lifetime = 10
                 ).show()
                 return
 
@@ -542,11 +546,11 @@ class DigitalFactoryController(QObject):
                           f = file_name) -> None:
             progress_message.hide()
             Logger.error("An error {0} {1} occurred while downloading {2}/{3}".format(str(error), str(reply), p, f))
-            Message(
+            getBackwardsCompatibleMessage(
                     text = "Failed Digital Library download for '{}'.".format(f),
                     title = "Network error {}".format(error),
-                    lifetime = 10,
-                    message_type=Message.MessageType.ERROR
+                    message_type_str="ERROR",
+                    lifetime = 10
             ).show()
 
         download_manager = HttpRequestManager.getInstance()
@@ -591,17 +595,19 @@ class DigitalFactoryController(QObject):
 
         if filename == "":
             Logger.log("w", "The file name cannot be empty.")
-            Message(text = "Cannot upload file with an empty name to the Digital Library",
+            getBackwardsCompatibleMessage(
+                    text = "Cannot upload file with an empty name to the Digital Library",
                     title = "Empty file name provided",
-                    lifetime = 0,
-                    message_type = Message.MessageType.ERROR).show()
+                    message_type_str = "ERROR",
+                    lifetime = 0
+            ).show()
             return
 
         self._saveFileToSelectedProjectHelper(filename, formats)
 
     def _saveFileToSelectedProjectHelper(self, filename: str, formats: List[str]) -> None:
-        # Indicate we have started sending a job.
-        self.uploadStarted.emit()
+        # Indicate we have started sending a job (and propagate any user file name changes back to the open project)
+        self.uploadStarted.emit(filename if "3mf" in formats else None)
 
         library_project_id = self._project_model.items[self._selected_project_idx]["libraryProjectId"]
         library_project_name = self._project_model.items[self._selected_project_idx]["displayName"]

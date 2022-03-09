@@ -23,6 +23,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 import cura.CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -319,7 +321,7 @@ class ContainerManager(QObject):
                 stack.qualityChanges = quality_changes
 
             if not quality_changes or container_registry.isReadOnly(quality_changes.getId()):
-                Logger.log("e", "Could not update quality of a nonexistant or read only quality profile in stack %s", stack.getId())
+                Logger.log("e", "Could not update quality of a nonexistent or read only quality profile in stack %s", stack.getId())
                 continue
 
             self._performMerge(quality_changes, stack.getTop())
@@ -408,7 +410,7 @@ class ContainerManager(QObject):
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         for plugin_id, container_type in container_registry.getContainerTypes():
             # Ignore default container types since those are not plugins
-            if container_type in (InstanceContainer, ContainerStack, DefinitionContainer):
+            if container_type in (InstanceContainer, ContainerStack, DefinitionContainer, GlobalStack, ExtruderStack):
                 continue
 
             serialize_type = ""

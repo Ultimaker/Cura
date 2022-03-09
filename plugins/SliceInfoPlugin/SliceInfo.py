@@ -130,6 +130,7 @@ class SliceInfo(QObject, Extension):
             data["cura_version"] = self._application.getVersion()
             data["cura_build_type"] = ApplicationMetadata.CuraBuildType
             org_id = user_profile.get("organization_id", None) if user_profile else None
+            data["is_logged_in"] = self._application.getCuraAPI().account.isLoggedIn
             data["organization_id"] = org_id if org_id else None
             data["subscriptions"] = user_profile.get("subscriptions", []) if user_profile else []
 

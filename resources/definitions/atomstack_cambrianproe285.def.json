@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Cambrian Pro E285",
+    "inherits": "atomstack_cambrian_base",
+    "metadata": {
+        "visible": true,
+        "author": "AtomStack",
+        "manufacturer": "AtomStack",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains": {
+        "0": "atomstack_cambrianproe285_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Cambrian Pro E285"
+        },
+        "machine_width": {
+            "default_value": 235
+        },
+        "machine_height": {
+            "default_value": 250
+        },
+        "machine_depth": {
+            "default_value": 235
+        }
+    }
+}

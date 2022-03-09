@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -33,30 +33,24 @@ Item
             margins: UM.Theme.getSize("default_margin").width
         }
 
-        Label
+        UM.Label
         {
             text: (printCoreConfiguration !== null && printCoreConfiguration.material.brand) ? printCoreConfiguration.material.brand : " " //Use space so that the height is still correct.
-            renderType: Text.NativeRendering
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_inactive")
             width: parent.width
         }
-        Label
+        UM.Label
         {
             text: (printCoreConfiguration !== null && printCoreConfiguration.material.brand) ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
-            renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
             width: parent.width
         }
-        Label
+        UM.Label
         {
             text: (printCoreConfiguration !== null && printCoreConfiguration.hotendID) ? printCoreConfiguration.hotendID : " " //Use space so that the height is still correct.
-            renderType: Text.NativeRendering
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_inactive")
             width: parent.width
         }

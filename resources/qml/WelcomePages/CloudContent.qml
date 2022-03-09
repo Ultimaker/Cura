@@ -112,7 +112,7 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("Plugin")
+                        source: UM.Theme.getIcon("Plugin", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -142,7 +142,7 @@ Item
                         anchors.horizontalCenter: parent.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("Spool")
+                        source: UM.Theme.getIcon("Spool", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -172,7 +172,7 @@ Item
                         anchors.horizontalCenter: communityColumn.horizontalCenter
                         fillMode: Image.PreserveAspectFit
                         width: UM.Theme.getSize("welcome_wizard_cloud_content_image").width
-                        source: UM.Theme.getIcon("PrinterTriple", "medium")
+                        source: UM.Theme.getIcon("People", "high")
                         sourceSize.width: width
                         sourceSize.height: height
                     }
@@ -190,55 +190,48 @@ Item
                     }
                 }
             }
-
-            // Sign in Button
-            Cura.PrimaryButton
-            {
-                id: signInButton
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: catalog.i18nc("@button", "Sign in")
-                onClicked: Cura.API.account.login()
-                // Content Item is used in order to align the text inside the button. Without it, when resizing the
-                // button, the text will be aligned on the left
-                contentItem: Text {
-                    text: signInButton.text
-                    font: UM.Theme.getFont("medium")
-                    color: UM.Theme.getColor("primary_text")
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            // Create an account button
-            Cura.TertiaryButton
-            {
-                id: createAccountButton
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: catalog.i18nc("@text", "Create a free Ultimaker Account")
-                onClicked:  Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
-            }
         }
     }
 
-    // The "Skip" button exists on the bottom right
-    Label
+    // Skip button
+    Cura.TertiaryButton
     {
         id: skipButton
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        text: catalog.i18nc("@button", "Skip")
+        onClicked: base.showNextPage()
+    }
+
+    // Create an account button
+    Cura.SecondaryButton
+    {
+        id: createAccountButton
+        anchors.right: signInButton.left
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+        anchors.bottom: parent.bottom
+
+        text: catalog.i18nc("@text", "Create a free Ultimaker Account")
+        onClicked:  Qt.openUrlExternally("https://ultimaker.com/app/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=onboarding-signup")
+    }
+
+    // Sign in Button
+    Cura.PrimaryButton
+    {
+        id: signInButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@button", "Skip")
-        color: UM.Theme.getColor("secondary_button_text")
-        font: UM.Theme.getFont("medium")
-        renderType: Text.NativeRendering
 
-        MouseArea
-        {
-            anchors.fill: parent
-            hoverEnabled: true
-            onClicked: base.showNextPage()
-            onEntered: parent.font.underline = true
-            onExited: parent.font.underline = false
+        text: catalog.i18nc("@button", "Sign in")
+        onClicked: Cura.API.account.login()
+        // Content Item is used in order to align the text inside the button. Without it, when resizing the
+        // button, the text will be aligned on the left
+        contentItem: Text {
+            text: signInButton.text
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("primary_text")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
     }
 }

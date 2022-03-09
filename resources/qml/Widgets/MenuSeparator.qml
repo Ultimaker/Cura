@@ -11,9 +11,10 @@ import UM 1.1 as UM
 //
 MenuSeparator
 {
-    padding: 0
-
-    contentItem: Rectangle {
+    leftPadding: UM.Theme.getSize("default_margin").width
+    rightPadding: UM.Theme.getSize("default_margin").width
+    contentItem: Rectangle
+    {
         implicitHeight: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("setting_control_border")
     }

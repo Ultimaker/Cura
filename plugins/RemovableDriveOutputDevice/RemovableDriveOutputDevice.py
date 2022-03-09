@@ -136,7 +136,7 @@ class RemovableDriveOutputDevice(OutputDevice):
                 self._stream.close()
                 self._stream = None
             except:
-                Logger.logException("w", "An execption occured while trying to write to removable drive.")
+                Logger.logException("w", "An exception occurred while trying to write to removable drive.")
                 message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),str(job.getError())),
                                   title = catalog.i18nc("@info:title", "Error"),
                                   message_type = Message.MessageType.ERROR)

@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.10\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0000\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 15:00+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
@@ -60,9 +60,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"最初に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -74,9 +72,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"最後に実行するG-codeコマンドは、\n"
-"で区切ります。"
+msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -164,6 +160,18 @@ msgctxt "machine_depth description"
 msgid "The depth (Y-direction) of the printable area."
 msgstr "造形可能領域の幅（Y方向）。"
 
+# msgstr "楕円形"
+#: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "プリンターの高さ"
+
+# msgstr "プリンターの高さ"
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "造形可能領域の幅（Z方向）。"
+
 #: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
@@ -205,18 +213,6 @@ msgstr "ガラス"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "アルミニウム"
-
-# msgstr "楕円形"
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "プリンターの高さ"
-
-# msgstr "プリンターの高さ"
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "造形可能領域の幅（Z方向）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -590,8 +586,8 @@ msgstr "Z方向のモーターの最大速度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "最大送り速度"
+msgid "Maximum Speed E"
+msgstr "最大速度E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -715,8 +711,8 @@ msgstr "ミリメートルあたりのステップ (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "フィーダーホイールを円周上で1ミリメートル移動させるのに、ステップモーターが行うステップの数を示します。"
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1488,6 +1484,16 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "互いに次に実行する上層/底層スキンパスに接合します。同心円のパターンの場合、この設定を有効にすることにより、移動時間が短縮されますが、インフィルまでの途中で接合があるため、この機能で上層面の品質が損なわれることがあります。"
 
 #: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "上面/底面の方向一貫性"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "上面/底面のラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "上層/底層ラインの向き"
@@ -1560,6 +1566,16 @@ msgstr "同心円"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "ジグザグ"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "アイロン方向一貫性"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "アイロンラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
@@ -1782,8 +1798,8 @@ msgstr "インフィルパターン"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "印刷用インフィル材料のパターン。代替層のラインとジグザグの面詰めスワップ方向、材料コストを削減します。グリッド、トライアングル、トライ六角、キュービック、オクテット、クォーターキュービック、クロスと同心円のパターンは、すべてのレイヤーを完全に印刷されます。ジャイロイド、キュービック、クォーターキュービック、オクテットのインフィルは、各レイヤーを変更して各方向の強度をより均等な分布にします。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "プリントのインフィル材料のパターンラインおよびジグザグインフィルはレイヤーごとに方向を入れ替え、材料コストを削減します。グリッド、トライアングル、トライヘキサゴン、キュービック、オクテット、クォーターキュービック、クロスおよび同心円パターンはレイヤーごとに完全にプリントされます。ジャイロイド、キュービック、クォーターキュービックおよびオクテットインフィルはレイヤーごとに変化し、各方向にかけてより均一な強度分布を実現します。ライトニングインフィルは造形物の天井のみを支えることで、インフィルを最低限にするよう試みます。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1852,6 +1868,11 @@ msgstr "3Dクロス"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "ジャイロイド"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "ライトニング"
 
 # msgstr "クロス3D"
 #: fdmprinter.def.json
@@ -2072,6 +2093,46 @@ msgstr "スキンエッジサポートレイヤー"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "スキンエッジをサポートするインフィルレイヤーの数。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "ライトニングインフィルサポート角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "ライトニングインフィルレイヤーがその上の物を支える必要がある場合を決定します。レイヤーの厚さを考慮して角度で指定されます。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "ライトニングインフィルオーバーハング角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "ライトニングインフィルレイヤーがその上のモデルを支える必要がある場合を決定します。厚さを考慮して角度で指定されます。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "ライトニングインフィル刈り込み角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "インフィルラインのエンドポイントは短縮され、材料が節約されます。この設定は、これらのラインのエンドポイントにおけるオーバーハングの角度です。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "ライトニングインフィル矯正角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "インフィルラインは矯正され、プリント時間が節約されます。これは、インフィルラインの全長にわたって許可されるオーバーハングの最大角度です。"
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3271,6 +3332,11 @@ msgstr "オフ"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "すべて"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "外側表面には適用しない"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5255,11 +5321,10 @@ msgctxt "mold_width label"
 msgid "Minimal Mold Width"
 msgstr "最小型幅"
 
-# msgstr "最小のモールド幅"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "型用とモデルの外側の最短距離。"
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "型の外側とモデルの外側との間の最小距離です。"
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5431,6 +5496,16 @@ msgstr "同心円"
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "ジグザグ"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "上面方向一貫性"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "上面のラインを、隣接するラインと常に一方向で重なるような順序でプリントします。これにより、プリントにかかる時間は少し長くなりますが、平らな面の見た目の一貫性が高まります。"
 
 # msgstr "ジグザグ"
 #: fdmprinter.def.json
@@ -6534,6 +6609,43 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "最初に実行するG-codeコマンドは、\\n で区切ります。"
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "最後に実行するG-codeコマンドは、\\n で区切ります。"
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "最大送り速度"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "プリントのインフィル材料のパターンラインおよびジグザグインフィルはレイヤーごとに方向を入れ替え、材料コストを削減します。グリッド、トライアングル、トライヘキサゴン、キュービック、オクテット、クォーターキュービック、クロスおよび同心円パターンはレイヤーごとに完全にプリントされます。ジャイロイド、キュービック、クォーターキュービックおよびオクテットインフィルはレイヤーごとに変化し、各方向にかけてより均一な強度分布を実現します。ライトニングインフィルは造形物の（内部）ルーフのみを支えることで、インフィルを最低限にするよう試みます。そのため、インフィル率はモデル内で支える必要がある物の1つ下のレイヤーでのみ有効です。"
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "ツリーの外側末端の刈り込みに関して、ライトニングインフィルレイヤーとそのすぐ上にあるレイヤーとの間に存在することのできる差異です。厚さを考慮して角度で指定されます。"
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "ツリーのスムージングに関して、ライトニングインフィルレイヤーとそのすぐ上にあるレイヤーとの間に存在することのできる差異です。厚さを考慮して角度で指定されます。"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "印刷用インフィル材料のパターン。代替層のラインとジグザグの面詰めスワップ方向、材料コストを削減します。グリッド、トライアングル、トライ六角、キュービック、オクテット、クォーターキュービック、クロスと同心円のパターンは、すべてのレイヤーを完全に印刷されます。ジャイロイド、キュービック、クォーターキュービック、オクテットのインフィルは、各レイヤーを変更して各方向の強度をより均等な分布にします。"
+
+# msgstr "最小のモールド幅"
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "型用とモデルの外側の最短距離。"
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "1 ミリメートルの押出でステップモーターが行うステップの数を示します。"
 
 #~ msgctxt "retraction_combing_max_distance description"
 #~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."

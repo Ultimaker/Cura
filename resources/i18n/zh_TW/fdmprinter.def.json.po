@@ -1,21 +1,21 @@
 # Cura JSON setting files
 # Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2021.
+# Ultimaker <plugins@ultimaker.com>, 2021.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.10\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0000\n"
-"PO-Revision-Date: 2021-06-14 16:21+0800\n"
-"Last-Translator: Valen Chang <carf17771@gmail.com>\n"
-"Language-Team: Valen Chang <carf17771@gmail.com>/Zhang Heh Ji <dinowchang@gmail.com>\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
+"PO-Revision-Date: 2022-01-02 20:24+0800\n"
+"Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
+"Language-Team: Valen Chang <carf17771@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -156,6 +156,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "機器可列印區域深度（Y 座標）"
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "機器高度"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "機器可列印區域高度（Z 座標）"
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "列印平台形狀"
@@ -194,16 +204,6 @@ msgstr "玻璃"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "鋁"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "機器高度"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "機器可列印區域高度（Z 座標）"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -562,8 +562,8 @@ msgstr "Z 軸方向馬達的最大速度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "最大進料速率"
+msgid "Maximum Speed E"
+msgstr "E 軸最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -687,8 +687,8 @@ msgstr "每毫米的步數（E）"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "擠出機移動一毫米時，步進馬達所需移動的步數。"
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "在擠出輪旋轉一毫米時，步進馬達所需移動的步數."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1278,12 +1278,12 @@ msgstr "啟用時，Z 接縫座標為相對於各個部分中心的值。關閉�
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr "頂層"
+msgstr "頂層/底層"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr "頂層"
+msgstr "頂層/底層"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1436,6 +1436,16 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時啟用此設定，可以大大地減少移動時間。但因連接可能碰巧在途中跨越填充，所以此功能可能會降低頂部表層的品質。"
 
 #: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "單一化列印 頂層/底層 順序"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "再列印頂層/底層線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "頂部/底部線條方向"
@@ -1504,6 +1514,16 @@ msgstr "同心"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "鋸齒狀"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "單一化燙平順序"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "再使用燙平列印線條時，命令相鄰線條於單方向重疊。雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1712,8 +1732,8 @@ msgstr "填充列印樣式"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "選擇填充線材的樣式。直線和鋸齒狀填充輪流在每一層交換方向，以降低線材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。螺旋形、立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "內部填充層的圖案。線形、鋸齒形填充在交替層間交換方向，已降低材料成本。網格、三角形、三角-六邊形、立方體、八面體、四分立方體、十字和同心圖案每個層間皆有列印。螺旋型、立方體、四分立方體和八面體的填充隨著每一層而變化，以在每個方向上提供更均勻的強度分佈。閃電型填充透過僅支撐物體的頂層來最小化填充。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1733,7 +1753,7 @@ msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr "三-六邊形"
+msgstr "三角-六邊形混和"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1779,6 +1799,11 @@ msgstr "立體十字形"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "螺旋形"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "閃電形"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1993,6 +2018,46 @@ msgstr "表層邊緣支撐層數"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "支撐表層邊緣的額外填充的層數。"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "閃電形填充支撐堆疊角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "決定使用閃電形填充支撐時，層間堆疊的角度."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "閃電形填充突出角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "決定使用閃電形填充支撐時，層間堆疊的角度."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "閃電形填充生成角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "內部填充線的端點已被縮減以節省線材. 這個設定用於調整突出線的角度."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "閃電形填充層間垂直堆疊角度"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "填充線被拉直用以節省列印時間. 這是填充線長度上允許的最大突出角度."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2452,7 +2517,7 @@ msgstr "列印速度"
 #: fdmprinter.def.json
 msgctxt "speed_print description"
 msgid "The speed at which printing happens."
-msgstr "開始列印的速度。"
+msgstr "開始列印時的速度。"
 
 #: fdmprinter.def.json
 msgctxt "speed_infill label"
@@ -3183,6 +3248,11 @@ msgstr "關"
 msgctxt "retraction_combing option all"
 msgid "All"
 msgstr "所有"
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "不在外表面上"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5135,8 +5205,8 @@ msgstr "最小模具寬度"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "模具外側和模型外側之間的最小距離。"
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "模具外部與模型外部的最小距離."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5302,6 +5372,16 @@ msgstr "同心"
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "鋸齒狀"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "頂層表面單一化列印順序"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "再列印頂層表面線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -6401,6 +6481,34 @@ msgstr "網格旋轉矩陣"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在將模型從檔案中載入時套用在模型上的轉換矩陣。"
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "最大進料速率"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "列印填充樣式；直線型與鋸齒狀填充於層間交替方向,減少線材消耗；網格型、三角形、三角-六邊形混和、立方體、八面體、四分立方體、十字形、同心於每層間皆完整列印；螺旋形、立方體、四分立方體及八面體填充於每層一間進行改變，確保每個方向都有相同的強度分配，閃電形填充透過只支撐物件內層頂部來最小化填充，因此填充百分比只對於下一層才有效果."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "閃電形填充層與其附著物間的生成角度."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "設定閃電形填充層間垂直堆疊角度，調整樹狀堆疊的平滑度."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "選擇填充線材的樣式。直線和鋸齒狀填充輪流在每一層交換方向，以降低線材成本。網格、三角形、三-六邊形、立方體、八面體、四分立方體、十字形和同心的列印樣式在每層完整列印。螺旋形、立方體、四分立方體和八面體填充隨每層變化，以在各個方向提供更均衡的强度分布。"
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "模具外側和模型外側之間的最小距離。"
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "擠出機移動一毫米時，步進馬達所需移動的步數。"
 
 #~ msgctxt "retraction_combing_max_distance description"
 #~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."

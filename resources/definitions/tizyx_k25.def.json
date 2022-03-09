@@ -55,6 +55,6 @@
         "z_seam_type": {"default_value": "back"},
         "z_seam_x": {"value": "127.5"},
         "z_seam_y": {"value": "250"},
-        "retraction_combing": {"default_value": "off"}
+        "retraction_combing": {"value": "'off'"}
     }
 }

@@ -61,6 +61,10 @@ class SettingInheritanceManager(QObject):
                 result.append(key)
         return result
 
+    @pyqtSlot(str, str, result = bool)
+    def hasOverrides(self, key: str, extruder_index: str):
+        return key in self.getOverridesForExtruder(key, extruder_index)
+
     @pyqtSlot(str, str, result = "QStringList")
     def getOverridesForExtruder(self, key: str, extruder_index: str) -> List[str]:
         if self._global_container_stack is None:

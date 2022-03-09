@@ -133,6 +133,9 @@ class SendMaterialJob(Job):
         except FileNotFoundError:
             Logger.error("Unable to send material {material_id}, since it has been deleted in the meanwhile.".format(material_id = material_id))
             return
+        except EnvironmentError as e:
+            Logger.error(f"Unable to send material {material_id}. We can't open that file for reading: {str(e)}")
+            return
 
         # Add the material signature file if needed.
         signature_file_path = "{}.sig".format(file_path)

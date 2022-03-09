@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.10\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2021-06-10 17:35+0000\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 14:56+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Portuguese <info@lionbridge.com>, Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"Comandos G-code a serem executados no início – separados por \n"
-"."
+msgstr "Comandos G-code a serem executados no início – separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"Comandos G-code a serem executados no fim – separados por \n"
-"."
+msgstr "Comandos G-code a serem executados no fim – separados por \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -156,6 +152,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "A profundidade (direção Y) da área de impressão."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Altura da Máquina"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "A altura (direção Z) da área de impressão."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Forma da Base de Construção"
@@ -194,16 +200,6 @@ msgstr "Vidro"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Alumínio"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Altura da Máquina"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "A altura (direção Z) da área de impressão."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -566,8 +562,8 @@ msgstr "A velocidade máxima do motor da direção Z."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Velocidade Máxima de Alimentação"
+msgid "Maximum Speed E"
+msgstr "Velocidade Máxima de E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -691,8 +687,8 @@ msgstr "Passos por Milímetro (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "O numero de passos dos motores de passos (stepper motors) que irão resultar em um milímetro de extrusão."
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "O número de passos do motor de passos (stepper motor) que irá resultar no movimento de um milímetro da roda do alimentador à volta da respetiva circunferência."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -1480,6 +1476,16 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "Ligar caminhos de revestimento superiores/inferiores quando as trajetórias são paralelas. Para o padrão concêntrico, ativar esta definição reduz consideravelmente o tempo de deslocação mas, uma vez que as ligações podem suceder num ponto intermediário sobre o enchimento, esta funcionalidade pode reduzir a qualidade da superfície superior."
 
 #: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "Ordem Superior/Inferior em \"Monotonic\""
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Imprimir as linhas superiores/inferiores numa ordem que faz com que ocorra sempre uma sobreposição com as linhas adjacentes numa única direção. Este processo demora ligeiramente mais tempo a imprimir, mas torna o aspeto das superfícies planas mais consistente."
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "Direções Linha Superior / Inferior"
@@ -1552,6 +1558,16 @@ msgstr "Concêntrico"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Ziguezague"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "Ordem de Engomar em \"Monotonic\""
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Imprimir as linhas de engomar numa ordem que faz com que ocorra sempre uma sobreposição com as linhas adjacentes numa única direção. Este processo demora ligeiramente mais tempo a imprimir, mas torna o aspeto das superfícies planas mais consistente."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1766,8 +1782,11 @@ msgstr "Padrão de Enchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "O padrão do material de enchimento da impressão. A direção de troca de enchimento de linha e ziguezague em camadas alternadas, reduzindo os custos de material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos Gyroid, cúbico, quarto cúbico e octeto são alterados a cada camada para fornecer uma distribuição mais uniforme da resistência em cada direção."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "O padrão do material de enchimento da impressão. A linha e o enchimento em ziguezague mudam de direção em camadas alternativas, o que reduz o custo do"
+" material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos"
+" gyroid, cúbico, quarto cúbico e octeto mudam em cada camada para proporcionar uma distribuição mais uniforme da resistência em cada direção. O enchimento"
+" relâmpago tenta minimizar o enchimento, ao suportar apenas a parte superior do objeto."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1833,6 +1852,11 @@ msgstr "Cruz 3D"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Gyroid"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "Relâmpago"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2050,6 +2074,46 @@ msgstr "Camadas do Suporte da Aresta de Revestimento"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "O número de camadas de enchimento que suportam as arestas do revestimento."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "Ângulo de suporte de enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Determina o momento em que uma camada de enchimento relâmpago tem de suportar algo acima da mesma. Medido como um ângulo conforme a espessura da camada."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "Ângulo de saliência do enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "Determina o momento em que uma camada de enchimento relâmpago tem de suportar o modelo acima da mesma. Medido como um ângulo conforme a espessura."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "Ângulo de corte do enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "As extremidades das linhas de enchimento são encurtadas para poupar material. Esta definição é o ângulo da saliência das extremidades destas linhas."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "Ângulo de alisamento do enchimento relâmpago"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "As linhas de enchimento são simplificadas para poupar tempo de impressão. Este é o ângulo máximo permitido de saliência ao longo da linha de enchimento."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3288,6 +3352,11 @@ msgid "All"
 msgstr "Tudo"
 
 #: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "Não na Superfície Exterior"
+
+#: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "Não no Revestimento"
@@ -3305,8 +3374,7 @@ msgstr "Distância Max. de Combing sem Retração"
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
-msgstr "Os movimentos de deslocação de Combing com uma distância maior que este valor, quando este é superior a zero, utilizam retrações. Se o valor for definido"
-" como zero, não existirá qualquer valor máximo e os movimentos Combing não utilizarão retrações."
+msgstr "Os movimentos de deslocação de Combing com uma distância maior que este valor, quando este é superior a zero, utilizam retrações. Se o valor for definido como zero, não existirá qualquer valor máximo e os movimentos Combing não utilizarão retrações."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5285,7 +5353,7 @@ msgstr "Largura mínima do molde"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
 msgstr "A distância mínima entre o exterior do molde e o exterior do modelo."
 
 #: fdmprinter.def.json
@@ -5454,6 +5522,16 @@ msgstr "Concêntrico"
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Ziguezague"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "Ordem da superfície superior em \"Monotonic\""
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Imprimir as linhas da superfície superior numa ordem que faz com que ocorra sempre uma sobreposição com linhas adjacentes numa única direção. Este processo demora ligeiramente mais tempo a imprimir, mas torna o aspeto das superfícies planas mais consistente."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -6567,6 +6645,42 @@ msgstr "Matriz Rotação do Objeto"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matriz de transformação a ser aplicada ao modelo quando abrir o ficheiro."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "Comandos G-code a serem executados no início – separados por \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "Comandos G-code a serem executados no fim – separados por \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Velocidade Máxima de Alimentação"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "O padrão do material de enchimento da impressão. A linha e o enchimento em ziguezague mudam de direção em camadas alternativas, o que reduz o custo do material. Os padrões em grelha, triângulo, tri-hexágono, octeto, quarto cúbico, cruz e concêntricos são totalmente impressos em cada camada. Os enchimentos gyroid, cúbico, quarto cúbico e octeto mudam em cada camada para proporcionar uma distribuição mais uniforme da resistência em cada direção. O enchimento relâmpago tenta minimizar o enchimento, ao suportar apenas as partes superiores (internas) do objeto. Como tal, a percentagem de enchimento só é \"válida\" uma camada abaixo do que for necessário para suportar o modelo."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "A diferença que uma camada de enchimento relâmpago pode ter com uma imediatamente acima no que diz respeito ao corte das extremidades exteriores das árvores. Medido como um ângulo conforme a espessura."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "A diferença que uma camada de enchimento relâmpago pode ter com uma imediatamente acima no que diz respeito ao alisamento das árvores. Medido como um ângulo conforme a espessura."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "O padrão do material de enchimento da impressão. A direção de troca de enchimento de linha e ziguezague em camadas alternadas, reduzindo os custos de material. Os padrões de grelha, triângulo, tri-hexágono, cubo, octeto, quarto cúbico, cruz e concêntrico são totalmente impressos em cada camada. Os enchimentos Gyroid, cúbico, quarto cúbico e octeto são alterados a cada camada para fornecer uma distribuição mais uniforme da resistência em cada direção."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "A distância mínima entre o exterior do molde e o exterior do modelo."
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "O numero de passos dos motores de passos (stepper motors) que irão resultar em um milímetro de extrusão."
 
 #~ msgctxt "retraction_combing_max_distance description"
 #~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."

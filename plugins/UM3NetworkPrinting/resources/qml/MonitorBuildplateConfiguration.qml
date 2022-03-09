@@ -3,7 +3,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.0
-import UM 1.3 as UM
+import UM 1.5 as UM
 
 /**
  * This component comprises a buildplate icon and the buildplate name. It is
@@ -51,25 +51,21 @@ Item
                 anchors.centerIn: parent
                 color: UM.Theme.getColor("monitor_icon_primary")
                 height: UM.Theme.getSize("medium_button_icon").width
-                source: "../svg/icons/Buildplate.svg"
+                source: UM.Theme.getIcon("Buildplate")
                 width: height
                 visible: buildplate
             }
         }
 
-        Label
+        UM.Label
         {
             id: buildplateLabel
-            color: UM.Theme.getColor("text")
             elide: Text.ElideRight
-            font: UM.Theme.getFont("default") // 12pt, regular
             text: buildplate ? buildplate : ""
             visible: text !== ""
 
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
         }
     }
 }

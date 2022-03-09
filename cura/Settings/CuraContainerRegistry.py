@@ -32,6 +32,10 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
 from UM.i18n import i18nCatalog
+from .DatabaseHandlers.IntentDatabaseHandler import IntentDatabaseHandler
+from .DatabaseHandlers.QualityDatabaseHandler import QualityDatabaseHandler
+from .DatabaseHandlers.VariantDatabaseHandler import VariantDatabaseHandler
+
 catalog = i18nCatalog("cura")
 
 
@@ -43,6 +47,10 @@ class CuraContainerRegistry(ContainerRegistry):
         # for single extrusion machines, we subscribe to the containerAdded signal, and whenever a global stack
         # is added, we check to see if an extruder stack needs to be added.
         self.containerAdded.connect(self._onContainerAdded)
+
+        self._database_handlers["variant"] = VariantDatabaseHandler()
+        self._database_handlers["quality"] = QualityDatabaseHandler()
+        self._database_handlers["intent"] = IntentDatabaseHandler()
 
     @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> bool:

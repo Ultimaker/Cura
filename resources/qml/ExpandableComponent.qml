@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // The expandable component has 2 major sub components:
@@ -30,8 +30,8 @@ Item
     property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
-    property color headerActiveColor: UM.Theme.getColor("secondary")
-    property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
+    property color headerActiveColor: UM.Theme.getColor("expandable_active")
+    property color headerHoverColor: UM.Theme.getColor("expandable_hover")
 
     property alias enabled: mouseArea.enabled
 
@@ -76,7 +76,8 @@ Item
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
 
-    property int popupOffset: 2
+    // Distance between the header and the content.
+    property int popupOffset: 2 * UM.Theme.getSize("default_lining").height
 
     // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
     property string dragPreferencesNamePrefix: ""
@@ -125,7 +126,7 @@ Item
         color: base.enabled ? (base.expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
         anchors.fill: parent
 
-        Label
+        UM.Label
         {
             id: disabledLabel
             visible: !base.enabled
@@ -133,10 +134,6 @@ Item
             leftPadding: background.padding
             rightPadding: background.padding
             text: ""
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
-            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
         }
 

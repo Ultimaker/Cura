@@ -97,7 +97,7 @@
 		"material_final_print_temperature": {"value": "default_material_print_temperature" },
 		"material_initial_print_temperature": {"value": "default_material_print_temperature" },
         "gantry_height": {"value": "20"},
-        "retraction_combing": { "default_value": "all" },
+        "retraction_combing": { "value": "'all'" },
         "retraction_amount": {"default_value": 2},
         "adhesion_type": {"default_value": "skirt"},
         "skirt_line_count": {"default_value": 3},

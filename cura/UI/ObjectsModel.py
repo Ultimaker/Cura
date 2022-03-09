@@ -90,7 +90,7 @@ class ObjectsModel(ListModel):
 
         parent = node.getParent()
         if parent and parent.callDecoration("isGroup"):
-            return False  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            return False  # Grouped nodes don't need resetting as their parent (the group) is reset)
 
         node_build_plate_number = node.callDecoration("getBuildPlateNumber")
         if Application.getInstance().getPreferences().getValue("view/filter_current_build_plate") and node_build_plate_number != self._build_plate_number:

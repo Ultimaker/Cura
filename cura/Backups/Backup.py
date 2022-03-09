@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import io
@@ -168,7 +168,10 @@ class Backup:
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
-            shutil.move(backup_preferences_file, preferences_file)
+            try:
+                shutil.move(backup_preferences_file, preferences_file)
+            except EnvironmentError as e:
+                Logger.error(f"Unable to back-up preferences file: {type(e)} - {str(e)}")
 
         # Read the preferences from the newly restored configuration (or else the cached Preferences will override the restored ones)
         self._application.readPreferencesFromConfiguration()
@@ -178,8 +181,7 @@ class Backup:
 
         return extracted
 
-    @staticmethod
-    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+    def _extractArchive(self, archive: "ZipFile", target_path: str) -> bool:
         """Extract the whole archive to the given target path.
 
         :param archive: The archive as ZipFile.
@@ -198,11 +200,17 @@ class Backup:
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
         name_list = archive.namelist()
+        ignore_string = re.compile("|".join(self.IGNORED_FILES + self.IGNORED_FOLDERS))
         for archive_filename in name_list:
+            if ignore_string.search(archive_filename):
+                Logger.warning(f"File ({archive_filename}) in archive that doesn't fit current backup policy; ignored.")
+                continue
             try:
                 archive.extract(archive_filename, target_path)
             except (PermissionError, EnvironmentError):
                 Logger.logException("e", f"Unable to extract the file {archive_filename} from the backup due to permission or file system errors.")
+            except UnicodeEncodeError:
+                Logger.error(f"Unable to extract the file {archive_filename} because of an encoding error.")
             CuraApplication.getInstance().processEvents()
         return True
 
