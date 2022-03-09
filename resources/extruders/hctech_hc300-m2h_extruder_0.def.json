@@ -17,10 +17,10 @@
         "material_diameter": { "default_value": 1.75 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "machine_extruder_start_code": {
-            "default_value": "\nG1 X0 Y300 F4800\nG1 X5 Y320 ;move to start point\nT0 ;switch to extruder 1\nM109 S{material_print_temperature}\nG92 E0 ;reset extruder distance\nG1 F1500 E2 ;load filament\nG92 E0 ;reset extruder distance\nG1 F5000\nG12"
+            "default_value": "\nT0 ;switch to extruder 1\nM109 S{material_print_temperature}\nG1 F5000\nG12 ;clean nozzle\nG1 X0 Y300 F4800 ;move to start point"
         },
         "machine_extruder_end_code": {
-            "default_value": "\nG92 E0 ;reset extruder distance\nG1 F800 E-1 ;retract\nG92 E0 ;reset extruder distance\nG1 X0 Y300 F4800 ;move to corner"
+            "default_value": "\nG92 E0 ;reset extruder distance\nG1 F800 E-1 ;retract\nG92 E0 ;reset extruder distance\nG1 X0 Y300 F4800 ;move to start point\nG1 X5 Y325"
         },
         "machine_extruder_cooling_fan_number": { "default_value": 0 }
     }
