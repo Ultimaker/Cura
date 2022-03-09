@@ -74,49 +74,44 @@
 
         "machine_max_feedrate_x": { "value": 100 },
         "machine_max_feedrate_y": { "value": 100 },
-        "machine_max_feedrate_z": { "value": 12 },
+        "machine_max_feedrate_z": { "value": 8 },
         "machine_max_feedrate_e": { "value": 40 },
 
-        "machine_max_acceleration_x": { "value": 600 },
-        "machine_max_acceleration_y": { "value": 600 },
+        "machine_max_acceleration_x": { "value": 1000 },
+        "machine_max_acceleration_y": { "value": 1000 },
         "machine_max_acceleration_z": { "value": 10 },
         "machine_max_acceleration_e": { "value": 1000 },
-        "machine_acceleration": { "value": 600 },
+        "machine_acceleration": { "value": 1000 },
 
         "machine_max_jerk_xy": { "value": 10.0 },
         "machine_max_jerk_z": { "value": 0.3 },
         "machine_max_jerk_e": { "value": 5 },
         
       
-        "wall_0_wipe_dist": { "value": 0.00 },
         "optimize_wall_printing_order": { "value": "True" },
-        "travel_compensate_overlapping_walls_enabled": { "value": "True" },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
-        "travel_compensate_overlapping_walls_x_enabled": { "value": "True" },
-		"filter_out_tiny_gaps": { "value": "False" },
+		"outer_inset_first": { "value": "True" },
+		"travel_compensate_overlapping_walls_enabled": { "value": "False" },
+		"fill_perimeter_gaps": { "value": "'nowhere'" },
 		"z_seam_type": { "value": "'back'" },
 		"z_seam_position": { "value": "'backleft'" },
 
-		"skin_overlap": { "value": 10 },
-
-        "infill_sparse_density": { "value": 16 },
-        "infill_wipe_dist": { "value": 0 },
-        "infill_before_walls": { "value": "False" },
-        "infill_pattern": { "value": "'cubic'" },
-        "infill_overlap": { "value": 30 },
+		"top_bottom_pattern": { "value": "'zigzag'" },
+		"expand_skins_expand_distance": { "value": 0.3 },
+        "infill_sparse_density": { "value": 10 },
+        "infill_pattern": { "value": "'zigzag'" },
 
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_bed_temperature_layer_0": { "value": "material_bed_temperature" },
 
-        "speed_print": { "value": 40.0 } ,
+        "speed_print": { "value": 60.0 } ,
         "speed_topbottom": { "value": "speed_print" },
         "speed_support_interface": { "value": "speed_support" },
-        "speed_travel": { "value": 80.0 },
-        "speed_layer_0": { "value": 25.0 },
+        "speed_travel": { "value": 100.0 },
+		"speed_z_hop": { "value": 8.0 },
         
-        "acceleration_print": { "value": 600 },		
-        "acceleration_travel": { "value": 600 },
+        "acceleration_print": { "value": 1000 },		
+        "acceleration_travel": { "value": 1000 },
         "acceleration_travel_layer_0": { "value": "acceleration_travel" },
 
         "jerk_print": { "value": 10 },
@@ -126,12 +121,12 @@
         "acceleration_enabled": { "value": "False" },
         "jerk_enabled": { "value": "False" },
 
-        "retraction_amount": { "value": 3 },
-        "retraction_combing": { "value": "'noskin'" },
-		"retraction_combing_max_distance": { "value": 30 },
+        "retraction_amount": { "value": 1.5 },
+		"retraction_min_travel": { "value": 1.5 },
 		"travel_retract_before_outer_wall": { "value": "True" },
-        "travel_avoid_other_parts": { "value": "True" },
-		"travel_avoid_supports": { "value": "True" },
+        "retract_at_layer_change": { "value": "True" },
+        "retraction_combing": { "value": "'all'" },
+        "retraction_combing_max_distance": { "value": 30 },
 
 		"support_wall_count": { "value": 1 },
 		"support_infill_rate": { "value": 20 },
@@ -150,15 +145,12 @@
         "adhesion_type": { "value": "'skirt'" },
         "skirt_gap": { "value": 5.0 },
         "skirt_line_count": { "value": 2 },
-
-        "meshfix_maximum_deviation": { "value": 0.01 },        
 		
         "adaptive_layer_height_variation": { "value": 0.16 },
         "adaptive_layer_height_variation_step": { "value": 0.04 },
 
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
-        "wall_thickness": {"value": "line_width * 2" },
-        "speed_z_hop": {"default_value": 8}
+        "wall_thickness": {"value": "line_width * 2" }
 
     }
 }
