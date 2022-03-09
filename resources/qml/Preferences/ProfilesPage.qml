@@ -79,7 +79,7 @@ UM.ManagementPage
             tooltip: catalog.i18nc("@action:tooltip", "Create new profile from current settings/overrides")
             onClicked:
             {
-                createQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name)
+                createQualityDialog.object = Cura.ContainerManager.makeUniqueName("<new name>")
                 createQualityDialog.open()
                 createQualityDialog.selectText()
             }
