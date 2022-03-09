@@ -21,17 +21,6 @@ UM.Dialog
 
     property alias swatchGridColumns: colorSwatchGrid.columns
 
-    // In this case we would like to let the content of the dialog determine the size of the dialog
-    // however with the current implementation of the dialog this is not possible, so instead we calculate
-    // the size of the dialog ourselves.
-    minimumWidth: content.width + 4 * margin
-    minimumHeight:
-        content.height                                 // content height
-      + buttonRow.height                               // button row height
-      + 5 * margin                                     // top and bottom margin and margin between buttons and content
-    width: minimumWidth
-    height: minimumHeight
-
     property alias color: colorInput.text
     property var swatchColors: [
         "#2161AF", "#57AFB2", "#F7B32D", "#E33D4A", "#C088AD",

@@ -35,10 +35,9 @@ Rectangle
     {
         id: swatch
         color: material != null ? material.color_code : "transparent"
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: "black"
-        width: UM.Theme.getSize("favorites_button_icon").width
-        height: UM.Theme.getSize("favorites_button_icon").height
+        width: UM.Theme.getSize("icon_indicator").width
+        height: UM.Theme.getSize("icon_indicator").height
+        radius: width / 2
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.left: materialSlot.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
