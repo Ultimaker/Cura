@@ -316,13 +316,14 @@ UM.ManagementPage
                 elide: Text.ElideRight
             }
 
+
             Flow
             {
                 id: currentSettingsActions
                 width: parent.width
 
                 visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
-
+                spacing: UM.Theme.getSize("default_margin").width
                 Cura.SecondaryButton
                 {
                     text: catalog.i18nc("@action:button", "Update profile.")
