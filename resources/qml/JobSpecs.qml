@@ -64,7 +64,7 @@ Item
             anchors.left: printJobPencilIcon.right
             anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
             height: UM.Theme.getSize("jobspecs_line").height
-            width: Math.max(contentWidth + UM.Theme.getSize("default_margin").width, 50)
+            width: Math.max(contentWidth + UM.Theme.getSize("default_margin").width + 2, 50) // add two pixels to width to prevent inner text from shifting
             maximumLength: 120
             text: PrintInformation === null ? "" : PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
