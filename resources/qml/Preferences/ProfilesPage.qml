@@ -325,9 +325,10 @@ UM.ManagementPage
 
                 Cura.SecondaryButton
                 {
-                    text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
+                    text: catalog.i18nc("@action:button", "Update profile.")
                     enabled: Cura.MachineManager.hasUserSettings && objectList.currentIndex && !objectList.currentIndex.is_read_only
                     onClicked: Cura.ContainerManager.updateQualityChanges()
+                    tooltip: catalog.i18nc("@action:tooltip", "Update profile with current settings/overrides")
                 }
 
                 Cura.SecondaryButton
