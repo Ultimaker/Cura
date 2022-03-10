@@ -29,7 +29,7 @@
         "machine_max_feedrate_y": { "value": 550 },
         "machine_max_feedrate_z": { "value": 40 },
         "machine_max_feedrate_e": { "value": 166 },
-		
+
         "machine_max_acceleration_x": { "value": 5000 },
         "machine_max_acceleration_y": { "value": 5000 },
         "machine_max_acceleration_z": { "value": 500 },
@@ -40,11 +40,11 @@
         "acceleration_travel_layer_0": { "value": "acceleration_travel" },
         "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
         "acceleration_enabled": { "value": false },
-		
+
         "machine_max_jerk_xy": { "value": 20 },
         "machine_max_jerk_z": { "value": 1 },
         "machine_max_jerk_e": { "value": 30 },
-		"jerk_print": { "value": 10 },
+        "jerk_print": { "value": 10 },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
         "jerk_enabled": { "value": false },
@@ -122,7 +122,7 @@
         "cool_fan_full_at_height": { "value": "layer_height_0 * 4" },
         "cool_fan_enabled": { "value": true },
         "cool_min_layer_time": { "value": 5 },
-		"cool_min_speed": { "value": "speed_print * 0.3" },
+        "cool_min_speed": { "value": "speed_print * 0.3" },
 
         "adhesion_type": { "value": "'skirt'" },
         "brim_replaces_support": { "value": false },
