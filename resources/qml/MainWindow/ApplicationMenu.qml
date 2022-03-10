@@ -34,14 +34,16 @@ Item
             {
                 text: menuBarItem.text.replace(new RegExp("&([A-Za-z])"), function (match, character)
                 {
-                    return `<u>${character}</u>`;
+                    return `<u>${character}</u>`
                 })
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
             }
-
+            leftPadding: UM.Theme.getSize("default_margin").width
+            rightPadding: UM.Theme.getSize("default_margin").width
             background: Rectangle
             {
+
                 color: menuBarItem.highlighted ? UM.Theme.getColor("background_2") : "transparent"
             }
         }
