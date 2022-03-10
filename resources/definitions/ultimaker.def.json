@@ -56,6 +56,15 @@
         "retraction_combing": {
             "value": "'no_outer_surfaces'"
         },
+        "roofing_layer_count": {
+            "value": "1"
+        },
+        "roofing_material_flow": {
+            "value": "material_flow"
+        },
+        "skin_material_flow": {
+            "value": "0.95 * material_flow"
+        },
         "skin_monotonic" : {
             "value": true
         },
