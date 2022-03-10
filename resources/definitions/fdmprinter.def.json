@@ -1237,7 +1237,7 @@
                                     "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
                                     "type": "float",
                                     "unit": "%",
-                                    "default_value": 90,
+                                    "default_value": 50,
                                     "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
                                     "value_explicit": "100 * (2 * min_even_wall_line_width - wall_line_width_0) / (wall_line_width_0 + wall_line_width_x - wall_line_width_0)",
                                     "minimum_value": "1",
@@ -1263,7 +1263,7 @@
                                     "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
                                     "type": "float",
                                     "unit": "%",
-                                    "default_value": 80,
+                                    "default_value": 75,
                                     "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
                                     "minimum_value": "1",
                                     "maximum_value": "99"
