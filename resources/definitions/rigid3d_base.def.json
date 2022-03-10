@@ -26,8 +26,11 @@
 			"emotiontech_bvoh", "emotiontech_copa", "emotiontech_hips", "emotiontech_nylon_1030", 
 			"emotiontech_nylon_1030cf", "emotiontech_nylon_1070","emotiontech_pc", "emotiontech_petg",
 			"emotiontech_pla", "emotiontech_pla_hr_870", "emotiontech_pva-m", "emotiontech_pva-oks",
-			"emotiontech_pva-s", "emotiontech_tpu98a",
+			"emotiontech_pva-s", "emotiontech_tpu98a", "emotiontech_pekk",
+            "eryone_petg", "eryone_pla", "eryone_pla_glow", "eryone_pla_matte", "eryone_pla_wood",
             "eSUN_PETG_Black", "eSUN_PETG_Grey", "eSUN_PETG_Purple", "eSUN_PLA_PRO_Black", "eSUN_PLA_PRO_Grey", "eSUN_PLA_PRO_Purple", "eSUN_PLA_PRO_White",
+            "Extrudr_GreenTECPro_Anthracite_175", "Extrudr_GreenTECPro_Black_175", "Extrudr_GreenTECPro_Blue_175", "Extrudr_GreenTECPro_Nature_175",
+            "Extrudr_GreenTECPro_Red_175", "Extrudr_GreenTECPro_Silver_175", "Extrudr_GreenTECPro_White_175",
             "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu",
 			"fdplast_pla_olive", "fdplast_abs_tomato", "fdplast_petg_gray",
             "fiberlogy_hd_pla",
@@ -35,6 +38,8 @@
             "generic_abs", "generic_bam", "generic_cffcpe", "generic_cffpa", "generic_cpe", "generic_cpe_plus",
             "generic_gffcpe", "generic_gffpa", "generic_hips", "generic_nylon", "generic_pc", "generic_petg",
             "generic_pla", "generic_pp", "generic_pva", "generic_tough_pla", "generic_tpu",
+            "goofoo_abs", "goofoo_asa", "goofoo_bronze_pla", "goofoo_emarble_pla", "goofoo_esilk_pla", "goofoo_hips", "goofoo_pa", "goofoo_pa_cf", "goofoo_pc",
+            "goofoo_peek", "goofoo_petg", "goofoo_pla", "goofoo_pva", "goofoo_tpe_83a", "goofoo_tpu_87a", "goofoo_tpu_95a", "goofoo_wood_pla",
             "imade3d_petg_175", "imade3d_pla_175",
             "innofill_innoflex60_175",
 			"layer_one_white_pla", "layer_one_black_pla", "layer_one_dark_gray_pla",
@@ -64,6 +69,8 @@
             "volumic_bumper_ultra", "volumic_cu80_ultra", "volumic_flex93_ultra", "volumic_medical_ultra",
             "volumic_nylon_ultra", "volumic_pekk_carbone", "volumic_petg_ultra", "volumic_petgcarbone_ultra",
             "volumic_pla_ultra", "volumic_pp_ultra", "volumic_strong_ultra",
+            "xyzprinting_abs", "xyzprinting_antibact_pla", "xyzprinting_carbon_fiber", "xyzprinting_colorinkjet_pla", "xyzprinting_flexible", "xyzprinting_metallic_pla",
+            "xyzprinting_nylon", "xyzprinting_petg", "xyzprinting_pla", "xyzprinting_tough_pla", "xyzprinting_tpu",
             "zyyx_pro_flex", "zyyx_pro_pla"
         ]
     },
@@ -110,9 +117,8 @@
         "speed_travel": { "value": 100.0 },
 		"speed_z_hop": { "value": 8.0 },
         
-        "acceleration_print": { "value": 1000 },		
-        "acceleration_travel": { "value": 1000 },
-        "acceleration_travel_layer_0": { "value": "acceleration_travel" },
+        "acceleration_print": { "value": 500 },		
+        "acceleration_travel": { "value": 500 },
 
         "jerk_print": { "value": 10 },
         "jerk_travel": { "value": "jerk_print" },
