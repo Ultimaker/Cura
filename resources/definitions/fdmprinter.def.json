@@ -1301,7 +1301,7 @@
                 },
                 "min_bead_width":
                 {
-                    "label": "Minimum Wall Line Width",
+                    "label": "Minimum Thin Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
                     "value": "machine_nozzle_size * .75",
