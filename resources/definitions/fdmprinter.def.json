@@ -1165,11 +1165,11 @@
                     "description": "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 1.4,
-                    "value": "4 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
+                    "default_value": 100,
+                    "value": "100",
                     "minimum_value": "wall_transition_length",
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
-                    "maximum_value_warning": "10 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x"
+                    "maximum_value_warning": "999999"
                 },
                 "wall_0_wipe_dist":
                 {
