@@ -1226,8 +1226,6 @@
                             "unit": "mm",
                             "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                             "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
-                            "minimum_value_warning_old": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
-                            "maximum_value_warning_old": "2 * machine_nozzle_size",
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
@@ -1254,8 +1252,6 @@
                             "unit": "mm",
                             "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                             "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
-                            "minimum_value_warning_old": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
-                            "maximum_value_warning_old": "2 * machine_nozzle_size",
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
@@ -1269,7 +1265,6 @@
                                     "unit": "%",
                                     "default_value": 80,
                                     "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
-                                    "value_explicit": "100 * (2 * wall_line_width_0 + min_odd_wall_line_width - 2 * wall_line_width_0) / (2 * wall_line_width_0 + wall_line_width_x - 2 * wall_line_width_0)",
                                     "minimum_value": "1",
                                     "maximum_value": "99"
                                 }
