@@ -12,7 +12,8 @@ Cura.ActionButton
     color: UM.Theme.getColor("secondary_button")
     textColor: UM.Theme.getColor("secondary_button_text")
     outlineColor: UM.Theme.getColor("border_accent_1")
-    disabledColor: UM.Theme.getColor("action_button_disabled")
+    disabledColor: UM.Theme.getColor("secondary_button")
     textDisabledColor: UM.Theme.getColor("action_button_disabled_text")
     hoverColor: UM.Theme.getColor("secondary_button_hover")
+    outlineDisabledColor: UM.Theme.getColor("action_button_disabled_text")
 }
