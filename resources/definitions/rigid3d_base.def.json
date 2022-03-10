@@ -96,9 +96,7 @@
 
 
         "optimize_wall_printing_order": { "value": "True" },
-        "outer_inset_first": { "value": "True" },
-        "travel_compensate_overlapping_walls_enabled": { "value": "False" },
-        "fill_perimeter_gaps": { "value": "'nowhere'" },
+        "inset_direction": { "value": "'outside_in'" },
         "z_seam_type": { "value": "'back'" },
         "z_seam_position": { "value": "'backleft'" },
 
