@@ -50,6 +50,9 @@
         "infill_before_walls": {
             "value": "False"
         },
+        "infill_material_flow": {
+            "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow"
+        },
         "retraction_combing": {
             "value": "'no_outer_surfaces'"
         },
