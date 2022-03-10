@@ -1169,7 +1169,7 @@
                     "value": "100",
                     "minimum_value": "wall_transition_length",
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
-                    "maximum_value_warning": "999999"
+                    "maximum_value": "999999"
                 },
                 "wall_0_wipe_dist":
                 {
