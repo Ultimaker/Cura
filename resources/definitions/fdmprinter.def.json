@@ -1304,7 +1304,7 @@
                     "label": "Minimum Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "wall_line_width_0 * (100.0 + wall_split_middle_threshold)/200",
+                    "value": "machine_nozzle_size * .75",
                     "default_value": 0.2,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
