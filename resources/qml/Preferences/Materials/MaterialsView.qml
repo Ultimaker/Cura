@@ -511,91 +511,98 @@ Item
             }
         }
 
-        ListView
+        Column
         {
-            anchors
-            {
-                top: pageSelectorTabRow.bottom
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
-
-            model: UM.SettingDefinitionsModel
-            {
-                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
-                expanded: ["*"]
-            }
+            visible: pageSelectorTabRow.currentItem.activeView === "settings"
+            spacing: UM.Theme.getSize("narrow_margin").height
+            anchors.fill: parent
+            anchors.topMargin: UM.Theme.getSize("thin_margin").height
+            anchors.bottomMargin: UM.Theme.getSize("thin_margin").height
+            anchors.leftMargin: UM.Theme.getSize("thin_margin").width
+            anchors.rightMargin: UM.Theme.getSize("thin_margin").width
             ScrollBar.vertical: UM.ScrollBar {}
             clip: true
-            visible: pageSelectorTabRow.currentItem.activeView === "settings"
 
-            delegate: UM.TooltipArea
+            Repeater
             {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: model.description
-                UM.Label
+                model: UM.SettingDefinitionsModel
                 {
-                    id: label
-                    width: base.firstColumnWidth;
-                    height: spinBox.height + UM.Theme.getSize("default_lining").height
-                    text: model.label
-                    elide: Text.ElideRight
-                    verticalAlignment: Qt.AlignVCenter
-                }
-                Cura.SpinBox
-                {
-                    id: spinBox
-                    anchors.left: label.right
-                    value:
-                    {
-                        // In case the setting is not in the material...
-                        if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
-                        {
-                            return parseFloat(materialPropertyProvider.properties.value);
-                        }
-                        // ... we search in the variant, and if it is not there...
-                        if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
-                        {
-                            return parseFloat(variantPropertyProvider.properties.value);
-                        }
-                        // ... then look in the definition container.
-                        if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
-                        {
-                            return parseFloat(machinePropertyProvider.properties.value);
-                        }
-                        return 0;
-                    }
-                    width: base.secondColumnWidth
-                    suffix: " " + model.unit
-                    to: 99999
-                    decimals: model.unit == "mm" ? 2 : 0
-
-                    onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
-                }
-
-                UM.ContainerPropertyProvider
-                {
-                    id: materialPropertyProvider
-                    containerId: base.containerId
-                    watchedProperties: [ "value" ]
-                    key: model.key
-                }
-                UM.ContainerPropertyProvider
-                {
-                    id: variantPropertyProvider
-                    containerId: Cura.MachineManager.activeStack.variant.id
-                    watchedProperties: [ "value" ]
-                    key: model.key
-                }
-                UM.ContainerPropertyProvider
-                {
-                    id: machinePropertyProvider
                     containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    watchedProperties: [ "value" ]
-                    key: model.key
+                    visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
+                    expanded: ["*"]
+                }
+
+                delegate: UM.TooltipArea
+                {
+                    width: childrenRect.width
+                    height: childrenRect.height
+
+                    UM.TooltipArea
+                    {
+                        anchors.fill: parent
+                        text: model.description
+                    }
+                    UM.Label
+                    {
+                        id: label
+                        width: base.firstColumnWidth;
+                        height: spinBox.height + UM.Theme.getSize("default_lining").height
+                        text: model.label
+                        elide: Text.ElideRight
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                    Cura.SpinBox
+                    {
+                        id: spinBox
+                        anchors.left: label.right
+                        value:
+                        {
+                            // In case the setting is not in the material...
+                            if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
+                            {
+                                return parseFloat(materialPropertyProvider.properties.value);
+                            }
+                            // ... we search in the variant, and if it is not there...
+                            if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
+                            {
+                                return parseFloat(variantPropertyProvider.properties.value);
+                            }
+                            // ... then look in the definition container.
+                            if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
+                            {
+                                return parseFloat(machinePropertyProvider.properties.value);
+                            }
+                            return 0;
+                        }
+                        width: base.secondColumnWidth
+                        suffix: " " + model.unit
+                        to: 99999
+                        decimals: model.unit == "mm" ? 2 : 0
+
+                        onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
+                    }
+
+                    UM.ContainerPropertyProvider
+                    {
+                        id: materialPropertyProvider
+                        containerId: base.containerId
+                        watchedProperties: [ "value" ]
+                        key: model.key
+                    }
+                    UM.ContainerPropertyProvider
+                    {
+                        id: variantPropertyProvider
+                        containerId: Cura.MachineManager.activeStack.variant.id
+                        watchedProperties: [ "value" ]
+                        key: model.key
+                    }
+                    UM.ContainerPropertyProvider
+                    {
+                        id: machinePropertyProvider
+                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                        watchedProperties: ["value"]
+                        key: model.key
+                    }
                 }
             }
         }
