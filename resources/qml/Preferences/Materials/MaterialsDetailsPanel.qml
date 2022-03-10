@@ -50,29 +50,11 @@ Item
         materialProperties.approximate_diameter = currentItem.approximate_diameter || "0"
     }
 
-    // Material title Label
-    UM.Label {
-        id: profileName
-
-        width: parent.width
-        text: materialProperties.name
-        font: UM.Theme.getFont("large_bold")
-        elide: Text.ElideRight
-    }
-
     // Material detailed information view below the title Label
     MaterialsView
     {
         id: materialDetailsView
-        anchors
-        {
-            left: parent.left
-            right: parent.right
-            top: profileName.bottom
-            topMargin: UM.Theme.getSize("default_margin").height
-            bottom: parent.bottom
-        }
-
+        anchors.fill: parent
         editingEnabled: currentItem != null && !currentItem.is_read_only
         onResetSelectedMaterial: base.resetExpandedActiveMaterial()
 

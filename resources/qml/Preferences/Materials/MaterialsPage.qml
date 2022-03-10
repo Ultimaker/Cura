@@ -68,6 +68,7 @@ UM.ManagementPage
     }
 
     title: catalog.i18nc("@title:tab", "Materials")
+    detailsPlaneCation: currentItem.name
     scrollviewCaption: catalog.i18nc("@label", "Materials compatible with active printer:") + `<br /><b>${Cura.MachineManager.activeMachine.name}</b>`
 
     buttons: [
@@ -107,8 +108,13 @@ UM.ManagementPage
         }
     ]
 
-    onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
-
+    onHamburgeButtonClicked: {
+        const hamburerButtonHeight = hamburger_button.height;
+        menu.popup(hamburger_button, -menu.width + hamburger_button.width / 2, hamburger_button.height);
+        // for some reason the height of the hamburger changes when opening the popup
+        // reset height to initial heigt
+        hamburger_button.height = hamburerButtonHeight;
+    }
     listContent: ScrollView
     {
         id: materialScrollView
@@ -137,12 +143,14 @@ UM.ManagementPage
         }
     }
 
+    MaterialsDetailsPanel
+    {
+        id: materialDetailsPanel
+        anchors.fill: parent
+    }
 
     Item
     {
-        id: content_item
-        anchors.fill: parent
-
         Cura.Menu
         {
             id: menu
@@ -195,12 +203,6 @@ UM.ManagementPage
                 }
                 enabled: base.hasCurrentItem
             }
-        }
-
-        MaterialsDetailsPanel
-        {
-            id: materialDetailsPanel
-            anchors.fill: parent
         }
 
         // Dialogs

@@ -46,8 +46,6 @@ UM.ManagementPage
     property string newQualityNameToSelect: ""
     property bool toActivateNewQuality: false
 
-    onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
-
     onCreateProfile:
     {
         createQualityDialog.object = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
@@ -56,10 +54,18 @@ UM.ManagementPage
     }
 
     title: catalog.i18nc("@title:tab", "Profiles")
+    detailsPlaneCation: base.currentItemDisplayName
     scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<br><b>" + Cura.MachineManager.activeMachine.name + "</b>"
 
     hamburgerButtonVisible: hasCurrentItem
+    onHamburgeButtonClicked: {
+        const hamburerButtonHeight = hamburger_button.height;
+        menu.popup(hamburger_button, -menu.width + hamburger_button.width / 2, hamburger_button.height);
 
+        // for some reason the height of the hamburger changes when opening the popup
+        // reset height to initial heigt
+        hamburger_button.height = hamburerButtonHeight;
+    }
     sectionRole: "section_name"
 
     model: qualityManagementModel
@@ -86,10 +92,110 @@ UM.ManagementPage
         }
     ]
 
+    Column
+    {
+        id: detailsPanelHeaderColumn
+        anchors
+        {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
+
+        spacing: UM.Theme.getSize("default_margin").height
+        visible: base.currentItem != null
+
+        Flow
+        {
+            id: currentSettingsActions
+            width: parent.width
+
+            visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
+
+            Cura.SecondaryButton
+            {
+                text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
+                enabled: Cura.MachineManager.hasUserSettings && objectList.currentIndex && !objectList.currentIndex.is_read_only
+                onClicked: Cura.ContainerManager.updateQualityChanges()
+            }
+
+            Cura.SecondaryButton
+            {
+                text: catalog.i18nc("@action:button", "Discard current changes")
+                enabled: Cura.MachineManager.hasUserSettings
+                onClicked: Cura.ContainerManager.clearUserContainers()
+            }
+        }
+
+        UM.Label
+        {
+            id: defaultsMessage
+            visible: false
+            text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
+            width: parent.width
+        }
+        UM.Label
+        {
+            id: noCurrentSettingsMessage
+            visible: base.isCurrentItemActivated && !Cura.MachineManager.hasUserSettings
+            text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
+            width: parent.width
+        }
+
+        UM.TabRow
+        {
+            id: profileExtruderTabs
+            UM.TabRowButton // One extra tab for the global settings.
+            {
+                text: catalog.i18nc("@title:tab", "Global Settings")
+            }
+
+            Repeater
+            {
+                model: base.extrudersModel
+
+                UM.TabRowButton
+                {
+                    text: model.name
+                }
+            }
+        }
+    }
+
+    Rectangle
+    {
+        color: UM.Theme.getColor("main_background")
+        anchors
+        {
+            top: detailsPanelHeaderColumn.bottom
+            topMargin: -UM.Theme.getSize("default_lining").width
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("thick_lining")
+        visible: base.hasCurrentItem
+    }
+
+    Cura.ProfileOverview
+    {
+        anchors
+        {
+            top: detailsPanelHeaderColumn.bottom
+            margins: UM.Theme.getSize("default_margin").height
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        visible: detailsPanelHeaderColumn.visible
+        qualityItem: base.currentItem
+        extruderPosition: profileExtruderTabs.currentIndex - 1
+    }
+
     Item
     {
-        id: content_item
-        anchors.fill: parent
         // This connection makes sure that we will switch to the correct quality after the model gets updated
         Connections
         {
@@ -293,116 +399,6 @@ UM.ManagementPage
                 messageDialog.open();
                 CuraApplication.setDefaultPath("dialog_profile_path", folder);
             }
-        }
-
-        Column
-        {
-            id: detailsPanelHeaderColumn
-            anchors
-            {
-                left: parent.left
-                right: parent.right
-                top: parent.top
-            }
-
-            spacing: UM.Theme.getSize("default_margin").height
-            visible: base.currentItem != null
-            UM.Label
-            {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                text: base.currentItemDisplayName
-                font: UM.Theme.getFont("large_bold")
-                elide: Text.ElideRight
-            }
-
-            Flow
-            {
-                id: currentSettingsActions
-                width: parent.width
-
-                visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
-
-                Cura.SecondaryButton
-                {
-                    text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
-                    enabled: Cura.MachineManager.hasUserSettings && objectList.currentIndex && !objectList.currentIndex.is_read_only
-                    onClicked: Cura.ContainerManager.updateQualityChanges()
-                }
-
-                Cura.SecondaryButton
-                {
-                    text: catalog.i18nc("@action:button", "Discard current changes")
-                    enabled: Cura.MachineManager.hasUserSettings
-                    onClicked: Cura.ContainerManager.clearUserContainers()
-                }
-            }
-
-            UM.Label
-            {
-                id: defaultsMessage
-                visible: false
-                text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
-                width: parent.width
-            }
-            UM.Label
-            {
-                id: noCurrentSettingsMessage
-                visible: base.isCurrentItemActivated && !Cura.MachineManager.hasUserSettings
-                text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
-                width: parent.width
-            }
-
-            UM.TabRow
-            {
-                id: profileExtruderTabs
-                UM.TabRowButton // One extra tab for the global settings.
-                {
-                    text: catalog.i18nc("@title:tab", "Global Settings")
-                }
-
-                Repeater
-                {
-                    model: base.extrudersModel
-
-                    UM.TabRowButton
-                    {
-                        text: model.name
-                    }
-                }
-            }
-        }
-
-        Rectangle
-        {
-            color: UM.Theme.getColor("main_background")
-            anchors
-            {
-                top: detailsPanelHeaderColumn.bottom
-                topMargin: -UM.Theme.getSize("default_lining").width
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color: UM.Theme.getColor("thick_lining")
-            visible: base.hasCurrentItem
-        }
-
-        Cura.ProfileOverview
-        {
-            anchors
-            {
-                top: detailsPanelHeaderColumn.bottom
-                margins: UM.Theme.getSize("default_margin").height
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
-
-            visible: detailsPanelHeaderColumn.visible
-            qualityItem: base.currentItem
-            extruderPosition: profileExtruderTabs.currentIndex - 1
         }
     }
 }
