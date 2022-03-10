@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "HCTECH_HC300-M1&M1H",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_nozzle_size": { "default_value": 0.4 }
+    }
+}
