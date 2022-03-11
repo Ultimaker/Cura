@@ -3,11 +3,9 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // An expandable list of materials. Includes both the header (this file) and the items (brandMaterialList)
@@ -43,13 +41,12 @@ Item
     {
         id: brand_header
         width: parent.width
-        Label
+        UM.Label
         {
             id: brand_name
             text: sectionName
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - UM.Theme.getSize("favorites_button").width
-            verticalAlignment: Text.AlignVCenter
             leftPadding: (UM.Theme.getSize("default_margin").width / 2) | 0
         }
         Item

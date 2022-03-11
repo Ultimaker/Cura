@@ -2,8 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.11
-import QtQuick.Controls 1.1
-import UM 1.2 as UM
+import UM 1.5 as UM
 
 Item
 {
@@ -43,18 +42,15 @@ Item
             color: extruderNumberText.color
         }
 
-        Label
+        UM.Label
         {
             id: extruderNumberText
             anchors.centerIn: parent
             text: index + 1
             font: UM.Theme.getFont("small_emphasis")
-            color: UM.Theme.getColor("text")
             width: contentWidth
             height: contentHeight
-            renderType: Text.NativeRendering
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
         }
     }
 }

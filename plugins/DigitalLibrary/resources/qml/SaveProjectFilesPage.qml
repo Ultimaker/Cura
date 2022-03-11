@@ -1,12 +1,12 @@
-// Copyright (C) 2021 Ultimaker B.V.
+//Copyright (C) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
+import Qt.labs.qmlmodels 1.0
 import QtQuick 2.10
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4 as OldControls // TableView doesn't exist in the QtQuick Controls 2.x in 5.10, so use the old one
 import QtQuick.Controls 2.3
-import QtQuick.Controls.Styles 1.4
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -86,35 +86,22 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-
-        Cura.TableView
+        //We can't use Cura's TableView here, since in Cura >= 5.0 this uses QtQuick.TableView, while in Cura < 5.0 this uses QtControls1.TableView.
+        //So we have to define our own. Once support for 4.13 and earlier is dropped, we can switch to Cura.TableView.
+        Table
         {
             id: filesTableView
             anchors.fill: parent
-            model: manager.digitalFactoryFileModel
-            visible: model.count != 0 && manager.retrievingFileStatus != DF.RetrievalStatus.InProgress
-            selectionMode: OldControls.SelectionMode.NoSelection
+            anchors.margins: parent.border.width
 
-            OldControls.TableViewColumn
+            allowSelection: false
+            columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
+            model: TableModel
             {
-                id: fileNameColumn
-                role: "fileName"
-                title: "@tableViewColumn:title", "Name"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                id: usernameColumn
-                role: "username"
-                title: "Uploaded by"
-                width: Math.round(filesTableView.width / 3)
-            }
-
-            OldControls.TableViewColumn
-            {
-                role: "uploadedAt"
-                title: "Uploaded at"
+                TableModelColumn { display: "fileName" }
+                TableModelColumn { display: "username" }
+                TableModelColumn { display: "uploadedAt" }
+                rows: manager.digitalFactoryFileModel.items
             }
         }
 
@@ -173,8 +160,7 @@ Item
             function onItemsChanged()
             {
                 // Make sure no files are selected when the file model changes
-                filesTableView.currentRow = -1
-                filesTableView.selection.clear()
+                filesTableView.currentRow = -1;
             }
         }
     }
@@ -228,7 +214,7 @@ Item
         width: childrenRect.width
         spacing: UM.Theme.getSize("default_margin").width
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asProjectCheckbox
             height: UM.Theme.getSize("checkbox").height
@@ -238,7 +224,7 @@ Item
             font: UM.Theme.getFont("medium")
         }
 
-        Cura.CheckBox
+        UM.CheckBox
         {
             id: asSlicedCheckbox
             height: UM.Theme.getSize("checkbox").height
