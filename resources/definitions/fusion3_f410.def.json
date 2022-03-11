@@ -5,7 +5,6 @@
     "metadata": {
         "quality_definition": "fusion3",
         "visible": true,
-        "platform": "fusion3.obj"
     },
     "overrides": {
         "machine_name": { "default_value": "Fusion3 F410" },
