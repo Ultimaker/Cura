@@ -4,7 +4,7 @@
     "inherits": "fusion3",
     "metadata": {
         "quality_definition": "fusion3",
-        "visible": true,
+        "visible": true
     },
     "overrides": {
         "machine_name": { "default_value": "Fusion3 F410" },
