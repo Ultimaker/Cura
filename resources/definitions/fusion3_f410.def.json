@@ -155,12 +155,12 @@
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
         "top_bottom_pattern": {"value": "'zigzag'" },
-        "top_bottom_pattern_0": {"value": "'zigzag'" },
         "top_bottom_thickness": {
             "value":  "(layer_height*3) + layer_height_0",
             "minimum_value_warning": "0.4"
             },
         "top_layers": { "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))"},
-        "bottom_layers": { "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"}
+        "bottom_layers": { "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"},
+        "top_bottom_pattern_0": {"value": "'zigzag'" }
     }
 }
