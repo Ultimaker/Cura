@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import math
@@ -31,6 +31,8 @@ Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f
 class FlavorParser:
     """This parser is intended to interpret the common firmware codes among all the different flavors"""
 
+    MAX_EXTRUDER_COUNT = 16
+
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
@@ -53,7 +55,7 @@ class FlavorParser:
 
     def _clearValues(self) -> None:
         self._extruder_number = 0
-        self._extrusion_length_offset = [0] * 8 # type: List[float]
+        self._extrusion_length_offset = [0] * self.MAX_EXTRUDER_COUNT # type: List[float]
         self._layer_type = LayerPolygon.Inset0Type
         self._layer_number = 0
         self._previous_z = 0 # type: float
@@ -355,7 +357,7 @@ class FlavorParser:
 
         Logger.log("d", "Parsing g-code...")
 
-        current_position = Position(0, 0, 0, 0, [0] * 8)
+        current_position = Position(0, 0, 0, 0, [0] * self.MAX_EXTRUDER_COUNT)
         current_path = [] #type: List[List[float]]
         min_layer_number = 0
         negative_layers = 0
