@@ -10,100 +10,52 @@ import Cura 1.0 as Cura
 
 // An expandable list of materials. Includes both the header (this file) and the items (brandMaterialList)
 
-Item
+Column
 {
     id: brand_section
 
-    property var sectionName: ""
+    property string sectionName: ""
     property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
-    property var hasMaterialTypes: true  // It indicates whether it has material types or not
-    property var expanded: materialList.expandedBrands.indexOf(sectionName) > -1
+    property bool hasMaterialTypes: true  // It indicates whether it has material types or not
+    property bool expanded: materialList.expandedBrands.indexOf(sectionName) !== -1
 
-    height: childrenRect.height
     width: parent.width
-    Rectangle
+
+    Cura.CategoryButton
     {
-        id: brand_header_background
-        color:
-        {
-            if (!expanded && sectionName == materialList.currentBrand)
-            {
-                return UM.Theme.getColor("favorites_row_selected")
-            }
-            else
-            {
-                return UM.Theme.getColor("favorites_header_bar")
-            }
-        }
-        anchors.fill: brand_header
-    }
-    Row
-    {
-        id: brand_header
         width: parent.width
-        UM.Label
+        height: UM.Theme.getSize("favorites_row").height
+        labelText: sectionName
+        labelFont: UM.Theme.getFont("default_bold")
+        expanded: brand_section.expanded
+        onClicked:
         {
-            id: brand_name
-            text: sectionName
-            height: UM.Theme.getSize("favorites_row").height
-            width: parent.width - UM.Theme.getSize("favorites_button").width
-            leftPadding: Math.round(UM.Theme.getSize("default_margin").width / 2)
-        }
-        Item
-        {
-            implicitWidth: UM.Theme.getSize("favorites_button").width
-            implicitHeight: UM.Theme.getSize("favorites_button").height
-            UM.RecolorImage
+            const i = materialList.expandedBrands.indexOf(sectionName);
+            if (i !== -1)
             {
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
-                }
-                width: UM.Theme.getSize("standard_arrow").width
-                height: UM.Theme.getSize("standard_arrow").height
-                color: "black"
-                source: brand_section.expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
-            }
-        }
-    }
-    MouseArea
-    {
-        anchors.fill: brand_header
-        onPressed:
-        {
-            const i = materialList.expandedBrands.indexOf(sectionName)
-            if (i > -1)
-            {
-                // Remove it
-                materialList.expandedBrands.splice(i, 1)
-                brand_section.expanded = false
+                materialList.expandedBrands.splice(i, 1); // remove
             }
             else
             {
-                // Add it
-                materialList.expandedBrands.push(sectionName)
-                brand_section.expanded = true
+                materialList.expandedBrands.push(sectionName); // add
             }
             UM.Preferences.setValue("cura/expanded_brands", materialList.expandedBrands.join(";"));
         }
     }
+
     Column
     {
         id: brandMaterialList
-        anchors.top: brand_header.bottom
         width: parent.width
-        anchors.left: parent ? parent.left : undefined
-        height: brand_section.expanded ? childrenRect.height : 0
         visible: brand_section.expanded
 
         Repeater
         {
             model: elementsModel
+
             delegate: Loader
             {
-                id: loader
-                width: parent ? parent.width : 0
+                width: parent.width
                 property var element: model
                 sourceComponent: hasMaterialTypes ? materialsTypeSection : materialSlot
             }
@@ -138,7 +90,7 @@ Item
                 return;
             }
 
-            expanded = materialList.expandedBrands.indexOf(sectionName) > -1
+            brand_section.expanded = materialList.expandedBrands.indexOf(sectionName) !== -1;
         }
     }
 }
