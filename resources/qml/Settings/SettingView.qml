@@ -191,7 +191,7 @@ Item
         }
         clip: true
         cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
-        ScrollBar.vertical: UM.ScrollBar {}
+        ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
 
         model: UM.SettingDefinitionsModel
         {
@@ -213,14 +213,12 @@ Item
         }
 
         property int indexWithFocus: -1
-        property double delegateHeight: UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height
         property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
         delegate: Loader
         {
             id: delegate
 
-            width: contents.width
-            height: enabled ? contents.delegateHeight: 0
+            width: contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: enabled ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
