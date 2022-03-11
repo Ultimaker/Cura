@@ -82,10 +82,10 @@ UM.ManagementPage
 
             enabled: !Cura.MachineManager.stacksHaveErrors
             visible: base.canCreateProfile
-
+            tooltip: catalog.i18nc("@action:tooltip", "Create new profile from current settings/overrides")
             onClicked:
             {
-                createQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name)
+                createQualityDialog.object = Cura.ContainerManager.makeUniqueName("<new name>")
                 createQualityDialog.open()
                 createQualityDialog.selectText()
             }
@@ -105,6 +105,14 @@ UM.ManagementPage
         spacing: UM.Theme.getSize("default_margin").height
         visible: base.currentItem != null
 
+        UM.Label
+        {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            text: catalog.i18nc("@action:label", "Some settings from current profile were overwritten.")
+            visible: currentSettingsActions.visible
+        }
+
         Flow
         {
             id: currentSettingsActions
@@ -112,11 +120,14 @@ UM.ManagementPage
 
             visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
 
+            spacing: UM.Theme.getSize("default_margin").width
+
             Cura.SecondaryButton
             {
-                text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
+                text: catalog.i18nc("@action:button", "Update profile.")
                 enabled: Cura.MachineManager.hasUserSettings && objectList.currentIndex && !objectList.currentIndex.is_read_only
                 onClicked: Cura.ContainerManager.updateQualityChanges()
+                tooltip: catalog.i18nc("@action:tooltip", "Update profile with current settings/overrides")
             }
 
             Cura.SecondaryButton
@@ -145,7 +156,8 @@ UM.ManagementPage
         UM.TabRow
         {
             id: profileExtruderTabs
-            UM.TabRowButton // One extra tab for the global settings.
+            // One extra tab for the global settings.
+            UM.TabRowButton
             {
                 text: catalog.i18nc("@title:tab", "Global Settings")
             }
@@ -196,6 +208,8 @@ UM.ManagementPage
 
     Item
     {
+        id: content_item
+        anchors.fill: parent
         // This connection makes sure that we will switch to the correct quality after the model gets updated
         Connections
         {

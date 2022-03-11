@@ -31,8 +31,11 @@ class Marketplace(Extension, QObject):
         # Not entirely the cleanest code, since the localPackage list also checks the server if there are updates
         # Since that in turn will trigger notifications to be shown, we do need to construct it here and make sure
         # that it checks for updates...
+        preferences = CuraApplication.getInstance().getPreferences()
+        preferences.addPreference("info/automatic_plugin_update_check", True)
         self._local_package_list = LocalPackageList(self)
-        self._local_package_list.checkForUpdates(self._package_manager.local_packages)
+        if preferences.getValue("info/automatic_plugin_update_check"):
+            self._local_package_list.checkForUpdates(self._package_manager.local_packages)
 
         self._package_manager.installedPackagesChanged.connect(self.checkIfRestartNeeded)
 

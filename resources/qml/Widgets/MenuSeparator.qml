@@ -18,4 +18,5 @@ MenuSeparator
         implicitHeight: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("setting_control_border")
     }
+    height: visible ? implicitHeight: 0
 }
