@@ -79,7 +79,7 @@ Item
     {
         id: showTroubleShootingAction
         onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
-        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide")
+        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting")
     }
 
     Action

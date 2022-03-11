@@ -24,7 +24,7 @@ Item
     height: UM.Theme.getSize("card").height
 
     // card icon
-    Image
+    Item
     {
         id: packageItem
         anchors
@@ -35,19 +35,36 @@ Item
         }
         width: UM.Theme.getSize("card_icon").width
         height: width
-        sourceSize.height: height
-        sourceSize.width: width
-        source:
+
+        property bool packageHasIcon: packageData.iconUrl != ""
+
+        Image
         {
-            if (packageData.iconUrl != "")
+            visible: parent.packageHasIcon
+            anchors.fill: parent
+            source: packageData.iconUrl
+            sourceSize.height: height
+            sourceSize.width: width
+        }
+
+        UM.RecolorImage
+        {
+            visible: !parent.packageHasIcon
+            anchors.fill: parent
+            sourceSize.height: height
+            sourceSize.width: width
+            color: UM.Theme.getColor("text")
+            source:
             {
-                return packageData.iconUrl
-            }
-            switch (packageData.packageType)
-            {
-                case "plugin": return "../images/Plugin.svg";
-                case "material": return "../images/Spool.svg";
-                default: return "../images/placeholder.svg";
+                switch (packageData.packageType)
+                {
+                    case "plugin":
+                        return "../images/Plugin.svg";
+                    case "material":
+                        return "../images/Spool.svg";
+                    default:
+                        return "../images/placeholder.svg";
+                }
             }
         }
     }

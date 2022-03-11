@@ -180,6 +180,7 @@ Item
     ListView
     {
         id: contents
+        maximumFlickVelocity: 1000
         anchors
         {
             top: filterContainer.bottom

@@ -76,10 +76,10 @@ UM.ManagementPage
 
             enabled: !Cura.MachineManager.stacksHaveErrors
             visible: base.canCreateProfile
-
+            tooltip: catalog.i18nc("@action:tooltip", "Create new profile from current settings/overrides")
             onClicked:
             {
-                createQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name)
+                createQualityDialog.object = Cura.ContainerManager.makeUniqueName("<new name>")
                 createQualityDialog.open()
                 createQualityDialog.selectText()
             }
@@ -315,6 +315,13 @@ UM.ManagementPage
                 font: UM.Theme.getFont("large_bold")
                 elide: Text.ElideRight
             }
+            UM.Label
+            {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                text: catalog.i18nc("@action:label", "Some settings from current profile were overwritten.")
+                visible: currentSettingsActions.visible
+            }
 
             Flow
             {
@@ -322,12 +329,13 @@ UM.ManagementPage
                 width: parent.width
 
                 visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
-
+                spacing: UM.Theme.getSize("default_margin").width
                 Cura.SecondaryButton
                 {
-                    text: catalog.i18nc("@action:button", "Update profile with current settings/overrides")
+                    text: catalog.i18nc("@action:button", "Update profile.")
                     enabled: Cura.MachineManager.hasUserSettings && objectList.currentIndex && !objectList.currentIndex.is_read_only
                     onClicked: Cura.ContainerManager.updateQualityChanges()
+                    tooltip: catalog.i18nc("@action:tooltip", "Update profile with current settings/overrides")
                 }
 
                 Cura.SecondaryButton

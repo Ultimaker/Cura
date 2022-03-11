@@ -639,6 +639,8 @@
 
         "banner_icon_size": [2.0, 2.0],
 
-        "marketplace_large_icon": [4.0, 4.0]
+        "marketplace_large_icon": [4.0, 4.0],
+
+        "preferences_page_list_item": [8.0, 2.0]
     }
 }
