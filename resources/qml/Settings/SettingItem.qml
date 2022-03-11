@@ -17,8 +17,6 @@ Item
     anchors.left: parent.left
     anchors.right: parent.right
 
-    // To avoid overlapping with the scrollBars
-
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
 
