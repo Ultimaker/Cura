@@ -18,7 +18,6 @@ Item
     anchors.right: parent.right
 
     // To avoid overlapping with the scrollBars
-    //anchors.rightMargin:  UM.Theme.getSize("thin_margin").width
 
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
