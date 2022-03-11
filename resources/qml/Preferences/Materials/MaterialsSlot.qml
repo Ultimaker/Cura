@@ -53,11 +53,14 @@ Rectangle
     {
         id: materialLabel
         text: material != null ? `${material.brand} ${material.name}` : ""
+        elide: Text.ElideRight
+        wrapMode: Text.NoWrap
         verticalAlignment: Text.AlignVCenter
         anchors.left: swatch.right
-        anchors.verticalCenter: materialSlot.verticalCenter
+        anchors.right: parent.right
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        font: UM.Theme.getFont("default")
+        anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+        anchors.verticalCenter: materialSlot.verticalCenter
     }
 
     MouseArea
