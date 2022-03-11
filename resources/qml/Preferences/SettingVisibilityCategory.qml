@@ -4,12 +4,12 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 
+import UM 1.5 as UM
 import Cura 1.5 as Cura
-import ".."
 
 Cura.CategoryButton
 {
-    id: base;
+    id: base
 
     categoryIcon: definition ? UM.Theme.getIcon(definition.icon) : ""
     labelText: definition ? definition.label : ""

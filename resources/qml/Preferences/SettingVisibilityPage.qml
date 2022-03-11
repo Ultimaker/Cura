@@ -163,6 +163,9 @@ UM.PreferencesPage
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
             }
 
+            property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
+            property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
+
             delegate: Loader
             {
                 id: loader
@@ -177,31 +180,15 @@ UM.PreferencesPage
                 active: model.type != undefined
                 sourceComponent:
                 {
-                    switch(model.type)
+                    switch (model.type)
                     {
                         case "category":
-                            return settingVisibilityCategory
+                            return settingsListView.settingVisibilityCategory
                         default:
-                            return settingVisibilityItem
+                            return settingsListView.settingVisibilityItem
                     }
                 }
             }
-        }
-
-        UM.I18nCatalog { name: "cura" }
-
-        Component
-        {
-            id: settingVisibilityCategory;
-
-            UM.SettingVisibilityCategory { }
-        }
-
-        Component
-        {
-            id: settingVisibilityItem;
-
-            UM.SettingVisibilityItem { }
         }
     }
 }
