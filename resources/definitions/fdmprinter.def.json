@@ -8019,8 +8019,9 @@
                         {
                             "label": "Wall Line Width Ratio",
                             "description": "Ratio between inner and outter walls line.",
-                            "default_value": 0.5,
+                            "unit": "%",
                             "type": "float",
+                            "default_value": 50,
                             "settable_per_mesh": true
                         },
                         "min_line_width":
@@ -8028,7 +8029,7 @@
                             "label": "Minimum Line Width",
                             "description": "The minimum line width.",
                             "unit": "mm",
-                            "default_value": 0.001,
+                            "default_value": 0.1,
                             "type": "float",
                             "settable_per_mesh": true
                         },
@@ -8037,7 +8038,7 @@
                             "label": "Maximum Line Width",
                             "description": "The maximum line width.",
                             "unit": "mm",
-                            "default_value": 10,
+                            "default_value": 1,
                             "type": "float",
                             "settable_per_mesh": true
                         }
