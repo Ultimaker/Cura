@@ -8005,6 +8005,43 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "ratio_based_walls":
+                {
+                    "label": "Ratio Based Walls",
+                    "description": "Generate wall width according to this ratio instead of inner/outter values.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "wall_line_width_ratio":
+                        {
+                            "label": "Wall Line Width Ratio",
+                            "description": "Ratio between inner and outter walls line.",
+                            "default_value": 0.5,
+                            "type": "float",
+                            "settable_per_mesh": true
+                        },
+                        "min_line_width":
+                        {
+                            "label": "Minimum Line Width",
+                            "description": "The minimum line width.",
+                            "unit": "mm",
+                            "default_value": 0.001,
+                            "type": "float",
+                            "settable_per_mesh": true
+                        },
+                        "max_line_width":
+                        {
+                            "label": "Maximum Line Width",
+                            "description": "The maximum line width.",
+                            "unit": "mm",
+                            "default_value": 10,
+                            "type": "float",
+                            "settable_per_mesh": true
+                        }
+                    }
                 }
             }
         },
