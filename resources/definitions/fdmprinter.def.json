@@ -8022,6 +8022,8 @@
                             "unit": "%",
                             "type": "float",
                             "default_value": 50,
+                            "minimum_value_warning": "100 * (min_line_width / wall_thickness)",
+                            "maximum_value_warning": "100 * (max_line_width / wall_thickness)",
                             "settable_per_mesh": true
                         },
                         "min_line_width":
@@ -8029,8 +8031,8 @@
                             "label": "Minimum Line Width",
                             "description": "The minimum line width.",
                             "unit": "mm",
-                            "default_value": 0.1,
                             "type": "float",
+                            "default_value": 0.1,
                             "settable_per_mesh": true
                         },
                         "max_line_width":
@@ -8038,8 +8040,8 @@
                             "label": "Maximum Line Width",
                             "description": "The maximum line width.",
                             "unit": "mm",
-                            "default_value": 1,
                             "type": "float",
+                            "default_value": 1,
                             "settable_per_mesh": true
                         }
                     }
