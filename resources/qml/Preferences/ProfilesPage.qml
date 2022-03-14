@@ -332,7 +332,7 @@ UM.ManagementPage
                 spacing: UM.Theme.getSize("default_margin").width
                 Cura.SecondaryButton
                 {
-                    text: catalog.i18nc("@action:button", "Update profile.")
+                    text: catalog.i18nc("@action:button", "Update profile")
                     enabled: Cura.MachineManager.hasUserSettings && objectList.currentIndex && !objectList.currentIndex.is_read_only
                     onClicked: Cura.ContainerManager.updateQualityChanges()
                     tooltip: catalog.i18nc("@action:tooltip", "Update profile with current settings/overrides")
