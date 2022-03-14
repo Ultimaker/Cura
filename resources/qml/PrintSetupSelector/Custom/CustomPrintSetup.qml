@@ -90,7 +90,6 @@ Item
                 UM.Label
                 {
                     text: activeQualityDetailText()
-                    font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text_detail")
                     Layout.margins: 0
                     Layout.fillWidth: true
