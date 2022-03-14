@@ -84,6 +84,7 @@ Item
                     Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
                     elide: Text.ElideRight
+                    wrapMode: Text.NoWrap
                 }
 
                 UM.Label
@@ -96,7 +97,7 @@ Item
 
                     height: contentHeight
                     elide: Text.ElideRight
-
+                    wrapMode: Text.NoWrap
                     function activeQualityDetailText()
                     {
                         var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
