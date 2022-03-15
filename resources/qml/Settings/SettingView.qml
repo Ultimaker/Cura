@@ -153,11 +153,14 @@ Item
 
         onClicked:
         {
+            // Fix for strange bug where height is havled after creating a popup
+            var height = settingVisibilityMenu.height
             settingVisibilityPresetsMenu.popup(
                 settingVisibilityMenu,
-                -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
+                -settingVisibilityPresetsMenu.width,
                 settingVisibilityMenu.height
             )
+            settingVisibilityMenu.height = height
         }
     }
 
