@@ -110,6 +110,7 @@ Item
 
             ScrollBar.vertical: UM.ScrollBar
             {
+                id: scrollBar
                 parent: informationPage
                 anchors
                 {
@@ -122,7 +123,7 @@ Item
             clip: true
             visible: pageSelectorTabRow.currentItem.activeView === "information"
 
-            property real columnWidth: Math.floor(width / 2 - UM.Theme.getSize("narrow_margin").width)
+            property real columnWidth: Math.floor((width - scrollBar.width - UM.Theme.getSize("narrow_margin").width) / 2)
             property real rowHeight: UM.Theme.getSize("setting_control").height
 
             Column
@@ -169,10 +170,10 @@ Item
                     }
                     Cura.TextField
                     {
-                        id: displayNameTextField;
-                        width: informationPage.columnWidth;
-                        text: properties.name;
-                        enabled: base.editingEnabled;
+                        id: displayNameTextField
+                        width: informationPage.columnWidth
+                        text: properties.name
+                        enabled: base.editingEnabled
                         onEditingFinished: base.updateMaterialDisplayName(properties.name, text)
                     }
                 }
@@ -480,7 +481,7 @@ Item
                 Cura.ReadOnlyTextArea
                 {
                     text: properties.description
-                    width: informationPage.width
+                    width: informationPage.width - scrollBar.width
                     height: 0.4 * informationPage.width
                     wrapMode: Text.WordWrap
 
@@ -499,7 +500,7 @@ Item
                 Cura.ReadOnlyTextArea
                 {
                     text: properties.adhesion_info
-                    width: informationPage.width
+                    width: informationPage.width - scrollBar.width
                     height: 0.4 * informationPage.width
                     wrapMode: Text.WordWrap
                     readOnly: !base.editingEnabled
