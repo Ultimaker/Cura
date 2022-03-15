@@ -21,12 +21,13 @@ Button
     height: UM.Theme.getSize("section_header").height
 
     property var expanded: false
-
+    property bool indented: false
     property alias arrow: categoryArrow
     property alias categoryIcon: icon.source
     property alias labelText: categoryLabel.text
     property alias labelFont: categoryLabel.font
-
+    leftPadding: UM.Theme.getSize("narrow_margin").width
+    rightPadding: UM.Theme.getSize("narrow_margin").width
     states:
     [
         State
@@ -72,20 +73,21 @@ Button
         }
     }
 
-    contentItem: RowLayout
+    contentItem: Item
     {
         id: content
-        spacing: UM.Theme.getSize("narrow_margin").width
+        //spacing: UM.Theme.getSize("narrow_margin").width
 
         UM.RecolorImage
         {
             id: icon
             source: ""
             visible: icon.source != ""
-            Layout.alignment: Qt.AlignHCenter
+            anchors.verticalCenter: parent.verticalCenter
             color: UM.Theme.getColor("setting_category_text")
-            width: UM.Theme.getSize("section_icon").width
+            width: visible ? UM.Theme.getSize("section_icon").width: 0
             height: UM.Theme.getSize("section_icon").height
+            anchors.leftMargin: base.indented ? UM.Theme.getSize("default_margin").width: 0
             sourceSize.width: width
             sourceSize.height: width
         }
@@ -94,7 +96,10 @@ Button
         {
             id: categoryLabel
             Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
+            anchors.right: categoryArrow.left
+            anchors.left: icon.right
+            anchors.leftMargin: base.indented ? UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width: UM.Theme.getSize("narrow_margin").width
+            anchors.verticalCenter: parent.verticalCenter
             elide: Text.ElideRight
             wrapMode: Text.NoWrap
             font: UM.Theme.getFont("medium_bold")
@@ -104,9 +109,10 @@ Button
         UM.RecolorImage
         {
             id: categoryArrow
-            Layout.alignment: Qt.AlignHCenter
+            anchors.right: parent.right
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
+            anchors.verticalCenter: parent.verticalCenter
             sourceSize.width: width
             sourceSize.height: height
             color: UM.Theme.getColor("setting_control_button")

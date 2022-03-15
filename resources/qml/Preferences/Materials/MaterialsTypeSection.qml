@@ -16,11 +16,12 @@ Column
     property string materialName: materialType !== null ? materialType.name : ""
     property bool expanded: materialList.expandedTypes.indexOf(`${materialBrand}_${materialName}`) !== -1
     property var colorsModel: materialType !== null ? materialType.colors : null
-
+    property alias indented: categoryButton.indented
     width: parent.width
 
     Cura.CategoryButton
     {
+        id: categoryButton
         width: parent.width
         height: UM.Theme.getSize("favorites_row").height
         labelText: materialName

@@ -18,7 +18,6 @@ Column
     property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
     property bool hasMaterialTypes: true  // It indicates whether it has material types or not
     property bool expanded: materialList.expandedBrands.indexOf(sectionName) !== -1
-
     width: parent.width
 
     Cura.CategoryButton
@@ -68,6 +67,7 @@ Column
         MaterialsTypeSection
         {
             materialType: element
+            indented: true
         }
     }
 

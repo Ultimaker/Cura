@@ -47,7 +47,7 @@ Rectangle
         radius: width / 2
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.left: materialSlot.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
     }
     UM.Label
     {
