@@ -23,7 +23,7 @@ Column
     {
         id: categoryButton
         width: parent.width
-        height: UM.Theme.getSize("favorites_row").height
+        height: UM.Theme.getSize("preferences_page_list_item").height
         labelText: materialName
         labelFont: UM.Theme.getFont("default")
         expanded: material_type_section.expanded

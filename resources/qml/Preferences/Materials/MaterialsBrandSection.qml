@@ -23,9 +23,8 @@ Column
     Cura.CategoryButton
     {
         width: parent.width
-        height: UM.Theme.getSize("favorites_row").height
         labelText: sectionName
-        labelFont: UM.Theme.getFont("default_bold")
+        labelFont: UM.Theme.getFont("medium_bold")
         expanded: brand_section.expanded
         onClicked:
         {

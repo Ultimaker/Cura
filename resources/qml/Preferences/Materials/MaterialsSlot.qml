@@ -17,7 +17,7 @@ Rectangle
     property var material: null
     property bool hovered: false
 
-    height: UM.Theme.getSize("favorites_row").height
+    height: UM.Theme.getSize("preferences_page_list_item").height
     width: parent.width
     color: UM.Theme.getColor("main_background")
 
