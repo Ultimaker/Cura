@@ -130,8 +130,6 @@ Item
     SettingVisibilityPresetsMenu
     {
         id: settingVisibilityPresetsMenu
-        x: settingVisibilityMenu.x
-        y: settingVisibilityMenu.y
         onCollapseAllCategories:
         {
             settingsSearchTimer.stop()
@@ -154,11 +152,18 @@ Item
         onClicked:
         {
             settingVisibilityPresetsMenu.popup(
-                settingVisibilityMenu,
+                popupContainer,
                 -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
                 settingVisibilityMenu.height
             )
         }
+    }
+    Item
+    {
+        // Work around to prevent the buttom from being rescaled if a popup is attached
+        id: popupContainer
+        anchors.bottom: settingVisibilityMenu.bottom
+        anchors.right: settingVisibilityMenu.right
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.
