@@ -9,8 +9,6 @@ import QtQuick.Layouts 1.3
 import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-import ".." // Access to ReadOnlyTextArea.qml
-
 Item
 {
     id: base
@@ -479,7 +477,7 @@ Item
                     height: parent.rowHeight
                     text: catalog.i18nc("@label", "Description")
                 }
-                ReadOnlyTextArea
+                Cura.ReadOnlyTextArea
                 {
                     text: properties.description
                     width: informationPage.width
@@ -498,7 +496,7 @@ Item
                     text: catalog.i18nc("@label", "Adhesion Information")
                 }
 
-                ReadOnlyTextArea
+                Cura.ReadOnlyTextArea
                 {
                     text: properties.adhesion_info
                     width: informationPage.width
