@@ -68,7 +68,7 @@ UM.ManagementPage
     }
 
     title: catalog.i18nc("@title:tab", "Materials")
-    detailsPlaneCation: currentItem.name
+    detailsPlaneCation: currentItem ? currentItem.name: ""
     scrollviewCaption: catalog.i18nc("@label", "Materials compatible with active printer:") + `<br /><b>${Cura.MachineManager.activeMachine.name}</b>`
 
     buttons: [

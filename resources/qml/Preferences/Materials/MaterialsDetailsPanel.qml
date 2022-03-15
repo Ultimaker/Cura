@@ -60,7 +60,7 @@ Item
 
         properties: materialProperties
         containerId: currentItem != null ? currentItem.id : ""
-        currentMaterialNode: currentItem.container_node
+        currentMaterialNode: currentItem != null ? currentItem.container_node: null
     }
 
     QtObject

@@ -97,7 +97,6 @@ Item
         }
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("thick_lining")
-        visible: base.hasCurrentItem
 
         ScrollView
         {
@@ -240,11 +239,12 @@ Item
 
                             anchors.verticalCenter: parent.verticalCenter
 
-                            width: childrenRect.width + 2 * UM.Theme.getSize("narrow_margin").width
-                            height: childrenRect.height + 2 * UM.Theme.getSize("narrow_margin").height
+                            width: colorSelectorBackground.width + 2 * UM.Theme.getSize("narrow_margin").width
+                            height: colorSelectorBackground.height + 2 * UM.Theme.getSize("narrow_margin").height
 
                             Rectangle
                             {
+                                id: colorSelectorBackground
                                 color: properties.color_code
                                 width: UM.Theme.getSize("icon_indicator").width
                                 height: UM.Theme.getSize("icon_indicator").height
