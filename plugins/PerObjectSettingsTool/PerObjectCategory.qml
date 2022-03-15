@@ -5,6 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 2.1
 
 import Cura 1.5 as Cura
+import UM 1.5 as UM
 import ".."
 
 Cura.CategoryButton
