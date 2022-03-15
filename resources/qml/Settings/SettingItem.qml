@@ -134,7 +134,7 @@ Item
             id: label
 
             anchors.left: parent.left
-            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("narrow_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("default_margin").width)) : 0
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 

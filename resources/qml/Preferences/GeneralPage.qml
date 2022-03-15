@@ -215,7 +215,7 @@ UM.PreferencesPage
 
                     textRole: "text"
                     model: languageList
-                    implicitWidth: UM.Theme.getSize("setting_control").width
+                    implicitWidth: UM.Theme.getSize("combobox_wide").width
                     implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
@@ -255,7 +255,7 @@ UM.PreferencesPage
                     id: currencyField
                     selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
-                    implicitWidth: UM.Theme.getSize("setting_control").width
+                    implicitWidth: UM.Theme.getSize("combobox_wide").width
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
 
@@ -284,7 +284,7 @@ UM.PreferencesPage
 
                     model: themeList
                     textRole: "text"
-                    implicitWidth: UM.Theme.getSize("setting_control").width
+                    implicitWidth: UM.Theme.getSize("combobox_wide").width
                     implicitHeight: currencyField.height
 
                     currentIndex:
