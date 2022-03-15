@@ -593,7 +593,8 @@
         "checkbox_radius": [0.25, 0.25],
 
         "spinbox": [6.0, 3.0],
-        "combobox_wide": [14, 2],
+        "combobox": [14, 2],
+        "combobox_wide": [22, 2],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
