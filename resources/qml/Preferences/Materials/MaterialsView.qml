@@ -66,21 +66,6 @@ Item
         }
     }
 
-    UM.TabRow
-    {
-        id: pageSelectorTabRow
-        UM.TabRowButton
-        {
-            text: catalog.i18nc("@title", "Information")
-            property string activeView: "information" //To determine which page gets displayed.
-        }
-        UM.TabRowButton
-        {
-            text: catalog.i18nc("@label", "Print settings")
-            property string activeView: "settings"
-        }
-    }
-
     Rectangle
     {
         color: UM.Theme.getColor("main_background")
@@ -94,7 +79,7 @@ Item
             bottom: parent.bottom
         }
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("thick_lining")
+        border.color: UM.Theme.getColor("border_main")
 
         ScrollView
         {
@@ -604,6 +589,21 @@ Item
                     }
                 }
             }
+        }
+    }
+
+    UM.TabRow
+    {
+        id: pageSelectorTabRow
+        UM.TabRowButton
+        {
+            text: catalog.i18nc("@title", "Information")
+            property string activeView: "information" //To determine which page gets displayed.
+        }
+        UM.TabRowButton
+        {
+            text: catalog.i18nc("@label", "Print settings")
+            property string activeView: "settings"
         }
     }
 
