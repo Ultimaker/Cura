@@ -28,7 +28,6 @@ Rectangle
             name: "selected"
             when: material !== null && base.currentItem !== null && base.currentItem.root_material_id === material.root_material_id
             PropertyChanges { target: materialSlot; color: UM.Theme.getColor("background_3") }
-            PropertyChanges { target: materialLabel; font: UM.Theme.getFont("default_italic") }
         },
         State
         {
