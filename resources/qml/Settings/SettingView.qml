@@ -193,6 +193,14 @@ Item
         cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
         ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
 
+        onContentYChanged: {
+        // This removes focus from SettingItems when scrolling.
+        // This fixes comboboxes staying open and scrolling out of the settingView.
+            if (!scrollBar.activeFocus) {
+                scrollBar.forceActiveFocus();
+            }
+        }
+
         model: UM.SettingDefinitionsModel
         {
             id: definitionsModel
