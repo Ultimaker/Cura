@@ -87,7 +87,7 @@ Rectangle
             {
                 name: "favorite"
                 when: material !== null && material.is_favorite
-                PropertyChanges { target: favoriteIndicator; source: UM.Theme.getIcon("StarFilled"); color: UM.Theme.getColor("primary") }
+                PropertyChanges { target: favoriteIndicator; source: UM.Theme.getIcon("StarFilled");}
                 PropertyChanges { target: favoriteButton; visible: true }
             },
             State
@@ -109,7 +109,7 @@ Rectangle
             anchors.centerIn: parent
             width: UM.Theme.getSize("small_button_icon").width
             height: UM.Theme.getSize("small_button_icon").height
-            color: UM.Theme.getColor("text_inactive")
+            color: UM.Theme.getColor("primary")
             source: UM.Theme.getIcon("Star")
         }
 
