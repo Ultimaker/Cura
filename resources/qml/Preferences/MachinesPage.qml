@@ -14,7 +14,7 @@ UM.ManagementPage
     id: base
 
     title: catalog.i18nc("@title:tab", "Printers")
-    detailsPlaneCation: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
+    detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
 
     model: Cura.GlobalStacksModel { }
 

@@ -54,7 +54,7 @@ UM.ManagementPage
     }
 
     title: catalog.i18nc("@title:tab", "Profiles")
-    detailsPlaneCation: base.currentItemDisplayName
+    detailsPlaneCaption: base.currentItemDisplayName
     scrollviewCaption: catalog.i18nc("@label", "Profiles compatible with active printer:") + "<br><b>" + Cura.MachineManager.activeMachine.name + "</b>"
 
     hamburgerButtonVisible: hasCurrentItem
