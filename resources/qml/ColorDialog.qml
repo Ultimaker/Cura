@@ -24,13 +24,9 @@ UM.Dialog
     // In this case we would like to let the content of the dialog determine the size of the dialog
     // however with the current implementation of the dialog this is not possible, so instead we calculate
     // the size of the dialog ourselves.
-    minimumWidth: content.width + 4 * margin
-    minimumHeight:
-        content.height                                 // content height
-      + buttonRow.height                               // button row height
-      + 5 * margin                                     // top and bottom margin and margin between buttons and content
-    width: minimumWidth
-    height: minimumHeight
+    // Ugly workaround for windows having overlapping elements due to incorrect dialog width
+    minimumWidth: content.width + (Qt.platform.os == "windows" ? 4 * margin : 2 * margin)
+    minimumHeight: content.height + buttonRow.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
 
     property alias color: colorInput.text
     property var swatchColors: [
