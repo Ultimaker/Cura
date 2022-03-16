@@ -148,6 +148,14 @@ UM.PreferencesPage
                 bottom: parent.bottom
                 right: parent.right
             }
+
+            onPositionChanged: {
+                // This removes focus from items when scrolling.
+                // This fixes comboboxes staying open and scrolling container
+                if (!activeFocus) {
+                    forceActiveFocus();
+                }
+            }
         }
 
         Column
