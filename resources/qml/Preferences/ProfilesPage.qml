@@ -303,6 +303,7 @@ UM.ManagementPage
                 left: parent.left
                 right: parent.right
                 top: parent.top
+                topMargin: UM.Theme.getSize("narrow_margin").height
             }
 
             spacing: UM.Theme.getSize("default_margin").height
@@ -364,7 +365,9 @@ UM.ManagementPage
             UM.TabRow
             {
                 id: profileExtruderTabs
-                UM.TabRowButton // One extra tab for the global settings.
+
+                // One extra tab for the global settings.
+                UM.TabRowButton
                 {
                     text: catalog.i18nc("@title:tab", "Global Settings")
                 }
