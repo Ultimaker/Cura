@@ -5431,6 +5431,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable'))",
+                            "resolve": "'-1' if '-1' in extruderValues('skirt_brim_extruder_nr') else adhesion_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
