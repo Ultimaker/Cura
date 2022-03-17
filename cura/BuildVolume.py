@@ -818,9 +818,6 @@ class BuildVolume(SceneNode):
                             break
                     if prime_tower_collision:  # Already found a collision.
                         break
-                    if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
-                        brim_size = self._calculateBedAdhesionSize(used_extruders, "brim")
-                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(brim_size, num_segments = 24))
                 if not prime_tower_collision:
                     result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
                     result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
@@ -1076,7 +1073,7 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
-    def _calculateBedAdhesionSize(self, used_extruders, adhesion_override = None):
+    def _calculateBedAdhesionSize(self, used_extruders):
         """Get the bed adhesion size for the global container stack and used extruders
 
         :param adhesion_override: override adhesion type.
@@ -1086,9 +1083,7 @@ class BuildVolume(SceneNode):
             return None
 
         container_stack = self._global_container_stack
-        adhesion_type = adhesion_override
-        if adhesion_type is None:
-            adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        adhesion_type = container_stack.getProperty("adhesion_type", "value")
 
         if adhesion_type == "raft":
             bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")  # Should refer to the raft extruder if set.
