@@ -62,9 +62,11 @@ Rectangle
         anchors.verticalCenter: materialSlot.verticalCenter
     }
 
-    MouseArea
+    UM.TooltipArea
     {
         anchors.fill: parent
+        text: material != null ? `${material.brand} ${material.name}` : ""
+
         onClicked:
         {
             materialList.currentBrand = material.brand;
