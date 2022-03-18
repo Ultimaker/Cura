@@ -22,6 +22,7 @@ UM.TooltipArea
 
     property int controlWidth: UM.Theme.getSize("setting_control").width
     property int controlHeight: UM.Theme.getSize("setting_control").height
+    property real spacing: UM.Theme.getSize("default_margin").width
 
     text: tooltipText
 
@@ -75,7 +76,7 @@ UM.TooltipArea
     {
         id: textFieldWithUnit
         anchors.left: fieldLabel.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: spacing
         verticalAlignment: Text.AlignVCenter
         selectionColor: UM.Theme.getColor("text_selection")
         selectedTextColor: UM.Theme.getColor("setting_control_text")
@@ -88,7 +89,6 @@ UM.TooltipArea
         background: UM.UnderlineBackground
         {
             anchors.fill: parent
-            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
 
             liningColor:
             {

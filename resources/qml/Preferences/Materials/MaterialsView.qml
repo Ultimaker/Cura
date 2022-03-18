@@ -140,7 +140,7 @@ Item
                     onRejected:
                     {
                         base.properties.diameter = old_diameter_value;
-                        diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
+                        diameterTextField.valueText = Qt.binding(function() { return base.properties.diameter })
                     }
                 }
 
@@ -286,18 +286,26 @@ Item
                         width: informationPage.columnWidth
                         text: catalog.i18nc("@label", "Density")
                     }
-                    Cura.SpinBox
-                    {
-                        enabled: base.editingEnabled
-                        id: densitySpinBox
-                        width: informationPage.columnWidth
-                        value: properties.density
-                        decimals: 2
-                        suffix: " g/cm³"
-                        stepSize: 0.01
 
-                        onEditingFinished: base.setMetaDataEntry("properties/density", properties.density, value)
-                        onValueChanged: updateCostPerMeter()
+                    Cura.NumericTextFieldWithUnit
+                    {
+                        id: densityTextField
+                        enabled: base.editingEnabled
+                        valueText: properties.density
+                        controlWidth: informationPage.columnWidth
+                        controlHeight: informationPage.rowHeight
+                        spacing: 0
+                        unitText: "g/cm³"
+                        decimals: 2
+                        maximum: 1000
+
+                        editingFinishedFunction: function()
+                        {
+                            var modified_text = valueText.replace(",", ".");
+                            base.setMetaDataEntry("properties/density", properties.density, modified_text)
+                        }
+
+                        onValueTextChanged: updateCostPerMeter()
                     }
                 }
 
@@ -311,37 +319,43 @@ Item
                         width: informationPage.columnWidth
                         text: catalog.i18nc("@label", "Diameter")
                     }
-                    Cura.SpinBox
-                    {
-                        enabled: base.editingEnabled
-                        id: diameterSpinBox
-                        width: informationPage.columnWidth
-                        value: properties.diameter
-                        decimals: 2
-                        suffix: " mm"
-                        stepSize: 0.01
 
-                        onEditingFinished:
+                    Cura.NumericTextFieldWithUnit
+                    {
+                        id: diameterTextField
+                        enabled: base.editingEnabled
+                        valueText: properties.diameter
+                        controlWidth: informationPage.columnWidth
+                        controlHeight: informationPage.rowHeight
+                        spacing: 0
+                        unitText: "mm"
+                        decimals: 2
+                        maximum: 1000
+
+                        editingFinishedFunction: function()
                         {
                             // This does not use a SettingPropertyProvider, because we need to make the change to all containers
                             // which derive from the same base_file
                             var old_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "properties/diameter");
                             var old_approximate_diameter = Cura.ContainerManager.getContainerMetaDataEntry(base.containerId, "approximate_diameter");
-                            var new_approximate_diameter = getApproximateDiameter(value);
+                            var modified_value = valueText.replace(",", ".");
+                            var new_approximate_diameter = getApproximateDiameter(modified_value);
+
                             if (new_approximate_diameter != Cura.ExtruderManager.getActiveExtruderStack().approximateMaterialDiameter)
                             {
                                 confirmDiameterChangeDialog.old_diameter_value = old_diameter;
-                                confirmDiameterChangeDialog.new_diameter_value = value;
+                                confirmDiameterChangeDialog.new_diameter_value = modified_value;
                                 confirmDiameterChangeDialog.old_approximate_diameter_value = old_approximate_diameter;
 
                                 confirmDiameterChangeDialog.open()
                             }
                             else {
-                                base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, getApproximateDiameter(value).toString());
-                                base.setMetaDataEntry("properties/diameter", properties.diameter, value);
+                                base.setMetaDataEntry("approximate_diameter", old_approximate_diameter, new_approximate_diameter);
+                                base.setMetaDataEntry("properties/diameter", properties.diameter, modified_value);
                             }
                         }
-                        onValueChanged: updateCostPerMeter()
+
+                        onValueTextChanged: updateCostPerMeter()
                     }
                 }
 
@@ -355,21 +369,25 @@ Item
                         width: informationPage.columnWidth
                         text: catalog.i18nc("@label", "Filament Cost")
                     }
-                    Cura.SpinBox
-                    {
-                        id: spoolCostSpinBox
-                        width: informationPage.columnWidth
-                        value: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
-                        to: 100000000
-                        editable: true
-                        prefix: base.currency + " "
-                        decimals: 2
 
-                        onValueChanged:
+                    Cura.NumericTextFieldWithUnit
+                    {
+                        id: spoolCostTextField
+                        valueText: base.getMaterialPreferenceValue(properties.guid, "spool_cost")
+                        controlWidth: informationPage.columnWidth
+                        controlHeight: informationPage.rowHeight
+                        spacing: 0
+                        unitText: base.currency
+                        decimals: 2
+                        maximum: 100000000
+
+                        editingFinishedFunction: function()
                         {
-                            base.setMaterialPreferenceValue(properties.guid, "spool_cost", parseFloat(value))
-                            updateCostPerMeter()
+                            var modified_text = valueText.replace(",", ".");
+                            base.setMaterialPreferenceValue(properties.guid, "spool_cost", modified_text);
                         }
+
+                        onValueTextChanged: updateCostPerMeter()
                     }
                 }
 
@@ -383,21 +401,25 @@ Item
                         width: informationPage.columnWidth
                         text: catalog.i18nc("@label", "Filament weight")
                     }
-                    Cura.SpinBox
-                    {
-                        id: spoolWeightSpinBox
-                        width: informationPage.columnWidth
-                        value: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
-                        stepSize: 100
-                        to: 10000
-                        editable: true
-                        suffix: " g"
 
-                        onValueChanged:
+                    Cura.NumericTextFieldWithUnit
+                    {
+                        id: spoolWeightTextField
+                        valueText: base.getMaterialPreferenceValue(properties.guid, "spool_weight", Cura.ContainerManager.getContainerMetaDataEntry(properties.container_id, "properties/weight"))
+                        controlWidth: informationPage.columnWidth
+                        controlHeight: informationPage.rowHeight
+                        spacing: 0
+                        unitText: " g"
+                        decimals: 0
+                        maximum: 10000
+
+                        editingFinishedFunction: function()
                         {
-                            base.setMaterialPreferenceValue(properties.guid, "spool_weight", parseFloat(value))
-                            updateCostPerMeter()
+                            var modified_text = valueText.replace(",", ".")
+                            base.setMaterialPreferenceValue(properties.guid, "spool_weight", modified_text)
                         }
+
+                        onValueTextChanged: updateCostPerMeter()
                     }
                 }
 
@@ -609,8 +631,12 @@ Item
 
     function updateCostPerMeter()
     {
-        base.spoolLength = calculateSpoolLength(diameterSpinBox.value, densitySpinBox.value, spoolWeightSpinBox.value);
-        base.costPerMeter = calculateCostPerMeter(spoolCostSpinBox.value);
+        var modified_weight = spoolWeightTextField.valueText.replace(",", ".")
+        var modified_cost = spoolCostTextField.valueText.replace(",", ".")
+        var modified_diameter = diameterTextField.valueText.replace(",", ".")
+        var modified_density = densityTextField.valueText.replace(",", ".")
+        base.spoolLength = calculateSpoolLength(modified_diameter, modified_density, parseInt(modified_weight));
+        base.costPerMeter = calculateCostPerMeter(parseFloat(modified_cost));
     }
 
     function calculateSpoolLength(diameter, density, spoolWeight)
