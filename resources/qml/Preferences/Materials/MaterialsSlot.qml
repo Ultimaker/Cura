@@ -56,7 +56,7 @@ Rectangle
         wrapMode: Text.NoWrap
         verticalAlignment: Text.AlignVCenter
         anchors.left: swatch.right
-        anchors.right: parent.right
+        anchors.right: favoriteButton.left
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
         anchors.verticalCenter: materialSlot.verticalCenter
