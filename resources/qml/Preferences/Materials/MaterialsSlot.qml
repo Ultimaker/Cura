@@ -66,7 +66,7 @@ Rectangle
     {
         anchors.fill: parent
         text: material != null ? `${material.brand} ${material.name}` : ""
-
+        acceptedButtons: Qt.LeftButton
         onClicked:
         {
             materialList.currentBrand = material.brand;
