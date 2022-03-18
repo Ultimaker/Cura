@@ -18,8 +18,6 @@ Item
 
     property bool editingEnabled: false
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
-    property real firstColumnWidth: (width * 0.50) | 0
-    property real secondColumnWidth: (width * 0.40) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
     property var materialManagementModel: CuraApplication.getMaterialManagementModel()
@@ -517,97 +515,120 @@ Item
             }
         }
 
-        Column
+        ScrollView
         {
+            id: settingsPage
             visible: pageSelectorTabRow.currentItem.activeView === "settings"
-            spacing: UM.Theme.getSize("narrow_margin").height
-            anchors.fill: parent
-            anchors.topMargin: UM.Theme.getSize("thin_margin").height
-            anchors.bottomMargin: UM.Theme.getSize("thin_margin").height
-            anchors.leftMargin: UM.Theme.getSize("thin_margin").width
-            anchors.rightMargin: UM.Theme.getSize("thin_margin").width
-            ScrollBar.vertical: UM.ScrollBar {}
             clip: true
 
-            Repeater
+            anchors
             {
-                model: UM.SettingDefinitionsModel
+                fill: parent
+                topMargin: UM.Theme.getSize("thin_margin").height
+                bottomMargin: UM.Theme.getSize("thin_margin").height
+                leftMargin: UM.Theme.getSize("thin_margin").width
+                rightMargin: UM.Theme.getSize("thin_margin").width
+            }
+
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                id: settingScrollBar
+                parent: settingsPage
+                anchors
                 {
-                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
-                    expanded: ["*"]
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
                 }
+            }
 
-                delegate: UM.TooltipArea
+            property real columnWidth: Math.floor((width - settingScrollBar.width - UM.Theme.getSize("narrow_margin").width) / 2)
+
+            Column
+            {
+                width: settingsPage.width
+                spacing: UM.Theme.getSize("narrow_margin").height
+                Repeater
                 {
-                    width: childrenRect.width
-                    height: childrenRect.height
-
-                    UM.TooltipArea
+                    model: UM.SettingDefinitionsModel
                     {
-                        anchors.fill: parent
-                        text: model.description
-                    }
-                    UM.Label
-                    {
-                        id: label
-                        width: base.firstColumnWidth;
-                        height: spinBox.height + UM.Theme.getSize("default_lining").height
-                        text: model.label
-                        elide: Text.ElideRight
-                        verticalAlignment: Qt.AlignVCenter
-                    }
-                    Cura.SpinBox
-                    {
-                        id: spinBox
-                        anchors.left: label.right
-                        value:
-                        {
-                            // In case the setting is not in the material...
-                            if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
-                            {
-                                return parseFloat(materialPropertyProvider.properties.value);
-                            }
-                            // ... we search in the variant, and if it is not there...
-                            if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
-                            {
-                                return parseFloat(variantPropertyProvider.properties.value);
-                            }
-                            // ... then look in the definition container.
-                            if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
-                            {
-                                return parseFloat(machinePropertyProvider.properties.value);
-                            }
-                            return 0;
-                        }
-                        width: base.secondColumnWidth
-                        suffix: " " + model.unit
-                        to: 99999
-                        decimals: model.unit == "mm" ? 2 : 0
-
-                        onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
-                    }
-
-                    UM.ContainerPropertyProvider
-                    {
-                        id: materialPropertyProvider
-                        containerId: base.containerId
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider
-                    {
-                        id: variantPropertyProvider
-                        containerId: Cura.MachineManager.activeStack.variant.id
-                        watchedProperties: [ "value" ]
-                        key: model.key
-                    }
-                    UM.ContainerPropertyProvider
-                    {
-                        id: machinePropertyProvider
                         containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                        watchedProperties: ["value"]
-                        key: model.key
+                        visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
+                        expanded: ["*"]
+                    }
+
+                    delegate: UM.TooltipArea
+                    {
+                        width: childrenRect.width
+                        height: childrenRect.height
+
+                        UM.TooltipArea
+                        {
+                            anchors.fill: parent
+                            text: model.description
+                        }
+                        UM.Label
+                        {
+                            id: label
+                            width: settingsPage.columnWidth
+                            height: spinBox.height + UM.Theme.getSize("default_lining").height
+                            text: model.label
+                            elide: Text.ElideRight
+                            verticalAlignment: Qt.AlignVCenter
+                        }
+                        Cura.SpinBox
+                        {
+                            id: spinBox
+                            anchors.left: label.right
+                            value:
+                            {
+                                // In case the setting is not in the material...
+                                if (!isNaN(parseFloat(materialPropertyProvider.properties.value)))
+                                {
+                                    return parseFloat(materialPropertyProvider.properties.value);
+                                }
+                                // ... we search in the variant, and if it is not there...
+                                if (!isNaN(parseFloat(variantPropertyProvider.properties.value)))
+                                {
+                                    return parseFloat(variantPropertyProvider.properties.value);
+                                }
+                                // ... then look in the definition container.
+                                if (!isNaN(parseFloat(machinePropertyProvider.properties.value)))
+                                {
+                                    return parseFloat(machinePropertyProvider.properties.value);
+                                }
+                                return 0;
+                            }
+                            width: settingsPage.columnWidth
+                            suffix: " " + model.unit
+                            to: 99999
+                            decimals: model.unit == "mm" ? 2 : 0
+
+                            onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
+                        }
+
+                        UM.ContainerPropertyProvider
+                        {
+                            id: materialPropertyProvider
+                            containerId: base.containerId
+                            watchedProperties: [ "value" ]
+                            key: model.key
+                        }
+                        UM.ContainerPropertyProvider
+                        {
+                            id: variantPropertyProvider
+                            containerId: Cura.MachineManager.activeStack.variant.id
+                            watchedProperties: [ "value" ]
+                            key: model.key
+                        }
+                        UM.ContainerPropertyProvider
+                        {
+                            id: machinePropertyProvider
+                            containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                            watchedProperties: ["value"]
+                            key: model.key
+                        }
                     }
                 }
             }
