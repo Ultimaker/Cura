@@ -86,12 +86,12 @@ class TestCalculateBedAdhesionSize:
         ({"adhesion_type": {"value": "skirt"}}, 0),
         ({"adhesion_type": {"value": "raft"}}, 0),
         ({"adhesion_type": {"value": "none"}}, 0),
-        ({"adhesion_type": {"value": "skirt"}, "skirt_line_count": {"value": 2}, "initial_layer_line_width_factor": {"value": 1}, "skirt_brim_line_width": {"value": 2}}, 0.02),
+        ({"adhesion_type": {"value": "skirt"}, "skirt_line_count": {"value": 2}, "initial_layer_line_width_factor": {"value": 1}, "skirt_brim_line_width": {"value": 2}}, 0),
         # Even though it's marked as skirt, it should behave as a brim as the prime tower has a brim (skirt line count is still at 0!)
-        ({"adhesion_type": {"value": "skirt"}, "prime_tower_brim_enable": {"value": True}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, -0.06),
+        ({"adhesion_type": {"value": "skirt"}, "prime_tower_brim_enable": {"value": True}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0),
         ({"brim_line_count": {"value": 1}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0),
-        ({"brim_line_count": {"value": 2}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0.06),
-        ({"brim_line_count": {"value": 9000000}, "skirt_brim_line_width": {"value": 90000}, "initial_layer_line_width_factor": {"value": 9000}}, 100),  # Clamped at half the max size of buildplate
+        ({"brim_line_count": {"value": 2}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0),
+        ({"brim_line_count": {"value": 9000000}, "skirt_brim_line_width": {"value": 90000}, "initial_layer_line_width_factor": {"value": 9000}}, 0),  # Clamped at half the max size of buildplate
     ])
     def test_singleExtruder(self, build_volume: BuildVolume, setting_dict, result):
         self.createAndSetGlobalStack(build_volume)
@@ -105,14 +105,6 @@ class TestCalculateBedAdhesionSize:
         })
         with patch.dict(self.setting_property_dict, patched_dictionary):
             assert build_volume._calculateBedAdhesionSize([]) == result
-
-    def test_unknownBedAdhesion(self, build_volume: BuildVolume):
-        self.createAndSetGlobalStack(build_volume)
-        patched_dictionary = self.setting_property_dict.copy()
-        patched_dictionary.update({"adhesion_type": {"value": "OMGZOMGBBQ"}})
-        with patch.dict(self.setting_property_dict, patched_dictionary):
-            with pytest.raises(Exception):
-                build_volume._calculateBedAdhesionSize([])
 
 class TestComputeDisallowedAreasStatic:
     setting_property_dict = {"machine_disallowed_areas": {"value": [[[-200,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]]]},
