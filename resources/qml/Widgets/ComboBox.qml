@@ -57,9 +57,7 @@ ComboBox
     contentItem: UM.Label
     {
         id: contentLabel
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
-        anchors.verticalCenter: parent.verticalCenter
+        leftPadding: UM.Theme.getSize("setting_unit_margin").width + UM.Theme.getSize("default_margin").width
         anchors.right: downArrow.left
         wrapMode: Text.NoWrap
         text:

@@ -299,12 +299,12 @@
         "scrollbar_handle_hover": [50, 130, 255, 255],
         "scrollbar_handle_down": [50, 130, 255, 255],
 
-        "setting_category": [240, 240, 240, 255],
+        "setting_category": "background_1",
         "setting_category_disabled": [255, 255, 255, 255],
-        "setting_category_hover": [232, 242, 252, 255],
-        "setting_category_text": [35, 35, 35, 255],
+        "setting_category_hover": "background_2",
+        "setting_category_text": "text_default",
         "setting_category_disabled_text": [24, 41, 77, 101],
-        "setting_category_active_text": [35, 35, 35, 255],
+        "setting_category_active_text": "text_default",
 
         "setting_control": "background_2",
         "setting_control_highlight": "background_3",
@@ -525,8 +525,10 @@
         "extruder_icon": [2.5, 2.5],
 
         "section": [0.0, 2],
+        "section_header": [0.0, 2.5],
+
         "section_control": [0, 1],
-        "section_icon": [2, 2],
+        "section_icon": [1.5, 1.5],
         "section_icon_column": [2.5, 2.5],
 
         "setting": [25.0, 1.8],
@@ -591,7 +593,8 @@
         "checkbox_radius": [0.25, 0.25],
 
         "spinbox": [6.0, 3.0],
-        "combobox_wide": [14, 2],
+        "combobox": [14, 2],
+        "combobox_wide": [22, 2],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],

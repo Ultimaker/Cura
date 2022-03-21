@@ -25,7 +25,6 @@ Item
             top: parent.top
             left: parent.left
             right: settingVisibilityMenu.left
-            rightMargin: UM.Theme.getSize("default_margin").width
         }
         height: UM.Theme.getSize("print_setup_big_item").height
 
@@ -131,8 +130,6 @@ Item
     SettingVisibilityPresetsMenu
     {
         id: settingVisibilityPresetsMenu
-        x: settingVisibilityMenu.x
-        y: settingVisibilityMenu.y
         onCollapseAllCategories:
         {
             settingsSearchTimer.stop()
@@ -142,31 +139,31 @@ Item
         }
     }
 
-    UM.SimpleButton
+    UM.BurgerButton
     {
         id: settingVisibilityMenu
 
         anchors
         {
-            top: filterContainer.top
-            bottom: filterContainer.bottom
+            verticalCenter: filterContainer.verticalCenter
             right: parent.right
-            rightMargin: UM.Theme.getSize("wide_margin").width
         }
-        width: UM.Theme.getSize("medium_button_icon").width
-        height: UM.Theme.getSize("medium_button_icon").height
-        iconSource: UM.Theme.getIcon("Hamburger")
-        hoverColor: UM.Theme.getColor("small_button_text_hover")
-        color: UM.Theme.getColor("small_button_text")
 
         onClicked:
         {
             settingVisibilityPresetsMenu.popup(
-                settingVisibilityMenu,
+                popupContainer,
                 -settingVisibilityPresetsMenu.width + UM.Theme.getSize("default_margin").width,
                 settingVisibilityMenu.height
             )
         }
+    }
+    Item
+    {
+        // Work around to prevent the buttom from being rescaled if a popup is attached
+        id: popupContainer
+        anchors.bottom: settingVisibilityMenu.bottom
+        anchors.right: settingVisibilityMenu.right
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.
@@ -180,7 +177,7 @@ Item
     ListView
     {
         id: contents
-
+        maximumFlickVelocity: 1000
         anchors
         {
             top: filterContainer.bottom
@@ -191,7 +188,17 @@ Item
         }
         clip: true
         cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
-        ScrollBar.vertical: UM.ScrollBar {}
+        ScrollBar.vertical: UM.ScrollBar
+        {
+            id: scrollBar
+            onPositionChanged: {
+                // This removes focus from items when scrolling.
+                // This fixes comboboxes staying open and scrolling container
+                if (!activeFocus) {
+                    forceActiveFocus();
+                }
+            }
+        }
 
         model: UM.SettingDefinitionsModel
         {
@@ -213,14 +220,12 @@ Item
         }
 
         property int indexWithFocus: -1
-        property double delegateHeight: UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height
         property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
         delegate: Loader
         {
             id: delegate
 
-            width: contents.width
-            height: enabled ? contents.delegateHeight: 0
+            width: contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
             Behavior on height { NumberAnimation { duration: 100 } }
             opacity: enabled ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }

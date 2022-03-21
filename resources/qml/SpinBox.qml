@@ -72,6 +72,18 @@ Item
             base.value = value * base.stepSize;
         }
 
+        // This forces TextField to commit typed values before incrementing with buttons.
+        // This fixes the typed value not being incremented when the textField has active focus.
+        up.onPressedChanged:
+        {
+            base.forceActiveFocus()
+        }
+
+        down.onPressedChanged:
+        {
+            base.forceActiveFocus()
+        }
+
         background: Item {}
 
         contentItem: Cura.TextField

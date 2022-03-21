@@ -134,12 +134,8 @@
         "scrollbar_handle_hover": [255, 255, 255, 255],
         "scrollbar_handle_down": [255, 255, 255, 255],
 
-        "setting_category": "background_3",
         "setting_category_disabled": [75, 80, 83, 255],
-        "setting_category_hover": "background_3",
-        "setting_category_text": [255, 255, 255, 152],
         "setting_category_disabled_text": [255, 255, 255, 101],
-        "setting_category_active_text": [255, 255, 255, 204],
 
         "setting_control": "background_2",
         "setting_control_selected": [34, 39, 42, 38],
