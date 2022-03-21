@@ -3,7 +3,7 @@
     "name": "Right Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "HCTECH_HC300-M2H",
+        "machine": "hctech_hc300-m2h",
         "position": "1"
     },
 

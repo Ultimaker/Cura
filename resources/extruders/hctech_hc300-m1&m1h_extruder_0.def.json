@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "HCTECH_HC300-M1&M1H",
+        "machine": "hctech_hc300-m1&m1h",
         "position": "0"
     },
 
