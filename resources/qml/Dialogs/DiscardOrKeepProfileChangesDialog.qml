@@ -93,8 +93,8 @@ UM.Dialog
     leftButtons: [
         Cura.ComboBox
         {
-            implicitHeight: UM.Theme.getSize("combobox_wide").height
-            implicitWidth: UM.Theme.getSize("combobox_wide").width
+            implicitHeight: UM.Theme.getSize("combobox").height
+            implicitWidth: UM.Theme.getSize("combobox").width
 
             id: discardOrKeepProfileChangesDropDownButton
             textRole: "text"

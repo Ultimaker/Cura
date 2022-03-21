@@ -21,6 +21,13 @@ UM.Dialog
 
     property alias swatchGridColumns: colorSwatchGrid.columns
 
+    // In this case we would like to let the content of the dialog determine the size of the dialog
+    // however with the current implementation of the dialog this is not possible, so instead we calculate
+    // the size of the dialog ourselves.
+    // Ugly workaround for windows having overlapping elements due to incorrect dialog width
+    minimumWidth: content.width + (Qt.platform.os == "windows" ? 4 * margin : 2 * margin)
+    minimumHeight: content.height + buttonRow.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
+
     property alias color: colorInput.text
     property var swatchColors: [
         "#2161AF", "#57AFB2", "#F7B32D", "#E33D4A", "#C088AD",

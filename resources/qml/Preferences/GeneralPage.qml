@@ -148,6 +148,14 @@ UM.PreferencesPage
                 bottom: parent.bottom
                 right: parent.right
             }
+
+            onPositionChanged: {
+                // This removes focus from items when scrolling.
+                // This fixes comboboxes staying open and scrolling container
+                if (!activeFocus) {
+                    forceActiveFocus();
+                }
+            }
         }
 
         Column
@@ -215,7 +223,7 @@ UM.PreferencesPage
 
                     textRole: "text"
                     model: languageList
-                    implicitWidth: UM.Theme.getSize("combobox_wide").width
+                    implicitWidth: UM.Theme.getSize("combobox").width
                     implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
@@ -255,7 +263,7 @@ UM.PreferencesPage
                     id: currencyField
                     selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
-                    implicitWidth: UM.Theme.getSize("combobox_wide").width
+                    implicitWidth: UM.Theme.getSize("combobox").width
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
 
@@ -284,7 +292,7 @@ UM.PreferencesPage
 
                     model: themeList
                     textRole: "text"
-                    implicitWidth: UM.Theme.getSize("combobox_wide").width
+                    implicitWidth: UM.Theme.getSize("combobox").width
                     implicitHeight: currencyField.height
 
                     currentIndex:
@@ -554,8 +562,8 @@ UM.PreferencesPage
 
                         model: comboBoxList
                         textRole: "text"
-                        width: UM.Theme.getSize("combobox_wide").width
-                        height: UM.Theme.getSize("combobox_wide").height
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
 
                         currentIndex:
                         {
@@ -711,8 +719,8 @@ UM.PreferencesPage
                     Cura.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: UM.Theme.getSize("combobox_wide").width
-                        height: UM.Theme.getSize("combobox_wide").height
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
 
                         model: ListModel
                         {

@@ -161,7 +161,6 @@
         "travel_avoid_supports": { "value": "True" },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
         "wall_0_inset": { "value": "0" },
-        "wall_thickness": { "value": "1" },
         "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
         "meshfix_maximum_deviation": { "value": "layer_height / 4" },
         "optimize_wall_printing_order": { "value": "True" },
