@@ -316,7 +316,7 @@ Item
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             text: catalog.i18nc("@label", "Abort Print")
-            onClicked: confirmationDialog.visible = true
+            onClicked: confirmationDialog.open()
         }
 
         Cura.MessageDialog
@@ -325,7 +325,7 @@ Item
 
             title: catalog.i18nc("@window:title", "Abort print")
             text: catalog.i18nc("@label", "Are you sure you want to abort the print?")
-            standardButtons: Dialog.Yes | Dialog.No
+            standardButtons: Cura.MessageDialog.Yes | Cura.MessageDialog.No
             onAccepted: activePrintJob.setState("abort")
         }
     }
