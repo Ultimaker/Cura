@@ -10,6 +10,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.1
 
 import UM 1.5 as UM
 
@@ -17,14 +18,16 @@ Button
 {
     id: base
 
-    height: enabled ? UM.Theme.getSize("section_header").height : 0
+    height: UM.Theme.getSize("section_header").height
 
     property var expanded: false
-
+    property bool indented: false
     property alias arrow: categoryArrow
     property alias categoryIcon: icon.source
     property alias labelText: categoryLabel.text
-
+    property alias labelFont: categoryLabel.font
+    leftPadding: UM.Theme.getSize("narrow_margin").width
+    rightPadding: UM.Theme.getSize("narrow_margin").width
     states:
     [
         State
@@ -56,14 +59,13 @@ Button
     background: Rectangle
     {
         id: backgroundRectangle
-        height: base.height
 
         color: UM.Theme.getColor("setting_category")
         Behavior on color { ColorAnimation { duration: 50 } }
 
+        // Lining on top
         Rectangle
         {
-            //Lining on top
             anchors.top: parent.top
             color: UM.Theme.getColor("border_main")
             height: UM.Theme.getSize("default_lining").height
@@ -73,49 +75,48 @@ Button
 
     contentItem: Item
     {
-        anchors.fill: parent
+        id: content
+        //spacing: UM.Theme.getSize("narrow_margin").width
+
+        UM.RecolorImage
+        {
+            id: icon
+            source: ""
+            visible: icon.source != ""
+            anchors.verticalCenter: parent.verticalCenter
+            color: UM.Theme.getColor("setting_category_text")
+            width: visible ? UM.Theme.getSize("section_icon").width: 0
+            height: UM.Theme.getSize("section_icon").height
+            anchors.leftMargin: base.indented ? UM.Theme.getSize("default_margin").width: 0
+            sourceSize.width: width
+            sourceSize.height: width
+        }
 
         UM.Label
         {
             id: categoryLabel
-            anchors
-            {
-                left: parent.left
-                leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("section_icon").width
-                right: parent.right
-                verticalCenter: parent.verticalCenter
-            }
-            textFormat: Text.PlainText
+            Layout.fillWidth: true
+            anchors.right: categoryArrow.left
+            anchors.left: icon.right
+            anchors.leftMargin: base.indented ? UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width: UM.Theme.getSize("narrow_margin").width
+            anchors.verticalCenter: parent.verticalCenter
+            elide: Text.ElideRight
+            wrapMode: Text.NoWrap
             font: UM.Theme.getFont("medium_bold")
             color: UM.Theme.getColor("setting_category_text")
-            fontSizeMode: Text.HorizontalFit
-            minimumPointSize: 8
         }
 
         UM.RecolorImage
         {
             id: categoryArrow
-            anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.height: width
+            anchors.verticalCenter: parent.verticalCenter
+            sourceSize.width: width
+            sourceSize.height: height
             color: UM.Theme.getColor("setting_control_button")
             source: expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
         }
-    }
-
-    UM.RecolorImage
-    {
-        id: icon
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        color: UM.Theme.getColor("setting_category_text")
-        width: UM.Theme.getSize("section_icon").width
-        height: UM.Theme.getSize("section_icon").height
-        sourceSize.width: width
-        sourceSize.height: width
     }
 }

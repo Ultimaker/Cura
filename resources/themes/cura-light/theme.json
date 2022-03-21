@@ -431,8 +431,6 @@
         "layerview_nozzle": [224, 192, 16, 64],
         "layerview_starts": [255, 255, 255, 255],
 
-        "favorites_header_bar": [245, 245, 245, 255],
-        "favorites_row_selected": [196, 239, 255, 255],
 
         "monitor_printer_family_tag": [228, 228, 242, 255],
         "monitor_text_disabled": [238, 238, 238, 255],
@@ -561,10 +559,6 @@
         "medium_button_icon": [2, 2],
 
         "context_menu": [20, 2],
-
-        "favorites_row": [2, 2],
-        "favorites_button": [2, 2],
-        "favorites_button_icon": [1.2, 1.2],
 
         "icon_indicator": [1, 1],
 
