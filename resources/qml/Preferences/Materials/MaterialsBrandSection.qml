@@ -24,7 +24,8 @@ Column
     {
         width: parent.width
         labelText: sectionName
-        labelFont: UM.Theme.getFont("medium_bold")
+        height: UM.Theme.getSize("preferences_page_list_item").height
+        labelFont: UM.Theme.getFont("default_bold")
         expanded: brand_section.expanded
         onClicked:
         {
