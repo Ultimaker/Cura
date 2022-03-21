@@ -48,6 +48,17 @@ UM.ManagementPage
 
     onHamburgeButtonClicked: menu.popup(content_item, content_item.width - menu.width, hamburger_button.height)
 
+    isActiveModelFunction: function(model, id) {
+        if (model.is_read_only)
+        {
+            return (model.name == Cura.MachineManager.activeQualityOrQualityChangesName) && (model.intent_category == Cura.MachineManager.activeIntentCategory);
+        }
+        else
+        {
+            return model.name == Cura.MachineManager.activeQualityOrQualityChangesName;
+        }
+    }
+
     onCreateProfile:
     {
         createQualityDialog.object = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
