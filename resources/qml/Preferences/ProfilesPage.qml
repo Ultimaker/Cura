@@ -66,6 +66,18 @@ UM.ManagementPage
         // reset height to initial heigt
         hamburger_button.height = hamburerButtonHeight;
     }
+
+    isActiveModelFunction: function(model, id) {
+        if (model.is_read_only)
+        {
+            return (model.name == Cura.MachineManager.activeQualityOrQualityChangesName) && (model.intent_category == Cura.MachineManager.activeIntentCategory);
+        }
+        else
+        {
+            return model.name == Cura.MachineManager.activeQualityOrQualityChangesName;
+        }
+    }
+
     sectionRole: "section_name"
 
     model: qualityManagementModel
