@@ -16,6 +16,7 @@ Rectangle
 
     property var material: null
     property bool hovered: false
+    property bool isActive: material !== null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
 
     height: UM.Theme.getSize("preferences_page_list_item").height
     width: parent.width
@@ -52,6 +53,7 @@ Rectangle
     {
         id: materialLabel
         text: material != null ? `${material.brand} ${material.name}` : ""
+        font: isActive ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         elide: Text.ElideRight
         wrapMode: Text.NoWrap
         verticalAlignment: Text.AlignVCenter
