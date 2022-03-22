@@ -1,5 +1,6 @@
 {
     "name": "Modix Base Printer",
+	"version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Modix",
@@ -12,7 +13,8 @@
       
         "has_variants": true,
         "variants_name": "Nozzle Size",
-        "preferred_variant_name": "0.4 mm Nozzle",
+        "preferred_variant_name": "0.4 mm Nozzle"
+		
 	},
 	"overrides": {
         "machine_name": { "default_value": "Modix Base Printer" },
@@ -31,7 +33,7 @@
         "speed_wall_x": { "value": "speed_wall" },
         "speed_topbottom": { "value": "speed_print / 2" },
         "speed_roofing": { "value": "speed_topbottom" },
-        "speed_travel": { "value": 150.0},
+        "speed_travel": { "value": 150.0 },
         "speed_layer_0": { "value": 20.0 },
         "speed_print_layer_0": { "value": "speed_layer_0" },
         "speed_travel_layer_0": { "value": "speed_layer_0 * speed_travel / speed_print" },
@@ -101,5 +103,6 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
+		
     }
 }
