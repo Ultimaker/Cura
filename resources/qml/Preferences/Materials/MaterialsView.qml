@@ -94,7 +94,7 @@ Item
             ScrollBar.vertical: UM.ScrollBar
             {
                 id: scrollBar
-                parent: informationPage
+                parent: informationPage.parent
                 anchors
                 {
                     top: parent.top
@@ -536,7 +536,7 @@ Item
             ScrollBar.vertical: UM.ScrollBar
             {
                 id: settingScrollBar
-                parent: settingsPage
+                parent: settingsPage.parent
                 anchors
                 {
                     top: parent.top

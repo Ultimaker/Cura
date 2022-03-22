@@ -141,7 +141,7 @@ UM.PreferencesPage
         ScrollBar.vertical: UM.ScrollBar
         {
             id: preferencesScrollBar
-            parent: preferencesScrollView
+            parent: preferencesScrollView.parent
             anchors
             {
                 top: parent.top

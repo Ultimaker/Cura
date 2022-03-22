@@ -68,7 +68,7 @@ Item
         clip: true
 
         ScrollBar.vertical: UM.ScrollBar {
-            parent: container
+            parent: container.parent
             anchors
             {
                 top: parent.top
