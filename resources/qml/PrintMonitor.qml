@@ -21,7 +21,7 @@ ScrollView
     ScrollBar.vertical: UM.ScrollBar
     {
         id: scrollbar
-        parent: base
+        parent: base.parent
         anchors
         {
             right: parent.right

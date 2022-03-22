@@ -126,7 +126,7 @@ UM.ManagementPage
         ScrollBar.vertical: UM.ScrollBar
         {
             id: materialScrollBar
-            parent: materialScrollView
+            parent: materialScrollView.parent
             anchors
             {
                 top: parent.top
