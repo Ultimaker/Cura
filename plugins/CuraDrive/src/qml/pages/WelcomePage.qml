@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Window 2.2
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "../components"
@@ -28,18 +28,14 @@ Column
         width: Math.round(parent.width / 4)
     }
 
-    Label
+    UM.Label
     {
         id: welcomeTextLabel
         text: catalog.i18nc("@description", "Backup and synchronize your Cura settings.")
         width: Math.round(parent.width / 2)
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
-        verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: parent.horizontalCenter
         wrapMode: Label.WordWrap
-        renderType: Text.NativeRendering
     }
 
     Cura.PrimaryButton

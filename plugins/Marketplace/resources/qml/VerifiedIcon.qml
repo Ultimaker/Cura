@@ -12,7 +12,7 @@ Control
     implicitWidth: UM.Theme.getSize("card_tiny_icon").width
     implicitHeight: UM.Theme.getSize("card_tiny_icon").height
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         tooltipText:
         {

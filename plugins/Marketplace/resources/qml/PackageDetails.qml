@@ -6,7 +6,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
 
 import Cura 1.0 as Cura
-import UM 1.0 as UM
+import UM 1.5 as UM
 
 Item
 {
@@ -38,7 +38,7 @@ Item
             onClicked: contextStack.pop() //Remove this page, returning to the main package list or whichever thing is beneath it.
 
             tooltip: catalog.i18nc("@button:tooltip", "Back")
-            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignRight
             leftPadding: UM.Theme.getSize("narrow_margin").width
             rightPadding: leftPadding
             iconSource: UM.Theme.getIcon("ArrowLeft")

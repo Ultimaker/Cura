@@ -2,20 +2,34 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 import "PrinterOutput"
 
-
-Item
+ScrollView
 {
     id: base
-    UM.I18nCatalog { id: catalog; name: "cura"}
+    width: parent.width
+    height: parent.height
+
+    contentHeight: printMonitor.height
+
+    ScrollBar.vertical: UM.ScrollBar
+    {
+        id: scrollbar
+        parent: base
+        anchors
+        {
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
+        }
+    }
+    clip: true
 
     function showTooltip(item, position, text)
     {
@@ -53,7 +67,9 @@ Item
     {
         id: printMonitor
 
-        anchors.fill: parent
+        UM.I18nCatalog { id: catalog; name: "cura" }
+
+        width: parent.width - scrollbar.width
 
         property var extrudersModel: CuraApplication.getExtrudersModel()
 

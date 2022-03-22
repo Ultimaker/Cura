@@ -1,11 +1,10 @@
-// Copyright (c) 2021 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2022 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.2
+import QtQuick.Controls 2.15
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 import ".."
 
@@ -76,63 +75,72 @@ Item
             id: meshTypeButtons
             spacing: UM.Theme.getSize("default_margin").width
 
-            Button
+            UM.ToolbarButton
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                iconSource: UM.Theme.getIcon("Infill0");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("Infill0")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(normalMeshType);
-                style: UM.Theme.styles.tool_button;
                 z: 4
             }
 
-            Button
+            UM.ToolbarButton
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                iconSource: UM.Theme.getIcon("MeshTypeSupport");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("MeshTypeSupport")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(supportMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 3
             }
 
-            Button
+            UM.ToolbarButton
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                iconSource: UM.Theme.getIcon("MeshTypeIntersect");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("MeshTypeIntersect")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable:true
                 onClicked: setMeshType(infillMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 2
             }
 
-            Button
+            UM.ToolbarButton
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                iconSource: UM.Theme.getIcon("BlockSupportOverlaps");
+                toolItem: UM.RecolorImage
+                {
+                    source: UM.Theme.getIcon("BlockSupportOverlaps")
+                    color: UM.Theme.getColor("icon")
+                }
                 property bool needBorder: true
                 checkable: true
                 onClicked: setMeshType(antiOverhangMeshType)
-                style: UM.Theme.styles.tool_button;
                 z: 1
             }
 
         }
 
-        Label
+        UM.Label
         {
             id: meshTypeLabel
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
             height: UM.Theme.getSize("setting").height
-            verticalAlignment: Text.AlignVCenter
         }
 
 
@@ -179,192 +187,187 @@ Item
             // It kinda looks ugly otherwise (big panel, no content on it)
             id: currentSettings
             property int maximumHeight: 200 * screenScaleFactor
-            height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
+            height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height + UM.Theme.getSize("default_lining").height), maximumHeight)
             visible: currentMeshType != "anti_overhang_mesh"
 
-            ScrollView
+            ListView
             {
+                id: contents
                 height: parent.height
                 width: UM.Theme.getSize("setting").width + UM.Theme.getSize("default_margin").width
-                style: UM.Theme.styles.scrollview
 
-                ListView
+                ScrollBar.vertical: UM.ScrollBar {}
+                clip: true
+                spacing: UM.Theme.getSize("default_lining").height
+
+                model: UM.SettingDefinitionsModel
                 {
-                    id: contents
-                    spacing: UM.Theme.getSize("default_lining").height
-
-                    model: UM.SettingDefinitionsModel
+                    id: addedSettingsModel
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                    expanded: [ "*" ]
+                    filter:
                     {
-                        id: addedSettingsModel
-                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                        expanded: [ "*" ]
-                        filter:
+                        if (printSequencePropertyProvider.properties.value == "one_at_a_time")
                         {
-                            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
+                            return {"settable_per_meshgroup": true}
+                        }
+                        return {"settable_per_mesh": true}
+                    }
+                    exclude:
+                    {
+                        var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+
+                        if (currentMeshType == "support_mesh")
+                        {
+                            excluded_settings = excluded_settings.concat(base.allCategoriesExceptSupport)
+                        }
+                        return excluded_settings
+                    }
+
+                    visibilityHandler: Cura.PerObjectSettingVisibilityHandler
+                    {
+                        id: visibility_handler
+                        selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
+                    }
+
+                    // For some reason the model object is updated after removing him from the memory and
+                    // it happens only on Windows. For this reason, set the destroyed value manually.
+                    Component.onDestruction:
+                    {
+                        setDestroyed(true)
+                    }
+                }
+
+                delegate: Row
+                {
+                    spacing: - UM.Theme.getSize("default_margin").width
+                    Loader
+                    {
+                        id: settingLoader
+                        width: UM.Theme.getSize("setting").width
+                        height: UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height
+                        enabled: provider.properties.enabled === "True"
+                        property var definition: model
+                        property var settingDefinitionsModel: addedSettingsModel
+                        property var propertyProvider: provider
+                        property var globalPropertyProvider: inheritStackProvider
+                        property var externalResetHandler: false
+
+                        //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                        //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                        //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                        asynchronous: model.type != "enum" && model.type != "extruder"
+
+                        onLoaded:
+                        {
+                            settingLoader.item.showRevertButton = false
+                            settingLoader.item.showInheritButton = false
+                            settingLoader.item.showLinkedSettingIcon = false
+                            settingLoader.item.doDepthIndentation = false
+                            settingLoader.item.doQualityUserSettingEmphasis = false
+                        }
+
+                        sourceComponent:
+                        {
+                            switch(model.type)
                             {
-                                return {"settable_per_meshgroup": true}
+                                case "int":
+                                    return settingTextField
+                                case "[int]":
+                                    return settingTextField
+                                case "float":
+                                    return settingTextField
+                                case "enum":
+                                    return settingComboBox
+                                case "extruder":
+                                    return settingExtruder
+                                case "optional_extruder":
+                                    return settingOptionalExtruder
+                                case "bool":
+                                    return settingCheckBox
+                                case "str":
+                                    return settingTextField
+                                case "category":
+                                    return settingCategory
+                                default:
+                                    return settingUnknown
                             }
-                            return {"settable_per_mesh": true}
-                        }
-                        exclude:
-                        {
-                            var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
-
-                            if (currentMeshType == "support_mesh")
-                            {
-                                excluded_settings = excluded_settings.concat(base.allCategoriesExceptSupport)
-                            }
-                            return excluded_settings
-                        }
-
-                        visibilityHandler: Cura.PerObjectSettingVisibilityHandler
-                        {
-                            id: visibility_handler
-                            selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
-                        }
-
-                        // For some reason the model object is updated after removing him from the memory and
-                        // it happens only on Windows. For this reason, set the destroyed value manually.
-                        Component.onDestruction:
-                        {
-                            setDestroyed(true)
                         }
                     }
 
-                    delegate: Row
+                    Button
                     {
-                        spacing: - UM.Theme.getSize("default_margin").width
-                        Loader
+                        width: Math.round(UM.Theme.getSize("setting").height / 2)
+                        height: UM.Theme.getSize("setting").height
+
+                        onClicked: addedSettingsModel.setVisible(model.key, false)
+
+                        background: Item
                         {
-                            id: settingLoader
-                            width: UM.Theme.getSize("setting").width
-                            height: UM.Theme.getSize("section").height
-                            enabled: provider.properties.enabled === "True"
-                            property var definition: model
-                            property var settingDefinitionsModel: addedSettingsModel
-                            property var propertyProvider: provider
-                            property var globalPropertyProvider: inheritStackProvider
-                            property var externalResetHandler: false
-
-                            //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-                            //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-                            //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                            asynchronous: model.type != "enum" && model.type != "extruder"
-
-                            onLoaded:
+                            UM.RecolorImage
                             {
-                                settingLoader.item.showRevertButton = false
-                                settingLoader.item.showInheritButton = false
-                                settingLoader.item.showLinkedSettingIcon = false
-                                settingLoader.item.doDepthIndentation = false
-                                settingLoader.item.doQualityUserSettingEmphasis = false
-                            }
-
-                            sourceComponent:
-                            {
-                                switch(model.type)
-                                {
-                                    case "int":
-                                        return settingTextField
-                                    case "[int]":
-                                        return settingTextField
-                                    case "float":
-                                        return settingTextField
-                                    case "enum":
-                                        return settingComboBox
-                                    case "extruder":
-                                        return settingExtruder
-                                    case "optional_extruder":
-                                        return settingOptionalExtruder
-                                    case "bool":
-                                        return settingCheckBox
-                                    case "str":
-                                        return settingTextField
-                                    case "category":
-                                        return settingCategory
-                                    default:
-                                        return settingUnknown
-                                }
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: parent.width
+                                height: width
+                                sourceSize.height: width
+                                color: parent.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                source: UM.Theme.getIcon("Minus")
                             }
                         }
+                    }
 
-                        Button
+                    // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
+                    // so we bypass that to make a dedicated provider).
+                    UM.SettingPropertyProvider
+                    {
+                        id: provider
+
+                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                        key: model.key
+                        watchedProperties: [ "value", "enabled", "validationState" ]
+                        storeIndex: 0
+                        removeUnusedValue: false
+                    }
+
+                    UM.SettingPropertyProvider
+                    {
+                        id: inheritStackProvider
+                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                        key: model.key
+                        watchedProperties: [ "limit_to_extruder" ]
+                    }
+
+                    Connections
+                    {
+                        target: inheritStackProvider
+                        function onPropertiesChanged() { provider.forcePropertiesChanged() }
+                    }
+
+                    Connections
+                    {
+                        target: UM.ActiveTool
+                        function onPropertiesChanged()
                         {
-                            width: Math.round(UM.Theme.getSize("setting").height / 2)
-                            height: UM.Theme.getSize("setting").height
-
-                            onClicked: addedSettingsModel.setVisible(model.key, false)
-
-                            style: ButtonStyle
+                            // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
+                            // so here we connect to the signal and update the those values.
+                            if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
                             {
-                                background: Item
+                                const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId")
+                                if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
                                 {
-                                    UM.RecolorImage
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        width: parent.width
-                                        height: width
-                                        sourceSize.height: width
-                                        color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                        source: UM.Theme.getIcon("Minus")
-                                    }
+                                    addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId
                                 }
                             }
-                        }
-
-                        // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
-                        // so we bypass that to make a dedicated provider).
-                        UM.SettingPropertyProvider
-                        {
-                            id: provider
-
-                            containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
-                            key: model.key
-                            watchedProperties: [ "value", "enabled", "validationState" ]
-                            storeIndex: 0
-                            removeUnusedValue: false
-                        }
-
-                        UM.SettingPropertyProvider
-                        {
-                            id: inheritStackProvider
-                            containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
-                            key: model.key
-                            watchedProperties: [ "limit_to_extruder" ]
-                        }
-
-                        Connections
-                        {
-                            target: inheritStackProvider
-                            function onPropertiesChanged() { provider.forcePropertiesChanged() }
-                        }
-
-                        Connections
-                        {
-                            target: UM.ActiveTool
-                            function onPropertiesChanged()
+                            if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
                             {
-                                // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
-                                // so here we connect to the signal and update the those values.
-                                if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
+                                const containerId = UM.ActiveTool.properties.getValue("ContainerID")
+                                if (provider.containerStackId != containerId)
                                 {
-                                    const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId")
-                                    if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
-                                    {
-                                        addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId
-                                    }
+                                    provider.containerStackId = containerId
                                 }
-                                if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
+                                if (inheritStackProvider.containerStackId != containerId)
                                 {
-                                    const containerId = UM.ActiveTool.properties.getValue("ContainerID")
-                                    if (provider.containerStackId != containerId)
-                                    {
-                                        provider.containerStackId = containerId
-                                    }
-                                    if (inheritStackProvider.containerStackId != containerId)
-                                    {
-                                        inheritStackProvider.containerStackId = containerId
-                                    }
+                                    inheritStackProvider.containerStackId = containerId
                                 }
                             }
                         }
@@ -421,8 +424,6 @@ Item
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
-
-    SystemPalette { id: palette }
 
     Component
     {

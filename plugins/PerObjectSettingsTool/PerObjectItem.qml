@@ -3,25 +3,22 @@
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.1
 
 import UM 1.5 as UM
-
 import Cura 1.0 as Cura
 
 UM.TooltipArea
 {
-    x: model.depth * UM.Theme.getSize("default_margin").width;
-    text: model.description;
+    x: model.depth * UM.Theme.getSize("narrow_margin").width
+    text: model.description
 
-    width: childrenRect.width;
-    height: childrenRect.height;
+    width: childrenRect.width
+    height: childrenRect.height
 
     UM.CheckBox
     {
         id: check
-
         text: definition.label
         checked: addedSettingsModel.getVisible(model.key)
 

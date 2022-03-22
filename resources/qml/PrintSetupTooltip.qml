@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.0 as UM
+import UM 1.5 as UM
 
 UM.PointingRectangle
 {
@@ -88,18 +88,16 @@ UM.PointingRectangle
                 active: false //Only allow vertical scrolling. We should grow vertically only, but due to how the label is positioned it allocates space in the ScrollView horizontally.
             }
 
-            Label
+            UM.Label
             {
                 id: label
                 x: UM.Theme.getSize("tooltip_margins").width
                 y: UM.Theme.getSize("tooltip_margins").height
                 width: base.width - UM.Theme.getSize("tooltip_margins").width * 2
 
-                wrapMode: Text.Wrap;
+                wrapMode: Text.Wrap
                 textFormat: Text.RichText
-                font: UM.Theme.getFont("default");
-                color: UM.Theme.getColor("tooltip_text");
-                renderType: Text.NativeRendering
+                color: UM.Theme.getColor("tooltip_text")
             }
         }
     }
