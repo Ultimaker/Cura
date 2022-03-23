@@ -1,6 +1,6 @@
 {
     "name": "Modix Base Printer",
-	"version": 19,
+	"version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Modix",
