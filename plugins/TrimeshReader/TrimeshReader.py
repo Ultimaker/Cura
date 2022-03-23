@@ -1,4 +1,4 @@
-#  Copyright (c) 2019-2022 Ultimaker B.V.
+#  Copyright (c) 2019-2022 Ultimaker B.V., fieldOfView
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 # The _toMeshData function is taken from the AMFReader class which was built by fieldOfView.
