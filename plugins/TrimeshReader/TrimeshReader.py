@@ -1,5 +1,5 @@
-# Copyright (c) 2019 Ultimaker B.V., fieldOfView
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2019-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 # The _toMeshData function is taken from the AMFReader class which was built by fieldOfView.
 
@@ -29,14 +29,7 @@ class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".ctm", ".dae", ".gltf", ".glb", ".ply", ".zae"]
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name = "application/x-ctm",
-                comment = "Open Compressed Triangle Mesh",
-                suffixes = ["ctm"]
-            )
-        )
+        self._supported_extensions = [".dae", ".gltf", ".glb", ".ply", ".zae"]
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "model/vnd.collada+xml",
