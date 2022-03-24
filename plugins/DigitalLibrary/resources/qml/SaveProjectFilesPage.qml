@@ -67,11 +67,17 @@ Item
         }
 
         text: PrintInformation.jobName
-        font: UM.Theme.getFont("medium")
+        font: fontMetrics.font
+        height: fontMetrics.height + 2 * UM.Theme.getSize("thin_margin").height
         placeholderText: "Enter the name of the file."
         onAccepted: { if (saveButton.enabled) {saveButton.clicked()}}
     }
 
+    FontMetrics
+    {
+        id: fontMetrics
+        font: UM.Theme.getFont("medium")
+    }
 
     Rectangle
     {
