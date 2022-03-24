@@ -45,7 +45,7 @@ find_package(Python ${Python_VERSION} EXACT REQUIRED COMPONENTS Interpreter)
 message(STATUS "Linking and building ${project_name} against Python ${Python_VERSION}")
 if(NOT DEFINED Python_SITELIB_LOCAL)
     set(Python_SITELIB_LOCAL
-            ${Python_SITELIB}
+            "${Python_SITELIB}"
             CACHE PATH "Local alternative site-package location to install Cura" FORCE)
 endif()
 
@@ -66,22 +66,15 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     endif()
 endif()
 
-
-install(DIRECTORY resources
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
+install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
 
 include(CuraPluginInstall)
 
+install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR}
+        PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(DIRECTORY cura DESTINATION "${Python_SITELIB_LOCAL}")
+install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION "${Python_SITELIB_LOCAL}/cura/")
 if(NOT APPLE AND NOT WIN32)
-    install(FILES cura_app.py
-            DESTINATION ${CMAKE_INSTALL_BINDIR}
-            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-    install(DIRECTORY cura
-            DESTINATION ${Python_SITELIB_LOCAL}/cura
-            FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
-            DESTINATION ${Python_SITELIB_LOCAL}/cura)
-
     install(FILES ${CMAKE_BINARY_DIR}/com.ultimaker.cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES ${CMAKE_SOURCE_DIR}/resources/images/cura-icon.png
@@ -91,13 +84,4 @@ if(NOT APPLE AND NOT WIN32)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
             RENAME cura.xml )
-else()
-    install(FILES cura_app.py
-            DESTINATION ${CMAKE_INSTALL_BINDIR}
-            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-    install(DIRECTORY cura
-            DESTINATION ${Python_SITELIB_LOCAL}
-            FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
-            DESTINATION ${Python_SITELIB_LOCAL}/cura)
 endif()
