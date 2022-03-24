@@ -2,10 +2,10 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
-import UM 1.3 as UM
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 UM.Dialog
 {
@@ -18,12 +18,21 @@ UM.Dialog
     width: minimumWidth
     height: minimumHeight
     title: catalog.i18nc("@title:window", "Configuration Changes")
+    buttonSpacing: UM.Theme.getSize("narrow_margin").width
     rightButtons:
     [
-        Button
+        Cura.TertiaryButton
+        {
+            id: cancelButton
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked:
+            {
+                overrideConfirmationDialog.reject()
+            }
+        },
+        Cura.PrimaryButton
         {
             id: overrideButton
-            anchors.margins: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@action:button", "Override")
             onClicked:
             {
@@ -50,20 +59,10 @@ UM.Dialog
                 }
                 return true
             }
-        },
-        Button
-        {
-            id: cancelButton
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@action:button", "Cancel")
-            onClicked:
-            {
-                overrideConfirmationDialog.reject()
-            }
         }
     ]
 
-    Label
+    UM.Label
     {
         anchors
         {
@@ -72,7 +71,6 @@ UM.Dialog
             bottomMargin: 56 * screenScaleFactor // TODO: Theme!
         }
         wrapMode: Text.WordWrap
-        renderType: Text.NativeRendering
         text:
         {
             if (!printer || !printer.activePrintJob)

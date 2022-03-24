@@ -19,7 +19,10 @@ ListView
     property string bannerText
     property string bannerReadMoreUrl
     property var onRemoveBanner
-    property bool packagesManageableInListView
+
+    property bool showUpdateButton
+    property bool showDisableButton
+    property bool showInstallButton
 
     clip: true
 
@@ -53,8 +56,8 @@ ListView
         // Vertical ScrollBar, styled similarly to the scrollBar in the settings panel
         id: verticalScrollBar
         visible: packages.contentHeight > packages.height
-
-        background: Item{}
+        anchors.right: parent.right
+        background: Item {}
 
         contentItem: Rectangle
         {
@@ -81,9 +84,20 @@ ListView
 
         PackageCard
         {
-            manageableInListView: packages.packagesManageableInListView
+            showUpdateButton: packages.showUpdateButton
+            showDisableButton: packages.showDisableButton
+            showInstallButton: packages.showInstallButton
             packageData: model.package
-            width: parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("narrow_margin").width
+            width: {
+                if (verticalScrollBar.visible)
+                {
+                    return parent.width - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("default_margin").width
+                }
+                else
+                {
+                    return parent.width - UM.Theme.getSize("default_margin").width
+                }
+            }
             color: cardMouseArea.containsMouse ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("main_background")
         }
     }

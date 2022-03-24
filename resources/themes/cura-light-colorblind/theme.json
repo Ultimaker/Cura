@@ -8,7 +8,6 @@
 
         "x_axis": [200, 0, 0, 255],
         "y_axis": [64, 64, 255, 255],
-        "model_default": [156, 201, 36, 255],
         "model_overhang": [200, 0, 255, 255],
         "model_selection_outline": [12, 169, 227, 255],
 

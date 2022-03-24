@@ -113,8 +113,6 @@ Item
                             right: subpageImage.right
                         }
 
-                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
                         back_color: UM.Theme.getColor("viewport_overlay")
                         do_borders: false
 

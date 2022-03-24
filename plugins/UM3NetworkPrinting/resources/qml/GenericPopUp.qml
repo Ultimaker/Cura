@@ -3,8 +3,6 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Dialogs 1.1
 import QtGraphicalEffects 1.0
 import UM 1.3 as UM
 

@@ -12,16 +12,19 @@ import Cura 1.6 as Cura
 // are combined into the reusable "PackageCardHeader" component
 Item
 {
-    default property alias contents: contentItem.children;
+    default property alias contents: contentItem.children
 
     property var packageData
-    property bool showManageButtons: false
+    property bool showDisableButton: false
+    property bool showInstallButton: false
+    property bool showUpdateButton: false
+
 
     width: parent.width
     height: UM.Theme.getSize("card").height
 
     // card icon
-    Image
+    Item
     {
         id: packageItem
         anchors
@@ -33,7 +36,37 @@ Item
         width: UM.Theme.getSize("card_icon").width
         height: width
 
-        source: packageData.iconUrl != "" ? packageData.iconUrl : "../images/placeholder.svg"
+        property bool packageHasIcon: packageData.iconUrl != ""
+
+        Image
+        {
+            visible: parent.packageHasIcon
+            anchors.fill: parent
+            source: packageData.iconUrl
+            sourceSize.height: height
+            sourceSize.width: width
+        }
+
+        UM.RecolorImage
+        {
+            visible: !parent.packageHasIcon
+            anchors.fill: parent
+            sourceSize.height: height
+            sourceSize.width: width
+            color: UM.Theme.getColor("text")
+            source:
+            {
+                switch (packageData.packageType)
+                {
+                    case "plugin":
+                        return "../images/Plugin.svg";
+                    case "material":
+                        return "../images/Spool.svg";
+                    default:
+                        return "../images/placeholder.svg";
+                }
+            }
+        }
     }
 
     ColumnLayout
@@ -103,7 +136,7 @@ Item
                     color: externalLinkButton.hovered ? UM.Theme.getColor("action_button_hovered"): "transparent"
                     radius: externalLinkButton.width / 2
                 }
-                onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
+                onClicked: Qt.openUrlExternally(packageData.marketplaceURL)
             }
         }
 
@@ -157,7 +190,7 @@ Item
             ManageButton
             {
                 id: enableManageButton
-                visible: showManageButtons && packageData.isInstalled && !packageData.isToBeInstalled && packageData.packageType != "material"
+                visible: showDisableButton && packageData.isInstalled && !packageData.isToBeInstalled && packageData.packageType != "material"
                 enabled: !packageData.busy
 
                 button_style: !packageData.isActive
@@ -171,7 +204,7 @@ Item
             ManageButton
             {
                 id: installManageButton
-                visible: showManageButtons && (packageData.canDowngrade || !packageData.isBundled)
+                visible: showInstallButton && (packageData.canDowngrade || !packageData.isBundled)
                 enabled: !packageData.busy
                 busy: packageData.busy
                 button_style: !(packageData.isInstalled || packageData.isToBeInstalled)
@@ -201,7 +234,7 @@ Item
             ManageButton
             {
                 id: updateManageButton
-                visible: showManageButtons && packageData.canUpdate
+                visible: showUpdateButton && packageData.canUpdate
                 enabled: !packageData.busy
                 busy: packageData.busy
                 Layout.alignment: Qt.AlignTop

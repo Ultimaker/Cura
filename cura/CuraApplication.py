@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
@@ -43,7 +43,7 @@ from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType, toIntConversion
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -382,9 +382,10 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default=None,
                                                depends_on="value")
 
-        SettingDefinition.addSettingType("extruder", None, str, Validator)
-        SettingDefinition.addSettingType("optional_extruder", None, str, None)
+        SettingDefinition.addSettingType("extruder", None, toIntConversion, Validator)
+        SettingDefinition.addSettingType("optional_extruder", None, toIntConversion, None)
         SettingDefinition.addSettingType("[int]", None, str, None)
+
 
 
     def _initializeSettingFunctions(self):

@@ -166,7 +166,6 @@
         "top_bottom_thickness": { "value": "1" },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
         "wall_0_inset": { "value": "0" },
-        "wall_thickness": { "value": "1" },
         "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
     }
 }

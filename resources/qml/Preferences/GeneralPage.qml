@@ -2,11 +2,8 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.1
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
-
-import QtQuick.Controls 2.3 as NewControls
 
 import UM 1.5 as UM
 import Cura 1.1 as Cura
@@ -17,7 +14,7 @@ UM.PreferencesPage
     title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
 
-    width: parent.width
+    width: parent ? parent.width: 0
 
     function setDefaultLanguage(languageCode)
     {
@@ -103,14 +100,14 @@ UM.PreferencesPage
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
         UM.Preferences.resetPreference("view/zoom_to_mouse");
         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
-        UM.Preferences.resetPreference("view/top_layer_count");
-        topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
+        //UM.Preferences.resetPreference("view/top_layer_count");
+        //topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
         UM.Preferences.resetPreference("general/restore_window_geometry")
         restoreWindowPositionCheckbox.checked = boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
-        var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
-        setDefaultCameraMode(defaultCameraMode)
+        //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
+//        /setDefaultCameraMode(defaultCameraMode)
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
@@ -128,33 +125,60 @@ UM.PreferencesPage
         pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
     }
 
+    buttons: [
+        Cura.SecondaryButton
+        {
+            text: catalog.i18nc("@action:button", "Defaults")
+            onClicked: reset()
+        }
+    ]
     ScrollView
     {
         id: preferencesScrollView
         width: parent.width
         height: parent.height
 
+        ScrollBar.vertical: UM.ScrollBar
+        {
+            id: preferencesScrollBar
+            parent: preferencesScrollView.parent
+            anchors
+            {
+                top: parent.top
+                bottom: parent.bottom
+                right: parent.right
+            }
+
+            onPositionChanged: {
+                // This removes focus from items when scrolling.
+                // This fixes comboboxes staying open and scrolling container
+                if (!activeFocus) {
+                    forceActiveFocus();
+                }
+            }
+        }
+
         Column
         {
             UM.I18nCatalog{id: catalog; name: "cura"}
-            width: preferencesScrollView.viewport.width
+            width: preferencesScrollView.width - preferencesScrollBar.width
 
-            Label
+            UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Interface")
             }
 
             GridLayout
             {
                 id: interfaceGrid
-                columns: 4
+                columns: 2
                 width: parent.width
 
-                Label
+                UM.Label
                 {
                     id: languageLabel
-                    text: "Language:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
+                    text: "Language*:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
                 }
 
                 ListModel
@@ -193,13 +217,14 @@ UM.PreferencesPage
                     }
                 }
 
-                NewControls.ComboBox
+                Cura.ComboBox
                 {
                     id: languageComboBox
 
                     textRole: "text"
                     model: languageList
-                    Layout.fillWidth: true
+                    implicitWidth: UM.Theme.getSize("combobox").width
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -214,7 +239,9 @@ UM.PreferencesPage
 
                     currentIndex: setCurrentIndex()
 
-                    onActivated: if (model.get(index).code != "")
+                    onActivated:
+                    {
+                        if (model.get(index).code != "")
                         {
                             UM.Preferences.setValue("general/language", model.get(index).code);
                         }
@@ -222,25 +249,28 @@ UM.PreferencesPage
                         {
                             currentIndex = setCurrentIndex();
                         }
+                    }
                 }
 
-                Label
+                UM.Label
                 {
                     id: currencyLabel
                     text: catalog.i18nc("@label", "Currency:")
                 }
 
-                TextField
+                Cura.TextField
                 {
                     id: currencyField
+                    selectByMouse: true
                     text: UM.Preferences.getValue("cura/currency")
+                    implicitWidth: UM.Theme.getSize("combobox").width
                     onTextChanged: UM.Preferences.setValue("cura/currency", text)
                 }
 
-                Label
+                UM.Label
                 {
                     id: themeLabel
-                    text: catalog.i18nc("@label","Theme:")
+                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme*:")
                 }
 
                 ListModel
@@ -256,13 +286,14 @@ UM.PreferencesPage
                     }
                 }
 
-                NewControls.ComboBox
+                Cura.ComboBox
                 {
                     id: themeComboBox
 
                     model: themeList
                     textRole: "text"
-                    Layout.fillWidth: true
+                    implicitWidth: UM.Theme.getSize("combobox").width
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {
@@ -278,23 +309,6 @@ UM.PreferencesPage
                     }
                     onActivated: UM.Preferences.setValue("general/theme", model.get(index).code)
                 }
-            }
-
-            Label
-            {
-                id: languageCaption
-
-                //: Language change warning
-                text: catalog.i18nc("@label", "You will need to restart the application for these changes to have effect.")
-                wrapMode: Text.WordWrap
-                font.italic: true
-            }
-
-            Item
-            {
-                //: Spacer
-                height: UM.Theme.getSize("default_margin").height
-                width: UM.Theme.getSize("default_margin").width
             }
 
             UM.TooltipArea
@@ -314,6 +328,16 @@ UM.PreferencesPage
                 }
             }
 
+            UM.Label
+            {
+                id: languageCaption
+
+                //: Language change warning
+                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
+                wrapMode: Text.WordWrap
+                font.italic: true
+            }
+
             Item
             {
                 //: Spacer
@@ -321,9 +345,9 @@ UM.PreferencesPage
                 width: UM.Theme.getSize("default_margin").width
             }
 
-            Label
+            UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Viewport behavior")
             }
 
@@ -516,9 +540,9 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "What type of camera rendering should be used?")
                 Column
                 {
-                    spacing: 4 * screenScaleFactor
+                    spacing: UM.Theme.getSize("narrow_margin").height
 
-                    Label
+                    UM.Label
                     {
                         text: catalog.i18nc("@window:text", "Camera rendering:")
                     }
@@ -532,12 +556,14 @@ UM.PreferencesPage
                         }
                     }
 
-                    NewControls.ComboBox
+                    Cura.ComboBox
                     {
                         id: cameraComboBox
 
                         model: comboBoxList
                         textRole: "text"
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
 
                         currentIndex:
                         {
@@ -563,9 +589,9 @@ UM.PreferencesPage
                 width: UM.Theme.getSize("default_margin").height
             }
 
-            Label
+            UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label","Opening and saving files")
             }
 
@@ -579,6 +605,7 @@ UM.PreferencesPage
                 {
                     id: singleInstanceCheckbox
                     text: catalog.i18nc("@option:check","Use a single instance of Cura")
+
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
                 }
@@ -682,17 +709,18 @@ UM.PreferencesPage
 
                 Column
                 {
-                    spacing: 4 * screenScaleFactor
+                    spacing: UM.Theme.getSize("narrow_margin").height
 
-                    Label
+                    UM.Label
                     {
                         text: catalog.i18nc("@window:text", "Default behavior when opening a project file: ")
                     }
 
-                    NewControls.ComboBox
+                    Cura.ComboBox
                     {
                         id: choiceOnOpenProjectDropDownButton
-                        width: Math.round(250 * screenScaleFactor)
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
 
                         model: ListModel
                         {
@@ -736,31 +764,31 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                width: childrenRect.width;
-                height: childrenRect.height;
+                width: childrenRect.width
+                height: childrenRect.height
 
                 text: catalog.i18nc("@info:tooltip", "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again.")
 
                 Column
                 {
-                    spacing: 4 * screenScaleFactor
+                    spacing: UM.Theme.getSize("narrow_margin").height
 
-                    Label
+                    UM.Label
                     {
-                        font.bold: true
+                        font: UM.Theme.getFont("medium_bold")
                         text: catalog.i18nc("@label", "Profiles")
                     }
 
-                    Label
+                    UM.Label
                     {
                         text: catalog.i18nc("@window:text", "Default behavior for changed setting values when switching to a different profile: ")
                     }
 
-                    NewControls.ComboBox
+                    Cura.ComboBox
                     {
                         id: choiceOnProfileOverrideDropDownButton
-                        width: Math.round(250 * screenScaleFactor)
-                        popup.width: Math.round(350 * screenScaleFactor)
+                        width: UM.Theme.getSize("combobox_wide").width
+                        height: UM.Theme.getSize("combobox_wide").height
                         model: ListModel
                         {
                             id: discardOrKeepProfileListModel
@@ -800,9 +828,9 @@ UM.PreferencesPage
                 width: UM.Theme.getSize("default_margin").height
             }
 
-            Label
+            UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Privacy")
             }
             UM.TooltipArea
@@ -819,15 +847,18 @@ UM.PreferencesPage
                     onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
                 }
 
-                Button
+
+                UM.SimpleButton
                 {
-                    id: showMoreInfo
-                    anchors.top: sendDataCheckbox.bottom
-                    text: catalog.i18nc("@action:button", "More information")
-                    onClicked:
-                    {
-                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection();
-                    }
+                    onClicked: CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
+                    iconSource: UM.Theme.getIcon("Information")
+                    anchors.left: sendDataCheckbox.right
+                    anchors.verticalCenter: sendDataCheckbox.verticalCenter
+                    hoverBackgroundColor: UM.Theme.getColor("secondary_button_hover")
+                    backgroundRadius: width / 2
+                    height: UM.Theme.getSize("small_button_icon").height
+                    color: UM.Theme.getColor("small_button_text")
+                    width: height
                 }
             }
 
@@ -838,9 +869,9 @@ UM.PreferencesPage
                 width: UM.Theme.getSize("default_margin").height
             }
 
-            Label
+            UM.Label
             {
-                font.bold: true
+                font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Updates")
             }
 
@@ -859,7 +890,12 @@ UM.PreferencesPage
                 }
             }
 
-            ExclusiveGroup { id: curaUpdatesGroup }
+            ButtonGroup
+            {
+                id: curaUpdatesGroup
+                buttons: [checkUpdatesOptionBeta, checkUpdatesOptionStable]
+            }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
@@ -867,10 +903,10 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                Cura.RadioButton
                 {
+                    id: checkUpdatesOptionStable
                     text: catalog.i18nc("@option:radio", "Stable releases only")
-                    exclusiveGroup: curaUpdatesGroup
                     enabled: checkUpdatesCheckbox.checked
                     checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
                     onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
@@ -883,10 +919,10 @@ UM.PreferencesPage
                 text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                RadioButton
+                Cura.RadioButton
                 {
+                    id: checkUpdatesOptionBeta
                     text: catalog.i18nc("@option:radio", "Stable and Beta releases")
-                    exclusiveGroup: curaUpdatesGroup
                     enabled: checkUpdatesCheckbox.checked
                     checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
                     onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")

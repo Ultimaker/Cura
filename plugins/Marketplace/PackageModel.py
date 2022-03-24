@@ -39,6 +39,7 @@ class PackageModel(QObject):
         self._package_type = package_data.get("package_type", "")
         self._is_bundled = package_data.get("is_bundled", False)
         self._icon_url = package_data.get("icon_url", "")
+        self._marketplace_url = package_data.get("marketplace_url", "")
         self._display_name = package_data.get("display_name", catalog.i18nc("@label:property", "Unknown Package"))
         tags = package_data.get("tags", [])
         self._is_checked_by_ultimaker = (self._package_type == "plugin" and "verified" in tags) or (
@@ -209,6 +210,10 @@ class PackageModel(QObject):
     @pyqtProperty(str, constant = True)
     def packageId(self) -> str:
         return self._package_id
+
+    @pyqtProperty(str, constant=True)
+    def marketplaceURL(self)-> str:
+        return self._marketplace_url
 
     @pyqtProperty(str, constant = True)
     def packageType(self) -> str:

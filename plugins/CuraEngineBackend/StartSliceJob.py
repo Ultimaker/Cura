@@ -205,6 +205,13 @@ class StartSliceJob(Job):
         # Get the objects in their groups to print.
         object_groups = []
         if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            modifier_mesh_nodes = []
+
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                build_plate_number = node.callDecoration("getBuildPlateNumber")
+                if node.callDecoration("isNonPrintingMesh") and build_plate_number == self._build_plate_number:
+                    modifier_mesh_nodes.append(node)
+
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
@@ -221,7 +228,7 @@ class StartSliceJob(Job):
                         temp_list.append(child_node)
 
                 if temp_list:
-                    object_groups.append(temp_list)
+                    object_groups.append(temp_list + modifier_mesh_nodes)
                 Job.yieldThread()
             if len(object_groups) == 0:
                 Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
