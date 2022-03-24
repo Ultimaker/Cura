@@ -56,7 +56,7 @@
         "z_seam_corner": { "value": "z_seam_corner_weighted" },
         
         "infill_sparse_density": { "value": "15" },
-        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'Gyroid'" },
+        "infill_pattern": { "value": "Gyroid" },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
         "skin_overlap": { "value": 10.0 },
