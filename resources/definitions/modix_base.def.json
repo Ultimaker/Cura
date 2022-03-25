@@ -51,22 +51,21 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
+        "travel_compensate_overlapping_walls_0_enabled": { "value": false },
 
         "z_seam_corner": { "value": "z_seam_corner_weighted" },
         
         "infill_sparse_density": { "value": "15" },
-        "infill_pattern": { "value": "Gyroid" },
+        "infill_pattern": { "value": "'gyroid'" },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30.0 },
         "skin_overlap": { "value": 10.0 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
 
         "retraction_speed": { "default_value": 40 },
-        "retraction_retract_speed": { "default_value": 40 },
-        "retraction_prime_speed": { "default_value": 40 },
+        "retraction_retract_speed": { "value": 40 },
+        "retraction_prime_speed": { "value": 40 },
         
         "retraction_hop_enabled": 			{ "value": "support_enable" },
         "retraction_hop": 					{ "value": 2 },
