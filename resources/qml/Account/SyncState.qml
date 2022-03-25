@@ -1,7 +1,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Row // Sync state icon + message
@@ -77,28 +77,26 @@ Row // Sync state icon + message
         width: childrenRect.width
         height: childrenRect.height
 
-        Label
+        UM.Label
         {
             id: stateLabel
             // text is determined by State
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-            width: contentWidth + UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            wrapMode: Text.NoWrap
             height: contentHeight
-            verticalAlignment: Text.AlignVCenter
             visible: !Cura.API.account.manualSyncEnabled && !Cura.API.account.updatePackagesEnabled
         }
 
-        Label
+        UM.Label
         {
             id: updatePackagesButton
             text: catalog.i18nc("@button", "Install pending updates")
             color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
             height: contentHeight
+            wrapMode: Text.NoWrap
             width: contentWidth + UM.Theme.getSize("default_margin").height
             visible: Cura.API.account.updatePackagesEnabled
 
@@ -112,14 +110,13 @@ Row // Sync state icon + message
             }
         }
 
-        Label
+        UM.Label
         {
             id: accountSyncButton
             text: catalog.i18nc("@button", "Check for account updates")
             color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.NoWrap
             height: contentHeight
             width: contentWidth + UM.Theme.getSize("default_margin").height
             visible: Cura.API.account.manualSyncEnabled

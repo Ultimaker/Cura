@@ -1,11 +1,10 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.15
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -87,10 +86,9 @@ Item
             width: parent.width
             height: UM.Theme.getSize("print_setup_slider_handle").height // The handle is the widest element of the slider
 
-            minimumValue: 0
-            maximumValue: 100
+            from: 0
+            to: 100
             stepSize: 1
-            tickmarksEnabled: true
 
             // disable slider when gradual support is enabled
             enabled: parseInt(infillSteps.properties.value) == 0
@@ -98,53 +96,37 @@ Item
             // set initial value from stack
             value: parseInt(infillDensity.properties.value)
 
-            style: SliderStyle
+            //Draw line
+            background: Rectangle
             {
-                //Draw line
-                groove: Item
-                {
-                    Rectangle
-                    {
-                        height: UM.Theme.getSize("print_setup_slider_groove").height
-                        width: control.width - UM.Theme.getSize("print_setup_slider_handle").width
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
-                    }
-                }
+                id: backgroundLine
+                height: UM.Theme.getSize("print_setup_slider_groove").height
+                width: infillSlider.width - UM.Theme.getSize("print_setup_slider_handle").width
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
 
-                handle: Rectangle
-                {
-                    id: handleButton
-                    color: control.enabled ? UM.Theme.getColor("primary") : UM.Theme.getColor("quality_slider_unavailable")
-                    implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
-                    implicitHeight: implicitWidth
-                    radius: Math.round(implicitWidth / 2)
-                    border.color: UM.Theme.getColor("slider_groove_fill")
-                    border.width: UM.Theme.getSize("default_lining").height
-                }
-
-                tickmarks: Repeater
+                Repeater
                 {
                     id: repeater
-                    model: control.maximumValue / control.stepSize + 1
+                    anchors.fill: parent
+                    model: infillSlider.to / infillSlider.stepSize + 1
 
                     Rectangle
                     {
-                        color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                        color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
                         implicitWidth: UM.Theme.getSize("print_setup_slider_tickmarks").width
                         implicitHeight: UM.Theme.getSize("print_setup_slider_tickmarks").height
                         anchors.verticalCenter: parent.verticalCenter
 
                         // Do not use Math.round otherwise the tickmarks won't be aligned
-                        x: ((styleData.handleWidth / 2) - (implicitWidth / 2) + (index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))))
-                        radius: Math.round(implicitWidth / 2)
+                        x: ((handleButton.width / 2) - (backgroundLine.implicitWidth / 2) + (index * ((repeater.width - handleButton.width) / (repeater.count-1))))
+                        radius: Math.round(backgroundLine.implicitWidth / 2)
                         visible: (index % 10) == 0 // Only show steps of 10%
 
-                        Label
+                        UM.Label
                         {
                             text: index
-                            font: UM.Theme.getFont("default")
                             visible: (index % 20) == 0 // Only show steps of 20%
                             anchors.horizontalCenter: parent.horizontalCenter
                             y: UM.Theme.getSize("thin_margin").height
@@ -155,36 +137,53 @@ Item
                 }
             }
 
-            onValueChanged:
+            handle: Rectangle
             {
-                // Don't round the value if it's already the same
-                if (parseInt(infillDensity.properties.value) == infillSlider.value)
+                id: handleButton
+                x: infillSlider.leftPadding + infillSlider.visualPosition * (infillSlider.availableWidth - width)
+                y: infillSlider.topPadding + infillSlider.availableHeight / 2 - height / 2
+                color: infillSlider.enabled ? UM.Theme.getColor("primary") : UM.Theme.getColor("quality_slider_unavailable")
+                implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
+                implicitHeight: implicitWidth
+                radius: Math.round(implicitWidth / 2)
+                border.color: UM.Theme.getColor("slider_groove_fill")
+                border.width: UM.Theme.getSize("default_lining").height
+            }
+
+            Connections
+            {
+                target: infillSlider
+                function onValueChanged()
                 {
-                    return
-                }
+                    // Don't round the value if it's already the same
+                    if (parseInt(infillDensity.properties.value) == infillSlider.value)
+                    {
+                        return
+                    }
 
-                // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
-                var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
+                    // Round the slider value to the nearest multiple of 10 (simulate step size of 10)
+                    var roundedSliderValue = Math.round(infillSlider.value / 10) * 10
 
-                // Update the slider value to represent the rounded value
-                infillSlider.value = roundedSliderValue
+                    // Update the slider value to represent the rounded value
+                    infillSlider.value = roundedSliderValue
 
-                // Update value only if the Recommended mode is Active,
-                // Otherwise if I change the value in the Custom mode the Recommended view will try to repeat
-                // same operation
-                var active_mode = UM.Preferences.getValue("cura/active_mode")
+                    // Update value only if the Recommended mode is Active,
+                    // Otherwise if I change the value in the Custom mode the Recommended view will try to repeat
+                    // same operation
+                    const active_mode = UM.Preferences.getValue("cura/active_mode")
 
-                if (active_mode == 0 || active_mode == "simple")
-                {
-                    Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
-                    Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
+                    if (active_mode == 0 || active_mode == "simple")
+                    {
+                        Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
+                        Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
+                    }
                 }
             }
         }
     }
 
     //  Gradual Support Infill Checkbox
-    CheckBox
+    UM.CheckBox
     {
         id: enableGradualInfillCheckBox
         property alias _hovered: enableGradualInfillMouseArea.containsMouse
@@ -194,7 +193,6 @@ Item
         anchors.left: infillSliderContainer.left
 
         text: catalog.i18nc("@label", "Gradual infill")
-        style: UM.Theme.styles.checkbox
         enabled: recommendedPrintSetup.settingsEnabled
         visible: infillSteps.properties.enabled == "True"
         checked: parseInt(infillSteps.properties.value) > 0

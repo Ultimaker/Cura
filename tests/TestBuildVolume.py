@@ -57,6 +57,7 @@ class TestCalculateBedAdhesionSize:
                              "machine_depth": {"value": 200},
                              "skirt_line_count": {"value": 0},
                              "skirt_gap": {"value": 0},
+                             "brim_gap": {"value": 0},
                              "raft_margin": {"value": 0},
                              "material_shrinkage_percentage": {"value": 100.0},
                              "material_shrinkage_percentage_xy": {"value": 100.0},
@@ -163,8 +164,9 @@ class TestComputeDisallowedAreasStatic:
 
 class TestUpdateRaftThickness:
     setting_property_dict = {"raft_base_thickness": {"value": 1},
+                             "raft_interface_layers": {"value": 2},
                              "raft_interface_thickness": {"value": 1},
-                             "raft_surface_layers": {"value": 1},
+                             "raft_surface_layers": {"value": 3},
                              "raft_surface_thickness": {"value": 1},
                              "raft_airgap": {"value": 1},
                              "layer_0_z_overlap": {"value": 1},
@@ -193,7 +195,7 @@ class TestUpdateRaftThickness:
 
         assert build_volume.getRaftThickness() == 0
         build_volume._updateRaftThickness()
-        assert build_volume.getRaftThickness() == 3
+        assert build_volume.getRaftThickness() == 6  # 1 base layer of 1mm, 2 interface layers of 1mm each, 3 surface layer of 1mm.
         assert build_volume.raftThicknessChanged.emit.call_count == 1
 
     def test_adhesionIsNotRaft(self, build_volume: BuildVolume):

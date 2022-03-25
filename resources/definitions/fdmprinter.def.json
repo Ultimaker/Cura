@@ -1102,38 +1102,6 @@
                     "default_value": "inward_distributed",
                     "limit_to_extruder": "wall_0_extruder_nr"
                 },
-                "wall_transition_threshold": {
-                    "label": "Middle Line Threshold",
-                    "description": "The smallest line width, as a factor of the normal line width, below which it will choose to use fewer, but wider lines to fill the available space the wall needs to occupy. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                    "type": "float",
-                    "unit": "%",
-                    "default_value": 90,
-                    "minimum_value": "1",
-                    "maximum_value": "99",
-                    "children":
-                    {
-                        "wall_split_middle_threshold": {
-                            "label": "Split Middle Line Threshold",
-                            "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                            "type": "float",
-                            "unit": "%",
-                            "default_value": 50,
-                            "value": "wall_transition_threshold",
-                            "minimum_value": "1",
-                            "maximum_value": "99"
-                        },
-                        "wall_add_middle_threshold": {
-                            "label": "Add Middle Line Threshold",
-                            "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
-                            "type": "float",
-                            "unit": "%",
-                            "default_value": 50,
-                            "value": "wall_transition_threshold * 8 / 9",
-                            "minimum_value": "1",
-                            "maximum_value": "99"
-                        }
-                    }
-                },
                 "wall_transition_length":
                 {
                     "label": "Wall Transition Length",
@@ -1152,14 +1120,15 @@
                     "label": "Wall Distribution Count",
                     "description": "The number of walls, counted from the center, over which the variation needs to be spread. Lower values mean that the outer walls don't change in width.",
                     "type": "int",
+                    "maximum_value": "999999",
                     "default_value": 1,
                     "minimum_value": "1",
                     "enabled": "beading_strategy_type == 'inward_distributed'"
                 },
                 "wall_transition_angle":
                 {
-                    "label": "Wall Transition Angle",
-                    "description": "When transitioning between different numbers of walls as the part becomes thinner, two adjacent walls will join together at this angle. This can make the walls come together faster than what the Wall Transition Length indicates, filling the space better.",
+                    "label": "Wall Transitioning Threshold Angle",
+                    "description": "When to create transitions between even and odd numbers of walls. A wedge shape with an angle greater than this setting will not have transitions and no walls will be printed in the center to fill the remaining space. Reducing this setting reduces the number and length of these center walls, but may leave gaps or overextrude.",
                     "type": "float",
                     "unit": "°",
                     "default_value": 10,
@@ -1208,8 +1177,8 @@
                 },
                 "optimize_wall_printing_order":
                 {
-                    "label": "Order Inner Walls By Inset",
-                    "description": "Order inner wall printing by inset-index, instead of by (hole) region.",
+                    "label": "Optimize Wall Printing Order",
+                    "description": "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
@@ -1245,6 +1214,71 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "min_wall_line_width":
+                {
+                    "label": "Minimum Wall Line Width",
+                    "description": "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width.",
+                    "unit": "mm",
+                    "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                    "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
+                    "default_value": 0.3,
+                    "value": "machine_nozzle_size * .75",
+                    "type": "float",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "min_even_wall_line_width":
+                        {
+                            "label": "Minimum Even Wall Line Width",
+                            "description": "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width.",
+                            "unit": "mm",
+                            "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                            "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
+                            "default_value": 0.3,
+                            "value": "min_wall_line_width",
+                            "type": "float",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_split_middle_threshold": {
+                                    "label": "Split Middle Line Threshold",
+                                    "description": "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                                    "type": "float",
+                                    "unit": "%",
+                                    "default_value": 50,
+                                    "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
+                                    "minimum_value": "1",
+                                    "maximum_value": "99"
+                                }
+                            }
+                        },
+                        "min_odd_wall_line_width":
+                        {
+                            "label": "Minimum Odd Wall Line Width",
+                            "description": "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,",
+                            "unit": "mm",
+                            "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
+                            "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
+                            "default_value": 0.3,
+                            "value": "min_wall_line_width",
+                            "type": "float",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_add_middle_threshold": {
+                                    "label": "Add Middle Line Threshold",
+                                    "description": "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall.",
+                                    "type": "float",
+                                    "unit": "%",
+                                    "default_value": 75,
+                                    "value": "max(1, min(99, 100 * min_odd_wall_line_width / wall_line_width_x))",
+                                    "minimum_value": "1",
+                                    "maximum_value": "99"
+                                }
+                            }
+                        }
+                    }
+                },
                 "fill_outline_gaps": {
                     "label": "Print Thin Walls",
                     "description": "Print pieces of the model which are horizontally thinner than the nozzle size.",
@@ -1269,10 +1303,10 @@
                 },
                 "min_bead_width":
                 {
-                    "label": "Minimum Wall Line Width",
+                    "label": "Minimum Thin Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "wall_line_width_0 * (100.0 + wall_split_middle_threshold)/200",
+                    "value": "machine_nozzle_size * .75",
                     "default_value": 0.2,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
@@ -1443,6 +1477,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "top_layers - 1",
                     "type": "int",
+                    "maximum_value": "999999",
                     "value": "0",
                     "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true,
@@ -1496,6 +1531,7 @@
                                     "default_value": 8,
                                     "minimum_value": "0",
                                     "maximum_value_warning": "100",
+                                    "maximum_value": "999999",
                                     "type": "int",
                                     "minimum_value_warning": "2",
                                     "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
@@ -1526,8 +1562,9 @@
                                     "minimum_value": "0",
                                     "minimum_value_warning": "2",
                                     "default_value": 6,
+                                    "maximum_value": "999999",
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "999999 if infill_sparse_density == 100 and not magic_spiralize else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -1537,6 +1574,7 @@
                                     "description": "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "minimum_value": "0",
                                     "minimum_value_warning": "2",
+                                    "maximum_value": "999999",
                                     "default_value": 6,
                                     "type": "int",
                                     "value": "bottom_layers",
@@ -2058,6 +2096,7 @@
                     "description": "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
                     "default_value": 1,
                     "type": "int",
+                    "maximum_value": "999999",
                     "minimum_value": "1",
                     "maximum_value_warning": "infill_line_distance / infill_line_width",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
@@ -2243,6 +2282,7 @@
                               "minimum_value": "0",
                               "maximum_value_warning": "10",
                               "type": "int",
+                              "maximum_value": "999999",
                               "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
                               "limit_to_extruder": "infill_extruder_nr",
                               "enabled": "infill_sparse_density > 0",
@@ -3267,6 +3307,7 @@
                     "default_value": 2,
                     "resolve": "round(sum(extruderValues('speed_slowdown_layers')) / len(extruderValues('speed_slowdown_layers')))",
                     "minimum_value": "0",
+                    "maximum_value": "999999",
                     "maximum_value_warning": "3.2 / resolveOrValue('layer_height')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -4368,6 +4409,7 @@
                             "default_value": "0",
                             "value": "support_extruder_nr",
                             "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                            "resolve": "max(extruderValues('support_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "children":
@@ -4380,6 +4422,7 @@
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
                                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "resolve": "max(extruderValues('support_roof_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 },
@@ -4391,6 +4434,7 @@
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
                                     "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1",
+                                    "resolve": "max(extruderValues('support_bottom_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
                                 }
@@ -5423,6 +5467,7 @@
                     "default_value": "0",
                     "value": "int(defaultExtruderPosition())",
                     "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
+                    "resolve": "max(extruderValues('adhesion_extruder_nr'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -5446,6 +5491,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_base_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5457,6 +5503,7 @@
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
                             "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_interface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -5467,7 +5514,8 @@
                             "type": "extruder",
                             "default_value": "0",
                             "value": "adhesion_extruder_nr",
-                            "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
+                            "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "max(extruderValues('raft_surface_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
@@ -5652,7 +5700,7 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "raft_interface_extruder_nr"
+                    "limit_to_extruder": "raft_surface_extruder_nr"
                 },
                 "raft_surface_thickness":
                 {
@@ -5665,7 +5713,7 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
@@ -5681,7 +5729,7 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "machine_nozzle_size * 0.1",
                     "maximum_value_warning": "machine_nozzle_size * 2",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
@@ -5696,11 +5744,24 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "raft_surface_line_width",
                     "maximum_value_warning": "raft_surface_line_width * 3",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "value": "raft_surface_line_width",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
+                },
+                "raft_interface_layers":
+                {
+                    "label": "Raft Middle Layers",
+                    "description": "The number of layers between the base and the surface of the raft. These comprise the main thickness of the raft. Increasing this creates a thicker, sturdier raft.",
+                    "type": "int",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_interface_extruder_nr"
                 },
                 "raft_interface_thickness":
                 {
@@ -5713,7 +5774,7 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.04",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_interface_extruder_nr"
@@ -5729,7 +5790,7 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "machine_nozzle_size * 0.5",
                     "maximum_value_warning": "machine_nozzle_size * 3",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_interface_extruder_nr"
@@ -5745,7 +5806,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "raft_interface_line_width",
                     "maximum_value_warning": "15.0",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_interface_extruder_nr"
@@ -5825,7 +5886,7 @@
                             "minimum_value": "0.1",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "100",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                             "value": "raft_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
@@ -5842,7 +5903,7 @@
                             "minimum_value": "0.1",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "150",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "raft_interface_extruder_nr"
@@ -5892,7 +5953,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled') and raft_surface_layers > 0",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "raft_surface_extruder_nr"
                         },
@@ -5907,7 +5968,7 @@
                             "minimum_value": "0.1",
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('acceleration_enabled') and raft_interface_layers > 0",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "raft_interface_extruder_nr"
                         },
@@ -5955,7 +6016,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled') and raft_surface_layers > 0",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "raft_surface_extruder_nr"
                         },
@@ -5970,7 +6031,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and resolveOrValue('jerk_enabled') and raft_interface_layers > 0",
                             "settable_per_mesh": false,
                             "limit_to_extruder": "raft_interface_extruder_nr"
                         },
@@ -6016,7 +6077,7 @@
                             "maximum_value": "100",
                             "default_value": 0,
                             "value": "raft_fan_speed",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "raft_surface_extruder_nr"
@@ -6031,7 +6092,7 @@
                             "maximum_value": "100",
                             "default_value": 0,
                             "value": "raft_fan_speed",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "raft_interface_extruder_nr"
@@ -6400,10 +6461,8 @@
                     "description": "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller.",
                     "type": "float",
                     "unit": "μm²",
-                    "default_value": 2000,
+                    "default_value": 50000,
                     "minimum_value": "0",
-                    "minimum_value_warning": "500",
-                    "maximum_value_warning": "50000",
                     "settable_per_mesh": true
                 }
             }
@@ -6954,7 +7013,6 @@
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "enabled": false,
                     "settable_per_mesh": true
                 },
                 "magic_fuzzy_skin_outside_only":
@@ -6963,7 +7021,7 @@
                     "description": "Jitter only the parts' outlines and not the parts' holes.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "magic_fuzzy_skin_enabled and False" ,
+                    "enabled": "magic_fuzzy_skin_enabled",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -6976,7 +7034,7 @@
                     "default_value": 0.3,
                     "minimum_value": "0.001",
                     "maximum_value_warning": "wall_line_width_0",
-                    "enabled": "magic_fuzzy_skin_enabled and False",
+                    "enabled": "magic_fuzzy_skin_enabled",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -6991,7 +7049,7 @@
                     "minimum_value_warning": "0.1",
                     "maximum_value_warning": "10",
                     "maximum_value": "2 / magic_fuzzy_skin_thickness",
-                    "enabled": "magic_fuzzy_skin_enabled and False",
+                    "enabled": "magic_fuzzy_skin_enabled",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
@@ -7007,7 +7065,7 @@
                             "minimum_value_warning": "0.1",
                             "maximum_value_warning": "10",
                             "value": "10000 if magic_fuzzy_skin_point_density == 0 else 1 / magic_fuzzy_skin_point_density",
-                            "enabled": "magic_fuzzy_skin_enabled and False",
+                            "enabled": "magic_fuzzy_skin_enabled",
                             "limit_to_extruder": "wall_0_extruder_nr",
                             "settable_per_mesh": true
                         }

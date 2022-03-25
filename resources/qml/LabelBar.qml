@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 
 // The labelBar shows a set of labels that are evenly spaced from one another.
 // The first item is aligned to the left, the last is aligned to the right.
@@ -34,13 +34,10 @@ Item
                 Layout.maximumWidth: Math.round(index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1))
                 height: label.height
 
-                Label
+                UM.Label
                 {
                     id: label
                     text: model[modelKey]
-                    color: UM.Theme.getColor("text")
-                    font: UM.Theme.getFont("default")
-                    renderType: Text.NativeRendering
                     height: contentHeight
                     anchors
                     {

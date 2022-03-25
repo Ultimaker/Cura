@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 // Header of the popup
@@ -16,20 +16,17 @@ Cura.RoundedRectangle
     property alias xPosCloseButton: closeButton.left
 
     height: UM.Theme.getSize("expandable_component_content_header").height
-    color: UM.Theme.getColor("secondary")
+    color: UM.Theme.getColor("background_1")
     cornerSide: Cura.RoundedRectangle.Direction.Up
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
     radius: UM.Theme.getSize("default_radius").width
 
-    Label
+    UM.Label
     {
         id: headerLabel
         text: ""
         font: UM.Theme.getFont("medium")
-        renderType: Text.NativeRendering
-        verticalAlignment: Text.AlignVCenter
-        color: UM.Theme.getColor("small_button_text")
         height: parent.height
 
         anchors

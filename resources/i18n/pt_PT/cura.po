@@ -6920,7 +6920,7 @@ msgstr "Verificador de Modelos"
 
 #~ msgctxt "@info:status"
 #~ msgid "Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. Please scale or rotate models to fit, or enable an extruder."
-#~ msgstr "Sem conteúdo para segmentar porque nenhum dos modelos está dentro do volume de construção ou porque os mesmos estão atribuídos a um extrusor desativado. Dimensione ou rode os modelos para os adaptar ou ative o extrusor."
+#~ msgstr "Sem conteúdo para seccionar porque nenhum dos modelos está dentro do volume de construção ou porque os mesmos estão atribuídos a um extrusor desativado. Dimensione ou rode os modelos para os adaptar ou ative o extrusor."
 
 #~ msgctxt "@info:backup_status"
 #~ msgid "There was an error listing your backups."
