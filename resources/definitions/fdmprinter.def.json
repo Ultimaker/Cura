@@ -1214,7 +1214,7 @@
                         "inside_out": "Inside To Outside",
                         "outside_in": "Outside To Inside"
                     },
-                    "default_value": "center_last",
+                    "default_value": "outside_in",
                     "settable_per_mesh": true
                 },
                 "wall_order_center_last":
