@@ -758,6 +758,16 @@
                     "default_value": 10.0,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "machine_scale_fan_speed_zero_to_one":
+                {
+                    "label": "Scale Fan Speed To 0-1",
+                    "description": "Scale the fan speed to be between 0 and 1 instead of between 0 and 256.",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
