@@ -1217,15 +1217,6 @@
                     "default_value": "outside_in",
                     "settable_per_mesh": true
                 },
-                "wall_order_center_last":
-                {
-                    "label": "Delay Middle Lines Until After All Walls",
-                    "description": "For thin geometry Cura might generate an odd number of walls smaller than the Wall Line Count. This setting control whether the middle line is printed after all even walls, rather than interspersed with the even walls. Depending on the Middle Line Threshold values the middle lines might have more width variation, which could cause issues for the even walls if printed interspersed. Disabling this setting reduces the travel time slightly.",
-                    "type": "bool",
-                    "default_value": false,
-                    "limit_to_extruder": "wall_x_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "alternate_extra_perimeter":
                 {
                     "label": "Alternate Extra Wall",
