@@ -17,8 +17,7 @@ UM.Dialog
     minimumWidth: UM.Theme.getSize("popup_dialog").width
     minimumHeight: UM.Theme.getSize("popup_dialog").height
     width: minimumWidth
-    height: Math.max(dialogSummaryItem.height + 2 * buttonsItem.height, minimumHeight) // 2 * button height to also have some extra space around the button relative to the button size
-
+    
     property int comboboxHeight: UM.Theme.getSize("default_margin").height
 
     onClosing: manager.notifyClosed()
@@ -67,7 +66,7 @@ UM.Dialog
             Column
             {
                 width: parent.width
-                height: cildrenRect.height
+                height: childrenRect.height
 
                 UM.Label
                 {
@@ -149,7 +148,7 @@ UM.Dialog
                 Column
                 {
                     width: parent.width
-                    height: cildrenRect.height
+                    height: childrenRect.height
 
                     UM.Label
                     {
@@ -225,7 +224,7 @@ UM.Dialog
                 Column
                 {
                     width: parent.width
-                    height: cildrenRect.height
+                    height: childrenRect.height
 
                     UM.Label
                     {
@@ -341,7 +340,7 @@ UM.Dialog
                 Column
                 {
                     width: parent.width
-                    height: cildrenRect.height
+                    height: childrenRect.height
                     Row
                     {
                         height: childrenRect.height
@@ -382,7 +381,7 @@ UM.Dialog
             Column
             {
                 width: parent.width
-                height: cildrenRect.height
+                height: childrenRect.height
 
                 UM.Label
                 {

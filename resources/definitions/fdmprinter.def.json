@@ -758,6 +758,16 @@
                     "default_value": 10.0,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "machine_scale_fan_speed_zero_to_one":
+                {
+                    "label": "Scale Fan Speed To 0-1",
+                    "description": "Scale the fan speed to be between 0 and 1 instead of between 0 and 256.",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
@@ -1211,8 +1221,6 @@
                     "unit": "mm",
                     "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                     "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
-                    "minimum_value_warning_old": "(0.1 + 0.4 * machine_nozzle_size) if inset_direction == \"outside_in\" else 0.1 * machine_nozzle_size",
-                    "maximum_value_warning_old": "2 * machine_nozzle_size",
                     "default_value": 0.3,
                     "value": "machine_nozzle_size * .75",
                     "type": "float",
@@ -1239,7 +1247,6 @@
                                     "unit": "%",
                                     "default_value": 50,
                                     "value": "max(1, min(99, 100 * (2 * min_even_wall_line_width - wall_line_width_0) / wall_line_width_0))",
-                                    "value_explicit": "100 * (2 * min_even_wall_line_width - wall_line_width_0) / (wall_line_width_0 + wall_line_width_x - wall_line_width_0)",
                                     "minimum_value": "1",
                                     "maximum_value": "99"
                                 }
@@ -6454,8 +6461,10 @@
                     "description": "The maximum extrusion area deviation allowed when removing intermediate points from a straight line. An intermediate point may serve as width-changing point in a long straight line. Therefore, if it is removed, it will cause the line to have a uniform width and, as a result, lose (or gain) a bit of extrusion area. If you increase this you may notice slight under- (or over-) extrusion in between straight parallel walls, as more intermediate width-changing points will be allowed to be removed. Your print will be less accurate, but the g-code will be smaller.",
                     "type": "float",
                     "unit": "μm²",
-                    "default_value": 50000,
+                    "default_value": 2000,
                     "minimum_value": "0",
+                    "minimum_value_warning": "500",
+                    "maximum_value_warning": "50000",
                     "settable_per_mesh": true
                 }
             }

@@ -62,9 +62,6 @@
         "speed_equalize_flow_width_factor": {
             "value": "110.0"
         },
-        "meshfix_maximum_extrusion_area_deviation": {
-            "value": "50000"
-        },
         "top_layers": {
             "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))"
         },
