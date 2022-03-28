@@ -4,7 +4,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
-import Qt5Compat.GraphicalEffects
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 

@@ -3,7 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import Qt5Compat.GraphicalEffects // For the dropshadow
+
 
 import UM 1.2 as UM
 
@@ -12,6 +12,8 @@ Rectangle
 {
     color: UM.Theme.getColor("disabled")
 
+    /*
+    TODO: Reimplement later
     DropShadow
     {
         id: shadow
@@ -24,5 +26,5 @@ Rectangle
         color: UM.Theme.getColor("action_button_shadow")
         // Should always be drawn behind the background.
         z: parent.z - 1
-    }
+    }*/
 }

@@ -3,7 +3,6 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 2.0
-import Qt5Compat.GraphicalEffects
 import UM 1.3 as UM
 
 /**
@@ -59,16 +58,6 @@ Popup
     background: Item
     {
         anchors.fill: parent
-
-        DropShadow
-        {
-            anchors.fill: pointedRectangle
-            color: UM.Theme.getColor("monitor_shadow")
-            radius: UM.Theme.getSize("monitor_shadow_radius").width
-            source: pointedRectangle
-            transparentBorder: true
-            verticalOffset: 2 * screenScaleFactor
-        }
 
         Item
         {

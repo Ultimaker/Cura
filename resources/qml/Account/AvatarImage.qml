@@ -3,7 +3,6 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import Qt5Compat.GraphicalEffects
 
 import UM 1.4 as UM
 
@@ -35,6 +34,8 @@ Item
         color: hasAvatar ? "white" : "transparent"
     }
 
+    /*
+    TODO: Reimplement this without OpacityMask.
     OpacityMask
     {
         anchors.fill: parent
@@ -42,7 +43,7 @@ Item
         maskSource: profileImageMask
         visible: hasAvatar
         cached: true
-    }
+    }*/
 
     UM.RecolorImage
     {
