@@ -3,7 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtGraphicalEffects 1.0 // For the dropshadow
+import Qt5Compat.GraphicalEffects // For the dropshadow
 
 import UM 1.2 as UM
 

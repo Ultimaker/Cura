@@ -3,7 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import UM 1.4 as UM
 

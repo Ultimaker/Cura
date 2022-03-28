@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.2
-import QtGraphicalEffects 1.0  // For the DropShadow
+import Qt5Compat.GraphicalEffects  // For the DropShadow
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura

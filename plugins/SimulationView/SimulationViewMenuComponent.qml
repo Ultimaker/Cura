@@ -4,7 +4,7 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
