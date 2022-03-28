@@ -71,12 +71,12 @@ class PauseAtHeight(Script):
                     "label": "Disarm timeout",
                     "description": "After this time steppers are going to disarm (meaning that they can easily lose their positions). Set this to 0 if you don't want to set any duration and disarm immediately.",
                     "type": "int",
-                    "value": "60",
+                    "value": "0",
                     "minimum_value": "0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "1800",
                     "unit": "s",
-                    "enabled": "hold_steppers_on"
+                    "enabled": "not hold_steppers_on"
                 },
                 "head_park_enabled":
                 {
