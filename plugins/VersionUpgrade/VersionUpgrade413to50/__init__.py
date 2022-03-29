@@ -11,18 +11,16 @@ if TYPE_CHECKING:
 upgrade = VersionUpgrade413to50.VersionUpgrade413to50()
 
 def getMetaData() -> Dict[str, Any]:
-    return {  # Since there is no VersionUpgrade from 48 to 49 yet, upgrade the 48 profiles to 50.
+    return {
         "version_upgrade": {
             # From                           To                              Upgrade function
-            ("preferences", 6000016):        ("preferences", 6000018,        upgrade.upgradePreferences),
-            ("machine_stack", 5000016):      ("machine_stack", 5000018,      upgrade.upgradeStack),
-            ("extruder_train", 5000016):     ("extruder_train", 5000018,     upgrade.upgradeStack),
-            ("machine_stack", 4000018):      ("machine_stack", 5000018,      upgrade.upgradeStack),  # We made a mistake in the arachne beta 1
-            ("extruder_train", 4000018):     ("extruder_train", 5000018,     upgrade.upgradeStack),  # We made a mistake in the arachne beta 1
-            ("definition_changes", 4000016): ("definition_changes", 4000018, upgrade.upgradeInstanceContainer),
-            ("quality_changes", 4000016):    ("quality_changes", 4000018,    upgrade.upgradeInstanceContainer),
-            ("quality", 4000016):            ("quality", 4000018,            upgrade.upgradeInstanceContainer),
-            ("user", 4000016):               ("user", 4000018,               upgrade.upgradeInstanceContainer),
+            ("preferences", 6000017):        ("preferences", 6000019,        upgrade.upgradePreferences),
+            ("machine_stack", 5000017):      ("machine_stack", 5000019,      upgrade.upgradeStack),
+            ("extruder_train", 5000017):     ("extruder_train", 5000019,     upgrade.upgradeStack),
+            ("definition_changes", 4000017): ("definition_changes", 4000019, upgrade.upgradeInstanceContainer),
+            ("quality_changes", 4000017):    ("quality_changes", 4000019,    upgrade.upgradeInstanceContainer),
+            ("quality", 4000017):            ("quality", 4000019,            upgrade.upgradeInstanceContainer),
+            ("user", 4000017):               ("user", 4000019,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
             "preferences": {

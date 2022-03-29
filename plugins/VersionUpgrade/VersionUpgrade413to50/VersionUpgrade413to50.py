@@ -34,7 +34,7 @@ class VersionUpgrade413to50(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "19"
 
         # Remove deleted settings from the visible settings list.
         if "general" in parser and "visible_settings" in parser["general"]:
@@ -71,7 +71,7 @@ class VersionUpgrade413to50(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "19"
 
         if "values" in parser:
             # Remove deleted settings from the instance containers.
@@ -111,7 +111,7 @@ class VersionUpgrade413to50(VersionUpgrade):
             parser["metadata"] = {}
 
         parser["general"]["version"] = "5"
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "19"
 
         result = io.StringIO()
         parser.write(result)
