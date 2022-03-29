@@ -1156,11 +1156,11 @@
                     "description": "Prevent Wall Transition Filtering from inducing errors on the extrusion width larger than this value.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.2,
-                    "value": ".5 * wall_line_width_x",
+                    "default_value": 0.1,
+                    "value": ".25 * machine_nozzle_size",
                     "minimum_value": "0",
-                    "minimum_value_warning": ".25 * wall_line_width_x",
-                    "maximum_value_warning": "wall_line_width_x"
+                    "minimum_value_warning": ".01",
+                    "maximum_value_warning": "machine_nozzle_size"
                 },
                 "wall_0_wipe_dist":
                 {
