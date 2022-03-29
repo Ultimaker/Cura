@@ -1150,6 +1150,18 @@
                     "minimum_value_warning": "math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x",
                     "maximum_value_warning": "10 * math.cos(wall_transition_angle / 180 * math.pi) * wall_line_width_x"
                 },
+                "wall_transition_filter_deviation":
+                {
+                    "label": "Wall Transition Filter Deviation",
+                    "description": "Prevent Wall Transition Filtering from inducing errors on the extrusion width larger than this value.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.2,
+                    "value": ".5 * wall_line_width_x",
+                    "minimum_value": "0",
+                    "minimum_value_warning": ".25 * wall_line_width_x",
+                    "maximum_value_warning": "wall_line_width_x"
+                },
                 "wall_0_wipe_dist":
                 {
                     "label": "Outer Wall Wipe Distance",
