@@ -1093,6 +1093,7 @@
                     "label": "Variable Line Strategy",
                     "description": "Strategy to use to print the width of a part with a number of walls. This determines how many walls it will use for a certain total width, and how wide each of these lines are. \"Center Deviation\" will print all walls at the nominal line width except the central one(s), causing big variations in the center but very consistent outsides. \"Distributed\" distributes the width equally over all walls. \"Inward Distributed\" is a balance between the other two, distributing the changes in width over all walls but keeping the walls on the outside slightly more consistent.",
                     "type": "enum",
+                    "enabled": false,
                     "options":
                     {
                         "center_deviation": "Center Deviation",
