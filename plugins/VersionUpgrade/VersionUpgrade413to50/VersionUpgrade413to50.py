@@ -14,8 +14,12 @@ _removed_settings = {
     "filter_out_tiny_gaps",
     "wall_min_flow",
     "wall_min_flow_retract",
-    "speed_equalize_flow_enabled",
-    "speed_equalize_flow_min"
+    "speed_equalize_flow_max"
+}
+
+_transformed_settings = {  # These settings have been changed to a new topic, but may have different data type. Used only for setting visibility; the rest is handled separately.
+    "outer_inset_first": "inset_direction",
+    "speed_equalize_flow_enabled": "speed_equalize_flow_width_factor"
 }
 
 
@@ -44,10 +48,11 @@ class VersionUpgrade413to50(VersionUpgrade):
                 if removed in visible_settings:
                     visible_settings.remove(removed)
 
-            # Replace Outer Before Inner Walls with equivalent.
-            if "outer_inset_first" in visible_settings:
-                visible_settings.remove("outer_inset_first")
-                visible_settings.add("inset_direction")
+            # Replace equivalent settings that have been transformed.
+            for old, new in _transformed_settings.items():
+                if old in visible_settings:
+                    visible_settings.remove(old)
+                    visible_settings.add(new)
 
             parser["general"]["visible_settings"] = ";".join(visible_settings)
 
@@ -87,6 +92,13 @@ class VersionUpgrade413to50(VersionUpgrade):
                     old_value = old_value[1:]
                 parser["values"]["inset_direction"] = f"='outside_in' if ({old_value}) else 'inside_out'"  # Makes it work both with plain setting values and formulas.
 
+            # Replace Equalize Filament Flow with equivalent setting.
+            if "speed_equalize_flow_enabled" in parser["values"]:
+                old_value = parser["values"]["speed_equalize_flow_enabled"]
+                if old_value.startswith("="):  # Was already a formula.
+                    old_value = old_value[1:]
+                parser["values"]["speed_equalize_flow_width_factor"] = f"=100 if ({old_value}) else 0"  # If it used to be enabled, set it to 100%. Otherwise 0%.
+
             # Disable Fuzzy Skin as it doesn't work with with the libArachne walls
             if "magic_fuzzy_skin_enabled" in parser["values"]:
                 parser["values"]["magic_fuzzy_skin_enabled"] = "False"
@@ -111,7 +123,6 @@ class VersionUpgrade413to50(VersionUpgrade):
         if "metadata" not in parser:
             parser["metadata"] = {}
 
-        parser["general"]["version"] = "5"
         parser["metadata"]["setting_version"] = "19"
 
         result = io.StringIO()
