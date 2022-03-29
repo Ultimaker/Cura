@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -18,7 +18,7 @@ _removed_settings = {
 }
 
 
-class VersionUpgrade49to50(VersionUpgrade):
+class VersionUpgrade413to50(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades preferences to remove from the visibility list the settings that were removed in this version.
