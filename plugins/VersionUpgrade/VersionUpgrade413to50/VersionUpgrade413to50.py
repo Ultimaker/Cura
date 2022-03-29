@@ -99,10 +99,6 @@ class VersionUpgrade413to50(VersionUpgrade):
                     old_value = old_value[1:]
                 parser["values"]["speed_equalize_flow_width_factor"] = f"=100 if ({old_value}) else 0"  # If it used to be enabled, set it to 100%. Otherwise 0%.
 
-            # Disable Fuzzy Skin as it doesn't work with with the libArachne walls
-            if "magic_fuzzy_skin_enabled" in parser["values"]:
-                parser["values"]["magic_fuzzy_skin_enabled"] = "False"
-
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
