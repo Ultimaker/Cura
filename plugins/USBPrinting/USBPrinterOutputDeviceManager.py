@@ -40,7 +40,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         self._usb_output_devices = {}
         self._usb_output_devices_model = None
         self._update_thread = threading.Thread(target = self._updateThread)
-        self._update_thread.setDaemon(True)
+        self._update_thread.daemon = True
 
         self._check_updates = True
 
