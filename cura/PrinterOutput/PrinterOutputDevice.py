@@ -137,7 +137,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
         """
         if self.connectionState != connection_state:
             self._connection_state = connection_state
-            cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().setMetaDataEntry("is_online", self.isConnected())
+            global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+            if global_stack:
+                global_stack.setMetaDataEntry("is_online", self.isConnected())
             self.connectionStateChanged.emit(self._id)
 
     @pyqtProperty(int, constant = True)
