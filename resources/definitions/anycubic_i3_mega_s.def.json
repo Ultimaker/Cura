@@ -139,6 +139,6 @@
         "minimum_support_area": { "value": 2 },
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * math.floor(1.2 / layer_height)" },
-        "wall_thickness": { "value": "line_width * 3" }
+        "wall_thickness": { "value": "line_width * 3 if line_width < 0.6 else line_width * 2" }
     }
 }
