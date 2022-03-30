@@ -1,13 +1,12 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
-import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
 
-import UM 1.0 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -43,22 +42,19 @@ Cura.ExpandableComponent
 
     headerItem: Item
     {
-        Label
+        UM.Label
         {
             id: colorSchemeLabel
             text: catalog.i18nc("@label", "Color scheme")
-            verticalAlignment: Text.AlignVCenter
             height: parent.height
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text_medium")
-            renderType: Text.NativeRendering
         }
 
-        Label
+        UM.Label
         {
             text: layerTypeCombobox.currentText
-            verticalAlignment: Text.AlignVCenter
             anchors
             {
                 left: colorSchemeLabel.right
@@ -68,8 +64,6 @@ Cura.ExpandableComponent
             height: parent.height
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            renderType: Text.NativeRendering
         }
     }
 
@@ -99,7 +93,8 @@ Cura.ExpandableComponent
 
         spacing: UM.Theme.getSize("layerview_row_spacing").height
 
-        ListModel  // matches SimulationView.py
+        // matches SimulationView.py
+        ListModel
         {
             id: layerViewTypes
         }
@@ -132,18 +127,17 @@ Cura.ExpandableComponent
             })
         }
 
-        ComboBox
+        Cura.ComboBox
         {
             id: layerTypeCombobox
+            textRole: "text"
+            valueRole: "type_id"
             width: parent.width
+            implicitHeight: UM.Theme.getSize("setting_control").height
             model: layerViewTypes
             visible: !UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.combobox
 
-            onActivated:
-            {
-                UM.Preferences.setValue("layerview/layer_view_type", index);
-            }
+            onActivated: UM.Preferences.setValue("layerview/layer_view_type", index)
 
             Component.onCompleted:
             {
@@ -165,16 +159,13 @@ Cura.ExpandableComponent
             }
         }
 
-        Label
+        UM.Label
         {
             id: compatibilityModeLabel
             text: catalog.i18nc("@label", "Compatibility Mode")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
             visible: UM.SimulationView.compatibilityMode
             height: UM.Theme.getSize("layerview_row").height
             width: parent.width
-            renderType: Text.NativeRendering
         }
 
         Item  // Spacer
@@ -187,7 +178,7 @@ Cura.ExpandableComponent
         {
             model: CuraApplication.getExtrudersModel()
 
-            CheckBox
+            UM.CheckBox
             {
                 id: extrudersModelCheckBox
                 checked: viewSettings.extruder_opacities[index] > 0.5 || viewSettings.extruder_opacities[index] == undefined || viewSettings.extruder_opacities[index] == ""
@@ -201,8 +192,6 @@ Cura.ExpandableComponent
                     UM.Preferences.setValue("layerview/extruder_opacities", viewSettings.extruder_opacities.join("|"));
                 }
 
-                style: UM.Theme.styles.checkbox
-
                 Rectangle
                 {
                     id: swatch
@@ -215,12 +204,11 @@ Cura.ExpandableComponent
                     border.color: UM.Theme.getColor("lining")
                 }
 
-                Label
+                UM.Label
                 {
                     text: model.name
                     elide: Text.ElideRight
                     color: UM.Theme.getColor("setting_control_text")
-                    font: UM.Theme.getFont("default")
                     anchors
                     {
                         verticalCenter: parent.verticalCenter
@@ -229,7 +217,6 @@ Cura.ExpandableComponent
                         leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
                         rightMargin: UM.Theme.getSize("default_margin").width * 2
                     }
-                    renderType: Text.NativeRendering
                 }
             }
         }
@@ -277,15 +264,13 @@ Cura.ExpandableComponent
                 }
             }
 
-            CheckBox
+            UM.CheckBox
             {
                 id: legendModelCheckBox
                 checked: model.initialValue
                 onClicked: UM.Preferences.setValue(model.preference, checked)
                 height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                 width: parent.width
-
-                style: UM.Theme.styles.checkbox
 
                 Rectangle
                 {
@@ -299,7 +284,7 @@ Cura.ExpandableComponent
                     visible: viewSettings.show_legend
                 }
 
-                Label
+                UM.Label
                 {
                     text: label
                     font: UM.Theme.getFont("default")
@@ -315,24 +300,22 @@ Cura.ExpandableComponent
             }
         }
 
-        CheckBox
+        UM.CheckBox
         {
             checked: viewSettings.only_show_top_layers
             onClicked: UM.Preferences.setValue("view/only_show_top_layers", checked ? 1.0 : 0.0)
             text: catalog.i18nc("@label", "Only Show Top Layers")
             visible: UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.checkbox
             width: parent.width
         }
 
-        CheckBox
+        UM.CheckBox
         {
             checked: viewSettings.top_layer_count == 5
             onClicked: UM.Preferences.setValue("view/top_layer_count", checked ? 5 : 1)
             text: catalog.i18nc("@label", "Show 5 Detailed Layers On Top")
             width: parent.width
             visible: UM.SimulationView.compatibilityMode
-            style: UM.Theme.styles.checkbox
         }
 
         Repeater
@@ -353,7 +336,7 @@ Cura.ExpandableComponent
                 }
             }
 
-            Label
+            UM.Label
             {
                 text: label
                 visible: viewSettings.show_legend
@@ -362,8 +345,6 @@ Cura.ExpandableComponent
                 height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                 width: parent.width
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
                 Rectangle
                 {
                     anchors.verticalCenter: parent.verticalCenter
@@ -388,7 +369,7 @@ Cura.ExpandableComponent
             width: parent.width
             height: UM.Theme.getSize("layerview_row").height
 
-            Label //Minimum value.
+            UM.Label //Minimum value.
             {
                 text:
                 {
@@ -419,12 +400,9 @@ Cura.ExpandableComponent
                     return catalog.i18nc("@label","min")
                 }
                 anchors.left: parent.left
-                color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
             }
 
-            Label //Unit in the middle.
+            UM.Label //Unit in the middle.
             {
                 text:
                 {
@@ -456,10 +434,9 @@ Cura.ExpandableComponent
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
             }
 
-            Label //Maximum value.
+            UM.Label //Maximum value.
             {
                 text: {
                     if (UM.SimulationView.layerActivity && CuraApplication.platformActivity)
@@ -490,7 +467,6 @@ Cura.ExpandableComponent
 
                 anchors.right: parent.right
                 color: UM.Theme.getColor("setting_control_text")
-                font: UM.Theme.getFont("default")
             }
         }
 

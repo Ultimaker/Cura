@@ -1,12 +1,10 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Controls 2.3 as Controls2
+import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -45,14 +43,13 @@ Item
             verticalCenter: enableSupportRowTitle.verticalCenter
         }
 
-        CheckBox
+        UM.CheckBox
         {
             id: enableSupportCheckBox
             anchors.verticalCenter: parent.verticalCenter
 
             property alias _hovered: enableSupportMouseArea.containsMouse
 
-            style: UM.Theme.styles.checkbox
             enabled: recommendedPrintSetup.settingsEnabled
 
             visible: supportEnabled.properties.enabled == "True"
@@ -75,7 +72,7 @@ Item
             }
         }
 
-        Controls2.ComboBox
+        ComboBox
         {
             id: supportExtruderCombobox
 
@@ -202,7 +199,7 @@ Item
                 }
             }
 
-            contentItem: Controls2.Label
+            contentItem: UM.Label
             {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -212,12 +209,10 @@ Item
 
                 text: supportExtruderCombobox.currentText
                 textFormat: Text.PlainText
-                renderType: Text.NativeRendering
-                font: UM.Theme.getFont("default")
                 color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
 
                 elide: Text.ElideLeft
-                verticalAlignment: Text.AlignVCenter
+
 
                 background: Rectangle
                 {
@@ -233,7 +228,7 @@ Item
                 }
             }
 
-            popup: Controls2.Popup
+            popup: Popup
             {
                 y: supportExtruderCombobox.height - UM.Theme.getSize("default_lining").height
                 width: supportExtruderCombobox.width
@@ -242,12 +237,12 @@ Item
 
                 contentItem: ListView
                 {
-                    clip: true
                     implicitHeight: contentHeight
+
+                    ScrollBar.vertical: UM.ScrollBar {}
+                    clip: true
                     model: supportExtruderCombobox.popup.visible ? supportExtruderCombobox.delegateModel : null
                     currentIndex: supportExtruderCombobox.highlightedIndex
-
-                    Controls2.ScrollIndicator.vertical: Controls2.ScrollIndicator { }
                 }
 
                 background: Rectangle
@@ -257,34 +252,22 @@ Item
                 }
             }
 
-            delegate: Controls2.ItemDelegate
+            delegate: ItemDelegate
             {
                 width: supportExtruderCombobox.width - 2 * UM.Theme.getSize("default_lining").width
                 height: supportExtruderCombobox.height
                 highlighted: supportExtruderCombobox.highlightedIndex == index
 
-                contentItem: Controls2.Label
+                contentItem: UM.Label
                 {
                     anchors.fill: parent
                     anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                     anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
                     text: model.name
-                    renderType: Text.NativeRendering
-                    color:
-                    {
-                        if (model.enabled)
-                        {
-                            UM.Theme.getColor("setting_control_text")
-                        }
-                        else
-                        {
-                            UM.Theme.getColor("action_button_disabled_text");
-                        }
-                    }
-                    font: UM.Theme.getFont("default")
+                    color: model.enabled ? UM.Theme.getColor("setting_control_text"): UM.Theme.getColor("action_button_disabled_text")
+
                     elide: Text.ElideRight
-                    verticalAlignment: Text.AlignVCenter
                     rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
                     background: Rectangle

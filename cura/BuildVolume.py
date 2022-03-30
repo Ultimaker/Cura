@@ -72,7 +72,7 @@ class BuildVolume(SceneNode):
 
         self._origin_mesh = None  # type: Optional[MeshData]
         self._origin_line_length = 20
-        self._origin_line_width = 1.5
+        self._origin_line_width = 1
         self._enabled = False
 
         self._grid_mesh = None   # type: Optional[MeshData]
@@ -601,6 +601,7 @@ class BuildVolume(SceneNode):
         if self._adhesion_type == "raft":
             self._raft_thickness = (
                 self._global_container_stack.getProperty("raft_base_thickness", "value") +
+                self._global_container_stack.getProperty("raft_interface_layers", "value") *
                 self._global_container_stack.getProperty("raft_interface_thickness", "value") +
                 self._global_container_stack.getProperty("raft_surface_layers", "value") *
                 self._global_container_stack.getProperty("raft_surface_thickness", "value") +
@@ -1112,7 +1113,8 @@ class BuildVolume(SceneNode):
         # Use brim width if brim is enabled OR the prime tower has a brim.
         if adhesion_type == "brim":
             brim_line_count = skirt_brim_stack.getProperty("brim_line_count", "value")
-            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+            brim_gap = skirt_brim_stack.getProperty("brim_gap", "value")
+            bed_adhesion_size = brim_gap + skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
 
             for extruder_stack in used_extruders:
                 bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
@@ -1213,8 +1215,8 @@ class BuildVolume(SceneNode):
         return max(min(value, max_value), min_value)
 
     _machine_settings = ["machine_width", "machine_depth", "machine_height", "machine_shape", "machine_center_is_zero"]
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
-    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "brim_gap", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "initial_layer_line_width_factor"]
+    _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_layers", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]

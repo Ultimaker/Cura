@@ -43,7 +43,7 @@ from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType, toIntConversion
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -52,8 +52,6 @@ from UM.i18n import i18nCatalog
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
-from cura.Arranging.Arrange import Arrange
-from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.Nest2DArrange import arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
@@ -382,9 +380,10 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default=None,
                                                depends_on="value")
 
-        SettingDefinition.addSettingType("extruder", None, str, Validator)
-        SettingDefinition.addSettingType("optional_extruder", None, str, None)
+        SettingDefinition.addSettingType("extruder", None, toIntConversion, Validator)
+        SettingDefinition.addSettingType("optional_extruder", None, toIntConversion, None)
         SettingDefinition.addSettingType("[int]", None, str, None)
+
 
 
     def _initializeSettingFunctions(self):
@@ -494,7 +493,7 @@ class CuraApplication(QtApplication):
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
-            "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "Marketplace", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
             "PrepareStage", #Cura is useless without this one since you can't load models.
             "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
             "MonitorStage", #Major part of Cura's functionality.
@@ -572,6 +571,10 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/expanded_types", "")
 
         preferences.addPreference("general/accepted_user_agreement", False)
+
+        preferences.addPreference("cura/market_place_show_plugin_banner", True)
+        preferences.addPreference("cura/market_place_show_material_banner", True)
+        preferences.addPreference("cura/market_place_show_manage_packages_banner", True)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -674,22 +677,6 @@ class CuraApplication(QtApplication):
     def setGlobalContainerStack(self, stack: Optional["GlobalStack"]) -> None:
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing Active Machine..."))
         super().setGlobalContainerStack(stack)
-
-    showMessageBox = pyqtSignal(str,str, str, str, int, int,
-                                arguments = ["title", "text", "informativeText", "detailedText","buttons", "icon"])
-    """A reusable dialogbox"""
-
-    def messageBox(self, title, text,
-                   informativeText = "",
-                   detailedText = "",
-                   buttons = QMessageBox.Ok,
-                   icon = QMessageBox.NoIcon,
-                   callback = None,
-                   callback_arguments = []
-                   ):
-        self._message_box_callback = callback
-        self._message_box_callback_arguments = callback_arguments
-        self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
 
     showDiscardOrKeepProfileChanges = pyqtSignal()
 
@@ -829,9 +816,6 @@ class CuraApplication(QtApplication):
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing build volume..."))
         root = self.getController().getScene().getRoot()
         self._volume = BuildVolume.BuildVolume(self, root)
-
-        # Ensure that the old style arranger still works.
-        Arrange.build_volume = self._volume
 
         # initialize info objects
         self._print_information = PrintInformation.PrintInformation(self)
@@ -1387,33 +1371,6 @@ class CuraApplication(QtApplication):
                     center_y = 0
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
-
-    @pyqtSlot()
-    def arrangeObjectsToAllBuildPlates(self) -> None:
-        """Arrange all objects."""
-
-        nodes_to_arrange = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode):
-                continue
-
-            if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesn't have a mesh and is not a group.
-
-            parent_node = node.getParent()
-            if parent_node and parent_node.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
-
-            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
-                continue  # i.e. node with layer data
-
-            bounding_box = node.getBoundingBox()
-            # Skip nodes that are too big
-            if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
-                nodes_to_arrange.append(node)
-        job = ArrangeObjectsAllBuildPlatesJob(nodes_to_arrange)
-        job.start()
-        self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     # Single build plate
     @pyqtSlot()

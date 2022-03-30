@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.4 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Column
@@ -41,16 +41,13 @@ Column
             anchors.verticalCenter: parent.verticalCenter
             color: UM.Theme.getColor("action_button_disabled")
             visible: !avatar.hasAvatar
-            Label
+            UM.Label
             {
                 id: initialLabel
                 anchors.centerIn: parent
                 text: profile["username"].charAt(0).toUpperCase()
                 font: UM.Theme.getFont("large_bold")
-                color: UM.Theme.getColor("text")
-                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                renderType: Text.NativeRendering
             }
         }
 
@@ -62,25 +59,22 @@ Column
             spacing: UM.Theme.getSize("narrow_margin").height
             width: childrenRect.width
             height: childrenRect.height
-            Label
+
+            UM.Label
             {
                 id: username
-                renderType: Text.NativeRendering
                 text: profile.username
                 font: UM.Theme.getFont("large_bold")
-                color: UM.Theme.getColor("text")
             }
 
             SyncState
             {
                 id: syncRow
             }
-            Label
+            UM.Label
             {
                 id: lastSyncLabel
-                renderType: Text.NativeRendering
                 text: catalog.i18nc("@label The argument is a timestamp", "Last update: %1").arg(Cura.API.account.lastSyncDateTime)
-                font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
             }
         }
