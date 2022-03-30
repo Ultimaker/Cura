@@ -296,7 +296,7 @@ class SolidView(View):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()
-            xray_img = xray_img.convertToFormat(QImage.Format_RGB888)
+            xray_img = xray_img.convertToFormat(QImage.Format.Format_RGB888)
 
             # We can't just read the image since the pixels are aligned to internal memory positions.
             # xray_img.byteCount() != xray_img.width() * xray_img.height() * 3
