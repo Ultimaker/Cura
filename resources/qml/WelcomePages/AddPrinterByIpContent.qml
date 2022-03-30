@@ -123,9 +123,9 @@ Item
 
                     onInvalidInputDetected: invalidInputLabel.visible = true
 
-                    validator: RegExpValidator
+                    validator: RegularExpressionValidator
                     {
-                        regExp: /([a-fA-F0-9.:]+)?/
+                        regularExpression: /([a-fA-F0-9.:]+)?/
                     }
 
                     onTextEdited: invalidInputLabel.visible = false

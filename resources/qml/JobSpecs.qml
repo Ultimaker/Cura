@@ -97,8 +97,8 @@ Item
                 cursorPosition = 0
             }
 
-            validator: RegExpValidator {
-                regExp: /^[^\\\/\*\?\|\[\]]*$/
+            validator: RegularExpressionValidator {
+                regularExpression: /^[^\\\/\*\?\|\[\]]*$/
             }
             color: UM.Theme.getColor("text_scene")
             background: Item {}

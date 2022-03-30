@@ -302,7 +302,7 @@ Cura.MachineAction
             {
                 id: addressField
                 width: parent.width
-                validator: RegExpValidator { regExp: /[a-zA-Z0-9\.\-\_]*/ }
+                validator: RegularExpressionValidator { regularExpression: /[a-zA-Z0-9\.\-\_]*/ }
             }
         }
 

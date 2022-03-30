@@ -61,9 +61,9 @@ Item
         anchors.left: parent.left
         anchors.top: fileNameLabel.bottom
         anchors.topMargin: UM.Theme.getSize("thin_margin").height
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: /^[\w\-\. ()]{0,255}$/
+            regularExpression: /^[\w\-\. ()]{0,255}$/
         }
 
         text: PrintInformation.jobName

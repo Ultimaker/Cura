@@ -47,7 +47,7 @@ UM.Dialog
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Peak_Height"
-            validator: RegExpValidator { regExp: /^\d{0,3}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^\d{0,3}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onPeakHeightChanged(text)
         }
 
@@ -81,7 +81,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             objectName: "Base_Height"
-            validator: RegExpValidator { regExp: /^\d{0,3}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^\d{0,3}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onBaseHeightChanged(text)
         }
 
@@ -115,7 +115,7 @@ UM.Dialog
             Layout.fillWidth: true
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             focus: true
-            validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onWidthChanged(text)
         }
 
@@ -149,7 +149,7 @@ UM.Dialog
             selectByMouse: true
             objectName: "Depth"
             focus: true
-            validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onDepthChanged(text)
         }
 
@@ -255,7 +255,7 @@ UM.Dialog
             Layout.minimumWidth: UM.Theme.getSize("setting_control").width
             selectByMouse: true
             objectName: "Transmittance"
-            validator: RegExpValidator { regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
+            validator: RegularExpressionValidator { regularExpression: /^[1-9]\d{0,2}([\,|\.]\d*)?$/ }
             onTextChanged: manager.onTransmittanceChanged(text)
 
             UM.ToolTip

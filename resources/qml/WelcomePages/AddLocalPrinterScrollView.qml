@@ -235,9 +235,9 @@ Item
                     placeholderText: catalog.i18nc("@text", "Please name your printer")
                     maximumLength: 40
                     width: parent.width - (printerNameLabel.width + (3 * UM.Theme.getSize("default_margin").width))
-                    validator: RegExpValidator
+                    validator: RegularExpressionValidator
                     {
-                        regExp: printerNameTextField.machineNameValidator.machineNameRegex
+                        regularExpression: printerNameTextField.machineNameValidator.machineNameRegex
                     }
                     property var machineNameValidator: Cura.MachineNameValidator { }
                 }

@@ -116,7 +116,7 @@ UM.Dialog
                         text = `#${text}`;
                     }
                 }
-                validator: RegExpValidator { regExp: /^#([a-fA-F0-9]{0,6})$/ }
+                validator: RegularExpressionValidator { regularExpression: /^#([a-fA-F0-9]{0,6})$/ }
             }
 
             Rectangle

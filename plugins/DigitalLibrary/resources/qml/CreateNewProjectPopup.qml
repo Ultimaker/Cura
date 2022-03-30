@@ -90,9 +90,9 @@ Popup
             left: parent.left
             right: parent.right
         }
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: /^[^\\\/\*\?\|\[\]]{0,99}$/
+            regularExpression: /^[^\\\/\*\?\|\[\]]{0,99}$/
         }
 
         text: PrintInformation.jobName

@@ -28,9 +28,9 @@ Item
 
     property bool editable: true
 
-    property var validator: RegExpValidator
+    property var validator: RegularExpressionValidator
     {
-        regExp: new RegExp("^" + prefix + "([0-9]+[.|,]?[0-9]*)?" + suffix + "$")
+        regularExpression: new RegExp("^" + prefix + "([0-9]+[.|,]?[0-9]*)?" + suffix + "$")
     }
 
     signal editingFinished()

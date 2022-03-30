@@ -172,9 +172,9 @@ UM.TooltipArea
                 return "^%0\\d{0,%1}[.,]?\\d{0,%2}$".arg(minus).arg(digits).arg(numericTextFieldWithUnit.decimals)
             }
         }
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: new RegExp(textFieldWithUnit.validatorString)
+            regularExpression: new RegExp(textFieldWithUnit.validatorString)
         }
 
         //Enforce actual minimum and maximum values.
