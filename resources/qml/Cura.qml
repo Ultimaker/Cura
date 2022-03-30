@@ -170,7 +170,7 @@ UM.MainWindow
             }
             height: stageMenu.source != "" ? Math.round(mainWindowHeader.height + stageMenu.height / 2) : mainWindowHeader.height
 
-            LinearGradient
+            /*LinearGradient
             {
                 anchors.fill: parent
                 start: Qt.point(0, 0)
@@ -193,7 +193,7 @@ UM.MainWindow
                         color: UM.Theme.getColor("main_window_header_background")
                     }
                 }
-            }
+            }*/
 
             // This is a placeholder for adding a pattern in the header
             Image
@@ -207,7 +207,7 @@ UM.MainWindow
             }
         }
 
-        MainWindowHeader
+        /*MainWindowHeader
         {
             id: mainWindowHeader
             anchors
@@ -216,7 +216,7 @@ UM.MainWindow
                 right: parent.right
                 top: applicationMenu.bottom
             }
-        }
+        }*/
 
         Item
         {
