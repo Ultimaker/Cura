@@ -51,6 +51,9 @@
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
 
+        "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * math.floor(1.2 / layer_height)" },
+        "wall_thickness": { "value": "line_width * 3 if line_width < 0.6 else line_width * 2" },
+
         "acceleration_print": { "value": 1500 },
         "acceleration_enabled": { "value": false },
         "acceleration_travel": { "value": 3000 },
@@ -137,8 +140,6 @@
         "support_interface_pattern": { "value": "'grid'" },
         "support_interface_skip_height": { "value": 0.2 },
         "minimum_support_area": { "value": 2 },
-        "minimum_interface_area": { "value": 10 },
-        "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * math.floor(1.2 / layer_height)" },
-        "wall_thickness": { "value": "line_width * 3 if line_width < 0.6 else line_width * 2" }
+        "minimum_interface_area": { "value": 10 }
     }
 }
