@@ -1,7 +1,7 @@
 //Copyright (C) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
+//import Qt.labs.qmlmodels 1.0
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 

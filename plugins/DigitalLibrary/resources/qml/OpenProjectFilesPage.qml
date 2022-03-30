@@ -66,13 +66,13 @@ Item
             anchors.margins: parent.border.width
 
             columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
-            model: TableModel
-            {
-                TableModelColumn { display: "fileName" }
-                TableModelColumn { display: "username" }
-                TableModelColumn { display: "uploadedAt" }
-                rows: manager.digitalFactoryFileModel.items
-            }
+//            model: TableModel
+//            {
+//                TableModelColumn { display: "fileName" }
+//                TableModelColumn { display: "username" }
+//                TableModelColumn { display: "uploadedAt" }
+//                rows: manager.digitalFactoryFileModel.items
+//            }
 
             onCurrentRowChanged:
             {

@@ -481,7 +481,7 @@ UM.Dialog
             }
             toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-            iconSource: "Script.svg"
+//            iconSource: "Script.svg"
             fixedWidthMode: false
         }
 

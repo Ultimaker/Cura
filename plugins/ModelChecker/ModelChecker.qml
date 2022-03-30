@@ -2,7 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import UM 1.2 as UM
+import UM 1.5 as UM
 
 
 UM.SimpleButton
@@ -14,7 +14,7 @@ UM.SimpleButton
 
     width: UM.Theme.getSize("save_button_specs_icons").width
     height: UM.Theme.getSize("save_button_specs_icons").height
-    iconSource: "model_checker.svg"
+//    iconSource: "model_checker.svg"
     anchors.verticalCenter: parent ? parent.verticalCenter : undefined
     color: UM.Theme.getColor("text_scene")
     hoverColor: UM.Theme.getColor("text_scene_hover")
