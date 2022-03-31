@@ -6361,6 +6361,7 @@
                     "description": "Remove the holes in each layer and keep only the outside shape. This will ignore any invisible internal geometry. However, it also ignores layer holes which can be viewed from above or below.",
                     "type": "bool",
                     "default_value": false,
+                    "value": "magic_spiralize",
                     "settable_per_mesh": true
                 },
                 "meshfix_extensive_stitching":
