@@ -170,30 +170,11 @@ UM.MainWindow
             }
             height: stageMenu.source != "" ? Math.round(mainWindowHeader.height + stageMenu.height / 2) : mainWindowHeader.height
 
-            /*LinearGradient
+            Rectangle
             {
                 anchors.fill: parent
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient
-                {
-                    GradientStop
-                    {
-                        position: 0.0
-                        color: UM.Theme.getColor("main_window_header_background")
-                    }
-                    GradientStop
-                    {
-                        position: 0.5
-                        color: UM.Theme.getColor("main_window_header_background_gradient")
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: UM.Theme.getColor("main_window_header_background")
-                    }
-                }
-            }*/
+                color: UM.Theme.getColor("main_window_header_background")
+            }
 
             // This is a placeholder for adding a pattern in the header
             Image
