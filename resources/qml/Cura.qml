@@ -207,7 +207,7 @@ UM.MainWindow
             }
         }
 
-        /*MainWindowHeader
+        MainWindowHeader
         {
             id: mainWindowHeader
             anchors
@@ -216,7 +216,7 @@ UM.MainWindow
                 right: parent.right
                 top: applicationMenu.bottom
             }
-        }*/
+        }
 
         Item
         {
