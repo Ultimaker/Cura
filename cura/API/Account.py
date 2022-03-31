@@ -269,10 +269,10 @@ class Account(QObject):
         return self._authorization_service.getAccessToken()
 
     @pyqtProperty("QVariantMap", notify = userProfileChanged)
-    def userProfile(self) -> Optional[Dict[str, Optional[str]]]:
+    def userProfile(self) -> Dict[str, Optional[str]]:
         """None if no user is logged in otherwise the logged in  user as a dict containing containing user_id, username and profile_image_url """
         if not self._user_profile:
-            return None
+            return {}
         return self._user_profile.__dict__
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)

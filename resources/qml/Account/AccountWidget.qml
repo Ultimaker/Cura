@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 Item
 {
     property var profile: Cura.API.account.userProfile
-    property var loggedIn: Cura.API.account.isLoggedIn
+    property bool loggedIn: Cura.API.account.isLoggedIn
 
     height: signInButton.visible ? signInButton.height : accountWidget.height
     width: signInButton.visible ? signInButton.width : accountWidget.width

@@ -203,7 +203,7 @@ Item
         }
     }
 
-    /*AccountWidget
+    AccountWidget
     {
         id: accountWidget
         anchors
@@ -212,5 +212,5 @@ Item
             right: parent.right
             rightMargin: UM.Theme.getSize("default_margin").width
         }
-    }*/
+    }
 }
