@@ -66,8 +66,8 @@ Cura.Menu
             checked: model.root_material_id === materialMenu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
         }
-        onObjectAdded: materialMenu.insertItem(index + 1, object)
-        onObjectRemoved: materialMenu.removeItem(index)
+        onObjectAdded: function(index, object) { materialMenu.insertItem(index + 1, object) }
+        onObjectRemoved: function(object) { materialMenu.removeItem(index) }
     }
 
     Cura.MenuSeparator { visible: favoriteMaterialsModel.items.length > 0}
@@ -88,8 +88,8 @@ Cura.Menu
                 checked: model.root_material_id === materialMenu.currentRootMaterialId
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
-            onObjectAdded: genericMenu.insertItem(index, object)
-            onObjectRemoved: genericMenu.removeItem(index)
+            onObjectAdded: function(index, object) { genericMenu.insertItem(index, object)}
+            onObjectRemoved: function(object) {genericMenu.removeItem(index) }
         }
     }
 
@@ -127,16 +127,16 @@ Cura.Menu
 
                             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
                         }
-                        onObjectAdded: brandMaterialsMenu.insertItem(index, object)
-                        onObjectRemoved: brandMaterialsMenu.removeItem(object)
+                        onObjectAdded: function(index, object) { brandMaterialsMenu.insertItem(index, object)}
+                        onObjectRemoved: function(object) {brandMaterialsMenu.removeItem(object)}
                     }
                 }
-                onObjectAdded: brandMenu.insertMenu(index, object)
-                onObjectRemoved: brandMenu.removeMenu(object)
+                onObjectAdded: function(index, object) { brandMenu.insertMenu(index, object)}
+                onObjectRemoved: function(object) {brandMenu.removeMenu(object)}
             }
         }
-        onObjectAdded: materialMenu.insertMenu(index + 4, object)
-        onObjectRemoved: materialMenu.removeMenu(object)
+        onObjectAdded: function(index, object) {materialMenu.insertMenu(index + 4, object)}
+        onObjectRemoved: function(object) { materialMenu.removeMenu(object)}
     }
 
     Cura.MenuSeparator {}

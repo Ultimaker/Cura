@@ -57,7 +57,7 @@ Cura.ExpandablePopup
 
                     property var extruderStack: activeMachine ? activeMachine.extruderList[model.index]: null
                     property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
-                    property bool valueError: activeMachine ? Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True" : false
+                    property bool valueError: activeMachine ? Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible") != "True" : false
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon

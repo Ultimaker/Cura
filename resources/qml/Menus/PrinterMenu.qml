@@ -38,8 +38,8 @@ Cura.Menu
             checked: Cura.MachineManager.activeMachineNetworkGroupName == connectGroupName
             onTriggered: Cura.MachineManager.setActiveMachine(model.id)
         }
-        onObjectAdded: menu.insertItem(2, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: function(index, object) { menu.insertItem(2, object)}
+        onObjectRemoved: function(object) {  menu.removeItem(object)}
     }
 
     Cura.MenuSeparator { visible: networKPrinterInstantiator.count > 0 }
@@ -66,8 +66,8 @@ Cura.Menu
             onTriggered: Cura.MachineManager.setActiveMachine(model.id)
         }
         // A bit hackish, but we have 2 items at the end, put them before that
-        onObjectAdded: menu.insertItem(menu.count - 2, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: function(index, object) { menu.insertItem(menu.count - 2, object) }
+        onObjectRemoved: function(object) {  menu.removeItem(object) }
     }
 
     Cura.MenuSeparator { visible: localPrinterInstantiator.count > 0 }

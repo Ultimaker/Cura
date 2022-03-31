@@ -237,8 +237,8 @@ UM.Dialog
                     onTriggered: manager.addScriptToList(modelData.toString())
                 }
 
-                onObjectAdded: scriptsMenu.insertItem(index, object)
-                onObjectRemoved: scriptsMenu.removeItem(object)
+                onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
+                onObjectRemoved: function(object) {  scriptsMenu.removeItem(object) }
             }
         }
 

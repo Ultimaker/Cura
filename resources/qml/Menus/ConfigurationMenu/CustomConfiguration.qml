@@ -202,7 +202,7 @@ Item
                     return paddedWidth - textWidth - UM.Theme.getSize("print_setup_big_item").height * 0.5 - UM.Theme.getSize("default_margin").width
                 }
             }
-            property string instructionLink: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", ""): ""
+            property string instructionLink: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link"): ""
 
             Row
             {
@@ -269,7 +269,7 @@ Item
                 {
                     id: materialSelection
 
-                    property bool valueError: Cura.MachineManager.activeStack !== null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible", "") !== "True" : true
+                    property bool valueError: Cura.MachineManager.activeStack !== null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "compatible") !== "True" : true
                     property bool valueWarning: !Cura.MachineManager.isActiveQualitySupported
 
                     text: Cura.MachineManager.activeStack !== null ? Cura.MachineManager.activeStack.material.name : ""
