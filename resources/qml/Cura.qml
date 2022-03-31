@@ -739,7 +739,7 @@ UM.MainWindow
     {
         id: packageInstallDialog
         title: catalog.i18nc("@window:title", "Install Package")
-        standardButtons: StandardButton.Ok
+        standardButtons: Dialog.Ok
     }
 
     Cura.MessageDialog
