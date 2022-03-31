@@ -107,8 +107,8 @@ class CuraSceneController(QObject):
         """Either select or deselect an item"""
 
         modifiers = QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers & Qt.ControlModifier
-        shift_is_active = modifiers & Qt.ShiftModifier
+        ctrl_is_active = modifiers & Qt.KeyboardModifier.ControlModifier
+        shift_is_active = modifiers & Qt.KeyboardModifier.ShiftModifier
 
         if ctrl_is_active:
             item = self._objects_model.getItem(index)

@@ -598,8 +598,8 @@ class SimulationView(CuraView):
 
     def event(self, event) -> bool:
         modifiers = QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers & Qt.ControlModifier
-        shift_is_active = modifiers & Qt.ShiftModifier
+        ctrl_is_active = modifiers & Qt.KeyboardModifier.ControlModifier
+        shift_is_active = modifiers & Qt.KeyboardModifier.ShiftModifier
         if event.type == Event.KeyPressEvent and ctrl_is_active:
             amount = 10 if shift_is_active else 1
             if event.key == KeyEvent.UpKey:
