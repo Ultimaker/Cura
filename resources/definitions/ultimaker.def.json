@@ -82,6 +82,67 @@
         },
         "xy_offset": {
             "value": "-layer_height * 0.2"
+        },
+        "bridge_settings_enabled": {
+            "value": false
+        },
+        "bridge_wall_min_length": {
+            "value": 0
+        },
+        "bridge_skin_support_threshold": {
+            "value": 50
+        },
+        "bridge_sparse_infill_max_density": {
+            "value": 0
+        },
+        "bridge_wall_coast": {
+            "value": 0
+        },
+        "bridge_wall_speed": {
+            "value": "speed_wall"
+        },
+        "bridge_wall_material_flow": {
+            "value": "wall_material_flow"
+        },
+        "bridge_skin_speed": {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_material_flow": {
+            "value": "skin_material_flow"
+        },
+        "bridge_skin_density": {
+            "value": "80"
+        },
+        "bridge_fan_speed": {
+             "value": "cool_fan_speed_max"
+        },
+        "bridge_enable_more_layers": {
+            "value": false
+        },
+        "bridge_skin_speed_2": {
+            "value": "speed_topbottom"
+        },
+        "bridge_skin_material_flow_2": {
+            "value": "skin_material_flow"
+        },
+        "bridge_skin_density_2": {
+            "value": 100
+        },
+        "bridge_fan_speed_2": {
+            "value": "cool_fan_speed_min"
+        },
+        "bridge_skin_speed_3": {
+             "value": "speed_topbottom"
+        },
+        "bridge_skin_material_flow_3": {
+            "value": "skin_material_flow"
+        },
+        "bridge_skin_density_3": {
+             "value": 100
+        },
+        "bridge_fan_speed_3": {
+             "value": "cool_fan_speed_min"
         }
+
     }
 }
