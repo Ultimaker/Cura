@@ -198,8 +198,8 @@
         "secondary_button_hover": [232, 240, 253, 255],
         "secondary_button_text": [25, 110, 240, 255],
 
-        "main_window_header_background": [8, 7, 63, 255],
-        "main_window_header_background_gradient": [25, 23, 91, 255],
+        "main_window_header_background": [32, 45, 53, 255],
+        "main_window_header_background_gradient": [32, 45, 53, 255],
         "main_window_header_button_text_active": [8, 7, 63, 255],
         "main_window_header_button_text_inactive": [255, 255, 255, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],
