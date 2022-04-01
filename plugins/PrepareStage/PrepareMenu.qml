@@ -199,7 +199,7 @@ Item
                 id: background
                 height: parent.height
                 width: parent.width
-                border.color: UM.Theme.getColor("lining")
+                border.color: UM.Theme.getColor("zmorph_yellow")
                 border.width: UM.Theme.getSize("default_lining").width
 
                 radius: UM.Theme.getSize("default_radius").width

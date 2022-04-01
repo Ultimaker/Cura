@@ -175,7 +175,7 @@
         "main_background": [255, 255, 255, 255],
         "wide_lining": [245, 245, 245, 255],
         "thick_lining": [180, 180, 180, 255],
-        "lining": [192, 193, 194, 255],
+        "lining": [32, 45, 53, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
         "primary": [50, 130, 255, 255],
@@ -186,7 +186,7 @@
         "secondary": [240, 240, 240, 255],
         "secondary_shadow": [216, 216, 216, 255],
 
-        "icon": [8, 7, 63, 255],
+        "icon": [32, 45, 53, 255],
 
         "primary_button": [25, 110, 240, 255],
         "primary_button_shadow": [27, 95, 202, 255],
