@@ -43,6 +43,7 @@ Item
             height: parent.height
             anchors.left: parent.left
             anchors.right: parent.right
+            topPadding: height / 4
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             placeholderText: catalog.i18nc("@label:textbox", "Search settings")
             font.italic: true
