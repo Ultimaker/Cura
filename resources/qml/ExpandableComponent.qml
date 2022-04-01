@@ -307,4 +307,16 @@ Item
             contentItem: Item {}
         }
     }
+
+    // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
+    // Apparently the order in which these are handled matters and so the height is correctly updated if this is here.
+    Connections
+    {
+        // Since it could be that the content is dynamically populated, we should also take these changes into account.
+        target: content.contentItem
+        function onHeightChanged()
+        {
+            contentContainer.height = contentHeader.height + content.height
+        }
+    }
 }
