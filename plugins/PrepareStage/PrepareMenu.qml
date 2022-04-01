@@ -95,7 +95,7 @@ Item
             {
                 id: menuIcon
                 source: UM.Theme.getIcon("Folder", "medium")
-                color: UM.Theme.getColor("zmorph_yellow")
+                color: UM.Theme.getColor("icon")
 
                 sourceSize.height: height
             }
@@ -188,7 +188,7 @@ Item
                     anchors.centerIn: parent
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
-                    color: UM.Theme.getColor("zmorph_yellow")
+                    color: UM.Theme.getColor("icon")
 
                     sourceSize.height: height
                 }
