@@ -623,12 +623,12 @@ UM.MainWindow
         {
             // Because several implementations of the file dialog only update the folder
             // when it is explicitly set.
-            var f = folder;
-            folder = f;
+            var f = currentFolder;
+            currentFolder = f;
 
-            CuraApplication.setDefaultPath("dialog_load_path", folder);
+            CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
 
-            handleOpenFileUrls(fileUrls);
+            handleOpenFileUrls(selectedFiles);
         }
 
         // Yeah... I know... it is a mess to put all those things here.
