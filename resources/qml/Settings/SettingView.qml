@@ -171,7 +171,7 @@ Item
     {
         anchors.fill: contents
         acceptedButtons: Qt.AllButtons
-        onWheel: wheel.accepted = true
+        onWheel: (wheel) => { wheel.accepted = true }
     }
 
     ListView
