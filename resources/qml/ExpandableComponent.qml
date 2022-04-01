@@ -305,14 +305,6 @@ Item
             padding: UM.Theme.getSize("default_margin").width
 
             contentItem: Item {}
-
-            onContentItemChanged:
-            {
-                // Since we want the size of the content to be set by the size of the content,
-                // we need to do it like this.
-                content.width = contentItem.width + 2 * content.padding
-                content.height = contentItem.height + 2 * content.padding
-            }
         }
     }
 
@@ -322,10 +314,8 @@ Item
     {
         // Since it could be that the content is dynamically populated, we should also take these changes into account.
         target: content.contentItem
-        function onWidthChanged() { content.width = content.contentItem.width + 2 * content.padding }
         function onHeightChanged()
         {
-            content.height = content.contentItem.height + 2 * content.padding
             contentContainer.height = contentHeader.height + content.height
         }
     }
