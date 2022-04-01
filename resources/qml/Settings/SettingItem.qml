@@ -97,7 +97,7 @@ Item
 
         anchors.fill: parent
 
-        acceptedButtons: Qt.MouseButton.RightButton
+        acceptedButtons: Qt.RightButton
         hoverEnabled: true;
 
         onClicked: base.contextMenuRequested()
