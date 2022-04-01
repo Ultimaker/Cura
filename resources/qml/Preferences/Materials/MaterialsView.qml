@@ -206,7 +206,8 @@ Item
                     {
                         height: informationPage.rowHeight
                         width: informationPage.columnWidth
-                        verticalAlignment: Qt.AlignmentFlag.AlignVCenter; text: catalog.i18nc("@label", "Color")
+                        verticalAlignment: Qt.AlignVCenter
+                        text: catalog.i18nc("@label", "Color")
                     }
 
                     Row
@@ -270,7 +271,7 @@ Item
                     width: parent.width
                     height: parent.rowHeight
                     font: UM.Theme.getFont("default_bold")
-                    verticalAlignment: Qt.AlignmentFlag.AlignVCenter
+                    verticalAlignment: Qt.AlignVCenter
                     text: catalog.i18nc("@label", "Properties")
                 }
 
@@ -571,7 +572,7 @@ Item
                     height: spinBox.height + UM.Theme.getSize("default_lining").height
                     text: model.label
                     elide: Text.ElideRight
-                    verticalAlignment: Qt.AlignmentFlag.AlignVCenter
+                    verticalAlignment: Qt.AlignVCenter
                 }
                 Cura.SpinBox
                 {
