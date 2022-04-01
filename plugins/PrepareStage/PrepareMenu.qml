@@ -95,7 +95,7 @@ Item
             {
                 id: menuIcon
                 source: UM.Theme.getIcon("Folder", "medium")
-                color: UM.Theme.getColor("icon")
+                color: UM.Theme.getColor("zmorph_yellow")
 
                 sourceSize.height: height
             }
