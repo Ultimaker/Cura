@@ -111,13 +111,13 @@ Item
                     //The column doesn't automatically listen to its children rect if the children change internally, so we need to explicitly update the size.
                     onChildrenRectChanged:
                     {
-                        popup.height = childrenRect.height
-                        popup.width = childrenRect.width
+                        popup.implicitHeight = childrenRect.height
+                        popup.implicitWidth = childrenRect.width
                     }
                     onPositioningComplete:
                     {
-                        popup.height = childrenRect.height
-                        popup.width = childrenRect.width
+                        popup.implicitHeight = childrenRect.height
+                        popup.implicitWidth = childrenRect.width
                     }
 
                     Repeater

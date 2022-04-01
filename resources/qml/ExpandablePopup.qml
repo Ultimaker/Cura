@@ -27,6 +27,12 @@ Item
     // The contentItem holds the QML item that is shown when the "open" button is pressed
     property alias contentItem: content.contentItem
 
+    // If the contentItem is a Layout (eg Column) you must use these to set the popup size otherwise you end up with a
+    // binding loop between the popup and the contentItem
+    // ImplicitWidth/ImplicitHeight can be used instead in the contentItem if it is not a Layout.
+    property alias contentWidth: content.width
+    property alias contentHeight: content.height
+
     property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
@@ -211,23 +217,5 @@ Item
         }
 
         contentItem: Item {}
-
-        onContentItemChanged:
-        {
-            // Since we want the size of the content to be set by the size of the content,
-            // we need to do it like this.
-            content.width = contentItem.width + 2 * content.padding
-            content.height = contentItem.height + 2 * content.padding
-        }
-    }
-
-    // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
-    // Apparently the order in which these are handled matters and so the height is correctly updated if this is here.
-    Connections
-    {
-        // Since it could be that the content is dynamically populated, we should also take these changes into account.
-        target: content.contentItem
-        function onWidthChanged() { content.width = content.contentItem.width + 2 * content.padding }
-        function onHeightChanged() { content.height = content.contentItem.height + 2 * content.padding }
     }
 }
