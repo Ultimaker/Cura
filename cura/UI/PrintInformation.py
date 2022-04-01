@@ -132,7 +132,7 @@ class PrintInformation(QObject):
             self._updateJobName()
             self.preSlicedChanged.emit()
 
-    @pyqtProperty(Duration, notify = currentPrintTimeChanged)
+    @pyqtProperty(QObject, notify = currentPrintTimeChanged)
     def currentPrintTime(self) -> Duration:
         return self._current_print_time[self._active_build_plate]
 
