@@ -3,9 +3,10 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 6.0
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.1
+
 import Cura 1.1 as Cura
 import UM 1.5 as UM
 
