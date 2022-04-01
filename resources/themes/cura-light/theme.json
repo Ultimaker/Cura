@@ -6,7 +6,7 @@
     "fonts": {
         "large": {
             "size": 1.35,
-            "weight": 350,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_ja_JP": {
@@ -41,7 +41,7 @@
         },
         "medium": {
             "size": 1.16,
-            "weight": 350,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_ja_JP": {
@@ -66,7 +66,7 @@
         },
         "default": {
             "size": 0.95,
-            "weight": 350,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_ja_JP": {
@@ -106,7 +106,7 @@
         },
         "default_italic": {
             "size": 0.95,
-            "weight": 350,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
@@ -130,7 +130,7 @@
         },
         "small": {
             "size": 0.9,
-            "weight": 350,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_ja_JP": {
@@ -150,22 +150,22 @@
         },
         "small_emphasis": {
             "size": 0.9,
-            "weight": 1000,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_ja_JP": {
             "size": 0.9,
-            "weight": 1000,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_zh_CN": {
             "size": 0.9,
-            "weight": 1000,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_zh_TW": {
             "size": 0.9,
-            "weight": 1000,
+            "weight": 700,
             "family": "Noto Sans"
         }
     },

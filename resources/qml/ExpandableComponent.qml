@@ -249,13 +249,13 @@ Item
                 }
                 property var clickPos: Qt.point(0, 0)
                 property bool dragging: false
-                onPressed:
+                onPressed: (mouse) =>
                 {
                     clickPos = Qt.point(mouse.x, mouse.y);
                     dragging = true
                 }
 
-                onPositionChanged:
+                onPositionChanged: (mouse) =>
                 {
                     if(dragging)
                     {
