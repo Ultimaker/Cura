@@ -48,6 +48,22 @@ UM.MainWindow
         tooltip.hide();
     }
 
+    MouseArea
+    {
+        // Hack introduced when switching to qt6
+        // We used to be able to let the main window's default handlers control this, but something seems to be changed
+        // for qt6 in the ordering. TODO; We should find out what changed and have a less hacky fix for that.
+        enabled: parent.visible
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+        onPositionChanged: (mouse) => {base.mouseMoved(mouse);}
+        onPressed: (mouse) => { base.mousePressed(mouse);}
+        onReleased: (mouse) => { base.mouseReleased(mouse);}
+        onWheel: (wheel) => {base.wheel(wheel)}
+
+    }
+
     Rectangle
     {
         id: greyOutBackground
