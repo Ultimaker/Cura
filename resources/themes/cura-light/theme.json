@@ -175,7 +175,7 @@
         "main_background": [255, 255, 255, 255],
         "wide_lining": [245, 245, 245, 255],
         "thick_lining": [180, 180, 180, 255],
-        "lining": [32, 45, 53, 255],
+        "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
         "primary": [50, 130, 255, 255],
@@ -196,7 +196,7 @@
         "secondary_button": [255, 255, 255, 255],
         "secondary_button_shadow": [216, 216, 216, 255],
         "secondary_button_hover": [232, 240, 253, 255],
-        "secondary_button_text": [25, 110, 240, 255],
+        "secondary_button_text": [32, 45, 53, 255],
 
         "main_window_header_background": [32, 45, 53, 255],
         "main_window_header_background_gradient": [32, 45, 53, 255],
@@ -337,7 +337,7 @@
 
         "material_compatibility_warning": [243, 166, 59, 255],
 
-        "progressbar_background": [245, 245, 245, 255],
+        "progressbar_background": [32, 45, 52, 25],
         "progressbar_control": [50, 130, 255, 255],
 
         "slider_groove": [223, 223, 223, 255],
