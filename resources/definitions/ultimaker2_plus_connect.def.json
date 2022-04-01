@@ -7,8 +7,9 @@
         "manufacturer": "Ultimaker B.V.",
         "weight": 1,
         "file_formats": "application/x-ufp;text/x-gcode",
-        "platform": "ultimaker3_platform.obj",
+        "platform": "ultimaker2_plus_connect_platform.obj",
         "platform_texture": "Ultimaker2PlusConnectbackplate.png",
+        "platform_offset": [-1, -6, 0],
         "preferred_variant_name": "0.4 mm",
         "has_variants": true,
         "has_materials": true,
@@ -55,11 +56,11 @@
         },
         "infill_wipe_dist": { "value": "0" },
         "infill_overlap": { "value": "0" },
-        "infill_pattern": { "value": "'grid'" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
         "speed_infill": { "value": "speed_print" },
         "speed_wall_x": { "value": "speed_wall" },
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
-        "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
+        "line_width": { "value": "machine_nozzle_size" },
         "optimize_wall_printing_order": { "value": "True" },
         "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
         "speed_support": { "value": "speed_wall_0" },
@@ -81,8 +82,10 @@
         "material_bed_temperature_layer_0": { "maximum_value": 110 },
         "material_print_temperature": { "maximum_value": 260 },
         "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
-        "meshfix_maximum_deviation": { "value": "layer_height / 4" },		
+        "meshfix_maximum_deviation": { "value": "layer_height / 4" },
         "meshfix_maximum_travel_resolution": { "value": 0.5 },
-        "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" }
+        "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
+        "retraction_prime_speed": { "value": "15" },
+        "retraction_speed": {"value": "45" }
     }
 }

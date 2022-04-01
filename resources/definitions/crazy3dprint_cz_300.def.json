@@ -1,5 +1,5 @@
 {
-    "version": 2, 
+    "version": 2,
     "name": "Crazy3DPrint CZ-300",
     "inherits": "crazy3dprint_base",
     "metadata": {
@@ -42,7 +42,7 @@
         "material_bed_temperature_layer_0": {  "value": 70 },
 		"material_flow_layer_0": {"value": 140},
 		"retraction_amount": {  "default_value": 10 },
-		"retraction_speed": {  "default_value": 70 },
+		"retraction_speed": {  "default_value": 50 },
         "speed_print": {  "default_value": 40 },
         "speed_travel": { "value": 60 },
         "cool_fan_enabled": { "default_value": true },
@@ -52,9 +52,9 @@
 		"skirt_line_count": { "default_value" : 5 },
 		"initial_layer_line_width_factor": { "default_value" : 140 },
 		"top_bottom_pattern": { "default_value" : "concentric" },
-		"outer_inset_first": { "default_value": true },
 		"fill_outline_gaps": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "inset_direction": {"value": "'outside_in'" },
         "machine_start_gcode": {
             "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n"
          },

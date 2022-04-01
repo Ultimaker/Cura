@@ -1,18 +1,19 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from datetime import datetime
-import json
-import secrets
-from hashlib import sha512
 from base64 import b64encode
-from typing import Optional
-import requests
-
-from UM.i18n import i18nCatalog
-from UM.Logger import Logger
+from datetime import datetime
+from hashlib import sha512
+from PyQt5.QtNetwork import QNetworkReply
+import secrets
+from typing import Callable, Optional
+import urllib.parse
 
 from cura.OAuth2.Models import AuthenticationResponse, UserProfile, OAuth2Settings
+from UM.i18n import i18nCatalog
+from UM.Logger import Logger
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To download log-in tokens.
+
 catalog = i18nCatalog("cura")
 TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
 
@@ -30,14 +31,13 @@ class AuthorizationHelpers:
 
         return self._settings
 
-    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str) -> "AuthenticationResponse":
-        """Request the access token from the authorization server.
-
+    def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str, callback: Callable[[AuthenticationResponse], None]) -> None:
+        """
+        Request the access token from the authorization server.
         :param authorization_code: The authorization code from the 1st step.
         :param verification_code: The verification code needed for the PKCE extension.
-        :return: An AuthenticationResponse object.
+        :param callback: Once the token has been obtained, this function will be called with the response.
         """
-
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -46,18 +46,21 @@ class AuthorizationHelpers:
             "code_verifier": verification_code,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
             }
-        try:
-            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError as connection_error:
-            return AuthenticationResponse(success = False, err_message = f"Unable to connect to remote server: {connection_error}")
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        HttpRequestManager.getInstance().post(
+            self._token_url,
+            data = urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict = headers,
+            callback = lambda response: self.parseTokenResponse(response, callback),
+            error_callback = lambda response, _: self.parseTokenResponse(response, callback)
+        )
 
-    def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
-        """Request the access token from the authorization server using a refresh token.
-
-        :param refresh_token:
-        :return: An AuthenticationResponse object.
+    def getAccessTokenUsingRefreshToken(self, refresh_token: str, callback: Callable[[AuthenticationResponse], None]) -> None:
         """
-
+        Request the access token from the authorization server using a refresh token.
+        :param refresh_token: A long-lived token used to refresh the authentication token.
+        :param callback: Once the token has been obtained, this function will be called with the response.
+        """
         Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
@@ -66,74 +69,98 @@ class AuthorizationHelpers:
             "refresh_token": refresh_token,
             "scope": self._settings.CLIENT_SCOPES if self._settings.CLIENT_SCOPES is not None else "",
         }
-        try:
-            return self.parseTokenResponse(requests.post(self._token_url, data = data))  # type: ignore
-        except requests.exceptions.ConnectionError:
-            return AuthenticationResponse(success = False, err_message = "Unable to connect to remote server")
-        except OSError as e:
-            return AuthenticationResponse(success = False, err_message = "Operating system is unable to set up a secure connection: {err}".format(err = str(e)))
+        headers = {"Content-type": "application/x-www-form-urlencoded"}
+        HttpRequestManager.getInstance().post(
+            self._token_url,
+            data = urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict = headers,
+            callback = lambda response: self.parseTokenResponse(response, callback),
+            error_callback = lambda response, _: self.parseTokenResponse(response, callback)
+        )
 
-    @staticmethod
-    def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":
+    def parseTokenResponse(self, token_response: QNetworkReply, callback: Callable[[AuthenticationResponse], None]) -> None:
         """Parse the token response from the authorization server into an AuthenticationResponse object.
 
         :param token_response: The JSON string data response from the authorization server.
         :return: An AuthenticationResponse object.
         """
-
-        token_data = None
-
-        try:
-            token_data = json.loads(token_response.text)
-        except ValueError:
-            Logger.log("w", "Could not parse token response data: %s", token_response.text)
-
+        token_data = HttpRequestManager.readJSON(token_response)
         if not token_data:
-            return AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response."))
+            callback(AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response.")))
+            return
 
-        if token_response.status_code not in (200, 201):
-            return AuthenticationResponse(success = False, err_message = token_data["error_description"])
+        if token_response.error() != QNetworkReply.NetworkError.NoError:
+            callback(AuthenticationResponse(success = False, err_message = token_data["error_description"]))
+            return
 
-        return AuthenticationResponse(success=True,
-                                      token_type=token_data["token_type"],
-                                      access_token=token_data["access_token"],
-                                      refresh_token=token_data["refresh_token"],
-                                      expires_in=token_data["expires_in"],
-                                      scope=token_data["scope"],
-                                      received_at=datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT))
+        callback(AuthenticationResponse(success = True,
+                                        token_type = token_data["token_type"],
+                                        access_token = token_data["access_token"],
+                                        refresh_token = token_data["refresh_token"],
+                                        expires_in = token_data["expires_in"],
+                                        scope = token_data["scope"],
+                                        received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)))
+        return
 
-    def parseJWT(self, access_token: str) -> Optional["UserProfile"]:
+    def checkToken(self, access_token: str, success_callback: Optional[Callable[[UserProfile], None]] = None, failed_callback: Optional[Callable[[], None]] = None) -> None:
         """Calls the authentication API endpoint to get the token data.
 
+        The API is called asynchronously. When a response is given, the callback is called with the user's profile.
         :param access_token: The encoded JWT token.
-        :return: Dict containing some profile data.
+        :param success_callback: When a response is given, this function will be called with a user profile. If None,
+        there will not be a callback.
+        :param failed_callback: When the request failed or the response didn't parse, this function will be called.
         """
-
-        try:
-            check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
-            Logger.log("d", "Checking the access token for [%s]", check_token_url)
-            token_request = requests.get(check_token_url, headers = {
-                "Authorization": "Bearer {}".format(access_token)
-            })
-        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-            # Connection was suddenly dropped. Nothing we can do about that.
-            Logger.logException("w", "Something failed while attempting to parse the JWT token")
-            return None
-        if token_request.status_code not in (200, 201):
-            Logger.log("w", "Could not retrieve token data from auth server: %s", token_request.text)
-            return None
-        user_data = token_request.json().get("data")
-        if not user_data or not isinstance(user_data, dict):
-            Logger.log("w", "Could not parse user data from token: %s", user_data)
-            return None
-
-        return UserProfile(
-            user_id = user_data["user_id"],
-            username = user_data["username"],
-            profile_image_url = user_data.get("profile_image_url", ""),
-            organization_id = user_data.get("organization", {}).get("organization_id"),
-            subscriptions = user_data.get("subscriptions", [])
+        check_token_url = "{}/check-token".format(self._settings.OAUTH_SERVER_URL)
+        Logger.log("d", "Checking the access token for [%s]", check_token_url)
+        headers = {
+            "Authorization": f"Bearer {access_token}"
+        }
+        HttpRequestManager.getInstance().get(
+            check_token_url,
+            headers_dict = headers,
+            callback = lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
+            error_callback = lambda _, _2: failed_callback() if failed_callback is not None else None
         )
+
+    def _parseUserProfile(self, reply: QNetworkReply, success_callback: Optional[Callable[[UserProfile], None]], failed_callback: Optional[Callable[[], None]] = None) -> None:
+        """
+        Parses the user profile from a reply to /check-token.
+
+        If the response is valid, the callback will be called to return the user profile to the caller.
+        :param reply: A network reply to a request to the /check-token URL.
+        :param success_callback: A function to call once a user profile was successfully obtained.
+        :param failed_callback: A function to call if parsing the profile failed.
+        """
+        if reply.error() != QNetworkReply.NetworkError.NoError:
+            Logger.warning(f"Could not access account information. QNetworkError {reply.errorString()}")
+            if failed_callback is not None:
+                failed_callback()
+            return
+
+        profile_data = HttpRequestManager.getInstance().readJSON(reply)
+        if profile_data is None or "data" not in profile_data:
+            Logger.warning("Could not parse user data from token.")
+            if failed_callback is not None:
+                failed_callback()
+            return
+        profile_data = profile_data["data"]
+
+        required_fields = {"user_id", "username"}
+        if "user_id" not in profile_data or "username" not in profile_data:
+            Logger.warning(f"User data missing required field(s): {required_fields - set(profile_data.keys())}")
+            if failed_callback is not None:
+                failed_callback()
+            return
+
+        if success_callback is not None:
+            success_callback(UserProfile(
+                user_id = profile_data["user_id"],
+                username = profile_data["username"],
+                profile_image_url = profile_data.get("profile_image_url", ""),
+                organization_id = profile_data.get("organization", {}).get("organization_id"),
+                subscriptions = profile_data.get("subscriptions", [])
+            ))
 
     @staticmethod
     def generateVerificationCode(code_length: int = 32) -> str:

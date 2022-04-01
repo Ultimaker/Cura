@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.12\n"
+"Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-10-20 16:43+0000\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 14:58+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Italian <info@lionbridge.com>, Italian <info@bothof.nl>\n"
@@ -56,9 +56,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"I comandi codice G da eseguire all’avvio, separati da \n"
-"."
+msgstr "I comandi codice G da eseguire all’avvio, separati da \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,9 +68,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"I comandi codice G da eseguire alla fine, separati da \n"
-"."
+msgstr "I comandi codice G da eseguire alla fine, separati da \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -155,6 +151,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "La profondità (direzione Y) dell’area stampabile."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Altezza macchina"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "L’altezza (direzione Z) dell’area stampabile."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Forma del piano di stampa"
@@ -193,16 +199,6 @@ msgstr "Cristallo"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Alluminio"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Altezza macchina"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "L’altezza (direzione Z) dell’area stampabile."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -561,8 +557,8 @@ msgstr "Indica la velocità massima del motore per la direzione Z."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Velocità di alimentazione massima"
+msgid "Maximum Speed E"
+msgstr "Velocità massima E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1731,8 +1727,11 @@ msgstr "Configurazione di riempimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "Configurazione del materiale di riempimento della stampa. Il riempimento a linea e a zig zag cambia direzione su strati alternati, riducendo il costo del"
+" materiale. Le configurazioni a griglia, a triangolo, tri-esagonali, cubiche, ottagonali, a quarto di cubo, incrociate e concentriche sono stampate completamente"
+" su ogni strato. Le configurazioni gyroid, cubiche, a quarto di cubo e ottagonali variano per ciascuno strato per garantire una più uniforme distribuzione"
+" della forza in ogni direzione. Il riempimento fulmine cerca di minimizzare il riempimento, supportando solo la parte superiore dell'oggetto."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1802,7 +1801,7 @@ msgstr "Gyroid"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "Fulmine"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2021,42 +2020,44 @@ msgstr "Numero di layer di riempimento che supportano i bordi del rivestimento."
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "Angolo di supporto riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Determina quando uno strato di riempimento fulmine deve supportare il materiale sopra di esso. Misurato nell'angolo dato lo stesso di uno strato."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "Angolo di sbalzo riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Determina quando uno strato di riempimento fulmine deve supportare il modello sopra di esso. Misurato nell'angolo dato lo spessore."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "Angolo eliminazione riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "I punti finali delle linee di riempimento vengono accorciati per risparmiare sul materiale. Questa impostazione è l'angolo di sbalzo dei punti finali di"
+" queste linee."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "Angolo di raddrizzatura riempimento fulmine"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "Le linee di riempimento vengono raddrizzate per risparmiare sul tempo di stampa. Questo è l'angolo di sbalzo massimo consentito sulla lunghezza della linea"
+" di riempimento."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3251,7 +3252,7 @@ msgstr "Tutto"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "Non su superficie esterna"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5205,7 +5206,7 @@ msgstr "Larghezza minimo dello stampo"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "Distanza minima tra l'esterno dello stampo e l'esterno del modello."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -6480,6 +6481,30 @@ msgstr "Matrice rotazione maglia"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matrice di rotazione da applicare al modello quando caricato dal file."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "I comandi codice G da eseguire all’avvio, separati da \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "I comandi codice G da eseguire alla fine, separati da \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Velocità di alimentazione massima"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "Configurazione del materiale di riempimento della stampa. Il riempimento a linea e a zig zag cambia direzione su strati alternati, riducendo il costo del materiale. Le configurazioni a griglia, a triangolo, tri-esagonali, cubiche, ottagonali, a quarto di cubo, incrociate e concentriche sono stampate completamente su ogni strato. Le configurazioni gyroid, cubiche, a quarto di cubo e ottagonali variano per ciascuno strato per garantire una più uniforme distribuzione della forza in ogni direzione. Il riempimento fulmine cerca di minimizzare il riempimento, supportando solo le parti superiori (interne) dell'oggetto. Come tale, la percentuale di riempimento è 'valida' solo uno strato al di sotto di ciò che è necessario per supportare il modello."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "La differenza tra uno strato di riempimento fulmine con quello immediatamente sopra rispetto alla potatura delle estremità esterne degli alberi. Misurato nell'angolo dato lo spessore."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "La differenza tra uno strato di riempimento fulmine con quello immediatamente sopra rispetto alla levigatura degli alberi. Misurato nell'angolo dato lo spessore."
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."

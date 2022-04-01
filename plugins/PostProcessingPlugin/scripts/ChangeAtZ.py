@@ -11,6 +11,8 @@
 # Modified by Jaime van Kessel (Ultimaker), j.vankessel@ultimaker.com to make it work for 15.10 / 2.x
 # Modified by Ghostkeeper (Ultimaker), rubend@tutanota.com, to debug.
 # Modified by Wes Hanney, https://github.com/novamxd, Retract Length + Speed, Clean up
+# Modified by Alex Jaxon, https://github.com/legend069, Added option to modify Build Volume Temperature
+
 
 # history / changelog:
 # V3.0.1:   TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
@@ -33,13 +35,17 @@
 # V5.0:		Bugfix for fall back after one layer and doubled G0 commands when using print speed tweak, Initial version for Cura 2.x
 # V5.0.1:	Bugfix for calling unknown property 'bedTemp' of previous settings storage and unknown variable 'speed'
 # V5.1:		API Changes included for use with Cura 2.2
-# V5.2.0:	Wes Hanney. Added support for changing Retract Length and Speed. Removed layer spread option. Fixed issue of cumulative ChangeZ
+# V5.2.0:	Wes Hanney. Added support for changing Retract Length and Speed. Removed layer spread option. Fixed issue of cumulative ChangeAtZ
 # mods so they can now properly be stacked on top of each other. Applied code refactoring to clean up various coding styles. Added comments.
 # Broke up functions for clarity. Split up class so it can be debugged outside of Cura.
 # V5.2.1:	Wes Hanney. Added support for firmware based retractions. Fixed issue of properly restoring previous values in single layer option.
 # Added support for outputting changes to LCD (untested). Added type hints to most functions and variables. Added more comments. Created GCodeCommand
 # class for better detection of G1 vs G10 or G11 commands, and accessing arguments. Moved most GCode methods to GCodeCommand class. Improved wording
 # of Single Layer vs Keep Layer to better reflect what was happening.
+# V5.3.0    Alex Jaxon, Added option to modify Build Volume Temperature keeping current format
+#
+
+
 
 # Uses -
 # M220 S<factor in percent> - set speed factor override percentage
@@ -56,9 +62,9 @@ from ..Script import Script
 import re
 
 
-# this was broken up into a separate class so the main ChangeZ script could be debugged outside of Cura
+# this was broken up into a separate class so the main ChangeAtZ script could be debugged outside of Cura
 class ChangeAtZ(Script):
-    version = "5.2.1"
+    version = "5.3.0"
 
     def getSettingDataString(self):
         return """{
@@ -69,10 +75,10 @@ class ChangeAtZ(Script):
             "settings": {
                 "caz_enabled": {
                     "label": "Enabled",
-                    "description": "Allows adding multiple ChangeZ mods and disabling them as needed.",
+                    "description": "Allows adding multiple ChangeAtZ mods and disabling them as needed.",
                     "type": "bool",
                     "default_value": true
-                },             
+                },
                 "a_trigger": {
                     "label": "Trigger",
                     "description": "Trigger at height or at layer no.",
@@ -119,7 +125,7 @@ class ChangeAtZ(Script):
                     "description": "Displays the current changes to the LCD",
                     "type": "bool",
                     "default_value": false
-                },                                                         
+                },
                 "e1_Change_speed": {
                     "label": "Change Speed",
                     "description": "Select if total speed (print and travel) has to be changed",
@@ -222,6 +228,23 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "120",
                     "enabled": "h1_Change_bedTemp"
                 },
+                "h1_Change_buildVolumeTemperature": {
+                    "label": "Change Build Volume Temperature",
+                    "description": "Select if Build Volume Temperature has to be changed",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "h2_buildVolumeTemperature": {
+                    "label": "Build Volume Temperature",
+                    "description": "New Build Volume Temperature",
+                    "unit": "C",
+                    "type": "float",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "10",
+                    "maximum_value_warning": "50",
+                    "enabled": "h1_Change_buildVolumeTemperature"
+                },
                 "i1_Change_extruderOne": {
                     "label": "Change Extruder 1 Temp",
                     "description": "Select if First Extruder Temperature has to be changed",
@@ -275,28 +298,28 @@ class ChangeAtZ(Script):
                 },
                 "caz_change_retract": {
                     "label": "Change Retraction",
-                    "description": "Indicates you would like to modify retraction properties.",
+                    "description": "Indicates you would like to modify retraction properties. Does not work when using relative extrusion.",
                     "type": "bool",
                     "default_value": false
-                },                  
+                },
                 "caz_retractstyle": {
                     "label": "Retract Style",
                     "description": "Specify if you're using firmware retraction or linear move based retractions. Check your printer settings to see which you're using.",
                     "type": "enum",
                     "options": {
-                        "linear": "Linear Move",                       
+                        "linear": "Linear Move",
                         "firmware": "Firmware"
                     },
                     "default_value": "linear",
                     "enabled": "caz_change_retract"
-                },                  
+                },
                 "caz_change_retractfeedrate": {
                     "label": "Change Retract Feed Rate",
                     "description": "Changes the retraction feed rate during print",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "caz_change_retract"
-                },                
+                },
                 "caz_retractfeedrate": {
                     "label": "Retract Feed Rate",
                     "description": "New Retract Feed Rate (mm/s)",
@@ -325,7 +348,7 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "20",
                     "enabled": "caz_change_retractlength"
-                }            
+                }      
             }
         }"""
 
@@ -345,6 +368,7 @@ class ChangeAtZ(Script):
         self.setIntSettingIfEnabled(caz_instance, "g3_Change_flowrateOne", "flowrateOne", "g4_flowrateOne")
         self.setIntSettingIfEnabled(caz_instance, "g5_Change_flowrateTwo", "flowrateTwo", "g6_flowrateTwo")
         self.setFloatSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
+        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_buildVolumeTemperature", "buildVolumeTemperature", "h2_buildVolumeTemperature")
         self.setFloatSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
         self.setFloatSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
         self.setIntSettingIfEnabled(caz_instance, "j1_Change_fanSpeed", "fanSpeed", "j2_fanSpeed")
@@ -776,6 +800,10 @@ class ChangeAtZProcessor:
         if "bedTemp" in values:
             codes.append("BedTemp: " + str(round(values["bedTemp"])))
 
+        # looking for wait for Build Volume Temperature
+        if "buildVolumeTemperature" in values:
+            codes.append("buildVolumeTemperature: " + str(round(values["buildVolumeTemperature"])))
+
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
             codes.append("Extruder 1 Temp: " + str(round(values["extruderOne"])))
@@ -857,6 +885,10 @@ class ChangeAtZProcessor:
         # looking for wait for bed temp
         if "bedTemp" in values:
             codes.append("M140 S" + str(values["bedTemp"]))
+
+        # looking for wait for Build Volume Temperature
+        if "buildVolumeTemperature" in values:
+            codes.append("M141 S" + str(values["buildVolumeTemperature"]))
 
         # set our extruder one temp (if specified)
         if "extruderOne" in values:
@@ -943,7 +975,7 @@ class ChangeAtZProcessor:
         # nothing to do
         return ""
 
-    # Returns the unmodified GCODE line from previous ChangeZ edits
+    # Returns the unmodified GCODE line from previous ChangeAtZ edits
     @staticmethod
     def getOriginalLine(line: str) -> str:
 
@@ -990,7 +1022,7 @@ class ChangeAtZProcessor:
             else:
                 return self.currentZ >= self.targetZ
 
-    # Marks any current ChangeZ layer defaults in the layer for deletion
+    # Marks any current ChangeAtZ layer defaults in the layer for deletion
     @staticmethod
     def markChangesForDeletion(layer: str):
         return re.sub(r";\[CAZD:", ";[CAZD:DELETE:", layer)
@@ -1288,7 +1320,7 @@ class ChangeAtZProcessor:
         # flag that we're inside our target layer
         self.insideTargetLayer = True
 
-    # Removes all the ChangeZ layer defaults from the given layer
+    # Removes all the ChangeAtZ layer defaults from the given layer
     @staticmethod
     def removeMarkedChanges(layer: str) -> str:
         return re.sub(r";\[CAZD:DELETE:[\s\S]+?:CAZD\](\n|$)", "", layer)
@@ -1360,6 +1392,16 @@ class ChangeAtZProcessor:
             # get our bed temp if provided
             if "S" in command.arguments:
                 self.lastValues["bedTemp"] = command.getArgumentAsFloat("S")
+
+            # move to the next command
+            return
+
+        # handle Build Volume Temperature changes, really shouldn't want to wait for enclousure temp mid print though.
+        if command.command == "M141" or command.command == "M191":
+
+            # get our bed temp if provided
+            if "S" in command.arguments:
+                self.lastValues["buildVolumeTemperature"] = command.getArgumentAsFloat("S")
 
             # move to the next command
             return

@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 SettingItem
 {
@@ -26,19 +26,17 @@ SettingItem
         }
     }
 
-    contents: Rectangle
+    contents: UM.UnderlineBackground
     {
         id: control
 
         anchors.fill: parent
 
-        radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color:
+        liningColor:
         {
             if(!enabled)
             {
-                return UM.Theme.getColor("setting_control_disabled_border")
+                return UM.Theme.getColor("text_field_border_disabled")
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -54,15 +52,15 @@ SettingItem
             //Validation is OK.
             if(hovered || input.activeFocus)
             {
-                return UM.Theme.getColor("setting_control_border_highlight")
+                return UM.Theme.getColor("text_field_border_hovered")
             }
-            return UM.Theme.getColor("setting_control_border")
+            return UM.Theme.getColor("text_field_border")
         }
 
         color: {
             if(!enabled)
             {
-                return UM.Theme.getColor("setting_control_disabled")
+                return UM.Theme.getColor("text_field")
             }
             switch(propertyProvider.properties.validationState)
             {
@@ -78,19 +76,11 @@ SettingItem
                     return UM.Theme.getColor("setting_validation_ok")
 
                 default:
-                    return UM.Theme.getColor("setting_control")
+                    return UM.Theme.getColor("text_field")
             }
         }
 
-        Rectangle
-        {
-            anchors.fill: parent
-            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
-            color: UM.Theme.getColor("setting_control_highlight")
-            opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35
-        }
-
-        Label
+        UM.Label
         {
             anchors
             {
@@ -105,9 +95,7 @@ SettingItem
             //However the setting value is aligned, align the unit opposite. That way it stays readable with right-to-left languages.
             horizontalAlignment: (input.effectiveHorizontalAlignment == Text.AlignLeft) ? Text.AlignRight : Text.AlignLeft
             textFormat: Text.PlainText
-            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
-            font: UM.Theme.getFont("default")
         }
 
         TextInput
@@ -155,8 +143,9 @@ SettingItem
             }
 
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+            selectedTextColor: UM.Theme.getColor("setting_control_text")
             font: UM.Theme.getFont("default")
-
+            selectionColor: UM.Theme.getColor("text_selection")
             selectByMouse: true
 
             maximumLength: (definition.type == "str" || definition.type == "[int]") ? -1 : 10

@@ -181,8 +181,7 @@ class Backup:
 
         return extracted
 
-    @staticmethod
-    def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+    def _extractArchive(self, archive: "ZipFile", target_path: str) -> bool:
         """Extract the whole archive to the given target path.
 
         :param archive: The archive as ZipFile.
@@ -201,7 +200,11 @@ class Backup:
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
         name_list = archive.namelist()
+        ignore_string = re.compile("|".join(self.IGNORED_FILES + self.IGNORED_FOLDERS))
         for archive_filename in name_list:
+            if ignore_string.search(archive_filename):
+                Logger.warning(f"File ({archive_filename}) in archive that doesn't fit current backup policy; ignored.")
+                continue
             try:
                 archive.extract(archive_filename, target_path)
             except (PermissionError, EnvironmentError):

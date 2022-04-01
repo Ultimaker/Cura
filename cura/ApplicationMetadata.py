@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # ---------
@@ -13,7 +13,7 @@ DEFAULT_CURA_DEBUG_MODE = False
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
 # example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
 # CuraVersion.py.in template.
-CuraSDKVersion = "7.8.0"
+CuraSDKVersion = "7.9.0"
 
 try:
     from cura.CuraVersion import CuraAppName  # type: ignore
@@ -46,6 +46,10 @@ except ImportError:
 # Various convenience flags indicating what kind of Cura build it is.
 __ENTERPRISE_VERSION_TYPE = "enterprise"
 IsEnterpriseVersion = CuraBuildType.lower() == __ENTERPRISE_VERSION_TYPE
+IsAlternateVersion = CuraBuildType.lower() not in [DEFAULT_CURA_BUILD_TYPE, __ENTERPRISE_VERSION_TYPE]
+# NOTE: IsAlternateVersion is to make it possibile to have 'non-numbered' versions, at least as presented to the user.
+#       (Internally, it'll still have some sort of version-number, but the user is never meant to see it in the GUI).
+#       Warning: This will also change (some of) the icons/splash-screen to the 'work in progress' alternatives!
 
 try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore

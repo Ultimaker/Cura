@@ -1,14 +1,11 @@
-// Copyright (c) 2021 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.15
 import QtQuick.Dialogs 1.2
 import QtGraphicalEffects 1.0
-
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "Dialogs"
@@ -161,7 +158,6 @@ UM.MainWindow
         ApplicationMenu
         {
             id: applicationMenu
-            window: base
         }
 
         Item
@@ -255,7 +251,6 @@ UM.MainWindow
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
-                                packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();
                             }
                             else
@@ -588,18 +583,15 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
+    Cura.MessageDialog
     {
         id: exitConfirmationDialog
         title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
         text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
-        icon: StandardIcon.Question
-        modality: Qt.ApplicationModal
-        standardButtons: StandardButton.Yes | StandardButton.No
-        onYes: CuraApplication.callConfirmExitDialogCallback(true)
-        onNo: CuraApplication.callConfirmExitDialogCallback(false)
+        standardButtons: Dialog.Yes | Dialog.No
+        onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
         onRejected: CuraApplication.callConfirmExitDialogCallback(false)
-        onVisibilityChanged:
+        onClosed:
         {
             if (!visible)
             {
@@ -749,20 +741,18 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
+    Cura.MessageDialog
     {
         id: packageInstallDialog
-        title: catalog.i18nc("@window:title", "Install Package");
+        title: catalog.i18nc("@window:title", "Install Package")
         standardButtons: StandardButton.Ok
-        modality: Qt.ApplicationModal
     }
 
-    MessageDialog
+    Cura.MessageDialog
     {
         id: infoMultipleFilesWithGcodeDialog
         title: catalog.i18nc("@title:window", "Open File(s)")
-        icon: StandardIcon.Information
-        standardButtons: StandardButton.Ok
+        standardButtons: Dialog.Ok
         text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
 
         property var selectedMultipleFiles
@@ -818,35 +808,6 @@ UM.MainWindow
             {
                 Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
             }
-        }
-    }
-
-    MessageDialog
-    {
-        id: messageDialog
-        modality: Qt.ApplicationModal
-        onAccepted: CuraApplication.messageBoxClosed(clickedButton)
-        onApply: CuraApplication.messageBoxClosed(clickedButton)
-        onDiscard: CuraApplication.messageBoxClosed(clickedButton)
-        onHelp: CuraApplication.messageBoxClosed(clickedButton)
-        onNo: CuraApplication.messageBoxClosed(clickedButton)
-        onRejected: CuraApplication.messageBoxClosed(clickedButton)
-        onReset: CuraApplication.messageBoxClosed(clickedButton)
-        onYes: CuraApplication.messageBoxClosed(clickedButton)
-    }
-
-    Connections
-    {
-        target: CuraApplication
-        function onShowMessageBox(title, text, informativeText, detailedText, buttons, icon)
-        {
-            messageDialog.title = title
-            messageDialog.text = text
-            messageDialog.informativeText = informativeText
-            messageDialog.detailedText = detailedText
-            messageDialog.standardButtons = buttons
-            messageDialog.icon = icon
-            messageDialog.visible = true
         }
     }
 

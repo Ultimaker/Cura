@@ -40,7 +40,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
-    build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
+    build_plate_bounding_box = Box(int(machine_width * factor), int(machine_depth * factor))
 
     if fixed_nodes is None:
         fixed_nodes = []
@@ -91,7 +91,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
         if hull_polygon is not None and hull_polygon.getPoints() is not None and len(hull_polygon.getPoints()) > 2:  # numpy array has to be explicitly checked against None
             for point in hull_polygon.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
+                converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
             item = Item(converted_points)
             item.markAsFixedInBin(0)
             node_items.append(item)
@@ -159,4 +159,4 @@ def arrange(nodes_to_arrange: List["SceneNode"],
 
     grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes, factor, add_new_nodes_in_scene)
     grouped_operation.push()
-    return not_fit_count != 0
+    return not_fit_count == 0

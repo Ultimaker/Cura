@@ -1,10 +1,10 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 Popup
@@ -43,17 +43,29 @@ Popup
         // This repeater adds the intent labels
         ScrollView
         {
+            id: qualityListScrollView
             property real maximumHeight: screenScaleFactor * 400
             contentHeight: dataColumn.height
             height: Math.min(contentHeight, maximumHeight)
-            clip: true
+            width: parent.width
 
-            ScrollBar.vertical.policy: height == maximumHeight ? ScrollBar.AlwaysOn: ScrollBar.AlwaysOff
+            clip: true
+            ScrollBar.vertical: UM.ScrollBar
+            {
+                id: qualityListScrollBar
+                parent: qualityListScrollView
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+            }
 
             Column
             {
                 id: dataColumn
-                width: parent.width
+                width: qualityListScrollView.width - qualityListScrollBar.width
                 Repeater
                 {
                     model: dataModel
@@ -64,14 +76,13 @@ Popup
                         property variant subItemModel: model.qualities
 
                         height: childrenRect.height
-                        width: popup.contentWidth
+                        width: dataColumn.width
 
-                        Label
+                        UM.Label
                         {
                             id: headerLabel
                             text: model.name
                             color: UM.Theme.getColor("text_inactive")
-                            renderType: Text.NativeRendering
                             width: parent.width
                             height: visible ? contentHeight: 0
                             visible: qualitiesList.visibleChildren.length > 0
@@ -119,6 +130,7 @@ Popup
                                     checkable: true
                                     visible: model.available
                                     text: model.name + " - " + model.layer_height + " mm"
+                                    leftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                                     checked:
                                     {
                                         if (Cura.MachineManager.hasCustomQuality)
@@ -138,13 +150,12 @@ Popup
                 Item
                 {
                     height: childrenRect.height
-                    width: popup.contentWidth
+                    width: dataColumn.width
 
-                    Label
+                    UM.Label
                     {
                         id: customProfileHeader
                         text: catalog.i18nc("@label:header", "Custom profiles")
-                        renderType: Text.NativeRendering
                         height: visible ? contentHeight: 0
                         enabled: false
                         visible: profilesList.visibleChildren.length > 1
@@ -185,6 +196,7 @@ Popup
                                 checkable: true
                                 visible: model.available
                                 text: model.name
+                                leftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                                 checked:
                                 {
                                     var active_quality_group = Cura.MachineManager.activeQualityChangesGroup
@@ -280,29 +292,20 @@ Popup
                 width: parent.width
                 height: childrenRect.height
 
-                Label
+                UM.Label
                 {
                     id: textLabel
                     text: manageProfilesButton.text
                     height: contentHeight
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                 }
-                Label
+                UM.Label
                 {
                     id: shortcutLabel
                     text: Cura.Actions.manageProfiles.shortcut
+                    color: UM.Theme.getColor("text_lighter")
                     height: contentHeight
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
                 }
             }
             onClicked:

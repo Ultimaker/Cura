@@ -361,8 +361,15 @@ class QualityManagementModel(ListModel):
                 "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", "Unknown"))),
             })
         # Sort by quality_type for each intent category
+        intent_translations_list = list(intent_translations)
 
-        result = sorted(result, key = lambda x: (list(intent_translations).index(x["intent_category"]), x["quality_type"]))
+        def getIntentWeight(intent_category):
+            try:
+                return intent_translations_list.index(intent_category)
+            except ValueError:
+                return 99
+
+        result = sorted(result, key = lambda x: (getIntentWeight(x["intent_category"]), x["quality_type"]))
         item_list += result
 
         # Create quality_changes group items

@@ -40,6 +40,48 @@
         {
             "value": false,
             "enabled": false
+        },
+        "skin_angles": {
+            "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]"
+        },
+        "line_width": {
+            "value": "machine_nozzle_size"
+        },
+        "wall_thickness": {
+            "value": "wall_line_width_0 + wall_line_width_x"
+        },
+        "infill_before_walls": {
+            "value": "False"
+        },
+        "infill_material_flow": {
+            "value": "(1.95-infill_sparse_density / 100 if infill_sparse_density > 95 else 1) * material_flow"
+        },
+        "retraction_combing": {
+            "value": "'no_outer_surfaces'"
+        },
+        "roofing_layer_count": {
+            "value": "0"
+        },
+        "roofing_material_flow": {
+            "value": "material_flow"
+        },
+        "skin_material_flow": {
+            "value": "0.97 * material_flow"
+        },
+        "skin_monotonic" : {
+            "value": true
+        },
+        "speed_equalize_flow_width_factor": {
+            "value": "110.0"
+        },
+        "top_layers": {
+            "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))"
+        },
+        "bottom_layers": {
+            "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"
+        },
+        "xy_offset": {
+            "value": "-layer_height * 0.2"
         }
     }
 }

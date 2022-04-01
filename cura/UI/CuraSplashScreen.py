@@ -14,10 +14,12 @@ import time
 class CuraSplashScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
-        self._scale = 0.7
+        self._scale = 1
         self._version_y_offset = 0  # when extra visual elements are in the background image, move version text down
 
-        if ApplicationMetadata.IsEnterpriseVersion:
+        if ApplicationMetadata.IsAlternateVersion:
+            splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_wip.png"))
+        elif ApplicationMetadata.IsEnterpriseVersion:
             splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_enterprise.png"))
             self._version_y_offset = 26
         else:
@@ -67,23 +69,21 @@ class CuraSplashScreen(QSplashScreen):
         version = Application.getInstance().getVersion().split("-")
 
         # Draw version text
-        font = QFont()  # Using system-default font here
-        font.setPixelSize(18)
+        font = QFont()
+        font.setPixelSize(24)
         painter.setFont(font)
-        painter.drawText(60, 70 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0])
-        if len(version) > 1:
-            font.setPixelSize(16)
-            painter.setFont(font)
-            painter.setPen(QColor(200, 200, 200, 255))
-            painter.drawText(247, 105 + self._version_y_offset, round(330 * self._scale), round(255 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[1])
-        painter.setPen(QColor(255, 255, 255, 255))
+
+        if len(version) == 1:
+            painter.drawText(40, 104 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0] if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
+        elif len(version) > 1: 
+            painter.drawText(40, 104 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignLeft | Qt.AlignTop, version[0] +" "+ version[1] if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
 
         # Draw the loading image
         pen = QPen()
-        pen.setWidthF(6 * self._scale)
-        pen.setColor(QColor(32, 166, 219, 255))
+        pen.setWidthF(2 * self._scale)
+        pen.setColor(QColor(255, 255, 255, 255))
         painter.setPen(pen)
-        painter.drawArc(60, 150, round(32 * self._scale), round(32 * self._scale), round(self._loading_image_rotation_angle * 16), 300 * 16)
+        painter.drawArc(38, 324, round(20 * self._scale), round(20 * self._scale), round(self._loading_image_rotation_angle * 16), 300 * 16)
 
         # Draw message text
         if self._current_message:
@@ -93,7 +93,7 @@ class CuraSplashScreen(QSplashScreen):
             pen.setColor(QColor(255, 255, 255, 255))
             painter.setPen(pen)
             painter.setFont(font)
-            painter.drawText(100, 128, 170, 64,
+            painter.drawText(70, 320, 170, 24,
                              Qt.AlignLeft | Qt.AlignVCenter | Qt.TextWordWrap,
                              self._current_message)
 

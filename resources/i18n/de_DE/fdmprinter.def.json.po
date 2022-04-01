@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.12\n"
+"Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-10-20 16:43+0000\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 15:16+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: German <info@lionbridge.com>, German <info@bothof.nl>\n"
@@ -57,7 +57,7 @@ msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
 msgstr ""
-"G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n"
+"G-Code-Befehle, die ganz am Anfang ausgeführt werden - getrennt durch \n"
 "."
 
 #: fdmprinter.def.json
@@ -71,7 +71,7 @@ msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
 msgstr ""
-"G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \n"
+"G-Code-Befehle, die ganz am Ende ausgeführt werden - getrennt durch \n"
 "."
 
 #: fdmprinter.def.json
@@ -155,6 +155,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "Die Tiefe (Y-Richtung) des druckbaren Bereichs."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Gerätehöhe"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "Die Höhe (Z-Richtung) des druckbaren Bereichs."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Druckbettform"
@@ -193,16 +203,6 @@ msgstr "Glas"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Aluminium"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Gerätehöhe"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "Die Höhe (Z-Richtung) des druckbaren Bereichs."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -561,8 +561,8 @@ msgstr "Die Maximaldrehzahl für den Motor der Z-Richtung."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Maximaler Vorschub"
+msgid "Maximum Speed E"
+msgstr "Maximaldrehzahl Extruder"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1267,7 +1267,7 @@ msgstr "Intelligent verbergen"
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
-msgstr "Realitvwert der Z-Naht"
+msgstr "Relativwert der Z-Naht"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative description"
@@ -1731,8 +1731,8 @@ msgstr "Füllmuster"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "Das Muster des Füllungsmaterials des Drucks. Die Linien- und Zickzack-Füllung wechselt die Richtung auf abwechselnden Schichten, was die Materialkosten reduziert. Die Gitter-, Dreieck-, Tri-Hexagon-, Kubus-, Oktett-, Viertelkubus-, Kreuz- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Die Füllung in Form von Kreiseln, Würfeln, Viertelwürfeln und Achten wechselt mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in jeder Richtung zu erreichen. Bei der Blitz-Füllung wird versucht, die Füllung zu minimieren, indem nur die Decke des Objekts unterstützt wird."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -2021,42 +2021,42 @@ msgstr "Die Anzahl der zusätzlichen Schichten, die die Außenhautkanten stütze
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "Stützwinkel der Blitz-Füllung"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "Legt fest, wann eine Blitz-Füllschicht alles Darüberliegende tragen soll. Gemessen in dem Winkel, den die Schichtstärke vorgibt."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "Überstandswinkel der Blitz-Füllung"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "Legt fest, wann eine Blitz-Füllschicht das Modell darüber tragen soll. Gemessen in dem Winkel, den die Schichtstärke vorgibt."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "Beschnittwinkel der Blitz-Füllung"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "Die Endpunkte der Füllungslinien werden verkürzt, um Material zu sparen. Diese Einstellung ist der Winkel des Überhangs der Endpunkte dieser Linien."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "Begradigungswinkel der Blitz-Füllung"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "Um Druckzeit zu sparen, werden die Füllungslinien begradigt. Dies ist der maximal zulässige Winkel des Überhangs über die Länge der Füllung."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3251,7 +3251,7 @@ msgstr "Alle"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "Nicht auf der Außenfläche"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -3721,7 +3721,7 @@ msgstr "Zickzack"
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
-msgstr "Quer"
+msgstr "Kreuz"
 
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
@@ -5205,7 +5205,7 @@ msgstr "Mindestbreite der Form"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "Der Mindestabstand zwischen der Außenseite der Form und der Außenseite des Modells."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5585,17 +5585,17 @@ msgstr "Die Geschwindigkeit, mit der die Bewegung während des Coasting erfolgt,
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size label"
 msgid "Cross 3D Pocket Size"
-msgstr "Größe 3D-Quertasche"
+msgstr "Größe 3D-Kreuztasche"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
-msgstr "Die Größe der Taschen bei Überkreuzung im 3D-Quermuster bei Höhen, in denen sich das Muster selbst berührt."
+msgstr "Die Größe der Taschen bei Überkreuzung im 3D-Kreuzmuster bei Höhen, in denen sich das Muster selbst berührt."
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image label"
 msgid "Cross Infill Density Image"
-msgstr "Querfülldichte Bild"
+msgstr "Kreuzfülldichte Bild"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_density_image description"
@@ -5605,7 +5605,7 @@ msgstr "Die Dateiposition eines Bildes, von dem die Helligkeitswerte die minimal
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image label"
 msgid "Cross Fill Density Image for Support"
-msgstr "Querfülldichte Bild für Stützstruktur"
+msgstr "Kreuzfülldichte Bild für Stützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "cross_support_density_image description"
@@ -6481,9 +6481,33 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angewandt wird."
 
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Maximaler Vorschub"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "Das Muster des Füllmaterials des Drucks. Die Linien- und Zickzackfüllmethode wechseln nach jeder Schicht die Richtung, um Materialkosten zu reduzieren. Die Gitter-, Dreieck- Tri-Hexagon-, Würfel-, Octahedral-, Viertelwürfel-, Kreuz- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Gyroid-, Würfel-, Viertelwürfel- und achtflächige Füllungen wechseln mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in allen Richtungen zu erzielen. Die Einstellung Blitz versucht, die Füllung zu minimieren, indem nur die (internen) Dächer des Objekts gestützt werden. Der ‚gültige‘ Prozentsatz der Füllung bezieht sich daher nur auf die jeweilige Ebene unter dem zu stützenden Bereich des Modells."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "Der Unterschied, den eine Blitz-Füllschicht zu der unmittelbar darüber liegenden Schicht haben kann, wenn es um den Beschnitt der äußeren Enden von Bäumen geht. Gemessen in dem Winkel, den die Schichtstärke vorgibt."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "Die veränderte Position, die eine Schicht der Blitz-Füllung zu der unmittelbar darüber liegenden Schicht haben kann, wenn es um das Ausrunden der äußeren Enden von Bäumen geht. Gemessen als Winkel der Zweige."
+
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-#~ msgstr "Das Muster des Füllmaterials des Drucks. Die Linien- und Zickzackfüllmethode wechseln nach jeder Schicht die Richtung, um Materialkosten zu reduzieren. Die Gitter-, Dreieck- Tri-Hexagon-, Würfel-, Octahedral-, Viertelwürfel-, Quer- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Gyroid-, Würfel-, Viertelwürfel- und Octahedral-Füllungen wechseln mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in allen Richtungen zu erzielen."
+#~ msgstr "Das Muster des Füllmaterials des Drucks. Die Linien- und Zickzackfüllmethode wechseln nach jeder Schicht die Richtung, um Materialkosten zu reduzieren. Die Gitter-, Dreieck- Tri-Hexagon-, Würfel-, Octahedral-, Viertelwürfel-, Kreuz- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Gyroid-, Würfel-, Viertelwürfel- und Octahedral-Füllungen wechseln mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in allen Richtungen zu erzielen."
 
 #~ msgctxt "mold_width description"
 #~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
@@ -6963,7 +6987,7 @@ msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angew
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-#~ msgstr "Das Muster des Füllmaterials des Drucks. Die Linien- und Zickzackfüllmethode wechseln nach jeder Schicht die Richtung, um Materialkosten zu reduzieren. Die Gitter-, Dreieck- Tri-Hexagon-, Würfel-, Octahedral-, Viertelwürfel-, Quer- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Würfel-, Viertelwürfel- und Octahedral-Füllungen wechseln mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in allen Richtungen zu erzielen."
+#~ msgstr "Das Muster des Füllmaterials des Drucks. Die Linien- und Zickzackfüllmethode wechseln nach jeder Schicht die Richtung, um Materialkosten zu reduzieren. Die Gitter-, Dreieck- Tri-Hexagon-, Würfel-, Octahedral-, Viertelwürfel-, Kreuz- und konzentrischen Muster werden in jeder Schicht vollständig gedruckt. Würfel-, Viertelwürfel- und Octahedral-Füllungen wechseln mit jeder Schicht, um eine gleichmäßigere Verteilung der Stärke in allen Richtungen zu erzielen."
 
 #~ msgctxt "infill_pattern option concentric_3d"
 #~ msgid "Concentric 3D"
@@ -7035,11 +7059,11 @@ msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angew
 
 #~ msgctxt "cross_infill_apply_pockets_alternatingly label"
 #~ msgid "Alternate Cross 3D Pockets"
-#~ msgstr "3D-Quertaschen abwechseln"
+#~ msgstr "3D-Kreuztaschen abwechseln"
 
 #~ msgctxt "cross_infill_apply_pockets_alternatingly description"
 #~ msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-#~ msgstr "Wenden Sie Taschen nur in der Hälfte der Überkreuzungen im 3D-Quermuster an und wechseln Sie die Position der Taschen zwischen den Höhen ab, in denen sich das Muster selbst berührt."
+#~ msgstr "Wenden Sie Taschen nur in der Hälfte der Überkreuzungen im 3D-Kreuzmuster an und wechseln Sie die Position der Taschen zwischen den Höhen ab, in denen sich das Muster selbst berührt."
 
 #~ msgctxt "infill_hollow label"
 #~ msgid "Hollow Out Objects"

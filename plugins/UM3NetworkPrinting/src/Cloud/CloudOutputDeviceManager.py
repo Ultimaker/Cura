@@ -19,7 +19,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To update printer metadata with information received about cloud printers.
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
-from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
+from cura.UltimakerCloud.UltimakerCloudConstants import META_CAPABILITIES, META_UM_LINKED_TO_ACCOUNT
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
@@ -128,6 +128,8 @@ class CloudOutputDeviceManager:
                 # to the current account
                 if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                     self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
+                if not self._um_cloud_printers[device_id].getMetaDataEntry(META_CAPABILITIES, None):
+                    self._um_cloud_printers[device_id].setMetaDataEntry(META_CAPABILITIES, ",".join(cluster_data.capabilities))
         self._onDevicesDiscovered(new_clusters)
 
         self._updateOnlinePrinters(all_clusters)

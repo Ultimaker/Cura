@@ -7,6 +7,7 @@ from typing import Dict, Optional, TYPE_CHECKING
 import zipfile  # To export all materials in a .zip archive.
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
+from UM.Resources import Resources
 from cura.PrinterOutput.UploadMaterialsJob import UploadMaterialsJob, UploadMaterialsError  # To export materials to the output printer.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from UM.i18n import i18nCatalog
@@ -42,6 +43,23 @@ class CloudMaterialSync(QObject):
                 self._showSyncNewMaterialsMessage()
                 break
 
+    def openSyncAllWindow(self):
+
+        self.reset()
+
+        if self.sync_all_dialog is None:
+            qml_path = Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.QmlFiles, "Preferences",
+                                         "Materials", "MaterialsSyncDialog.qml")
+            self.sync_all_dialog = cura.CuraApplication.CuraApplication.getInstance().createQmlComponent(
+                qml_path, {})
+        if self.sync_all_dialog is None:  # Failed to load QML file.
+            return
+        self.sync_all_dialog.setProperty("syncModel", self)
+        self.sync_all_dialog.setProperty("pageIndex", 0)  # Return to first page.
+        self.sync_all_dialog.setProperty("hasExportedUsb", False)  # If the user exported USB before, reset that page.
+        self.sync_all_dialog.setProperty("syncStatusText", "")  # Reset any previous error messages.
+        self.sync_all_dialog.show()
+
     def _showSyncNewMaterialsMessage(self) -> None:
         sync_materials_message = Message(
                 text = catalog.i18nc("@action:button",
@@ -53,7 +71,7 @@ class CloudMaterialSync(QObject):
 
         sync_materials_message.addAction(
                 "sync",
-                name = catalog.i18nc("@action:button", "Sync materials with printers"),
+                name = catalog.i18nc("@action:button", "Sync materials"),
                 icon = "",
                 description = "Sync your newly installed materials with your printers.",
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
@@ -165,7 +183,7 @@ class CloudMaterialSync(QObject):
             return
         if job_result == UploadMaterialsJob.Result.FAILED:
             if isinstance(job_error, UploadMaterialsError):
-                self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Error sending materials to the Digital Factory:") + " " + str(job_error))
+                self.sync_all_dialog.setProperty("syncStatusText", str(job_error))
             else:  # Could be "None"
                 self.sync_all_dialog.setProperty("syncStatusText", catalog.i18nc("@text", "Unknown error."))
             self._export_upload_status = "error"

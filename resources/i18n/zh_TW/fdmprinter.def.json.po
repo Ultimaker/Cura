@@ -5,17 +5,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.12\n"
+"Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-10-20 16:43+0000\n"
-"PO-Revision-Date: 2021-08-16 20:48+0800\n"
-"Last-Translator: Valen Chang <carf17771@gmail.com>\n"
-"Language-Team: Valen Chang <carf17771@gmail.com>/Zhang Heh Ji <dinowchang@gmail.com>\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
+"PO-Revision-Date: 2022-01-02 20:24+0800\n"
+"Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
+"Language-Team: Valen Chang <carf17771@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -156,6 +156,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "機器可列印區域深度（Y 座標）"
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "機器高度"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "機器可列印區域高度（Z 座標）"
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "列印平台形狀"
@@ -194,16 +204,6 @@ msgstr "玻璃"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "鋁"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "機器高度"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "機器可列印區域高度（Z 座標）"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -562,8 +562,8 @@ msgstr "Z 軸方向馬達的最大速度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "最大進料速率"
+msgid "Maximum Speed E"
+msgstr "E 軸最大速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1278,12 +1278,12 @@ msgstr "啟用時，Z 接縫座標為相對於各個部分中心的值。關閉�
 #: fdmprinter.def.json
 msgctxt "top_bottom label"
 msgid "Top/Bottom"
-msgstr "頂層"
+msgstr "頂層/底層"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom description"
 msgid "Top/Bottom"
-msgstr "頂層"
+msgstr "頂層/底層"
 
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr label"
@@ -1438,7 +1438,7 @@ msgstr "將頂部/底部表層路徑相鄰的位置連接。同心模式時啟�
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
-msgstr "Monotonic列印 頂層/底層 順序"
+msgstr "單一化列印 頂層/底層 順序"
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic description"
@@ -1518,7 +1518,7 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
-msgstr "Monotonous燙平順序"
+msgstr "單一化燙平順序"
 
 #: fdmprinter.def.json
 msgctxt "ironing_monotonic description"
@@ -1732,8 +1732,8 @@ msgstr "填充列印樣式"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "內部填充層的圖案。線形、鋸齒形填充在交替層間交換方向，已降低材料成本。網格、三角形、三角-六邊形、立方體、八面體、四分立方體、十字和同心圖案每個層間皆有列印。螺旋型、立方體、四分立方體和八面體的填充隨著每一層而變化，以在每個方向上提供更均勻的強度分佈。閃電型填充透過僅支撐物體的頂層來最小化填充。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1753,7 +1753,7 @@ msgstr "三角形"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr "三-六邊形"
+msgstr "三角-六邊形混和"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cubic"
@@ -1803,7 +1803,7 @@ msgstr "螺旋形"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "閃電形"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2022,42 +2022,42 @@ msgstr "支撐表層邊緣的額外填充的層數。"
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "閃電形填充支撐堆疊角度"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "決定使用閃電形填充支撐時，層間堆疊的角度."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "閃電形填充突出角度"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "決定使用閃電形填充支撐時，層間堆疊的角度."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "閃電形填充生成角度"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "內部填充線的端點已被縮減以節省線材. 這個設定用於調整突出線的角度."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "閃電形填充層間垂直堆疊角度"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "填充線被拉直用以節省列印時間. 這是填充線長度上允許的最大突出角度."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2517,7 +2517,7 @@ msgstr "列印速度"
 #: fdmprinter.def.json
 msgctxt "speed_print description"
 msgid "The speed at which printing happens."
-msgstr "開始列印的速度。"
+msgstr "開始列印時的速度。"
 
 #: fdmprinter.def.json
 msgctxt "speed_infill label"
@@ -3252,7 +3252,7 @@ msgstr "所有"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "不在外表面上"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5206,7 +5206,7 @@ msgstr "最小模具寬度"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "模具外部與模型外部的最小距離."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5376,7 +5376,7 @@ msgstr "鋸齒狀"
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
-msgstr "頂層Monotonic列印順序"
+msgstr "頂層表面單一化列印順序"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic description"
@@ -6481,6 +6481,22 @@ msgstr "網格旋轉矩陣"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在將模型從檔案中載入時套用在模型上的轉換矩陣。"
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "最大進料速率"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "列印填充樣式；直線型與鋸齒狀填充於層間交替方向,減少線材消耗；網格型、三角形、三角-六邊形混和、立方體、八面體、四分立方體、十字形、同心於每層間皆完整列印；螺旋形、立方體、四分立方體及八面體填充於每層一間進行改變，確保每個方向都有相同的強度分配，閃電形填充透過只支撐物件內層頂部來最小化填充，因此填充百分比只對於下一層才有效果."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "閃電形填充層與其附著物間的生成角度."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "設定閃電形填充層間垂直堆疊角度，調整樹狀堆疊的平滑度."
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."

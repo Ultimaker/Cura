@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.12\n"
+"Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2021-10-20 16:43+0000\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
 "PO-Revision-Date: 2021-04-16 15:02+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"시작과 동시에형실행될 G 코드 명령어 \n"
-"."
+msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"맨 마지막에 실행될 G 코드 명령 \n"
-"."
+msgstr "맨 마지막에 실행될 G 코드 명령 \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -156,6 +152,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "프린팅 가능 영역의 깊이 (Y 방향)"
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "기기 높이"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "프린팅 가능 영역의 높이 (Z 방향)입니다."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "빌드 플레이트 모양"
@@ -194,16 +200,6 @@ msgstr "유리"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "알루미늄"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "기기 높이"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "프린팅 가능 영역의 높이 (Z 방향)입니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -562,8 +558,8 @@ msgstr "Z 방향의 모터 최대 속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "최대 이송 속도"
+msgid "Maximum Speed E"
+msgstr "최대 속도 E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -1732,8 +1728,9 @@ msgstr "내부채움 패턴"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-msgstr ""
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "프린트 내부채움 재료의 패턴입니다. 선형과 지그재그형 내부채움이 서로 다른 레이어에서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 트라이 헥사곤 (tri-hexagon), 큐빅, 옥텟 (octet), 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다."
+" 자이로이드 (Gyroid), 큐빅, 쿼터 큐빅, 옥텟 (octet) 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 천장만 서포트하여 내부채움을 최소화합니다."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1803,7 +1800,7 @@ msgstr "자이로이드"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
-msgstr ""
+msgstr "라이트닝"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -2022,42 +2019,42 @@ msgstr "스킨 에지를 지원하는 내부채움 레이어의 수."
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle label"
 msgid "Lightning Infill Support Angle"
-msgstr ""
+msgstr "라이트닝 내부채움 서포트 각도"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
-msgstr ""
+msgstr "라이트닝 내부채움 레이어가 그 위에 있는 것을 서포트해야 할 부분을 결정합니다. 레이어 두께가 주어진 각도로 측정됩니다."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
-msgstr ""
+msgstr "라이트닝 내부채움 오버행 각도"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
-msgstr ""
+msgstr "라이트닝 내부채움 레이어가 레이어 위에 있는 모델을 서포트해야 할 부분을 결정합니다. 두께가 주어진 각도로 측정됩니다."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle label"
 msgid "Lightning Infill Prune Angle"
-msgstr ""
+msgstr "라이트닝 내부채움 가지치기 각도"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_prune_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "내부채움 선의 종점이 재료를 절약하기 위해 단축됩니다. 이 설정은 해당 선의 종점에 대한 오버행(경사면)의 각도입니다."
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle label"
 msgid "Lightning Infill Straightening Angle"
-msgstr ""
+msgstr "라이트닝 내부채움 정리 각도"
 
 #: fdmprinter.def.json
 msgctxt "lightning_infill_straightening_angle description"
-msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-msgstr ""
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "내부채움 선이 인쇄 시간을 절약하기 위해 정리됩니다. 이는 내부채움 선 길이 전체에 허용되는 오버행(경사면)의 최대 각도입니다."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -3252,7 +3249,7 @@ msgstr "모두"
 #: fdmprinter.def.json
 msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
-msgstr ""
+msgstr "외부 표면에 없음"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
@@ -5206,7 +5203,7 @@ msgstr "최소 몰드 너비"
 #: fdmprinter.def.json
 msgctxt "mold_width description"
 msgid "The minimal distance between the outside of the mold and the outside of the model."
-msgstr ""
+msgstr "몰드의 바깥쪽과 모델의 바깥쪽 사이의 최소 거리입니다."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -6479,6 +6476,30 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid "G-code commands to be executed at the very start - separated by \\n."
+#~ msgstr "시작과 동시에형실행될 G 코드 명령어 \\n."
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid "G-code commands to be executed at the very end - separated by \\n."
+#~ msgstr "맨 마지막에 실행될 G 코드 명령 \\n."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "최대 이송 속도"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "프린트 내부채움 재료의 패턴입니다. 선과 지그재그형 내부채움이 레이어를 하나 걸러서 방향을 바꾸므로 재료비가 절감됩니다. 격자, 삼각형, 삼육각형, 큐빅, 옥텟, 쿼터 큐빅, 크로스, 동심원 패턴이 레이어마다 완전히 프린트됩니다. 자이로이드, 큐빅, 쿼터 큐빅, 옥텟 내부채움이 레이어마다 변경되므로 각 방향으로 힘이 더 균등하게 분산됩니다. 라이트닝 내부채움이 객체의 (내부) 지붕만 서포트하여 내부채움을 최소화합니다. 따라서 내부채움 비율은 모델을 서포트하는 데 필요한 것에 상관없이 한 레이어 아래에만 '유효'합니다."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "나무의 바깥쪽 가지치기에 대해 라이트닝 내부채움 레이어와 바로 위 레이어의 차이점입니다. 두께가 주어진 각도로 측정됩니다."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "나무의 윤곽선을 부드럽게 하는 것에 관한 라이트닝 내부채움 레이어와 바로 위 레이어의 차이점입니다. 두께가 주어진 각도로 측정됩니다."
 
 #~ msgctxt "infill_pattern description"
 #~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."

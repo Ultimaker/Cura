@@ -650,7 +650,6 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
                 if not machine_id_list:
                     machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
-
                 for machine_id in machine_id_list:
                     definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
                     if not definitions:
@@ -1068,6 +1067,8 @@ class XmlMaterialProfile(InstanceContainer):
         id_list = {name.lower().replace(" ", ""),  # simply removing all spaces
                    name.lower().replace(" ", "_"),  # simply replacing all spaces with underscores
                    "_".join(merged_name_parts),
+                   name.replace(" ", ""),
+                   name.replace(" ", "_")
                    }
         id_list = list(id_list)
         return id_list
