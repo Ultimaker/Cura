@@ -38,24 +38,10 @@ Item
         }
         height: parent.height
         z: 10
-        LinearGradient
+        Rectangle
         {
             anchors.fill: parent
-            start: Qt.point(0, 0)
-            end: Qt.point(leftHint.width, 0)
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: UM.Theme.getColor("monitor_stage_background")
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: UM.Theme.getColor("monitor_stage_background_fade")
-                }
-            }
+            color: UM.Theme.getColor("monitor_stage_background")
         }
         MouseArea
         {
@@ -193,24 +179,11 @@ Item
         height: centerSection.height
         z: 10
 
-        LinearGradient
+        Rectangle
         {
             anchors.fill: parent
-            start: Qt.point(0, 0)
-            end: Qt.point(rightHint.width, 0)
-            gradient: Gradient
-            {
-                GradientStop
-                {
-                    position: 0.0
-                    color: UM.Theme.getColor("monitor_stage_background_fade")
-                }
-                GradientStop
-                {
-                    position: 1.0
-                    color: UM.Theme.getColor("monitor_stage_background")
-                }
-            }
+            color: UM.Theme.getColor("monitor_stage_background_fade")
+
         }
         MouseArea
         {
