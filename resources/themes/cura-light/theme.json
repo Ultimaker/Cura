@@ -278,7 +278,7 @@
         "sync_button_text": [120, 120, 120, 255],
         "sync_button_text_hovered": [0, 0, 0, 255],
 
-        "zmorph_yellow": [242, 255, 0, 255], 
+        "zmorph_yellow": [242, 255, 0, 255],
 
         "action_button": [255, 255, 255, 255],
         "action_button_text": [0, 0, 0, 255],
