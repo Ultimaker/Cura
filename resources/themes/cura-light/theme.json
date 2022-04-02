@@ -195,7 +195,7 @@
 
         "secondary_button": [255, 255, 255, 255],
         "secondary_button_shadow": [216, 216, 216, 255],
-        "secondary_button_hover": [232, 240, 253, 255],
+        "secondary_button_hover": [32, 45, 53, 10],
         "secondary_button_text": [32, 45, 53, 255],
 
         "main_window_header_background": [32, 45, 53, 255],
@@ -248,8 +248,8 @@
         "toolbar_button_active": [232, 242, 252, 255],
         "toolbar_button_active_hover": [232, 242, 252, 255],
 
-        "button": [31, 36, 39, 255],
-        "button_hover": [68, 72, 75, 255],
+        "button": [32, 45, 53, 255],
+        "button_hover": [32, 45, 53, 10],
         "button_active": [68, 72, 75, 255],
         "button_active_hover": [68, 72, 75, 255],
         "button_text": [255, 255, 255, 255],
