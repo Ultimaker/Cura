@@ -188,7 +188,7 @@
 
         "icon": [32, 45, 53, 255],
 
-        "primary_button": [242, 255, 0, 255],
+        "primary_button": [25, 110, 240, 255],
         "primary_button_shadow": [27, 95, 202, 255],
         "primary_button_hover": [16, 70, 156, 255],
         "primary_button_text": [255, 255, 255, 255],
@@ -216,7 +216,7 @@
         "machine_selector_text_active": [255, 255, 255, 255],
         "machine_selector_printer_icon": [8, 7, 63, 255],
 
-        "action_panel_secondary": [32, 45, 53, 255],
+        "action_panel_secondary": [25, 110, 240, 255],
 
         "first_run_shadow": [50, 50, 50, 255],
 
@@ -278,7 +278,7 @@
         "sync_button_text": [120, 120, 120, 255],
         "sync_button_text_hovered": [0, 0, 0, 255],
 
-        "zmorph_yellow": [242, 255, 0, 255], 
+        "zmorph_yellow": [242, 255, 0, 255],
 
         "action_button": [255, 255, 255, 255],
         "action_button_text": [0, 0, 0, 255],
