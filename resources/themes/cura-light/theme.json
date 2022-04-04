@@ -188,7 +188,7 @@
 
         "icon": [32, 45, 53, 255],
 
-        "primary_button": [242, 255, 0, 255],
+        "primary_button": [25, 110, 240, 255],
         "primary_button_shadow": [32, 45, 53, 25],
         "primary_button_hover": [199, 199, 199, 255],
         "primary_button_text": [255, 255, 255, 255],
