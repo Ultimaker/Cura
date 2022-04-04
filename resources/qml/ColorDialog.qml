@@ -29,7 +29,7 @@ UM.Dialog
     // the size of the dialog ourselves.
     // Ugly workaround for windows having overlapping elements due to incorrect dialog width
     minimumWidth: content.width + (Qt.platform.os == "windows" ? 4 * margin : 2 * margin)
-    minimumHeight: content.height + buttonRow.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
+    minimumHeight: content.height + buttonArea.height + (Qt.platform.os == "windows" ? 5 * margin : 3 * margin)
 
     property alias color: colorInput.text
     property var swatchColors: [
