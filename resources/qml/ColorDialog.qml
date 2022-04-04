@@ -107,7 +107,7 @@ UM.Dialog
                 text: catalog.i18nc("@label", "Hex")
             }
 
-            TextField
+            Cura.TextField
             {
                 id: colorInput
                 Layout.fillWidth: true
