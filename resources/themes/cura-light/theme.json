@@ -281,7 +281,7 @@
         "zmorph_yellow": [242, 255, 0, 255],
 
         "action_button": [255, 255, 255, 255],
-        "action_button_text": [0, 0, 0, 255],
+        "action_button_text": [242, 255, 0, 255],
         "action_button_border": [127, 127, 127, 255],
         "action_button_hovered": [199, 199, 199, 255],
         "action_button_hovered_text": [31, 36, 39, 255],
