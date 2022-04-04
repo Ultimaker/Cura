@@ -162,6 +162,13 @@ SettingItem
                 property: "text"
                 value:
                 {
+                    if (input.activeFocus)
+                    {
+                        // In QT6 using "when: !activeFocus" causes the value to be null when activeFocus becomes True
+                        // Since we want the value to stay the same when giving focus to the TextInput this is being used
+                        // in place of "when: !activeFocus"
+                        return input.text
+                    }
                     // Stacklevels
                     // 0: user  -> unsaved change
                     // 1: quality changes  -> saved change
@@ -181,7 +188,6 @@ SettingItem
                         return propertyProvider.properties.value
                     }
                 }
-                when: !input.activeFocus
             }
 
             MouseArea
