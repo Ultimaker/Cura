@@ -283,7 +283,7 @@
         "action_button": [255, 255, 255, 255],
         "action_button_text": [0, 0, 0, 255],
         "action_button_border": [127, 127, 127, 255],
-        "action_button_hovered": [199, 199, 199, 255],
+        "action_button_hovered": [215, 215, 215, 255],
         "action_button_hovered_text": [31, 36, 39, 255],
         "action_button_hovered_border": [32, 45, 53, 255],
         "action_button_active": [255, 255, 255, 255],
