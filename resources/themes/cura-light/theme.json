@@ -178,7 +178,7 @@
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
-        "primary": [50, 130, 255, 255],
+        "primary": [32, 45, 53, 255],
         "primary_shadow": [64, 47, 205, 255],
         "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
@@ -188,7 +188,7 @@
 
         "icon": [32, 45, 53, 255],
 
-        "primary_button": [25, 110, 240, 255],
+        "primary_button": [242, 255, 0, 255],
         "primary_button_shadow": [27, 95, 202, 255],
         "primary_button_hover": [16, 70, 156, 255],
         "primary_button_text": [255, 255, 255, 255],
