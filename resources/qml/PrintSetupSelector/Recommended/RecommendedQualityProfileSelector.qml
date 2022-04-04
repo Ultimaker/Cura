@@ -69,7 +69,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
 
-                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("zmorph_yellow")
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("primary_button")
                 iconSource: UM.Theme.getIcon("ArrowReset")
 
                 onClicked:
