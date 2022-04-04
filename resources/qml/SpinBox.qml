@@ -34,8 +34,7 @@ Item
     }
 
     signal editingFinished()
-    implicitWidth: spinBox.implicitWidth
-    implicitHeight: spinBox.implicitHeight
+    height: UM.Theme.getSize("setting_control").height
 
     SpinBox
     {
@@ -44,8 +43,8 @@ Item
         editable: base.editable
         topPadding: 0
         bottomPadding: 0
-        padding: UM.Theme.getSize("narrow_margin").width
-
+        leftPadding: down.indicator.width + UM.Theme.getSize("narrow_margin").width
+        rightPadding: up.indicator.width + UM.Theme.getSize("narrow_margin").width
         // The stepSize of the SpinBox is intentionally set to be always `1`
         // As SpinBoxes can only contain integer values the `base.stepSize` is concidered the precision/resolution
         // increasing the spinBox.value by one increases the actual/real value of the component by `base.stepSize`
