@@ -116,7 +116,7 @@ Item
                 handle: Rectangle
                 {
                     id: handleButton
-                    color: control.enabled ? UM.Theme.getColor("primary") : UM.Theme.getColor("quality_slider_unavailable")
+                    color: control.enabled ? UM.Theme.getColor("zmorph_yellow") : UM.Theme.getColor("quality_slider_unavailable")
                     implicitWidth: UM.Theme.getSize("print_setup_slider_handle").width
                     implicitHeight: implicitWidth
                     radius: Math.round(implicitWidth / 2)
