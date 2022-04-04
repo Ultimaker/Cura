@@ -47,7 +47,7 @@ Item
         {
             id: extruderNumberText
             anchors.centerIn: parent
-            text: "E" + str(index + 1)
+            text: "E" + (index + 1)
             font: UM.Theme.getFont("small_emphasis")
             color: UM.Theme.getColor("text")
             width: contentWidth
