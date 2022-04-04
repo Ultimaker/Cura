@@ -1197,7 +1197,7 @@
                     "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                     "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
                     "default_value": 0.3,
-                    "value": "machine_nozzle_size * .75",
+                    "value": "machine_nozzle_size * .85",
                     "type": "float",
                     "settable_per_mesh": true,
                     "children":
@@ -1281,7 +1281,7 @@
                     "label": "Minimum Thin Wall Line Width",
                     "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
                     "unit": "mm",
-                    "value": "machine_nozzle_size * .75",
+                    "value": "min_wall_line_width",
                     "default_value": 0.2,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "min_feature_size",
