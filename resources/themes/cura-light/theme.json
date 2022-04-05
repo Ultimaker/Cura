@@ -338,7 +338,7 @@
         "material_compatibility_warning": [243, 166, 59, 255],
 
         "progressbar_background": [32, 45, 52, 25],
-        "progressbar_control": [50, 130, 255, 255],
+        "progressbar_control": [242, 255, 0, 255],
 
         "slider_groove": [223, 223, 223, 255],
         "slider_groove_fill": [8, 7, 63, 255],
@@ -365,7 +365,7 @@
         "message_close": [102, 102, 102, 255],
         "message_close_hover": [8, 7, 63, 255],
         "message_progressbar_background": [245, 245, 245, 255],
-        "message_progressbar_control": [50, 130, 255, 255],
+        "message_progressbar_control": [242, 255, 0, 255],
         "message_success_icon": [255, 255, 255, 255],
         "message_warning_icon": [0, 0, 0, 255],
         "message_error_icon": [255, 255, 255, 255],
@@ -386,7 +386,7 @@
         "all_axis": [255, 255, 255, 255],
 
         "viewport_background": [193, 194, 196, 20],
-        "volume_outline": [242, 255, 0, 255],
+        "volume_outline": [50, 130, 255, 255],
         "buildplate": [244, 244, 244, 255],
         "buildplate_grid": [129, 131, 134, 255],
         "buildplate_grid_minor": [230, 230, 231, 255],
@@ -399,7 +399,7 @@
         "model_overhang": [255, 0, 0, 255],
         "model_unslicable": [122, 122, 122, 255],
         "model_unslicable_alt": [172, 172, 127, 255],
-        "model_selection_outline": [50, 130, 255, 255],
+        "model_selection_outline": [242, 255, 0, 255],
         "model_non_printing": [122, 122, 122, 255],
 
         "xray_error_dark": [255,  0,  0, 255],
@@ -456,7 +456,7 @@
         "monitor_stage_background": [246, 246, 246, 255],
         "monitor_stage_background_fade": [246, 246, 246, 102],
 
-        "monitor_progress_bar_fill": [50, 130, 255, 255],
+        "monitor_progress_bar_fill": [242, 255, 0, 255],
         "monitor_progress_bar_deactive": [192, 193, 194, 255],
         "monitor_progress_bar_empty": [245, 245, 245, 255],
 
