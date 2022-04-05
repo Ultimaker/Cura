@@ -188,7 +188,7 @@
 
         "icon": [32, 45, 53, 255],
 
-        "primary_button": [25, 110, 240, 255],
+        "primary_button": [242, 255, 0, 255],
         "primary_button_shadow": [32, 45, 53, 25],
         "primary_button_hover": [199, 199, 199, 255],
         "primary_button_text": [255, 255, 255, 255],
@@ -337,8 +337,8 @@
 
         "material_compatibility_warning": [243, 166, 59, 255],
 
-        "progressbar_background": [32, 45, 52, 25],
-        "progressbar_control": [242, 255, 0, 255],
+        "progressbar_background": [32, 45, 53, 25],
+        "progressbar_control": [32, 45, 53, 255],
 
         "slider_groove": [223, 223, 223, 255],
         "slider_groove_fill": [8, 7, 63, 255],
@@ -365,7 +365,7 @@
         "message_close": [102, 102, 102, 255],
         "message_close_hover": [8, 7, 63, 255],
         "message_progressbar_background": [245, 245, 245, 255],
-        "message_progressbar_control": [242, 255, 0, 255],
+        "message_progressbar_control": [32, 45, 53, 255],
         "message_success_icon": [255, 255, 255, 255],
         "message_warning_icon": [0, 0, 0, 255],
         "message_error_icon": [255, 255, 255, 255],
@@ -456,7 +456,7 @@
         "monitor_stage_background": [246, 246, 246, 255],
         "monitor_stage_background_fade": [246, 246, 246, 102],
 
-        "monitor_progress_bar_fill": [242, 255, 0, 255],
+        "monitor_progress_bar_fill": [32, 45, 53, 255],
         "monitor_progress_bar_deactive": [192, 193, 194, 255],
         "monitor_progress_bar_empty": [245, 245, 245, 255],
 
