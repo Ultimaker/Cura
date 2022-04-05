@@ -1140,7 +1140,7 @@
                 },
                 "wall_transition_filter_distance":
                 {
-                    "label": "Wall Transition Filter Distance",
+                    "label": "Wall Transitioning Filter Distance",
                     "description": "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance.",
                     "type": "float",
                     "unit": "mm",
