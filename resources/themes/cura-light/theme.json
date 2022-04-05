@@ -244,9 +244,9 @@
         "success": [36, 162, 73, 255],
         "disabled": [229, 229, 229, 255],
 
-        "toolbar_button_hover": [232, 242, 252, 255],
-        "toolbar_button_active": [232, 242, 252, 255],
-        "toolbar_button_active_hover": [232, 242, 252, 255],
+        "toolbar_button_hover": [242, 255, 0, 255],
+        "toolbar_button_active": [242, 255, 0, 255],
+        "toolbar_button_active_hover": [242, 255, 0, 255],
 
         "button": [32, 45, 53, 255],
         "button_hover": [32, 45, 53, 10],
@@ -330,7 +330,7 @@
         "setting_unit": [127, 127, 127, 255],
         "setting_validation_error_background": [255, 66, 60, 255],
         "setting_validation_error": [127, 127, 127, 255],
-        "setting_validation_warning_background": [255, 145, 62, 255],
+        "setting_validation_warning_background": [242, 255, 0, 255],
         "setting_validation_warning": [127, 127, 127, 255],
         "setting_validation_ok": [255, 255, 255, 255],
         "setting_filter_field" : [153, 153, 153, 255],
@@ -386,7 +386,7 @@
         "all_axis": [255, 255, 255, 255],
 
         "viewport_background": [193, 194, 196, 20],
-        "volume_outline": [50, 130, 255, 255],
+        "volume_outline": [242, 255, 0, 255],
         "buildplate": [244, 244, 244, 255],
         "buildplate_grid": [129, 131, 134, 255],
         "buildplate_grid_minor": [230, 230, 231, 255],
