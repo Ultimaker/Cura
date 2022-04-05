@@ -234,7 +234,7 @@ UM.MainWindow
             {
                 // The drop area is here to handle files being dropped onto Cura.
                 anchors.fill: parent
-                onDropped:
+                onDropped: (drop) =>
                 {
                     if (drop.urls.length > 0)
                     {
@@ -243,7 +243,7 @@ UM.MainWindow
                         for (var i = 0; i < drop.urls.length; i++)
                         {
                             var filename = drop.urls[i];
-                            if (filename.toLowerCase().endsWith(".curapackage"))
+                            if (filename.toString().toLowerCase().endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
