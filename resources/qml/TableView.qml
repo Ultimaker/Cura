@@ -56,8 +56,9 @@ Item
                     font: UM.Theme.getFont("medium_bold")
                     elide: Text.ElideRight
                 }
-                Item //Resize handle.
+                Item
                 {
+                    //Resize handle.
                     anchors
                     {
                         right: parent.right

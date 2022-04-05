@@ -6,7 +6,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -66,13 +66,11 @@ Item
             anchors.margins: parent.border.width
 
             columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
-//            model: TableModel
-//            {
-//                TableModelColumn { display: "fileName" }
-//                TableModelColumn { display: "username" }
-//                TableModelColumn { display: "uploadedAt" }
-//                rows: manager.digitalFactoryFileModel.items
-//            }
+            model: UM.TableModel
+            {
+                headers: ["fileName", "username", "uploadedAt"]
+                rows: manager.digitalFactoryFileModel.items
+            }
 
             onCurrentRowChanged:
             {
