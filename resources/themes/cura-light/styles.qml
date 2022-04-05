@@ -226,15 +226,15 @@ QtObject
                         }
                         else if(control.checkable && control.checked && control.hovered)
                         {
-                            return UM.Theme.getColor("toolbar_button_active_hover")
+                            return UM.Theme.getColor("zmorph_grey")
                         }
                         else if(control.pressed || (control.checkable && control.checked))
                         {
-                            return UM.Theme.getColor("toolbar_button_active")
+                            return UM.Theme.getColor("zmorph_grey")
                         }
                         else if(control.hovered)
                         {
-                            return UM.Theme.getColor("toolbar_button_hover")
+                            return UM.Theme.getColor("zmorph_grey")
                         }
                         return UM.Theme.getColor("toolbar_background")
                     }
