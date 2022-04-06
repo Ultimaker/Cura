@@ -11,7 +11,7 @@ Item
     id: base
     property ButtonGroup buttonGroup: null
 
-    property color activeColor: UM.Theme.getColor("zmorph_yellow")
+    property color activeColor: UM.Theme.getColor("primary_button")
     property color inactiveColor: UM.Theme.getColor("slider_groove")
     property color defaultItemColor: UM.Theme.getColor("slider_groove_fill")
     property color defaultItemFillColor: UM.Theme.getColor("main_background")
