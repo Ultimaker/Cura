@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.4
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
 
@@ -483,43 +483,28 @@ Cura.ExpandableComponent
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
 
-            LinearGradient
+            gradient: Gradient
             {
-                anchors
+                orientation: Gradient.Horizontal
+                GradientStop
                 {
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_lining").width
-                    right: parent.right
-                    rightMargin: UM.Theme.getSize("default_lining").width
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_lining").width
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_lining").width
+                    position: 0.000
+                    color: Qt.rgba(0, 0, 1, 1)
                 }
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient
+                GradientStop
                 {
-                    GradientStop
-                    {
-                        position: 0.000
-                        color: Qt.rgba(0, 0, 1, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.25
-                        color: Qt.rgba(0.25, 1, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.375
-                        color: Qt.rgba(0.375, 0.5, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: Qt.rgba(1, 0.5, 0, 1)
-                    }
+                    position: 0.25
+                    color: Qt.rgba(0.25, 1, 0, 1)
+                }
+                GradientStop
+                {
+                    position: 0.375
+                    color: Qt.rgba(0.375, 0.5, 0, 1)
+                }
+                GradientStop
+                {
+                    position: 1.0
+                    color: Qt.rgba(1, 0.5, 0, 1)
                 }
             }
         }
@@ -537,48 +522,33 @@ Cura.ExpandableComponent
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
 
-            LinearGradient
+            gradient: Gradient
             {
-                anchors
+                orientation: Gradient.Horizontal
+                GradientStop
                 {
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_lining").width
-                    right: parent.right
-                    rightMargin: UM.Theme.getSize("default_lining").width
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_lining").width
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_lining").width
+                    position: 0.000
+                    color: Qt.rgba(0, 0, 0.5, 1)
                 }
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient
+                GradientStop
                 {
-                    GradientStop
-                    {
-                        position: 0.000
-                        color: Qt.rgba(0, 0, 0.5, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.25
-                        color: Qt.rgba(0, 0.375, 0.75, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.5
-                        color: Qt.rgba(0, 0.75, 0.5, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.75
-                        color: Qt.rgba(1, 0.75, 0.25, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: Qt.rgba(1, 1, 0, 1)
-                    }
+                    position: 0.25
+                    color: Qt.rgba(0, 0.375, 0.75, 1)
+                }
+                GradientStop
+                {
+                    position: 0.5
+                    color: Qt.rgba(0, 0.75, 0.5, 1)
+                }
+                GradientStop
+                {
+                    position: 0.75
+                    color: Qt.rgba(1, 0.75, 0.25, 1)
+                }
+                GradientStop
+                {
+                    position: 1.0
+                    color: Qt.rgba(1, 1, 0, 1)
                 }
             }
         }
@@ -596,68 +566,53 @@ Cura.ExpandableComponent
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
 
-            LinearGradient
+            gradient: Gradient
             {
-                anchors
+                orientation: Gradient.Horizontal
+                GradientStop
                 {
-                    left: parent.left
-                    leftMargin: UM.Theme.getSize("default_lining").width
-                    right: parent.right
-                    rightMargin: UM.Theme.getSize("default_lining").width
-                    top: parent.top
-                    topMargin: UM.Theme.getSize("default_lining").width
-                    bottom: parent.bottom
-                    bottomMargin: UM.Theme.getSize("default_lining").width
+                    position: 0.0
+                    color: Qt.rgba(0, 0, 0.5, 1)
                 }
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient
+                GradientStop
                 {
-                    GradientStop
-                    {
-                        position: 0.0
-                        color: Qt.rgba(0, 0, 0.5, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.125
-                        color: Qt.rgba(0, 0.0, 1.0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.25
-                        color: Qt.rgba(0, 0.5, 1.0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.375
-                        color: Qt.rgba(0.0, 1.0, 1.0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.5
-                        color: Qt.rgba(0.5, 1.0, 0.5, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.625
-                        color: Qt.rgba(1.0, 1.0, 0.0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.75
-                        color: Qt.rgba(1.0, 0.5, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 0.875
-                        color: Qt.rgba(1.0, 0.0, 0, 1)
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: Qt.rgba(0.5, 0, 0, 1)
-                    }
+                    position: 0.125
+                    color: Qt.rgba(0, 0.0, 1.0, 1)
+                }
+                GradientStop
+                {
+                    position: 0.25
+                    color: Qt.rgba(0, 0.5, 1.0, 1)
+                }
+                GradientStop
+                {
+                    position: 0.375
+                    color: Qt.rgba(0.0, 1.0, 1.0, 1)
+                }
+                GradientStop
+                {
+                    position: 0.5
+                    color: Qt.rgba(0.5, 1.0, 0.5, 1)
+                }
+                GradientStop
+                {
+                    position: 0.625
+                    color: Qt.rgba(1.0, 1.0, 0.0, 1)
+                }
+                GradientStop
+                {
+                    position: 0.75
+                    color: Qt.rgba(1.0, 0.5, 0, 1)
+                }
+                GradientStop
+                {
+                    position: 0.875
+                    color: Qt.rgba(1.0, 0.0, 0, 1)
+                }
+                GradientStop
+                {
+                    position: 1.0
+                    color: Qt.rgba(0.5, 0, 0, 1)
                 }
             }
         }
