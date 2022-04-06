@@ -103,7 +103,7 @@ Window
             {
                 implicitHeight: childrenRect.height
                 implicitWidth: parent.width - 2 * UM.Theme.getSize("default_margin").width
-                Layout.alignment: Qt.AlignmentFlag.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
                 RowLayout
                 {
                     width: parent.width
