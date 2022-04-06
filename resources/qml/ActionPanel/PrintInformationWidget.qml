@@ -17,6 +17,8 @@ UM.RecolorImage
 
     color: UM.Theme.getColor("icon")
 
+    property var printMaterialCosts: PrintInformation.materialCosts
+
     MouseArea
     {
         anchors.fill: parent
@@ -37,8 +39,6 @@ UM.RecolorImage
         opacity: opened ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
-        contentWidth: printJobInformation.width
-        contentHeight: printJobInformation.implicitHeight
 
         contentItem: PrintJobInformation
         {
