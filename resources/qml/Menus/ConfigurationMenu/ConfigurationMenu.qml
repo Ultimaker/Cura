@@ -55,7 +55,7 @@ Cura.ExpandablePopup
                     Layout.maximumWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
 
-                    property var extruderStack: activeMachine ? activeMachine.extruderList[model.index]: null
+                    property var extruderStack: activeMachine ? activeMachine.extruders[model.index]: null
                     property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
                     property bool valueError: activeMachine ? Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True" : false
 
