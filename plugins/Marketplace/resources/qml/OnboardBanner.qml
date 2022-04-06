@@ -70,7 +70,7 @@ Rectangle
         wrapMode: Text.Wrap
         elide: Text.ElideRight
 
-        onLineLaidOut:
+        onLineLaidOut: (line) =>
         {
             if(line.isLast)
             {
