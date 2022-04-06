@@ -30,7 +30,7 @@ scipy==1.8.0rc2
 sentry-sdk==0.13.5
 six==1.12.0
 trimesh==3.9.36
-twisted==21.2.0
+twisted==22.2.0
 typing
 urllib3==1.25.9
 zeroconf==0.31.0
