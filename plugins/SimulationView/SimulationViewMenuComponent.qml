@@ -136,7 +136,7 @@ Cura.ExpandableComponent
             model: layerViewTypes
             visible: !UM.SimulationView.compatibilityMode
 
-            onActivated: UM.Preferences.setValue("layerview/layer_view_type", index)
+            onActivated: (index) => {UM.Preferences.setValue("layerview/layer_view_type", index)}
 
             Component.onCompleted:
             {

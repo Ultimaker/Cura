@@ -163,7 +163,7 @@ UM.MainWindow
         anchors.fill: parent
 
         //DeleteSelection on the keypress backspace event
-        Keys.onPressed:
+        Keys.onPressed: (event) =>
         {
             if (event.key == Qt.Key_Backspace)
             {
