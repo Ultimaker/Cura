@@ -342,9 +342,9 @@
         "progressbar_control": [32, 45, 53, 255],
 
         "slider_groove": [223, 223, 223, 255],
-        "slider_groove_fill": [8, 7, 63, 255],
-        "slider_handle": [8, 7, 63, 255],
-        "slider_handle_active": [50, 130, 255, 255],
+        "slider_groove_fill": [32, 45, 53, 255],
+        "slider_handle": [32, 45, 53, 255],
+        "slider_handle_active": [242, 255, 0, 255],
         "slider_text_background": [255, 255, 255, 255],
 
         "quality_slider_unavailable": [179, 179, 179, 255],
