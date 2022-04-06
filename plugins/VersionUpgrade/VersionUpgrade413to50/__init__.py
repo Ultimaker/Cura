@@ -1,28 +1,26 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, Dict, TYPE_CHECKING
 
-from . import VersionUpgrade49to50
+from . import VersionUpgrade413to50
 
 if TYPE_CHECKING:
     from UM.Application import Application
 
-upgrade = VersionUpgrade49to50.VersionUpgrade49to50()
+upgrade = VersionUpgrade413to50.VersionUpgrade413to50()
 
 def getMetaData() -> Dict[str, Any]:
-    return {  # Since there is no VersionUpgrade from 48 to 49 yet, upgrade the 48 profiles to 50.
+    return {
         "version_upgrade": {
             # From                           To                              Upgrade function
-            ("preferences", 6000016):        ("preferences", 6000018,        upgrade.upgradePreferences),
-            ("machine_stack", 5000016):      ("machine_stack", 5000018,      upgrade.upgradeStack),
-            ("extruder_train", 5000016):     ("extruder_train", 5000018,     upgrade.upgradeStack),
-            ("machine_stack", 4000018):      ("machine_stack", 5000018,      upgrade.upgradeStack),  # We made a mistake in the arachne beta 1
-            ("extruder_train", 4000018):     ("extruder_train", 5000018,     upgrade.upgradeStack),  # We made a mistake in the arachne beta 1
-            ("definition_changes", 4000016): ("definition_changes", 4000018, upgrade.upgradeInstanceContainer),
-            ("quality_changes", 4000016):    ("quality_changes", 4000018,    upgrade.upgradeInstanceContainer),
-            ("quality", 4000016):            ("quality", 4000018,            upgrade.upgradeInstanceContainer),
-            ("user", 4000016):               ("user", 4000018,               upgrade.upgradeInstanceContainer),
+            ("preferences", 7000019):        ("preferences", 7000020,        upgrade.upgradePreferences),
+            ("machine_stack", 5000019):      ("machine_stack", 5000020,      upgrade.upgradeStack),
+            ("extruder_train", 5000019):     ("extruder_train", 5000020,     upgrade.upgradeStack),
+            ("definition_changes", 4000019): ("definition_changes", 4000020, upgrade.upgradeInstanceContainer),
+            ("quality_changes", 4000019):    ("quality_changes", 4000020,    upgrade.upgradeInstanceContainer),
+            ("quality", 4000019):            ("quality", 4000020,            upgrade.upgradeInstanceContainer),
+            ("user", 4000019):               ("user", 4000020,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
             "preferences": {
