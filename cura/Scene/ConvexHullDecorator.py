@@ -383,7 +383,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Shrinkage compensation.
         if not self._global_stack:  # Should never happen.
             return convex_hull
-        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage_xy", "value") / 100.0
+        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
         result = convex_hull
         if scale_factor != 1.0 and not self.getNode().callDecoration("isGroup"):
             center = None

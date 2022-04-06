@@ -139,4 +139,4 @@ class ModelChecker(QObject, Extension):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is None:
             return 100
-        return max(global_container_stack.getProperty("material_shrinkage_percentage_xy", "value"), global_container_stack.getProperty("material_shrinkage_percentage_z", "value"))
+        return global_container_stack.getProperty("material_shrinkage_percentage", "value")

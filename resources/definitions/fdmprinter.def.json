@@ -2527,35 +2527,55 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_shrinkage_percentage_xy":
+                "material_shrinkage_percentage":
                 {
-                    "label": "Horizontal Scaling Factor Shrinkage Compensation",
-                    "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally).",
+                    "label": "Scaling Factor Shrinkage Compensation",
+                    "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": null,
+                    "default_value": 100.0,
                     "enabled": true,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "120",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "resolve": "100 if sum(1 if s != None else 0 for s in extruderValues('material_shrinkage_percentage_xy')) == 0 else sum(s if s != None else 0 for s in extruderValues('material_shrinkage_percentage_xy'))/sum(1 if s != None else 0 for s in extruderValues('material_shrinkage_percentage_xy'))"
-                },
-                "material_shrinkage_percentage_z":
-                {
-                    "label": "Vertical Scaling Factor Shrinkage Compensation",
-                    "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically).",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": null,
-                    "enabled": true,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "100",
-                    "maximum_value_warning": "120",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "resolve": "100 if sum(1 if s != None else 0 for s in extruderValues('material_shrinkage_percentage_z')) == 0 else sum(s if s != None else 0 for s in extruderValues('material_shrinkage_percentage_z'))/sum(1 if s != None else 0 for s in extruderValues('material_shrinkage_percentage_z'))"
+                    "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))",
+                    "children":
+                    {
+                        "material_shrinkage_percentage_xy":
+                        {
+                            "label": "Horizontal Scaling Factor Shrinkage Compensation",
+                            "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally).",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100.0,
+                            "enabled": true,
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "120",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "resolve": "sum(extruderValues(\"material_shrinkage_percentage_xy\")) / len(extruderValues(\"material_shrinkage_percentage_xy\"))",
+                            "value": "material_shrinkage_percentage"
+                        },
+                        "material_shrinkage_percentage_z":
+                        {
+                            "label": "Vertical Scaling Factor Shrinkage Compensation",
+                            "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the Z-direction (vertically).",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100.0,
+                            "enabled": true,
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "120",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
+                            "value": "material_shrinkage_percentage"
+                        }
+                    }
                 },
                 "material_crystallinity":
                 {
