@@ -81,7 +81,7 @@
             "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))"
         },
         "xy_offset": {
-            "value": "-layer_height * 0.2"
+            "value": "-layer_height * 0.1"
         }
     }
 }
