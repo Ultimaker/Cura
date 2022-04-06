@@ -59,11 +59,11 @@ Item
                 switch (packageData.packageType)
                 {
                     case "plugin":
-                        return "../images/Plugin.svg";
+                        return Qt.resolvedUrl("../images/Plugin.svg");
                     case "material":
-                        return "../images/Spool.svg";
+                        return Qt.resolvedUrl("../images/Spool.svg");
                     default:
-                        return "../images/placeholder.svg";
+                        return Qt.resolvedUrl("../images/placeholder.svg");
                 }
             }
         }
