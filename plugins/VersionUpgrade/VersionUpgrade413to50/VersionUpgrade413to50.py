@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -11,14 +11,19 @@ _removed_settings = {
     "travel_compensate_overlapping_walls_0_enabled",
     "travel_compensate_overlapping_walls_x_enabled",
     "fill_perimeter_gaps",
+    "filter_out_tiny_gaps",
     "wall_min_flow",
     "wall_min_flow_retract",
-    "speed_equalize_flow_enabled",
-    "speed_equalize_flow_min"
+    "speed_equalize_flow_max"
+}
+
+_transformed_settings = {  # These settings have been changed to a new topic, but may have different data type. Used only for setting visibility; the rest is handled separately.
+    "outer_inset_first": "inset_direction",
+    "speed_equalize_flow_enabled": "speed_equalize_flow_width_factor"
 }
 
 
-class VersionUpgrade49to50(VersionUpgrade):
+class VersionUpgrade413to50(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades preferences to remove from the visibility list the settings that were removed in this version.
@@ -34,7 +39,7 @@ class VersionUpgrade49to50(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "20"
 
         # Remove deleted settings from the visible settings list.
         if "general" in parser and "visible_settings" in parser["general"]:
@@ -43,10 +48,11 @@ class VersionUpgrade49to50(VersionUpgrade):
                 if removed in visible_settings:
                     visible_settings.remove(removed)
 
-            # Replace Outer Before Inner Walls with equivalent.
-            if "outer_inset_first" in visible_settings:
-                visible_settings.remove("outer_inset_first")
-                visible_settings.add("inset_direction")
+            # Replace equivalent settings that have been transformed.
+            for old, new in _transformed_settings.items():
+                if old in visible_settings:
+                    visible_settings.remove(old)
+                    visible_settings.add(new)
 
             parser["general"]["visible_settings"] = ";".join(visible_settings)
 
@@ -71,7 +77,7 @@ class VersionUpgrade49to50(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "20"
 
         if "values" in parser:
             # Remove deleted settings from the instance containers.
@@ -86,9 +92,12 @@ class VersionUpgrade49to50(VersionUpgrade):
                     old_value = old_value[1:]
                 parser["values"]["inset_direction"] = f"='outside_in' if ({old_value}) else 'inside_out'"  # Makes it work both with plain setting values and formulas.
 
-            # Disable Fuzzy Skin as it doesn't work with with the libArachne walls
-            if "magic_fuzzy_skin_enabled" in parser["values"]:
-                parser["values"]["magic_fuzzy_skin_enabled"] = "False"
+            # Replace Equalize Filament Flow with equivalent setting.
+            if "speed_equalize_flow_enabled" in parser["values"]:
+                old_value = parser["values"]["speed_equalize_flow_enabled"]
+                if old_value.startswith("="):  # Was already a formula.
+                    old_value = old_value[1:]
+                parser["values"]["speed_equalize_flow_width_factor"] = f"=100 if ({old_value}) else 0"  # If it used to be enabled, set it to 100%. Otherwise 0%.
 
         result = io.StringIO()
         parser.write(result)
@@ -110,8 +119,7 @@ class VersionUpgrade49to50(VersionUpgrade):
         if "metadata" not in parser:
             parser["metadata"] = {}
 
-        parser["general"]["version"] = "5"
-        parser["metadata"]["setting_version"] = "18"
+        parser["metadata"]["setting_version"] = "20"
 
         result = io.StringIO()
         parser.write(result)
