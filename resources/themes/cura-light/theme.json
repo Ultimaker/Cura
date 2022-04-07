@@ -67,7 +67,7 @@
         "default": {
             "size": 0.95,
             "weight": 40,
-            "family": "TT OctoSquares"
+            "family": "boxed"
         },
         "default_ja_JP": {
             "size": 1.0,
