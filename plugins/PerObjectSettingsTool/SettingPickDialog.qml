@@ -12,6 +12,8 @@ UM.Dialog
 {
     id: settingPickDialog
 
+    margin: UM.Theme.getSize("default_margin").width
+
     title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
     width: UM.Theme.getSize("small_popup_dialog").width
     backgroundColor: UM.Theme.getColor("background_1")

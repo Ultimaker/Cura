@@ -43,7 +43,7 @@ from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType, toIntConversion
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -52,8 +52,6 @@ from UM.i18n import i18nCatalog
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
-from cura.Arranging.Arrange import Arrange
-from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.Nest2DArrange import arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
@@ -129,7 +127,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 19
+    SettingVersion = 20
 
     Created = False
 
@@ -382,9 +380,10 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("resolve", DefinitionPropertyType.Function, default=None,
                                                depends_on="value")
 
-        SettingDefinition.addSettingType("extruder", None, str, Validator)
-        SettingDefinition.addSettingType("optional_extruder", None, str, None)
+        SettingDefinition.addSettingType("extruder", None, toIntConversion, Validator)
+        SettingDefinition.addSettingType("optional_extruder", None, toIntConversion, None)
         SettingDefinition.addSettingType("[int]", None, str, None)
+
 
 
     def _initializeSettingFunctions(self):
@@ -817,9 +816,6 @@ class CuraApplication(QtApplication):
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing build volume..."))
         root = self.getController().getScene().getRoot()
         self._volume = BuildVolume.BuildVolume(self, root)
-
-        # Ensure that the old style arranger still works.
-        Arrange.build_volume = self._volume
 
         # initialize info objects
         self._print_information = PrintInformation.PrintInformation(self)
@@ -1375,33 +1371,6 @@ class CuraApplication(QtApplication):
                     center_y = 0
                 op.addOperation(SetTransformOperation(node, Vector(0, center_y, 0), Quaternion(), Vector(1, 1, 1)))
             op.push()
-
-    @pyqtSlot()
-    def arrangeObjectsToAllBuildPlates(self) -> None:
-        """Arrange all objects."""
-
-        nodes_to_arrange = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if not isinstance(node, SceneNode):
-                continue
-
-            if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue  # Node that doesn't have a mesh and is not a group.
-
-            parent_node = node.getParent()
-            if parent_node and parent_node.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is reset)
-
-            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
-                continue  # i.e. node with layer data
-
-            bounding_box = node.getBoundingBox()
-            # Skip nodes that are too big
-            if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
-                nodes_to_arrange.append(node)
-        job = ArrangeObjectsAllBuildPlatesJob(nodes_to_arrange)
-        job.start()
-        self.getCuraSceneController().setActiveBuildPlate(0)  # Select first build plate
 
     # Single build plate
     @pyqtSlot()

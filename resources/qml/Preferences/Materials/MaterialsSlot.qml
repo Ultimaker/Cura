@@ -5,119 +5,134 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
-import UM 1.2 as UM
-import Cura 1.0 as Cura
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 // A single material row, typically used in a MaterialsBrandSection
 
 Rectangle
 {
     id: materialSlot
-    property var material: null
-    property var hovered: false
-    property var is_favorite: material != null && material.is_favorite
 
-    height: UM.Theme.getSize("favorites_row").height
+    property var material: null
+    property bool hovered: false
+    property bool isActive: material != null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
+
+    height: UM.Theme.getSize("preferences_page_list_item").height
     width: parent.width
-    //color: material != null ? (base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent") : "transparent"
-    color:
-    {
-        if(material !== null && base.currentItem !== null)
+    color: UM.Theme.getColor("main_background")
+
+    states:
+    [
+        State
         {
-            if(base.currentItem.root_material_id === material.root_material_id)
-            {
-                return UM.Theme.getColor("favorites_row_selected")
-            }
+            name: "selected"
+            when: material !== null && base.currentItem !== null && base.currentItem.root_material_id === material.root_material_id
+            PropertyChanges { target: materialSlot; color: UM.Theme.getColor("background_3") }
+        },
+        State
+        {
+            name: "hovered"
+            when: hovered
+            PropertyChanges { target: materialSlot; color: UM.Theme.getColor("background_3") }
         }
-        return "transparent"
-    }
+    ]
+
     Rectangle
     {
         id: swatch
         color: material != null ? material.color_code : "transparent"
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: "black"
-        width: UM.Theme.getSize("favorites_button_icon").width
-        height: UM.Theme.getSize("favorites_button_icon").height
+        width: UM.Theme.getSize("icon_indicator").width
+        height: UM.Theme.getSize("icon_indicator").height
+        radius: width / 2
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.left: materialSlot.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: 2 * UM.Theme.getSize("default_margin").width
     }
-    Label
+    UM.Label
     {
-        text: material != null ? material.brand + " " + material.name : ""
+        id: materialLabel
+        text: material != null ? `${material.brand} ${material.name}` : ""
+        font: isActive ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
+        elide: Text.ElideRight
+        wrapMode: Text.NoWrap
         verticalAlignment: Text.AlignVCenter
-        height: parent.height
         anchors.left: swatch.right
+        anchors.right: favoriteButton.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
         anchors.verticalCenter: materialSlot.verticalCenter
-        anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        font.italic: material != null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
     }
-    MouseArea
+
+    UM.TooltipArea
     {
         anchors.fill: parent
+        text: material != null ? `${material.brand} ${material.name}` : ""
+        acceptedButtons: Qt.LeftButton
         onClicked:
         {
-            materialList.currentBrand = material.brand
-            materialList.currentType = material.brand + "_" + material.material
-            base.setExpandedActiveMaterial(material.root_material_id)
+            materialList.currentBrand = material.brand;
+            materialList.currentType = `${material.brand}_${material.material}`;
+            base.setExpandedActiveMaterial(material.root_material_id);
         }
         hoverEnabled: true
         onEntered: { materialSlot.hovered = true }
         onExited: { materialSlot.hovered = false }
     }
-    Button
+
+    Item
     {
-        id: favorite_button
-        text: ""
-        implicitWidth: UM.Theme.getSize("favorites_button").width
-        implicitHeight: UM.Theme.getSize("favorites_button").height
-        visible: materialSlot.hovered || materialSlot.is_favorite || favorite_button.hovered
-        anchors
-        {
-            right: materialSlot.right
-            verticalCenter: materialSlot.verticalCenter
-        }
-        onClicked:
-        {
-            if (materialSlot.is_favorite)
+        id: favoriteButton
+
+        states:
+        [
+            State
             {
-                CuraApplication.getMaterialManagementModel().removeFavorite(material.root_material_id)
-            }
-            else
+                name: "favorite"
+                when: material !== null && material.is_favorite
+                PropertyChanges { target: favoriteIndicator; source: UM.Theme.getIcon("StarFilled");}
+                PropertyChanges { target: favoriteButton; visible: true }
+            },
+            State
             {
-                CuraApplication.getMaterialManagementModel().addFavorite(material.root_material_id)
+                name: "hovered"
+                when: hovered
+                PropertyChanges { target: favoriteButton; visible: true }
             }
-        }
+        ]
+
+        implicitHeight: parent.height
+        implicitWidth: height
+        anchors.right: materialSlot.right
+        visible: false
 
         UM.RecolorImage
         {
-            anchors
+            id: favoriteIndicator
+            anchors.centerIn: parent
+            width: UM.Theme.getSize("small_button_icon").width
+            height: UM.Theme.getSize("small_button_icon").height
+            color: UM.Theme.getColor("primary")
+            source: UM.Theme.getIcon("Star")
+        }
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked:
             {
-                verticalCenter: favorite_button.verticalCenter
-                horizontalCenter: favorite_button.horizontalCenter
-            }
-            width: UM.Theme.getSize("favorites_button_icon").width
-            height: UM.Theme.getSize("favorites_button_icon").height
-            color:
-            {
-                if (favorite_button.hovered)
+                if (material !== null)
                 {
-                    return UM.Theme.getColor("primary_hover")
-                }
-                else
-                {
-                    if (materialSlot.is_favorite)
+                    if (material.is_favorite)
                     {
-                        return UM.Theme.getColor("primary")
+                        CuraApplication.getMaterialManagementModel().removeFavorite(material.root_material_id)
                     }
                     else
                     {
-                        UM.Theme.getColor("text_inactive")
+                        CuraApplication.getMaterialManagementModel().addFavorite(material.root_material_id)
                     }
                 }
             }
-            source: materialSlot.is_favorite ? UM.Theme.getIcon("StarFilled") : UM.Theme.getIcon("Star")
         }
     }
 }

@@ -67,7 +67,7 @@ UM.Dialog
 
             ScrollBar.vertical: UM.ScrollBar
             {
-                parent: scroll
+                parent: scroll.parent
                 anchors
                 {
                     top: parent.top

@@ -21,7 +21,10 @@ Component
 
             Cura.PrintMonitor
             {
-                anchors.fill: parent
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: footerSeparator.top
             }
 
             Rectangle

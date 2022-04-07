@@ -298,7 +298,7 @@ class ChangeAtZ(Script):
                 },
                 "caz_change_retract": {
                     "label": "Change Retraction",
-                    "description": "Indicates you would like to modify retraction properties.",
+                    "description": "Indicates you would like to modify retraction properties. Does not work when using relative extrusion.",
                     "type": "bool",
                     "default_value": false
                 },
