@@ -27,7 +27,7 @@
         "large_bold": {
             "size": 1.35,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "huge": {
             "size": 1.8,
@@ -37,7 +37,7 @@
         "huge_bold": {
             "size": 1.8,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "medium": {
             "size": 1.16,
@@ -62,7 +62,7 @@
         "medium_bold": {
             "size": 1.16,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "default": {
             "size": 0.95,
@@ -87,22 +87,22 @@
         "default_bold": {
             "size": 0.95,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "default_bold_ja_JP": {
             "size": 1.0,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "default_bold_zh_CN": {
             "size": 1.0,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "default_bold_zh_TW": {
             "size": 1.0,
             "weight": 63,
-            "family": "boxed"
+            "family": "Boxed Regular Bold"
         },
         "default_italic": {
             "size": 0.95,
