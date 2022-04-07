@@ -2,6 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtQml import QQmlEngine
+
 from UM.Qt.ListModel import ListModel
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
@@ -9,6 +11,7 @@ class MaterialTypesModel(ListModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.ObjectOwnership.CppOwnership)
 
         self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
         self.addRoleName(Qt.ItemDataRole.UserRole + 2, "brand")
@@ -20,6 +23,7 @@ class MaterialBrandsModel(BaseMaterialsModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
+        QQmlEngine.setObjectOwnership(self, QQmlEngine.ObjectOwnership.CppOwnership)
 
         self.addRoleName(Qt.ItemDataRole.UserRole + 1, "name")
         self.addRoleName(Qt.ItemDataRole.UserRole + 2, "material_types")
