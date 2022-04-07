@@ -74,14 +74,14 @@ class MaterialBrandsModel(BaseMaterialsModel):
             material_type_item_list = []
             brand_item = {
                 "name": brand,
-                "material_types": MaterialTypesModel(self)
+                "material_types": MaterialTypesModel()
             }
 
             for material_type, material_list in material_dict.items():
                 material_type_item = {
                     "name": material_type,
                     "brand": brand,
-                    "colors": BaseMaterialsModel(self)
+                    "colors": BaseMaterialsModel()
                 }
                 material_type_item["colors"].clear()
 
