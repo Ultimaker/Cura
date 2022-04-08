@@ -87,7 +87,6 @@ class MaterialBrandsModel(BaseMaterialsModel):
                     "brand": brand,
                     "colors": BaseMaterialsModel()
                 }
-                material_type_item["colors"].clear()
 
                 # Sort materials by name
                 material_list = sorted(material_list, key = lambda x: x["name"].upper())
