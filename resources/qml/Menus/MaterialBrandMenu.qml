@@ -62,7 +62,7 @@ Cura.MenuItem
     Timer
     {
         id: showTimer
-        interval: 100
+        interval: 250
         function restartTimer()
         {
             restart();
@@ -197,7 +197,7 @@ Cura.MenuItem
                     Timer
                     {
                         id: showSubTimer
-                        interval: 100
+                        interval: 250
                         function restartTimer()
                         {
                             restart();
