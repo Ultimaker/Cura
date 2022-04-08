@@ -16,9 +16,11 @@ UM.MenuItem
     implicitHeight: UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height
     implicitWidth: UM.Theme.getSize("menu").width
 
+    property bool overrideShowArrow: false
+
     arrow: UM.RecolorImage
     {
-        visible: menuItem.subMenu
+        visible: menuItem.subMenu || overrideShowArrow
         height: UM.Theme.getSize("default_arrow").height
         width: height
         anchors.verticalCenter: parent.verticalCenter

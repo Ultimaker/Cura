@@ -98,45 +98,12 @@ Cura.Menu
     Instantiator
     {
         model: brandModel
-        Cura.Menu
+        delegate: Cura.MaterialBrandMenu
         {
-            id: brandMenu
-            title: brandName
-            property string brandName: model.name
-            property var brandMaterials: model.material_types
-
-            Instantiator
-            {
-                model: brandMaterials
-                delegate: Cura.Menu
-                {
-                    id: brandMaterialsMenu
-                    title: materialName
-                    property string materialName: model.name
-                    property var brandMaterialColors: model.colors
-
-                    Instantiator
-                    {
-                        model: brandMaterialColors
-                        delegate: Cura.MenuItem
-                        {
-                            text: model.name
-                            checkable: true
-                            enabled: isActiveExtruderEnabled
-                            checked: model.id === materialMenu.activeMaterialId
-
-                            onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
-                        }
-                        onObjectAdded: function(index, object) { brandMaterialsMenu.insertItem(index, object)}
-                        onObjectRemoved: function(object) {brandMaterialsMenu.removeItem(object)}
-                    }
-                }
-                onObjectAdded: function(index, object) { brandMenu.insertMenu(index, object)}
-                onObjectRemoved: function(object) {brandMenu.removeMenu(object)}
-            }
+            text: model.name
         }
-        onObjectAdded: function(index, object) {materialMenu.insertMenu(index + 4, object)}
-        onObjectRemoved: function(object) { materialMenu.removeMenu(object)}
+        onObjectAdded: function(index, object) { materialMenu.insertItem(index + 4, object)}
+        onObjectRemoved: function(object) { materialMenu.removeItem(index) }
     }
 
     Cura.MenuSeparator {}
