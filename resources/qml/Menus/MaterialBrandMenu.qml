@@ -87,8 +87,8 @@ Cura.MenuItem
     Popup
     {
         id: menuPopup
-        x: parent.width
-        y: 0
+        x: parent.width - UM.Theme.getSize("default_lining").width
+        y: -UM.Theme.getSize("default_lining").width
         width: materialTypesList.width + padding * 2
         height: materialTypesList.height + padding * 2
 
@@ -223,7 +223,7 @@ Cura.MenuItem
                         width: materialColorsList.width + padding * 2
                         height: materialColorsList.height + padding * 2
                         x: parent.width
-                        y: 0
+                        y: -UM.Theme.getSize("default_lining").width
 
                         property int itemHovered: 0
                         padding: background.border.width
