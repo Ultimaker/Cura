@@ -254,17 +254,10 @@ Cura.MenuItem
 
                                     color: materialColorButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
 
-                                    RowLayout
+                                    Item
                                     {
-                                        spacing: 0
                                         opacity: materialBrandMenu.enabled ? 1 : 0.5
-                                        height: parent.height
-
-                                        Item
-                                        {
-                                            // Spacer
-                                            width: UM.Theme.getSize("default_margin").width + (model.id === materialMenu.activeMaterialId ? 0 : UM.Theme.getSize("default_arrow").height)
-                                        }
+                                        anchors.fill: parent
 
                                         //Checkmark, if the material is selected.
                                         UM.RecolorImage
@@ -273,6 +266,9 @@ Cura.MenuItem
                                             visible: model.id === materialMenu.activeMaterialId
                                             height: UM.Theme.getSize("default_arrow").height
                                             width: height
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                                            anchors.verticalCenter: parent.verticalCenter
                                             source: UM.Theme.getIcon("Check", "low")
                                             color: UM.Theme.getColor("setting_control_text")
                                         }
@@ -280,21 +276,14 @@ Cura.MenuItem
                                         UM.Label
                                         {
                                             text: model.name
-                                            Layout.fillWidth: true
-                                            Layout.fillHeight: true
+                                            anchors.left: parent.left
+                                            anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("default_arrow").height
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.right: parent.right
+                                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
                                             elide: Label.ElideRight
                                             wrapMode: Text.NoWrap
-                                        }
-
-                                        Item
-                                        {
-                                            Layout.fillWidth: true
-                                        }
-
-                                        Item
-                                        {
-                                            // Right side margin
-                                            width: UM.Theme.getSize("default_margin").width
                                         }
                                     }
 
