@@ -263,7 +263,18 @@ Cura.MenuItem
                                         Item
                                         {
                                             // Spacer
-                                            width: UM.Theme.getSize("default_margin").width
+                                            width: UM.Theme.getSize("default_margin").width + (model.id === materialMenu.activeMaterialId ? 0 : UM.Theme.getSize("default_arrow").height)
+                                        }
+
+                                        //Checkmark, if the material is selected.
+                                        UM.RecolorImage
+                                        {
+                                            id: checkmark
+                                            visible: model.id === materialMenu.activeMaterialId
+                                            height: UM.Theme.getSize("default_arrow").height
+                                            width: height
+                                            source: UM.Theme.getIcon("Check", "low")
+                                            color: UM.Theme.getColor("setting_control_text")
                                         }
 
                                         UM.Label
