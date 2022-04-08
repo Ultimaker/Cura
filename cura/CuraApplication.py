@@ -350,6 +350,7 @@ class CuraApplication(QtApplication):
 
         app_root = os.path.abspath(os.path.join(os.path.dirname(sys.executable)))
         Resources.addSearchPath(os.path.join(app_root, "share", "cura", "resources"))
+        Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "share", "cura", "resources"))
 
         Resources.addSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
