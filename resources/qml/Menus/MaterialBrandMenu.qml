@@ -179,7 +179,9 @@ Cura.MenuItem
                     {
                         id: materialTypeButton
                         anchors.fill: parent
+
                         hoverEnabled: true
+                        acceptedButtons: Qt.NoButton
 
                         onEntered:
                         {
@@ -289,8 +291,17 @@ Cura.MenuItem
                                     {
                                         id: materialColorButton
                                         anchors.fill: parent
-                                        hoverEnabled: true
 
+                                        hoverEnabled: true
+                                        onClicked:
+                                        {
+                                            Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
+                                            menuPopup.itemHovered = 0; //Close all of these menus.
+                                            menuPopup.close();
+                                            colorPopup.itemHovered = 0;
+                                            colorPopup.close();
+                                            materialMenu.close();
+                                        }
                                         onEntered:
                                         {
                                             menuPopup.itemHovered += 1;
