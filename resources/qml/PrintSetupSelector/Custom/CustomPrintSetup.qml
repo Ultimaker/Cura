@@ -159,7 +159,7 @@ Item
                 }
                 onExited: base.hideTooltip()
             }
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: downArrow
 

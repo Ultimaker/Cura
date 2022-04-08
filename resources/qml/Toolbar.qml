@@ -63,13 +63,10 @@ Item
                     isTopElement: toolsModel.getItem(0).id == model.id
                     isBottomElement: toolsModel.getItem(toolsModel.count - 1).id == model.id
 
-                    toolItem: UM.RecolorImage
+                    toolItem: UM.ColorImage
                     {
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
-
-                        sourceSize.height: Math.round(UM.Theme.getSize("button").height / 2)
-                        sourceSize.width: Math.round(UM.Theme.getSize("button").width / 2)
                     }
 
                     onCheckedChanged:

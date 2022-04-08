@@ -155,7 +155,7 @@ Item
                 }
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: collapseButton
                 anchors

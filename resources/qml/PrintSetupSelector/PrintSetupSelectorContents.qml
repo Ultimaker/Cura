@@ -226,7 +226,7 @@ Item
                     color: UM.Theme.getColor("lining")
                 }
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     width: UM.Theme.getSize("drag_icon").width
                     height: UM.Theme.getSize("drag_icon").height

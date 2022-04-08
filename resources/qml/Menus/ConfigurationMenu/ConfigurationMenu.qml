@@ -109,7 +109,7 @@ Cura.ExpandablePopup
                     }
 
                     // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: badge
                         anchors

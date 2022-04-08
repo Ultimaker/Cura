@@ -174,7 +174,7 @@ Item
                 anchors.bottom: parent.bottom
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: collapseButton
                 anchors

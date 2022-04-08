@@ -47,12 +47,10 @@ Item
             sourceSize.width: width
         }
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             visible: !parent.packageHasIcon
             anchors.fill: parent
-            sourceSize.height: height
-            sourceSize.width: width
             color: UM.Theme.getColor("text")
             source:
             {
@@ -123,7 +121,7 @@ Item
 
                 Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
                 Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                contentItem: UM.RecolorImage
+                contentItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("LinkExternal")
                     color: UM.Theme.getColor("icon")

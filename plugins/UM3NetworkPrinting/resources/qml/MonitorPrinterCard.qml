@@ -147,7 +147,7 @@ Item
                         color: UM.Theme.getColor("text_link")
                         text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
                     }
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: externalLinkIcon
                         anchors

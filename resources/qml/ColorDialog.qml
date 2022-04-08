@@ -80,7 +80,7 @@ UM.Dialog
                     implicitHeight: UM.Theme.getSize("medium_button_icon").height
                     radius: width / 2
 
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         anchors.fill: parent
                         visible: swatchColor == base.color

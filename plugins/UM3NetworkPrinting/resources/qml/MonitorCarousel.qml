@@ -75,13 +75,11 @@ Item
         contentItem: Item
         {
             anchors.fill: parent
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 width: 18 // TODO: Theme!
                 height: width // TODO: Theme!
-                sourceSize.width: width // TODO: Theme!
-                sourceSize.height: width // TODO: Theme!
                 color: UM.Theme.getColor("text")
                 source: UM.Theme.getIcon("ChevronSingleLeft")
             }
@@ -154,13 +152,11 @@ Item
         contentItem: Item
         {
             anchors.fill: parent
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 width: 18 // TODO: Theme!
                 height: width // TODO: Theme!
-                sourceSize.width: width // TODO: Theme!
-                sourceSize.height: width // TODO: Theme!
                 color: UM.Theme.getColor("text")
                 source: UM.Theme.getIcon("ChevronSingleRight")
             }

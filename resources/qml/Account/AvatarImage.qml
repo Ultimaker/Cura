@@ -45,7 +45,7 @@ Item
         cached: true
     }*/
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: profileImageOutline
         anchors.centerIn: parent
@@ -54,7 +54,6 @@ Item
         height: parent.height + 2
         visible: hasAvatar
         source: UM.Theme.getIcon("CircleOutline")
-        sourceSize: Qt.size(parent.width, parent.height)
         color: UM.Theme.getColor("account_widget_outline_active")
     }
 }

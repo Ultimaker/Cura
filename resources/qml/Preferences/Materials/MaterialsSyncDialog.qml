@@ -298,7 +298,7 @@ Window
                             iconSize: UM.Theme.getSize("machine_selector_icon").width
 
                             //Printer status badge (always cloud, but whether it's online or offline).
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 width: UM.Theme.getSize("printer_status_icon").width
                                 height: UM.Theme.getSize("printer_status_icon").height
@@ -326,7 +326,7 @@ Window
                             }
                         }
 
-                        UM.RecolorImage
+                        UM.ColorImage
                         {
                             id: printerSpinner
                             width: UM.Theme.getSize("section_icon").width
@@ -491,7 +491,7 @@ Window
 
                         visible: !syncButton.visible
 
-                        UM.RecolorImage
+                        UM.ColorImage
                         {
                             id: syncingIcon
                             height: UM.Theme.getSize("action_button_icon").height

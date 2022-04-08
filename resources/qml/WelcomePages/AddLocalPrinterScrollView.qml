@@ -115,14 +115,12 @@ Item
                     width: childrenRect.width
                     height: UM.Theme.getSize("action_button").height
 
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: arrow
                         anchors.left: parent.left
                         width: UM.Theme.getSize("standard_arrow").width
                         height: UM.Theme.getSize("standard_arrow").height
-                        sourceSize.width: width
-                        sourceSize.height: height
                         color: UM.Theme.getColor("text")
                         source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
                     }

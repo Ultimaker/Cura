@@ -46,7 +46,7 @@ Rectangle
                     // But we re-use the package page for the manage plugins as well. The one user that doesn't see
                     // the num downloads is an acceptable "sacrifice" to make this easy to fix. 
                     visible: packageData.downloadCount != "0"
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: downloadsIcon
                         width: UM.Theme.getSize("card_tiny_icon").width

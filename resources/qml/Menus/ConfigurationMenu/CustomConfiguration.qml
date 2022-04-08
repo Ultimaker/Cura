@@ -304,7 +304,7 @@ Item
                         height: UM.Theme.getSize("small_button").height
                         width: UM.Theme.getSize("small_button").width
                         anchors.centerIn: parent
-                        background: UM.RecolorImage
+                        background: UM.ColorImage
                         {
                             source: UM.Theme.getIcon("Guide")
                             color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
@@ -369,15 +369,13 @@ Item
                     width: selectors.controlWidth
                     height: childrenRect.height
 
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: warningImage
                         anchors.left: parent.left
                         source: UM.Theme.getIcon("Warning")
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
-                        sourceSize.width: width
-                        sourceSize.height: height
                         color: UM.Theme.getColor("material_compatibility_warning")
                         visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
                     }

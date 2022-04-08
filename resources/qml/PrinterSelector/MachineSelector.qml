@@ -108,7 +108,7 @@ Cura.ExpandablePopup
         iconColor: UM.Theme.getColor("machine_selector_printer_icon")
         iconSize: source != "" ? UM.Theme.getSize("machine_selector_icon").width: 0
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: connectionStatusImage
             anchors

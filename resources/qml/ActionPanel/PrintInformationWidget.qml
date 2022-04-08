@@ -7,7 +7,7 @@ import QtQuick.Controls 2.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-UM.RecolorImage
+UM.ColorImage
 {
     id: widget
 

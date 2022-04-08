@@ -78,7 +78,7 @@ Button
         id: content
         //spacing: UM.Theme.getSize("narrow_margin").width
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: icon
             source: ""
@@ -88,8 +88,6 @@ Button
             width: visible ? UM.Theme.getSize("section_icon").width: 0
             height: UM.Theme.getSize("section_icon").height
             anchors.leftMargin: base.indented ? UM.Theme.getSize("default_margin").width: 0
-            sourceSize.width: width
-            sourceSize.height: width
         }
 
         UM.Label
@@ -106,15 +104,13 @@ Button
             color: UM.Theme.getColor("setting_category_text")
         }
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: categoryArrow
             anchors.right: parent.right
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
             anchors.verticalCenter: parent.verticalCenter
-            sourceSize.width: width
-            sourceSize.height: height
             color: UM.Theme.getColor("setting_control_button")
             source: expanded ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
         }

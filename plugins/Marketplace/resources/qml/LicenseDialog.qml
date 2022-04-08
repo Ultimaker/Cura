@@ -33,7 +33,7 @@ UM.Dialog
             spacing: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("narrow_margin").width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: icon
                 width: UM.Theme.getSize("marketplace_large_icon").width

@@ -43,7 +43,7 @@ Row // Sync state icon + message
         }
     ]
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         width: 20 * screenScaleFactor

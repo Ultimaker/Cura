@@ -51,7 +51,7 @@ Item
             property var expandedCategories
             property bool lastFindingSettings: false
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: searchIcon
 

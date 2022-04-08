@@ -109,7 +109,7 @@ Item
                 color: spinBox.down.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 height: parent.height / 2.5
@@ -129,7 +129,7 @@ Item
                 color: spinBox.up.pressed ? spinBox.palette.mid : UM.Theme.getColor("detail_background")
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 anchors.centerIn: parent
                 height: parent.height / 2.5

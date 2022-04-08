@@ -18,7 +18,7 @@ UM.MenuItem
 
     property bool overrideShowArrow: false
 
-    arrow: UM.RecolorImage
+    arrow: UM.ColorImage
     {
         visible: menuItem.subMenu || overrideShowArrow
         height: UM.Theme.getSize("default_arrow").height
@@ -30,7 +30,7 @@ UM.MenuItem
         color: UM.Theme.getColor("setting_control_text")
     }
 
-    indicator: UM.RecolorImage
+    indicator: UM.ColorImage
     {
         id: check
         visible: menuItem.checkable && menuItem.checked

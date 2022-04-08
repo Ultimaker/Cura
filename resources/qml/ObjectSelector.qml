@@ -41,12 +41,11 @@ Item
             width: parent.width
             height: label.height
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: openCloseIcon
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
                 anchors.left: parent.left
                 color: openCloseButton.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
                 source: objectSelector.opened ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleUp")

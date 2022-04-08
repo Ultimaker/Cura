@@ -53,7 +53,7 @@ TextField
     {
         id: backgroundRectangle
         //Optional icon added on the left hand side.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: iconLeft
 

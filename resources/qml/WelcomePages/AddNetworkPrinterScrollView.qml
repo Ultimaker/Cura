@@ -200,7 +200,7 @@ Item
             height: troubleshootingLinkIcon.height
             width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("thin_margin").width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: troubleshootingLinkIcon
                 anchors.right: troubleshootingLabel.left

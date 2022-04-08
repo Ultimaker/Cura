@@ -20,7 +20,7 @@ Rectangle
     color: UM.Theme.getColor("action_panel_secondary")
 
     // Icon
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: onboardingIcon
         anchors

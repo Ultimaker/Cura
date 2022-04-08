@@ -251,7 +251,7 @@ Window
                 margins: UM.Theme.getSize("default_margin").width
             }
             spacing: UM.Theme.getSize("default_margin").width
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: bannerIcon
                 source: UM.Theme.getIcon("Plugin")
