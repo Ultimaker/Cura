@@ -307,9 +307,7 @@ Cura.MenuItem
                                         onClicked:
                                         {
                                             Cura.MachineManager.setMaterial(extruderIndex, model.container_node);
-                                            menuPopup.itemHovered = 0; //Close all of these menus.
                                             menuPopup.close();
-                                            colorPopup.itemHovered = 0;
                                             colorPopup.close();
                                             materialMenu.close();
                                         }
