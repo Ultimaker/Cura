@@ -138,6 +138,7 @@ Cura.MenuItem
                         spacing: 0
                         opacity: materialBrandMenu.enabled ? 1 : 0.5
                         height: parent.height
+                        width: parent.width
 
                         Item
                         {
@@ -159,7 +160,15 @@ Cura.MenuItem
                             Layout.fillWidth: true
                         }
 
-                        Item
+                        UM.ColorImage
+                        {
+                            height: UM.Theme.getSize("default_arrow").height
+                            width: UM.Theme.getSize("default_arrow").width
+                            color: UM.Theme.getColor("setting_control_text")
+                            source: UM.Theme.getIcon("ChevronSingleRight")
+                        }
+
+                                                Item
                         {
                             // Right side margin
                             width: UM.Theme.getSize("default_margin").width
