@@ -116,6 +116,7 @@ Cura.MenuItem
         Column
         {
             id: materialTypesList
+            spacing: 0
 
             Repeater
             {
@@ -123,33 +124,53 @@ Cura.MenuItem
 
                 //Use a MouseArea and Rectangle, not a button, because the button grabs mouse events which makes the parent pop-up think it's no longer being hovered.
                 //With a custom MouseArea, we can prevent the events from being accepted.
-                delegate: Item
+                delegate: Rectangle
                 {
-                    width: materialTypeLabel.width
-                    height: materialTypeLabel.height
+                    height: UM.Theme.getSize("menu").height
+                    width: UM.Theme.getSize("menu").width
 
-                    Rectangle
+                    color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
+
+                    MouseArea
                     {
-                        width: materialTypesList.width
+                        id: materialTypeButton
+                        anchors.fill: parent
+                        hoverEnabled: true
+
+                        onEntered: menuPopup.itemHovered += 1
+                        onExited: menuPopup.itemHovered -= 1
+                    }
+                    RowLayout
+                    {
+                        spacing: 0
+                        opacity: materialBrandMenu.enabled ? 1 : 0.5
                         height: parent.height
 
-                        color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
-
-                        MouseArea
+                        Item
                         {
-                            id: materialTypeButton
-                            anchors.fill: parent
-                            hoverEnabled: true
-
-                            onEntered: menuPopup.itemHovered += 1
-                            onExited: menuPopup.itemHovered -= 1
+                            // Spacer
+                            width: UM.Theme.getSize("default_margin").width
                         }
-                    }
 
-                    UM.Label
-                    {
-                        id: materialTypeLabel
-                        text: model.name
+                        UM.Label
+                        {
+                            text: model.name
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            elide: Label.ElideRight
+                            wrapMode: Text.NoWrap
+                        }
+
+                        Item
+                        {
+                            Layout.fillWidth: true
+                        }
+
+                        Item
+                        {
+                            // Right side margin
+                            width: UM.Theme.getSize("default_margin").width
+                        }
                     }
                 }
             }
