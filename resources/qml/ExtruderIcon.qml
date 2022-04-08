@@ -27,8 +27,8 @@ Item
         UM.ColorImage
         {
             anchors.fill: parent
-            width: mainIcon.sourceSize.width
-            height: mainIcon.sourceSize.height
+            width: mainIcon.width
+            height: mainIcon.height
 
             source: UM.Theme.getIcon("ExtruderColor", iconVariant)
             color: materialColor
