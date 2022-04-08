@@ -100,7 +100,7 @@ Cura.Menu
         model: brandModel
         delegate: Cura.MaterialBrandMenu
         {
-            text: model.name
+            materialTypesModel: model
         }
         onObjectAdded: function(index, object) { materialMenu.insertItem(index + 4, object)}
         onObjectRemoved: function(object) { materialMenu.removeItem(index) }

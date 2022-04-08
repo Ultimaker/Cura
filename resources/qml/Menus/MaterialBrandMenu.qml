@@ -16,6 +16,9 @@ Cura.MenuItem
     id: materialBrandMenu
     overrideShowArrow: true
 
+    property var materialTypesModel
+    text: materialTypesModel.name
+
     contentItem: MouseArea
     {
         hoverEnabled: true
@@ -63,7 +66,7 @@ Cura.MenuItem
         function restartTimer()
         {
             restart();
-            running = materialBrandMenu.enabled && materialBrandMenu.contentItem.containsMouse;
+            running = Qt.binding(function() { return materialBrandMenu.enabled && materialBrandMenu.contentItem.containsMouse; });
             hideTimer.running = false;
         }
         onTriggered: menuPopup.open()
@@ -75,7 +78,7 @@ Cura.MenuItem
         function restartTimer() //Restart but re-evaluate the running property then.
         {
             restart();
-            running = materialBrandMenu.enabled && !materialBrandMenu.contentItem.containsMouse && !submenuArea.containsMouse;
+            running = Qt.binding(function() { return materialBrandMenu.enabled && !materialBrandMenu.contentItem.containsMouse && !menuPopup.itemHovered > 0; });
             showTimer.running = false;
         }
         onTriggered: menuPopup.close()
@@ -86,9 +89,14 @@ Cura.MenuItem
         id: menuPopup
         x: parent.width
         y: 0
-        width: 100
-        height: 100
+        width: materialTypesList.width + padding * 2
+        height: materialTypesList.height + padding * 2
 
+        padding: background.border.width
+        // Nasty hack to ensure that we can keep track if the popup contains the mouse.
+        // Since we also want a hover for the sub items (and these events are sent async)
+        // We have to keep a count of itemHovered (instead of just a bool)
+        property int itemHovered: 0
         MouseArea
         {
             id: submenuArea
@@ -96,6 +104,55 @@ Cura.MenuItem
 
             hoverEnabled: true
             onEntered: hideTimer.restartTimer()
+        }
+
+        background: Rectangle
+        {
+            color: UM.Theme.getColor("main_background")
+            border.color: UM.Theme.getColor("lining")
+            border.width: UM.Theme.getSize("default_lining").width
+        }
+
+        Column
+        {
+            id: materialTypesList
+
+            Repeater
+            {
+                model: materialTypesModel.material_types
+
+                //Use a MouseArea and Rectangle, not a button, because the button grabs mouse events which makes the parent pop-up think it's no longer being hovered.
+                //With a custom MouseArea, we can prevent the events from being accepted.
+                delegate: Item
+                {
+                    width: materialTypeLabel.width
+                    height: materialTypeLabel.height
+
+                    Rectangle
+                    {
+                        width: materialTypesList.width
+                        height: parent.height
+
+                        color: materialTypeButton.containsMouse ? UM.Theme.getColor("background_2") : UM.Theme.getColor("background_1")
+
+                        MouseArea
+                        {
+                            id: materialTypeButton
+                            anchors.fill: parent
+                            hoverEnabled: true
+
+                            onEntered: menuPopup.itemHovered += 1
+                            onExited: menuPopup.itemHovered -= 1
+                        }
+                    }
+
+                    UM.Label
+                    {
+                        id: materialTypeLabel
+                        text: model.name
+                    }
+                }
+            }
         }
     }
 }
