@@ -176,7 +176,7 @@ class ClusterApiClient:
             if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
                 return
 
-            if reply.error() > 0:
+            if reply.error() != QNetworkReply.NetworkError.NoError:
                 self._on_error(reply.errorString())
                 return
 
