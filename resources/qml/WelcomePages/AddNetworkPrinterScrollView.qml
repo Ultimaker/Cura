@@ -208,7 +208,6 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 height: troubleshootingLabel.height
                 width: height
-                sourceSize.height: width
                 color: UM.Theme.getColor("text_link")
                 source: UM.Theme.getIcon("LinkExternal")
             }
