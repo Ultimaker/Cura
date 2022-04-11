@@ -81,6 +81,7 @@ Item
 
             source: (loggedIn && profile["profile_image_url"]) ? profile["profile_image_url"] : ""
             outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
+            maskColor: UM.Theme.getColor("main_window_header_background")
         }
 
         contentItem: Item
