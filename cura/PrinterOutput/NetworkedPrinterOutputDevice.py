@@ -290,7 +290,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                           on_progress: Optional[Callable[[int, int], None]] = None) -> QNetworkReply:
         self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
-        multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
+        multi_post_part = QHttpMultiPart(QHttpMultiPart.ContentType.FormDataType)
         for part in parts:
             multi_post_part.append(part)
 
