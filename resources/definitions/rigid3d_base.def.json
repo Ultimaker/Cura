@@ -97,6 +97,7 @@
 
         "optimize_wall_printing_order": { "value": "True" },
         "inset_direction": { "value": "'outside_in'" },
+        "xy_offset_layer_0": { "value": -0.2 },
         "z_seam_type": { "value": "'back'" },
         "z_seam_position": { "value": "'backleft'" },
 
@@ -112,7 +113,7 @@
         "speed_print": { "value": 60.0 } ,
         "speed_topbottom": { "value": "speed_print" },
         "speed_support_interface": { "value": "speed_support" },
-        "speed_travel": { "value": 100.0 },
+        "speed_travel": { "value": 80.0 },
         "speed_z_hop": { "value": 8.0 },
 
         "acceleration_print": { "value": 500 },		
