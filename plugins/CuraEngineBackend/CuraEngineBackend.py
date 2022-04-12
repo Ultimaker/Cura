@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
@@ -15,6 +15,7 @@ from UM.Backend.Backend import Backend, BackendState
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from UM.Logger import Logger
+from UM.Mesh.MeshData import MeshData  # For the structure visualization node.
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Platform import Platform
@@ -126,6 +127,7 @@ class CuraEngineBackend(QObject, Backend):
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
         self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
+        self._message_handlers["cura.proto.StructurePolygon"] = self._onStructurePolygonMessage
 
         self._start_slice_job = None #type: Optional[StartSliceJob]
         self._start_slice_job_build_plate = None #type: Optional[int]
@@ -141,6 +143,7 @@ class CuraEngineBackend(QObject, Backend):
         self._error_message = None #type: Optional[Message] # Pop-up message that shows errors.
         self._last_num_objects = defaultdict(int) #type: Dict[int, int] # Count number of objects to see if there is something changed
         self._postponed_scene_change_sources = [] #type: List[SceneNode] # scene change is postponed (by a tool)
+        self._structure_vis_node = None  # type: Optional[SceneNode]  # Node to store structure visualizations in.
 
         self._slice_start_time = None #type: Optional[float]
         self._is_disabled = False #type: bool
@@ -295,6 +298,13 @@ class CuraEngineBackend(QObject, Backend):
 
         if not hasattr(self._scene, "gcode_dict"):
             self._scene.gcode_dict = {} #type: ignore #Because we are creating the missing attribute here.
+        # Recreate structure visualization node.
+        if self._structure_vis_node:
+            self._scene.getRoot().removeChild(self._structure_vis_node)
+        self._structure_vis_node = SceneNode()
+        self._structure_vis_node.setId("structure_visualization")
+        self._structure_vis_node.setMeshData(MeshData())
+        self._scene.getRoot().addChild(self._structure_vis_node)
 
         # see if we really have to slice
         application = CuraApplication.getInstance()
@@ -713,6 +723,16 @@ class CuraEngineBackend(QObject, Backend):
             if self._start_slice_job_build_plate not in self._stored_optimized_layer_data:
                 self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
             self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
+
+    def _onStructurePolygonMessage(self, message: Arcus.PythonMessage) -> None:
+        """
+        Called when a structure polygon visualization is received from the
+        engine.
+        :param message: The protobuf message containing a structure polygon.
+        """
+        print("----------- got a structure polygon message!")
+        #mesh_data = self._structure_vis_node.getMeshData()
+        #mesh_data.getVertices().
 
     def _onProgressMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a progress message is received from the engine.
