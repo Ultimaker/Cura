@@ -492,6 +492,23 @@
             }
         }
     },
+    "StructureView": {
+        "package_info": {
+            "package_id": "StructureView",
+            "package_type": "plugin",
+            "display_name": "Structure View",
+            "description": "Provides a preview of the generated structures while slicing.",
+            "package_version": "1.0.0",
+            "sdk_version": "7.9.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "SupportEraser": {
         "package_info": {
             "package_id": "SupportEraser",

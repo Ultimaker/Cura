@@ -724,15 +724,15 @@ class CuraEngineBackend(QObject, Backend):
                 self._stored_optimized_layer_data[self._start_slice_job_build_plate] = []
             self._stored_optimized_layer_data[self._start_slice_job_build_plate].append(message)
 
+    structurePolygonReceived = Signal()
+
     def _onStructurePolygonMessage(self, message: Arcus.PythonMessage) -> None:
         """
         Called when a structure polygon visualization is received from the
-        engine.
+        engine. This sends it on to a signal for others to listen to.
         :param message: The protobuf message containing a structure polygon.
         """
-        print("----------- got a structure polygon message!")
-        #mesh_data = self._structure_vis_node.getMeshData()
-        #mesh_data.getVertices().
+        self.structurePolygonReceived.emit(message)
 
     def _onProgressMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a progress message is received from the engine.
