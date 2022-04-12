@@ -114,7 +114,6 @@ message StructurePolygon {
     }
     Type type = 2; //Type of structure.
     int32 layer_index = 3; //Layer number this is on.
-    float height = 4; //Z position.
 }
 
 message PrintTimeMaterialEstimates { // The print time for each feature and material estimates for the extruder
