@@ -4438,7 +4438,8 @@
                     "options":
                     {
                         "normal": "Normal",
-                        "tree": "Tree"
+                        "tree": "Tree",
+                        "lightning": "Lightning"
                     },
                     "enabled": "support_enable",
                     "default_value": "normal",
