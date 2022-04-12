@@ -4,8 +4,10 @@
 from typing import Optional, TYPE_CHECKING
 import numpy
 
+from cura.CuraApplication import CuraApplication
 from cura.CuraView import CuraView
 from cura.Scene.CuraSceneNode import CuraSceneNode
+from UM.Mesh.MeshData import MeshData
 from UM.PluginRegistry import PluginRegistry
 
 if TYPE_CHECKING:
@@ -14,7 +16,7 @@ if TYPE_CHECKING:
 class StructureView(CuraView):
     def __init__(self):
         super().__init__(parent = None, use_empty_menu_placeholder = True)
-        self._root_node = None  # type: Optional[CuraSceneNode]  # All structure data will be under this node. Will be generated on first message received (since there is no scene yet at init).
+        self._scene_node = None  # type: Optional[CuraSceneNode]  # All structure data will be under this node. Will be generated on first message received (since there is no scene yet at init).
         self._capacity = 3 * 10000  # Start with some allocation to prevent having to reallocate all the time. Preferably a multiple of 3 (for triangles).
         self._vertices = numpy.ndarray((self._capacity, 3), dtype = numpy.single)
         self._indices = numpy.arange(self._capacity)  # Since we're using a triangle list, the indices are simply increasing linearly.
@@ -29,6 +31,12 @@ class StructureView(CuraView):
         if self._enabled:
             engine = plugin_registry.getPluginObject("CuraEngineBackend")
             engine.structurePolygonReceived.connect(self._onStructurePolygonReceived)  # type: ignore
+
+        CuraApplication.getInstance().initializationFinished.connect(self._createSceneNode)
+
+    def _createSceneNode(self):
+        if not self._scene_node:
+            self._scene_node = CuraSceneNode(parent = CuraApplication.getInstance().getController().getScene().getRoot())
 
     def _onStructurePolygonReceived(self, message: "pyArcus.PythonMessage") -> None:
         """
@@ -49,6 +57,8 @@ class StructureView(CuraView):
 
         self._current_index += num_vertices
 
+        self._updateScene()
+
     def _reallocate(self, minimum_capacity: int) -> None:
         """
         Increase capacity to be able to hold at least a given amount of vertices.
@@ -64,3 +74,12 @@ class StructureView(CuraView):
         self._layers.resize((new_capacity, ))
 
         self._capacity = new_capacity
+
+    def _updateScene(self) -> None:
+        """
+        After receiving new data, makes sure that the data gets visualised in the 3D scene.
+        """
+        if not self._scene_node:
+            return
+        print("Updating scene!")
+        self._scene_node.setMeshData(MeshData(vertices = self._vertices, normals = self._normals, indices = self._indices, colors = self._colors))  # TODO: Does a copy due to the immutableNdArray, which is BAD!
