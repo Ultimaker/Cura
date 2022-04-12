@@ -732,7 +732,6 @@ Window
     property variant exportUsbDialog: FileDialog
     {
         title: catalog.i18nc("@title:window", "Export All Materials")
-        selectExisting: false
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
         onAccepted:
         {

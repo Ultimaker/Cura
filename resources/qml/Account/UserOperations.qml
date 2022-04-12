@@ -30,6 +30,7 @@ Column
             height: UM.Theme.getSize("main_window_header").height
 
             source: profile["profile_image_url"] ? profile["profile_image_url"] : ""
+            maskColor: UM.Theme.getColor("main_background")
             outlineColor: UM.Theme.getColor("main_background")
         }
         Rectangle

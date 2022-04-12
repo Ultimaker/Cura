@@ -118,7 +118,6 @@ class ClusterApiClient:
         """
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)
-        request.setAttribute(QNetworkRequest.Attribute.RedirectPolicyAttribute, QNetworkRequest.RedirectPolicy.ManualRedirectPolicy)
         if content_type:
             request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
         return request
@@ -176,7 +175,7 @@ class ClusterApiClient:
             if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
                 return
 
-            if reply.error() > 0:
+            if reply.error() != QNetworkReply.NetworkError.NoError:
                 self._on_error(reply.errorString())
                 return
 
