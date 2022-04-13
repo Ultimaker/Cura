@@ -82,4 +82,4 @@ class StructureView(CuraView):
         if not self._scene_node:
             return
         print("Updating scene!")
-        self._scene_node.setMeshData(MeshData(vertices = self._vertices, normals = self._normals, indices = self._indices, colors = self._colors))  # TODO: Does a copy due to the immutableNdArray, which is BAD!
+        self._scene_node.setMeshData(MeshData(vertices = self._vertices[0:self._current_index], normals = self._normals[0:self._current_index], indices = self._indices[0:self._current_index], colors = self._colors[0:self._current_index]))  # TODO: Does a copy due to the immutableNdArray, which is BAD!
