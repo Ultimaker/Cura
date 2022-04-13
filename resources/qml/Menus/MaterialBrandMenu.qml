@@ -260,7 +260,7 @@ Cura.MenuItem
                                         anchors.fill: parent
 
                                         //Checkmark, if the material is selected.
-                                        UM.RecolorImage
+                                        UM.ColorImage
                                         {
                                             id: checkmark
                                             visible: model.id === materialMenu.activeMaterialId
