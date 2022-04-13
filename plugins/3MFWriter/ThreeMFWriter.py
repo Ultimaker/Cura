@@ -157,7 +157,7 @@ class ThreeMFWriter(MeshWriter):
             snapshot = self._createSnapshot()
             if snapshot:
                 thumbnail_buffer = QBuffer()
-                thumbnail_buffer.open(QBuffer.ReadWrite)
+                thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
 
                 thumbnail_file = zipfile.ZipInfo("Metadata/thumbnail.png")

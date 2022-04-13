@@ -21,7 +21,7 @@ class Snapshot:
     def getImageBoundaries(image: QImage):
         # Look at the resulting image to get a good crop.
         # Get the pixels as byte array
-        pixel_array = image.bits().asarray(image.byteCount())
+        pixel_array = image.bits().asarray(image.sizeInBytes())
         width, height = image.width(), image.height()
         # Convert to numpy array, assume it's 32 bit (it should always be)
         pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
@@ -98,7 +98,7 @@ class Snapshot:
             try:
                 min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
             except (ValueError, AttributeError):
-                Logger.log("w", "Failed to crop the snapshot!")
+                Logger.logException("w", "Failed to crop the snapshot!")
                 return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
@@ -120,7 +120,7 @@ class Snapshot:
         # Scale it to the correct size
         scaled_image = cropped_image.scaled(
             width, height,
-            aspectRatioMode = QtCore.Qt.IgnoreAspectRatio,
-            transformMode = QtCore.Qt.SmoothTransformation)
+            aspectRatioMode = QtCore.Qt.AspectRatioMode.IgnoreAspectRatio,
+            transformMode = QtCore.Qt.TransformationMode.SmoothTransformation)
 
         return scaled_image
