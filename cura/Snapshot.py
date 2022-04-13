@@ -6,6 +6,7 @@ from PyQt6 import QtCore
 from PyQt6.QtCore import QCoreApplication
 from PyQt6.QtGui import QImage
 
+from UM.Logger import Logger
 from cura.PreviewPass import PreviewPass
 
 from UM.Application import Application
@@ -64,6 +65,7 @@ class Snapshot:
                         bbox = bbox + node.getBoundingBox()
         # If there is no bounding box, it means that there is no model in the buildplate
         if bbox is None:
+            Logger.log("w", "Unable to create snapshot as we seem to have an empty buildplate")
             return None
 
         look_at = bbox.center
@@ -96,6 +98,7 @@ class Snapshot:
             try:
                 min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
             except (ValueError, AttributeError):
+                Logger.log("w", "Failed to crop the snapshot!")
                 return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
