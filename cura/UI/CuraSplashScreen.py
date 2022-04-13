@@ -76,7 +76,7 @@ class CuraSplashScreen(QSplashScreen):
         if len(version) == 1:
             painter.drawText(40, 104 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, version[0] if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
         elif len(version) > 1:
-            painter.drawText(40, 104 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, version[0] +" "+ version[1] if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
+            painter.drawText(40, 104 + self._version_y_offset, round(330 * self._scale), round(230 * self._scale), Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop, {"version[0]_version[1]"} if not ApplicationMetadata.IsAlternateVersion else ApplicationMetadata.CuraBuildType)
 
         # Draw the loading image
         pen = QPen()
@@ -93,7 +93,7 @@ class CuraSplashScreen(QSplashScreen):
             pen.setColor(QColor(255, 255, 255, 255))
             painter.setPen(pen)
             painter.setFont(font)
-            painter.drawText(70, 320, 170, 24,
+            painter.drawText(70, 308, 170, 48,
                              Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap,
                              self._current_message)
 
