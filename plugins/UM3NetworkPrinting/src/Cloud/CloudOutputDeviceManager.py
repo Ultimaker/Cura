@@ -480,7 +480,7 @@ class CloudOutputDeviceManager:
             if remove_printers_ids == all_ids:
                 question_content = self.i18n_catalog.i18nc("@label", "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?")
             result = QMessageBox.question(None, question_title, question_content)
-            if result == QMessageBox.No:
+            if result == QMessageBox.ButtonRole.NoRole:
                 return
 
             for machine_cloud_id in self.reported_device_ids:

@@ -157,7 +157,7 @@ Item
         anchors.topMargin: base.activeY
         z: buttons.z - 1
 
-        target: Qt.point(parent.right, base.activeY +  Math.round(UM.Theme.getSize("button").height/2))
+        target: Qt.point(-1, base.activeY +  Math.round(UM.Theme.getSize("button").height / 2))
         arrowSize: UM.Theme.getSize("default_arrow").width
 
         width:

@@ -63,7 +63,7 @@ class ImageReader(MeshReader):
         aspect = height / width
 
         if img.width() < 2 or img.height() < 2:
-            img = img.scaled(width, height, Qt.IgnoreAspectRatio)
+            img = img.scaled(width, height, Qt.AspectRatioMode.IgnoreAspectRatio)
 
         height_from_base = max(height_from_base, 0)
         base_height = max(base_height, 0)
@@ -84,15 +84,15 @@ class ImageReader(MeshReader):
 
             width = int(max(round(width * scale_factor), 2))
             height = int(max(round(height * scale_factor), 2))
-            img = img.scaled(width, height, Qt.IgnoreAspectRatio)
+            img = img.scaled(width, height, Qt.AspectRatioMode.IgnoreAspectRatio)
 
         width_minus_one = width - 1
         height_minus_one = height - 1
 
         Job.yieldThread()
 
-        texel_width = 1.0 / (width_minus_one) * scale_vector.x
-        texel_height = 1.0 / (height_minus_one) * scale_vector.z
+        texel_width = 1.0 / width_minus_one * scale_vector.x
+        texel_height = 1.0 / height_minus_one * scale_vector.z
 
         height_data = numpy.zeros((height, width), dtype = numpy.float32)
 
