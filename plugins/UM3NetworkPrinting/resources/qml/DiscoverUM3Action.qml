@@ -1,13 +1,13 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import UM 1.5 as UM
-import Cura 1.5 as Cura
-
-import QtQuick 2.2
+import QtQuick 2.15
 import QtQuick.Controls 2.9
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
+
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 Cura.MachineAction
 {
@@ -302,7 +302,7 @@ Cura.MachineAction
             {
                 id: addressField
                 width: parent.width
-                validator: RegExpValidator { regExp: /[a-zA-Z0-9\.\-\_]*/ }
+                validator: RegularExpressionValidator { regularExpression: /[a-zA-Z0-9\.\-\_]*/ }
             }
         }
 

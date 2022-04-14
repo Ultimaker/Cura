@@ -30,7 +30,7 @@ Cura.RoundedRectangle
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: projectImage
             anchors.verticalCenter: parent.verticalCenter

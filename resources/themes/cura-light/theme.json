@@ -6,166 +6,166 @@
     "fonts": {
         "large": {
             "size": 1.35,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_ja_JP": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_zh_CN": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_zh_TW": {
             "size": 1.35,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "large_bold": {
             "size": 1.35,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "huge": {
             "size": 1.8,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "huge_bold": {
             "size": 1.8,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "medium": {
             "size": 1.16,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_ja_JP": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_zh_CN": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_zh_TW": {
             "size": 1.16,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "medium_bold": {
             "size": 1.16,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default": {
             "size": 0.95,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_ja_JP": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_zh_CN": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_zh_TW": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "default_bold": {
             "size": 0.95,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_bold_ja_JP": {
             "size": 1.0,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_bold_zh_CN": {
             "size": 1.0,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_bold_zh_TW": {
             "size": 1.0,
-            "weight": 63,
+            "weight": 600,
             "family": "Noto Sans"
         },
         "default_italic": {
             "size": 0.95,
-            "weight": 40,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "default_italic_ja_JP": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "default_italic_zh_CN": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "default_italic_zh_TW": {
             "size": 1.0,
-            "weight": 50,
+            "weight": 400,
             "italic": true,
             "family": "Noto Sans"
         },
         "small": {
             "size": 0.9,
-            "weight": 40,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_ja_JP": {
             "size": 0.9,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_zh_CN": {
             "size": 0.9,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_zh_TW": {
             "size": 0.9,
-            "weight": 50,
+            "weight": 400,
             "family": "Noto Sans"
         },
         "small_emphasis": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_ja_JP": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_zh_CN": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         },
         "small_emphasis_zh_TW": {
             "size": 0.9,
-            "weight": 100,
+            "weight": 700,
             "family": "Noto Sans"
         }
     },

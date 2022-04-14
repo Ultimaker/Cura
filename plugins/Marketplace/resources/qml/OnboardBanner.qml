@@ -20,7 +20,7 @@ Rectangle
     color: UM.Theme.getColor("action_panel_secondary")
 
     // Icon
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: onboardingIcon
         anchors
@@ -70,7 +70,7 @@ Rectangle
         wrapMode: Text.Wrap
         elide: Text.ElideRight
 
-        onLineLaidOut:
+        onLineLaidOut: (line) =>
         {
             if(line.isLast)
             {

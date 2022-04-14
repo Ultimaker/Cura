@@ -17,7 +17,7 @@ Cura.TextField
     placeholderText: catalog.i18nc("@placeholder", "Search")
     font.italic: true
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: searchIcon
 

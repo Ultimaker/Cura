@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 Item
 {
     property var profile: Cura.API.account.userProfile
-    property var loggedIn: Cura.API.account.isLoggedIn
+    property bool loggedIn: Cura.API.account.isLoggedIn
 
     height: signInButton.visible ? signInButton.height : accountWidget.height
     width: signInButton.visible ? signInButton.width : accountWidget.width
@@ -81,6 +81,7 @@ Item
 
             source: (loggedIn && profile["profile_image_url"]) ? profile["profile_image_url"] : ""
             outlineColor: loggedIn ? UM.Theme.getColor("account_widget_outline_active") : UM.Theme.getColor("lining")
+            maskColor: UM.Theme.getColor("main_window_header_background")
         }
 
         contentItem: Item

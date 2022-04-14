@@ -53,12 +53,12 @@ Cura.Menu
                     sourceComponent: modelText.trim() == "" ? extensionsMenuSeparator : extensionsMenuItem
                 }
 
-                onObjectAdded: sub_menu.insertItem(index, object.item)
-                onObjectRemoved: sub_menu.removeItem(object.item)
+                onObjectAdded: function(index, object) { sub_menu.insertItem(index, object.item)}
+                onObjectRemoved: function(object) { sub_menu.removeItem(object.item)}
             }
         }
 
-        onObjectAdded: extensionMenu.insertMenu(index, object)
-        onObjectRemoved: extensionMenu.removeMenu(object)
+        onObjectAdded: function(index, object) { extensionMenu.insertMenu(index, object) }
+        onObjectRemoved: function(object) { extensionMenu.removeMenu(object)}
     }
 }

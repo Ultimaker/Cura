@@ -8,7 +8,7 @@ from Charon.OpenMode import OpenMode  # To indicate that we want to write to UFP
 from Charon.filetypes.OpenPackagingConvention import OPCError
 from io import StringIO  # For converting g-code to bytes.
 
-from PyQt5.QtCore import QBuffer
+from PyQt6.QtCore import QBuffer
 
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter  # The writer we need to implement.
@@ -83,7 +83,7 @@ class UFPWriter(MeshWriter):
                 thumbnail = archive.getStream("/Metadata/thumbnail.png")
 
                 thumbnail_buffer = QBuffer()
-                thumbnail_buffer.open(QBuffer.ReadWrite)
+                thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
 
                 thumbnail.write(thumbnail_buffer.data())

@@ -79,7 +79,7 @@ Item
             {
                 id: normalButton
                 text: catalog.i18nc("@label", "Normal model")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("Infill0")
                     color: UM.Theme.getColor("icon")
@@ -94,7 +94,7 @@ Item
             {
                 id: supportMeshButton
                 text: catalog.i18nc("@label", "Print as support")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("MeshTypeSupport")
                     color: UM.Theme.getColor("icon")
@@ -109,7 +109,7 @@ Item
             {
                 id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("MeshTypeIntersect")
                     color: UM.Theme.getColor("icon")
@@ -124,7 +124,7 @@ Item
             {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
-                toolItem: UM.RecolorImage
+                toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("BlockSupportOverlaps")
                     color: UM.Theme.getColor("icon")
@@ -304,12 +304,11 @@ Item
 
                         background: Item
                         {
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 width: parent.width
                                 height: width
-                                sourceSize.height: width
                                 color: parent.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
                                 source: UM.Theme.getIcon("Minus")
                             }

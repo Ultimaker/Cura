@@ -3,8 +3,8 @@
 
 from typing import Optional, TYPE_CHECKING, List
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
-from PyQt5.QtGui import QImage
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
+from PyQt6.QtGui import QImage
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -58,7 +58,7 @@ class PrintJobOutputModel(QObject):
         # requires a QUrl to function, updates correctly we add an increasing number. This causes to see the QUrl
         # as new (instead of relying on cached version and thus forces an update.
         temp = "image://print_job_preview/" + str(self._preview_image_id) + "/" + self._key
-        return QUrl(temp, QUrl.TolerantMode)
+        return QUrl(temp, QUrl.ParsingMode.TolerantMode)
 
     def getPreviewImage(self) -> Optional[QImage]:
         return self._preview_image

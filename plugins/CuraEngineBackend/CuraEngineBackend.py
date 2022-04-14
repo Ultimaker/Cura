@@ -1,15 +1,15 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
-from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSlot
+from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
 from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 
-from PyQt5.QtGui import QDesktopServices, QImage
+from PyQt6.QtGui import QDesktopServices, QImage
 
 from UM.Backend.Backend import Backend, BackendState
 from UM.Scene.SceneNode import SceneNode
@@ -31,7 +31,7 @@ from cura.Utils.Threading import call_on_qt_thread
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
 
-import Arcus
+import pyArcus as Arcus
 
 if TYPE_CHECKING:
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel

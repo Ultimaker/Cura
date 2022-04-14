@@ -43,8 +43,8 @@ Cura.Menu
             shortcut: model.shortcut
             enabled: saveProjectMenu.shouldBeVisible
         }
-        onObjectAdded: saveProjectMenu.insertItem(index, object)
-        onObjectRemoved: saveProjectMenu.removeItem(object)
+        onObjectAdded: function(index, object) {  saveProjectMenu.insertItem(index, object)}
+        onObjectRemoved: function(object) {  saveProjectMenu.removeItem(object)}
     }
 
     WorkspaceSummaryDialog

@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 
 import UM 1.5 as UM
@@ -172,9 +172,9 @@ UM.TooltipArea
                 return "^%0\\d{0,%1}[.,]?\\d{0,%2}$".arg(minus).arg(digits).arg(numericTextFieldWithUnit.decimals)
             }
         }
-        validator: RegExpValidator
+        validator: RegularExpressionValidator
         {
-            regExp: new RegExp(textFieldWithUnit.validatorString)
+            regularExpression: new RegExp(textFieldWithUnit.validatorString)
         }
 
         //Enforce actual minimum and maximum values.

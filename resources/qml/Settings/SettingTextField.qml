@@ -1,8 +1,8 @@
 // Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
 
@@ -154,7 +154,7 @@ SettingItem
             // should be done as little as possible)
             clip: definition.type == "str" || definition.type == "[int]"
 
-            validator: RegExpValidator { regExp: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,9}\s*,)*(\s*-?[0-9]{0,9})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : (definition.type == "float") ? /^-?[0-9]{0,9}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
+            validator: RegularExpressionValidator { regularExpression: (definition.type == "[int]") ? /^\[?(\s*-?[0-9]{0,9}\s*,)*(\s*-?[0-9]{0,9})\s*\]?$/ : (definition.type == "int") ? /^-?[0-9]{0,10}$/ : (definition.type == "float") ? /^-?[0-9]{0,9}[.,]?[0-9]{0,3}$/ : /^.*$/ } // definition.type property from parent loader used to disallow fractional number entry
 
             Binding
             {
@@ -162,6 +162,13 @@ SettingItem
                 property: "text"
                 value:
                 {
+                    if (input.activeFocus)
+                    {
+                        // In QT6 using "when: !activeFocus" causes the value to be null when activeFocus becomes True
+                        // Since we want the value to stay the same when giving focus to the TextInput this is being used
+                        // in place of "when: !activeFocus"
+                        return input.text
+                    }
                     // Stacklevels
                     // 0: user  -> unsaved change
                     // 1: quality changes  -> saved change
@@ -181,7 +188,6 @@ SettingItem
                         return propertyProvider.properties.value
                     }
                 }
-                when: !input.activeFocus
             }
 
             MouseArea

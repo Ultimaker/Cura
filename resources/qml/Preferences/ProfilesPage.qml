@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.6 as Cura
@@ -349,9 +349,9 @@ UM.ManagementPage
         {
             id: exportDialog
             title: catalog.i18nc("@title:window", "Export Profile")
-            selectExisting: false
+            fileMode: FileDialog.SaveFile
             nameFilters: base.qualityManagementModel.getFileNameFilters("profile_writer")
-            folder: CuraApplication.getDefaultPath("dialog_profile_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
                 var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
@@ -414,9 +414,9 @@ UM.ManagementPage
         {
             id: importDialog
             title: catalog.i18nc("@title:window", "Import Profile")
-            selectExisting: true
+            fileMode: FileDialog.OpenFile
             nameFilters: base.qualityManagementModel.getFileNameFilters("profile_reader")
-            folder: CuraApplication.getDefaultPath("dialog_profile_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
                 var result = Cura.ContainerManager.importProfile(fileUrl);

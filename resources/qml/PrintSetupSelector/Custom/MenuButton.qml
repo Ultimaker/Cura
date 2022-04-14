@@ -44,7 +44,7 @@ Button
     {
         height: button.height
         width: button.width
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: check
             height: UM.Theme.getSize("default_arrow").height

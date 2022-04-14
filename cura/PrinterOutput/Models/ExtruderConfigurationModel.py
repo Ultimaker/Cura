@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
+from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal
 
 from .MaterialOutputModel import MaterialOutputModel
 

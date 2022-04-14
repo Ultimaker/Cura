@@ -3,7 +3,7 @@
 
 from typing import Dict, List
 
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from UM.Qt.ListModel import ListModel
 from cura.Settings.GlobalStack import GlobalStack
@@ -25,10 +25,10 @@ class UpdatableMachinesModel(ListModel):
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
-        self.addRoleName(Qt.UserRole + 1, "id")
-        self.addRoleName(Qt.UserRole + 2, "name")
-        self.addRoleName(Qt.UserRole + 3, "displayName")
-        self.addRoleName(Qt.UserRole + 4, "type")  # Either "default_option" or "machine"
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "displayName")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 4, "type")  # Either "default_option" or "machine"
 
     def update(self, machines: List[GlobalStack]) -> None:
         items = [create_new_list_item]  # type: List[Dict[str, str]]

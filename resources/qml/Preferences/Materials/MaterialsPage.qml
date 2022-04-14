@@ -3,7 +3,7 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.5 as Cura
@@ -226,9 +226,9 @@ UM.ManagementPage
         {
             id: importMaterialDialog
             title: catalog.i18nc("@title:window", "Import Material")
-            selectExisting: true
+            fileMode: FileDialog.OpenFile
             nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
-            folder: CuraApplication.getDefaultPath("dialog_material_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
                 const result = Cura.ContainerManager.importMaterialContainer(fileUrl);
@@ -254,9 +254,9 @@ UM.ManagementPage
         {
             id: exportMaterialDialog
             title: catalog.i18nc("@title:window", "Export Material")
-            selectExisting: false
+            fileMode: FileDialog.SaveFile
             nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
-            folder: CuraApplication.getDefaultPath("dialog_material_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
                 const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);

@@ -143,14 +143,12 @@ UM.Dialog
                                 }
                             }
 
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: UM.Theme.getSize("standard_arrow").width
                                 height: UM.Theme.getSize("standard_arrow").height
-                                sourceSize.width: width
-                                sourceSize.height: height
                                 color: parent.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
                                 source: UM.Theme.getIcon("ChevronSingleDown")
                             }
@@ -175,14 +173,12 @@ UM.Dialog
                                 }
                             }
 
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: UM.Theme.getSize("standard_arrow").width
                                 height: UM.Theme.getSize("standard_arrow").height
-                                sourceSize.width: width
-                                sourceSize.height: height
                                 color: upButton.enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("text_disabled")
                                 source: UM.Theme.getIcon("ChevronSingleUp")
                             }
@@ -200,14 +196,12 @@ UM.Dialog
                                 onClicked: manager.removeScriptByIndex(index)
                             }
 
-                            UM.RecolorImage
+                            UM.ColorImage
                             {
                                 anchors.verticalCenter: parent.verticalCenter
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 width: UM.Theme.getSize("standard_arrow").width
                                 height: UM.Theme.getSize("standard_arrow").height
-                                sourceSize.width: width
-                                sourceSize.height: height
                                 color: UM.Theme.getColor("text")
                                 source: UM.Theme.getIcon("Cancel")
                             }
@@ -237,8 +231,8 @@ UM.Dialog
                     onTriggered: manager.addScriptToList(modelData.toString())
                 }
 
-                onObjectAdded: scriptsMenu.insertItem(index, object)
-                onObjectRemoved: scriptsMenu.removeItem(object)
+                onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
+                onObjectRemoved: function(object) {  scriptsMenu.removeItem(object) }
             }
         }
 
@@ -481,7 +475,7 @@ UM.Dialog
             }
             toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-            iconSource: "Script.svg"
+//            iconSource: "Script.svg"
             fixedWidthMode: false
         }
 

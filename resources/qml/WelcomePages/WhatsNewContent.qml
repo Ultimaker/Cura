@@ -4,7 +4,6 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.12 // For the DropShadow
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -67,7 +66,7 @@ Item
 
                 Rectangle
                 {
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignmentFlag.AlignHCenter
                     color: UM.Theme.getColor("viewport_overlay")
                     width: whatsNewViewport.width
                     height: whatsNewViewport.height
@@ -90,13 +89,6 @@ Item
                         onStatusChanged: playing = (status == AnimatedImage.Ready)
 
                         source: manager.getSubpageImageSource(index)
-                    }
-
-                    DropShadow {
-                        anchors.fill: subpageImage
-                        radius: UM.Theme.getSize("monitor_shadow_radius").width
-                        color: UM.Theme.getColor("first_run_shadow")
-                        source: subpageImage
                     }
 
                     Cura.ScrollableTextArea
