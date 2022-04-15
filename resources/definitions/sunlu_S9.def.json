@@ -4,8 +4,7 @@
     "inherits": "sunlu_base",
     "metadata": {
         "quality_definition": "sunlu_base",
-        "visible": true,
-        "platform": ""
+        "visible": true
     },
     "overrides": {
         "machine_name": { "default_value": "Sunlu S-9" },
