@@ -17,6 +17,6 @@ class StructureNode(SceneNode):
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
 
         if self.getMeshData():
-            renderer.queueNode(self, shader = self._shader, transparent = False, backface_cull = False)
+            renderer.queueNode(self, shader = self._shader, transparent = False, backface_cull = False, sort = 10)
             return True
         return False
