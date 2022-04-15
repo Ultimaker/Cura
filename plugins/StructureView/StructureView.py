@@ -15,6 +15,23 @@ if TYPE_CHECKING:
     import pyArcus
 
 class StructureView(CuraView):
+    """
+    View the structure types.
+    """
+
+    _color_map = {
+        0: "layerview_inset_x",
+        1: "layerview_skin",
+        2: "layerview_infill",
+        3: "layerview_support",
+        4: "layerview_ghost",
+        5: "layerview_skirt"
+    }
+    """
+    Mapping which color theme entry to display for each type of structure.
+    The numbers here should match the structure types in Cura.proto under StructurePolygon.Type
+    """
+
     def __init__(self):
         super().__init__(parent = None, use_empty_menu_placeholder = True)
         self._scene_node = None  # type: Optional[StructureNode]  # All structure data will be under this node. Will be generated on first message received (since there is no scene yet at init).
@@ -45,15 +62,15 @@ class StructureView(CuraView):
         :param message: A message received from CuraEngine containing a structure polygon.
         """
         num_vertices = int(len(message.points) / 4 / 3)  # Number of bytes, / 4 for bytes per float, / 3 for X, Y and Z coordinates.
-        vertex_data = numpy.frombuffer(message.points, dtype = numpy.single)
-        vertex_data = numpy.reshape(vertex_data, newshape = (num_vertices, 3))
-
-        if self._current_index + num_vertices >= self._capacity:
+        to = self._current_index + num_vertices
+        if to >= self._capacity:
             self._reallocate(self._current_index + num_vertices)
 
-        to = self._current_index + num_vertices
+        # Fill the existing buffers with data in our region.
+        vertex_data = numpy.frombuffer(message.points, dtype = numpy.single)
+        vertex_data = numpy.reshape(vertex_data, newshape = (num_vertices, 3))
         self._vertices[self._current_index:to, 0:3] = vertex_data
-        self._colors[self._current_index:to] = [1.0, 0.0, 0.0, 1.0]  # TODO: Placeholder color red. Use proper colour depending on structure type.
+        self._colors[self._current_index:to] = CuraApplication.getInstance().getTheme().getColor(self._color_map.get(message.type, "layerview_none")).getRgbF()
         self._layers[self._current_index:to] = message.layer_index
 
         self._current_index += num_vertices
