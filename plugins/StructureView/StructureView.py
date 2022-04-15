@@ -21,8 +21,8 @@ class StructureView(CuraView):
         self._capacity = 3 * 10000  # Start with some allocation to prevent having to reallocate all the time. Preferably a multiple of 3 (for triangles).
         self._vertices = numpy.ndarray((self._capacity, 3), dtype = numpy.single)
         self._indices = numpy.arange(self._capacity * 3, dtype = numpy.int32).reshape((self._capacity, 3))  # Since we're using a triangle list, the indices are simply increasing linearly.
-        self._normals = numpy.repeat([[0.0, 1.0, 0.0]], self._capacity, axis = 0)  # All normals are pointing up (to positive Y).
-        self._colors = numpy.repeat([[0.0, 0.0, 0.0]], self._capacity, axis = 0)  # No colors yet.
+        self._normals = numpy.repeat(numpy.array([[0.0, 1.0, 0.0]], dtype = numpy.single), self._capacity, axis = 0)  # All normals are pointing up (to positive Y).
+        self._colors = numpy.repeat(numpy.array([[0.0, 0.0, 0.0, 1.0]], dtype = numpy.single), self._capacity, axis = 0)  # No colors yet.
         self._layers = numpy.repeat(-1, self._capacity)  # To mask out certain layers for layer view.
 
         self._current_index = 0  # type: int  # Where to add new data.
@@ -53,7 +53,7 @@ class StructureView(CuraView):
 
         to = self._current_index + num_vertices
         self._vertices[self._current_index:to, 0:3] = vertex_data
-        self._colors[self._current_index:to] = [1.0, 0.0, 0.0]  # TODO: Placeholder color red. Use proper colour depending on structure type.
+        self._colors[self._current_index:to] = [1.0, 0.0, 0.0, 1.0]  # TODO: Placeholder color red. Use proper colour depending on structure type.
         self._layers[self._current_index:to] = message.layer_index
 
         self._current_index += num_vertices
@@ -71,7 +71,7 @@ class StructureView(CuraView):
         self._vertices.resize((new_capacity, 3))
         self._indices = numpy.arange(new_capacity).reshape((new_capacity, 3))
         self._normals = numpy.repeat([0, 1, 0], self._capacity, axis = 0)
-        self._colors.resize((new_capacity, 3))
+        self._colors.resize((new_capacity, 4))
         self._layers.resize((new_capacity, ))
 
         self._capacity = new_capacity
@@ -83,8 +83,8 @@ class StructureView(CuraView):
         if not self._scene_node:
             return
         self._scene_node.setMeshData(MeshData(
-            vertices = self._vertices[0:self._current_index].copy(),
-            normals = self._normals[0:self._current_index].copy(),
-            indices = self._indices[0:int(self._current_index / 3)].copy(),
-            colors = self._colors[0:self._current_index].copy()
+            vertices = self._vertices[0:self._current_index],
+            normals = self._normals[0:self._current_index],
+            indices = self._indices[0:int(self._current_index / 3)],
+            colors = self._colors[0:self._current_index]
         ))
