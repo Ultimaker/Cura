@@ -6,9 +6,10 @@ import numpy
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraView import CuraView
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.Mesh.MeshData import MeshData
 from UM.PluginRegistry import PluginRegistry
+
+from .StructureNode import StructureNode
 
 if TYPE_CHECKING:
     import pyArcus
@@ -16,10 +17,10 @@ if TYPE_CHECKING:
 class StructureView(CuraView):
     def __init__(self):
         super().__init__(parent = None, use_empty_menu_placeholder = True)
-        self._scene_node = None  # type: Optional[CuraSceneNode]  # All structure data will be under this node. Will be generated on first message received (since there is no scene yet at init).
+        self._scene_node = None  # type: Optional[StructureNode]  # All structure data will be under this node. Will be generated on first message received (since there is no scene yet at init).
         self._capacity = 3 * 10000  # Start with some allocation to prevent having to reallocate all the time. Preferably a multiple of 3 (for triangles).
         self._vertices = numpy.ndarray((self._capacity, 3), dtype = numpy.single)
-        self._indices = numpy.arange(self._capacity)  # Since we're using a triangle list, the indices are simply increasing linearly.
+        self._indices = numpy.arange(self._capacity * 3, dtype = numpy.int32).reshape((self._capacity, 3))  # Since we're using a triangle list, the indices are simply increasing linearly.
         self._normals = numpy.repeat([[0.0, 1.0, 0.0]], self._capacity, axis = 0)  # All normals are pointing up (to positive Y).
         self._colors = numpy.repeat([[0.0, 0.0, 0.0]], self._capacity, axis = 0)  # No colors yet.
         self._layers = numpy.repeat(-1, self._capacity)  # To mask out certain layers for layer view.
@@ -36,7 +37,7 @@ class StructureView(CuraView):
 
     def _createSceneNode(self):
         if not self._scene_node:
-            self._scene_node = CuraSceneNode(parent = CuraApplication.getInstance().getController().getScene().getRoot())
+            self._scene_node = StructureNode(parent = CuraApplication.getInstance().getController().getScene().getRoot())
 
     def _onStructurePolygonReceived(self, message: "pyArcus.PythonMessage") -> None:
         """
@@ -68,7 +69,7 @@ class StructureView(CuraView):
             new_capacity *= 2
 
         self._vertices.resize((new_capacity, 3))
-        self._indices = numpy.arange(new_capacity)
+        self._indices = numpy.arange(new_capacity).reshape((new_capacity, 3))
         self._normals = numpy.repeat([0, 1, 0], self._capacity, axis = 0)
         self._colors.resize((new_capacity, 3))
         self._layers.resize((new_capacity, ))
@@ -81,5 +82,9 @@ class StructureView(CuraView):
         """
         if not self._scene_node:
             return
-        print("Updating scene!")
-        self._scene_node.setMeshData(MeshData(vertices = self._vertices[0:self._current_index], normals = self._normals[0:self._current_index], indices = self._indices[0:self._current_index], colors = self._colors[0:self._current_index]))  # TODO: Does a copy due to the immutableNdArray, which is BAD!
+        self._scene_node.setMeshData(MeshData(
+            vertices = self._vertices[0:self._current_index].copy(),
+            normals = self._normals[0:self._current_index].copy(),
+            indices = self._indices[0:int(self._current_index / 3)].copy(),
+            colors = self._colors[0:self._current_index].copy()
+        ))
