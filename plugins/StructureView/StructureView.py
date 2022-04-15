@@ -57,11 +57,13 @@ class StructureView(CuraView):
             engine = plugin_registry.getPluginObject("CuraEngineBackend")
             engine.structurePolygonReceived.connect(self._onStructurePolygonReceived)  # type: ignore
 
-        CuraApplication.getInstance().initializationFinished.connect(self._createSceneNode)
+            CuraApplication.getInstance().initializationFinished.connect(self._createSceneNode)
 
     def _createSceneNode(self):
+        scene = CuraApplication.getInstance().getController().getScene()
         if not self._scene_node:
-            self._scene_node = StructureNode(parent = CuraApplication.getInstance().getController().getScene().getRoot())
+            self._scene_node = StructureNode(parent = scene.getRoot())
+        scene.sceneChanged.connect(self._clear)
 
     def _onStructurePolygonReceived(self, message: "pyArcus.PythonMessage") -> None:
         """
@@ -113,3 +115,23 @@ class StructureView(CuraView):
             indices = self._indices[0:int(self._current_index / 3)],
             colors = self._colors[0:self._current_index]
         ))
+
+    def _clear(self, source: "SceneNode") -> None:
+        """
+        Removes the structure data from the scene when the scene changes.
+        :param source: The scene node that changed.
+        """
+        scene = CuraApplication.getInstance().getController().getScene()
+        if not source.callDecoration("isSliceable") and source != scene.getRoot():
+            return
+
+        if source.callDecoration("getBuildPlateNumber") is None:  # Not on the build plate.
+            return
+        if not source.callDecoration("isGroup"):
+            mesh_data = source.getMeshData()
+            if mesh_data is None or mesh_data.getVertices() is None:
+                return
+
+        if self._current_index != 0:
+            self._current_index = 0
+            self._updateScene()
