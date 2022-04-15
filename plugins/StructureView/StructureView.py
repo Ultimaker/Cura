@@ -37,7 +37,7 @@ class StructureView(CuraView):
         self._scene_node = None  # type: Optional[StructureNode]  # All structure data will be under this node. Will be generated on first message received (since there is no scene yet at init).
         self._capacity = 3 * 10000  # Start with some allocation to prevent having to reallocate all the time. Preferably a multiple of 3 (for triangles).
         self._vertices = numpy.ndarray((self._capacity, 3), dtype = numpy.single)
-        self._indices = numpy.arange(self._capacity * 3, dtype = numpy.int32).reshape((self._capacity, 3))  # Since we're using a triangle list, the indices are simply increasing linearly.
+        self._indices = numpy.arange(self._capacity, dtype = numpy.int32).reshape((int(self._capacity / 3), 3))  # Since we're using a triangle list, the indices are simply increasing linearly.
         self._normals = numpy.repeat(numpy.array([[0.0, 1.0, 0.0]], dtype = numpy.single), self._capacity, axis = 0)  # All normals are pointing up (to positive Y).
         self._colors = numpy.repeat(numpy.array([[0.0, 0.0, 0.0, 1.0]], dtype = numpy.single), self._capacity, axis = 0)  # No colors yet.
         self._layers = numpy.repeat(-1, self._capacity)  # To mask out certain layers for layer view.
@@ -86,8 +86,8 @@ class StructureView(CuraView):
             new_capacity *= 2
 
         self._vertices.resize((new_capacity, 3))
-        self._indices = numpy.arange(new_capacity).reshape((new_capacity, 3))
-        self._normals = numpy.repeat([0, 1, 0], self._capacity, axis = 0)
+        self._indices = numpy.arange(new_capacity, dtype = numpy.int32).reshape((int(new_capacity / 3), 3))
+        self._normals = numpy.repeat(numpy.array([[0.0, 1.0, 0.0]], dtype = numpy.single), new_capacity, axis = 0)
         self._colors.resize((new_capacity, 4))
         self._layers.resize((new_capacity, ))
 
