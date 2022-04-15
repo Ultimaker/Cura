@@ -99,18 +99,12 @@ message GCodeLayer {
 message StructurePolygon {
     bytes points = 1; //The vertices of the polygon.
     enum Type {
-        NoneType = 0;
-        Inset0Type = 1;
-        InsetXType = 2;
-        SkinType = 3;
-        SupportType = 4;
-        SkirtType = 5;
-        InfillType = 6;
-        SupportInfillType = 7;
-        MoveCombingType = 8;
-        MoveRetractionType = 9;
-        SupportInterfaceType = 10;
-        PrimeTowerType = 11;
+        Wall = 0;
+        Skin = 1;
+        Infill = 2;
+        Support = 3;
+        Combing = 4;
+        Adhesion = 5;
     }
     Type type = 2; //Type of structure.
     int32 layer_index = 3; //Layer number this is on.
