@@ -61,7 +61,6 @@ Rectangle
             margins: UM.Theme.getSize("default_margin").width
         }
 
-        renderType: Text.NativeRendering
         color: UM.Theme.getColor("primary_text")
         elide: Text.ElideRight
 
