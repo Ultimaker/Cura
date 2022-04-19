@@ -8,7 +8,7 @@ import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
-from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum
+from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
 from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
@@ -121,7 +121,6 @@ if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 numpy.seterr(all = "ignore")
-
 
 class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
@@ -623,11 +622,14 @@ class CuraApplication(QtApplication):
         # the QML code then gets `null` as the global stack and can deal with that as it deems fit.
         self.getMachineManager().setActiveMachine(None)
 
+        QtApplication.getInstance().closeAllWindows()
+
         main_window = self.getMainWindow()
         if main_window is not None:
             main_window.close()
-        else:
-            self.exit(0)
+
+        QtApplication.closeAllWindows()
+        QCoreApplication.quit()
 
     # This function first performs all upon-exit checks such as USB printing that is in progress.
     # Use this to close the application.
@@ -1097,6 +1099,12 @@ class CuraApplication(QtApplication):
                 self._openFile(event.file())
             else:
                 self._open_file_queue.append(event.file())
+
+        if int(event.type()) == 20:  # 'QEvent.Type.Quit' enum isn't there, even though it should be according to docs.
+            # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
+            # It's more difficult to call sys.exit(0): That requires that it happens as the result of a pyqtSignal-emit.
+            # (See https://doc.qt.io/qt-6/qcoreapplication.html#quit)
+            os._exit(0)
 
         return super().event(event)
 
