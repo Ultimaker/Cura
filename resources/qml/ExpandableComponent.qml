@@ -266,10 +266,8 @@ Item
                         }
                     }
                 }
-                onReleased:
-                {
-                     dragging = false
-                }
+                onReleased: dragging = false
+
 
                 onDoubleClicked:
                 {
