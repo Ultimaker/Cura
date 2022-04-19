@@ -46,7 +46,7 @@ UM.Dialog
             Image
             {
                 id: icon
-                width: 30 * screenScaleFactor
+                width: UM.Theme.getSize("card_icon").width
                 height: width
                 sourceSize.width: width
                 sourceSize.height: height
@@ -81,11 +81,8 @@ UM.Dialog
     [
         Cura.PrimaryButton
         {
-            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
-            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
-
             text: licenseModel.acceptButtonText
-            onClicked: { handler.onLicenseAccepted() }
+            onClicked:  handler.onLicenseAccepted()
         }
     ]
 
@@ -95,7 +92,7 @@ UM.Dialog
         {
             id: declineButton
             text: licenseModel.declineButtonText
-            onClicked: { handler.onLicenseDeclined() }
+            onClicked: handler.onLicenseDeclined()
         }
     ]
 }

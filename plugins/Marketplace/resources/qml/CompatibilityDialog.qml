@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 
@@ -47,12 +47,10 @@ UM.Dialog
                 anchors.margins: UM.Theme.getSize("default_margin").width
 
                 // Compatible packages
-                Label
+                UM.Label
                 {
-                    font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages will be added:")
                     visible: subscribedPackagesModel.hasCompatiblePackages
-                    color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
                 Repeater
@@ -77,14 +75,13 @@ UM.Dialog
                                 mipmap: true
                                 fillMode: Image.PreserveAspectFit
                             }
-                            Label
+                            UM.Label
                             {
                                 text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.verticalCenter: packageIcon.verticalCenter
-                                color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
                             }
                         }
@@ -92,12 +89,10 @@ UM.Dialog
                 }
 
                 // Incompatible packages
-                Label
+                UM.Label
                 {
-                    font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages can not be installed because of an incompatible Cura version:")
                     visible: subscribedPackagesModel.hasIncompatiblePackages
-                    color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
                 Repeater
@@ -122,14 +117,13 @@ UM.Dialog
                                 mipmap: true
                                 fillMode: Image.PreserveAspectFit
                             }
-                            Label
+                            UM.Label
                             {
                                 text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.verticalCenter: packageIcon.verticalCenter
-                                color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
                             }
                         }
@@ -147,8 +141,6 @@ UM.Dialog
             anchors.margins: UM.Theme.getSize("default_margin").height
             text: actionButtonText
             onClicked: accept()
-            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
-            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
         }
     }
 }
