@@ -231,7 +231,7 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                const result = Cura.ContainerManager.importMaterialContainer(fileUrl);
+                const result = Cura.ContainerManager.importMaterialContainer(selectedFile);
 
                 const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
                 messageDialog.standardButtons = Dialog.Ok;
@@ -259,7 +259,7 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
+                const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, selectedFile);
 
                 const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
                 messageDialog.title = catalog.i18nc("@title:window", "Export Material");

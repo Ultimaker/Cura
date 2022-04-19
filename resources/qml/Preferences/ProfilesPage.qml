@@ -355,7 +355,7 @@ UM.ManagementPage
             onAccepted:
             {
                 var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
-                                                                             fileUrl, selectedNameFilter);
+                                                                             selectedFile, selectedNameFilter);
 
                 if (result && result.status == "error")
                 {
@@ -419,7 +419,7 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var result = Cura.ContainerManager.importProfile(fileUrl);
+                var result = Cura.ContainerManager.importProfile(selectedFile);
                 messageDialog.title = catalog.i18nc("@title:window", "Import Profile")
                 messageDialog.text = result.message;
                 messageDialog.open();
