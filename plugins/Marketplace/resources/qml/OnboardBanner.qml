@@ -19,7 +19,6 @@ Rectangle
     implicitHeight: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
     color: UM.Theme.getColor("action_panel_secondary")
 
-    // Icon
     UM.ColorImage
     {
         id: onboardingIcon
@@ -33,7 +32,6 @@ Rectangle
         height: UM.Theme.getSize("banner_icon_size").height
     }
 
-    // Close button
     UM.SimpleButton
     {
         id: onboardingClose
@@ -52,8 +50,8 @@ Rectangle
         onClicked: onRemove()
     }
 
-    // Body
-    Label {
+    UM.Label
+    {
         id: infoText
         anchors
         {
@@ -63,11 +61,8 @@ Rectangle
             margins: UM.Theme.getSize("default_margin").width
         }
 
-        font: UM.Theme.getFont("default")
-
         renderType: Text.NativeRendering
         color: UM.Theme.getColor("primary_text")
-        wrapMode: Text.Wrap
         elide: Text.ElideRight
 
         onLineLaidOut: (line) =>
@@ -102,7 +97,7 @@ Rectangle
         id: readMoreButton
         anchors.left: infoText.left
         anchors.bottom: infoText.bottom
-        text: "Learn More"
+        text: catalog.i18nc("@button:label", "Learn More")
         textFont: UM.Theme.getFont("default")
         textColor: infoText.color
         leftPadding: 0
