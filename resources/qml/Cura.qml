@@ -571,7 +571,7 @@ UM.MainWindow
         id: contextMenu
     }
 
-    onPreClosing:
+    onPreClosing: (close) =>
     {
         close.accepted = CuraApplication.getIsAllChecksPassed();
         if (!close.accepted)
