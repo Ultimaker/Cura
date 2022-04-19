@@ -236,6 +236,8 @@ class CloudOutputDeviceManager:
         )
         message.show()
 
+        new_devices_added = []
+
         for idx, device in enumerate(new_devices):
             message_text = self.i18n_catalog.i18nc("info:status Filled in with printer name and printer model.", "Adding printer {name} ({model}) from your account").format(name = device.name, model = device.printerTypeName)
             message.setText(message_text)
@@ -246,21 +248,25 @@ class CloudOutputDeviceManager:
 
             # If there is no active machine, activate the first available cloud printer
             activate = not CuraApplication.getInstance().getMachineManager().activeMachine
-            self._createMachineFromDiscoveredDevice(device.getId(), activate = activate)
+
+            if self._createMachineFromDiscoveredDevice(device.getId(), activate = activate):
+                new_devices_added.append(device)
 
         message.setProgress(None)
 
         max_disp_devices = 3
-        if len(new_devices) > max_disp_devices:
-            num_hidden = len(new_devices) - max_disp_devices
+        if len(new_devices_added) > max_disp_devices:
+            num_hidden = len(new_devices_added) - max_disp_devices
             device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:max_disp_devices]]
             device_name_list.append("<li>" + self.i18n_catalog.i18ncp("info:{0} gets replaced by a number of printers", "... and {0} other", "... and {0} others", num_hidden) + "</li>")
             device_names = "".join(device_name_list)
         else:
-            device_names = "".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices])
-
-        message_text = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:") + "<ul>" + device_names + "</ul>"
-        message.setText(message_text)
+            device_names = "".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices_added])
+        if new_devices_added:
+            message_text = self.i18n_catalog.i18nc("info:status", "Printers added from Digital Factory:") + "<ul>" + device_names + "</ul>"
+            message.setText(message_text)
+        else:
+            message.hide()
 
     def _updateOnlinePrinters(self, printer_responses: Dict[str, CloudClusterResponse]) -> None:
         """
@@ -385,22 +391,24 @@ class CloudOutputDeviceManager:
         if device.key in output_device_manager.getOutputDeviceIds():
             output_device_manager.removeOutputDevice(device.key)
 
-    def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> None:
+    def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> bool:
         device = self._remote_clusters[key]
         if not device:
-            return
+            return False
 
         # Create a new machine.
         # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
-        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType, show_warning_message=False)
         if not new_machine:
             Logger.log("e", "Failed creating a new machine")
-            return
+            return False
 
         self._setOutputDeviceMetadata(device, new_machine)
 
         if activate:
             CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+
+        return True
 
     def _connectToActiveMachine(self) -> None:
         """Callback for when the active machine was changed by the user"""
