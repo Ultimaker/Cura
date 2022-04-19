@@ -735,7 +735,7 @@ Window
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
         onAccepted:
         {
-            syncModel.exportAll(fileUrl);
+            syncModel.exportAll(selectedFile);
             CuraApplication.setDefaultPath("dialog_material_path", folder);
             materialsSyncDialog.hasExportedUsb = true;
         }
