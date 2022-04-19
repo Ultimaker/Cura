@@ -6,41 +6,33 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.6 as Cura
 
 UM.Dialog
 {
     id: licenseDialog
     title: licenseModel.dialogTitle
-    Component.onCompleted:
-    {
-        for(var p in licenseModel)
-            console.log(p + ": " + item[p]);
-    }
 
-    minimumWidth: UM.Theme.getSize("license_window_minimum").width
-    minimumHeight: UM.Theme.getSize("license_window_minimum").height
+    minimumWidth: UM.Theme.getSize("modal_window_minimum").width
+    minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
     backgroundColor: UM.Theme.getColor("main_background")
-    margin: screenScaleFactor * 10
+    margin: UM.Theme.getSize("default_margin").width
 
     ColumnLayout
     {
         anchors.fill: parent
         spacing: UM.Theme.getSize("thick_margin").height
 
-        UM.I18nCatalog{id: catalog; name: "cura"}
+        UM.I18nCatalog { id: catalog; name: "cura" }
 
-        Label
+        UM.Label
         {
             id: licenseHeader
             Layout.fillWidth: true
             text: catalog.i18nc("@label", "You need to accept the license to install the package")
-            color: UM.Theme.getColor("text")
-            wrapMode: Text.Wrap
-            renderType: Text.NativeRendering
         }
 
         Row {
@@ -63,24 +55,19 @@ UM.Dialog
                 mipmap: true
             }
 
-            Label
+            UM.Label
             {
                 id: packageName
                 text: licenseModel.packageName
-                color: UM.Theme.getColor("text")
+
                 font.bold: true
                 anchors.verticalCenter: icon.verticalCenter
                 height: contentHeight
-                wrapMode: Text.Wrap
-                renderType: Text.NativeRendering
             }
-
-
         }
 
         Cura.ScrollableTextArea
         {
-
             Layout.fillWidth: true
             Layout.fillHeight: true
             anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -88,8 +75,8 @@ UM.Dialog
             textArea.text: licenseModel.licenseText
             textArea.readOnly: true
         }
-
     }
+
     rightButtons:
     [
         Cura.PrimaryButton
