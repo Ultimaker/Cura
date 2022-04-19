@@ -385,7 +385,7 @@ UM.ManagementPage
 
             title: catalog.i18nc("@title:window", "Confirm Remove")
             text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
-            standardButtons: StandardButton.Yes | StandardButton.No
+            standardButtons: Dialog.Yes | Dialog.No
             modal: true
 
             onAccepted:
