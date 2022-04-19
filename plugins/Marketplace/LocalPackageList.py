@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, QObject
+from PyQt6.QtCore import pyqtSlot, QObject
 
 from UM.Version import Version
 from UM.i18n import i18nCatalog
@@ -15,8 +15,8 @@ from .PackageModel import PackageModel
 from .Constants import PACKAGE_UPDATES_URL
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtCore import QObject
+    from PyQt6.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 

@@ -213,7 +213,7 @@ ListView
                         status: UM.StatusIcon.Status.ERROR
                         visible: false
                     }
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: loadMoreIcon
                         anchors.fill: parent

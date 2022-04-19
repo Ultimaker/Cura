@@ -5,9 +5,9 @@ import threading
 from json import JSONDecodeError
 from typing import List, Dict, Any, Callable, Union, Optional
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger

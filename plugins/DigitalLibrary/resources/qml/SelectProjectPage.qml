@@ -56,7 +56,7 @@ Item
             id: createNewProjectButton
 
             text: "New Library project"
-            visible: createNewProjectButtonVisible && manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == DF.RetrievalStatus.Success || manager.retrievingProjectsStatus == DF.RetrievalStatus.Failed)
+            visible: createNewProjectButtonVisible && manager.userAccountCanCreateNewLibraryProject && (manager.retrievingProjectsStatus == 2 || manager.retrievingProjectsStatus == 3) // Status is succeeded or failed
 
             onClicked:
             {

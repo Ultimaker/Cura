@@ -426,7 +426,7 @@ UM.Dialog
                 width: parent.width
                 height: childrenRect.height
                 visible: manager.hasObjectsOnPlate
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     width: warningLabel.height
                     height: width

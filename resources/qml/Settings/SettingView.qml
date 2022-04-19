@@ -43,6 +43,7 @@ Item
             height: parent.height
             anchors.left: parent.left
             anchors.right: parent.right
+            topPadding: height / 4
             leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
             placeholderText: catalog.i18nc("@label:textbox", "Search settings")
             font.italic: true
@@ -50,7 +51,7 @@ Item
             property var expandedCategories
             property bool lastFindingSettings: false
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: searchIcon
 
@@ -171,7 +172,7 @@ Item
     {
         anchors.fill: contents
         acceptedButtons: Qt.AllButtons
-        onWheel: wheel.accepted = true
+        onWheel: (wheel) => { wheel.accepted = true }
     }
 
     ListView

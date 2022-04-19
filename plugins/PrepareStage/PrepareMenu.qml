@@ -91,13 +91,11 @@ Item
             height: parent.height
             width: visible ? (headerPadding * 3 + UM.Theme.getSize("button_icon").height + iconSize) : 0
 
-            headerItem: UM.RecolorImage
+            headerItem: UM.ColorImage
             {
                 id: menuIcon
                 source: UM.Theme.getIcon("Folder", "medium")
                 color: UM.Theme.getColor("icon")
-
-                sourceSize.height: height
             }
 
             contentItem: Item
@@ -111,13 +109,13 @@ Item
                     //The column doesn't automatically listen to its children rect if the children change internally, so we need to explicitly update the size.
                     onChildrenRectChanged:
                     {
-                        popup.height = childrenRect.height
-                        popup.width = childrenRect.width
+                        popup.implicitHeight = childrenRect.height
+                        popup.implicitWidth = childrenRect.width
                     }
                     onPositioningComplete:
                     {
-                        popup.height = childrenRect.height
-                        popup.width = childrenRect.width
+                        popup.implicitHeight = childrenRect.height
+                        popup.implicitWidth = childrenRect.width
                     }
 
                     Repeater
@@ -177,7 +175,7 @@ Item
 
             contentItem: Item
             {
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: buttonIcon
                     source: UM.Theme.getIcon("Folder", "medium")
@@ -185,8 +183,6 @@ Item
                     width: UM.Theme.getSize("button_icon").width
                     height: UM.Theme.getSize("button_icon").height
                     color: UM.Theme.getColor("icon")
-
-                    sourceSize.height: height
                 }
             }
 

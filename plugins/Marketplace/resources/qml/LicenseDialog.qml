@@ -2,7 +2,6 @@
 //Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
@@ -34,7 +33,7 @@ UM.Dialog
             spacing: UM.Theme.getSize("default_margin").width
             leftPadding: UM.Theme.getSize("narrow_margin").width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: icon
                 width: UM.Theme.getSize("marketplace_large_icon").width
@@ -50,7 +49,7 @@ UM.Dialog
                 font: UM.Theme.getFont("large")
                 anchors.verticalCenter: icon.verticalCenter
                 height: UM.Theme.getSize("marketplace_large_icon").height
-                verticalAlignment: Qt.AlignVCenter
+                verticalAlignment: Qt.AlignmentFlag.AlignVCenter
                 wrapMode: Text.Wrap
                 renderType: Text.NativeRendering
             }

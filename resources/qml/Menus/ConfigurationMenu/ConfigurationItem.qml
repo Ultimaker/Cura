@@ -88,7 +88,7 @@ Button
 
                 visible: !configurationItem.isValidMaterial
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: icon
                     anchors.verticalCenter: unknownMaterialMessage.verticalCenter

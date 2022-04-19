@@ -3,7 +3,6 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-import QtGraphicalEffects 1.0 // For the dropshadow
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -47,7 +46,7 @@ Button
 
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
-    height: UM.Theme.getSize("action_button").height
+    implicitHeight: UM.Theme.getSize("action_button").height
     hoverEnabled: true
 
     onHoveredChanged:
@@ -63,14 +62,12 @@ Button
         spacing: UM.Theme.getSize("narrow_margin").width
         height: button.height
         //Left side icon. Only displayed if !isIconOnRightSide.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: buttonIconLeft
             source: ""
             height: visible ? button.iconSize : 0
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor) : button.textDisabledColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
@@ -110,14 +107,12 @@ Button
         }
 
         //Right side icon. Only displayed if isIconOnRightSide.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: buttonIconRight
             source: buttonIconLeft.source
             height: visible ? button.iconSize : 0
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: buttonIconLeft.color
             visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter

@@ -1,11 +1,10 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
 import QtQuick 2.7
 import QtQuick.Controls 2.15
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 Cura.TableView
@@ -39,13 +38,11 @@ Cura.TableView
         catalog.i18nc("@title:column", "Current"),
         catalog.i18nc("@title:column Unit of measurement", "Unit")
     ]
-    model: TableModel
+
+    model: UM.TableModel
     {
         id: tableModel
-        TableModelColumn { display: "label" }
-        TableModelColumn { display: "profile_value" }
-        TableModelColumn { display: "user_value" }
-        TableModelColumn { display: "unit" }
+        headers: ["label", "profile_value", "user_value", "unit"]
         rows: modelRows
     }
     sectionRole: "category"

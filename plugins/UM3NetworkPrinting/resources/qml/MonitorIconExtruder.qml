@@ -27,7 +27,7 @@ Item
     height: size
     width: size
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         anchors.fill: parent

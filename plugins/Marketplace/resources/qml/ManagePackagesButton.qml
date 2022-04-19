@@ -33,7 +33,7 @@ TabButton
         visible: root.hovered
     }
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
 

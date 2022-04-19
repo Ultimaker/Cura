@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtSignal, pyqtSlot, QObject, QUrl
+from PyQt6.QtGui import QDesktopServices
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 

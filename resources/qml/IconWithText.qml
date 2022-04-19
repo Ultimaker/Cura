@@ -35,7 +35,7 @@ Item
     implicitWidth: icon.width + 100
     implicitHeight: icon.height
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: icon
         width: UM.Theme.getSize("section_icon").width

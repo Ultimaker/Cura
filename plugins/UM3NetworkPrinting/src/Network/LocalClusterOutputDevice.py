@@ -3,9 +3,9 @@
 import os
 from typing import Optional, Dict, List, Callable, Any
 
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.i18n import i18nCatalog
