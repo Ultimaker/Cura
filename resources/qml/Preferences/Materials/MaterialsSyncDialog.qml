@@ -701,7 +701,7 @@ Window
                         {
                             if(!materialsSyncDialog.hasExportedUsb)
                             {
-                                exportUsbDialog.folder = syncModel.getPreferredExportAllPath();
+                                exportUsbDialog.currentFolder = syncModel.getPreferredExportAllPath();
                                 exportUsbDialog.open();
                             }
                             else
@@ -733,6 +733,7 @@ Window
     {
         title: catalog.i18nc("@title:window", "Export All Materials")
         nameFilters: ["Material archives (*.umm)", "All files (*)"]
+        fileMode: FileDialog.SaveFile
         onAccepted:
         {
             syncModel.exportAll(selectedFile);
