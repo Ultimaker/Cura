@@ -5,7 +5,8 @@
     "metadata": {
         "author": "Cubicon R&D Center",
         "manufacturer": "Cubicon",
-        "visible": false
+        "visible": false,
+        "has_materials": true
     },
     "overrides": {
         "machine_start_gcode": {
