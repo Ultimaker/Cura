@@ -151,7 +151,7 @@ class AnnealAfterPrint(Script):
         anneal_code = self.generateAnnealCode(anneal_bed_temp, anneal_chamber_temp, anneal_minutes, initial_beep, final_cooling_temp)
 
         try:
-            end_of_gcode_index = data[-1].index(';End sof Gcode')
+            end_of_gcode_index = data[-1].index(';End of Gcode')
         except ValueError:
             data[-1] += anneal_code + '\n'
         else:
