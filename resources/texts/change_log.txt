@@ -44,7 +44,7 @@ The new slicing engine in Ultimaker Cura 5.0 beta has helped us to improve our p
 - Fixed a bug where Speed in the flow setting were not respected
 - Fixed a bug with unnecessary retracted travel moves
 - Fixed a bug where the Ironing Inset didn't work
-- Fixed a bug where Support Layers where missing
+- Fixed a bug where Support Layers were missing
 - Improved the visibility of the checkboxes
 - Fixed a crash if Randomize Infill Start was used
 - Fixed a bug where Combing was in the wrong part with dual extrusion
