@@ -46,7 +46,7 @@ Column
             {
                 id: initialLabel
                 anchors.centerIn: parent
-                text: profile["username"].charAt(0).toUpperCase()
+                text: profile.username.charAt(0).toUpperCase()
                 font: UM.Theme.getFont("large_bold")
                 horizontalAlignment: Text.AlignHCenter
             }

@@ -28,7 +28,7 @@ Cura.Menu
                 Cura.MachineManager.switchPrinterType(modelData.machine_type)
             }
         }
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: function(index, object) { return menu.insertItem(index, object); }
+        onObjectRemoved: function(object) { return menu.removeItem(object); }
     }
 }
