@@ -95,7 +95,7 @@ Cura.MachineAction
         onAccepted:
         {
             updateProgressDialog.visible = true;
-            activeOutputDevice.updateFirmware(fileUrl);
+            activeOutputDevice.updateFirmware(selectedFile);
         }
     }
 

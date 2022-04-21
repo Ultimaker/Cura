@@ -240,11 +240,11 @@ Item
 
                 delegate: Row
                 {
-                    spacing: - UM.Theme.getSize("default_margin").width
+                    spacing: UM.Theme.getSize("default_margin").width
                     Loader
                     {
                         id: settingLoader
-                        width: UM.Theme.getSize("setting").width
+                        width: UM.Theme.getSize("setting").width - removeButton.width
                         height: UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height
                         enabled: provider.properties.enabled === "True"
                         property var definition: model
@@ -297,7 +297,8 @@ Item
 
                     Button
                     {
-                        width: Math.round(UM.Theme.getSize("setting").height / 2)
+                        id: removeButton
+                        width: UM.Theme.getSize("setting").height
                         height: UM.Theme.getSize("setting").height
 
                         onClicked: addedSettingsModel.setVisible(model.key, false)
