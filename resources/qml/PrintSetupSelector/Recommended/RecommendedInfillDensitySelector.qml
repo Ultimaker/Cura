@@ -172,7 +172,8 @@ Item
                     // same operation
                     const active_mode = UM.Preferences.getValue("cura/active_mode")
 
-                    if (active_mode == 0 || active_mode == "simple")
+                    if (visible  // Workaround: 'visible' is checked because on startup in Windows it spuriously gets an 'onValueChanged' with value '0' if this isn't checked.
+                        && (active_mode == 0 || active_mode == "simple"))
                     {
                         Cura.MachineManager.setSettingForAllExtruders("infill_sparse_density", "value", roundedSliderValue)
                         Cura.MachineManager.resetSettingForAllExtruders("infill_line_distance")
