@@ -195,7 +195,7 @@ Item
             onPositionChanged: {
                 // This removes focus from items when scrolling.
                 // This fixes comboboxes staying open and scrolling container
-                if (!activeFocus) {
+                if (!activeFocus && !filter.activeFocus) {
                     forceActiveFocus();
                 }
             }
@@ -227,9 +227,7 @@ Item
             id: delegate
 
             width: contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
-            Behavior on height { NumberAnimation { duration: 100 } }
             opacity: enabled ? 1 : 0
-            Behavior on opacity { NumberAnimation { duration: 100 } }
             enabled: provider.properties.enabled === "True"
 
             property var definition: model
@@ -351,10 +349,7 @@ Item
                 function onFocusReceived()
                 {
                     contents.indexWithFocus = index
-                    animateContentY.from = contents.contentY
                     contents.positionViewAtIndex(index, ListView.Contain)
-                    animateContentY.to = contents.contentY
-                    animateContentY.running = true
                 }
                 function onSetActiveFocusToNextSetting(forward)
                 {
@@ -383,35 +378,6 @@ Item
                         }
                     }
                 }
-            }
-        }
-
-        NumberAnimation {
-            id: animateContentY
-            target: contents
-            property: "contentY"
-            duration: 50
-        }
-
-        add: Transition {
-            SequentialAnimation {
-                NumberAnimation { properties: "height"; from: 0; duration: 100 }
-                NumberAnimation { properties: "opacity"; from: 0; duration: 100 }
-            }
-        }
-        remove: Transition {
-            SequentialAnimation {
-                NumberAnimation { properties: "opacity"; to: 0; duration: 100 }
-                NumberAnimation { properties: "height"; to: 0; duration: 100 }
-            }
-        }
-        addDisplaced: Transition {
-            NumberAnimation { properties: "x,y"; duration: 100 }
-        }
-        removeDisplaced: Transition {
-            SequentialAnimation {
-                PauseAnimation { duration: 100; }
-                NumberAnimation { properties: "x,y"; duration: 100 }
             }
         }
 

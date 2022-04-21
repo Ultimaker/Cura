@@ -196,7 +196,7 @@ Item
                 height: parent.height
                 width: UM.Theme.getSize("setting").width + UM.Theme.getSize("default_margin").width
 
-                ScrollBar.vertical: UM.ScrollBar {}
+                ScrollBar.vertical: UM.ScrollBar { id: scrollBar }
                 clip: true
                 spacing: UM.Theme.getSize("default_lining").height
 
@@ -244,7 +244,7 @@ Item
                     Loader
                     {
                         id: settingLoader
-                        width: UM.Theme.getSize("setting").width - removeButton.width
+                        width: UM.Theme.getSize("setting").width - removeButton.width - scrollBar.width
                         height: UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height
                         enabled: provider.properties.enabled === "True"
                         property var definition: model
@@ -299,7 +299,7 @@ Item
                     {
                         id: removeButton
                         width: UM.Theme.getSize("setting").height
-                        height: UM.Theme.getSize("setting").height
+                        height: UM.Theme.getSize("setting").height + UM.Theme.getSize("narrow_margin").height
 
                         onClicked: addedSettingsModel.setVisible(model.key, false)
 
