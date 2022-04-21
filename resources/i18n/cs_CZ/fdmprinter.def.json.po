@@ -1,21 +1,21 @@
 # Cura
-# Copyright (C) 2020 Ultimaker B.V.
+# Copyright (C) 2021 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2020.
+# Ultimaker <plugins@ultimaker.com>, 2020.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.8\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-10-19 13:15+0000\n"
-"PO-Revision-Date: 2020-08-04 12:40+0200\n"
-"Last-Translator: DenyCZ <www.github.com/DenyCZ>\n"
+"Project-Id-Version: Cura 4.13\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2021-12-10 11:59+0000\n"
+"PO-Revision-Date: 2021-12-17 21:11+0100\n"
+"Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -154,6 +154,16 @@ msgid "The depth (Y-direction) of the printable area."
 msgstr "Hlouba (Isa Y) plochy k tisku."
 
 #: fdmprinter.def.json
+msgctxt "machine_height label"
+msgid "Machine Height"
+msgstr "Výška zařízení"
+
+#: fdmprinter.def.json
+msgctxt "machine_height description"
+msgid "The height (Z-direction) of the printable area."
+msgstr "Výška (Osa Z) plochy k tisku."
+
+#: fdmprinter.def.json
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Tvar podložky"
@@ -192,16 +202,6 @@ msgstr "Sklo"
 msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Hliník"
-
-#: fdmprinter.def.json
-msgctxt "machine_height label"
-msgid "Machine Height"
-msgstr "Výška zařízení"
-
-#: fdmprinter.def.json
-msgctxt "machine_height description"
-msgid "The height (Z-direction) of the printable area."
-msgstr "Výška (Osa Z) plochy k tisku."
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed label"
@@ -419,6 +419,26 @@ msgid "Whether the extruders share a single heater rather than each extruder hav
 msgstr "Zda extrudéry sdílejí jeden ohřívač spíše než každý extrudér mající svůj vlastní ohřívač."
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle label"
+msgid "Extruders Share Nozzle"
+msgstr "Extrudery sdílí trysku"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_nozzle description"
+msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
+msgstr "Určuje, zda extrudery sdílí jednu trysku namísto, aby měl každý extruder svou vlastní trysku. Pokud je zvoleno, předpokládá se, že počáteční G kód tiskárny správně nastaví všechny extrudery do známého stavu, který je vzájemně kompatibilní (všechny filamenty jsou zatažené nebo jen jeden je nezatažený). V tomto případě je počáteční stav zatažení určen pro každý extruder parametrem 'machine_extruders_shared_nozzle_initial_retraction'."
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction label"
+msgid "Shared Nozzle Initial Retraction"
+msgstr "Počáteční retrakce sdílené trysky"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_shared_nozzle_initial_retraction description"
+msgid "How much the filament of each extruder is assumed to have been retracted from the shared nozzle tip at the completion of the printer-start gcode script; the value should be equal to or greater than the length of the common part of the nozzle's ducts."
+msgstr "Jak daleko je zatažen filament každého extruderu sdílené trysky po dokončení počátečního G kódu tiskárny. Tato hodnota by se měla rovnat nebo být vyšší než je délka společné části vedení trysky."
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Zakázané zóny"
@@ -485,8 +505,8 @@ msgstr "Offset s extrudérem"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
-msgid "Apply the extruder offset to the coordinate system."
-msgstr "Naneste odsazení extrudéru na souřadnicový systém."
+msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr "Použít offset extruderu v souřadnicovém systému. Ovlivňuje všechny extrudery."
 
 #: fdmprinter.def.json
 msgctxt "extruder_prime_pos_z label"
@@ -540,8 +560,8 @@ msgstr "Maximální rychlost pro motor ve směru Z."
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e label"
-msgid "Maximum Feedrate"
-msgstr "Maximální feedrate"
+msgid "Maximum Speed E"
+msgstr "Maximální rychlost E"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_feedrate_e description"
@@ -665,8 +685,8 @@ msgstr "Kroků za milimetr (E)"
 
 #: fdmprinter.def.json
 msgctxt "machine_steps_per_mm_e description"
-msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-msgstr "Kolik kroků krokových motorů vyústí v jeden milimetr vytlačování."
+msgid "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference."
+msgstr "Kolik kroků krokového motoru povede k pohybu kolečka feederu o jeden milimetr po jeho obvodu."
 
 #: fdmprinter.def.json
 msgctxt "machine_endstop_positive_direction_x label"
@@ -880,8 +900,8 @@ msgstr "Násobitel šířky čáry v první vrstvě. Jejich zvýšení by mohlo 
 
 #: fdmprinter.def.json
 msgctxt "shell label"
-msgid "Shell"
-msgstr "Shell"
+msgid "Walls"
+msgstr "Stěny"
 
 #: fdmprinter.def.json
 msgctxt "shell description"
@@ -947,166 +967,6 @@ msgstr "Vzdálenost stírání vnější stěny"
 msgctxt "wall_0_wipe_dist description"
 msgid "Distance of a travel move inserted after the outer wall, to hide the Z seam better."
 msgstr "Vzdálenost pohybového posunu vloženého za vnější stěnu, aby se skryla Z šev lépe."
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr label"
-msgid "Top Surface Skin Extruder"
-msgstr "Nejvyšší povrchový extrudér"
-
-#: fdmprinter.def.json
-msgctxt "roofing_extruder_nr description"
-msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr "Vytlačovací stroj používaný pro tisk nejvyššího povrchu. To se používá při vícenásobném vytlačování."
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count label"
-msgid "Top Surface Skin Layers"
-msgstr "Nejvyšší povrchová vrstva"
-
-#: fdmprinter.def.json
-msgctxt "roofing_layer_count description"
-msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr "Počet nejpřednějších vrstev pokožky. Obvykle stačí jedna horní vrstva nejvíce k vytvoření horních povrchů vyšší kvality."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr label"
-msgid "Top/Bottom Extruder"
-msgstr "Vrchní/spodní extruder"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_extruder_nr description"
-msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr "Vytlačovací souprava použitá pro tisk horní a spodní pokožky. To se používá při vícenásobném vytlačování."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness label"
-msgid "Top/Bottom Thickness"
-msgstr "Vrchní/spodní tloušťka"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_thickness description"
-msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
-msgstr "Tloušťka horní / dolní vrstvy v tisku. Tato hodnota dělená výškou vrstvy definuje počet vrstev horní / dolní."
-
-#: fdmprinter.def.json
-msgctxt "top_thickness label"
-msgid "Top Thickness"
-msgstr "Vrchní tloušťka"
-
-#: fdmprinter.def.json
-msgctxt "top_thickness description"
-msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
-msgstr "Tloušťka horních vrstev v tisku. Tato hodnota dělená výškou vrstvy definuje počet vrchních vrstev."
-
-#: fdmprinter.def.json
-msgctxt "top_layers label"
-msgid "Top Layers"
-msgstr "Vrchní vrstvy"
-
-#: fdmprinter.def.json
-msgctxt "top_layers description"
-msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
-msgstr "Počet vrchních vrstev. Při výpočtu podle nejvyšší tloušťky se tato hodnota zaokrouhlí na celé číslo."
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness label"
-msgid "Bottom Thickness"
-msgstr "Spodní tloušťka"
-
-#: fdmprinter.def.json
-msgctxt "bottom_thickness description"
-msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
-msgstr "Tloušťka spodních vrstev v tisku. Tato hodnota dělená výškou vrstvy definuje počet spodních vrstev."
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers label"
-msgid "Bottom Layers"
-msgstr "Spodní vrstvy"
-
-#: fdmprinter.def.json
-msgctxt "bottom_layers description"
-msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "Počet spodních vrstev. Při výpočtu podle tloušťky dna je tato hodnota zaokrouhlena na celé číslo."
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers label"
-msgid "Initial Bottom Layers"
-msgstr "Počáteční spodní vrstvy"
-
-#: fdmprinter.def.json
-msgctxt "initial_bottom_layers description"
-msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "Počet počátečních spodních vrstev od montážní desky směrem nahoru. Při výpočtu podle tloušťky dna je tato hodnota zaokrouhlena na celé číslo."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern label"
-msgid "Top/Bottom Pattern"
-msgstr "Vrchní/spodní vzor"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern description"
-msgid "The pattern of the top/bottom layers."
-msgstr "Vzor horní / dolní vrstvy."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option lines"
-msgid "Lines"
-msgstr "Čáry"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option concentric"
-msgid "Concentric"
-msgstr "Soustředný"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "Zig Zag"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 label"
-msgid "Bottom Pattern Initial Layer"
-msgstr "Vzor spodní počáteční vrstvy"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 description"
-msgid "The pattern on the bottom of the print on the first layer."
-msgstr "Vzor ve spodní části tisku na první vrstvě."
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option lines"
-msgid "Lines"
-msgstr "Čáry"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option concentric"
-msgid "Concentric"
-msgstr "Soustředný"
-
-#: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option zigzag"
-msgid "Zig Zag"
-msgstr "Zig Zag"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons label"
-msgid "Connect Top/Bottom Polygons"
-msgstr "Připojte horní / dolní polygony"
-
-#: fdmprinter.def.json
-msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "Propojte horní / dolní povrchové cesty tam, kde běží vedle sebe. Pro soustředné uspořádání umožňující toto nastavení výrazně zkracuje dobu cestování, ale protože se spojení může uskutečnit uprostřed výplně, může tato funkce snížit kvalitu povrchu."
-
-#: fdmprinter.def.json
-msgctxt "skin_angles label"
-msgid "Top/Bottom Line Directions"
-msgstr "Pokyny pro horní a dolní řádek"
-
-#: fdmprinter.def.json
-msgctxt "skin_angles description"
-msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "Seznam směrů celočíselných čar, které se použijí, když horní / dolní vrstvy používají čáry nebo vzor zig zag. Prvky ze seznamu se používají postupně jako vrstvy a jakmile je dosaženo konce seznamu, začíná znovu na začátku. Položky seznamu jsou odděleny čárkami a celý seznam je obsažen v hranatých závorkách. Výchozí je prázdný seznam, což znamená použití tradičních výchozích úhlů (45 a 135 stupňů)."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
@@ -1414,6 +1274,186 @@ msgid "When enabled, the z seam coordinates are relative to each part's centre. 
 msgstr "Pokud je tato možnost povolena, jsou souřadnice z švu vztaženy ke středu každé součásti. Pokud je zakázána, souřadnice definují absolutní polohu na sestavovací desce."
 
 #: fdmprinter.def.json
+msgctxt "top_bottom label"
+msgid "Top/Bottom"
+msgstr "Vrch/spodek"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom description"
+msgid "Top/Bottom"
+msgstr "Vrch/spodek"
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr label"
+msgid "Top Surface Skin Extruder"
+msgstr "Nejvyšší povrchový extrudér"
+
+#: fdmprinter.def.json
+msgctxt "roofing_extruder_nr description"
+msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
+msgstr "Vytlačovací stroj používaný pro tisk nejvyššího povrchu. To se používá při vícenásobném vytlačování."
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count label"
+msgid "Top Surface Skin Layers"
+msgstr "Nejvyšší povrchová vrstva"
+
+#: fdmprinter.def.json
+msgctxt "roofing_layer_count description"
+msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
+msgstr "Počet nejpřednějších vrstev pokožky. Obvykle stačí jedna horní vrstva nejvíce k vytvoření horních povrchů vyšší kvality."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr label"
+msgid "Top/Bottom Extruder"
+msgstr "Vrchní/spodní extruder"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_extruder_nr description"
+msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
+msgstr "Vytlačovací souprava použitá pro tisk horní a spodní pokožky. To se používá při vícenásobném vytlačování."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness label"
+msgid "Top/Bottom Thickness"
+msgstr "Vrchní/spodní tloušťka"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_thickness description"
+msgid "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers."
+msgstr "Tloušťka horní / dolní vrstvy v tisku. Tato hodnota dělená výškou vrstvy definuje počet vrstev horní / dolní."
+
+#: fdmprinter.def.json
+msgctxt "top_thickness label"
+msgid "Top Thickness"
+msgstr "Vrchní tloušťka"
+
+#: fdmprinter.def.json
+msgctxt "top_thickness description"
+msgid "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers."
+msgstr "Tloušťka horních vrstev v tisku. Tato hodnota dělená výškou vrstvy definuje počet vrchních vrstev."
+
+#: fdmprinter.def.json
+msgctxt "top_layers label"
+msgid "Top Layers"
+msgstr "Vrchní vrstvy"
+
+#: fdmprinter.def.json
+msgctxt "top_layers description"
+msgid "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number."
+msgstr "Počet vrchních vrstev. Při výpočtu podle nejvyšší tloušťky se tato hodnota zaokrouhlí na celé číslo."
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness label"
+msgid "Bottom Thickness"
+msgstr "Spodní tloušťka"
+
+#: fdmprinter.def.json
+msgctxt "bottom_thickness description"
+msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
+msgstr "Tloušťka spodních vrstev v tisku. Tato hodnota dělená výškou vrstvy definuje počet spodních vrstev."
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers label"
+msgid "Bottom Layers"
+msgstr "Spodní vrstvy"
+
+#: fdmprinter.def.json
+msgctxt "bottom_layers description"
+msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "Počet spodních vrstev. Při výpočtu podle tloušťky dna je tato hodnota zaokrouhlena na celé číslo."
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr "Počáteční spodní vrstvy"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "Počet počátečních spodních vrstev od montážní desky směrem nahoru. Při výpočtu podle tloušťky dna je tato hodnota zaokrouhlena na celé číslo."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern label"
+msgid "Top/Bottom Pattern"
+msgstr "Vrchní/spodní vzor"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern description"
+msgid "The pattern of the top/bottom layers."
+msgstr "Vzor horní / dolní vrstvy."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option lines"
+msgid "Lines"
+msgstr "Čáry"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option concentric"
+msgid "Concentric"
+msgstr "Soustředný"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Zig Zag"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 label"
+msgid "Bottom Pattern Initial Layer"
+msgstr "Vzor spodní počáteční vrstvy"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 description"
+msgid "The pattern on the bottom of the print on the first layer."
+msgstr "Vzor ve spodní části tisku na první vrstvě."
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option lines"
+msgid "Lines"
+msgstr "Čáry"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option concentric"
+msgid "Concentric"
+msgstr "Soustředný"
+
+#: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option zigzag"
+msgid "Zig Zag"
+msgstr "Zig Zag"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr "Připojte horní / dolní polygony"
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "Propojte horní / dolní povrchové cesty tam, kde běží vedle sebe. Pro soustředné uspořádání umožňující toto nastavení výrazně zkracuje dobu cestování, ale protože se spojení může uskutečnit uprostřed výplně, může tato funkce snížit kvalitu povrchu."
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic label"
+msgid "Monotonic Top/Bottom Order"
+msgstr "Monotónní pořadí horních / dolních povrchů"
+
+#: fdmprinter.def.json
+msgctxt "skin_monotonic description"
+msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Tisknout horní / dolní linky v takovém pořadí, aby se navazující linky překrývaly ve stejném směru. Tisk zabere trochu více času, ale hladké povrchy budou vypadat více jednolité."
+
+#: fdmprinter.def.json
+msgctxt "skin_angles label"
+msgid "Top/Bottom Line Directions"
+msgstr "Pokyny pro horní a dolní řádek"
+
+#: fdmprinter.def.json
+msgctxt "skin_angles description"
+msgid "A list of integer line directions to use when the top/bottom layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "Seznam směrů celočíselných čar, které se použijí, když horní / dolní vrstvy používají čáry nebo vzor zig zag. Prvky ze seznamu se používají postupně jako vrstvy a jakmile je dosaženo konce seznamu, začíná znovu na začátku. Položky seznamu jsou odděleny čárkami a celý seznam je obsažen v hranatých závorkách. Výchozí je prázdný seznam, což znamená použití tradičních výchozích úhlů (45 a 135 stupňů)."
+
+#: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
 msgstr "Žádný povrch v Z mezerách"
@@ -1472,6 +1512,16 @@ msgstr "Soustředný"
 msgctxt "ironing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zig Zag"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic label"
+msgid "Monotonic Ironing Order"
+msgstr "Monotónní pořadí žehlení"
+
+#: fdmprinter.def.json
+msgctxt "ironing_monotonic description"
+msgid "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Tisknout žehlící linky v takovém pořadí, aby se navazující linky překrývaly ve stejném směru. Tisk zabere trochu více času, ale hladké povrchy budou vypadat více jednolité."
 
 #: fdmprinter.def.json
 msgctxt "ironing_line_spacing label"
@@ -1554,6 +1604,86 @@ msgid "Adjust the amount of overlap between the walls and (the endpoints of) the
 msgstr "Upravte míru překrytí mezi stěnami a (koncovými body) osami porvchu. Mírné překrytí umožňuje, aby se stěny pevně spojily s povrchem. Je třeba si uvědomit, že při stejné šířce linie povrchu a stěny může jakákoli hodnota přesahující polovinu šířky stěny již způsobit, že jakýkoli povrch projde kolem zdi, protože v tomto bodě může pozice trysky extruderu povrchu již dosáhnout. kolem středu zdi."
 
 #: fdmprinter.def.json
+msgctxt "skin_preshrink label"
+msgid "Skin Removal Width"
+msgstr "Šířka odstranění povrchu"
+
+#: fdmprinter.def.json
+msgctxt "skin_preshrink description"
+msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
+msgstr "Největší šířka oblastí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem vrchní / spodní kůže na šikmých plochách v modelu."
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink label"
+msgid "Top Skin Removal Width"
+msgstr "Horní šířka odstranění povrchu"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_preshrink description"
+msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
+msgstr "Největší šířka horních oblastí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem vrchní kůže na šikmých plochách v modelu."
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink label"
+msgid "Bottom Skin Removal Width"
+msgstr "Dolní šířka odstranění povrchu"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_preshrink description"
+msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
+msgstr "Největší šířka spodních částí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem spodní vrstvy na šikmých plochách v modelu."
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance label"
+msgid "Skin Expand Distance"
+msgstr "Vzdálenost rozšíření povrchu"
+
+#: fdmprinter.def.json
+msgctxt "expand_skins_expand_distance description"
+msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
+msgstr "Vzdálenost povrchu je rozšířena do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a díky tomu lepí přilnavost stěn na sousedních vrstvách k povrchu. Nižší hodnoty šetří množství použitého materiálu."
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance label"
+msgid "Top Skin Expand Distance"
+msgstr "Horní vzdálenost rozšíření povrchu"
+
+#: fdmprinter.def.json
+msgctxt "top_skin_expand_distance description"
+msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
+msgstr "Vzdálenost, ve které jsou vrchní vrstvy povrchu rozšířeny do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a lepší přilnutí stěn nad vrstvou k povrchu. Nižší hodnoty šetří množství použitého materiálu."
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance label"
+msgid "Bottom Skin Expand Distance"
+msgstr "Dolní vzdálenost rozšíření povrchu"
+
+#: fdmprinter.def.json
+msgctxt "bottom_skin_expand_distance description"
+msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
+msgstr "Vzdálenost spodního povrchu, který se rozšiřuje do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a lepší přilnavost povrchu ke stěnám na spodní vrstvě. Nižší hodnoty šetří množství použitého materiálu."
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion label"
+msgid "Maximum Skin Angle for Expansion"
+msgstr "Maximální úhel pro rozšíření povrchu"
+
+#: fdmprinter.def.json
+msgctxt "max_skin_angle_for_expansion description"
+msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal and will cause no skin to be expanded, while an angle of 90° is vertical and will cause all skin to be expanded."
+msgstr "Horní a/nebo dolní povrchy objektu s větším úhlem, než je toto nastavení, nebudou mít své horní/spodní povrchy rozšířeny. Tím se zabrání rozšíření úzkých oblastí, které jsou vytvořeny, když má povrch modelu téměř svislý sklon. Úhel 0° je vodorovný a způsobí, že žádný povrch nebude rozšířen, zatímco úhel 90° je svislý a způsobí, že všechny povrchy budou rozšířeny."
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion label"
+msgid "Minimum Skin Width for Expansion"
+msgstr "Minimální úhel pro rozšíření povrchu"
+
+#: fdmprinter.def.json
+msgctxt "min_skin_width_for_expansion description"
+msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
+msgstr "Oblasti povrchu užší, než je tento, nejsou rozšířeny. Tím se zabrání rozšíření úzkých oblastí vzhledu, které jsou vytvořeny, když má povrch modelu sklon v blízkosti svislé."
+
+#: fdmprinter.def.json
 msgctxt "infill label"
 msgid "Infill"
 msgstr "Výplň"
@@ -1600,8 +1730,8 @@ msgstr "Výplňový vzor"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "Vzor výplňového materiálu tisku. Směr a cik-cak vyplňují směr výměny na alternativních vrstvách, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychlový, oktet, čtvrtý krychlový, křížový a soustředný obrazec jsou plně vytištěny v každé vrstvě. Výplň Gyroid, krychlový, kvartální a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze strop objektu."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1641,7 +1771,7 @@ msgstr "Oktet"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option quarter_cubic"
 msgid "Quarter Cubic"
-msgstr "Čtvrtina krychlove"
+msgstr "Čtvrtinově krychlový"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option concentric"
@@ -1651,7 +1781,7 @@ msgstr "Soustředný"
 #: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
-msgstr "Zig Zag"
+msgstr "Cik-cak"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option cross"
@@ -1667,6 +1797,11 @@ msgstr "3D Křížek"
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Gyroid"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr "Bleskový"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1863,86 +1998,6 @@ msgid "The minimum angle of internal overhangs for which infill is added. At a v
 msgstr "Minimální úhel vnitřních přesahů, pro které je přidána výplň. Při hodnotě 0 ° jsou objekty zcela vyplněny výplní, 90 ° neposkytuje výplně."
 
 #: fdmprinter.def.json
-msgctxt "skin_preshrink label"
-msgid "Skin Removal Width"
-msgstr "Šířka odstranění povrchu"
-
-#: fdmprinter.def.json
-msgctxt "skin_preshrink description"
-msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "Největší šířka oblastí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem vrchní / spodní kůže na šikmých plochách v modelu."
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink label"
-msgid "Top Skin Removal Width"
-msgstr "Horní šířka odstranění povrchu"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_preshrink description"
-msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "Největší šířka horních oblastí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem vrchní kůže na šikmých plochách v modelu."
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink label"
-msgid "Bottom Skin Removal Width"
-msgstr "Dolní šířka odstranění povrchu"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_preshrink description"
-msgid "The largest width of bottom skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing bottom skin at slanted surfaces in the model."
-msgstr "Největší šířka spodních částí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem spodní vrstvy na šikmých plochách v modelu."
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance label"
-msgid "Skin Expand Distance"
-msgstr "Vzdálenost rozšíření povrchu"
-
-#: fdmprinter.def.json
-msgctxt "expand_skins_expand_distance description"
-msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "Vzdálenost povrchu je rozšířena do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a díky tomu lepí přilnavost stěn na sousedních vrstvách k povrchu. Nižší hodnoty šetří množství použitého materiálu."
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance label"
-msgid "Top Skin Expand Distance"
-msgstr "Horní vzdálenost rozšíření povrchu"
-
-#: fdmprinter.def.json
-msgctxt "top_skin_expand_distance description"
-msgid "The distance the top skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on the layer above adhere better to the skin. Lower values save amount of material used."
-msgstr "Vzdálenost, ve které jsou vrchní vrstvy povrchu rozšířeny do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a lepší přilnutí stěn nad vrstvou k povrchu. Nižší hodnoty šetří množství použitého materiálu."
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance label"
-msgid "Bottom Skin Expand Distance"
-msgstr "Dolní vzdálenost rozšíření povrchu"
-
-#: fdmprinter.def.json
-msgctxt "bottom_skin_expand_distance description"
-msgid "The distance the bottom skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the skin adhere better to the walls on the layer below. Lower values save amount of material used."
-msgstr "Vzdálenost spodního povrchu, který se rozšiřuje do výplně. Vyšší hodnoty umožňují lepší přilnavost povrchu k vzoru výplně a lepší přilnavost povrchu ke stěnám na spodní vrstvě. Nižší hodnoty šetří množství použitého materiálu."
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion label"
-msgid "Maximum Skin Angle for Expansion"
-msgstr "Maximální úhel pro rozšíření povrchu"
-
-#: fdmprinter.def.json
-msgctxt "max_skin_angle_for_expansion description"
-msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-msgstr "Horní a/nebo dolní povrch objektu s větším úhlem, než je toto nastavení, nebudou mít rozbalenou horní/dolní plochu. Tím se zabrání rozšíření úzkých oblastí vzhledu, které jsou vytvořeny, když má povrch modelu téměř svislý sklon. Úhel 0° je vodorovný, zatímco úhel 90° je svislý."
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion label"
-msgid "Minimum Skin Width for Expansion"
-msgstr "Minimální úhel pro rozšíření povrchu"
-
-#: fdmprinter.def.json
-msgctxt "min_skin_width_for_expansion description"
-msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
-msgstr "Oblasti povrchu užší, než je tento, nejsou rozšířeny. Tím se zabrání rozšíření úzkých oblastí vzhledu, které jsou vytvořeny, když má povrch modelu sklon v blízkosti svislé."
-
-#: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
 msgstr "Tloušťka podpory hrany povrchu"
@@ -1961,6 +2016,46 @@ msgstr "Vrstvy podpory hrany povrchu"
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
 msgstr "Počet výplňových vrstev, které podporují okraje povrchu."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle label"
+msgid "Lightning Infill Support Angle"
+msgstr "Úhel podpory bleskové výplně"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_support_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Určuje, kdy má vrstva bleskové výplně nad sebou něco, co má podporovat. Zadává se jako úhel a řídí se tloušťkou vrstvy."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle label"
+msgid "Lightning Infill Overhang Angle"
+msgstr "Úhel převisu bleskové podpory"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
+msgstr "Určuje, od jakého úhlu převisu bude vrstva bleskové výplň podporovat model nad sebou."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle label"
+msgid "Lightning Infill Prune Angle"
+msgstr "Úhel ústupu bleskové vrstvy"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "Koncové body čar výplně jsou zkracovány pro šetření materiálu. Toto nastavení je úhel převisu koncových bodů těchto čar."
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle label"
+msgid "Lightning Infill Straightening Angle"
+msgstr "Úhel vyrovnávání bleskové vrstvy"
+
+#: fdmprinter.def.json
+msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "Čáry výplně jsou vyrovnávány, aby se snížila doba tisku. Toto je maximální dovolený úhel převisu podél čáry výplně."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2060,7 +2155,7 @@ msgstr "Teplota podložky"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
 msgid "The temperature used for the heated build plate. If this is 0, the build plate is left unheated."
-msgstr ""
+msgstr "Teplota použitá pro vyhřívanou podložku. Pokud je to 0, podložka se vyhřívat nebude."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -2070,7 +2165,7 @@ msgstr "Teplota podložky při počáteční vrstvě"
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
-msgstr ""
+msgstr "Teplota použitá pro vyhřívanou podložku při první vrstvě. Pokud je to 0, podložka se při první vrstvě vyhřívat nebude."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -2095,12 +2190,12 @@ msgstr "Povrchová energie."
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
-msgstr ""
+msgstr "Faktor zvětšení pro kompenzaci smrštění"
 
 #: fdmprinter.def.json
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
-msgstr ""
+msgstr "Model bude zvětšen tímto faktorem, aby bylo kompenzováno smrštění materiálu po vychladnutí."
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
@@ -2559,8 +2654,8 @@ msgstr "Rychlost prvotní vrstvy"
 
 #: fdmprinter.def.json
 msgctxt "speed_layer_0 description"
-msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
-msgstr "Rychlost počáteční vrstvy. Doporučuje se nižší hodnota pro zlepšení přilnavosti k montážní desce."
+msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft."
+msgstr "Rychlost počáteční vrstvy. Doporučuje se nižší hodnota pro zlepšení přilnavosti k montážní desce. Nemá vliv na samotné struktury pro přilnavost k podložce (např. límec a raft)."
 
 #: fdmprinter.def.json
 msgctxt "speed_print_layer_0 label"
@@ -3153,6 +3248,11 @@ msgid "All"
 msgstr "Vše"
 
 #: fdmprinter.def.json
+msgctxt "retraction_combing option no_outer_surfaces"
+msgid "Not on Outer Surface"
+msgstr "Ne na vnějším povrchu"
+
+#: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
 msgid "Not in Skin"
 msgstr "Ne v povrchu"
@@ -3169,8 +3269,8 @@ msgstr "Maximální vzdálenost Combing-u bez retrakce"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_distance description"
-msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-msgstr "Pokud nenulové, pohyby combingového pohybu, které jsou delší než tato vzdálenost, použijí zatažení."
+msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
+msgstr "Pokud je větší než nula, combingové pohyby delší než tato vzdálenost budou používat retrakci. Nula znamená, že se při combingových pohybech retrakce provádět nebudou."
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -5069,12 +5169,12 @@ msgstr "Pomocí této mřížky můžete upravit výplň dalších sítí, s nim
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Mesh Processing Rank"
-msgstr "Úroveň Zpracování Masky"
+msgstr "Pořadí zpracování sítě"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
-msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-msgstr ""
+msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
+msgstr "Určuje prioritu této sítě, když se překrývá více sítí výplně. U oblastí, kde se překrývá více sítí výplně, se nastavení přebírá ze sítě s nejvyšším pořadím. Síť výplně s vyšším pořadím bude modifikovat výplň sítě výplně s nižším pořadím a běžné sítě."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5103,8 +5203,8 @@ msgstr "Minimální šířka formy"
 
 #: fdmprinter.def.json
 msgctxt "mold_width description"
-msgid "The minimal distance between the ouside of the mold and the outside of the model."
-msgstr "Minimální vzdálenost mezi vnější stranou formy a vnější stranou modelu."
+msgid "The minimal distance between the outside of the mold and the outside of the model."
+msgstr "Minimální vzdálenost mezi vnější stranou formy a modelu."
 
 #: fdmprinter.def.json
 msgctxt "mold_roof_height label"
@@ -5204,7 +5304,7 @@ msgstr "Použijte spíše relativní extruzi než absolutní extruzi. Použití 
 #: fdmprinter.def.json
 msgctxt "experimental label"
 msgid "Experimental"
-msgstr "Experimentálí"
+msgstr "Experimentální"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
@@ -5270,6 +5370,16 @@ msgstr "Soustředný"
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zig Zag"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic label"
+msgid "Monotonic Top Surface Order"
+msgstr "Monotónní pořadí horního povrchu"
+
+#: fdmprinter.def.json
+msgctxt "roofing_monotonic description"
+msgid "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Tisknout linky horního povrchu v takovém pořadí, aby se navazující linky překrývaly ve stejném směru. Tisk zabere trochu více času, ale hladké povrchy budou vypadat více jednolité."
 
 #: fdmprinter.def.json
 msgctxt "roofing_angles label"
@@ -5420,6 +5530,16 @@ msgstr "Maximální úhel modelu"
 msgctxt "conical_overhang_angle description"
 msgid "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way."
 msgstr "Maximální úhel přesahů po jejich tisku. Při hodnotě 0 ° jsou všechny převisy nahrazeny kusem modelu připojeným k podložce, 90 ° model nijak nijak nezmění."
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size label"
+msgid "Maximum Overhang Hole Area"
+msgstr "Maximální plocha díry pod převisem"
+
+#: fdmprinter.def.json
+msgctxt "conical_overhang_hole_size description"
+msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
+msgstr "Maximální plocha díry v základně modelu, která nebude odstraněna funkcí „Udělat převis tisknutelný“. Menší díry budou zachovány. Hodnota 0 mm² způsobí vyplnění všech děr v základně modelu."
 
 #: fdmprinter.def.json
 msgctxt "coasting_enable label"
@@ -6359,6 +6479,58 @@ msgstr "Matice rotace sítě"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformační matice, která se použije na model při načítání ze souboru."
+
+#~ msgctxt "machine_max_feedrate_e label"
+#~ msgid "Maximum Feedrate"
+#~ msgstr "Maximální feedrate"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
+#~ msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze horní povrchy objektu. U bleskového vzoru má procento význam pouze v první vrstvě pod každým povrchem."
+
+#~ msgctxt "lightning_infill_prune_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
+#~ msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami se větve bleskové výplně zkracují."
+
+#~ msgctxt "lightning_infill_straightening_angle description"
+#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
+#~ msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami může docházet k vyrovnávání větví bleskové výplně."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "Vzor výplňového materiálu tisku. Směr a cik-cak vyplňují směr výměny na alternativních vrstvách, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychlový, oktet, čtvrtý krychlový, křížový a soustředný obrazec jsou plně vytištěny v každé vrstvě. Výplň Gyroid, krychlový, kvartální a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru."
+
+#~ msgctxt "mold_width description"
+#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
+#~ msgstr "Minimální vzdálenost mezi vnější stranou formy a vnější stranou modelu."
+
+#~ msgctxt "machine_steps_per_mm_e description"
+#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+#~ msgstr "Kolik kroků krokových motorů vyústí v jeden milimetr vytlačování."
+
+#~ msgctxt "retraction_combing_max_distance description"
+#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+#~ msgstr "Pokud nenulové, pohyby combingového pohybu, které jsou delší než tato vzdálenost, použijí zatažení."
+
+#~ msgctxt "infill_mesh_order description"
+#~ msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
+#~ msgstr "Určuje prioritu této sítě, když se překrývá více sítí výplně. U oblastí, kde se překrývá více sítí výplně, se nastavení přebírá ze sítě s nejnižším pořadím. Síť výplně s vyšším pořadím bude modifikovat výplň sítě výplně s nižším pořadím a běžné sítě."
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
+#~ msgid "Apply the extruder offset to the coordinate system."
+#~ msgstr "Naneste odsazení extrudéru na souřadnicový systém."
+
+#~ msgctxt "shell label"
+#~ msgid "Shell"
+#~ msgstr "Shell"
+
+#~ msgctxt "max_skin_angle_for_expansion description"
+#~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
+#~ msgstr "Horní a/nebo dolní povrch objektu s větším úhlem, než je toto nastavení, nebudou mít rozbalenou horní/dolní plochu. Tím se zabrání rozšíření úzkých oblastí vzhledu, které jsou vytvořeny, když má povrch modelu téměř svislý sklon. Úhel 0° je vodorovný, zatímco úhel 90° je svislý."
+
+#~ msgctxt "speed_layer_0 description"
+#~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
+#~ msgstr "Rychlost počáteční vrstvy. Doporučuje se nižší hodnota pro zlepšení přilnavosti k montážní desce."
 
 #~ msgctxt "material_bed_temperature description"
 #~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."

@@ -1,3 +1,7 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
+import re  # Filtering out invalid characters.
 from typing import List, Optional
 
 from UM.FileHandler.FileHandler import FileHandler
@@ -24,6 +28,7 @@ class ExportFileJob(WriteFileJob):
 
         # Determine the filename.
         job_name = CuraApplication.getInstance().getPrintInformation().jobName
+        job_name = re.sub("[^\w\-. ()]", "-", job_name)
         extension = self._mesh_format_handler.preferred_format.get("extension", "")
         self.setFileName("{}.{}".format(job_name, extension))
 

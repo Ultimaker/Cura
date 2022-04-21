@@ -3,7 +3,7 @@
 
 from typing import Any, Optional, List, Dict, Callable
 
-from PyQt5.QtNetwork import QNetworkReply
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
@@ -43,6 +43,10 @@ class DriveApiService:
                 return
 
             backup_list_response = HttpRequestManager.readJSON(reply)
+            if backup_list_response is None:
+                Logger.error("List of back-ups can't be parsed.")
+                changed([])
+                return
             if "data" not in backup_list_response:
                 Logger.log("w", "Could not get backups from remote, actual response body was: %s",
                            str(backup_list_response))
@@ -89,7 +93,7 @@ class DriveApiService:
     def _onRestoreFinished(self, job: "RestoreBackupJob") -> None:
         if job.restore_backup_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.restoringStateChanged.emit(is_restoring=False)
+            self.restoringStateChanged.emit(is_restoring = False)
         else:
             self.restoringStateChanged.emit(is_restoring = False, error_message = job.restore_backup_error_message)
 

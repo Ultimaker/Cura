@@ -1,11 +1,11 @@
 {
-    "name": "ZAV Base Printer",
+    "name": "Zav Base Printer",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": false,
         "author": "Kirill Nikolaev, Kim Evgeniy (C)",
-        "manufacturer": "ZAV Co., Ltd.",
+        "manufacturer": "Zav Co., Ltd.",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
         "machine_extruder_trains": {

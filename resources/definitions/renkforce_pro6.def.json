@@ -1,0 +1,17 @@
+{
+    "name": "Renkforce Pro 6",
+    "version": 2,
+    "inherits": "goofoo_near",
+    "overrides": {
+        "machine_name": { "default_value": "Renkforce Pro 6" },
+        "machine_width": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 }
+
+    },
+    "metadata": {
+        "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
+        "manufacturer": "Renkforce",
+        "visible": true
+    }
+}

@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -17,7 +17,7 @@ ColumnLayout
     // Cura version
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("application")
+        iconSource: UM.Theme.getIcon("UltimakerCura")
         label: catalog.i18nc("@backuplist:label", "Cura Version")
         value: backupDetailsData.metadata.cura_release
     }
@@ -25,7 +25,7 @@ ColumnLayout
     // Machine count.
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("printer_single")
+        iconSource: UM.Theme.getIcon("Printer")
         label: catalog.i18nc("@backuplist:label", "Machines")
         value: backupDetailsData.metadata.machine_count
     }
@@ -33,7 +33,7 @@ ColumnLayout
     // Material count
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("category_material")
+        iconSource: UM.Theme.getIcon("Spool")
         label: catalog.i18nc("@backuplist:label", "Materials")
         value: backupDetailsData.metadata.material_count
     }
@@ -41,7 +41,7 @@ ColumnLayout
     // Profile count.
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("settings")
+        iconSource: UM.Theme.getIcon("Sliders")
         label: catalog.i18nc("@backuplist:label", "Profiles")
         value: backupDetailsData.metadata.profile_count
     }
@@ -49,7 +49,7 @@ ColumnLayout
     // Plugin count.
     BackupListItemDetailsRow
     {
-        iconSource: UM.Theme.getIcon("plugin")
+        iconSource: UM.Theme.getIcon("Plugin")
         label: catalog.i18nc("@backuplist:label", "Plugins")
         value: backupDetailsData.metadata.plugin_count
     }

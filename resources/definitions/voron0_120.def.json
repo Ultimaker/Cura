@@ -1,0 +1,18 @@
+{
+    "name": "Voron 0",
+    "version": 2,
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "voron0_120_bed.stl",
+        "quality_definition": "voron2_base"
+    },
+    "overrides":
+    {
+        "machine_name":         { "default_value": "VORON 0" },
+        "machine_width":        { "default_value": 120 },
+        "machine_depth":        { "default_value": 120 },
+        "machine_height":       { "default_value": 120 }
+    }
+}

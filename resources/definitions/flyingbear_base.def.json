@@ -22,11 +22,14 @@
         "preferred_quality_type": "normal",
 
         "exclude_materials": [
+            "3D-Fuel_PLA_PRO_Black",
+            "3D-Fuel_PLA_SnapSupport",
             "chromatik_pla",
             "dsm_arnitel2045_175",
             "dsm_novamid1070_175",
             "emotiontech_abs",
             "emotiontech_absx",
+            "emotiontech_acetate",
             "emotiontech_asax",
             "emotiontech_bvoh",
             "emotiontech_hips",
@@ -150,9 +153,9 @@
     "overrides": {
         "machine_name": { "default_value": "Flying Bear Base Printer" },
 
-        "machine_start_gcode": { "default_value": "M220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\n;Code for nozzle cleaning and flow normalization\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.4 Y20 Z0.28 F5000.0\nG1 X10.4 Y170.0 Z0.28 F1500.0 E15\nG1 X10.1 Y170.0 Z0.28 F5000.0\nG1 X10.1 Y40 Z0.28 F1500.0 E30\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up" },
+        "machine_start_gcode": { "default_value": "M220 S100 ;reset feedrate\nM221 S100 ;reset flowrate\nG90 ;use absolute coordinates\nM82 ;absolute extrusion mode\nG28 ;home\nG1 Z2 F1500 ;raise z\nG92 E0 ;reset extruder\n\nG1 X75 Y5 F5000 ;start position\nG1 Z0.28 F1500 ;lower z\nG1 E4 F500 ;prime the filament\nG1 X180 E10 F500 ;1st line\nG1 Y5.4 F5000\nG1 X75 E20 F500 ;2nd line\nG1 Z2 F1500 ;raise z\nG92 E0 ;reset extruder" },
 
-        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract the filament\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positioning\n\nG28 X0 Y0 ;Home X and Y\n\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_end_gcode": { "default_value": "G91 ;use relative coordinates\nG1 E-4 F1500 ;retract the filament\nG1 X5 Y5 Z0.2 F5000 ;wipe\nG1 Z5 F1500 ;raise z\nG90 ;use absolute coordinates\nG1 X10 Y{machine_depth} F5000 ;park print head\n\nM107 ;turn off fan\nM104 S0 ;turn off hotend\nM140 S0 ;turn off heatbed\nM84 ;disable motors" },
 
         "machine_heated_bed": { "default_value": true },
         "machine_shape": { "default_value": "rectangular" },
@@ -172,8 +175,6 @@
         "wall_0_wipe_dist": { "value": 0.0 },
         "top_bottom_thickness": { "value":  "layer_height_0 + layer_height * 3 if layer_height > 0.15 else 0.8" },
         "optimize_wall_printing_order": { "value": true },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": false },
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "filter_out_tiny_gaps": { "value": false },
         "fill_outline_gaps": { "value": false },
         "z_seam_type": { "value": "'sharpest_corner'" },

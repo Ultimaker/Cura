@@ -3,8 +3,8 @@
     "name": "imade3d_jellybox_root",
     "inherits": "fdmprinter",
     "metadata": {
-        "author": "IMADE3D",
-        "manufacturer": "IMADE3D",
+        "author": "Imade3D",
+        "manufacturer": "Imade3D",
         "visible": false,
         "file_formats": "text/x-gcode",
         "exclude_materials": [

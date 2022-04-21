@@ -8,7 +8,7 @@ from UM.i18n import i18nCatalog
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdateState
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject
+from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject
 from typing import Optional
 
 MYPY = False

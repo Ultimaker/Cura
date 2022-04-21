@@ -1,18 +1,18 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.1 as UM
-import Cura 1.0 as Cura
+import UM 1.5 as UM
+import Cura 1.5 as Cura
 
 SettingItem
 {
     id: base
     property var focusItem: control
 
-    contents: ComboBox
+    contents: Cura.ComboBox
     {
         id: control
         anchors.fill: parent
@@ -24,7 +24,7 @@ SettingItem
         Connections
         {
             target: extrudersModel
-            onModelChanged:
+            function onModelChanged()
             {
                 control.color = extrudersModel.getItem(control.currentIndex).color
             }
@@ -77,7 +77,7 @@ SettingItem
 
         currentIndex: propertyProvider.properties.value !== undefined ? propertyProvider.properties.value : 0
 
-        property string color: "#fff"
+        property string color: "transparent"
 
         Binding
         {
@@ -85,7 +85,7 @@ SettingItem
             // explicit binding here otherwise we do not handle value changes after the model changes.
             target: control
             property: "color"
-            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : ""
+            value: control.currentText != "" ? control.model.getItem(control.currentIndex).color : "transparent"
         }
 
         Binding
@@ -98,22 +98,20 @@ SettingItem
             when: control.model.items.length > 0
         }
 
-        indicator: UM.RecolorImage
+        indicator: UM.ColorImage
         {
             id: downArrow
             x: control.width - width - control.rightPadding
             y: control.topPadding + Math.round((control.availableHeight - height) / 2)
 
-            source: UM.Theme.getIcon("arrow_bottom")
+            source: UM.Theme.getIcon("ChevronSingleDown")
             width: UM.Theme.getSize("standard_arrow").width
             height: UM.Theme.getSize("standard_arrow").height
-            sourceSize.width: width + 5 * screenScaleFactor
-            sourceSize.height: width + 5 * screenScaleFactor
 
             color: UM.Theme.getColor("setting_control_button");
         }
 
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             color:
             {
@@ -127,9 +125,7 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control")
             }
-            radius: UM.Theme.getSize("setting_control_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color:
+            liningColor:
             {
                 if (!enabled)
                 {
@@ -137,13 +133,13 @@ SettingItem
                 }
                 if (control.hovered || control.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("border_main")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("border_field_light")
             }
         }
 
-        contentItem: Label
+        contentItem: UM.Label
         {
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
@@ -153,25 +149,18 @@ SettingItem
 
             text: control.currentText
             textFormat: Text.PlainText
-            renderType: Text.NativeRendering
-            font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
 
-            elide: Text.ElideLeft
-            verticalAlignment: Text.AlignVCenter
-
-            background: UM.RecolorImage
+            background: Rectangle
             {
                 id: swatch
                 height: Math.round(parent.height / 2)
                 width: height
+                radius: Math.round(width / 2)
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                sourceSize.width: width
-                sourceSize.height: height
-                source: UM.Theme.getIcon("extruder_button")
                 color: control.color
             }
         }
@@ -185,12 +174,12 @@ SettingItem
 
             contentItem: ListView
             {
-                clip: true
                 implicitHeight: contentHeight
+
+                ScrollBar.vertical: UM.ScrollBar {}
+                clip: true
                 model: control.popup.visible ? control.delegateModel : null
                 currentIndex: control.highlightedIndex
-
-                ScrollIndicator.vertical: ScrollIndicator { }
             }
 
             background: Rectangle
@@ -206,41 +195,27 @@ SettingItem
             height: control.height
             highlighted: control.highlightedIndex == index
 
-            contentItem: Label
+            contentItem: UM.Label
             {
                 anchors.fill: parent
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
                 text: model.name
-                renderType: Text.NativeRendering
-                color:
-                {
-                    if (model.enabled)
-                    {
-                        UM.Theme.getColor("setting_control_text")
-                    } else
-                    {
-                        UM.Theme.getColor("action_button_disabled_text");
-                    }
-                }
-                font: UM.Theme.getFont("default")
+                color: model.enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("action_button_disabled_text")
                 elide: Text.ElideRight
-                verticalAlignment: Text.AlignVCenter
                 rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
-                background: UM.RecolorImage
+                background: Rectangle
                 {
                     id: swatch
                     height: Math.round(parent.height / 2)
                     width: height
+                    radius: Math.round(width / 2)
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                    sourceSize.width: width
-                    sourceSize.height: height
-                    source: UM.Theme.getIcon("extruder_button")
                     color: control.model.getItem(index).color
                 }
             }
@@ -248,7 +223,6 @@ SettingItem
             background: Rectangle
             {
                 color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-                border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
             }
         }
     }

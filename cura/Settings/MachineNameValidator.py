@@ -1,8 +1,8 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, QObject, pyqtSignal, QRegExp
-from PyQt5.QtGui import QValidator
+from PyQt6.QtCore import pyqtSlot, pyqtProperty, QObject, pyqtSignal
+from PyQt6.QtGui import QValidator
 import os #For statvfs.
 import urllib #To escape machine names for how they're saved to file.
 
@@ -23,7 +23,7 @@ class MachineNameValidator(QObject):
         #Compute the validation regex for printer names. This is limited by the maximum file name length.
         try:
             filename_max_length = os.statvfs(Resources.getDataStoragePath()).f_namemax
-        except AttributeError: #Doesn't support statvfs. Probably because it's not a Unix system.
+        except (AttributeError, EnvironmentError):  # Doesn't support statvfs. Probably because it's not a Unix system. Or perhaps there is no permission or it doesn't exist.
             filename_max_length = 255 #Assume it's Windows on NTFS.
         machine_name_max_length = filename_max_length - len("_current_settings.") - len(ContainerRegistry.getMimeTypeForContainer(InstanceContainer).preferredSuffix)
         # Characters that urllib.parse.quote_plus escapes count for 12! So now
@@ -65,6 +65,6 @@ class MachineNameValidator(QObject):
             self.validation_regex = "a^" #Never matches (unless you manage to get "a" before the start of the string... good luck).
         self.validationChanged.emit()
 
-    @pyqtProperty("QRegExp", notify=validationChanged)
+    @pyqtProperty(str, notify=validationChanged)
     def machineNameRegex(self):
-        return QRegExp(self.machine_name_regex)
+        return str(self.machine_name_regex)

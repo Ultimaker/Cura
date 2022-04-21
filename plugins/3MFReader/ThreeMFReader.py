@@ -1,11 +1,11 @@
-# Copyright (c) 2019 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import zipfile
 from typing import List, Optional, Union, TYPE_CHECKING, cast
 
-import Savitar
+import pySavitar as Savitar
 import numpy
 
 from UM.Logger import Logger
@@ -51,6 +51,10 @@ class ThreeMFReader(MeshReader):
         self._root = None
         self._base_name = ""
         self._unit = None
+        self._empty_project = False
+
+    def emptyFileHintSet(self) -> bool:
+        return self._empty_project
 
     def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
         if transformation == "":
@@ -159,9 +163,9 @@ class ThreeMFReader(MeshReader):
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
-
+            known_setting_keys = um_node.callDecoration("getStack").getAllKeys()
             for key in settings:
-                setting_value = settings[key]
+                setting_value = settings[key].value
 
                 # Extruder_nr is a special case.
                 if key == "extruder_nr":
@@ -171,7 +175,10 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
-                setting_container.setProperty(key, "value", setting_value)
+                if key in known_setting_keys:
+                    setting_container.setProperty(key, "value", setting_value)
+                else:
+                    um_node.metadata[key] = settings[key]
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
             if len(um_node.getAllChildren()) == 1:
@@ -193,6 +200,7 @@ class ThreeMFReader(MeshReader):
         return um_node
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
+        self._empty_project = False
         result = []
         # The base object of 3mf is a zipped archive.
         try:
@@ -201,6 +209,10 @@ class ThreeMFReader(MeshReader):
             parser = Savitar.ThreeMFParser()
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
+
+            for key, value in scene_3mf.getMetadata().items():
+                CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
+
             for node in scene_3mf.getSceneNodes():
                 um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
@@ -256,6 +268,9 @@ class ThreeMFReader(MeshReader):
                             um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
+
+            if len(result) == 0:
+                self._empty_project = True
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")

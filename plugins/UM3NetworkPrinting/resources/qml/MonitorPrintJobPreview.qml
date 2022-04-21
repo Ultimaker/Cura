@@ -38,7 +38,7 @@ Item
     }
 
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: ultiBotImage
 
@@ -46,18 +46,13 @@ Item
         color: UM.Theme.getColor("monitor_placeholder_image")
         height: printJobPreview.height
         source: "../svg/ultibot.svg"
-        sourceSize
-        {
-            height: height
-            width: width
-        }
         /* Since print jobs ALWAYS have an image url, we have to check if that image URL errors or
             not in order to determine if we show the placeholder (ultibot) image instead. */
         visible: printJob && previewImage.status == Image.Error
         width: printJobPreview.width
     }
 
-    UM.RecolorImage
+    UM.ColorImage
     {
         id: overlayIcon
         anchors.centerIn: printJobPreview
@@ -71,29 +66,24 @@ Item
             }
             if (printJob.configurationChanges.length > 0)
             {
-                return "../svg/warning-icon.svg"
+                return "../svg/Warning.svg"
             }
             switch(printJob.state)
             {
                 case "error":
-                    return "../svg/aborted-icon.svg"
+                    return "../svg/CancelCircle.svg"
                 case "wait_cleanup":
-                    return printJob.timeTotal > printJob.timeElapsed ? "../svg/aborted-icon.svg" : ""
+                    return printJob.timeTotal > printJob.timeElapsed ? "../svg/CancelCircle.svg" : ""
                 case "pausing":
-                    return "../svg/paused-icon.svg"
+                    return "../svg/PauseCircle.svg"
                 case "paused":
-                    return "../svg/paused-icon.svg"
+                    return "../svg/PauseCircle.svg"
                 case "resuming":
-                    return "../svg/paused-icon.svg"
+                    return "../svg/PauseCircle.svg"
                 default:
                     return ""
             }
             return ""
-        }
-        sourceSize
-        {
-            height: height
-            width: width
         }
         visible: source != ""
         width: 0.5 * printJobPreview.width

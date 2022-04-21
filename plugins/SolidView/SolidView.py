@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -6,8 +6,8 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt5.QtGui import QOpenGLContext, QImage
-from PyQt5.QtCore import QSize
+from PyQt6.QtGui import QOpenGLContext, QDesktopServices, QImage
+from PyQt6.QtCore import QSize, QUrl
 
 import numpy as np
 import time
@@ -56,7 +56,8 @@ class SolidView(View):
 
         self._extruders_model = None
         self._theme = None
-        self._support_angle = 90
+        self._support_angle = self._retrieveSupportAngle()
+        self._lowest_printable_height = self._retrieveLowestPrintHeight()
 
         self._global_stack = None
 
@@ -67,19 +68,27 @@ class SolidView(View):
         self._xray_checking_update_time = 30.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
         self._xray_warning_message = Message(
-            catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
+            catalog.i18nc("@info:status", "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."),
             lifetime = 60 * 5, # leave message for 5 minutes
-            title = catalog.i18nc("@info:title", "Model errors"),
+            title = catalog.i18nc("@info:title", "Model Errors"),
             option_text = catalog.i18nc("@info:option_text", "Do not show this message again"),
-            option_state = False
+            option_state = False,
+            message_type=Message.MessageType.WARNING
         )
         self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         application.getPreferences().addPreference(self._show_xray_warning_preference, True)
+        self._xray_warning_message.addAction("manifold", catalog.i18nc("@action:button", "Learn more"), "[no_icon]", "[no_description]",
+                          button_style = Message.ActionButtonStyle.LINK,
+                          button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
+        self._xray_warning_message.actionTriggered.connect(self._onNonManifoldLearnMoreClicked)
 
         application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
         Application.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
+
+    def _onNonManifoldLearnMoreClicked(self, action, message) -> None:
+        QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360014055959"))
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:
@@ -95,12 +104,20 @@ class SolidView(View):
             self._global_stack.propertyChanged.connect(self._onPropertyChanged)
             for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
-            self._onPropertyChanged("support_angle", "value")  # Force an re-evaluation
+            # Force re-evaluation:
+            self._support_angle = self._retrieveSupportAngle()
+            self._lowest_printable_height = self._retrieveLowestPrintHeight()
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
-        if key != "support_angle" or property_name != "value":
+        if property_name != "value":
             return
         # As the rendering is called a *lot* we really, dont want to re-evaluate the property every time. So we store em!
+        if key == "support_angle":
+            self._support_angle = self._retrieveSupportAngle()
+        elif key == "layer_height_0" or key == "slicing_tolerance":
+            self._lowest_printable_height = self._retrieveLowestPrintHeight()
+
+    def _retrieveSupportAngle(self) -> float:
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             support_extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
@@ -111,7 +128,18 @@ class SolidView(View):
             else:
                 angle = support_angle_stack.getProperty("support_angle", "value")
                 if angle is not None:
-                    self._support_angle = angle
+                    return angle
+        return 90.0
+
+    def _retrieveLowestPrintHeight(self) -> float:
+        min_height = 0.0
+        for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
+            init_layer_height = extruder.getProperty("layer_height_0", "value")
+            tolerance_setting = extruder.getProperty("slicing_tolerance", "value")
+            if tolerance_setting == "middle":
+                init_layer_height /= 2.0
+            min_height = max(min_height, init_layer_height)
+        return min_height
 
     def _checkSetup(self):
         if not self._extruders_model:
@@ -194,6 +222,7 @@ class SolidView(View):
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
+        self._enabled_shader.setUniformValue("u_lowestPrintableHeight", self._lowest_printable_height)
         disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
         normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
         renderer.addRenderBatch(disabled_batch)
@@ -267,7 +296,7 @@ class SolidView(View):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()
-            xray_img = xray_img.convertToFormat(QImage.Format_RGB888)
+            xray_img = xray_img.convertToFormat(QImage.Format.Format_RGB888)
 
             # We can't just read the image since the pixels are aligned to internal memory positions.
             # xray_img.byteCount() != xray_img.width() * xray_img.height() * 3

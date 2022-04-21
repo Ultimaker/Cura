@@ -27,7 +27,7 @@ Item
     Connections
     {
         target: machineActionsModel
-        onAllFinished:
+        function onAllFinished()
         {
             if (visible)
             {

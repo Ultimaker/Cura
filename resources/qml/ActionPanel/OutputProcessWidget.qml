@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -57,7 +57,7 @@ Column
                 width: parent.width
 
                 text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
-                source: UM.Theme.getIcon("clock")
+                source: UM.Theme.getIcon("Clock")
                 font: UM.Theme.getFont("medium_bold")
             }
 
@@ -99,7 +99,7 @@ Column
                     }
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
-                source: UM.Theme.getIcon("spool")
+                source: UM.Theme.getIcon("Spool")
                 font: UM.Theme.getFont("default")
             }
         }
@@ -128,7 +128,7 @@ Column
             tooltip: text
             fixedWidthMode: true
 
-            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
 
             onClicked: UM.Controller.setActiveStage("PreviewStage")
         }

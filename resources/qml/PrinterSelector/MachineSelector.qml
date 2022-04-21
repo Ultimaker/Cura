@@ -1,10 +1,10 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 Cura.ExpandablePopup
@@ -93,11 +93,11 @@ Cura.ExpandablePopup
         {
             if (isGroup)
             {
-                return UM.Theme.getIcon("printer_group")
+                return UM.Theme.getIcon("PrinterTriple", "medium")
             }
             else if (isNetworkPrinter || isCloudRegistered)
             {
-                return UM.Theme.getIcon("printer_single")
+                return UM.Theme.getIcon("Printer", "medium")
             }
             else
             {
@@ -108,17 +108,32 @@ Cura.ExpandablePopup
         iconColor: UM.Theme.getColor("machine_selector_printer_icon")
         iconSize: source != "" ? UM.Theme.getSize("machine_selector_icon").width: 0
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: connectionStatusImage
             anchors
             {
                 bottom: parent.bottom
+                bottomMargin: - Math.round(height * 1 / 6)
                 left: parent.left
-                leftMargin: UM.Theme.getSize("thick_margin").width
+                leftMargin: iconSize - Math.round(width * 5 / 6)
             }
 
-            source: UM.Theme.getIcon(connectionStatus)
+            source:
+            {
+                if (connectionStatus == "printer_connected")
+                {
+                    return UM.Theme.getIcon("CheckBlueBG", "low")
+                }
+                else if (connectionStatus == "printer_cloud_connected" || connectionStatus == "printer_cloud_not_available")
+                {
+                    return UM.Theme.getIcon("CloudBadge", "low")
+                }
+                else
+                {
+                    return ""
+                }
+            }
 
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
@@ -132,11 +147,10 @@ Cura.ExpandablePopup
             {
                 id: iconBackground
                 anchors.centerIn: parent
-                // Make it a bit bigger so there is an outline
-                width: parent.width + 2 * UM.Theme.getSize("default_lining").width
-                height: parent.height + 2 * UM.Theme.getSize("default_lining").height
-                radius: Math.round(width / 2)
-                color: UM.Theme.getColor("main_background")
+                width: parent.width - 1.5  //1.5 pixels smaller, (at least sqrt(2), regardless of screen pixel scale) so that the circle doesn't show up behind the icon due to anti-aliasing.
+                height: parent.height - 1.5
+                radius: width / 2
+                color: UM.Theme.getColor("connection_badge_background")
                 z: parent.z - 1
             }
 
@@ -158,7 +172,7 @@ Cura.ExpandablePopup
             onExited: { tooltip.hide() }
         }
 
-        Cura.ToolTip
+        UM.ToolTip
         {
             id: tooltip
 
@@ -178,43 +192,27 @@ Cura.ExpandablePopup
     contentItem: Item
     {
         id: popup
-        width: UM.Theme.getSize("machine_selector_widget_content").width
-
-        ScrollView
+        implicitWidth: UM.Theme.getSize("machine_selector_widget_content").width
+        implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
+        MachineSelectorList
         {
-            id: scroll
-            width: parent.width
-            clip: true
-            leftPadding: UM.Theme.getSize("default_lining").width
-            rightPadding: UM.Theme.getSize("default_lining").width
-
-            MachineSelectorList
+            id: machineSelectorList
+            anchors
             {
-                id: machineSelectorList
-                // Can't use parent.width since the parent is the flickable component and not the ScrollView
-                width: scroll.width - scroll.leftPadding - scroll.rightPadding
-                property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
-
-                // We use an extra property here, since we only want to to be informed about the content size changes.
-                onContentHeightChanged:
-                {
-                    scroll.height = Math.min(contentHeight, maximumHeight)
-                    popup.height = scroll.height + buttonRow.height
-                }
-
-                Component.onCompleted:
-                {
-                    scroll.height = Math.min(contentHeight, maximumHeight)
-                    popup.height = scroll.height + buttonRow.height
-                }
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_lining").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("default_lining").width
+                top: parent.top
+                bottom: separator.top
             }
+            clip: true
         }
 
         Rectangle
         {
             id: separator
-
-            anchors.top: scroll.bottom
+            anchors.bottom: buttonRow.top
             width: parent.width
             height: UM.Theme.getSize("default_lining").height
             color: UM.Theme.getColor("lining")
@@ -224,8 +222,7 @@ Cura.ExpandablePopup
         {
             id: buttonRow
 
-            // The separator is inside the buttonRow. This is to avoid some weird behaviours with the scroll bar.
-            anchors.top: separator.top
+            anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width

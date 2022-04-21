@@ -129,16 +129,16 @@ class ZeroConfClient:
 
         for record in zero_conf.cache.entries_with_name(info.server):
             info.update_record(zero_conf, time(), record)
-            if info.addresses:
+            if hasattr(info, "addresses") and info.addresses:
                 break
 
         # Request more data if info is not complete
-        if not info.addresses:
+        if not hasattr(info, "addresses") or not info.addresses:
             new_info = zero_conf.get_service_info(service_type, name)
             if new_info is not None:
                 info = new_info
 
-        if info and info.addresses:
+        if info and hasattr(info, "addresses") and info.addresses:
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":

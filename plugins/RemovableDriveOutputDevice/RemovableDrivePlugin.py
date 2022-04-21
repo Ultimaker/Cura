@@ -21,7 +21,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
         super().__init__()
 
         self._update_thread = threading.Thread(target = self._updateThread)
-        self._update_thread.setDaemon(True)
+        self._update_thread.deamon = True
 
         self._check_updates = True
 
@@ -48,7 +48,7 @@ class RemovableDrivePlugin(OutputDevicePlugin):
             result = False
 
         if result:
-            Logger.log("i", "Succesfully ejected the device")
+            Logger.log("i", "Successfully ejected the device")
         return result
 
     def performEjectDevice(self, device):

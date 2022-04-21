@@ -1,15 +1,14 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Controls 2.1
 import QtQuick.Window 2.1
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
     id: base
 
@@ -18,17 +17,25 @@ Menu
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // Selection-related actions.
-    MenuItem { action: Cura.Actions.centerSelection; }
-    MenuItem { action: Cura.Actions.deleteSelection; }
-    MenuItem { action: Cura.Actions.multiplySelection; }
+    Cura.MenuItem { action: Cura.Actions.centerSelection; }
+    Cura.MenuItem { action: Cura.Actions.deleteSelection; }
+    Cura.MenuItem { action: Cura.Actions.multiplySelection; }
 
     // Extruder selection - only visible if there is more than 1 extruder
-    MenuSeparator { visible: base.shouldShowExtruders }
-    MenuItem { id: extruderHeader; text: catalog.i18ncp("@label", "Print Selected Model With:", "Print Selected Models With:", UM.Selection.selectionCount); enabled: false; visible: base.shouldShowExtruders }
+    Cura.MenuSeparator { visible: base.shouldShowExtruders }
+    Cura.MenuItem
+    {
+        id: extruderHeader
+        text: catalog.i18ncp("@label", "Print Selected Model With:", "Print Selected Models With:", UM.Selection.selectionCount)
+        enabled: false
+        visible: base.shouldShowExtruders
+    }
+
     Instantiator
     {
         model: CuraApplication.getExtrudersModel()
-        MenuItem {
+        Cura.MenuItem
+        {
             text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
             visible: base.shouldShowExtruders
             enabled: UM.Selection.hasSelection && model.enabled
@@ -37,66 +44,36 @@ Menu
             onTriggered: CuraActions.setExtruderForSelection(model.id)
             shortcut: "Ctrl+" + (model.index + 1)
         }
-        onObjectAdded: base.insertItem(index, object)
-        onObjectRemoved: base.removeItem(object)
-    }
-
-    MenuSeparator {
-        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
-    }
-
-    Instantiator
-    {
-        model: base.multiBuildPlateModel
-        MenuItem {
-            enabled: UM.Selection.hasSelection
-            text: base.multiBuildPlateModel.getItem(index).name;
-            onTriggered: CuraActions.setBuildPlateForSelection(base.multiBuildPlateModel.getItem(index).buildPlateNumber);
-            checkable: true
-            checked: base.multiBuildPlateModel.selectionBuildPlates.indexOf(base.multiBuildPlateModel.getItem(index).buildPlateNumber) != -1;
-            visible: UM.Preferences.getValue("cura/use_multi_build_plate")
-        }
-        onObjectAdded: base.insertItem(index, object);
-        onObjectRemoved: base.removeItem(object);
-    }
-
-    MenuItem {
-        enabled: UM.Selection.hasSelection
-        text: "New build plate";
-        onTriggered: {
-            CuraActions.setBuildPlateForSelection(base.multiBuildPlateModel.maxBuildPlate + 1);
-            checked = false;
-        }
-        checkable: true
-        checked: false
-        visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+        // Add it to the fifth position (and above) as we want it to be added after the extruder header.
+        onObjectAdded: function(index, object) { base.insertItem(index + 5, object) }
+        onObjectRemoved: function(object) {  base.removeItem(object) }
     }
 
     // Global actions
-    MenuSeparator {}
-    MenuItem { action: Cura.Actions.selectAll; }
-    MenuItem { action: Cura.Actions.arrangeAll; }
-    MenuItem { action: Cura.Actions.deleteAll; }
-    MenuItem { action: Cura.Actions.reloadAll; }
-    MenuItem { action: Cura.Actions.resetAllTranslation; }
-    MenuItem { action: Cura.Actions.resetAll; }
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.selectAll }
+    Cura.MenuItem { action: Cura.Actions.arrangeAll }
+    Cura.MenuItem { action: Cura.Actions.deleteAll }
+    Cura.MenuItem { action: Cura.Actions.reloadAll }
+    Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
+    Cura.MenuItem { action: Cura.Actions.resetAll }
 
     // Group actions
-    MenuSeparator {}
-    MenuItem { action: Cura.Actions.groupObjects; }
-    MenuItem { action: Cura.Actions.mergeObjects; }
-    MenuItem { action: Cura.Actions.unGroupObjects; }
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.groupObjects }
+    Cura.MenuItem { action: Cura.Actions.mergeObjects }
+    Cura.MenuItem { action: Cura.Actions.unGroupObjects }
 
     Connections
     {
         target: UM.Controller
-        onContextMenuRequested: base.popup();
+        function onContextMenuRequested() { base.popup() }
     }
 
     Connections
     {
         target: Cura.Actions.multiplySelection
-        onTriggered: multiplyDialog.open()
+        function onTriggered() { multiplyDialog.open() }
     }
 
     UM.SettingPropertyProvider
@@ -108,69 +85,56 @@ Menu
         watchedProperties: [ "value" ]
     }
 
-    Dialog
+    UM.Dialog
     {
         id: multiplyDialog
-        modality: Qt.ApplicationModal
 
         title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 
+        width: UM.Theme.getSize("small_popup_dialog").width
+        height: UM.Theme.getSize("small_popup_dialog").height
+        minimumWidth: UM.Theme.getSize("small_popup_dialog").width
+        minimumHeight: UM.Theme.getSize("small_popup_dialog").height
 
         onAccepted: CuraActions.multiplySelection(copiesField.value)
 
-        signal reset()
-        onReset:
-        {
-            copiesField.value = 1;
-            copiesField.focus = true;
-        }
+        buttonSpacing: UM.Theme.getSize("thin_margin").width
 
-        onVisibleChanged:
-        {
-            copiesField.forceActiveFocus();
-        }
-
-        standardButtons: StandardButton.Ok | StandardButton.Cancel
+        rightButtons:
+        [
+            Cura.SecondaryButton
+            {
+                text: "Cancel"
+                onClicked: multiplyDialog.reject()
+            },
+            Cura.PrimaryButton
+            {
+                text: "Ok"
+                onClicked: multiplyDialog.accept()
+            }
+        ]
 
         Row
         {
             spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Number of Copies")
                 anchors.verticalCenter: copiesField.verticalCenter
+                width: contentWidth
+                wrapMode: Text.NoWrap
             }
 
-            SpinBox
+            Cura.SpinBox
             {
                 id: copiesField
+                editable: true
                 focus: true
-                minimumValue: 1
-                maximumValue: 99
+                from: 1
+                to: 99
+                width: 2 * UM.Theme.getSize("button").width
             }
         }
     }
-
-    // Find the index of an item in the list of child items of this menu.
-    //
-    // This is primarily intended as a helper function so we do not have to
-    // hard-code the position of the extruder selection actions.
-    //
-    // \param item The item to find the index of.
-    //
-    // \return The index of the item or -1 if it was not found.
-    function findItemIndex(item)
-    {
-        for(var i in base.items)
-        {
-            if(base.items[i] == item)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    UM.I18nCatalog { id: catalog; name: "cura" }
 }

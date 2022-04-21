@@ -1,11 +1,10 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.1
-import QtGraphicalEffects 1.0 // For the dropshadow
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
@@ -15,22 +14,21 @@ Button
     property bool isIconOnRightSide: false
 
     property alias iconSource: buttonIconLeft.source
+    property real iconSize: UM.Theme.getSize("action_button_icon").height
     property alias textFont: buttonText.font
     property alias cornerRadius: backgroundRect.radius
     property alias tooltip: tooltip.tooltipText
-    property alias cornerSide: backgroundRect.cornerSide
+    property alias tooltipWidth: tooltip.width
 
     property color color: UM.Theme.getColor("primary")
     property color hoverColor: UM.Theme.getColor("primary_hover")
     property color disabledColor: color
     property color textColor: UM.Theme.getColor("button_text")
     property color textHoverColor: textColor
-    property color textDisabledColor: textColor
+    property color textDisabledColor: disabledColor
     property color outlineColor: color
-    property color outlineHoverColor: hoverColor
-    property color outlineDisabledColor: outlineColor
-    property alias shadowColor: shadow.color
-    property alias shadowEnabled: shadow.visible
+    property color outlineHoverColor: outlineColor
+    property color outlineDisabledColor: disabledColor
     property alias busy: busyIndicator.visible
 
     property bool underlineTextOnHover: false
@@ -48,7 +46,7 @@ Button
 
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
-    height: UM.Theme.getSize("action_button").height
+    implicitHeight: UM.Theme.getSize("action_button").height
     hoverEnabled: true
 
     onHoveredChanged:
@@ -64,14 +62,12 @@ Button
         spacing: UM.Theme.getSize("narrow_margin").width
         height: button.height
         //Left side icon. Only displayed if !isIconOnRightSide.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: buttonIconLeft
             source: ""
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor) : button.textDisabledColor
             visible: source != "" && !button.isIconOnRightSide
             anchors.verticalCenter: parent.verticalCenter
@@ -86,71 +82,52 @@ Button
             elideWidth: buttonText.width
         }
 
-        Label
+        UM.Label
         {
             id: buttonText
             text: button.text
             color: button.enabled ? (button.hovered ? button.textHoverColor : button.textColor): button.textDisabledColor
             font: UM.Theme.getFont("medium")
             visible: text != ""
-            renderType: Text.NativeRendering
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
 
             Binding
             {
-                // When settting width directly, an unjust binding loop warning would be triggered,
+                // When setting width directly, an unjust binding loop warning would be triggered,
                 // because button.width is part of this expression.
                 // Using parent.width is fine in fixedWidthMode.
                 target: buttonText
                 property: "width"
-                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
-                                             : ((maximumWidth != 0 && button.contentWidth > maximumWidth) ? maximumWidth : undefined)
+                value: button.fixedWidthMode ? (button.width - button.leftPadding - button.rightPadding)
+                                             : ((button.maximumWidth != 0 && button.implicitContentWidth > button.maximumWidth) ? (button.maximumWidth - (button.width - button.implicitContentWidth) * 2) : undefined)
             }
         }
 
         //Right side icon. Only displayed if isIconOnRightSide.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: buttonIconRight
             source: buttonIconLeft.source
-            height: visible ? UM.Theme.getSize("action_button_icon").height : 0
+            height: visible ? button.iconSize : 0
             width: visible ? height : 0
-            sourceSize.width: width
-            sourceSize.height: height
             color: buttonIconLeft.color
             visible: source != "" && button.isIconOnRightSide
             anchors.verticalCenter: buttonIconLeft.verticalCenter
         }
     }
 
-    background: Cura.RoundedRectangle
+    background: Rectangle
     {
         id: backgroundRect
-        cornerSide: Cura.RoundedRectangle.Direction.All
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
-        radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
         border.color: button.enabled ? (button.hovered ? button.outlineHoverColor : button.outlineColor) : button.outlineDisabledColor
     }
 
-    DropShadow
-    {
-        id: shadow
-        // Don't blur the shadow
-        radius: 0
-        anchors.fill: backgroundRect
-        source: backgroundRect
-        verticalOffset: 2
-        visible: false
-        // Should always be drawn behind the background.
-        z: backgroundRect.z - 1
-    }
-
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         visible:

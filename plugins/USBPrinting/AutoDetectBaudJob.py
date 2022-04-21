@@ -70,7 +70,10 @@ class AutoDetectBaudJob(Job):
                 timeout_time = time() + wait_response_timeout
 
                 while timeout_time > time():
-                    line = serial.readline()
+                    # If baudrate is wrong, then readline() might never
+                    # return, even with timeouts set. Using read_until
+                    # with size limit seems to fix this.
+                    line = serial.read_until(size = 100)
                     if b"ok" in line and b"T:" in line:
                         self.setResult(baud_rate)
                         Logger.log("d", "Detected baud rate {baud_rate} on serial {serial} on retry {retry} with after {time_elapsed:0.2f} seconds.".format(

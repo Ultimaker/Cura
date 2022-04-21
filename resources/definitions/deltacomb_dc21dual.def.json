@@ -1,6 +1,6 @@
 {
     "version":                 2,
-    "name":                    "Deltacomb DC-21 DUAL",    
+    "name":                    "Deltacomb DC-21 Dual",
     "inherits":                "deltacomb_base",
 
     "metadata": {

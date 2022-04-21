@@ -1,11 +1,11 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QOpenGLContext
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QOpenGLContext
+from PyQt6.QtWidgets import QApplication
 
 from UM.Application import Application
 from UM.Event import Event, KeyEvent
@@ -30,6 +30,7 @@ from UM.View.GL.ShaderProgram import ShaderProgram
 
 from UM.i18n import i18nCatalog
 from cura.CuraView import CuraView
+from cura.LayerPolygon import LayerPolygon  # To distinguish line types.
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
 
@@ -91,6 +92,10 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
+        self._min_flow_rate = sys.float_info.max
+        self._max_flow_rate = sys.float_info.min
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
@@ -104,24 +109,33 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
 
-        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 0)
+        Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
 
         Application.getInstance().getPreferences().addPreference("layerview/show_travel_moves", False)
         Application.getInstance().getPreferences().addPreference("layerview/show_helpers", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_starts", True)
 
+        self.visibleStructuresChanged.connect(self.calculateColorSchemeLimits)
         self._updateWithPreferences()
 
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled."),
-                                                  title = catalog.i18nc("@info:title", "Simulation View"))
-        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."), title = catalog.i18nc("@info:title", "No layers to show"),
-                                                    option_text = catalog.i18nc("@info:option_text", "Do not show this message again"), option_state = False)
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
+                                                                "Cura does not accurately display layers when Wire Printing is enabled."),
+                                                  title = catalog.i18nc("@info:title", "Simulation View"),
+                                                  message_type = Message.MessageType.WARNING)
+        self._slice_first_warning_message = Message(catalog.i18nc("@info:status",
+                                                                  "Nothing is shown because you need to slice first."),
+                                                    title = catalog.i18nc("@info:title", "No layers to show"),
+                                                    option_text = catalog.i18nc("@info:option_text",
+                                                                                "Do not show this message again"),
+                                                    option_state = False,
+                                                    message_type = Message.MessageType.WARNING)
         self._slice_first_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         CuraApplication.getInstance().getPreferences().addPreference(self._no_layers_warning_preference, True)
 
@@ -146,6 +160,7 @@ class SimulationView(CuraView):
         self._show_helpers = True
         self._show_skin = True
         self._show_infill = True
+        self._show_starts = True
         self.resetLayerData()
 
     def getActivity(self) -> bool:
@@ -194,6 +209,7 @@ class SimulationView(CuraView):
         if node.getMeshData() is None:
             return
         self.setActivity(False)
+        self.calculateColorSchemeLimits()
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
 
@@ -214,10 +230,6 @@ class SimulationView(CuraView):
     def resetLayerData(self) -> None:
         self._current_layer_mesh = None
         self._current_layer_jumps = None
-        self._max_feedrate = sys.float_info.min
-        self._min_feedrate = sys.float_info.max
-        self._max_thickness = sys.float_info.min
-        self._min_thickness = sys.float_info.max
 
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
@@ -242,58 +254,59 @@ class SimulationView(CuraView):
                     renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
 
     def setLayer(self, value: int) -> None:
+        """
+        Set the upper end of the range of visible layers.
+
+        If setting it below the lower end of the range, the lower end is lowered so that 1 layer stays visible.
+        :param value: The new layer number to show, 0-indexed.
+        """
         if self._current_layer_num != value:
-            self._current_layer_num = value
-            if self._current_layer_num < 0:
-                self._current_layer_num = 0
-            if self._current_layer_num > self._max_layers:
-                self._current_layer_num = self._max_layers
-            if self._current_layer_num < self._minimum_layer_num:
-                self._minimum_layer_num = self._current_layer_num
+            self._current_layer_num = min(max(value, 0), self._max_layers)
+            self._minimum_layer_num = min(self._current_layer_num, self._minimum_layer_num)
 
             self._startUpdateTopLayers()
-
             self.currentLayerNumChanged.emit()
 
     def setMinimumLayer(self, value: int) -> None:
+        """
+        Set the lower end of the range of visible layers.
+
+        If setting it above the upper end of the range, the upper end is increased so that 1 layer stays visible.
+        :param value: The new lower end of the range of visible layers, 0-indexed.
+        """
         if self._minimum_layer_num != value:
-            self._minimum_layer_num = value
-            if self._minimum_layer_num < 0:
-                self._minimum_layer_num = 0
-            if self._minimum_layer_num > self._max_layers:
-                self._minimum_layer_num = self._max_layers
-            if self._minimum_layer_num > self._current_layer_num:
-                self._current_layer_num = self._minimum_layer_num
+            self._minimum_layer_num = min(max(value, 0), self._max_layers)
+            self._current_layer_num = max(self._current_layer_num, self._minimum_layer_num)
 
             self._startUpdateTopLayers()
-
             self.currentLayerNumChanged.emit()
 
     def setPath(self, value: int) -> None:
+        """
+        Set the upper end of the range of visible paths on the current layer.
+
+        If setting it below the lower end of the range, the lower end is lowered so that 1 path stays visible.
+        :param value: The new path index to show, 0-indexed.
+        """
         if self._current_path_num != value:
-            self._current_path_num = value
-            if self._current_path_num < 0:
-                self._current_path_num = 0
-            if self._current_path_num > self._max_paths:
-                self._current_path_num = self._max_paths
-            if self._current_path_num < self._minimum_path_num:
-                self._minimum_path_num = self._current_path_num
+            self._current_path_num = min(max(value, 0), self._max_paths)
+            self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
 
     def setMinimumPath(self, value: int) -> None:
+        """
+        Set the lower end of the range of visible paths on the current layer.
+
+        If setting it above the upper end of the range, the upper end is increased so that 1 path stays visible.
+        :param value: The new lower end of the range of visible paths, 0-indexed.
+        """
         if self._minimum_path_num != value:
-            self._minimum_path_num = value
-            if self._minimum_path_num < 0:
-                self._minimum_path_num = 0
-            if self._minimum_path_num > self._max_layers:
-                self._minimum_path_num = self._max_layers
-            if self._minimum_path_num > self._current_path_num:
-                self._current_path_num = self._minimum_path_num
+            self._minimum_path_num = min(max(value, 0), self._max_paths)
+            self._current_path_num = max(self._current_path_num, self._minimum_path_num)
 
             self._startUpdateTopLayers()
-
             self.currentPathNumChanged.emit()
 
     def setSimulationViewType(self, layer_view_type: int) -> None:
@@ -327,33 +340,55 @@ class SimulationView(CuraView):
         # If more than 16 extruders are called for, this should be converted to a sampler1d.
         return Matrix(self._extruder_opacity)
 
-    def setShowTravelMoves(self, show):
+    def setShowTravelMoves(self, show: bool) -> None:
+        if show == self._show_travel_moves:
+            return
         self._show_travel_moves = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
-    def getShowTravelMoves(self):
+    def getShowTravelMoves(self) -> bool:
         return self._show_travel_moves
 
     def setShowHelpers(self, show: bool) -> None:
+        if show == self._show_helpers:
+            return
         self._show_helpers = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowHelpers(self) -> bool:
         return self._show_helpers
 
     def setShowSkin(self, show: bool) -> None:
+        if show == self._show_skin:
+            return
         self._show_skin = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowSkin(self) -> bool:
         return self._show_skin
 
     def setShowInfill(self, show: bool) -> None:
+        if show == self._show_infill:
+            return
         self._show_infill = show
         self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
 
     def getShowInfill(self) -> bool:
         return self._show_infill
+
+    def setShowStarts(self, show: bool) -> None:
+        if show == self._show_starts:
+            return
+        self._show_starts = show
+        self.currentLayerNumChanged.emit()
+        self.visibleStructuresChanged.emit()
+
+    def getShowStarts(self) -> bool:
+        return self._show_starts
 
     def getCompatibilityMode(self) -> bool:
         return self._compatibility_mode
@@ -377,12 +412,31 @@ class SimulationView(CuraView):
     def getMaxThickness(self) -> float:
         return self._max_thickness
 
+    def getMaxLineWidth(self) -> float:
+        return self._max_line_width
+
+    def getMinLineWidth(self) -> float:
+        if abs(self._min_line_width - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
+        return self._min_line_width
+
+    def getMaxFlowRate(self) -> float:
+        return self._max_flow_rate
+
+    def getMinFlowRate(self) -> float:
+        if abs(self._min_flow_rate - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
+        return self._min_flow_rate
+
     def calculateMaxLayers(self) -> None:
+        """
+        Calculates number of layers, triggers signals if the number of layers changed and makes sure the top layers are
+        recalculated for legacy layer view.
+        """
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
         new_max_layers = -1
-        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -397,17 +451,6 @@ class SimulationView(CuraView):
                 if len(layer_data.getLayer(layer_id).polygons) < 1:
                     continue
 
-                # Store the max and min feedrates and thicknesses for display purposes
-                for p in layer_data.getLayer(layer_id).polygons:
-                    self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
-                    self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
-                    self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
-                    try:
-                        self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
-                    except ValueError:
-                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
-                        # the zero) can't be calculated
-                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
@@ -430,6 +473,87 @@ class SimulationView(CuraView):
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
         self._startUpdateTopLayers()
+
+    def calculateColorSchemeLimits(self) -> None:
+        """
+        Calculates the limits of the colour schemes, depending on the layer view data that is visible to the user.
+        """
+        # Before we start, save the old values so that we can tell if any of the spectrums need to change.
+        old_min_feedrate = self._min_feedrate
+        old_max_feedrate = self._max_feedrate
+        old_min_linewidth = self._min_line_width
+        old_max_linewidth = self._max_line_width
+        old_min_thickness = self._min_thickness
+        old_max_thickness = self._max_thickness
+        old_min_flow_rate = self._min_flow_rate
+        old_max_flow_rate = self._max_flow_rate
+
+        self._min_feedrate = sys.float_info.max
+        self._max_feedrate = sys.float_info.min
+        self._min_line_width = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_thickness = sys.float_info.max
+        self._max_thickness = sys.float_info.min
+        self._min_flow_rate = sys.float_info.max
+        self._max_flow_rate = sys.float_info.min
+
+        # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
+        visible_line_types = []
+        if self.getShowSkin():  # Actually "shell".
+            visible_line_types.append(LayerPolygon.SkinType)
+            visible_line_types.append(LayerPolygon.Inset0Type)
+            visible_line_types.append(LayerPolygon.InsetXType)
+        if self.getShowInfill():
+            visible_line_types.append(LayerPolygon.InfillType)
+        if self.getShowHelpers():
+            visible_line_types.append(LayerPolygon.PrimeTowerType)
+            visible_line_types.append(LayerPolygon.SkirtType)
+            visible_line_types.append(LayerPolygon.SupportType)
+            visible_line_types.append(LayerPolygon.SupportInfillType)
+            visible_line_types.append(LayerPolygon.SupportInterfaceType)
+        visible_line_types_with_extrusion = visible_line_types.copy()  # Copy before travel moves are added
+        if self.getShowTravelMoves():
+            visible_line_types.append(LayerPolygon.MoveCombingType)
+            visible_line_types.append(LayerPolygon.MoveRetractionType)
+
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+
+            for layer_index in layer_data.getLayers():
+                for polyline in layer_data.getLayer(layer_index).polygons:
+                    is_visible = numpy.isin(polyline.types, visible_line_types)
+                    visible_indices = numpy.where(is_visible)[0]
+                    visible_indicies_with_extrusion = numpy.where(numpy.isin(polyline.types, visible_line_types_with_extrusion))[0]
+                    if visible_indices.size == 0:  # No items to take maximum or minimum of.
+                        continue
+                    visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
+                    visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
+                    visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
+                    visible_linewidths_with_extrusion = numpy.take(polyline.lineWidths, visible_indicies_with_extrusion)
+                    visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
+                    visible_thicknesses_with_extrusion = numpy.take(polyline.lineThicknesses, visible_indicies_with_extrusion)
+                    self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
+                    if visible_feedrates_with_extrusion.size != 0:
+                        flow_rates = visible_feedrates_with_extrusion * visible_linewidths_with_extrusion * visible_thicknesses_with_extrusion
+                        self._min_flow_rate = min(float(flow_rates.min()), self._min_flow_rate)
+                        self._max_flow_rate = max(float(flow_rates.max()), self._max_flow_rate)
+                    self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
+                    self._max_thickness = max(float(visible_thicknesses.max()), self._max_thickness)
+                    try:
+                        self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
+                    except ValueError:
+                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
+                        Logger.log("w", "Min thickness can't be calculated because all the values are zero")
+
+        if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
+                or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness \
+                or old_min_flow_rate != self._min_flow_rate or old_max_flow_rate != self._max_flow_rate:
+            self.colorSchemeLimitsChanged.emit()
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
@@ -457,6 +581,8 @@ class SimulationView(CuraView):
     preferencesChanged = Signal()
     busyChanged = Signal()
     activityChanged = Signal()
+    visibleStructuresChanged = Signal()
+    colorSchemeLimitsChanged = Signal()
 
     def getProxy(self, engine, script_engine):
         """Hackish way to ensure the proxy is already created
@@ -472,8 +598,8 @@ class SimulationView(CuraView):
 
     def event(self, event) -> bool:
         modifiers = QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers & Qt.ControlModifier
-        shift_is_active = modifiers & Qt.ShiftModifier
+        ctrl_is_active = modifiers & Qt.KeyboardModifier.ControlModifier
+        shift_is_active = modifiers & Qt.KeyboardModifier.ShiftModifier
         if event.type == Event.KeyPressEvent and ctrl_is_active:
             amount = 10 if shift_is_active else 1
             if event.key == KeyEvent.UpKey:
@@ -488,6 +614,7 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+            self.calculateColorSchemeLimits()
             self.calculateMaxLayers()
             self.calculateMaxPathsOnLayer(self._current_layer_num)
 
@@ -638,6 +765,7 @@ class SimulationView(CuraView):
         self.setShowHelpers(bool(Application.getInstance().getPreferences().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Application.getInstance().getPreferences().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Application.getInstance().getPreferences().getValue("layerview/show_infill")))
+        self.setShowStarts(bool(Application.getInstance().getPreferences().getValue("layerview/show_starts")))
 
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
@@ -653,6 +781,7 @@ class SimulationView(CuraView):
             "layerview/show_helpers",
             "layerview/show_skin",
             "layerview/show_infill",
+            "layerview/show_starts",
             }:
             return
 

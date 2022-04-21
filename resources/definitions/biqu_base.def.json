@@ -5,7 +5,7 @@
     "metadata": {
         "visible": false,
         "author": "Luke Harrison",
-        "manufacturer": "BIQU",
+        "manufacturer": "Biqu",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
@@ -83,10 +83,9 @@
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_flow": { "value": 100 },
-        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
 
-        "z_seam_type": { "value": "'back'" },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
 
         "infill_line_width": { "value": "line_width * 1.2" },
         "infill_sparse_density": { "value": "20" },
@@ -97,7 +96,6 @@
         "infill_wipe_dist": { "value": 0.0 },
         "wall_0_wipe_dist": { "value": 0.0 },
 
-        "fill_perimeter_gaps": { "value": "'everywhere'" },
         "fill_outline_gaps": { "value": false },
         "filter_out_tiny_gaps": { "value": false },
 
@@ -156,7 +154,7 @@
 
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "layer_height * 4" },
-        "support_interface_density": { "value": 33.333 },
+        "support_interface_density": { "value": 75 },
         "support_interface_pattern": { "value": "'grid'" },
         "support_interface_skip_height": { "value": 0.2 },
         "minimum_support_area": { "value": 2 },

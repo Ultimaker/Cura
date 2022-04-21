@@ -4,10 +4,8 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
-
-import QtGraphicalEffects 1.0 // For the dropshadow
 
 // The expandable component has 2 major sub components:
 //      * The headerItem; Always visible and should hold some info about what happens if the component is expanded
@@ -32,8 +30,8 @@ Item
     property color contentBackgroundColor: UM.Theme.getColor("action_button")
 
     property color headerBackgroundColor: UM.Theme.getColor("action_button")
-    property color headerActiveColor: UM.Theme.getColor("secondary")
-    property color headerHoverColor: UM.Theme.getColor("action_button_hovered")
+    property color headerActiveColor: UM.Theme.getColor("expandable_active")
+    property color headerHoverColor: UM.Theme.getColor("expandable_hover")
 
     property alias enabled: mouseArea.enabled
 
@@ -56,6 +54,11 @@ Item
     // How much padding is needed around the header & button
     property alias headerPadding: background.padding
 
+    property alias headerBackgroundBorder: background.border
+
+    // Whether or not to show the background border
+    property bool enableHeaderBackgroundBorder: true
+
     // What icon should be displayed on the right.
     property alias iconSource: collapseButton.source
 
@@ -73,11 +76,8 @@ Item
     // On what side should the header corners be shown? 1 is down, 2 is left, 3 is up and 4 is right.
     property alias headerCornerSide: background.cornerSide
 
-    property alias headerShadowColor: shadow.color
-
-    property alias enableHeaderShadow: shadow.visible
-
-    property int shadowOffset: 2
+    // Distance between the header and the content.
+    property int popupOffset: 2 * UM.Theme.getSize("default_lining").height
 
     // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
     property string dragPreferencesNamePrefix: ""
@@ -92,6 +92,15 @@ Item
         contentContainer.trySetPosition(contentContainer.x, contentContainer.y);
     }
 
+    onEnabledChanged:
+    {
+        if (!base.enabled && expanded)
+        {
+            toggleContent();
+            updateDragPosition();
+        }
+    }
+
     // Add this binding since the background color is not updated otherwise
     Binding
     {
@@ -103,20 +112,6 @@ Item
         }
     }
 
-    // The panel needs to close when it becomes disabled
-    Connections
-    {
-        target: base
-        onEnabledChanged:
-        {
-            if (!base.enabled && expanded)
-            {
-                toggleContent();
-                updateDragPosition();
-            }
-        }
-    }
-
     implicitHeight: 100 * screenScaleFactor
     implicitWidth: 400 * screenScaleFactor
 
@@ -125,10 +120,13 @@ Item
         id: background
         property real padding: UM.Theme.getSize("default_margin").width
 
+        border.width: base.enableHeaderBackgroundBorder ? UM.Theme.getSize("default_lining").width : 0
+        border.color: UM.Theme.getColor("lining")
+
         color: base.enabled ? (base.expanded ? headerActiveColor : headerBackgroundColor) : UM.Theme.getColor("disabled")
         anchors.fill: parent
 
-        Label
+        UM.Label
         {
             id: disabledLabel
             visible: !base.enabled
@@ -136,10 +134,6 @@ Item
             leftPadding: background.padding
             rightPadding: background.padding
             text: ""
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
-            color: UM.Theme.getColor("text")
             wrapMode: Text.WordWrap
         }
 
@@ -161,7 +155,7 @@ Item
                 }
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: collapseButton
                 anchors
@@ -170,7 +164,7 @@ Item
                     verticalCenter: parent.verticalCenter
                     margins: background.padding
                 }
-                source: UM.Theme.getIcon("pencil")
+                source: UM.Theme.getIcon("ChevronSingleDown")
                 visible: source != ""
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
@@ -189,20 +183,6 @@ Item
         }
     }
 
-    DropShadow
-    {
-        id: shadow
-        // Don't blur the shadow
-        radius: 0
-        anchors.fill: background
-        source: background
-        verticalOffset: base.shadowOffset
-        visible: true
-        color: UM.Theme.getColor("action_button_shadow")
-        // Should always be drawn behind the background.
-        z: background.z - 1
-    }
-
     Cura.RoundedRectangle
     {
         id: contentContainer
@@ -214,7 +194,7 @@ Item
         height: childrenRect.height
 
         // Ensure that the content is located directly below the headerItem
-        y: dragPreferencesNamePrefix === "" ? (background.height + base.shadowOffset + base.contentSpacingY) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameY)
+        y: dragPreferencesNamePrefix === "" ? (background.height + base.popupOffset + base.contentSpacingY) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameY)
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
@@ -233,7 +213,7 @@ Item
             var maxPt = base.mapFromItem(null,
                 CuraApplication.appWidth() - (contentContainer.width + margin.width),
                 CuraApplication.appHeight() - (contentContainer.height + margin.height));
-            var initialY = background.height + base.shadowOffset + margin.height;
+            var initialY = background.height + base.popupOffset + margin.height;
 
             contentContainer.x = Math.max(minPt.x, Math.min(maxPt.x, posNewX));
             contentContainer.y = Math.max(initialY, Math.min(maxPt.y, posNewY));
@@ -269,13 +249,13 @@ Item
                 }
                 property var clickPos: Qt.point(0, 0)
                 property bool dragging: false
-                onPressed:
+                onPressed: (mouse) =>
                 {
                     clickPos = Qt.point(mouse.x, mouse.y);
                     dragging = true
                 }
 
-                onPositionChanged:
+                onPositionChanged: (mouse) =>
                 {
                     if(dragging)
                     {
@@ -286,10 +266,8 @@ Item
                         }
                     }
                 }
-                onReleased:
-                {
-                     dragging = false
-                }
+                onReleased: dragging = false
+
 
                 onDoubleClicked:
                 {
@@ -300,7 +278,7 @@ Item
                 Connections
                 {
                     target: UM.Preferences
-                    onPreferenceChanged:
+                    function onPreferenceChanged(preference)
                     {
                         if
                         (
@@ -325,14 +303,6 @@ Item
             padding: UM.Theme.getSize("default_margin").width
 
             contentItem: Item {}
-
-            onContentItemChanged:
-            {
-                // Since we want the size of the content to be set by the size of the content,
-                // we need to do it like this.
-                content.width = contentItem.width + 2 * content.padding
-                content.height = contentItem.height + 2 * content.padding
-            }
         }
     }
 
@@ -342,10 +312,8 @@ Item
     {
         // Since it could be that the content is dynamically populated, we should also take these changes into account.
         target: content.contentItem
-        onWidthChanged: content.width = content.contentItem.width + 2 * content.padding
-        onHeightChanged:
+        function onHeightChanged()
         {
-            content.height = content.contentItem.height + 2 * content.padding
             contentContainer.height = contentHeader.height + content.height
         }
     }

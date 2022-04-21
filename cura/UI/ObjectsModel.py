@@ -4,7 +4,7 @@ from UM.Logger import Logger
 import re
 from typing import Dict, List, Optional, Union
 
-from PyQt5.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
@@ -34,14 +34,14 @@ class _NodeInfo:
 class ObjectsModel(ListModel):
     """Keep track of all objects in the project"""
 
-    NameRole = Qt.UserRole + 1
-    SelectedRole = Qt.UserRole + 2
-    OutsideAreaRole = Qt.UserRole + 3
-    BuilplateNumberRole = Qt.UserRole + 4
-    NodeRole = Qt.UserRole + 5
-    PerObjectSettingsCountRole = Qt.UserRole + 6
-    MeshTypeRole = Qt.UserRole + 7
-    ExtruderNumberRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    SelectedRole = Qt.ItemDataRole.UserRole + 2
+    OutsideAreaRole = Qt.ItemDataRole.UserRole + 3
+    BuilplateNumberRole = Qt.ItemDataRole.UserRole + 4
+    NodeRole = Qt.ItemDataRole.UserRole + 5
+    PerObjectSettingsCountRole = Qt.ItemDataRole.UserRole + 6
+    MeshTypeRole = Qt.ItemDataRole.UserRole + 7
+    ExtruderNumberRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -90,7 +90,7 @@ class ObjectsModel(ListModel):
 
         parent = node.getParent()
         if parent and parent.callDecoration("isGroup"):
-            return False  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            return False  # Grouped nodes don't need resetting as their parent (the group) is reset)
 
         node_build_plate_number = node.callDecoration("getBuildPlateNumber")
         if Application.getInstance().getPreferences().getValue("view/filter_current_build_plate") and node_build_plate_number != self._build_plate_number:
@@ -132,9 +132,26 @@ class ObjectsModel(ListModel):
 
             is_group = bool(node.callDecoration("isGroup"))
 
+            name_handled_as_group = False
             force_rename = False
-            if not is_group:
-                # Handle names for individual nodes
+            if is_group:
+                # Handle names for grouped nodes
+                original_name = self._group_name_prefix
+
+                current_name = node.getName()
+                if current_name.startswith(self._group_name_prefix):
+                    # This group has a standard group name, but we may need to renumber it
+                    name_index = int(current_name.split("#")[-1])
+                    name_handled_as_group = True
+                elif not current_name:
+                    # Force rename this group because this node has not been named as a group yet, probably because
+                    # it's a newly created group.
+                    name_index = 0
+                    force_rename = True
+                    name_handled_as_group = True
+
+            if not is_group or not name_handled_as_group:
+                # Handle names for individual nodes or groups that already have a non-group name
                 name = node.getName()
 
                 name_match = self._naming_regex.fullmatch(name)
@@ -144,18 +161,6 @@ class ObjectsModel(ListModel):
                 else:
                     original_name = name_match.groups()[0]
                     name_index = int(name_match.groups()[1])
-            else:
-                # Handle names for grouped nodes
-                original_name = self._group_name_prefix
-
-                current_name = node.getName()
-                if current_name.startswith(self._group_name_prefix):
-                    name_index = int(current_name.split("#")[-1])
-                else:
-                    # Force rename this group because this node has not been named as a group yet, probably because
-                    # it's a newly created group.
-                    name_index = 0
-                    force_rename = True
 
             if original_name not in name_to_node_info_dict:
                 # Keep track of 2 things:

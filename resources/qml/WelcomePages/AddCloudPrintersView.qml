@@ -1,18 +1,18 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.7 as Cura
 
 
 //
 // This component gets activated when the user presses the "Add cloud printers" button from the "Add a Printer" page.
 // It contains a busy indicator that remains active until the user logs in and adds a cloud printer in his/her account.
-// Once a cloud printer is added in mycloud.ultimaker.com, Cura discovers it (in a time window of 30 sec) and displays
+// Once a cloud printer is added in digitalfactory.ultimaker.com, Cura discovers it (in a time window of 30 sec) and displays
 // the newly added printers in this page.
 //
 Item
@@ -22,7 +22,7 @@ Item
     property bool searchingForCloudPrinters: true
     property var discoveredCloudPrintersModel: CuraApplication.getDiscoveredCloudPrintersModel()
 
-    // The area where either the discoveredCloudPrintersScrollView or the busyIndicator will be displayed
+    // The area where either the discoveredCloudPrintersList or the busyIndicator will be displayed
     Item
     {
         id: cloudPrintersContent
@@ -126,14 +126,9 @@ Item
 
         // The scrollView that contains the list of newly discovered Ultimaker Cloud printers. Visible only when
         // there is at least a new cloud printer.
-        ScrollView
+        ListView
         {
-            id: discoveredCloudPrintersScrollView
-            width: parent.width
-            clip : true
-            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-            visible: discoveredCloudPrintersModel.count > 0
+            id: discoveredCloudPrintersList
             anchors
             {
                 top: cloudPrintersAddedTitle.bottom
@@ -144,52 +139,47 @@ Item
                 bottom: parent.bottom
             }
 
-            Column
+            ScrollBar.vertical: UM.ScrollBar {}
+            clip : true
+            visible: discoveredCloudPrintersModel.count > 0
+            spacing: UM.Theme.getSize("wide_margin").height
+
+            model: discoveredCloudPrintersModel
+            delegate: Item
             {
-                id: discoveredPrintersColumn
-                spacing: 2 * UM.Theme.getSize("default_margin").height
+                width: discoveredCloudPrintersList.width
+                height: contentColumn.height
 
-                Repeater
+                Column
                 {
-                    id: discoveredCloudPrintersRepeater
-                    model: discoveredCloudPrintersModel
-                    delegate: Item
+                    id: contentColumn
+                    Label
                     {
-                        width: discoveredCloudPrintersScrollView.width
-                        height: contentColumn.height
-
-                        Column
-                        {
-                            id: contentColumn
-                            Label
-                            {
-                                id: cloudPrinterNameLabel
-                                leftPadding: UM.Theme.getSize("default_margin").width
-                                text: model.name
-                                font: UM.Theme.getFont("large_bold")
-                                color: UM.Theme.getColor("text")
-                                elide: Text.ElideRight
-                            }
-                            Label
-                            {
-                                id: cloudPrinterTypeLabel
-                                leftPadding: 2 * UM.Theme.getSize("default_margin").width
-                                topPadding: UM.Theme.getSize("thin_margin").height
-                                text: {"Type: " + model.machine_type}
-                                font: UM.Theme.getFont("medium")
-                                color: UM.Theme.getColor("text")
-                                elide: Text.ElideRight
-                            }
-                            Label
-                            {
-                                id: cloudPrinterFirmwareVersionLabel
-                                leftPadding: 2 * UM.Theme.getSize("default_margin").width
-                                text: {"Firmware version: " + model.firmware_version}
-                                font: UM.Theme.getFont("medium")
-                                color: UM.Theme.getColor("text")
-                                elide: Text.ElideRight
-                            }
-                        }
+                        id: cloudPrinterNameLabel
+                        leftPadding: UM.Theme.getSize("default_margin").width
+                        text: model.name ? model.name : ""
+                        font: UM.Theme.getFont("large_bold")
+                        color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
+                    }
+                    Label
+                    {
+                        id: cloudPrinterTypeLabel
+                        leftPadding: 2 * UM.Theme.getSize("default_margin").width
+                        topPadding: UM.Theme.getSize("thin_margin").height
+                        text: {"Type: " + model.machine_type}
+                        font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
+                    }
+                    Label
+                    {
+                        id: cloudPrinterFirmwareVersionLabel
+                        leftPadding: 2 * UM.Theme.getSize("default_margin").width
+                        text: {"Firmware version: " + model.firmware_version}
+                        font: UM.Theme.getFont("medium")
+                        color: UM.Theme.getColor("text")
+                        elide: Text.ElideRight
                     }
                 }
             }
@@ -215,7 +205,7 @@ Item
         id: finishButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Finish")
+        text: base.currentItem.next_page_button_text
         onClicked:
         {
             discoveredCloudPrintersModel.clear()

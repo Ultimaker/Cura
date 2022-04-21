@@ -1,14 +1,11 @@
-// Copyright (c) 2020 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.2
-import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.15
+import QtQuick.Dialogs
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 import "Dialogs"
@@ -52,6 +49,22 @@ UM.MainWindow
         tooltip.hide();
     }
 
+    MouseArea
+    {
+        // Hack introduced when switching to qt6
+        // We used to be able to let the main window's default handlers control this, but something seems to be changed
+        // for qt6 in the ordering. TODO; We should find out what changed and have a less hacky fix for that.
+        enabled: parent.visible
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+        onPositionChanged: (mouse) => {base.mouseMoved(mouse);}
+        onPressed: (mouse) => { base.mousePressed(mouse);}
+        onReleased: (mouse) => { base.mouseReleased(mouse);}
+        onWheel: (wheel) => {base.wheel(wheel)}
+
+    }
+
     Rectangle
     {
         id: greyOutBackground
@@ -88,7 +101,7 @@ UM.MainWindow
     {
         // This connection is used when there is no ActiveMachine and the user is logged in
         target: CuraApplication
-        onShowAddPrintersUncancellableDialog:
+        function onShowAddPrintersUncancellableDialog()
         {
             Cura.Actions.parent = backgroundItem
 
@@ -102,7 +115,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onInitializationFinished:
+        function onInitializationFinished()
         {
             // Workaround silly issues with QML Action's shortcut property.
             //
@@ -149,17 +162,8 @@ UM.MainWindow
         id: backgroundItem
         anchors.fill: parent
 
-        signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
-        function getMeshName(path)
-        {
-            //takes the path the complete path of the meshname and returns only the filebase
-            var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.indexOf("."))
-            return fileBase
-        }
-
         //DeleteSelection on the keypress backspace event
-        Keys.onPressed:
+        Keys.onPressed: (event) =>
         {
             if (event.key == Qt.Key_Backspace)
             {
@@ -170,7 +174,6 @@ UM.MainWindow
         ApplicationMenu
         {
             id: applicationMenu
-            window: base
         }
 
         Item
@@ -184,32 +187,13 @@ UM.MainWindow
             }
             height: stageMenu.source != "" ? Math.round(mainWindowHeader.height + stageMenu.height / 2) : mainWindowHeader.height
 
-            LinearGradient
+            Rectangle
             {
                 anchors.fill: parent
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient
-                {
-                    GradientStop
-                    {
-                        position: 0.0
-                        color: UM.Theme.getColor("main_window_header_background")
-                    }
-                    GradientStop
-                    {
-                        position: 0.5
-                        color: UM.Theme.getColor("main_window_header_background_gradient")
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: UM.Theme.getColor("main_window_header_background")
-                    }
-                }
+                color: UM.Theme.getColor("main_window_header_background")
             }
 
-            // This is a placehoder for adding a pattern in the header
+            // This is a placeholder for adding a pattern in the header
             Image
             {
                 id: backgroundPattern
@@ -250,7 +234,7 @@ UM.MainWindow
             {
                 // The drop area is here to handle files being dropped onto Cura.
                 anchors.fill: parent
-                onDropped:
+                onDropped: (drop) =>
                 {
                     if (drop.urls.length > 0)
                     {
@@ -259,12 +243,11 @@ UM.MainWindow
                         for (var i = 0; i < drop.urls.length; i++)
                         {
                             var filename = drop.urls[i];
-                            if (filename.toLowerCase().endsWith(".curapackage"))
+                            if (filename.toString().toLowerCase().endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
-                                packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();
                             }
                             else
@@ -320,8 +303,8 @@ UM.MainWindow
 
             Toolbar
             {
-                // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
-                // plugins)
+                // The toolbar is the left bar that is populated by all the tools
+                // (which are dynamically populated by plugins)
                 id: toolbar
 
                 property int mouseX: base.mouseX
@@ -426,6 +409,7 @@ UM.MainWindow
                     Cura.PrimaryButton
                     {
                         text: model.name
+                        iconSource: UM.Theme.getIcon(model.icon)
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
@@ -435,6 +419,23 @@ UM.MainWindow
                     Cura.SecondaryButton
                     {
                         text: model.name
+                        iconSource: UM.Theme.getIcon(model.icon)
+                        height: UM.Theme.getSize("message_action_button").height
+                    }
+                }
+                link: Component
+                {
+                    Cura.TertiaryButton
+                    {
+                        text: model.name
+                        iconSource:
+                        {
+                            if (model.icon == null || model.icon == "")
+                            {
+                                return UM.Theme.getIcon("LinkExternal")
+                            }
+                            return UM.Theme.getIcon(model.icon)
+                        }
                         height: UM.Theme.getSize("message_action_button").height
                     }
                 }
@@ -480,19 +481,19 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.preferences
-        onTriggered: preferences.visible = true
+        function onTriggered() { preferences.visible = true }
     }
 
     Connections
     {
         target: CuraApplication
-        onShowPreferencesWindow: preferences.visible = true
+        function onShowPreferencesWindow() { preferences.visible = true }
     }
 
     Connections
     {
         target: Cura.Actions.addProfile
-        onTriggered:
+        function onTriggered()
         {
             preferences.show();
             preferences.setPage(4);
@@ -504,7 +505,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.configureMachines
-        onTriggered:
+        function onTriggered()
         {
             preferences.visible = true;
             preferences.setPage(2);
@@ -514,7 +515,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.manageProfiles
-        onTriggered:
+        function onTriggered()
         {
             preferences.visible = true;
             preferences.setPage(4);
@@ -524,7 +525,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.manageMaterials
-        onTriggered:
+        function onTriggered()
         {
             preferences.visible = true;
             preferences.setPage(3)
@@ -534,7 +535,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.configureSettingVisibility
-        onTriggered:
+        function onTriggered(source)
         {
             preferences.visible = true;
             preferences.setPage(1);
@@ -559,7 +560,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.MachineManager
-        onBlurSettings:
+        function onBlurSettings()
         {
             contentItem.forceActiveFocus()
         }
@@ -570,7 +571,7 @@ UM.MainWindow
         id: contextMenu
     }
 
-    onPreClosing:
+    onPreClosing: (close) =>
     {
         close.accepted = CuraApplication.getIsAllChecksPassed();
         if (!close.accepted)
@@ -579,18 +580,15 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
+    Cura.MessageDialog
     {
         id: exitConfirmationDialog
         title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
         text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
-        icon: StandardIcon.Question
-        modality: Qt.ApplicationModal
-        standardButtons: StandardButton.Yes | StandardButton.No
-        onYes: CuraApplication.callConfirmExitDialogCallback(true)
-        onNo: CuraApplication.callConfirmExitDialogCallback(false)
+        standardButtons: Dialog.Yes | Dialog.No
+        onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
         onRejected: CuraApplication.callConfirmExitDialogCallback(false)
-        onVisibilityChanged:
+        onClosed:
         {
             if (!visible)
             {
@@ -603,7 +601,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onShowConfirmExitDialog:
+        function onShowConfirmExitDialog(message)
         {
             exitConfirmationDialog.text = message;
             exitConfirmationDialog.open();
@@ -613,19 +611,19 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.quit
-        onTriggered: CuraApplication.checkAndExitApplication();
+        function onTriggered() { CuraApplication.checkAndExitApplication(); }
     }
 
     Connections
     {
         target: Cura.Actions.toggleFullScreen
-        onTriggered: base.toggleFullscreen()
+        function onTriggered() { base.toggleFullscreen() }
     }
 
     Connections
     {
         target: Cura.Actions.exitFullScreen
-        onTriggered: base.exitFullscreen()
+        function onTriggered() { base.exitFullscreen() }
     }
 
     FileDialog
@@ -635,24 +633,19 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file(s)")
         modality: Qt.WindowModal
-        selectMultiple: true
+        fileMode: FileDialog.OpenFiles
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder:
-        {
-            //Because several implementations of the file dialog only update the folder when it is explicitly set.
-            folder = CuraApplication.getDefaultPath("dialog_load_path");
-            return CuraApplication.getDefaultPath("dialog_load_path");
-        }
+        currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
         {
             // Because several implementations of the file dialog only update the folder
             // when it is explicitly set.
-            var f = folder;
-            folder = f;
+            var f = currentFolder;
+            currentFolder = f;
 
-            CuraApplication.setDefaultPath("dialog_load_path", folder);
+            CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
 
-            handleOpenFileUrls(fileUrls);
+            handleOpenFileUrls(selectedFiles);
         }
 
         // Yeah... I know... it is a mess to put all those things here.
@@ -700,6 +693,9 @@ UM.MainWindow
 
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
+            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+            openFilesIncludingProjectsDialog.addToRecent = true;
+
             // we only allow opening one project file
             if (selectedMultipleFiles && hasProjectFile)
             {
@@ -726,6 +722,7 @@ UM.MainWindow
                 {
                     // ask whether to open as project or as models
                     askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.addToRecent = true;
                     askOpenAsProjectOrModelsDialog.show();
                 }
             }
@@ -736,20 +733,18 @@ UM.MainWindow
         }
     }
 
-    MessageDialog
+    Cura.MessageDialog
     {
         id: packageInstallDialog
-        title: catalog.i18nc("@window:title", "Install Package");
-        standardButtons: StandardButton.Ok
-        modality: Qt.ApplicationModal
+        title: catalog.i18nc("@window:title", "Install Package")
+        standardButtons: Dialog.Ok
     }
 
-    MessageDialog
+    Cura.MessageDialog
     {
         id: infoMultipleFilesWithGcodeDialog
         title: catalog.i18nc("@title:window", "Open File(s)")
-        icon: StandardIcon.Information
-        standardButtons: StandardButton.Ok
+        standardButtons: Dialog.Ok
         text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
 
         property var selectedMultipleFiles
@@ -766,7 +761,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.open
-        onTriggered: openDialog.open()
+        function onTriggered() { openDialog.open() }
     }
 
     OpenFilesIncludingProjectsDialog
@@ -782,9 +777,10 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onOpenProjectFile:
+        function onOpenProjectFile(project_file, add_to_recent_files)
         {
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
             askOpenAsProjectOrModelsDialog.show();
         }
     }
@@ -792,7 +788,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.showProfileFolder
-        onTriggered:
+        function onTriggered()
         {
             var path = UM.Resources.getPath(UM.Resources.Preferences, "");
             if(Qt.platform.os == "windows")
@@ -804,35 +800,6 @@ UM.MainWindow
             {
                 Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
             }
-        }
-    }
-
-    MessageDialog
-    {
-        id: messageDialog
-        modality: Qt.ApplicationModal
-        onAccepted: CuraApplication.messageBoxClosed(clickedButton)
-        onApply: CuraApplication.messageBoxClosed(clickedButton)
-        onDiscard: CuraApplication.messageBoxClosed(clickedButton)
-        onHelp: CuraApplication.messageBoxClosed(clickedButton)
-        onNo: CuraApplication.messageBoxClosed(clickedButton)
-        onRejected: CuraApplication.messageBoxClosed(clickedButton)
-        onReset: CuraApplication.messageBoxClosed(clickedButton)
-        onYes: CuraApplication.messageBoxClosed(clickedButton)
-    }
-
-    Connections
-    {
-        target: CuraApplication
-        onShowMessageBox:
-        {
-            messageDialog.title = title
-            messageDialog.text = text
-            messageDialog.informativeText = informativeText
-            messageDialog.detailedText = detailedText
-            messageDialog.standardButtons = buttons
-            messageDialog.icon = icon
-            messageDialog.visible = true
         }
     }
 
@@ -848,7 +815,7 @@ UM.MainWindow
     Connections
     {
         target: CuraApplication
-        onShowDiscardOrKeepProfileChanges:
+        function onShowDiscardOrKeepProfileChanges()
         {
             discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
             discardOrKeepProfileChangesDialogLoader.item.show()
@@ -867,6 +834,8 @@ UM.MainWindow
     {
         id: whatsNewDialog
         title: catalog.i18nc("@title:window", "What's New")
+        minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
+        minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
         visible: false
@@ -875,13 +844,13 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.whatsNew
-        onTriggered: whatsNewDialog.show()
+        function onTriggered() { whatsNewDialog.show() }
     }
 
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered:
+        function onTriggered()
         {
             // Make sure to show from the first page when the dialog shows up.
             addMachineDialog.resetModelState()
@@ -897,7 +866,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.about
-        onTriggered: aboutDialog.visible = true;
+        function onTriggered() { aboutDialog.visible = true; }
     }
 
     Timer

@@ -1,10 +1,8 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
-import QtQuick.Controls 1.4
-import QtQuick.Controls 2.3 as Controls2
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
@@ -30,7 +28,7 @@ Item
 
         spacing: UM.Theme.getSize("default_margin").height
 
-        Controls2.ButtonGroup
+        ButtonGroup
         {
             id: activeProfileButtonGroup
             exclusive: true
@@ -48,10 +46,11 @@ Item
             Cura.IconWithText
             {
                 id: profileLabel
-                source: UM.Theme.getIcon("category_layer_height")
+                source: UM.Theme.getIcon("PrintQuality")
                 text: catalog.i18nc("@label", "Profiles")
                 font: UM.Theme.getFont("medium")
                 width: labelColumnWidth
+                iconSize: UM.Theme.getSize("medium_button_icon").width
             }
             UM.SimpleButton
             {
@@ -69,7 +68,7 @@ Item
                 }
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                iconSource: UM.Theme.getIcon("reset")
+                iconSource: UM.Theme.getIcon("ArrowReset")
 
                 onClicked:
                 {
@@ -91,6 +90,7 @@ Item
                 {
                     left: profileLabel.right
                     right: parent.right
+                    verticalCenter: profileLabel.verticalCenter
                 }
 
                 model: Cura.QualityProfilesDropDownMenuModel

@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
-# Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen
+# Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen, Inigo Martinez
 # Date:     July 31, 2019
-# Modified: Okt 22, 2020
+# Modified: Nov 30, 2021
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -37,7 +37,8 @@ class DisplayProgressOnLCD(Script):
                     "type": "enum",
                     "options": {
                         "m117":"M117 - All printers",
-                        "m73":"M73 - Prusa, Marlin 2"
+                        "m73":"M73 - Prusa, Marlin 2",
+                        "m118":"M118 - Octoprint"
                     },
                     "enabled": "time_remaining",
                     "default_value": "m117"
@@ -77,7 +78,11 @@ class DisplayProgressOnLCD(Script):
             current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
             # And now insert that into the GCODE
             lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
-        else:  # Must be m73.
+        elif mode == "m118":
+            current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
+            # And now insert that into the GCODE
+            lines.insert(line_index, "M118 A1 P0 action:notification Time Left {}".format(current_time_string))
+        else:
             mins = int(60 * h + m + s / 30)
             lines.insert(line_index, "M73 R{}".format(mins))
 
@@ -107,7 +112,10 @@ class DisplayProgressOnLCD(Script):
 
                         if output_percentage:
                             # Emit 0 percent to sure Marlin knows we are overriding the completion percentage
-                            lines.insert(line_index, "M73 P0")
+                            if output_time_method == "m118":
+                                lines.insert(line_index, "M118 A1 P0 action:notification Data Left 0/100")
+                            else:
+                                lines.insert(line_index, "M73 P0")
 
                     elif line.startswith(";TIME_ELAPSED:"):
                         # We've found one of the time elapsed values which are added at the end of layers
@@ -178,7 +186,10 @@ class DisplayProgressOnLCD(Script):
                                     output = min(percentage + previous_layer_end_percentage, 100)
                                     
                                     # Now insert the sanitized percentage into the GCODE
-                                    lines.insert(percentage_line_index, "M73 P{}".format(output))
+                                    if output_time_method == "m118":
+                                        lines.insert(percentage_line_index, "M118 A1 P0 action:notification Data Left {}/100".format(output))
+                                    else:
+                                        lines.insert(percentage_line_index, "M73 P{}".format(output))
 
                                 previous_layer_end_percentage = layer_end_percentage
 

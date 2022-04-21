@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -35,7 +35,7 @@ Item
     Connections
     {
         target: header
-        onClicked:
+        function onClicked()
         {
             base.contentShown = !base.contentShown
             clicked()
@@ -49,19 +49,19 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
         height: UM.Theme.getSize("expandable_component_content_header").height
-        rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+        rightIconSource: contentShown ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleLeft")
         contentShown: base.contentShown
     }
 
     Cura.RoundedRectangle
     {
         id: contentRectangle
-        // Move up a bit (exaclty the width of the border) to avoid double line
+        // Move up a bit (exactly the width of the border) to avoid double line
         y: header.height - UM.Theme.getSize("default_lining").width
         anchors.left: header.left
         anchors.right: header.right
         // Add 2x lining, because it needs a bit of space on the top and the bottom.
-        height: contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height
+        height: contentLoader.item ? contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height : 0
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -88,14 +88,12 @@ Item
         {
             id: emptyComponent
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Empty")
                 height: UM.Theme.getSize("action_button").height
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 font: UM.Theme.getFont("medium")
-                renderType: Text.NativeRendering
             }
         }
     }

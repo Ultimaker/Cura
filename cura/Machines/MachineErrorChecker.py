@@ -5,7 +5,7 @@ import time
 
 from collections import deque
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
 from typing import Optional, Any, Set
 
 from UM.Logger import Logger
@@ -53,6 +53,8 @@ class MachineErrorChecker(QObject):
 
         self._keys_to_check = set()  # type: Set[str]
 
+        self._num_keys_to_check_per_update = 10
+
     def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
 
@@ -97,8 +99,7 @@ class MachineErrorChecker(QObject):
 
     def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
         """Start the error check for property changed
-
-        this is seperate from the startErrorCheck because it ignores a number property types
+        this is separate from the startErrorCheck because it ignores a number property types
 
         :param key:
         :param property_name:
@@ -163,37 +164,37 @@ class MachineErrorChecker(QObject):
 
         self._check_in_progress = True
 
-        # If there is nothing to check any more, it means there is no error.
-        if not self._stacks_and_keys_to_check:
-            # Finish
-            self._setResult(False)
-            return
+        for i in range(self._num_keys_to_check_per_update):
+            # If there is nothing to check any more, it means there is no error.
+            if not self._stacks_and_keys_to_check:
+                # Finish
+                self._setResult(False)
+                return
 
-        # Get the next stack and key to check
-        stack, key = self._stacks_and_keys_to_check.popleft()
+            # Get the next stack and key to check
+            stack, key = self._stacks_and_keys_to_check.popleft()
 
-        enabled = stack.getProperty(key, "enabled")
-        if not enabled:
-            self._application.callLater(self._checkStack)
-            return
+            enabled = stack.getProperty(key, "enabled")
+            if not enabled:
+                continue
 
-        validation_state = stack.getProperty(key, "validationState")
-        if validation_state is None:
-            # Setting is not validated. This can happen if there is only a setting definition.
-            # We do need to validate it, because a setting definitions value can be set by a function, which could
-            # be an invalid setting.
-            definition = stack.getSettingDefinition(key)
-            validator_type = SettingDefinition.getValidatorForType(definition.type)
-            if validator_type:
-                validator = validator_type(key)
-                validation_state = validator(stack)
-        if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
-            # Since we don't know if any of the settings we didn't check is has an error value, store the list for the
-            # next check.
-            keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
-            keys_to_recheck.add(key)
-            self._setResult(True, keys_to_recheck = keys_to_recheck)
-            return
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state is None:
+                # Setting is not validated. This can happen if there is only a setting definition.
+                # We do need to validate it, because a setting definitions value can be set by a function, which could
+                # be an invalid setting.
+                definition = stack.getSettingDefinition(key)
+                validator_type = SettingDefinition.getValidatorForType(definition.type)
+                if validator_type:
+                    validator = validator_type(key)
+                    validation_state = validator(stack)
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
+                # Since we don't know if any of the settings we didn't check is has an error value, store the list for the
+                # next check.
+                keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
+                keys_to_recheck.add(key)
+                self._setResult(True, keys_to_recheck = keys_to_recheck)
+                continue
 
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)

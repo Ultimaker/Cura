@@ -1,10 +1,10 @@
 // Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.15
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -22,6 +22,7 @@ UM.TooltipArea
 
     property int controlWidth: UM.Theme.getSize("setting_control").width
     property int controlHeight: UM.Theme.getSize("setting_control").height
+    property real spacing: UM.Theme.getSize("default_margin").width
 
     text: tooltipText
 
@@ -75,21 +76,21 @@ UM.TooltipArea
     {
         id: textFieldWithUnit
         anchors.left: fieldLabel.right
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: spacing
         verticalAlignment: Text.AlignVCenter
+        selectionColor: UM.Theme.getColor("text_selection")
+        selectedTextColor: UM.Theme.getColor("setting_control_text")
         padding: 0
         leftPadding: UM.Theme.getSize("narrow_margin").width
         width: numericTextFieldWithUnit.controlWidth
         height: numericTextFieldWithUnit.controlHeight
 
         // Background is a rounded-cornered box with filled color as state indication (normal, warning, error, etc.)
-        background: Rectangle
+        background: UM.UnderlineBackground
         {
             anchors.fill: parent
-            anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
-            radius: UM.Theme.getSize("setting_control_radius").width
 
-            border.color:
+            liningColor:
             {
                 if (!textFieldWithUnit.enabled)
                 {
@@ -108,9 +109,9 @@ UM.TooltipArea
                 // Validation is OK.
                 if (textFieldWithUnit.hovered || textFieldWithUnit.activeFocus)
                 {
-                    return UM.Theme.getColor("setting_control_border_highlight")
+                    return UM.Theme.getColor("border_main")
                 }
-                return UM.Theme.getColor("setting_control_border")
+                return UM.Theme.getColor("border_field_light")
             }
 
             color:
@@ -156,12 +157,24 @@ UM.TooltipArea
             const value = propertyProvider.properties.value
             return value ? value : ""
         }
-        validator: DoubleValidator
+        property string validatorString:
         {
-            bottom: numericTextFieldWithUnit.minimum
-            top: numericTextFieldWithUnit.maximum
-            decimals: numericTextFieldWithUnit.decimals
-            notation: DoubleValidator.StandardNotation
+            var digits = Math.min(8, 1 + Math.floor(
+                Math.log(Math.max(Math.abs(numericTextFieldWithUnit.maximum), Math.abs(numericTextFieldWithUnit.minimum)))/Math.log(10)
+            ))
+            var minus = numericTextFieldWithUnit.minimum < 0 ? "-?" : ""
+            if (numericTextFieldWithUnit.decimals == 0)
+            {
+                return "^%0\\d{1,%1}$".arg(minus).arg(digits)
+            }
+            else
+            {
+                return "^%0\\d{0,%1}[.,]?\\d{0,%2}$".arg(minus).arg(digits).arg(numericTextFieldWithUnit.decimals)
+            }
+        }
+        validator: RegularExpressionValidator
+        {
+            regularExpression: new RegExp(textFieldWithUnit.validatorString)
         }
 
         //Enforce actual minimum and maximum values.
@@ -210,7 +223,7 @@ UM.TooltipArea
             }
         }
 
-        Label
+        UM.Label
         {
             id: unitLabel
             anchors.right: parent.right
@@ -218,10 +231,7 @@ UM.TooltipArea
             anchors.verticalCenter: parent.verticalCenter
             text: unitText
             textFormat: Text.PlainText
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
             color: UM.Theme.getColor("setting_unit")
-            font: UM.Theme.getFont("default")
         }
     }
 }

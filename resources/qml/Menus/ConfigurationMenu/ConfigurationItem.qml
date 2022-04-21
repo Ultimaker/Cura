@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.0
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Button
@@ -88,18 +88,18 @@ Button
 
                 visible: !configurationItem.isValidMaterial
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: icon
                     anchors.verticalCenter: unknownMaterialMessage.verticalCenter
 
-                    source: UM.Theme.getIcon("warning")
+                    source: UM.Theme.getIcon("Warning")
                     color: UM.Theme.getColor("warning")
                     width: UM.Theme.getSize("section_icon").width
                     height: width
                 }
 
-                Label
+                UM.Label
                 {
                     id: unknownMaterialMessage
                     text:
@@ -147,10 +147,6 @@ Button
                     anchors.top: unknownMaterial.top
 
                     wrapMode: Text.WordWrap
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    verticalAlignment: Text.AlignVCenter
-                    linkColor: UM.Theme.getColor("text_link")
 
                     onLinkActivated:
                     {
@@ -202,7 +198,7 @@ Button
             Cura.IconWithText
             {
                 id: buildplateLabel
-                source: UM.Theme.getIcon("buildplate")
+                source: UM.Theme.getIcon("Buildplate")
                 text:
                 {
                     if (configuration === null)
@@ -219,7 +215,7 @@ Button
     Connections
     {
         target: Cura.MachineManager
-        onCurrentConfigurationChanged:
+        function onCurrentConfigurationChanged()
         {
             configurationItem.checked = Cura.MachineManager.matchesConfiguration(configuration)
         }

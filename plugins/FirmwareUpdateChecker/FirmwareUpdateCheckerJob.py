@@ -12,7 +12,7 @@ from urllib.error import URLError
 from typing import Dict
 import ssl
 
-import certifi
+import certifi  # type: ignore
 
 from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
 from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
@@ -112,7 +112,7 @@ class FirmwareUpdateCheckerJob(Job):
                 # The first time we want to store the current version, the notification will not be shown,
                 # because the new version of Cura will be release before the firmware and we don't want to
                 # notify the user when no new firmware version is available.
-                if (checked_version != "") and (checked_version != current_version):
+                if checked_version != "" and checked_version != current_version:
                     Logger.log("i", "Showing firmware update message for new version: {version}".format(version = current_version))
                     message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name, current_version,
                                                            self._lookups.getRedirectUserUrl())

@@ -1,0 +1,82 @@
+name: Bug Report
+description: Create a report to help us fix issues.
+labels: "Type: Bug"
+body:
+- type: markdown
+  attributes:
+    value: |
+      **Thank you for using Cura and wanting to report a bug.**
+      
+      Before filing, please check if the issue already exists (either open or closed) by using the search bar on the issues page. If it does, comment there. Even if it's closed, we can reopen it based on your comment. 
+      
+      Also, please note the application version in the title of the issue "For example (3.2.1) Cannot connect to 3rd-party printer". Please do not write things like **Request** or **BUG** in the title, this is what labels are for.
+- type: input
+  attributes:
+    label: Application Version
+    description: The version of Cura this issue occurs with.
+    placeholder: 4.9.0
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Platform
+    description: Information about the operating system the issue occurs on. Include at least the operating system and maybe GPU.
+    placeholder: Windows 10
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Printer
+    description: Which printer was selected in Cura?
+    placeholder: Ultimaker S5    
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Reproduction steps
+    description: Tell us what you did!
+    placeholder: |
+      1. Something you did
+      2. Something you did next
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Actual results
+    description: What happens after the above steps have been followed.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected results
+    description: What should happen after the above steps have been followed.
+  validations:
+    required: true
+- type: markdown
+  attributes:
+    value: |
+      Please be sure to add the following files:
+        * For slicing issues, upload a **project file** that clearly shows the bug. 
+          To save a project file go to `File -> Save project`. Please make sure to .zip your project file. For big files you may need to use WeTransfer or similar file sharing sites. 
+          G-code files are not project files!
+        * **Screenshots** of showing the problem, perhaps before/after images.
+        * A **log file** for crashes and similar issues.
+          You can find your log file here:
+          Windows: `%APPDATA%\cura\<Cura version>\cura.log` or usually `C:\Users\\<your username>\AppData\Roaming\cura\<Cura version>\cura.log`
+          MacOS: `$USER/Library/Application Support/cura/<Cura version>/cura.log`
+          Ubuntu/Linux: `$USER/.local/share/cura/<Cura version>/cura.log` 
+          
+          If the Cura user interface still starts, you can also reach this directory from the application menu in Help -> Show settings folder 
+- type: checkboxes
+  attributes:
+    label: Checklist of files to include
+    options:
+      - label: Log file
+      - label: Project file
+- type: textarea
+  attributes:
+    label: Additional information & file uploads  
+    description: You can add these files and additional information that is relevant to the issue in the comments below.
+  validations:
+    required: true
+

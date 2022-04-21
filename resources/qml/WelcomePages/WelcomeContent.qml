@@ -7,7 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-
 //
 // This component contains the content for the "Welcome" page of the welcome on-boarding process.
 //
@@ -15,11 +14,39 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    Column  // Arrange the items vertically and put everything in the center
+    // Arrange the items vertically and put everything in the center
+    Column
     {
-        anchors.centerIn: parent
-        width: parent.width
-        spacing: 2 * UM.Theme.getSize("wide_margin").height
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        spacing: UM.Theme.getSize("thick_margin").height
+        width:parent.width
+
+
+        // Filler item
+        Item
+        {
+            height: UM.Theme.getSize("thick_margin").width
+            width: parent.width
+        }
+
+        Image
+        {
+            id: curaImage
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: UM.Theme.getImage("welcome_cura")
+            fillMode: Image.PreserveAspectFit
+            width: UM.Theme.getSize("welcome_wizard_content_image_big").width
+            sourceSize.width: width
+            sourceSize.height: height
+        }
+
+        // Filler item
+        Item
+        {
+            height: UM.Theme.getSize("thick_margin").width
+            width: parent.width
+        }
 
         Label
         {
@@ -28,15 +55,8 @@ Item
             horizontalAlignment: Text.AlignHCenter
             text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
             color: UM.Theme.getColor("primary_button")
-            font: UM.Theme.getFont("huge")
+            font: UM.Theme.getFont("huge_bold")
             renderType: Text.NativeRendering
-        }
-
-        Image
-        {
-            id: curaImage
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: UM.Theme.getImage("first_run_welcome_cura")
         }
 
         Label
@@ -44,19 +64,34 @@ Item
             id: textLabel
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@text", "Please follow these steps to set up\nUltimaker Cura. This will only take a few moments.")
+            width: titleLabel.width + 2 * UM.Theme.getSize("thick_margin").width
+            text: catalog.i18nc("@text", "Please follow these steps to set up Ultimaker Cura. This will only take a few moments.")
+            wrapMode: Text.Wrap
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
+        }
+
+        // Filler item
+        Item
+        {
+            height: UM.Theme.getSize("thick_margin").height
+            width: parent.width
         }
 
         Cura.PrimaryButton
         {
             id: getStartedButton
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.margins: UM.Theme.getSize("wide_margin").width
             text: catalog.i18nc("@button", "Get started")
             onClicked: base.showNextPage()
+        }
+
+        // Filler item
+        Item
+        {
+            height: UM.Theme.getSize("thick_margin").height
+            width: parent.width
         }
     }
 }

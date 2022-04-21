@@ -15,5 +15,6 @@ class PrintJobUploadQueueFullMessage(Message):
         super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "Print job queue is full. The printer can't accept a new job."),
             title = I18N_CATALOG.i18nc("@info:title", "Queue Full"),
-            lifetime = 10
+            lifetime = 10,
+            message_type=Message.MessageType.ERROR
         )

@@ -14,5 +14,5 @@ class PrintJobUploadSuccessMessage(Message):
         super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
             title = I18N_CATALOG.i18nc("@info:title", "Data Sent"),
-            lifetime = 5
+            message_type = Message.MessageType.POSITIVE
         )

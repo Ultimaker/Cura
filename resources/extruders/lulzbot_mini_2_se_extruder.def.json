@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "Lulzbot Mini 2 | SE | 0.5mm",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "lulzbot_mini_2_se",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "0"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0 },
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.5 },
+        "machine_extruder_start_pos_abs": { "default_value": false },
+        "machine_extruder_start_pos_x": { "default_value": 0 },
+        "machine_extruder_start_pos_y": { "default_value": 0 },
+        "machine_extruder_end_pos_abs": { "default_value": false },
+        "machine_extruder_end_pos_x": { "default_value": 0 },
+        "machine_extruder_end_pos_y": { "default_value": 0 }
+    }
+}

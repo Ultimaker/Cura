@@ -6,7 +6,7 @@ import threading
 from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
 import uuid
 
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
+from PyQt6.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import deprecated, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
@@ -60,16 +60,6 @@ class GlobalStack(CuraContainerStack):
     extrudersChanged = pyqtSignal()
     configuredConnectionTypesChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantMap", notify = extrudersChanged)
-    @deprecated("Please use extruderList instead.", "4.4")
-    def extruders(self) -> Dict[str, "ExtruderStack"]:
-        """Get the list of extruders of this stack.
-
-        :return: The extruders registered with this stack.
-        """
-
-        return self._extruders
-
     @pyqtProperty("QVariantList", notify = extrudersChanged)
     def extruderList(self) -> List["ExtruderStack"]:
         result_tuple_list = sorted(list(self._extruders.items()), key=lambda x: int(x[0]))
@@ -85,6 +75,14 @@ class GlobalStack(CuraContainerStack):
     @pyqtProperty(bool, notify=configuredConnectionTypesChanged)
     def supportsNetworkConnection(self):
         return self.getMetaDataEntry("supports_network_connection", False)
+
+    @pyqtProperty(bool, constant = True)
+    def supportsMaterialExport(self):
+        """
+        Whether the printer supports Cura's export format of material profiles.
+        :return: ``True`` if it supports it, or ``False`` if not.
+        """
+        return self.getMetaDataEntry("supports_material_export", False)
 
     @classmethod
     def getLoadingPriority(cls) -> int:

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.FileHandler.FileHandler import FileHandler #For typing.
@@ -9,8 +9,8 @@ from cura.CuraApplication import CuraApplication
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
+from PyQt6.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager, QNetworkReply, QAuthenticator
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject, QUrl, QCoreApplication
 from time import time
 from typing import Callable, Dict, List, Optional, Union
 from enum import IntEnum
@@ -114,6 +114,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         return b"".join(file_data_bytes_list)
 
     def _update(self) -> None:
+        """
+        Update the connection state of this device.
+
+        This is called on regular intervals.
+        """
         if self._last_response_time:
             time_since_last_response = time() - self._last_response_time
         else:
@@ -127,11 +132,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         if time_since_last_response > self._timeout_time >= time_since_last_request:
             # Go (or stay) into timeout.
             if self._connection_state_before_timeout is None:
-                self._connection_state_before_timeout = self._connection_state
+                self._connection_state_before_timeout = self.connectionState
 
             self.setConnectionState(ConnectionState.Closed)
 
-        elif self._connection_state == ConnectionState.Closed:
+        elif self.connectionState == ConnectionState.Closed:
             # Go out of timeout.
             if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
                 self.setConnectionState(self._connection_state_before_timeout)
@@ -141,8 +146,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         url = QUrl("http://" + self._address + self._api_prefix + target)
         request = QNetworkRequest(url)
         if content_type is not None:
-            request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
-        request.setHeader(QNetworkRequest.UserAgentHeader, self._user_agent)
+            request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
+        request.setHeader(QNetworkRequest.KnownHeaders.UserAgentHeader, self._user_agent)
         return request
 
     def createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
@@ -157,10 +162,10 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         if not content_header.startswith("form-data;"):
             content_header = "form-data; " + content_header
-        part.setHeader(QNetworkRequest.ContentDispositionHeader, content_header)
+        part.setHeader(QNetworkRequest.KnownHeaders.ContentDispositionHeader, content_header)
 
         if content_type is not None:
-            part.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
+            part.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
 
         part.setBody(data)
         return part
@@ -285,7 +290,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
                           on_progress: Optional[Callable[[int, int], None]] = None) -> QNetworkReply:
         self._validateManager()
         request = self._createEmptyRequest(target, content_type=None)
-        multi_post_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
+        multi_post_part = QHttpMultiPart(QHttpMultiPart.ContentType.FormDataType)
         for part in parts:
             multi_post_part.append(part)
 
@@ -306,7 +311,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def postForm(self, target: str, header_data: str, body_data: bytes, on_finished: Optional[Callable[[QNetworkReply], None]], on_progress: Callable = None) -> None:
         post_part = QHttpPart()
-        post_part.setHeader(QNetworkRequest.ContentDispositionHeader, header_data)
+        post_part.setHeader(QNetworkRequest.KnownHeaders.ContentDispositionHeader, header_data)
         post_part.setBody(body_data)
 
         self.postFormWithParts(target, [post_part], on_finished, on_progress)
@@ -352,16 +357,16 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def _handleOnFinished(self, reply: QNetworkReply) -> None:
         # Due to garbage collection, we need to cache certain bits of post operations.
         # As we don't want to keep them around forever, delete them if we get a reply.
-        if reply.operation() == QNetworkAccessManager.PostOperation:
+        if reply.operation() == QNetworkAccessManager.Operation.PostOperation:
             self._clearCachedMultiPart(reply)
 
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+        if reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute) is None:
             # No status code means it never even reached remote.
             return
 
         self._last_response_time = time()
 
-        if self._connection_state == ConnectionState.Connecting:
+        if self.connectionState == ConnectionState.Connecting:
             self.setConnectionState(ConnectionState.Connected)
 
         callback_key = reply.url().toString() + str(reply.operation())
@@ -414,6 +419,6 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def ipAddress(self) -> str:
-        """IP adress of this printer"""
+        """IP address of this printer"""
 
         return self._address

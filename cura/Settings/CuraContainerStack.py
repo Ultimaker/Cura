@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, List, Optional, Dict
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
 from UM.Decorators import override
@@ -75,7 +75,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.UserChanges, new_user_changes)
 
-    @pyqtProperty(InstanceContainer, fset = setUserChanges, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setUserChanges, notify = pyqtContainersChanged)
     def userChanges(self) -> InstanceContainer:
         """Get the user changes container.
 
@@ -92,7 +92,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes, postpone_emit = postpone_emit)
 
-    @pyqtProperty(InstanceContainer, fset = setQualityChanges, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setQualityChanges, notify = pyqtContainersChanged)
     def qualityChanges(self) -> InstanceContainer:
         """Get the quality changes container.
 
@@ -109,7 +109,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.Intent, new_intent, postpone_emit = postpone_emit)
 
-    @pyqtProperty(InstanceContainer, fset = setIntent, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setIntent, notify = pyqtContainersChanged)
     def intent(self) -> InstanceContainer:
         """Get the quality container.
 
@@ -126,7 +126,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit = postpone_emit)
 
-    @pyqtProperty(InstanceContainer, fset = setQuality, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setQuality, notify = pyqtContainersChanged)
     def quality(self) -> InstanceContainer:
         """Get the quality container.
 
@@ -143,7 +143,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
 
-    @pyqtProperty(InstanceContainer, fset = setMaterial, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setMaterial, notify = pyqtContainersChanged)
     def material(self) -> InstanceContainer:
         """Get the material container.
 
@@ -160,7 +160,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.Variant, new_variant)
 
-    @pyqtProperty(InstanceContainer, fset = setVariant, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setVariant, notify = pyqtContainersChanged)
     def variant(self) -> InstanceContainer:
         """Get the variant container.
 
@@ -177,7 +177,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.DefinitionChanges, new_definition_changes)
 
-    @pyqtProperty(InstanceContainer, fset = setDefinitionChanges, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset = setDefinitionChanges, notify = pyqtContainersChanged)
     def definitionChanges(self) -> InstanceContainer:
         """Get the definition changes container.
 

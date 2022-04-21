@@ -4,7 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Item
@@ -44,7 +44,6 @@ Item
 
             anchors.top: parent.top
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
@@ -54,9 +53,9 @@ Item
                 width: childrenRect.width
                 height: childrenRect.height
 
-                delegate: ToolbarButton
+                delegate: UM.ToolbarButton
                 {
-                    text: model.name + (model.shortcut ? (" (" + model.shortcut + ")") : "")
+                    text: model.name + (model.shortcut ? ` ("${model.shortcut}")` : "")
                     checkable: true
                     checked: model.active
                     enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled
@@ -64,12 +63,10 @@ Item
                     isTopElement: toolsModel.getItem(0).id == model.id
                     isBottomElement: toolsModel.getItem(toolsModel.count - 1).id == model.id
 
-                    toolItem: UM.RecolorImage
+                    toolItem: UM.ColorImage
                     {
                         source: UM.Theme.getIcon(model.icon) != "" ? UM.Theme.getIcon(model.icon) : "file:///" + model.location + "/" + model.icon
                         color: UM.Theme.getColor("icon")
-
-                        sourceSize: UM.Theme.getSize("button_icon")
                     }
 
                     onCheckedChanged:
@@ -131,7 +128,6 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.top: toolButtons.bottom
             anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_lining").height
 
             Repeater
             {
@@ -161,7 +157,7 @@ Item
         anchors.topMargin: base.activeY
         z: buttons.z - 1
 
-        target: Qt.point(parent.right, base.activeY +  Math.round(UM.Theme.getSize("button").height/2))
+        target: Qt.point(-1, base.activeY +  Math.round(UM.Theme.getSize("button").height / 2))
         arrowSize: UM.Theme.getSize("default_arrow").width
 
         width:
@@ -184,7 +180,7 @@ Item
         borderColor: UM.Theme.getColor("lining")
         borderWidth: UM.Theme.getSize("default_lining").width
 
-        MouseArea //Catch all mouse events (so scene doesnt handle them)
+        MouseArea //Catch all mouse events (so scene doesn't handle them)
         {
             anchors.fill: parent
             acceptedButtons: Qt.AllButtons

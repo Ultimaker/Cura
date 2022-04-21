@@ -32,6 +32,7 @@ fragment =
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
+    uniform lowp float u_lowestPrintableHeight;
     uniform lowp vec4 u_faceColor;
     uniform highp int u_faceId;
 
@@ -61,11 +62,11 @@ fragment =
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
-        finalColor = (f_vertex.y > 0.0001 && -normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
+        finalColor = (f_vertex.y >= 0.0 && -normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
 
         highp vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
         finalColor.a = (u_renderError > 0.5) && dot(grid, grid) < 0.245 ? 0.667 : 1.0;
-        if (f_vertex.y <= 0.0)
+        if (f_vertex.y <= u_lowestPrintableHeight)
         {
             finalColor.rgb = vec3(1.0, 1.0, 1.0) - finalColor.rgb;
         }
@@ -109,6 +110,7 @@ fragment41core =
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
+    uniform lowp float u_lowestPrintableHeight;
     uniform lowp vec4 u_faceColor;
     uniform highp int u_faceId;
 
@@ -138,10 +140,10 @@ fragment41core =
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
-        finalColor = (u_faceId != gl_PrimitiveID) ? ((f_vertex.y > 0.0001 && -normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
+        finalColor = (u_faceId != gl_PrimitiveID) ? ((f_vertex.y >= 0.0 && -normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
 
         frag_color = finalColor;
-        if (f_vertex.y <= 0.0)
+        if (f_vertex.y <= u_lowestPrintableHeight)
         {
             frag_color.rgb = vec3(1.0, 1.0, 1.0) - frag_color.rgb;
         }
@@ -157,6 +159,7 @@ u_overhangColor = [1.0, 0.0, 0.0, 1.0]
 u_faceColor = [0.0, 0.0, 1.0, 1.0]
 u_shininess = 20.0
 u_renderError = 1.0
+u_lowestPrintableHeight = 0.0
 
 [bindings]
 u_modelMatrix = model_matrix

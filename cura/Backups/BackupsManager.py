@@ -4,6 +4,7 @@
 from typing import Dict, Optional, Tuple, TYPE_CHECKING
 
 from UM.Logger import Logger
+from UM.Version import Version
 from cura.Backups.Backup import Backup
 
 if TYPE_CHECKING:
@@ -52,6 +53,7 @@ class BackupsManager:
 
         backup = Backup(self._application, zip_file = zip_file, meta_data = meta_data)
         restored = backup.restore()
+
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
             # We don't want to store the data at this point as that would override the just-restored backup.

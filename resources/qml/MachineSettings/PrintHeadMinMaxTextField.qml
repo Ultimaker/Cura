@@ -54,7 +54,7 @@ NumericTextFieldWithUnit
     Connections
     {
         target: textField
-        onActiveFocusChanged:
+        function onActiveFocusChanged()
         {
             // When this text field loses focus and the entered text is not valid, make sure to recreate the binding to
             // show the correct value.

@@ -151,7 +151,7 @@ class XmlMaterialProfile(InstanceContainer):
                               "version": self.CurrentFdmMaterialVersion})
 
         ## Begin Metadata Block
-        builder.start("metadata") # type: ignore
+        builder.start("metadata", {}) # type: ignore
 
         metadata = copy.deepcopy(self.getMetaData())
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
@@ -165,21 +165,21 @@ class XmlMaterialProfile(InstanceContainer):
         properties = metadata.pop("properties", {})
 
         ## Begin Name Block
-        builder.start("name") # type: ignore
+        builder.start("name", {}) # type: ignore
 
-        builder.start("brand") # type: ignore
+        builder.start("brand", {}) # type: ignore
         builder.data(metadata.pop("brand", ""))
         builder.end("brand")
 
-        builder.start("material") # type: ignore
+        builder.start("material", {}) # type: ignore
         builder.data(metadata.pop("material", ""))
         builder.end("material")
 
-        builder.start("color") # type: ignore
+        builder.start("color", {}) # type: ignore
         builder.data(metadata.pop("color_name", ""))
         builder.end("color")
 
-        builder.start("label") # type: ignore
+        builder.start("label", {}) # type: ignore
         builder.data(self.getName())
         builder.end("label")
 
@@ -190,7 +190,7 @@ class XmlMaterialProfile(InstanceContainer):
             key_to_use = key
             if key in self._metadata_tags_that_have_cura_namespace:
                 key_to_use = "cura:" + key_to_use
-            builder.start(key_to_use) # type: ignore
+            builder.start(key_to_use, {}) # type: ignore
             if value is not None: #Nones get handled well by the builder.
                 #Otherwise the builder always expects a string.
                 #Deserialize expects the stringified version.
@@ -202,10 +202,10 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Metadata Block
 
         ## Begin Properties Block
-        builder.start("properties") # type: ignore
+        builder.start("properties", {}) # type: ignore
 
         for key, value in properties.items():
-            builder.start(key) # type: ignore
+            builder.start(key, {}) # type: ignore
             builder.data(value)
             builder.end(key)
 
@@ -213,7 +213,7 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Properties Block
 
         ## Begin Settings Block
-        builder.start("settings") # type: ignore
+        builder.start("settings", {}) # type: ignore
 
         if self.getMetaDataEntry("definition") == "fdmprinter":
             for instance in self.findInstances():
@@ -258,7 +258,7 @@ class XmlMaterialProfile(InstanceContainer):
                     product = product_name
                     break
 
-            builder.start("machine") # type: ignore
+            builder.start("machine", {}) # type: ignore
             builder.start("machine_identifier", {
                 "manufacturer": container.getMetaDataEntry("machine_manufacturer",
                                                            definition_metadata.get("manufacturer", "Unknown")),
@@ -650,7 +650,6 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
                 if not machine_id_list:
                     machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
-
                 for machine_id in machine_id_list:
                     definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
                     if not definitions:
@@ -1068,6 +1067,8 @@ class XmlMaterialProfile(InstanceContainer):
         id_list = {name.lower().replace(" ", ""),  # simply removing all spaces
                    name.lower().replace(" ", "_"),  # simply replacing all spaces with underscores
                    "_".join(merged_name_parts),
+                   name.replace(" ", ""),
+                   name.replace(" ", "_")
                    }
         id_list = list(id_list)
         return id_list

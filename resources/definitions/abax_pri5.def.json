@@ -1,11 +1,11 @@
 {
-    "name": "ABAX PRi5",
+    "name": "Abax PRi5",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "ABAX 3d Technologies",
-        "manufacturer": "ABAX 3d Technologies",
+        "author": "Abax 3D Technologies",
+        "manufacturer": "Abax 3D Technologies",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {

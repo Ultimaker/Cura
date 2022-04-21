@@ -1,5 +1,5 @@
 {
-    "name":      "ZAV mini",
+    "name":      "Zav Mini",
     "version":   2,
     "inherits":  "zav_base",
     "metadata":  {

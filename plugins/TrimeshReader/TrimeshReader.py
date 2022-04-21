@@ -1,5 +1,5 @@
-# Copyright (c) 2019 Ultimaker B.V., fieldOfView
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2019-2022 Ultimaker B.V., fieldOfView
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 # The _toMeshData function is taken from the AMFReader class which was built by fieldOfView.
 
@@ -29,14 +29,7 @@ class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".ctm", ".dae", ".gltf", ".glb", ".ply", ".zae"]
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name = "application/x-ctm",
-                comment = "Open Compressed Triangle Mesh",
-                suffixes = ["ctm"]
-            )
-        )
+        self._supported_extensions = [".dae", ".gltf", ".glb", ".ply", ".zae"]
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "model/vnd.collada+xml",
@@ -145,22 +138,22 @@ class TrimeshReader(MeshReader):
         tri_faces = tri_node.faces
         tri_vertices = tri_node.vertices
 
-        indices = []
-        vertices = []
+        indices_list = []
+        vertices_list = []
 
         index_count = 0
         face_count = 0
         for tri_face in tri_faces:
             face = []
             for tri_index in tri_face:
-                vertices.append(tri_vertices[tri_index])
+                vertices_list.append(tri_vertices[tri_index])
                 face.append(index_count)
                 index_count += 1
-            indices.append(face)
+            indices_list.append(face)
             face_count += 1
 
-        vertices = numpy.asarray(vertices, dtype = numpy.float32)
-        indices = numpy.asarray(indices, dtype = numpy.int32)
+        vertices = numpy.asarray(vertices_list, dtype = numpy.float32)
+        indices = numpy.asarray(indices_list, dtype = numpy.int32)
         normals = calculateNormalsFromIndexedVertices(vertices, indices, face_count)
 
         mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals, file_name = file_name)

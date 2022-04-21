@@ -1,13 +1,15 @@
-# Copyright (c) 2018 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
-from PyQt5.QtCore import QObject, QTimer, pyqtSlot
+from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
 import sys
 from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
+
+from PyQt6.QtGui import QDesktopServices, QImage
 
 from UM.Backend.Backend import Backend, BackendState
 from UM.Scene.SceneNode import SceneNode
@@ -24,10 +26,12 @@ from UM.Tool import Tool #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Snapshot import Snapshot
+from cura.Utils.Threading import call_on_qt_thread
 from .ProcessSlicedLayersJob import ProcessSlicedLayersJob
 from .StartSliceJob import StartSliceJob, StartJobResult
 
-import Arcus
+import pyArcus as Arcus
 
 if TYPE_CHECKING:
     from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
@@ -153,6 +157,21 @@ class CuraEngineBackend(QObject, Backend):
         self.determineAutoSlicing()
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
+        self._slicing_error_message = Message(
+            text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
+            title = catalog.i18nc("@message:title", "Slicing failed"),
+            message_type = Message.MessageType.ERROR
+        )
+        self._slicing_error_message.addAction(
+            action_id = "report_bug",
+            name = catalog.i18nc("@message:button", "Report a bug"),
+            description = catalog.i18nc("@message:description", "Report a bug on Ultimaker Cura's issue tracker."),
+            icon = "[no_icon]"
+        )
+        self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
+
+        self._snapshot = None #type: Optional[QImage]
+
         application.initializationFinished.connect(self.initialize)
 
     def initialize(self) -> None:
@@ -241,8 +260,26 @@ class CuraEngineBackend(QObject, Backend):
         self.markSliceAll()
         self.slice()
 
+    @call_on_qt_thread  # must be called from the main thread because of OpenGL
+    def _createSnapshot(self) -> None:
+        self._snapshot = None
+        if not CuraApplication.getInstance().isVisible:
+            Logger.log("w", "Can't create snapshot when renderer not initialized.")
+            return
+        Logger.log("i", "Creating thumbnail image (just before slice)...")
+        try:
+            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+        except:
+            Logger.logException("w", "Failed to create snapshot image")
+            self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
+
+    def getLatestSnapshot(self) -> Optional[QImage]:
+        return self._snapshot
+
     def slice(self) -> None:
         """Perform a slice of the scene."""
+
+        self._createSnapshot()
 
         Logger.log("i", "Starting to slice...")
         self._slice_start_time = time()
@@ -331,7 +368,6 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStartSliceCompleted(self, job: StartSliceJob) -> None:
         """Event handler to call when the job to initiate the slicing process is
-
         completed.
 
         When the start slice job is successfully completed, it will be happily
@@ -356,7 +392,9 @@ class CuraEngineBackend(QObject, Backend):
         if job.getResult() == StartJobResult.MaterialIncompatible:
             if application.platformActivity:
                 self._error_message = Message(catalog.i18nc("@info:status",
-                                            "Unable to slice with the current material as it is incompatible with the selected machine or configuration."), title = catalog.i18nc("@info:title", "Unable to slice"))
+                                                            "Unable to slice with the current material as it is incompatible with the selected machine or configuration."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -386,8 +424,11 @@ class CuraEngineBackend(QObject, Backend):
                         continue
                     error_labels.add(definitions[0].label)
 
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice with the current settings. The following settings have errors: {0}").format(", ".join(error_labels)),
-                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                self._error_message = Message(catalog.i18nc("@info:status",
+                                                            "Unable to slice with the current settings. The following settings have errors: {0}").format(", ".join(error_labels)),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
+                Logger.warning(f"Unable to slice with the current settings. The following settings have errors: {', '.join(error_labels)}")
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -410,8 +451,11 @@ class CuraEngineBackend(QObject, Backend):
                         Logger.log("e", "When checking settings for errors, unable to find definition for key {key} in per-object stack.".format(key = key))
                         continue
                     errors[key] = definition[0].label
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
-                                          title = catalog.i18nc("@info:title", "Unable to slice"))
+            self._error_message = Message(catalog.i18nc("@info:status",
+                                                        "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}").format(error_labels = ", ".join(errors.values())),
+                                          title = catalog.i18nc("@info:title", "Unable to slice"),
+                                          message_type = Message.MessageType.WARNING)
+            Logger.warning(f"Unable to slice due to per-object settings. The following settings have errors on one or more models: {', '.join(errors.values())}")
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)
@@ -419,17 +463,22 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartJobResult.BuildPlateError:
             if application.platformActivity:
-                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because the prime tower or prime position(s) are invalid."),
-                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                self._error_message = Message(catalog.i18nc("@info:status",
+                                                            "Unable to slice because the prime tower or prime position(s) are invalid."),
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
+                return
             else:
                 self.setState(BackendState.NotStarted)
 
         if job.getResult() == StartJobResult.ObjectsWithDisabledExtruder:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
-                                          title = catalog.i18nc("@info:title", "Unable to slice"))
+            self._error_message = Message(catalog.i18nc("@info:status",
+                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
+                                          title = catalog.i18nc("@info:title", "Unable to slice"),
+                                          message_type = Message.MessageType.WARNING)
             self._error_message.show()
             self.setState(BackendState.Error)
             self.backendError.emit(job)
@@ -441,7 +490,8 @@ class CuraEngineBackend(QObject, Backend):
                                                                             "\n- Fit within the build volume"
                                                                             "\n- Are assigned to an enabled extruder"
                                                                             "\n- Are not all set as modifier meshes"),
-                                              title = catalog.i18nc("@info:title", "Unable to slice"))
+                                              title = catalog.i18nc("@info:title", "Unable to slice"),
+                                              message_type = Message.MessageType.WARNING)
                 self._error_message.show()
                 self.setState(BackendState.Error)
                 self.backendError.emit(job)
@@ -599,7 +649,7 @@ class CuraEngineBackend(QObject, Backend):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    # We can asume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    # We can assume that all nodes have a parent as we're looping through the scene (and filter out root)
                     cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:
@@ -899,8 +949,21 @@ class CuraEngineBackend(QObject, Backend):
 
         if not self._restart:
             if self._process: # type: ignore
-                Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait()) # type: ignore
+                return_code = self._process.wait()
+                if return_code != 0:
+                    Logger.log("e", f"Backend exited abnormally with return code {return_code}!")
+                    self._slicing_error_message.show()
+                    self.setState(BackendState.Error)
+                    self.stopSlicing()
+                else:
+                    Logger.log("d", "Backend finished slicing. Resetting process and socket.")
                 self._process = None # type: ignore
+
+    def _reportBackendError(self, _message_id: str, _action_id: str) -> None:
+        """
+        Triggered when the user wants to report an error in the back-end.
+        """
+        QDesktopServices.openUrl(QUrl("https://github.com/Ultimaker/Cura/issues/new/choose"))
 
     def _onGlobalStackChanged(self) -> None:
         """Called when the global container stack changes"""

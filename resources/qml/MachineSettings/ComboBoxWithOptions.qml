@@ -93,8 +93,8 @@ UM.TooltipArea
     Connections
     {
         target: propertyProvider
-        onContainerStackChanged: defaultOptionsModel.updateModel()
-        onIsValueUsedChanged: defaultOptionsModel.updateModel()
+        function onContainerStackChanged() { defaultOptionsModel.updateModel() }
+        function onIsValueUsedChanged() { defaultOptionsModel.updateModel() }
     }
 
     Cura.ComboBox

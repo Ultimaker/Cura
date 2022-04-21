@@ -228,3 +228,19 @@ def test_extruderMatch(file_path: str):
     if "overrides" not in doc or "extruder_nr" not in doc["overrides"] or "default_value" not in doc["overrides"]["extruder_nr"]:
         assert position == "0"  # Default to 0 is allowed.
     assert doc["overrides"]["extruder_nr"]["default_value"] == int(position)
+
+@pytest.mark.parametrize("file_path", definition_filepaths)
+def test_noNewSettings(file_path: str):
+    """
+    Tests that a printer definition doesn't define any new settings.
+
+    Settings that are not common to all printers can cause Cura to crash, for instance when the setting is saved in a
+    profile and that profile is then used in a different printer.
+    :param file_path: A path to a definition file to test.
+    """
+    filename = os.path.basename(file_path)
+    if filename == "fdmprinter.def.json" or filename == "fdmextruder.def.json":
+        return  # FDMPrinter and FDMExtruder, being the basis for all printers and extruders, are allowed to define new settings since they will be available for all printers then.
+    with open(file_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+    assert "settings" not in doc

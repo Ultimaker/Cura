@@ -1,0 +1,15 @@
+{
+    "name": "Goofoo Far",
+    "version": 2,
+    "inherits": "goofoo_base",
+    "metadata": {
+        "quality_definition": "goofoo_far",
+        "visible": false,
+        "exclude_materials": [
+            "goofoo_bronze_pla",
+            "goofoo_tpe_83a",
+            "goofoo_tpu_87a",
+            "goofoo_tpu_95a"
+        ]
+    }
+}

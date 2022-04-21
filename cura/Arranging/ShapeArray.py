@@ -3,7 +3,7 @@
 
 import numpy
 import copy
-from typing import Optional, Tuple, TYPE_CHECKING
+from typing import Optional, Tuple, TYPE_CHECKING, Union
 
 from UM.Math.Polygon import Polygon
 
@@ -14,14 +14,14 @@ if TYPE_CHECKING:
 class ShapeArray:
     """Polygon representation as an array for use with :py:class:`cura.Arranging.Arrange.Arrange`"""
 
-    def __init__(self, arr: numpy.array, offset_x: float, offset_y: float, scale: float = 1) -> None:
+    def __init__(self, arr: numpy.ndarray, offset_x: float, offset_y: float, scale: float = 1) -> None:
         self.arr = arr
         self.offset_x = offset_x
         self.offset_y = offset_y
         self.scale = scale
 
     @classmethod
-    def fromPolygon(cls, vertices: numpy.array, scale: float = 1) -> "ShapeArray":
+    def fromPolygon(cls, vertices: numpy.ndarray, scale: float = 1) -> "ShapeArray":
         """Instantiate from a bunch of vertices
 
         :param vertices:
@@ -98,7 +98,7 @@ class ShapeArray:
         return offset_shape_arr, hull_shape_arr
 
     @classmethod
-    def arrayFromPolygon(cls, shape: Tuple[int, int], vertices: numpy.array) -> numpy.array:
+    def arrayFromPolygon(cls, shape: Union[Tuple[int, int], numpy.ndarray], vertices: numpy.ndarray) -> numpy.ndarray:
         """Create :py:class:`numpy.ndarray` with dimensions defined by shape
 
         Fills polygon defined by vertices with ones, all other values zero
@@ -110,7 +110,7 @@ class ShapeArray:
         :return: numpy array with dimensions defined by shape
         """
 
-        base_array = numpy.zeros(shape, dtype = numpy.int32)  # Initialize your array of zeros
+        base_array = numpy.zeros(shape, dtype = numpy.int32)  # type: ignore # Initialize your array of zeros
 
         fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
 
@@ -126,7 +126,7 @@ class ShapeArray:
         return base_array
 
     @classmethod
-    def _check(cls, p1: numpy.array, p2: numpy.array, base_array: numpy.array) -> Optional[numpy.array]:
+    def _check(cls, p1: numpy.ndarray, p2: numpy.ndarray, base_array: numpy.ndarray) -> Optional[numpy.ndarray]:
         """Return indices that mark one side of the line, used by arrayFromPolygon
 
         Uses the line defined by p1 and p2 to check array of

@@ -2,8 +2,6 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.1 as Cura
@@ -18,7 +16,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("view_3d")
+        iconSource: UM.Theme.getIcon("View3D")
         onClicked: Cura.Actions.view3DCamera.trigger()
 
         UM.TooltipArea
@@ -31,7 +29,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("view_front")
+        iconSource: UM.Theme.getIcon("ViewFront")
         onClicked: Cura.Actions.viewFrontCamera.trigger()
 
         UM.TooltipArea
@@ -44,7 +42,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("view_top")
+        iconSource: UM.Theme.getIcon("ViewTop")
         onClicked: Cura.Actions.viewTopCamera.trigger()
 
         UM.TooltipArea
@@ -57,7 +55,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("view_left")
+        iconSource: UM.Theme.getIcon("ViewLeft")
         onClicked: Cura.Actions.viewLeftSideCamera.trigger()
 
         UM.TooltipArea
@@ -70,7 +68,7 @@ Row
 
     ViewOrientationButton
     {
-        iconSource: UM.Theme.getIcon("view_right")
+        iconSource: UM.Theme.getIcon("ViewRight")
         onClicked: Cura.Actions.viewRightSideCamera.trigger()
 
         UM.TooltipArea

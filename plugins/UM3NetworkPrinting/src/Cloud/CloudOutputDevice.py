@@ -1,13 +1,13 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from time import time
 import os
 from typing import cast, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest  # Parse errors specific to print job uploading.
+from PyQt6.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest  # Parse errors specific to print job uploading.
 
 from UM import i18nCatalog
 from UM.Backend.Backend import BackendState
@@ -104,6 +104,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # Reference to the uploaded print job / mesh
         # We do this to prevent re-uploading the same file multiple times.
         self._tool_path = None  # type: Optional[bytes]
+        self._pre_upload_print_job = None  # type: Optional[CloudPrintJobResponse]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
 
     def connect(self) -> None:
@@ -130,6 +131,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """Resets the print job that was uploaded to force a new upload, runs whenever the user re-slices."""
 
         self._tool_path = None
+        self._pre_upload_print_job = None
         self._uploaded_print_job = None
 
     def matchesNetworkKey(self, network_key: str) -> bool:
@@ -189,6 +191,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if self._progress.visible:
             PrintJobUploadBlockedMessage().show()
             return
+        self._progress.show()
 
         # Indicate we have started sending a job.
         self.writeStarted.emit(self)
@@ -196,6 +199,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # The mesh didn't change, let's not upload it to the cloud again.
         # Note that self.writeFinished is called in _onPrintUploadCompleted as well.
         if self._uploaded_print_job:
+            Logger.log("i", "Current mesh is already attached to a print-job, immediately request reprint.")
             self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
             return
 
@@ -226,8 +230,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         if not self._tool_path:
             return self._onUploadError()
-        self._progress.show()
-        self._uploaded_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
+        self._pre_upload_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
         self._api.uploadToolPath(job_response, self._tool_path, self._onPrintJobUploaded, self._progress.update,
                                  self._onUploadError)
 
@@ -238,9 +241,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
 
         self._progress.update(100)
-        print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
-        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._uploaded_print_job to `None`.
-            # TODO: Maybe _onUploadError shouldn't set the _uploaded_print_job to None or we need to prevent such asynchronous cases.
+        print_job = cast(CloudPrintJobResponse, self._pre_upload_print_job)
+        if not print_job:  # It's possible that another print job is requested in the meanwhile, which then fails to upload with an error, which sets self._pre_uploaded_print_job to `None`.
+            self._pre_upload_print_job = None
+            self._uploaded_print_job = None
+            Logger.log("w", "Interference from another job uploaded at roughly the same time, not uploading print!")
             return  # Prevent a crash.
         self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted, self._onPrintUploadSpecificError)
 
@@ -249,21 +254,34 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         :param response: The response from the cloud API.
         """
+        self._uploaded_print_job = self._pre_upload_print_job
         self._progress.hide()
-        PrintJobUploadSuccessMessage().show()
+        message = PrintJobUploadSuccessMessage()
+        message.addAction("monitor print",
+                          name=I18N_CATALOG.i18nc("@action:button", "Monitor print"),
+                          icon="",
+                          description=I18N_CATALOG.i18nc("@action:tooltip", "Track the print in Ultimaker Digital Factory"),
+                          button_align=message.ActionButtonAlignment.ALIGN_RIGHT)
+        df_url = f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"
+        message.pyQtActionTriggered.connect(lambda message, action: (QDesktopServices.openUrl(QUrl(df_url)), message.hide()))
+
+        message.show()
         self.writeFinished.emit()
 
     def _onPrintUploadSpecificError(self, reply: "QNetworkReply", _: "QNetworkReply.NetworkError"):
         """
         Displays a message when an error occurs specific to uploading print job (i.e. queue is full).
         """
-        error_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        error_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         if error_code == 409:
             PrintJobUploadQueueFullMessage().show()
         else:
             PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send", "Unknown error code when uploading print job: {0}", error_code)).show()
 
+        Logger.log("w", "Upload of print job failed specifically with error code {}".format(error_code))
+
         self._progress.hide()
+        self._pre_upload_print_job = None
         self._uploaded_print_job = None
         self.writeError.emit()
 
@@ -272,7 +290,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         Displays the given message if uploading the mesh has failed due to a generic error (i.e. lost connection).
         :param message: The message to display.
         """
+        Logger.log("w", "Upload error with message {}".format(message))
+
         self._progress.hide()
+        self._pre_upload_print_job = None
         self._uploaded_print_job = None
         PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
@@ -287,7 +308,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         firmware_version = Version([version_number[0], version_number[1], version_number[2]])
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool, constant = True)
     def supportsPrintJobQueue(self) -> bool:
         """Gets whether the printer supports a queue"""
 
@@ -313,11 +334,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl))
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl + "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-browser"))
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl))
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl + "?utm_source=cura&utm_medium=software&utm_campaign=monitor-manage-printer"))
 
     @property
     def clusterData(self) -> CloudClusterResponse:
@@ -336,4 +357,4 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """Gets the URL on which to monitor the cluster via the cloud."""
 
         root_url_prefix = "-staging" if self._account.is_staging else ""
-        return "https://mycloud{}.ultimaker.com/app/jobs/{}".format(root_url_prefix, self.clusterData.cluster_id)
+        return "https://digitalfactory{}.ultimaker.com/app/jobs/{}".format(root_url_prefix, self.clusterData.cluster_id)

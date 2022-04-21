@@ -1,0 +1,16 @@
+{
+    "name": "Goofoo Nova",
+    "version": 2,
+    "inherits": "goofoo_near",
+    "overrides": {
+        "machine_name": { "default_value": "Goofoo Nova" },
+        "machine_width": { "default_value": 280 },
+        "machine_depth": { "default_value": 280 },
+        "machine_height": { "default_value": 300 }
+
+    },
+    "metadata": {
+        "author": "goofoo",
+        "visible": true
+    }
+}

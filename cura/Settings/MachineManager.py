@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -6,7 +6,7 @@ import re
 import unicodedata
 from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast, Set
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -627,7 +627,7 @@ class MachineManager(QObject):
             return ""
         return global_container_stack.getIntentCategory()
 
-    # Provies a list of extruder positions that have a different intent from the active one.
+    # Provides a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
     def extruderPositionsWithNonActiveIntent(self):
         global_container_stack = self._application.getGlobalContainerStack()
@@ -853,8 +853,8 @@ class MachineManager(QObject):
             self._global_container_stack.userChanges.setProperty(setting_key, "value", self._default_extruder_position)
         if add_user_changes:
             caution_message = Message(
-                catalog.i18nc("@info:message Followed by a list of settings.", "Settings have been changed to match the current availability of extruders:") + " [{settings_list}]".format(settings_list = ", ".join(add_user_changes)),
-                lifetime = 0,
+                catalog.i18nc("@info:message Followed by a list of settings.",
+                              "Settings have been changed to match the current availability of extruders:") + " [{settings_list}]".format(settings_list = ", ".join(add_user_changes)),
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
 
@@ -1190,7 +1190,7 @@ class MachineManager(QObject):
 
         self.setIntentByCategory(quality_changes_group.intent_category)
         self._reCalculateNumUserSettings()
-
+        self.correctExtruderSettings()
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
 
@@ -1397,6 +1397,8 @@ class MachineManager(QObject):
         # previous one).
         self._global_container_stack.setUserChanges(global_user_changes)
         for i, user_changes in enumerate(per_extruder_user_changes):
+            if i >= len(self._global_container_stack.extruderList):  # New printer has fewer extruders.
+                break
             self._global_container_stack.extruderList[i].setUserChanges(per_extruder_user_changes[i])
 
     @pyqtSlot(QObject)
@@ -1533,7 +1535,7 @@ class MachineManager(QObject):
         machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
         variant_node = machine_node.variants.get(variant_name)
         if variant_node is None:
-            Logger.error("There is no variant with the name {variant_name}.")
+            Logger.error(f"There is no variant with the name {variant_name}.")
             return
         self.setVariant(position, variant_node)
 

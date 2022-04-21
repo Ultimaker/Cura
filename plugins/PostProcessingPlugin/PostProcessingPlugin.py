@@ -9,7 +9,7 @@ import pkgutil
 import sys
 from typing import Dict, Type, TYPE_CHECKING, List, Optional, cast
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.Application import Application
 from UM.Extension import Extension
@@ -142,7 +142,9 @@ class PostProcessingPlugin(QObject, Extension):
         # The PostProcessingPlugin path is for built-in scripts.
         # The Resources path is where the user should store custom scripts.
         # The Preferences path is legacy, where the user may previously have stored scripts.
-        for root in [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Resources), Resources.getStoragePath(Resources.Preferences)]:
+        resource_folders = [PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"), Resources.getStoragePath(Resources.Preferences)]
+        resource_folders.extend(Resources.getAllPathsForType(Resources.Resources))
+        for root in resource_folders:
             if root is None:
                 continue
             path = os.path.join(root, "scripts")
@@ -191,6 +193,8 @@ class PostProcessingPlugin(QObject, Extension):
 
                     spec = importlib.util.spec_from_file_location(__name__ + "." + script_name,
                                                                   file_path)
+                    if spec is None:
+                        continue
                     loaded_script = importlib.util.module_from_spec(spec)
                     if spec.loader is None:
                         continue

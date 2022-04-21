@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.1 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 Button
@@ -13,8 +13,6 @@ Button
 
     width: parent.width
     height: UM.Theme.getSize("action_button").height
-    leftPadding: UM.Theme.getSize("thin_margin").width
-    rightPadding: perObjectSettingsInfo.visible ? UM.Theme.getSize("default_lining").width : UM.Theme.getSize("thin_margin").width
     checkable: true
     hoverEnabled: true
 
@@ -46,19 +44,19 @@ Button
         width: objectItemButton.width - objectItemButton.leftPadding
         height: UM.Theme.getSize("action_button").height
 
-        UM.RecolorImage
+        Rectangle
         {
             id: swatch
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            width: height
-            height: parent.height - UM.Theme.getSize("narrow_margin").height
-            source: UM.Theme.getIcon("extruder_button")
+            width: UM.Theme.getSize("standard_arrow").height
+            height: UM.Theme.getSize("standard_arrow").height
+            radius: Math.round(width / 2)
             color: extruderColor
             visible: showExtruderSwatches && extruderColor != ""
         }
 
-        Label
+        UM.Label
         {
             id: buttonText
             anchors
@@ -69,12 +67,9 @@ Button
                 verticalCenter: parent.verticalCenter
             }
             text: objectItemButton.text
-            font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_scene")
             opacity: (outsideBuildArea) ? 0.5 : 1.0
             visible: text != ""
-            renderType: Text.NativeRendering
-            verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
         }
 
@@ -87,7 +82,7 @@ Button
                 right: parent.right
                 rightMargin: 0
             }
-            width: childrenRect.width
+            width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
             height: parent.height
             padding: 0
             leftPadding: UM.Theme.getSize("thin_margin").width
@@ -136,7 +131,7 @@ Button
             contentItem: Item
             {
                 height: parent.height
-                width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
+                width: perObjectSettingsInfo.width
 
                 Cura.NotificationIcon
                 {
@@ -151,7 +146,7 @@ Button
                     labelText: perObjectSettingsCount.toString()
                 }
 
-                UM.RecolorImage
+                UM.ColorImage
                 {
                     id: meshTypeIcon
                     anchors
@@ -168,12 +163,12 @@ Button
                     {
                         switch (meshType) {
                             case "support_mesh":
-                                return UM.Theme.getIcon("pos_print_as_support");
+                                return UM.Theme.getIcon("MeshTypeSupport");
                             case "cutting_mesh":
                             case "infill_mesh":
-                                return UM.Theme.getIcon("pos_modify_overlaps");
+                                return UM.Theme.getIcon("MeshTypeIntersect");
                             case "anti_overhang_mesh":
-                                return UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                                return UM.Theme.getIcon("BlockSupportOverlaps");
                         }
                         return "";
                     }
@@ -193,7 +188,7 @@ Button
         elideWidth: buttonText.width
     }
 
-    Cura.ToolTip
+    UM.ToolTip
     {
         id: tooltip
         tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText

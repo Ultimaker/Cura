@@ -1,11 +1,11 @@
 {
-    "name": "TiZYX EVY",
+    "name": "Tizyx Evy",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "TiZYX",
-        "manufacturer": "TiZYX",
+        "author": "Tizyx",
+        "manufacturer": "Tizyx",
         "file_formats": "text/x-gcode",
 
         "has_machine_quality": true,
@@ -70,6 +70,6 @@
         "z_seam_type": {"default_value": "back"},
         "z_seam_x": {"value": "127.5"},
         "z_seam_y": {"value": "250"},
-        "retraction_combing": {"default_value": "off"}
+        "retraction_combing": {"value": "'off'"}
     }
 }

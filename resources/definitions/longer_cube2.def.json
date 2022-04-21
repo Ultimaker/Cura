@@ -1,0 +1,34 @@
+{
+    "name": "Longer Cube2",
+    "version": 2,
+    "inherits": "longer_base",
+    "metadata": {
+        "quality_definition": "longer_base",
+        "visible": true,
+        "platform": "longer_cube2_platform.stl",
+        "platform_offset": [-60, -3 ,70]
+    },
+    "overrides": {
+        "machine_name": { "default_value": "LONGER Cube2" },
+        "machine_start_gcode": { "default_value": "; LONGER Cube2 Start G-code\nG21 ; metric values\nG90 ; absolute positioning\nM82 ; set extruder to absolute mode\nM107 ; start with the fan off\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y120.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y120.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish\n" },
+        "machine_end_gcode": { "default_value": "; LONGER Cube2 End G-code\nG91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positioning\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM84 X Y E ;Disable all steppers but Z\n" },
+
+        "machine_heated_bed": { "default_value": false },
+        
+        "machine_width": { "default_value": 120 },
+        "machine_depth": { "default_value": 140 },
+        "machine_height": { "default_value": 105 },
+
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-22, 31],
+                [-22, -21],
+                [14, -21],
+                [14, 31]
+            ]
+        },
+
+        "gantry_height": { "value": 18 },
+
+        "speed_travel": { "value": 65 }
+    }
+}

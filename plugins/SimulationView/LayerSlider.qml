@@ -1,10 +1,8 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
 
 import UM 1.0 as UM
 import Cura 1.0 as Cura
@@ -187,7 +185,7 @@ Item
         {
             sliderRoot.manuallyChanged = true
 
-            // don't allow the lower handle to be heigher than the upper handle
+            // don't allow the lower handle to be higher than the upper handle
             if (lowerHandle.y - (y + height) < sliderRoot.minimumRangeHandleSize)
             {
                 lowerHandle.y = y + height + sliderRoot.minimumRangeHandleSize
@@ -268,7 +266,7 @@ Item
             anchors.bottom: parent.top
             anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-            target: Qt.point(parent.width / 2, parent.top)
+            target: Qt.point(parent.width / 2, 1)
             visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
@@ -300,7 +298,7 @@ Item
             // don't allow the upper handle to be lower than the lower handle
             if (y - (upperHandle.y + upperHandle.height) < sliderRoot.minimumRangeHandleSize)
             {
-                upperHandle.y = y - (upperHandle.heigth + sliderRoot.minimumRangeHandleSize)
+                upperHandle.y = y - (upperHandle.height + sliderRoot.minimumRangeHandleSize)
             }
 
             // update the range handle
@@ -378,7 +376,7 @@ Item
             anchors.top: parent.bottom
             anchors.topMargin: UM.Theme.getSize("narrow_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-            target: Qt.point(parent.width / 2, parent.bottom)
+            target: Qt.point(parent.width / 2, -1)
             visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties

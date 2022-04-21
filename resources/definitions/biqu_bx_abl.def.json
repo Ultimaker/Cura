@@ -1,0 +1,51 @@
+{
+    "name": "Biqu BX",
+    "version": 2,
+    "inherits": "biqu_base",
+    "metadata": {
+        "quality_definition": "biqu_base",
+        "visible": true,
+        "has_machine_materials": true,
+        "platform": "BIQU_BX_PLATE.stl",
+        "platform_offset": [
+            7,
+            -7.4,
+            -3
+        ]
+    },
+    "overrides": {
+        "coasting_enable": { "value": false },
+        "retraction_amount": { "value": 1 },
+        "retraction_speed": { "value": 40 },
+        "retraction_extrusion_window": { "value": 1 },
+        "retract_at_layer_change": { "value": true },
+        "support_enable": { "value": false },
+        "support_structure": { "value": "'normal'" },
+        "support_type": { "value": "'buildplate'" },
+        "support_angle": { "value": 45 },
+        "support_infill_rate": { "value": 15 },
+        "infill_overlap": { "value": 15.0 },
+        "skin_overlap": { "value": 20.0 },
+        "fill_outline_gaps": { "value": true },
+        "filter_out_tiny_gaps": { "value": true },
+        "roofing_layer_count": { "value": 2 },
+        "xy_offset_layer_0": { "value": -0.1 },
+        "speed_print": { "value": 50 },
+        "machine_name": { "default_value": "Biqu BX" },
+        "machine_width": { "value": 250 },
+        "machine_depth": { "value": 250 },
+        "machine_height": { "value": 250 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-33, 35],
+                [-33, -23],
+                [33, -23],
+                [33, 35]
+            ]
+        },
+        "machine_start_gcode": {
+            "default_value": "; BIQU BX Start G-code\r\n; For information on how to tune this profile and get the\r\n; most out of your BX visit: https:\/\/github.com\/looxonline\/Marlin\r\n; For the official github site visit: https:\/\/github.com\/bigtreetech\/BIQU-BX\r\n\r\nM117 Initial homing sequence.                         ; Home so that the probe is positioned to heat\r\nG28\r\n\r\nM117 Probe heating position\r\nG0 X65 Y5 Z1                                                   ; Move the probe to the heating position.\r\n\r\nM117 Getting the heaters up to temp!\r\nM104 S140                                                          ; Set Extruder temperature, no wait\r\nM140 S60                                                            ; Set Heat Bed temperature\r\nM190 S60                                                            ; Wait for Heat Bed temperature\r\n\r\nM117 Waiting for probe to warm!                        ; Wait another 90s for the probe to absorb heat.\r\nG4 S90 \r\n\r\nM117 Post warming re-home\r\nG28                                                                      ; Home all axes again after warming\r\n\r\nM117 Z-Dance of my people\r\nG34\r\n\r\nM117 ABL Probing\r\nG29\r\n\r\nM900 K0 L0 T0                                 ;Edit the K and L values if you have calibrated a k factor for your filament\r\nM900 T0 S0\r\n\r\nG1 Z2.0 F3000                                        ; Move Z Axis up little to prevent scratching of Heat Bed\r\nG1 X4.1 Y10 Z0.3 F5000.0                      ; Move to start position\r\n\r\nM117 Getting the extruder up to temp\r\nM140 S{material_bed_temperature_layer_0}      ; Set Heat Bed temperature\r\nM104 S{material_print_temperature_layer_0}    ; Set Extruder temperature\r\nM109 S{material_print_temperature_layer_0}    ; Wait for Extruder temperature\r\nM190 S{material_bed_temperature_layer_0}      ; Wait for Heat Bed temperature\r\n\r\nG92 E0                                        ; Reset Extruder\r\nM117 Purging\r\nG1 X4.1 Y200.0 Z0.3 F1500.0 E15               ; Draw the first line\r\nG1 X4.4 Y200.0 Z0.3 F5000.0                   ; Move to side a little\r\nG1 X4.4 Y20 Z0.3 F1500.0 E30                  ; Draw the second line\r\nG92 E0                                        ; Reset Extruder\r\nM117 Lets make\r\nG1 X8 Y20 Z0.3 F5000.0                        ; Move over to prevent blob squish"
+        },
+
+        "gantry_height": { "value": 27.5 }
+    }
+}

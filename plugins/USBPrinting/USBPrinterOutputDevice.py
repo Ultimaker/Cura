@@ -131,7 +131,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         """
 
         if self._is_printing:
-            message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
+            message = Message(text = catalog.i18nc("@message",
+                                                   "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."),
+                              title = catalog.i18nc("@message", "Print in Progress"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             return  # Already printing
         self.writeStarted.emit(self)
@@ -211,6 +214,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _onGlobalContainerStackChanged(self):
         container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if container_stack is None:
+            return
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
         controller = GenericOutputController(self)
@@ -306,7 +311,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if line == b"":
                 # An empty line means that the firmware is idle
                 # Multiple empty lines probably means that the firmware and Cura are waiting
-                # for eachother due to a missed "ok", so we keep track of empty lines
+                # for each other due to a missed "ok", so we keep track of empty lines
                 self._firmware_idle_count += 1
             else:
                 self._firmware_idle_count = 0

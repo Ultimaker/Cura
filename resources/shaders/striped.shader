@@ -36,6 +36,7 @@ fragment =
 
     uniform mediump float u_width;
     uniform bool u_vertical_stripes;
+    uniform lowp float u_lowestPrintableHeight;
 
     varying highp vec3 v_position;
     varying highp vec3 v_vertex;
@@ -64,7 +65,7 @@ fragment =
         highp vec3 viewVector = normalize(u_viewPosition - v_vertex);
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
-        if (v_vertex.y <= 0.0)
+        if (v_vertex.y <= u_lowestPrintableHeight)
         {
             finalColor.rgb = vec3(1.0, 1.0, 1.0) - finalColor.rgb;
         }
@@ -112,6 +113,7 @@ fragment41core =
 
     uniform mediump float u_width;
     uniform mediump bool u_vertical_stripes;
+    uniform lowp float u_lowestPrintableHeight;
 
     in highp vec3 v_position;
     in highp vec3 v_vertex;
@@ -144,7 +146,7 @@ fragment41core =
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
         frag_color = finalColor;
-        if (v_vertex.y <= 0.0)
+        if (v_vertex.y <= u_lowestPrintableHeight)
         {
             frag_color.rgb = vec3(1.0, 1.0, 1.0) - frag_color.rgb;
         }
@@ -160,6 +162,7 @@ u_opacity = 1.0
 u_shininess = 20.0
 u_width = 5.0
 u_vertical_stripes = 0
+u_lowestPrintableHeight = 0.0
 
 [bindings]
 u_modelMatrix = model_matrix

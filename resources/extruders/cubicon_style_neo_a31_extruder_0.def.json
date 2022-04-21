@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "cubicon_style_neo_a31",
+        "position": "0"
+    },
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0
+        },
+        "machine_nozzle_size": {
+            "default_value": 0.4
+        },
+        "machine_nozzle_offset_x": {
+            "default_value": -7.13
+        },
+        "machine_nozzle_offset_y": {
+            "default_value": -3.77
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        }
+    }
+}

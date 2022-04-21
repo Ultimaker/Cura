@@ -4,10 +4,10 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 
-import UM 1.2 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
-Cura.ToolbarButton
+UM.ToolbarButton
 {
     id: base
 
@@ -22,6 +22,7 @@ Cura.ToolbarButton
     {
         materialColor: extruder.color
         extruderEnabled: extruder.stack.isEnabled
+        iconVariant: "default"
         property int index: extruder.index
     }
 

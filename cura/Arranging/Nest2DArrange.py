@@ -36,10 +36,11 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
         node_items: A list of the nodes return by libnest2d, which contain the new positions on the buildplate
     """
+    spacing = int(1.5 * factor)  # 1.5mm spacing.
 
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
-    build_plate_bounding_box = Box(machine_width * factor, machine_depth * factor)
+    build_plate_bounding_box = Box(int(machine_width * factor), int(machine_depth * factor))
 
     if fixed_nodes is None:
         fixed_nodes = []
@@ -75,7 +76,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         # Clip the disallowed areas so that they don't overlap the bounding box (The arranger chokes otherwise)
         clipped_area = area.intersectionConvexHulls(build_plate_polygon)
 
-        if clipped_area.getPoints() is not None:  # numpy array has to be explicitly checked against None
+        if clipped_area.getPoints() is not None and len(clipped_area.getPoints()) > 2:  # numpy array has to be explicitly checked against None
             for point in clipped_area.getPoints():
                 converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
 
@@ -88,9 +89,9 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         converted_points = []
         hull_polygon = node.callDecoration("getConvexHull")
 
-        if hull_polygon is not None and hull_polygon.getPoints() is not None:  # numpy array has to be explicitly checked against None
+        if hull_polygon is not None and hull_polygon.getPoints() is not None and len(hull_polygon.getPoints()) > 2:  # numpy array has to be explicitly checked against None
             for point in hull_polygon.getPoints():
-                converted_points.append(Point(point[0] * factor, point[1] * factor))
+                converted_points.append(Point(int(point[0] * factor), int(point[1] * factor)))
             item = Item(converted_points)
             item.markAsFixedInBin(0)
             node_items.append(item)
@@ -99,7 +100,7 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     config = NfpConfig()
     config.accuracy = 1.0
 
-    num_bins = nest(node_items, build_plate_bounding_box, 10000, config)
+    num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 
     # Strip the fixed items (previously placed) and the disallowed areas from the results again.
     node_items = list(filter(lambda item: not item.isFixed(), node_items))
@@ -109,18 +110,11 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
     return found_solution_for_all, node_items
 
 
-def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fixed_nodes: Optional[List["SceneNode"]] = None, factor = 10000, add_new_nodes_in_scene: bool = False) -> bool:
-    """
-    Find placement for a set of scene nodes, and move them by using a single grouped operation.
-    :param nodes_to_arrange: The list of nodes that need to be moved.
-    :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
-    :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
-                        are placed.
-    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
-    :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
-
-    :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
-    """
+def createGroupOperationForArrange(nodes_to_arrange: List["SceneNode"],
+                                   build_volume: "BuildVolume",
+                                   fixed_nodes: Optional[List["SceneNode"]] = None,
+                                   factor = 10000,
+                                   add_new_nodes_in_scene: bool = False)  -> Tuple[GroupedOperation, int]:
     scene_root = Application.getInstance().getController().getScene().getRoot()
     found_solution_for_all, node_items = findNodePlacement(nodes_to_arrange, build_volume, fixed_nodes, factor)
 
@@ -142,6 +136,27 @@ def arrange(nodes_to_arrange: List["SceneNode"], build_volume: "BuildVolume", fi
             grouped_operation.addOperation(
                 TranslateOperation(node, Vector(200, node.getWorldPosition().y, -not_fit_count * 20), set_position = True))
             not_fit_count += 1
-    grouped_operation.push()
 
-    return found_solution_for_all
+    return grouped_operation, not_fit_count
+
+
+def arrange(nodes_to_arrange: List["SceneNode"],
+            build_volume: "BuildVolume",
+            fixed_nodes: Optional[List["SceneNode"]] = None,
+            factor = 10000,
+            add_new_nodes_in_scene: bool = False) -> bool:
+    """
+    Find placement for a set of scene nodes, and move them by using a single grouped operation.
+    :param nodes_to_arrange: The list of nodes that need to be moved.
+    :param build_volume: The build volume that we want to place the nodes in. It gets size & disallowed areas from this.
+    :param fixed_nodes: List of nods that should not be moved, but should be used when deciding where the others nodes
+                        are placed.
+    :param factor: The library that we use is int based. This factor defines how accuracte we want it to be.
+    :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
+
+    :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
+    """
+
+    grouped_operation, not_fit_count = createGroupOperationForArrange(nodes_to_arrange, build_volume, fixed_nodes, factor, add_new_nodes_in_scene)
+    grouped_operation.push()
+    return not_fit_count == 0

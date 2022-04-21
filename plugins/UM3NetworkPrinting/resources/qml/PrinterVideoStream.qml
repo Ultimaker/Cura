@@ -2,8 +2,6 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
@@ -30,7 +28,7 @@ Item {
             top: cameraImage.top
             topMargin: UM.Theme.getSize("default_margin").height
         }
-        iconSource: UM.Theme.getIcon("cross1");
+        iconSource: UM.Theme.getIcon("Cancel");
         z: 999;
     }
 

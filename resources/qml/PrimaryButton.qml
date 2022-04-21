@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -9,8 +9,6 @@ import Cura 1.1 as Cura
 
 Cura.ActionButton
 {
-    shadowEnabled: true
-    shadowColor: enabled ? UM.Theme.getColor("primary_button_shadow"): UM.Theme.getColor("action_button_disabled_shadow")
     color: UM.Theme.getColor("primary_button")
     textColor: UM.Theme.getColor("primary_button_text")
     outlineColor: "transparent"

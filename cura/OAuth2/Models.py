@@ -1,6 +1,8 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Union
+from copy import deepcopy
+from cura.OAuth2.KeyringAttribute import KeyringAttribute
 
 
 class BaseModel:
@@ -37,12 +39,29 @@ class AuthenticationResponse(BaseModel):
     # Data comes from the token response with success flag and error message added.
     success = True  # type: bool
     token_type = None  # type: Optional[str]
-    access_token = None  # type: Optional[str]
-    refresh_token = None  # type: Optional[str]
     expires_in = None  # type: Optional[str]
     scope = None  # type: Optional[str]
     err_message = None  # type: Optional[str]
     received_at = None  # type: Optional[str]
+    access_token = KeyringAttribute()
+    refresh_token = KeyringAttribute()
+    
+    def __init__(self, **kwargs: Any) -> None:
+        self.access_token = kwargs.pop("access_token", None)
+        self.refresh_token = kwargs.pop("refresh_token", None)
+        super(AuthenticationResponse, self).__init__(**kwargs)
+
+    def dump(self) -> Dict[str, Union[bool, Optional[str]]]:
+        """
+        Dumps the dictionary of Authentication attributes. KeyringAttributes are transformed to public attributes
+        If the keyring was used, these will have a None value, otherwise they will have the secret value
+
+        :return: Dictionary of Authentication attributes
+        """
+        dumped = deepcopy(vars(self))
+        dumped["access_token"] = dumped.pop("_access_token")
+        dumped["refresh_token"] = dumped.pop("_refresh_token")
+        return dumped
 
 
 class ResponseStatus(BaseModel):

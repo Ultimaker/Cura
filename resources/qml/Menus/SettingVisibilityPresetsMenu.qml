@@ -1,14 +1,17 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2021 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 1.4
+import QtQuick 2.10
+import QtQuick.Controls 2.11
+import QtQml.Models 2.14 as Models
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Menu
+Cura.Menu
 {
+    ActionGroup { id: group }
+
     id: menu
     title: catalog.i18nc("@action:inmenu", "Visible Settings")
 
@@ -16,28 +19,25 @@ Menu
 
     signal collapseAllCategories()
 
-    Instantiator
+    Models.Instantiator
     {
         model: settingVisibilityPresetsModel.items
 
-        MenuItem
+        Cura.MenuItem
         {
             text: modelData.name
             checkable: true
             checked: modelData.presetId == settingVisibilityPresetsModel.activePreset
-            exclusiveGroup: group
-            onTriggered:
-            {
-                settingVisibilityPresetsModel.setActivePreset(modelData.presetId);
-            }
+            ActionGroup.group: group
+            onTriggered: settingVisibilityPresetsModel.setActivePreset(modelData.presetId)
         }
 
-        onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object)
+        onObjectAdded: function(index, object) { menu.insertItem(index, object) }
+        onObjectRemoved: function(object) { menu.removeItem(object)}
     }
 
-    MenuSeparator {}
-    MenuItem
+    Cura.MenuSeparator {}
+    Cura.MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Collapse All Categories")
         onTriggered:
@@ -45,13 +45,11 @@ Menu
             collapseAllCategories();
         }
     }
-    MenuSeparator {}
-    MenuItem
+    Cura.MenuSeparator {}
+    Cura.MenuItem
     {
         text: catalog.i18nc("@action:inmenu", "Manage Setting Visibility...")
-        iconName: "configure"
+        icon.name: "configure"
         onTriggered: Cura.Actions.configureSettingVisibility.trigger()
     }
-
-    ExclusiveGroup { id: group }
 }

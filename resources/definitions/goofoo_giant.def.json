@@ -1,0 +1,15 @@
+{
+    "name": "Goofoo Giant",
+    "version": 2,
+    "inherits": "goofoo_near",
+    "overrides": {
+        "machine_name": { "default_value": "Goofoo Giant" },
+        "machine_width": { "default_value": 600 },
+        "machine_depth": { "default_value": 600 },
+        "machine_height": { "default_value": 1000 }
+
+    },
+    "metadata": {
+        "visible": true
+    }
+}
