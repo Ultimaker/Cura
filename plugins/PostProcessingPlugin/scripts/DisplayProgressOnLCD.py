@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
 # Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen, Inigo Martinez
 # Date:     July 31, 2019
-# Modified: Nov 30, 2021
+# Modified: Apr 21, 2022
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -67,6 +67,12 @@ class DisplayProgressOnLCD(Script):
     def getTimeValue(self, line):
         list_split = re.split(":", line)  # Split at ":" so we can get the numerical value
         return float(list_split[1])  # Convert the numerical portion to a float
+    
+    # Get the layer value from a line as a integer.
+    # Example line ;LAYER:25 or ;LAYER_COUNT:1337
+    def getIntValue(self, line):
+        list_split = re.split(":", line)  # Split at ":" so we can get the numerical value
+        return int(list_split[1])  # Convert the numerical portion to a int
 
     def outputTime(self, lines, line_index, time_left, mode):
         # Do some math to get the time left in seconds into the right format. (HH,MM,SS)
@@ -79,7 +85,7 @@ class DisplayProgressOnLCD(Script):
             # And now insert that into the GCODE
             lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
         elif mode == "m118":
-            current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
+            current_time_string = "{:02d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
             # And now insert that into the GCODE
             lines.insert(line_index, "M118 A1 P0 action:notification Time Left {}".format(current_time_string))
         else:
@@ -116,6 +122,13 @@ class DisplayProgressOnLCD(Script):
                                 lines.insert(line_index, "M118 A1 P0 action:notification Data Left 0/100")
                             else:
                                 lines.insert(line_index, "M73 P0")
+                                
+                    elif line.startswith(";LAYER_COUNT:"):
+                        total_layers = self.getIntValue(line)
+
+                    elif line.startswith(";LAYER:"):
+                        current_layer = self.getIntValue(line)
+                        lines.insert(1, "M118 A1 P0 action:notification Layer Left {}/{}".format(current_layer, total_layers)) # {}/{}".format(current_layer).format(total_layers))
 
                     elif line.startswith(";TIME_ELAPSED:"):
                         # We've found one of the time elapsed values which are added at the end of layers
@@ -163,7 +176,8 @@ class DisplayProgressOnLCD(Script):
                                             lines_added = lines_added + 1
 
                                     previous_layer_end_time = int(current_time)
-
+                                    
+                        
                         if output_percentage:
                             # Calculate percentage value this layer ends at
                             layer_end_percentage = int((current_time / total_time) * 100)
