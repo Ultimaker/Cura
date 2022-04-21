@@ -11,22 +11,19 @@ We have streamlined the workflow for accessing the Ultimaker Marketplace inside 
 * Improved print profiles for Ultimaker printers
 The new slicing engine in Ultimaker Cura 5.0 beta has helped us to improve our print profiles. This means that users of Ultimaker printers can achieve speed increases of up to 20%.
 
+* Upgrade from Qt5 to Qt6
+We now support Apple M1 chips
+
 * Other new features and improvements:
-- Upgrade from Qt5 to Qt6
 - New Cura icon
 - New Cura splash screen
-- Fuzzy skin works with the new engine
-- Connect Top/Bottom polygons work with the new engine
 - Updated the digital build plates for Ultimaker printers
 - Introduce Minimum Wall Line Width, contributed by @BagelOrb
-- Improved description and label of wall Transition Angle, contributed by @BagelOrb
 - Settings for metal printing implemented
 - Shrinkage compensation is now available for PLA, tPLA and PETG
 - Improved default Line Widths for Spiralize
 - Decrease resolution to remove some buffer underruns
 - Removed the setting Center Last from Wall Ordering
-- Increased Filter Distance
-- Hide the Variable Line Strategy in UI
 - Incomplete languages are now shown in the language drop-down menu
 
 * Bug fixes:
@@ -39,8 +36,6 @@ The new slicing engine in Ultimaker Cura 5.0 beta has helped us to improve our p
 - Fixed a bug where maximum resolution/deviation was not applied to surface mode, contributed by @BagelOrb
 - Fixed a bug where the seam placement was uneven
 - Fixed a bug where Top Surface Skin Layers didn't work
-- Updated the Tinyboy Fabricator printer definitions, contributed by @reibuehl
-- Updated the Creality Ender 5 printer profile, contributed by @Rakhmanov
 - Fixed a bug where Speed in the flow setting were not respected
 - Fixed a bug with unnecessary retracted travel moves
 - Fixed a bug where the Ironing Inset didn't work
@@ -67,6 +62,8 @@ The new slicing engine in Ultimaker Cura 5.0 beta has helped us to improve our p
 - Updated Atom 2 profile, contributed by @lin-ycv
 - Added Hellbot Hidra and Magna series printer definitions, contributed by @DevelopmentHellbot
 - Updated Snapmaker 2 End-Gcode, contributed by @Rolzad73
+- Updated the Tinyboy Fabricator printer definitions, contributed by @reibuehl
+- Updated the Creality Ender 5 printer profile, contributed by @Rakhmanov
 
 [4.13.1]
 * Bug fixes 
