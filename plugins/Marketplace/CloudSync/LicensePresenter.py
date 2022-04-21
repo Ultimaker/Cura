@@ -29,18 +29,18 @@ class LicensePresenter(QObject):
         self._presented = False
         """Whether present() has been called and state is expected to be initialized"""
 
-        self._dialog = None  # type: Optional[QObject]
-        self._package_manager = app.getPackageManager()  # type: PackageManager
+        self._dialog: Optional[QObject] = None
+        self._package_manager: PackageManager = app.getPackageManager()
         # Emits List[Dict[str, [Any]] containing for example
         # [{ "package_id": "BarbarianPlugin", "package_path" : "/tmp/dg345as", "accepted" : True }]
         self.licenseAnswers = Signal()
 
         self._current_package_idx = 0
-        self._package_models = []  # type: List[Dict]
+        self._package_models: List[Dict] = []
 
         self._catalog = i18nCatalog("cura")
         decline_button_text = self._catalog.i18nc("@button", "Decline and remove from account")
-        self._license_model = LicenseModel(decline_button_text=decline_button_text)  # type: LicenseModel
+        self._license_model: LicenseModel = LicenseModel(decline_button_text=decline_button_text)
         self._page_count = 0
 
         self._app = app

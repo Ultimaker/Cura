@@ -21,7 +21,7 @@ class DiscrepanciesPresenter(QObject):
 
         self._app = app
         self._package_manager = app.getPackageManager()
-        self._dialog = None  # type: Optional[QObject]
+        self._dialog: Optional[QObject] = None
         self._compatibility_dialog_path = "resources/qml/CompatibilityDialog.qml"
 
     def present(self, plugin_path: str, model: SubscribedPackagesModel) -> None:

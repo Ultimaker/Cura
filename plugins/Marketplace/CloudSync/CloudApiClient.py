@@ -27,7 +27,7 @@ class CloudApiClient:
         if self.__instance is not None:
             raise RuntimeError("This is a Singleton. use getInstance()")
 
-        self._scope = JsonDecoratorScope(UltimakerCloudScope(app))  # type: JsonDecoratorScope
+        self._scope: JsonDecoratorScope = JsonDecoratorScope(UltimakerCloudScope(app))
 
         app.getPackageManager().packageInstalled.connect(self._onPackageInstalled)
 

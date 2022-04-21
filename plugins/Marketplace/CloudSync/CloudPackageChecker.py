@@ -29,10 +29,10 @@ class CloudPackageChecker(QObject):
         super().__init__()
 
         self.discrepancies = Signal()  # Emits SubscribedPackagesModel
-        self._application = application  # type: CuraApplication
+        self._application: CuraApplication = application
         self._scope = JsonDecoratorScope(UltimakerCloudScope(application))
         self._model = SubscribedPackagesModel()
-        self._message = None  # type: Optional[Message]
+        self._message: Optional[Message] = None
 
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")

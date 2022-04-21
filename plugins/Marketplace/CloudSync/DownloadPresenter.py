@@ -37,8 +37,8 @@ class DownloadPresenter:
 
         self._started = False
         self._progress_message = self._createProgressMessage()
-        self._progress = {}  # type: Dict[str, Dict[str, Any]] # package_id, Dict
-        self._error = []  # type: List[str] # package_id
+        self._progress: Dict[str, Dict[str, Any]] = {}
+        self._error: List[str] = []
 
     def download(self, model: SubscribedPackagesModel) -> None:
         if self._started:

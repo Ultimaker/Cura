@@ -45,17 +45,17 @@ class SyncOrchestrator(Extension):
 
         self._package_manager = app.getPackageManager()
         # Keep a reference to the CloudApiClient. it watches for installed packages and subscribes to them
-        self._cloud_api = CloudApiClient.getInstance(app)  # type: CloudApiClient
+        self._cloud_api: CloudApiClient = CloudApiClient.getInstance(app)
 
-        self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
+        self._checker: CloudPackageChecker = CloudPackageChecker(app)
         self._checker.discrepancies.connect(self._onDiscrepancies)
 
-        self._discrepancies_presenter = DiscrepanciesPresenter(app)  # type: DiscrepanciesPresenter
+        self._discrepancies_presenter: DiscrepanciesPresenter = DiscrepanciesPresenter(app)
         self._discrepancies_presenter.packageMutations.connect(self._onPackageMutations)
 
-        self._download_presenter = DownloadPresenter(app)  # type: DownloadPresenter
+        self._download_presenter: DownloadPresenter = DownloadPresenter(app)
 
-        self._license_presenter = LicensePresenter(app)  # type: LicensePresenter
+        self._license_presenter: LicensePresenter = LicensePresenter(app)
         self._license_presenter.licenseAnswers.connect(self._onLicenseAnswers)
 
         self._restart_presenter = RestartApplicationPresenter(app)
