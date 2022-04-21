@@ -1,3 +1,70 @@
+[5.0]
+Beta
+<i><a href="https://youtu.be/kRj7pR4OkQA">Watch the launch event</a> to learn more about Ultimaker Cura 5.0 beta.</i>
+
+* New slicing engine
+Following special beta releases to test the Arachne engine, we are pleased to announce our new slicing engine is here in Ultimaker Cura! This all-new engine uses variable line widths when preparing files for printing, meaning you can now print thin and intricate parts more accurately and with greater strength. 
+
+* Renewed the Ultimaker Cura Marketplace
+We have streamlined the workflow for accessing the Ultimaker Marketplace inside of Ultimaker Cura. The UI has been improved and it’s now easier and faster to find and install plugins and material profiles.
+
+* Improved print profiles for Ultimaker printers
+The new slicing engine in Ultimaker Cura 5.0 beta has helped us to improve our print profiles. This means that users of Ultimaker printers can achieve speed increases of up to 20%.
+
+* Upgrade from Qt5 to Qt6
+We now support Apple M1 chips
+
+* Other new features and improvements:
+- New Cura icon
+- New Cura splash screen
+- Updated the digital build plates for Ultimaker printers
+- Introduce Minimum Wall Line Width, contributed by @BagelOrb
+- Settings for metal printing implemented
+- Shrinkage compensation is now available for PLA, tPLA and PETG
+- Improved default Line Widths for Spiralize
+- Decrease resolution to remove some buffer underruns
+- Removed the setting Center Last from Wall Ordering
+- Incomplete languages are now shown in the language drop-down menu
+
+* Bug fixes:
+- Added the Scale Fan Speed From 0 to 1 setting for printers that interpreted fan speed as percentages
+- Fixed a bug with extra travel moves increased the printing time, contributed by @BagelOrb
+- Fixed a bug where Monotonic Ironing breaks Ironing, contributed by @BagelOrb
+- Changed the priority of CuraEngine
+- Fixed a bug where increasing Filter distances creates extremely wide lines, contributed by @BagelOrb
+- Fixed double scroll bar, contributed by @fieldOfView
+- Fixed a bug where maximum resolution/deviation was not applied to surface mode, contributed by @BagelOrb
+- Fixed a bug where the seam placement was uneven
+- Fixed a bug where Top Surface Skin Layers didn't work
+- Fixed a bug where Speed in the flow setting were not respected
+- Fixed a bug with unnecessary retracted travel moves
+- Fixed a bug where the Ironing Inset didn't work
+- Fixed a bug where Support Layers were missing
+- Improved the visibility of the checkboxes
+- Fixed a crash if Randomize Infill Start was used
+- Fixed a bug where Combing was in the wrong part with dual extrusion
+- Fixed a crash with Bridging and Top Surface Skin Layers
+- Fixed a bug where modifier meshes didn't work in one-at-a-time mode
+- Fixed a bug where Tree Support Branches where not being generated
+- Fixed a bug where less support was generated
+- Changed the possibility for 100% Infill Bottom Layer for Spiralize, contributed by @BagelOrb
+- Fixed disallowed areas for Brim gap, contributed by @BagelOrb
+
+* Printer definitions, profiles and materials:
+- Added Atom 3 and Atom 3 Lite printer definitions, contributed by @Daniel-Kurth
+- Added Layer One Black PLA, Dark Grey PLA and White PLA, contributed by @Daniel-Kurth 
+- Added FLSUN Q5 printer definition, contributed by @kreuzhofer
+- Added Creatlity CR100 printer definition, contributed by @bodyboarder2528
+- Added Mixware Hyper-S printer definition, contributed by @mixware011
+- Added Creality Sermoon D1 printer definition, contributed by @felixstif
+- Added Volumic SH65, Stream30Pro MK3 and Stream30Ultra SC2 printer definitions, contributed by @VOLUMIC
+- Updated Eryone Thinker and ER20 profiles, contributed by @Eryone
+- Updated Atom 2 profile, contributed by @lin-ycv
+- Added Hellbot Hidra and Magna series printer definitions, contributed by @DevelopmentHellbot
+- Updated Snapmaker 2 End-Gcode, contributed by @Rolzad73
+- Updated the Tinyboy Fabricator printer definitions, contributed by @reibuehl
+- Updated the Creality Ender 5 printer profile, contributed by @Rakhmanov
+
 [4.13.1]
 * Bug fixes 
 - Fixed a bug where tree support could go through the model
