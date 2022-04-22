@@ -67,7 +67,7 @@ UM.Dialog
                             Image
                             {
                                 id: packageIcon
-                                source: model.icon_url || Qt.resolvedUrl("../../images/placeholder.svg")
+                                source: model.icon_url || Qt.resolvedUrl("../images/placeholder.svg")
                                 height: lineHeight
                                 width: height
                                 sourceSize.height: height
@@ -109,7 +109,7 @@ UM.Dialog
                             Image
                             {
                                 id: packageIcon
-                                source: model.icon_url || Qt.resolvedUrl("../../images/placeholder.svg")
+                                source: model.icon_url || Qt.resolvedUrl("../images/placeholder.svg")
                                 height: lineHeight
                                 width: height
                                 sourceSize.height: height
