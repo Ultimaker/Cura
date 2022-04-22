@@ -61,7 +61,7 @@ Item
                     left: parent.left
                     leftMargin: UM.Theme.getSize("default_margin").width
                 }
-                source: UM.Theme.getIcon("search")
+                source: UM.Theme.getIcon("Magnifier")
                 height: UM.Theme.getSize("small_button_icon").height
                 width: height
                 color: UM.Theme.getColor("text")
