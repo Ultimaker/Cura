@@ -35,7 +35,7 @@
 	"layer_height_0": { "default_value": 0.2 },
 
 	"wall_line_count":{ "value": 3 },
-	"wall_thickness": { "value": 1.2 },
+	"wall_thickness": { "value": "wall_line_count*line_width" },
  	"top_bottom_thickness": {"value": 1.5},
  	"optimize_wall_printing_order": {"value": true},
 
@@ -48,6 +48,7 @@
  	"speed_topbottom": {"value": 40 },
 	"speed_wall": { "value": 35 },
 	"speed_wall_x": { "value": 40 },
+	"speed_equalize_flow_max": { "value": 70 },
 
  	"retraction_enable": {"default_value":true},
 	"retraction_amount": { "default_value": 4 },
@@ -58,6 +59,8 @@
  	"retraction_hop": {"default_value":0.2},
 	"retraction_hop_enabled": {"value":true},
 	"speed_z_hop": {"value":2.5 },
+	"retraction_combing": {"value":"off"},
+	"cool_min_layer_time": {"default_value":30},
 
  	"cool_fan_enabled": {"default_value":true},
  	"cool_fan_full_at_height": {"value":0.4},
@@ -73,9 +76,13 @@
 	"support_interface_height": {"value": 0.5},
  	"support_interface_pattern": {"default_value":"lines"},
  	"support_pattern": {"default_value":"lines"},
- 	"support_xy_distance": {"value": 0.5},
- 	"support_z_distance": {"value": 0.3 },
-
+ 	"support_xy_distance": {"value": "machine_nozzle_size"},
+	"support_xy_distance_overhang": {"value": "machine_nozzle_size*0.95"},
+ 	"support_z_distance": {"value": "layer_height*2"},
+	"minimum_support_area": {"value": 30},
+	"support_angle": {"value": 40},
+	"wall_overhang_angle": {"value": 40},
+	"wall_overhang_speed_factor": {"value": 40},
 
  	"adhesion_type": {"default_value":"skirt"}
     }

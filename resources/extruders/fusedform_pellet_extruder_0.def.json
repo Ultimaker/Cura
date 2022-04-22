@@ -3,7 +3,7 @@
     "name": "Pellet Nozzle",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "fusedform_pellet600_base",
+        "machine": "fusedform_pellet_base",
         "position": "0"
     },
 
