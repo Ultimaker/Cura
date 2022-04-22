@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
 # Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee, Kimmo Toivanen, Inigo Martinez
 # Date:     July 31, 2019
-# Modified: Apr 21, 2022
+# Modified: Apr 22, 2022
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -127,7 +127,7 @@ class DisplayProgressOnLCD(Script):
                         total_layers = self.getIntValue(line)
 
                     elif line.startswith(";LAYER:"):
-                        current_layer = self.getIntValue(line)
+                        current_layer = self.getIntValue(line) + 1
                         lines.insert(1, "M118 A1 P0 action:notification Layer Left {}/{}".format(current_layer, total_layers)) # {}/{}".format(current_layer).format(total_layers))
 
                     elif line.startswith(";TIME_ELAPSED:"):
