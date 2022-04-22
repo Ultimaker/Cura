@@ -138,9 +138,10 @@ class RemotePackageList(PackageList):
         :param reply: The reply with packages. This will most likely be incomplete and should be ignored.
         :param error: The error status of the request.
         """
-        if error == QNetworkReply.NetworkError.OperationCanceledError:
+        if error == QNetworkReply.NetworkError.OperationCanceledError or error == QNetworkReply.NetworkError.ProtocolUnknownError:
             Logger.debug("Cancelled request for packages.")
             self._ongoing_requests["get_packages"] = None
+            self.setIsLoading(False)
             return  # Don't show an error about this to the user.
         Logger.error("Could not reach Marketplace server.")
         self.setErrorMessage(catalog.i18nc("@info:error", "Could not reach Marketplace."))
