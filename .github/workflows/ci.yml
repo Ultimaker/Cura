@@ -10,11 +10,11 @@ on:
   pull_request:
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-jammy
     container: ultimaker/cura-build-environment
     steps:
     - name: Checkout Cura
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Build
       run: docker/build.sh
     - name: Test
