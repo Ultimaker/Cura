@@ -37,7 +37,7 @@ class CreateThumbnail(Script):
 
         encoded_snapshot_length = len(encoded_snapshot)
         gcode.append(";")
-        gcode.append("; thumbnail begin {} {} {}".format(
+        gcode.append("; thumbnail begin {}x{} {}".format(
             width, height, encoded_snapshot_length))
 
         chunks = ["; {}".format(encoded_snapshot[i:i+chunk_size])
