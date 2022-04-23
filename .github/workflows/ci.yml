@@ -14,7 +14,8 @@ jobs:
     container: ultimaker/cura-build-environment
     steps:
     - name: Checkout Cura
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+    - run: brew install cmake
     - name: Build
       run: docker/build.sh
     - name: Test
