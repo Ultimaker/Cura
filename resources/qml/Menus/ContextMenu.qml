@@ -134,6 +134,7 @@ Cura.Menu
                 from: 1
                 to: 99
                 width: 2 * UM.Theme.getSize("button").width
+                value: 1
             }
         }
     }
