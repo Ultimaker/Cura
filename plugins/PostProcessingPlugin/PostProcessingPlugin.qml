@@ -475,7 +475,7 @@ UM.Dialog
             }
             toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
-//            iconSource: Qt.resolvedUrl("Script.svg")
+            iconSource: Qt.resolvedUrl("Script.svg")
             fixedWidthMode: false
         }
 
