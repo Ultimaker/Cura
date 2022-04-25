@@ -5,21 +5,23 @@ import sys
 from UM.Logger import Logger
 try:
     from . import ThreeMFWriter
+    threemf_writer_was_imported = True
 except ImportError:
     Logger.log("w", "Could not import ThreeMFWriter; libSavitar may be missing")
-from . import ThreeMFWorkspaceWriter
+    threemf_writer_was_imported = False
 
+from . import ThreeMFWorkspaceWriter
 from UM.i18n import i18nCatalog
-from UM.Platform import Platform
 
 i18n_catalog = i18nCatalog("cura")
+
 
 def getMetaData():
     workspace_extension = "3mf"
 
     metaData = {}
 
-    if "3MFWriter.ThreeMFWriter" in sys.modules:
+    if threemf_writer_was_imported:
         metaData["mesh_writer"] = {
             "output": [{
                 "extension": "3mf",
@@ -38,6 +40,7 @@ def getMetaData():
         }
 
     return metaData
+
 
 def register(app):
     if "3MFWriter.ThreeMFWriter" in sys.modules:
