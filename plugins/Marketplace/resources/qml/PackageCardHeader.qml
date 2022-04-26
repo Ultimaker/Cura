@@ -119,8 +119,8 @@ Item
                 topPadding: UM.Theme.getSize("narrow_margin").width
                 bottomPadding: UM.Theme.getSize("narrow_margin").width
 
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                width: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                height: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
                 contentItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("LinkExternal")
