@@ -101,7 +101,8 @@ Item
             {
                 id: backgroundLine
                 height: UM.Theme.getSize("print_setup_slider_groove").height
-                width: infillSlider.width - UM.Theme.getSize("print_setup_slider_handle").width
+                width: parent.width - UM.Theme.getSize("print_setup_slider_handle").width
+                implicitWidth: width
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 color: infillSlider.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
@@ -120,8 +121,10 @@ Item
                         anchors.verticalCenter: parent.verticalCenter
 
                         // Do not use Math.round otherwise the tickmarks won't be aligned
-                        x: ((handleButton.width / 2) - (backgroundLine.implicitWidth / 2) + (index * ((repeater.width - handleButton.width) / (repeater.count-1))))
-                        radius: Math.round(backgroundLine.implicitWidth / 2)
+                        // (space between steps) * index of step
+                        x: (backgroundLine.width / (repeater.count - 1)) * index
+
+                        radius: Math.round(implicitWidth / 2)
                         visible: (index % 10) == 0 // Only show steps of 10%
 
                         UM.Label
