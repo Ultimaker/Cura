@@ -99,7 +99,7 @@ Item
             {
                 id: digitalFactoryImage
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg"
+                source: Qt.resolvedUrl(searchBar.text === "" ? "../images/digital_factory.svg" : "../images/projects_not_found.svg")
                 fillMode: Image.PreserveAspectFit
                 width: parent.width - 2 * UM.Theme.getSize("thick_margin").width
             }
