@@ -178,7 +178,7 @@ Item
     ListView
     {
         id: contents
-        maximumFlickVelocity: 1000
+        maximumFlickVelocity: 1000 * screenScaleFactor
         anchors
         {
             top: filterContainer.bottom
