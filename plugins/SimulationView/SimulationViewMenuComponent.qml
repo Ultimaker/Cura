@@ -9,13 +9,128 @@ import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 
+Rectangle
+{
+
 Cura.ExpandableComponent
 {
-    id: base
+    id: cutPlaneBase
+
+    dragPreferencesNamePrefix: "view/cutplane"
+
+    contentHeaderTitle: catalog.i18nc("@label", "Cut plane")
+
+    anchors
+    {
+    top: parent.top
+    left: parent.horizontalCenter
+    right: parent.right
+    bottom: parent.bottom
+    }
+
+    headerItem: Item
+    {
+        UM.Label
+        {
+            id: cutPlaneLabel
+            text: catalog.i18nc("@label", "Cut plane")
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text_medium")
+        }
+
+        UM.Label
+        {
+            text: cutPlaneOff.checked ? cutPlaneOff.text : (cutPlaneXAxis.checked ? cutPlaneXAxis.text : cutPlaneYAxis.text)
+            anchors
+            {
+                left: cutPlaneLabel.right
+                leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+            }
+            height: parent.height
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("medium")
+        }
+    }
+
+    contentItem: Column
+    {
+        id: cutPlaneSettings
+
+        width: UM.Theme.getSize("layerview_menu_size").width - 2 * UM.Theme.getSize("default_margin").width
+        height: implicitHeight
+
+        ColumnLayout
+        {
+            spacing: UM.Theme.getSize("default_margin").width
+            RowLayout
+            {
+                spacing: UM.Theme.getSize("default_margin").width
+                ButtonGroup
+                {
+                    id: cutPlaneAxisButtons
+                    exclusive: true
+                    buttons: [cutPlaneOff, cutPlaneXAxis, cutPlaneYAxis]
+                }
+                Cura.RadioButton
+                {
+                    id: cutPlaneOff
+                    text: catalog.i18nc("@label cut-plane off", "Off")
+                    checked: true
+                    onCheckedChanged: UM.SimulationView.setCutPlaneOff()
+                }
+                Cura.RadioButton
+                {
+                    id: cutPlaneXAxis
+                    text: catalog.i18nc("@label cut-plane on x-axis", "X-Axis")
+                    onCheckedChanged: UM.SimulationView.setCutPlaneX()
+                }
+                Cura.RadioButton
+                {
+                    id: cutPlaneYAxis
+                    text: catalog.i18nc("@label cut-plane on y-axis", "Y-Axis")
+                    onCheckedChanged: UM.SimulationView.setCutPlaneY()
+                }
+                UM.CheckBox
+                {
+                    id: cutPlaneFlip
+                    enabled: ! cutPlaneOff.checked
+                    text: catalog.i18nc("@label cut-plane reversed", "Flipped")
+                    onClicked: UM.SimulationView.flipCutPlane()
+                }
+            }
+            Slider
+            {
+                id: cutPlaneSlider
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredWidth: parent.width
+                enabled: ! cutPlaneOff.checked
+                from: (cutPlaneXAxis.checked ? UM.SimulationView.buildVolumeWidth : UM.SimulationView.buildVolumeDepth) / -2
+                value: 0
+                to: (cutPlaneXAxis.checked ? UM.SimulationView.buildVolumeWidth : UM.SimulationView.buildVolumeDepth) / 2
+                onPositionChanged: UM.SimulationView.setCutPlaneSlider(value)
+            }
+        }
+    }
+}
+
+Cura.ExpandableComponent
+{
+    id: colorSchemeBase
 
     dragPreferencesNamePrefix: "view/colorscheme"
 
     contentHeaderTitle: catalog.i18nc("@label", "Color scheme")
+
+    anchors
+    {
+    top: parent.top
+    left: parent.left
+    right: parent.horizontalCenter
+    bottom: parent.bottom
+    }
 
     Connections
     {
@@ -617,7 +732,7 @@ Cura.ExpandableComponent
             }
         }
     }
-
+}
     FontMetrics
     {
         id: fontMetrics

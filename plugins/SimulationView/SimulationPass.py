@@ -82,6 +82,10 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
             self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
+            if not self._compatibility_mode:
+                self._layer_shader.setUniformValue("u_show_cutplane", self._layer_view.getCutPlaneEnabled())
+                self._layer_shader.setUniformValue("u_cutplane_normal", self._layer_view.getCutPlaneNormal())
+                self._layer_shader.setUniformValue("u_cutplane_distance", self._layer_view.getCutPlaneDistance())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)

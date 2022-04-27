@@ -105,6 +105,10 @@ class SimulationView(CuraView):
         self._show_travel_moves = False
         self._nozzle_node = None  # type: Optional[NozzleNode]
 
+        self._cut_plane_enabled = False
+        self._cut_plane_normal = [1.0, 0.0, 0.0]
+        self._cut_plane_distance = 0.0
+
         Application.getInstance().getPreferences().addPreference("view/top_layer_count", 5)
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
@@ -697,6 +701,31 @@ class SimulationView(CuraView):
     def getCurrentLayerJumps(self):
         return self._current_layer_jumps
 
+    def _notifyScene(self):
+        scene = Application.getInstance().getController().getScene()
+        scene.sceneChanged.emit(scene.getRoot())
+
+    def setCutPlaneEnabled(self, enable: bool) -> None:
+        self._cut_plane_enabled = enable
+        self._notifyScene()
+
+    def setCutPlaneNormal(self, normal: List[float]) -> None:
+        self._cut_plane_normal = normal
+        self._notifyScene()
+
+    def setCutPlaneDistance(self, value: float) -> None:
+        self._cut_plane_distance = value
+        self._notifyScene()
+
+    def getCutPlaneEnabled(self) -> bool:
+        return self._cut_plane_enabled
+
+    def getCutPlaneNormal(self) -> List[float]:
+        return self._cut_plane_normal
+
+    def getCutPlaneDistance(self) -> float:
+        return self._cut_plane_distance
+
     def _onGlobalStackChanged(self) -> None:
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -718,8 +747,7 @@ class SimulationView(CuraView):
 
     def _onCurrentLayerNumChanged(self) -> None:
         self.calculateMaxPathsOnLayer(self._current_layer_num)
-        scene = Application.getInstance().getController().getScene()
-        scene.sceneChanged.emit(scene.getRoot())
+        self._notifyScene()
 
     def _startUpdateTopLayers(self) -> None:
         if not self._compatibility_mode:

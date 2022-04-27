@@ -383,8 +383,17 @@ fragment41core =
     uniform mediump vec4 u_minimumAlbedo;
     uniform highp vec3 u_lightPosition;
 
+    uniform lowp int u_show_cutplane;
+    uniform lowp vec3 u_cutplane_normal;
+    uniform lowp float u_cutplane_distance;
+
     void main()
     {
+        if(u_show_cutplane > 0 && dot((u_cutplane_distance * u_cutplane_normal) - f_vertex, u_cutplane_normal) > 0)
+        {
+            discard;  // In the other side of the half-space, so discard.
+        }
+
         mediump vec4 finalColor = vec4(0.0);
         float alpha = f_color.a;
 
@@ -414,6 +423,10 @@ u_minimumAlbedo = [0.1, 0.1, 0.1, 1.0]
 u_shininess = 20.0
 
 u_starts_color = [1.0, 1.0, 1.0, 1.0]
+
+u_cutplane_normal = [1, 0, 0]
+u_cutplane_distance = 0
+u_show_cutplane = 0
 
 u_show_travel_moves = 0
 u_show_helpers = 1

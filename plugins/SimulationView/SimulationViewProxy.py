@@ -15,6 +15,7 @@ class SimulationViewProxy(QObject):
         super().__init__(parent)
         self._simulation_view = simulation_view
         self._current_layer = 0
+        self._cut_plane_flipped = 1.0
         self._controller = Application.getInstance().getController()
         self._controller.activeViewChanged.connect(self._onActiveViewChanged)
         self.is_simulationView_selected = False
@@ -29,6 +30,7 @@ class SimulationViewProxy(QObject):
     preferencesChanged = pyqtSignal()
     busyChanged = pyqtSignal()
     colorSchemeLimitsChanged = pyqtSignal()
+    dummySignal = pyqtSignal()
 
     @pyqtProperty(bool, notify=activityChanged)
     def layerActivity(self):
@@ -154,6 +156,36 @@ class SimulationViewProxy(QObject):
     @pyqtSlot(int)
     def setShowInfill(self, show):
         self._simulation_view.setShowInfill(show)
+
+    @pyqtProperty(int, notify=dummySignal)
+    def buildVolumeWidth(self):
+        return int(Application.getInstance().getBuildVolume().getWidth() * 1000.0)
+
+    @pyqtProperty(int, notify=dummySignal)
+    def buildVolumeDepth(self):
+        return int(Application.getInstance().getBuildVolume().getDepth() * 1000.0)
+
+    @pyqtSlot()
+    def setCutPlaneOff(self):
+        self._simulation_view.setCutPlaneEnabled(False)
+
+    @pyqtSlot()
+    def setCutPlaneX(self):
+        self._simulation_view.setCutPlaneEnabled(True)
+        self._simulation_view.setCutPlaneNormal([self._cut_plane_flipped * 1.0, 0.0, 0.0])
+
+    @pyqtSlot()
+    def setCutPlaneY(self):
+        self._simulation_view.setCutPlaneEnabled(True)
+        self._simulation_view.setCutPlaneNormal([0.0, 0.0, self._cut_plane_flipped * -1.0])
+
+    @pyqtSlot()
+    def flipCutPlane(self):
+        self._simulation_view.setCutPlaneNormal([-x for x in self._simulation_view.getCutPlaneNormal()])
+
+    @pyqtSlot(int)
+    def setCutPlaneSlider(self, value):
+        self._simulation_view.setCutPlaneDistance(float(value) / 1000.0)
 
     def _layerActivityChanged(self):
         self.activityChanged.emit()
