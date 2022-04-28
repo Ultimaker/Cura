@@ -354,8 +354,13 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
+
+                // If nameFilters contains only 1 item, the index of selectedNameFilter will always be -1
+                // This fetches the nameFilter at index selectedNameFilter.index if it is positive
+                var nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0]
+
                 var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
-                                                                             selectedFile, selectedNameFilter);
+                                                                             selectedFile, nameFilterString);
 
                 if (result && result.status == "error")
                 {
@@ -365,7 +370,7 @@ UM.ManagementPage
                 }
 
                 // else pop-up Message thing from python code
-                CuraApplication.setDefaultPath("dialog_profile_path", folder);
+                CuraApplication.setDefaultPath("dialog_profile_path", currentFolder);
             }
         }
 

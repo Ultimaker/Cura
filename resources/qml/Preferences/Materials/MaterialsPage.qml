@@ -246,7 +246,7 @@ UM.ManagementPage
                         break;
                 }
                 messageDialog.open();
-                CuraApplication.setDefaultPath("dialog_material_path", folder);
+                CuraApplication.setDefaultPath("dialog_material_path", currentFolder);
             }
         }
 
@@ -259,7 +259,9 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, selectedFile);
+                var nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0]
+
+                const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, nameFilterString, selectedFile);
 
                 const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
                 messageDialog.title = catalog.i18nc("@title:window", "Export Material");
@@ -275,7 +277,7 @@ UM.ManagementPage
                 }
                 messageDialog.open();
 
-                CuraApplication.setDefaultPath("dialog_material_path", folder);
+                CuraApplication.setDefaultPath("dialog_material_path", currentFolder);
             }
         }
     }
