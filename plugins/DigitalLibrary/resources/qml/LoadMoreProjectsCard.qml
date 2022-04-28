@@ -37,7 +37,7 @@ Cura.RoundedRectangle
             width: UM.Theme.getSize("section").height
             height: width
             color: UM.Theme.getColor("text_link")
-            source: "../images/arrow_down.svg"
+            source: Qt.resolvedUrl("../images/arrow_down.svg")
         }
 
         Label
@@ -65,7 +65,7 @@ Cura.RoundedRectangle
             {
                 target: projectImage
                 color: UM.Theme.getColor("text_link")
-                source: "../images/arrow_down.svg"
+                source: Qt.resolvedUrl("../images/arrow_down.svg")
             }
             PropertyChanges
             {
@@ -88,7 +88,7 @@ Cura.RoundedRectangle
             {
                 target: projectImage
                 color: UM.Theme.getColor("text_link")
-                source: "../images/arrow_down.svg"
+                source: Qt.resolvedUrl("../images/arrow_down.svg")
             }
             PropertyChanges
             {
@@ -111,7 +111,7 @@ Cura.RoundedRectangle
             {
                 target: projectImage
                 color: UM.Theme.getColor("action_button_disabled_text")
-                source: "../images/update.svg"
+                source: Qt.resolvedUrl("../images/update.svg")
             }
             PropertyChanges
             {

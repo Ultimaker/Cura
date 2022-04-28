@@ -62,13 +62,19 @@ Item
         var affected_by_list = ""
         for (var i in affected_by)
         {
-            affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            if(affected_by[i].label != "")
+            {
+                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            }
         }
 
         var affects_list = ""
         for (var i in affects)
         {
-            affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            if(affects[i].label != "")
+            {
+                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            }
         }
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
