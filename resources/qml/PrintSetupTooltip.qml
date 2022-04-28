@@ -63,7 +63,7 @@ UM.PointingRectangle
     {
         id: textScroll
         width: parent.width
-        height: Math.min(label.height, base.parent.height)
+        height: Math.min(label.height + UM.Theme.getSize("tooltip_margins").height, base.parent.height)
 
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
         ScrollBar.vertical.policy: ScrollBar.AsNeeded
