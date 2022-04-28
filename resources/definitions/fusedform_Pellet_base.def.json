@@ -78,8 +78,8 @@
 	"minimum_support_area": {"value": 100},
 
 	"coasting_enable": {"value": true },
-	"coasting_volume": {"value": "machine_nozzle_size * machine_nozzle_size" },
-	"coasting_min_volume": {"value": "machine_nozzle_size * machine_nozzle_size*5" },
+	"coasting_volume": {"value": "machine_nozzle_size * machine_nozzle_size*2.5" },
+	"coasting_min_volume": {"value": "machine_nozzle_size * machine_nozzle_size*10" },
 	"coasting_speed": {"value": 70 },
 
  	"adhesion_type": {"default_value":"skirt"}
