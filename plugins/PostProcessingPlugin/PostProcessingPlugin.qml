@@ -232,7 +232,7 @@ UM.Dialog
                 }
 
                 onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
-                onObjectRemoved: function(object) {  scriptsMenu.removeItem(object) }
+                onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
         }
 

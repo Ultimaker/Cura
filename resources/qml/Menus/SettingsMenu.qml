@@ -68,7 +68,7 @@ Cura.Menu
             }
         }
         onObjectAdded: function(index, object) {  base.insertMenu(index, object) }
-        onObjectRemoved:function(object) {  base.removeMenu(object)}
+        onObjectRemoved: function(index, object) {  base.removeMenu(object);}
     }
 
     Cura.MenuSeparator { }
