@@ -259,7 +259,7 @@ UM.ManagementPage
             currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                var nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0]
+                const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
 
                 const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, nameFilterString, selectedFile);
 

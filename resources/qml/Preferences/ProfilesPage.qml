@@ -357,7 +357,7 @@ UM.ManagementPage
 
                 // If nameFilters contains only 1 item, the index of selectedNameFilter will always be -1
                 // This fetches the nameFilter at index selectedNameFilter.index if it is positive
-                var nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0]
+                const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
 
                 var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
                                                                              selectedFile, nameFilterString);
