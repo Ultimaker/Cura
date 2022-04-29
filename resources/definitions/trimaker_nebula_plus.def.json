@@ -12,10 +12,10 @@
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "preferred_material": "redd_pla",
-        
+
         "platform_offset": [-117.5, -40, 147.5],
         "has_materials": true,
-        "machine_extruder_trains": {"0": "trimaker_nebula_extruder"},
+        "machine_extruder_trains": {"0": "trimaker_nebula_extruder"}
     },
 
     "overrides": {
@@ -110,6 +110,5 @@
         "machine_end_gcode": {"default_value": ";Trimaker Nebula End Code\n M107; Apagamos fan\n G90\n G92 E0\n G1 X0 Y200\n G91\n G1 Z5\n G92 E0\n M140 S0; Enfriamos\n M104 S0; Enfriamos\n M84\n G90\n M117 Impresion finalizada\n M300 S440 P700\n"},
         "material_diameter": {"default_value": 1.75},
         "machine_center_is_zero": {"default_value": false}
-
     }
 }
