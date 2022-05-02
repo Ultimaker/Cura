@@ -17,6 +17,8 @@ UM.PointingRectangle
     arrowSize: UM.Theme.getSize("default_arrow").width
 
     opacity: 0
+    // This should be disabled when invisible, otherwise it will catch mouse events.
+    enabled: opacity > 0
 
     Behavior on opacity
     {
