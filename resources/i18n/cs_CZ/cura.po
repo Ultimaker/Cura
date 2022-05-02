@@ -3009,7 +3009,7 @@ msgstr "Žádné informace o kompatibilitě"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:162
 msgctxt "@header"
 msgid "Compatible support materials"
-msgstr "Kompatibilní podporované materiály"
+msgstr "Kompatibilní materiály podpor"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:188
 msgctxt "@info No materials"
