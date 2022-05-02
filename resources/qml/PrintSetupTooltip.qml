@@ -17,6 +17,8 @@ UM.PointingRectangle
     arrowSize: UM.Theme.getSize("default_arrow").width
 
     opacity: 0
+    // This should be disabled when invisible, otherwise it will catch mouse events.
+    enabled: false
 
     Behavior on opacity
     {
@@ -52,11 +54,13 @@ UM.PointingRectangle
         }
         base.opacity = 1;
         target = Qt.point(position.x + 1, position.y + Math.round(UM.Theme.getSize("tooltip_arrow_margins").height / 2))
+        enabled = true
     }
 
     function hide()
     {
         base.opacity = 0;
+        enabled = false
     }
 
     ScrollView
