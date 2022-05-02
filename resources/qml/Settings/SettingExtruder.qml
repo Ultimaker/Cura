@@ -154,7 +154,7 @@ SettingItem
             background: Rectangle
             {
                 id: swatch
-                height: Math.round(parent.height / 2)
+                height: UM.Theme.getSize("standard_arrow").width
                 width: height
                 radius: Math.round(width / 2)
                 anchors.right: parent.right
