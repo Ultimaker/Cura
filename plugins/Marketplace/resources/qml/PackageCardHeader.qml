@@ -160,7 +160,7 @@ Item
                 id: authorBy
                 Layout.alignment: Qt.AlignCenter
 
-                text: catalog.i18nc("@label", "By")
+                text: catalog.i18nc("@label Is followed by the name of an author", "By")
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
             }
