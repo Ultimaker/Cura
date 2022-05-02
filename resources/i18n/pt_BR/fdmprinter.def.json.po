@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.13\n"
+"Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2022-04-13 10:49+0000\n"
 "PO-Revision-Date: 2022-05-02 12:04+0200\n"
