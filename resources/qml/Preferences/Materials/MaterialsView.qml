@@ -601,6 +601,7 @@ Item
                     suffix: " " + model.unit
                     to: 99999
                     decimals: model.unit == "mm" ? 2 : 0
+                    stepSize: Math.pow(10, -decimals)
 
                     onEditingFinished: materialPropertyProvider.setPropertyValue("value", value)
                 }
