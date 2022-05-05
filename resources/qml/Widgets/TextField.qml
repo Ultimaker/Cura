@@ -23,6 +23,8 @@ TextField
     selectByMouse: true
     font: UM.Theme.getFont("default")
     color: UM.Theme.getColor("text_field_text")
+    selectedTextColor: UM.Theme.getColor("text_field_text")
+    placeholderTextColor: UM.Theme.getColor("text_field_text_disabled")
     renderType: Text.NativeRendering
     selectionColor: UM.Theme.getColor("text_selection")
     leftPadding: iconLeft.visible ? iconLeft.width + UM.Theme.getSize("default_margin").width * 2 : UM.Theme.getSize("thin_margin").width
@@ -53,7 +55,7 @@ TextField
     {
         id: backgroundRectangle
         //Optional icon added on the left hand side.
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: iconLeft
 

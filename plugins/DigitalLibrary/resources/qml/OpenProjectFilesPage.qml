@@ -1,12 +1,11 @@
 //Copyright (C) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import Qt.labs.qmlmodels 1.0
 import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.6 as UM
 import Cura 1.6 as Cura
 
 import DigitalFactory 1.0 as DF
@@ -19,6 +18,7 @@ Item
     height: parent.height
 
     property var fileModel: manager.digitalFactoryFileModel
+    property var modelRows: manager.digitalFactoryFileModel.items
 
     signal openFilePressed()
     signal selectDifferentProjectPressed()
@@ -57,21 +57,19 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
 
-        //We can't use Cura's TableView here, since in Cura >= 5.0 this uses QtQuick.TableView, while in Cura < 5.0 this uses QtControls1.TableView.
-        //So we have to define our own. Once support for 4.13 and earlier is dropped, we can switch to Cura.TableView.
-        Table
+        // This is not backwards compatible with Cura < 5.0 due to QT.labs being removed in PyQt6
+        Cura.TableView
         {
             id: filesTableView
             anchors.fill: parent
             anchors.margins: parent.border.width
 
             columnHeaders: ["Name", "Uploaded by", "Uploaded at"]
-            model: TableModel
+            model: UM.TableModel
             {
-                TableModelColumn { display: "fileName" }
-                TableModelColumn { display: "username" }
-                TableModelColumn { display: "uploadedAt" }
-                rows: manager.digitalFactoryFileModel.items
+                id: tableModel
+                headers: ["fileName", "username", "uploadedAt"]
+                rows: modelRows
             }
 
             onCurrentRowChanged:
@@ -178,5 +176,11 @@ Item
     {
         openFilesButton.clicked.connect(base.openFilePressed)
         selectDifferentProjectButton.clicked.connect(base.selectDifferentProjectPressed)
+    }
+
+    onModelRowsChanged:
+    {
+        tableModel.clear()
+        tableModel.rows = modelRows
     }
 }

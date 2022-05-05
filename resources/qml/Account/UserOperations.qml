@@ -30,6 +30,7 @@ Column
             height: UM.Theme.getSize("main_window_header").height
 
             source: profile["profile_image_url"] ? profile["profile_image_url"] : ""
+            maskColor: UM.Theme.getColor("main_background")
             outlineColor: UM.Theme.getColor("main_background")
         }
         Rectangle
@@ -45,7 +46,7 @@ Column
             {
                 id: initialLabel
                 anchors.centerIn: parent
-                text: profile["username"].charAt(0).toUpperCase()
+                text: profile.username.charAt(0).toUpperCase()
                 font: UM.Theme.getFont("large_bold")
                 horizontalAlignment: Text.AlignHCenter
             }

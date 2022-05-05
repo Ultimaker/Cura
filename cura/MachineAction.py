@@ -4,7 +4,7 @@
 import os
 from typing import Optional
 
-from PyQt5.QtCore import QObject, QUrl, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, QUrl, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Logger import Logger
 from UM.PluginObject import PluginObject

@@ -1,5 +1,5 @@
-# Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2015-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
 from UM.Mesh.MeshWriter import MeshWriter
@@ -13,9 +13,9 @@ from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Snapshot import Snapshot
 
-from PyQt5.QtCore import QBuffer
+from PyQt6.QtCore import QBuffer
 
-import Savitar
+import pySavitar as Savitar
 
 import numpy
 import datetime
@@ -157,7 +157,7 @@ class ThreeMFWriter(MeshWriter):
             snapshot = self._createSnapshot()
             if snapshot:
                 thumbnail_buffer = QBuffer()
-                thumbnail_buffer.open(QBuffer.ReadWrite)
+                thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
 
                 thumbnail_file = zipfile.ZipInfo("Metadata/thumbnail.png")

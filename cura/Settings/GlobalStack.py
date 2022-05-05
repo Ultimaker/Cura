@@ -6,7 +6,7 @@ import threading
 from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
 import uuid
 
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
+from PyQt6.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import deprecated, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase

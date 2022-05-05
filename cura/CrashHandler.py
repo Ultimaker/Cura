@@ -20,9 +20,9 @@ try:
 except ImportError:
     with_sentry_sdk = False
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
+from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
+from PyQt6.QtGui import QDesktopServices
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -136,8 +136,8 @@ class CrashHandler:
 
         # "backup and start clean" and "close" buttons
         buttons = QDialogButtonBox()
-        buttons.addButton(QDialogButtonBox.Close)
-        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.AcceptRole)
+        buttons.addButton(QDialogButtonBox.StandardButton.Close)
+        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.ButtonRole.AcceptRole)
         buttons.rejected.connect(self._closeEarlyCrashDialog)
         buttons.accepted.connect(self._backupAndStartClean)
 
@@ -161,7 +161,7 @@ class CrashHandler:
         QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
 
     def _showDetailedReport(self):
-        self.dialog.exec_()
+        self.dialog.exec()
 
     def _createDialog(self):
         """Creates a modal dialog."""
@@ -409,12 +409,12 @@ class CrashHandler:
 
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
-        buttons.addButton(QDialogButtonBox.Close)
+        buttons.addButton(QDialogButtonBox.StandardButton.Close)
         # Like above, this will be served as a separate detailed report dialog if the application has not yet been
         # fully loaded. In this case, "send report" will be a check box in the early crash dialog, so there is no
         # need for this extra button.
         if self.has_started:
-            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.ButtonRole.AcceptRole)
             buttons.accepted.connect(self._sendCrashReport)
         buttons.rejected.connect(self.dialog.close)
 
@@ -456,5 +456,5 @@ class CrashHandler:
     def _show(self):
         # When the exception is in the skip_exception_types list, the dialog is not created, so we don't need to show it
         if self.dialog:
-            self.dialog.exec_()
+            self.dialog.exec()
         os._exit(1)

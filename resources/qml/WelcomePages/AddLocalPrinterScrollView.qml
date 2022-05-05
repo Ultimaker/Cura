@@ -1,8 +1,8 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
-import QtQuick.Controls 2.3
+import QtQuick 2.15
+import QtQuick.Controls 2.14
 
 import UM 1.5 as UM
 import Cura 1.1 as Cura
@@ -115,14 +115,12 @@ Item
                     width: childrenRect.width
                     height: UM.Theme.getSize("action_button").height
 
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: arrow
                         anchors.left: parent.left
                         width: UM.Theme.getSize("standard_arrow").width
                         height: UM.Theme.getSize("standard_arrow").height
-                        sourceSize.width: width
-                        sourceSize.height: height
                         color: UM.Theme.getColor("text")
                         source: base.currentSection == section ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
                     }
@@ -235,9 +233,9 @@ Item
                     placeholderText: catalog.i18nc("@text", "Please name your printer")
                     maximumLength: 40
                     width: parent.width - (printerNameLabel.width + (3 * UM.Theme.getSize("default_margin").width))
-                    validator: RegExpValidator
+                    validator: RegularExpressionValidator
                     {
-                        regExp: printerNameTextField.machineNameValidator.machineNameRegex
+                        regularExpression: printerNameTextField.machineNameValidator.machineNameRegex
                     }
                     property var machineNameValidator: Cura.MachineNameValidator { }
                 }

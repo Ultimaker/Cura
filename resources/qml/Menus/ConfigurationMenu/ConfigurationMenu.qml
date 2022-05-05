@@ -57,7 +57,7 @@ Cura.ExpandablePopup
 
                     property var extruderStack: activeMachine ? activeMachine.extruderList[model.index]: null
                     property bool valueWarning: !Cura.ExtruderManager.getExtruderHasQualityForMaterial(extruderStack)
-                    property bool valueError: activeMachine ? Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible", "") != "True" : false
+                    property bool valueError: activeMachine ? Cura.ContainerManager.getContainerMetaDataEntry(extruderStack.material.id, "compatible") != "True" : false
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon
@@ -109,7 +109,7 @@ Cura.ExpandablePopup
                     }
 
                     // Warning icon that indicates if no qualities are available for the variant/material combination for this extruder
-                    UM.RecolorImage
+                    UM.ColorImage
                     {
                         id: badge
                         anchors
@@ -257,11 +257,10 @@ Cura.ExpandablePopup
         }
     }
 
+    contentWidth: UM.Theme.getSize("configuration_selector").width
     contentItem: Column
     {
         id: popupItem
-        width: UM.Theme.getSize("configuration_selector").width
-        height: implicitHeight  // Required because ExpandableComponent will try to use this to determine the size of the background of the pop-up.
         padding: UM.Theme.getSize("default_margin").height
         spacing: UM.Theme.getSize("default_margin").height
 

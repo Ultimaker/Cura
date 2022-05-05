@@ -1,11 +1,11 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2021-2022 Ultimaker B.V.
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
 import zipfile
 from typing import List, Optional, Union, TYPE_CHECKING, cast
 
-import Savitar
+import pySavitar as Savitar
 import numpy
 
 from UM.Logger import Logger

@@ -106,7 +106,7 @@ Rectangle
         anchors.right: materialSlot.right
         visible: false
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: favoriteIndicator
             anchors.centerIn: parent

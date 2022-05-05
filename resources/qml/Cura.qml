@@ -3,8 +3,8 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.2
-import QtGraphicalEffects 1.0
+import QtQuick.Dialogs
+
 import UM 1.5 as UM
 import Cura 1.1 as Cura
 
@@ -47,6 +47,22 @@ UM.MainWindow
     function hideTooltip()
     {
         tooltip.hide();
+    }
+
+    MouseArea
+    {
+        // Hack introduced when switching to qt6
+        // We used to be able to let the main window's default handlers control this, but something seems to be changed
+        // for qt6 in the ordering. TODO; We should find out what changed and have a less hacky fix for that.
+        enabled: parent.visible
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+        onPositionChanged: (mouse) => {base.mouseMoved(mouse);}
+        onPressed: (mouse) => { base.mousePressed(mouse);}
+        onReleased: (mouse) => { base.mouseReleased(mouse);}
+        onWheel: (wheel) => {base.wheel(wheel)}
+
     }
 
     Rectangle
@@ -147,7 +163,7 @@ UM.MainWindow
         anchors.fill: parent
 
         //DeleteSelection on the keypress backspace event
-        Keys.onPressed:
+        Keys.onPressed: (event) =>
         {
             if (event.key == Qt.Key_Backspace)
             {
@@ -171,29 +187,10 @@ UM.MainWindow
             }
             height: stageMenu.source != "" ? Math.round(mainWindowHeader.height + stageMenu.height / 2) : mainWindowHeader.height
 
-            LinearGradient
+            Rectangle
             {
                 anchors.fill: parent
-                start: Qt.point(0, 0)
-                end: Qt.point(parent.width, 0)
-                gradient: Gradient
-                {
-                    GradientStop
-                    {
-                        position: 0.0
-                        color: UM.Theme.getColor("main_window_header_background")
-                    }
-                    GradientStop
-                    {
-                        position: 0.5
-                        color: UM.Theme.getColor("main_window_header_background_gradient")
-                    }
-                    GradientStop
-                    {
-                        position: 1.0
-                        color: UM.Theme.getColor("main_window_header_background")
-                    }
-                }
+                color: UM.Theme.getColor("main_window_header_background")
             }
 
             // This is a placeholder for adding a pattern in the header
@@ -237,7 +234,7 @@ UM.MainWindow
             {
                 // The drop area is here to handle files being dropped onto Cura.
                 anchors.fill: parent
-                onDropped:
+                onDropped: (drop) =>
                 {
                     if (drop.urls.length > 0)
                     {
@@ -246,7 +243,7 @@ UM.MainWindow
                         for (var i = 0; i < drop.urls.length; i++)
                         {
                             var filename = drop.urls[i];
-                            if (filename.toLowerCase().endsWith(".curapackage"))
+                            if (filename.toString().toLowerCase().endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
@@ -574,7 +571,7 @@ UM.MainWindow
         id: contextMenu
     }
 
-    onPreClosing:
+    onPreClosing: (close) =>
     {
         close.accepted = CuraApplication.getIsAllChecksPassed();
         if (!close.accepted)
@@ -636,24 +633,19 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file(s)")
         modality: Qt.WindowModal
-        selectMultiple: true
+        fileMode: FileDialog.OpenFiles
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder:
-        {
-            //Because several implementations of the file dialog only update the folder when it is explicitly set.
-            folder = CuraApplication.getDefaultPath("dialog_load_path");
-            return CuraApplication.getDefaultPath("dialog_load_path");
-        }
+        currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
         {
             // Because several implementations of the file dialog only update the folder
             // when it is explicitly set.
-            var f = folder;
-            folder = f;
+            var f = currentFolder;
+            currentFolder = f;
 
-            CuraApplication.setDefaultPath("dialog_load_path", folder);
+            CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
 
-            handleOpenFileUrls(fileUrls);
+            handleOpenFileUrls(selectedFiles);
         }
 
         // Yeah... I know... it is a mess to put all those things here.
@@ -745,7 +737,7 @@ UM.MainWindow
     {
         id: packageInstallDialog
         title: catalog.i18nc("@window:title", "Install Package")
-        standardButtons: StandardButton.Ok
+        standardButtons: Dialog.Ok
     }
 
     Cura.MessageDialog

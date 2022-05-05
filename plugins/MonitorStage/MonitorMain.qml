@@ -123,7 +123,7 @@ Rectangle
             visible: !isNetworkConfigured && isNetworkConfigurable
             width: childrenRect.width
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: externalLinkIcon
                 anchors.verticalCenter: parent.verticalCenter

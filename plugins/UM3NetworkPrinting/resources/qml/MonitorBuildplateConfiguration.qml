@@ -45,7 +45,7 @@ Item
                 radius: Math.floor(height / 2)
             }
 
-            UM.RecolorImage
+            UM.ColorImage
             {
                 id: buildplateIcon
                 anchors.centerIn: parent

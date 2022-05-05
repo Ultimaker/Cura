@@ -4,7 +4,7 @@ import tempfile
 import json
 import os.path
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
 from typing import cast, Dict, Optional, Set, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
@@ -22,8 +22,8 @@ from .PackageModel import PackageModel
 from .Constants import USER_PACKAGES_URL, PACKAGES_URL
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
-    from PyQt5.QtNetwork import QNetworkReply
+    from PyQt6.QtCore import QObject
+    from PyQt6.QtNetwork import QNetworkReply
 
 catalog = i18nCatalog("cura")
 
@@ -32,7 +32,7 @@ class PackageList(ListModel):
     """ A List model for Packages, this class serves as parent class for more detailed implementations.
     such as Packages obtained from Remote or Local source
     """
-    PackageRole = Qt.UserRole + 1
+    PackageRole = Qt.ItemDataRole.UserRole + 1
     DISK_WRITE_BUFFER_SIZE = 256 * 1024  # 256 KB
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:

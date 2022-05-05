@@ -49,8 +49,8 @@ Cura.Menu
             onTriggered: Cura.MachineManager.setVariant(nozzleMenu.extruderIndex, model.container_node)
         }
 
-        onObjectAdded: nozzleMenu.insertItem(index, object)
-        onObjectRemoved: nozzleMenu.removeItem(object)
+        onObjectAdded: function(index, object) { nozzleMenu.insertItem(index, object) }
+        onObjectRemoved: function(index, object) {nozzleMenu.removeItem(object)}
     }
 
 }

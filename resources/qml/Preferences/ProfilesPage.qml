@@ -4,7 +4,7 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.6 as Cura
@@ -349,13 +349,18 @@ UM.ManagementPage
         {
             id: exportDialog
             title: catalog.i18nc("@title:window", "Export Profile")
-            selectExisting: false
+            fileMode: FileDialog.SaveFile
             nameFilters: base.qualityManagementModel.getFileNameFilters("profile_writer")
-            folder: CuraApplication.getDefaultPath("dialog_profile_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
+
+                // If nameFilters contains only 1 item, the index of selectedNameFilter will always be -1
+                // This fetches the nameFilter at index selectedNameFilter.index if it is positive
+                const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
+
                 var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
-                                                                             fileUrl, selectedNameFilter);
+                                                                             selectedFile, nameFilterString);
 
                 if (result && result.status == "error")
                 {
@@ -365,7 +370,7 @@ UM.ManagementPage
                 }
 
                 // else pop-up Message thing from python code
-                CuraApplication.setDefaultPath("dialog_profile_path", folder);
+                CuraApplication.setDefaultPath("dialog_profile_path", currentFolder);
             }
         }
 
@@ -385,7 +390,7 @@ UM.ManagementPage
 
             title: catalog.i18nc("@title:window", "Confirm Remove")
             text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
-            standardButtons: StandardButton.Yes | StandardButton.No
+            standardButtons: Dialog.Yes | Dialog.No
             modal: true
 
             onAccepted:
@@ -414,12 +419,12 @@ UM.ManagementPage
         {
             id: importDialog
             title: catalog.i18nc("@title:window", "Import Profile")
-            selectExisting: true
+            fileMode: FileDialog.OpenFile
             nameFilters: base.qualityManagementModel.getFileNameFilters("profile_reader")
-            folder: CuraApplication.getDefaultPath("dialog_profile_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
             onAccepted:
             {
-                var result = Cura.ContainerManager.importProfile(fileUrl);
+                var result = Cura.ContainerManager.importProfile(selectedFile);
                 messageDialog.title = catalog.i18nc("@title:window", "Import Profile")
                 messageDialog.text = result.message;
                 messageDialog.open();

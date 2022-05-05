@@ -3,7 +3,7 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.15
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.5 as Cura
@@ -226,12 +226,12 @@ UM.ManagementPage
         {
             id: importMaterialDialog
             title: catalog.i18nc("@title:window", "Import Material")
-            selectExisting: true
+            fileMode: FileDialog.OpenFile
             nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
-            folder: CuraApplication.getDefaultPath("dialog_material_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                const result = Cura.ContainerManager.importMaterialContainer(fileUrl);
+                const result = Cura.ContainerManager.importMaterialContainer(selectedFile);
 
                 const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
                 messageDialog.standardButtons = Dialog.Ok;
@@ -239,14 +239,14 @@ UM.ManagementPage
                 switch (result.status)
                 {
                     case "success":
-                        messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(fileUrl);
+                        messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully imported material <filename>%1</filename>").arg(selectedFile);
                         break;
                     default:
-                        messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
+                        messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Could not import material <filename>%1</filename>: <message>%2</message>").arg(selectedFile).arg(result.message);
                         break;
                 }
                 messageDialog.open();
-                CuraApplication.setDefaultPath("dialog_material_path", folder);
+                CuraApplication.setDefaultPath("dialog_material_path", currentFolder);
             }
         }
 
@@ -254,12 +254,14 @@ UM.ManagementPage
         {
             id: exportMaterialDialog
             title: catalog.i18nc("@title:window", "Export Material")
-            selectExisting: false
+            fileMode: FileDialog.SaveFile
             nameFilters: Cura.ContainerManager.getContainerNameFilters("material")
-            folder: CuraApplication.getDefaultPath("dialog_material_path")
+            currentFolder: CuraApplication.getDefaultPath("dialog_material_path")
             onAccepted:
             {
-                const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, selectedNameFilter, fileUrl);
+                const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
+
+                const result = Cura.ContainerManager.exportContainer(base.currentItem.root_material_id, nameFilterString, selectedFile);
 
                 const messageDialog = Qt.createQmlObject("import Cura 1.5 as Cura; Cura.MessageDialog { onClosed: destroy() }", base);
                 messageDialog.title = catalog.i18nc("@title:window", "Export Material");
@@ -267,7 +269,7 @@ UM.ManagementPage
                 switch (result.status)
                 {
                     case "error":
-                        messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(fileUrl).arg(result.message);
+                        messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tags <filename> and <message>!", "Failed to export material to <filename>%1</filename>: <message>%2</message>").arg(selectedFile).arg(result.message);
                         break;
                     case "success":
                         messageDialog.text = catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Successfully exported material to <filename>%1</filename>").arg(result.path);
@@ -275,7 +277,7 @@ UM.ManagementPage
                 }
                 messageDialog.open();
 
-                CuraApplication.setDefaultPath("dialog_material_path", folder);
+                CuraApplication.setDefaultPath("dialog_material_path", currentFolder);
             }
         }
     }

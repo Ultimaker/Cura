@@ -13,7 +13,7 @@ catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from UM.Qt.QtApplication import QtApplication
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
 
 
 class CuraPackageManager(PackageManager):

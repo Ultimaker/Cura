@@ -75,7 +75,7 @@ Item
     UM.SimpleButton
     {
         id: playButton
-        iconSource: !isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg"
+        iconSource: Qt.resolvedUrl(!isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg")
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("slider_handle_active")

@@ -47,23 +47,21 @@ Item
             sourceSize.width: width
         }
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             visible: !parent.packageHasIcon
             anchors.fill: parent
-            sourceSize.height: height
-            sourceSize.width: width
             color: UM.Theme.getColor("text")
             source:
             {
                 switch (packageData.packageType)
                 {
                     case "plugin":
-                        return "../images/Plugin.svg";
+                        return Qt.resolvedUrl("../images/Plugin.svg");
                     case "material":
-                        return "../images/Spool.svg";
+                        return Qt.resolvedUrl("../images/Spool.svg");
                     default:
-                        return "../images/placeholder.svg";
+                        return Qt.resolvedUrl("../images/placeholder.svg");
                 }
             }
         }
@@ -121,9 +119,9 @@ Item
                 topPadding: UM.Theme.getSize("narrow_margin").width
                 bottomPadding: UM.Theme.getSize("narrow_margin").width
 
-                Layout.preferredWidth: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                Layout.preferredHeight: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
-                contentItem: UM.RecolorImage
+                width: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                height: UM.Theme.getSize("card_tiny_icon").width + 2 * padding
+                contentItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("LinkExternal")
                     color: UM.Theme.getColor("icon")

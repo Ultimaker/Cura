@@ -15,11 +15,12 @@ UM.MenuItem
 
     implicitHeight: UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height
     implicitWidth: UM.Theme.getSize("menu").width
-    opacity: enabled ? 1.0 : 0.5
 
-    arrow: UM.RecolorImage
+    property bool overrideShowArrow: false
+
+    arrow: UM.ColorImage
     {
-        visible: menuItem.subMenu
+        visible: menuItem.subMenu || overrideShowArrow
         height: UM.Theme.getSize("default_arrow").height
         width: height
         anchors.verticalCenter: parent.verticalCenter
@@ -29,7 +30,7 @@ UM.MenuItem
         color: UM.Theme.getColor("setting_control_text")
     }
 
-    indicator: UM.RecolorImage
+    indicator: UM.ColorImage
     {
         id: check
         visible: menuItem.checkable && menuItem.checked
