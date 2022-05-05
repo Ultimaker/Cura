@@ -196,7 +196,7 @@
             "default_value": true
         },
         "support_interface_density": {
-            "default_value": 33.333
+            "default_value": 80
         },
         "support_interface_pattern": {
             "default_value": "grid"
@@ -263,13 +263,13 @@
             "value": "speed_topbottom"
         },
         "speed_travel": {
-            "value": "150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5"
+            "value": "120.0 if speed_print < 60 else 240.0 if speed_print > 100 else speed_print * 2.5"
         },
         "speed_print_layer_0": {
             "value": "speed_layer_0"
         },
         "speed_travel_layer_0": {
-            "value": "100 if speed_layer_0 < 20 else 150 if speed_layer_0 > 30 else speed_layer_0 * 5"
+            "value": "60 if speed_layer_0 < 20 else 120 if speed_layer_0 > 30 else speed_layer_0 * 5"
         },
         "speed_prime_tower": {
             "value": "speed_topbottom"
@@ -347,7 +347,7 @@
             "value": false 
         },
         "retraction_combing": {
-            "value": "all"
+            "value": "off"
         },
         "retraction_extrusion_window": {
             "value": 10,
@@ -367,6 +367,12 @@
         },
         "wall_0_wipe_dist": {
             "value": 0.0
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "support_bottom_stair_step_height": {
+            "default_value": 0.2
         }
     }
 }
