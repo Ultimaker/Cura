@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.13\n"
+"Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-13 10:49+0200\n"
-"PO-Revision-Date: 2022-01-10 12:10+0100\n"
+"PO-Revision-Date: 2022-04-28 03:56+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -15,15 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/PrepareStage/__init__.py:12
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Preparar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraProfileWriter/__init__.py:14
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraProfileReader/__init__.py:14
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraProfileWriter/__init__.py:14 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraProfileReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Perfil do Cura"
@@ -96,8 +95,7 @@ msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Salvar em Unidade Removível {0}"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:66 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:118
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Não há formatos de arquivo disponíveis com os quais escrever!"
@@ -113,8 +111,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Salvando"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:108 /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:111
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
@@ -126,18 +123,14 @@ msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Não foi possível encontrar nome de arquivo ao tentar escrever em {device}."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:140 /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:159
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Não foi possível salvar em unidade removível {0}: {1}"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:161
-#: /home/remco/dev/code/ulti/trans/Cura/cura/CuraApplication.py:1782
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:156
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:166
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:141 /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:161 /home/remco/dev/code/ulti/trans/Cura/cura/CuraApplication.py:1782
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:156 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:166
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Erro"
@@ -181,9 +174,7 @@ msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Erro ao ejetar {0}. Outro programa pode estar usando a unidade."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177
-#: /home/remco/dev/code/ulti/trans/Cura/cura/CuraApplication.py:1770
-#: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationService.py:217
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:177 /home/remco/dev/code/ulti/trans/Cura/cura/CuraApplication.py:1770 /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationService.py:217
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Aviso"
@@ -198,8 +189,7 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "Arquivo AMF"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPReader/__init__.py:22
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/__init__.py:28
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPReader/__init__.py:22 /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/__init__.py:28
 msgctxt "@item:inlistbox"
 msgid "Ultimaker Format Package"
 msgstr "Pacote de Formato da Ultimaker"
@@ -401,8 +391,7 @@ msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "Esta impressora não está ligada à Digital Factory:"
 msgstr[1] "Estas impressoras não estão ligadas à Digital Factory:"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:432
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:342 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:432
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
@@ -541,8 +530,7 @@ msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "Não há camadas a exibir"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationView.py:136
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:74
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationView.py:136 /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:74
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "Não mostrar essa mensagem novamente"
@@ -557,15 +545,12 @@ msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "O GCodeWriter não suporta modo binário."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeWriter/GCodeWriter.py:80
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeWriter/GCodeWriter.py:96
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeWriter/GCodeWriter.py:80 /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeWriter/GCodeWriter.py:96
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Por favor prepare o G-Code antes de exportar."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeWriter/__init__.py:16
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeProfileReader/__init__.py:14
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/__init__.py:14
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeWriter/__init__.py:16 /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeProfileReader/__init__.py:14 /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/__init__.py:14
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Arquivo G-Code"
@@ -585,8 +570,7 @@ msgctxt "@error"
 msgid "There is no workspace yet to write. Please add a printer first."
 msgstr "Não existe espaço de trabalho ainda para a escrita. Por favor adicione uma impressora primeiro."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:64 /home/remco/dev/code/ulti/trans/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:97
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "Sem permissão para gravar o espaço de trabalho aqui."
@@ -606,8 +590,7 @@ msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Arquivo de Projeto 3MF do Cura"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeGzReader/__init__.py:17
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeGzWriter/__init__.py:17
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeGzReader/__init__.py:17 /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeGzWriter/__init__.py:17
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Arquivo de G-Code Comprimido"
@@ -637,12 +620,8 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Não foi possível fatiar com o material atual visto que é incompatível com a máquina ou configuração selecionada."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:429
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:456
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:468
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:480
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:493
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:429 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:456
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:468 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:480 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:493
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Não foi possível fatiar"
@@ -683,8 +662,7 @@ msgstr ""
 "- Estão associados a um extrusor habilitado\n"
 "- Não estão todos configurados como malhas de modificação"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "Processando Camadas"
@@ -724,8 +702,7 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "Imagem GIF"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/MachineManager.py:713
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:218 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/MachineManager.py:713
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Bico"
@@ -747,8 +724,7 @@ msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "O arquivo de projeto <filename>{0}</filename> tornou-se subitamente inacessível: <message>{1}</message>."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:645
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:653
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:645 /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:653
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "Não Foi Possível Abrir o Arquivo de Projeto"
@@ -775,16 +751,12 @@ msgctxt "@title:tab"
 msgid "Custom"
 msgstr "Personalizado"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/__init__.py:27
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/__init__.py:33
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/__init__.py:27 /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/__init__.py:33
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "Arquivo 3MF"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:57
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:72
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:94
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:149
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:57 /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:72 /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:94 /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:149
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UFPWriter/UFPWriter.py:159
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -835,16 +807,12 @@ msgctxt "@item:inmenu"
 msgid "Manage backups"
 msgstr "Gerenciar backups"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Backups/Backup.py:122
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Backups/Backup.py:159
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:118 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:126 /home/remco/dev/code/ulti/trans/Cura/cura/Backups/Backup.py:122 /home/remco/dev/code/ulti/trans/Cura/cura/Backups/Backup.py:159
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "Backup"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/DriveApiService.py:86
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:26
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/DriveApiService.py:86 /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:26
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "Houve um erro ao tentar restaurar seu backup."
@@ -902,42 +870,42 @@ msgstr "Selecionar Atualizações"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/PackageModel.py:43
 msgctxt "@label:property"
 msgid "Unknown Package"
-msgstr ""
+msgstr "Pacote Desconhecido"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/PackageModel.py:66
 msgctxt "@label:property"
 msgid "Unknown Author"
-msgstr ""
+msgstr "Autor Desconhecido"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/RemotePackageList.py:116
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
-msgstr ""
+msgstr "Não foi possível interpretar a resposta de servidor."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/RemotePackageList.py:146
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
-msgstr ""
+msgstr "Não foi possível conectar ao Marketplace."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:28
 msgctxt "@label"
 msgid "Installed Plugins"
-msgstr ""
+msgstr "Complementos Instalados"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:29
 msgctxt "@label"
 msgid "Installed Materials"
-msgstr ""
+msgstr "Materiais Instalados"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:33
 msgctxt "@label"
 msgid "Bundled Plugins"
-msgstr ""
+msgstr "Complementos Empacotados"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:34
 msgctxt "@label"
 msgid "Bundled Materials"
-msgstr ""
+msgstr "Materiais Empacotados"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
@@ -949,9 +917,7 @@ msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "Erros de Modelo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:80
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:71
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:80 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:71 /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:82
 msgctxt "@action:button"
 msgid "Learn more"
 msgstr "Saiba mais"
@@ -966,8 +932,7 @@ msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Interpretando G-Code"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/FlavorParser.py:352
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/FlavorParser.py:506
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/FlavorParser.py:352 /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/FlavorParser.py:506
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "Detalhes do G-Code"
@@ -1080,45 +1045,37 @@ msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Não é possível abrir nenhum outro arquivo se G-Code estiver sendo carregado. Pulando importação de {0}"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:42
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/QualityManagementModel.py:338
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:11
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:42 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/QualityManagementModel.py:338 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:11
 msgctxt "@label"
 msgid "Default"
 msgstr "Default"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:45
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:14
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:45 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:14
 msgctxt "@label"
 msgid "Visual"
 msgstr "Visual"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:46
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:15
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:46 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "O perfil visual é projetado para imprimir protótipos e modelos virtuais com o objetivo de alta qualidade visual e de superfície."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:49
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:18
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:49 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:18
 msgctxt "@label"
 msgid "Engineering"
 msgstr "Engenharia"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:50
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:19
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:50 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "O perfil de engenharia é projetado para imprimir protótipos funcionais e partes de uso final com o objetivo de melhor precisão e tolerâncias mais estritas."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:53
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:22
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:53 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:22
 msgctxt "@label"
 msgid "Draft"
 msgstr "Rascunho"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:54
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:23
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:54 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:23
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "O perfil de rascunho é projetado para imprimir protótipos iniciais e validações de conceito com o objetivo de redução significativa de tempo de impressão."
@@ -1134,9 +1091,7 @@ msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Tem certeza que deseja remover {0}? Isto não pode ser defeito!"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/QualityManagementModel.py:361
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/MachineManager.py:1614
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:83 /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/QualityManagementModel.py:361 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/MachineManager.py:1614
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Desconhecido"
@@ -1156,31 +1111,27 @@ msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Calculado"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:55
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:55 /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "Por favor sincronize os perfis de material com suas impressoras antes de começar a imprimir."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:56
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:56 /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:67
 msgctxt "@action:button"
 msgid "New materials installed"
 msgstr "Novos materiais instalados"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:63
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:63 /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74
 msgctxt "@action:button"
 msgid "Sync materials"
-msgstr ""
+msgstr "Sincronizar materiais"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:288
 msgctxt "@label"
 msgid "Custom Material"
 msgstr "Material Personalizado"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:289
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:336
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:289 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:336
 msgctxt "@label"
 msgid "Custom"
 msgstr "Personalizado"
@@ -1206,8 +1157,7 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "Falha em criar arquivo de materiais para sincronizar com impressoras."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111
-#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
+#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:111 /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:165
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
 msgstr "Falha em carregar o arquivo de materiais para sincronizar com impressoras."
@@ -1217,9 +1167,7 @@ msgctxt "@text:error"
 msgid "The response from Digital Factory appears to be corrupted."
 msgstr "A resposta da Digital Factory parece estar corrompida."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147
-#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151
-#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
+#: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:147 /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:151 /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:155
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
 msgstr "A resposta da Digital Factory veio sem informações importantes."
@@ -1264,8 +1212,7 @@ msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "Buscando Localização"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Arranging/ArrangeObjectsJob.py:41
-#: /home/remco/dev/code/ulti/trans/Cura/cura/MultiplyObjectsJob.py:99
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Arranging/ArrangeObjectsJob.py:41 /home/remco/dev/code/ulti/trans/Cura/cura/MultiplyObjectsJob.py:99
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Não foi possível achar um lugar dentro do volume de construção para todos os objetos"
@@ -1346,55 +1293,41 @@ msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Grupo #{group_nr}"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/TextManager.py:37
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/TextManager.py:63
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/TextManager.py:37 /home/remco/dev/code/ulti/trans/Cura/cura/UI/TextManager.py:63
 msgctxt "@text:window"
 msgid "The release notes could not be opened."
 msgstr "As notas de lançamento não puderam ser abertas."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WhatsNewPagesModel.py:67
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:286
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WhatsNewPagesModel.py:67 /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:286
 msgctxt "@action:button"
 msgid "Skip"
 msgstr "Pular"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WhatsNewPagesModel.py:72
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:135
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:178
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:450
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:172
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WhatsNewPagesModel.py:72 /home/remco/dev/code/ulti/trans/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:135 /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:178
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:450 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:172
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Fechar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/AddPrinterPagesModel.py:17
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/AddPrinterPagesModel.py:17 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:61
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Adicionar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/AddPrinterPagesModel.py:26
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:290
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/AddPrinterPagesModel.py:26 /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:290
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "Finalizar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/AddPrinterPagesModel.py:33
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:27
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:43
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:323
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:451
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:284
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:59
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:74
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/AddPrinterPagesModel.py:33 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:27 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:43
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:323 /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:451 /home/remco/dev/code/ulti/trans/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:150
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:284 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:59 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:74
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ColorDialog.qml:136
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:57
-#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:277
+#: /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:57 /home/remco/dev/code/ulti/trans/Cura/cura/UI/WelcomePagesModel.py:277
 msgctxt "@action:button"
 msgid "Next"
 msgstr "Próximo"
@@ -1424,21 +1357,18 @@ msgctxt "@text"
 msgid "Unknown error."
 msgstr "Erro desconhecido."
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:207
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:140
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:207 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:140
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "O Arquivo Já Existe"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:208
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:141
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:208 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:141
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "O arquivo <filename>{0}</filename> já existe. Tem certeza que quer sobrescrevê-lo?"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:459
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:462
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:459 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:462
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "URL de arquivo inválida:"
@@ -1515,8 +1445,7 @@ msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Erro ao importar perfil de <filename>{0}</filename>:"
 
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:252
-#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:262
+#: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:252 /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:262
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
@@ -1805,8 +1734,7 @@ msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Selecionar Ajustes a Personalizar para este modelo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:61
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:100
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:61 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:100
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Filtrar..."
@@ -1931,23 +1859,19 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "A atualização de firmware falhou devido a firmware não encontrado."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:70
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:70 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "Abortado"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:72
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:74
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:72 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:74
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "Finalizado"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:76
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:76 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:351
 msgctxt "@label:status"
 msgid "Preparing..."
@@ -1958,10 +1882,8 @@ msgctxt "@label:status"
 msgid "Aborting..."
 msgstr "Abortando..."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:92
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:92
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
 msgctxt "@label:status"
 msgid "Failed"
 msgstr "Falhado"
@@ -1996,15 +1918,13 @@ msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "Gerir Impressora"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:178
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:151
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:178 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:151
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:175
 msgctxt "@label"
 msgid "Glass"
 msgstr "Vidro"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:467
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241 /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:467
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:239
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
@@ -2147,9 +2067,7 @@ msgctxt "@action:button"
 msgid "Edit"
 msgstr "Editar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:82
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:141
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:186
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:82 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:141 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:186
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:320
 msgctxt "@action:button"
 msgid "Remove"
@@ -2165,20 +2083,17 @@ msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Se sua impressora não está listada, leia o <a href='%1'>guia de resolução de problemas de impressão em rede</a>"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:186
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:186 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:263
 msgctxt "@label"
 msgid "Type"
 msgstr "Tipo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:202
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:202 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:279
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Versão do firmware"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:212
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:212 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:295
 msgctxt "@label"
 msgid "Address"
 msgstr "Endereço"
@@ -2208,8 +2123,7 @@ msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Endereço IP inválido"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:262
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:262 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "Por favor entre um endereço IP válido."
@@ -2219,8 +2133,7 @@ msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Endereço da Impressora"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "Entre o endereço IP da sua impressora na rede."
@@ -2245,8 +2158,7 @@ msgctxt "@label"
 msgid "Delete"
 msgstr "Remover"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:284
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:100 /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:284
 msgctxt "@label"
 msgid "Resume"
 msgstr "Continuar"
@@ -2261,9 +2173,7 @@ msgctxt "@label"
 msgid "Resuming..."
 msgstr "Continuando..."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:279
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:288
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:106 /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:279 /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:288
 msgctxt "@label"
 msgid "Pause"
 msgstr "Pausar"
@@ -2303,8 +2213,7 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "Você tem certeza que quer abortar %1?"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:161
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:326
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:161 /home/remco/dev/code/ulti/trans/Cura/resources/qml/MonitorButton.qml:326
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "Abortar impressão"
@@ -2339,8 +2248,7 @@ msgctxt "@label"
 msgid "Waiting for"
 msgstr "Esperando por"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:19
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:48
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:19 /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:48
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "Esquema de Cores"
@@ -2395,8 +2303,7 @@ msgctxt "@label"
 msgid "Shell"
 msgstr "Perímetro"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:250
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:64
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:250 /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:64
 msgctxt "@label"
 msgid "Infill"
 msgstr "Preenchimento"
@@ -2439,7 +2346,7 @@ msgstr "máx"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
 msgid "Convert Image"
-msgstr ""
+msgstr "Converter Imagem"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:33
 msgctxt "@action:label"
@@ -2469,7 +2376,7 @@ msgstr "Largura (mm)"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:124
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
-msgstr ""
+msgstr "A largura em milímetros na plataforma de impressão"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:134
 msgctxt "@action:label"
@@ -2499,7 +2406,7 @@ msgstr "Para litofanos, pixels escuros devem corresponder a locais mais espessos
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:205
 msgctxt "@action:label"
 msgid "Color Model"
-msgstr ""
+msgstr "Modelo de Cor"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:224
 msgctxt "@item:inlistbox"
@@ -2536,9 +2443,7 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "A quantidade de suavização para aplicar na imagem."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:329
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:80
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:329 /home/remco/dev/code/ulti/trans/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:139 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:80
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ColorDialog.qml:140
 msgctxt "@action:button"
 msgid "OK"
@@ -2559,8 +2464,7 @@ msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "Criar novos"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:74
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:52
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:74 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:52
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Resumo - Projeto do Cura"
@@ -2570,20 +2474,17 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the machine be resolved?"
 msgstr "Como o conflito na máquina deve ser resolvido?"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:156
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:88
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:156 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:88
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "Ajustes da impressora"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:167
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:97
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:167 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:97
 msgctxt "@action:label"
 msgid "Type"
 msgstr "Tipo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:184
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:112
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:184 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:112
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "Grupo de Impressora"
@@ -2593,34 +2494,28 @@ msgctxt "@info:tooltip"
 msgid "How should the conflict in the profile be resolved?"
 msgstr "Como o conflito no perfil deve ser resolvido?"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:213
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:231 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:213
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Ajustes de perfil"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:242
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:367
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:112
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:242 /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:367 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:112
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:237
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Nome"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:260
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:254
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:260 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:254
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "Objetivo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:278
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:221
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:278 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:221
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Ausente no perfil"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:284
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.qml:284 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2754,9 +2649,7 @@ msgctxt "@description"
 msgid "Backup and synchronize your Cura settings."
 msgstr "Fazer backup e sincronizar os ajustes do Cura."
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Account/GeneralOperations.qml:49
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:163
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:47 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Account/GeneralOperations.qml:49 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:163
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/CloudContent.qml:225
 msgctxt "@button"
 msgid "Sign in"
@@ -2872,42 +2765,42 @@ msgstr "Mover pra a Posição Seguinte"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
 msgid "Ultimaker Verified Plug-in"
-msgstr ""
+msgstr "Complemento Verificado Ultimaker"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
 msgid "Ultimaker Certified Material"
-msgstr ""
+msgstr "Material Certificado Ultimaker"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
 msgid "Ultimaker Verified Package"
-msgstr ""
+msgstr "Pacote Verificado Ultimaker"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:84
 msgctxt "@title"
 msgid "Loading..."
-msgstr ""
+msgstr "Carregando..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:143
 msgctxt "@button"
 msgid "Plugins"
-msgstr ""
+msgstr "Complementos"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:151
 msgctxt "@button"
 msgid "Materials"
-msgstr ""
+msgstr "Materiais"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:188
 msgctxt "@info"
 msgid "Search in the browser"
-msgstr ""
+msgstr "Buscar no navegador"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:266
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
-msgstr ""
+msgstr "Para usar o pacote você precisará reiniciar o Cura"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:274
 msgctxt "@info:button, %1 is the application name"
@@ -2917,164 +2810,162 @@ msgstr "Sair de %1"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:165
 msgctxt "@label"
 msgid "By"
-msgstr ""
+msgstr "Por"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:199
 msgctxt "@button"
 msgid "Enable"
-msgstr ""
+msgstr "Habilitar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:199
 msgctxt "@button"
 msgid "Disable"
-msgstr ""
+msgstr "Desabilitar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:217
 msgctxt "@button"
 msgid "Downgrading..."
-msgstr ""
+msgstr "Fazendo downgrade..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:218
 msgctxt "@button"
 msgid "Downgrade"
-msgstr ""
+msgstr "Downgrade"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:222
 msgctxt "@button"
 msgid "Installing..."
-msgstr ""
+msgstr "Instalando..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:223
 msgctxt "@button"
 msgid "Install"
-msgstr ""
+msgstr "Instalar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:227
 msgctxt "@button"
 msgid "Uninstall"
-msgstr ""
+msgstr "Desinstalar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:242
 msgctxt "@button"
 msgid "Updating..."
-msgstr ""
+msgstr "Atualizando..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:242
 msgctxt "@button"
 msgid "Update"
-msgstr ""
+msgstr "Atualizar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Plugins.qml:8
 msgctxt "@header"
 msgid "Install Plugins"
-msgstr ""
+msgstr "Instalar Complementos"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
-msgstr ""
+msgstr "Simplifique seu fluxo de trabalho e personalize sua experiência do Ultimaker Cura com complementos contribuídos por nossa fantástica comunidade de usuários."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
 msgid "Manage packages"
-msgstr ""
+msgstr "Gerir pacotes"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:85
 msgctxt "@header"
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:117
 msgctxt "@header"
 msgid "Compatible printers"
-msgstr ""
+msgstr "Impressoras compatíveis"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:143
 msgctxt "@info"
 msgid "No compatibility information"
-msgstr ""
+msgstr "Sem informação de compatibilidade"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:162
 msgctxt "@header"
 msgid "Compatible support materials"
-msgstr ""
+msgstr "Materiais de suporte compatíveis"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:188
 msgctxt "@info No materials"
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:206
 msgctxt "@header"
 msgid "Compatible with Material Station"
-msgstr ""
+msgstr "Compatível com Material Station"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216 /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
 msgctxt "@info"
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216 /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
 msgctxt "@info"
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:234
 msgctxt "@header"
 msgid "Optimized for Air Manager"
-msgstr ""
+msgstr "Otimizado para o Air Manager"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:260
 msgctxt "@button"
 msgid "Visit plug-in website"
-msgstr ""
+msgstr "Visitar sítio web de complementos"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:260
 msgctxt "@button"
 msgid "Website"
-msgstr ""
+msgstr "Sítio web"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:269
 msgctxt "@button"
 msgid "Buy spool"
-msgstr ""
+msgstr "Comprar carretel"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:278
 msgctxt "@button"
 msgid "Safety datasheet"
-msgstr ""
+msgstr "Ficha de segurança"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:287
 msgctxt "@button"
 msgid "Technical datasheet"
-msgstr ""
+msgstr "Ficha técnica"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageDetails.qml:15
 msgctxt "@header"
 msgid "Package details"
-msgstr ""
+msgstr "Detalhes do pacote"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageDetails.qml:40
 msgctxt "@button:tooltip"
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:16
 msgctxt "@button"
 msgid "Plugin license agreement"
-msgstr ""
+msgstr "Acordo de licença do complemento"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:48
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
-msgstr ""
+msgstr "Por favor leia e concorde com a licença do complemento."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:74
 msgctxt "@button"
 msgid "Accept"
-msgstr ""
+msgstr "Aceitar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:83
 msgctxt "@button"
@@ -3084,52 +2975,52 @@ msgstr "Recusar"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:164
 msgctxt "@button"
 msgid "Failed to load packages:"
-msgstr ""
+msgstr "Falha em carregar pacotes:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:164
 msgctxt "@button"
 msgid "Retry?"
-msgstr ""
+msgstr "Tentar novamente?"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:180
 msgctxt "@button"
 msgid "Loading"
-msgstr ""
+msgstr "Carregando"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:196
 msgctxt "@message"
 msgid "No more results to load"
-msgstr ""
+msgstr "Não há mais resultados a carregar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:196
 msgctxt "@message"
 msgid "No results found with current filter"
-msgstr ""
+msgstr "Não há resultados encontrados com o filtro atual"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:239
 msgctxt "@button"
 msgid "Load more"
-msgstr ""
+msgstr "Carregar mais"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
 msgctxt "@header"
 msgid "Manage packages"
-msgstr ""
+msgstr "Gerir pacotes"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
 msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgstr "Gerencie seu complementos e perfis de materiais do Cura aqui. Se assegure de manter seus complementos atualizados e fazer backup de sua configuração regularmente."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Materials.qml:8
 msgctxt "@header"
 msgid "Install Materials"
-msgstr ""
+msgstr "Instalar Materiais"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
-msgstr ""
+msgstr "Selecione e instale perfis de material otimizados para suas impressoras 3D Ultimaker."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:42
 msgctxt "@title:tab"
@@ -3146,18 +3037,10 @@ msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Tamanho do bico"
 
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
-#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:89
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:205 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
+#: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:245 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265 /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:283
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
@@ -3364,8 +3247,7 @@ msgid_plural "Print Selected Models with %1"
 msgstr[0] "Imprimir Modelo Selecionado com %1"
 msgstr[1] "Imprimir Modelos Selecionados com %1"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MainWindow/ApplicationMenu.qml:63
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/SettingsMenu.qml:13
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MainWindow/ApplicationMenu.qml:63 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/SettingsMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "Aju&stes"
@@ -3405,14 +3287,12 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the bed to."
 msgstr "A temperatura em que pré-aquecer a mesa."
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:259
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:271
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:259 /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:271
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:263
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:274
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:263 /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:274
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Pré-aquecer"
@@ -3557,8 +3437,7 @@ msgctxt "@action:button"
 msgid "Save"
 msgstr "Salvar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:16
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:637
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:16 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:637
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Abrir arquivo(s)"
@@ -3690,15 +3569,14 @@ msgstr "Biblioteca de recorte de polígonos"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:153
 msgctxt "@label"
 msgid "Python bindings for Clipper"
-msgstr ""
+msgstr "Ligações de Python pra Clipper"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:154
 msgctxt "@Label"
 msgid "Static type checker for Python"
 msgstr "Verificador de tipos estáticos para Python"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:155
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:156
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:155 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:156
 msgctxt "@Label"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "Certificados raiz para validar confiança de SSL"
@@ -3751,7 +3629,7 @@ msgstr "Descartar ou Manter alterações"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:50
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr ""
+msgstr "Você personalizou alguns ajustes de perfil. Gostaria de manter estes ajustes alterados após trocar perfis? Alternativamente, você pode descartar as alterações para carregar os defaults de '%1'."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:76
 msgctxt "@title:column"
@@ -3763,8 +3641,7 @@ msgctxt "@title:column"
 msgid "Current changes"
 msgstr "Alterações atuais"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:107
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:798
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:107 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:798
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Sempre perguntar"
@@ -4033,8 +3910,7 @@ msgctxt "@label"
 msgid "View type"
 msgstr "Tipo de Visão"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Account/GeneralOperations.qml:19
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/CloudContent.qml:64
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Account/GeneralOperations.qml:19 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/CloudContent.qml:64
 msgctxt "@label"
 msgid "Sign in to the Ultimaker platform"
 msgstr "Entre na plataforma Ultimaker"
@@ -4170,8 +4046,7 @@ msgctxt "@label"
 msgid "This package will be installed after restarting."
 msgstr "Este pacote será instalado após o reinício."
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:463
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:14
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:463 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:14
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Geral"
@@ -4181,20 +4056,17 @@ msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Ajustes"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:468
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:16
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:468 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:16
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Impressoras"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:470
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:70
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:470 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:70
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Materiais"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:472
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:56
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:472 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:56
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Perfis"
@@ -4204,8 +4076,7 @@ msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "Fechando %1"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:590
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:599
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:590 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:599
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "Tem certeza que quer sair de %1?"
@@ -4250,8 +4121,7 @@ msgctxt "@label"
 msgid "Experimental"
 msgstr "Experimental"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:642
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:642
 msgctxt "@label"
 msgid "Print settings"
 msgstr "Ajustes de impressão"
@@ -4298,8 +4168,7 @@ msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 msgstr "Gera estrutura que suportarão partes do modelo que têm seções pendentes. Sem estas estruturas, tais partes desabariam durante a impressão."
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:50
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:779
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:50 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:779
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Perfis"
@@ -4324,8 +4193,7 @@ msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Perfis personalizados"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:256
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:147
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:256 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:147
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Descartar ajustes atuais"
@@ -4364,40 +4232,39 @@ msgstr "Atual"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ProfileOverview.qml:40
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
-msgstr ""
+msgstr "Unidade"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:22
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "Renomear"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:23
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "Por favor, escolha um novo nome."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:56
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
-msgstr ""
+msgstr "Este ajuste foi omitido para a máquina ativa e não ficará visível."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:73
 msgctxt "@item:tooltip %1 is list of setting names"
 msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
 msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Este ajuste foi mantido invisível pelo valor de %1. Altere o valor desse ajuste para tornar este ajuste visível."
+msgstr[1] "Este ajuste foi mantido invisível pelos valores de %1. Altere o valor desses ajustes para tornar este ajuste visível."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:13
 msgctxt "@title:tab"
 msgid "Setting Visibility"
 msgstr "Visibilidade dos Ajustes"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:22
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:131
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:22 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:131
 msgctxt "@action:button"
 msgid "Defaults"
-msgstr ""
+msgstr "Defaults"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:53
 msgctxt "@label:textbox"
@@ -4407,17 +4274,14 @@ msgstr "Verificar tudo"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:49
 msgctxt "@action:button"
 msgid "Add New"
-msgstr ""
+msgstr "Adicionar Novo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:135
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:160
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:293
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:135 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:160 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:293
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "Ativar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:147
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:330
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:147 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:330
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Renomear"
@@ -4455,7 +4319,7 @@ msgstr "Cor"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:261
 msgctxt "@title"
 msgid "Material color picker"
-msgstr ""
+msgstr "Seletor de cores do material"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:274
 msgctxt "@label"
@@ -4552,9 +4416,7 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "Para automaticamente sincronizar os perfis de material com todas as suas impressoras conectadas à Digital Factory, você precisa estar logado pelo Cura."
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:157
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:446
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:587
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:157 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:446 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:587
 msgctxt "@button"
 msgid "Sync materials with USB"
 msgstr "Sincronizar materiais usando USB"
@@ -4574,8 +4436,7 @@ msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "Perfis de material sincronizados com sucesso com as seguintes impressoras:"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:242
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:429
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:242 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:429
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "Resolução de problemas"
@@ -4600,14 +4461,12 @@ msgctxt "@button"
 msgid "Try again"
 msgstr "Tentar novamente"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:461
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:698
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:461 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:698
 msgctxt "@button"
 msgid "Done"
 msgstr "Feito"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:463
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:607
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:463 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:607
 msgctxt "@button"
 msgid "Sync"
 msgstr "Sincronizar"
@@ -4667,8 +4526,7 @@ msgctxt "@button"
 msgid "How to load new material profiles to my printer"
 msgstr "Como carregar novos perfis de material na minha impressora"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:689
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:334
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:689 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:334
 msgctxt "@button"
 msgid "Back"
 msgstr "Voltar"
@@ -4686,16 +4544,14 @@ msgstr "Exportar Todos Os Materiais"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:72
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
-msgstr ""
+msgstr "Materiais compatíveis com a impressora ativa:"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:78
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:93
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:78 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:93
 msgctxt "@action:button"
 msgid "Create new"
-msgstr ""
+msgstr "Criar novo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:90
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:87
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:90 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:87
 msgctxt "@action:button"
 msgid "Import"
 msgstr "Importar"
@@ -4703,34 +4559,29 @@ msgstr "Importar"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:101
 msgctxt "@action:button"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "Sincronizar com Impressoras"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:174
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:310
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:174 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:310
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Duplicar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:198
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:341
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:198 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:341
 msgctxt "@action:button"
 msgid "Export"
 msgstr "Exportar"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:212
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:386
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:212 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:386
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Confirmar Remoção"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:215
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:387
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:215 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:387
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Tem certeza que deseja remover %1? Isto não poderá ser desfeito!"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:228
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:238
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:228 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:238
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Importar Material"
@@ -4745,8 +4596,7 @@ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Não foi possível importar material <filename>%1</filename>: <message>%2</message>"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:256
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:265
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:256 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:265
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Exportar Material"
@@ -4764,27 +4614,27 @@ msgstr "Material exportado para <filename>%1</filename> com sucesso"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:58
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
-msgstr ""
+msgstr "Perfis compatíveis com a impressora ativa:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:97
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
-msgstr ""
+msgstr "Criar novo perfil a partir dos ajustes/sobreposições atuais"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:124
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
-msgstr ""
+msgstr "Alguns ajustes do perfil atual foram sobrescritos."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:139
 msgctxt "@action:button"
 msgid "Update profile."
-msgstr ""
+msgstr "Atualizar perfil."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:142
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
-msgstr ""
+msgstr "Atualizar perfil com ajustes/sobreposições atuais"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:157
 msgctxt "@action:label"
@@ -4811,8 +4661,7 @@ msgctxt "@info"
 msgid "Please provide a name for this profile."
 msgstr "Por favor dê um nome a este perfil."
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:351
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:362
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:351 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:362
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "Exportar Perfil"
@@ -4827,8 +4676,7 @@ msgctxt "@title:window"
 msgid "Rename Profile"
 msgstr "Renomear Perfil"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:416
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:423
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:416 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:423
 msgctxt "@title:window"
 msgid "Import Profile"
 msgstr "Importar Perfil"
@@ -4841,7 +4689,7 @@ msgstr "Interface"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:213
 msgctxt "@heading"
 msgid "-- incomplete --"
-msgstr ""
+msgstr "-- incompleto --"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:258
 msgctxt "@label"
@@ -4851,7 +4699,7 @@ msgstr "Moeda:"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:273
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
-msgstr ""
+msgstr "Tema*:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:319
 msgctxt "@info:tooltip"
@@ -4866,7 +4714,7 @@ msgstr "Fatiar automaticamente"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:336
 msgctxt "@label"
 msgid "*You will need to restart the application for these changes to have effect."
-msgstr ""
+msgstr "*Você precisa reiniciar a aplicação para que estas alterações tenham efeito."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:351
 msgctxt "@label"
@@ -5196,8 +5044,7 @@ msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "Não foi possível conectar ao dispositivo."
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:207 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
 msgstr "Não consegue conectar à sua impressora Ultimaker?"
@@ -5242,9 +5089,7 @@ msgctxt "@label"
 msgid "What's New"
 msgstr "O Que Há de Novo"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:184
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:184 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77 /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
 msgctxt "@button"
 msgid "Next"
 msgstr "Próximo"
@@ -5494,7 +5339,7 @@ msgstr "Gerenciar impressoras"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/SearchBar.qml:17
 msgctxt "@placeholder"
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/JobSpecs.qml:93
 msgctxt "@text Print job name"
@@ -5592,8 +5437,7 @@ msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Manter este ajuste visível"
 
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingView.qml:509
-#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:467
+#: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingView.qml:509 /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:467
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Configurar a visibilidade dos ajustes..."
@@ -5648,7 +5492,7 @@ msgstr ""
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ColorDialog.qml:104
 msgctxt "@label"
 msgid "Hex"
-msgstr ""
+msgstr "Hexa"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintMonitor.qml:156
 msgctxt "@label"
@@ -5673,7 +5517,7 @@ msgstr "Tempo restante estimado"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:81
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
-msgstr ""
+msgstr "Mostrar Resolução de Problemas Online"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:88
 msgctxt "@action:inmenu"
@@ -5753,7 +5597,7 @@ msgstr "Administrar Materiais..."
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:216
 msgctxt "@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Adicionar mais materiais ao Marketplace"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:223
 msgctxt "@action:inmenu menubar:profile"
@@ -6058,7 +5902,7 @@ msgstr "Verificador de Modelo"
 #: SimulationView/plugin.json
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
-msgstr ""
+msgstr "Provê a pré-visualização de dados de camada fatiados."
 
 #: SimulationView/plugin.json
 msgctxt "name"
@@ -6198,12 +6042,12 @@ msgstr "Atualização de Versão de 4.1 para 4.2"
 #: VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr ""
+msgstr "Atualiza configurações do Cura 4.13 para o Cura 5.0."
 
 #: VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.13 to 5.0"
-msgstr ""
+msgstr "Atualização de Versão de 4.13 para 5.0"
 
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
@@ -6498,12 +6342,12 @@ msgstr "Ações de máquina Ultimaker"
 #: Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr ""
+msgstr "Gerencia extensões à aplicação e permite navegar extensões do sítio web da Ultimaker."
 
 #: Marketplace/plugin.json
 msgctxt "name"
 msgid "Marketplace"
-msgstr ""
+msgstr "Marketplace"
 
 #: SolidView/plugin.json
 msgctxt "description"
