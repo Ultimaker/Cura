@@ -135,7 +135,7 @@ class GlobalStacksModel(ListModel):
                 continue
 
             device_name = container_stack.getMetaDataEntry("group_name", container_stack.getName())
-            section_name = "Connected printers" if has_remote_connection else "Preset printers"
+            section_name = self._catalog.i18nc("@label", "Connected printers") if has_remote_connection else self._catalog.i18nc("@label", "Preset printers")
             section_name = self._catalog.i18nc("@info:title", section_name)
 
             default_removal_warning = self._catalog.i18nc(
