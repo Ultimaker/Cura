@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.13\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-13 10:49+0200\n"
-"PO-Revision-Date: 2021-12-17 21:07+0100\n"
+"PO-Revision-Date: 2022-04-25 20:15+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/PrepareStage/__init__.py:12
 msgctxt "@item:inmenu"
@@ -910,42 +910,42 @@ msgstr "Vybrat vylepšení"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/PackageModel.py:43
 msgctxt "@label:property"
 msgid "Unknown Package"
-msgstr ""
+msgstr "Neznámý balíček"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/PackageModel.py:66
 msgctxt "@label:property"
 msgid "Unknown Author"
-msgstr ""
+msgstr "Neznámý autor"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/RemotePackageList.py:116
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
-msgstr ""
+msgstr "Nelze přečíst odpověď serveru."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/RemotePackageList.py:146
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
-msgstr ""
+msgstr "Nelze se připojit k Obchodu"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:28
 msgctxt "@label"
 msgid "Installed Plugins"
-msgstr ""
+msgstr "Nainstalované moduly"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:29
 msgctxt "@label"
 msgid "Installed Materials"
-msgstr ""
+msgstr "Nainstalované materiály"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:33
 msgctxt "@label"
 msgid "Bundled Plugins"
-msgstr ""
+msgstr "Přibalené moduly"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:34
 msgctxt "@label"
 msgid "Bundled Materials"
-msgstr ""
+msgstr "Přibalené materiály"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
@@ -1180,7 +1180,7 @@ msgstr "Byly nainstalovány nové materiály"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74
 msgctxt "@action:button"
 msgid "Sync materials"
-msgstr ""
+msgstr "Synchronizovat materiály"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:288
 msgctxt "@label"
@@ -2448,7 +2448,7 @@ msgstr "max"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
 msgid "Convert Image"
-msgstr ""
+msgstr "Konvertovat obrázek"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:33
 msgctxt "@action:label"
@@ -2478,7 +2478,7 @@ msgstr "Šířka (mm)"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:124
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
-msgstr ""
+msgstr "Šířka na podložce v milimetrech"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:134
 msgctxt "@action:label"
@@ -2508,7 +2508,7 @@ msgstr "U litofanů by tmavé pixely měly odpovídat silnějším místům, aby
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:205
 msgctxt "@action:label"
 msgid "Color Model"
-msgstr ""
+msgstr "Barevný model"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:224
 msgctxt "@item:inlistbox"
@@ -2884,42 +2884,42 @@ msgstr "Přesunout na další pozici"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
 msgid "Ultimaker Verified Plug-in"
-msgstr ""
+msgstr "Modul ověřený společností Ultimaker"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
 msgid "Ultimaker Certified Material"
-msgstr ""
+msgstr "Materiál certifikovaný společností Ultimaker"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
 msgid "Ultimaker Verified Package"
-msgstr ""
+msgstr "Balíček ověřený společností Ultimaker"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:84
 msgctxt "@title"
 msgid "Loading..."
-msgstr ""
+msgstr "Načítám..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:143
 msgctxt "@button"
 msgid "Plugins"
-msgstr ""
+msgstr "Zásuvné moduly"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:151
 msgctxt "@button"
 msgid "Materials"
-msgstr ""
+msgstr "Materiály"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:188
 msgctxt "@info"
 msgid "Search in the browser"
-msgstr ""
+msgstr "Hledat v prohlížeči"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:266
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
-msgstr ""
+msgstr "Abyste mohli balíček použít, musíte restartovat Curu"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:274
 msgctxt "@info:button, %1 is the application name"
@@ -2929,164 +2929,164 @@ msgstr "Ukončit %1"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:165
 msgctxt "@label"
 msgid "By"
-msgstr ""
+msgstr "Od"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:199
 msgctxt "@button"
 msgid "Enable"
-msgstr ""
+msgstr "Zapnout"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:199
 msgctxt "@button"
 msgid "Disable"
-msgstr ""
+msgstr "Vypnout"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:217
 msgctxt "@button"
 msgid "Downgrading..."
-msgstr ""
+msgstr "Snižuji verzi..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:218
 msgctxt "@button"
 msgid "Downgrade"
-msgstr ""
+msgstr "Snížit verzi"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:222
 msgctxt "@button"
 msgid "Installing..."
-msgstr ""
+msgstr "Instaluji..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:223
 msgctxt "@button"
 msgid "Install"
-msgstr ""
+msgstr "Instalovat"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:227
 msgctxt "@button"
 msgid "Uninstall"
-msgstr ""
+msgstr "Odinstalovat"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:242
 msgctxt "@button"
 msgid "Updating..."
-msgstr ""
+msgstr "Aktualizuji..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:242
 msgctxt "@button"
 msgid "Update"
-msgstr ""
+msgstr "Aktualizovat"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Plugins.qml:8
 msgctxt "@header"
 msgid "Install Plugins"
-msgstr ""
+msgstr "Nainstalovat moduly"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
 msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
-msgstr ""
+msgstr "Urychlete váš postup práce a přizpůsobte si zážitek s Ultimaker Cura pomocí modulů, kterými přispěla naše úžasná komunita uživatelů."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
 msgid "Manage packages"
-msgstr ""
+msgstr "Spravovat balíčky"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:85
 msgctxt "@header"
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:117
 msgctxt "@header"
 msgid "Compatible printers"
-msgstr ""
+msgstr "Kompatibilní tiskárny"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:143
 msgctxt "@info"
 msgid "No compatibility information"
-msgstr ""
+msgstr "Žádné informace o kompatibilitě"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:162
 msgctxt "@header"
 msgid "Compatible support materials"
-msgstr ""
+msgstr "Kompatibilní materiály podpor"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:188
 msgctxt "@info No materials"
 msgid "None"
-msgstr ""
+msgstr "Žádné"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:206
 msgctxt "@header"
 msgid "Compatible with Material Station"
-msgstr ""
+msgstr "Kompatibilní s Material Station"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
 msgctxt "@info"
 msgid "Yes"
-msgstr ""
+msgstr "Ano"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
 msgctxt "@info"
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:234
 msgctxt "@header"
 msgid "Optimized for Air Manager"
-msgstr ""
+msgstr "Optimalizováno pro Air Manager"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:260
 msgctxt "@button"
 msgid "Visit plug-in website"
-msgstr ""
+msgstr "Navštívit webovou stránku modulu"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:260
 msgctxt "@button"
 msgid "Website"
-msgstr ""
+msgstr "Webová stránka"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:269
 msgctxt "@button"
 msgid "Buy spool"
-msgstr ""
+msgstr "Koupit cívku"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:278
 msgctxt "@button"
 msgid "Safety datasheet"
-msgstr ""
+msgstr "Bezpečnostní list"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:287
 msgctxt "@button"
 msgid "Technical datasheet"
-msgstr ""
+msgstr "Technický list"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageDetails.qml:15
 msgctxt "@header"
 msgid "Package details"
-msgstr ""
+msgstr "Detaily balíčku"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageDetails.qml:40
 msgctxt "@button:tooltip"
 msgid "Back"
-msgstr ""
+msgstr "Zpět"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:16
 msgctxt "@button"
 msgid "Plugin license agreement"
-msgstr ""
+msgstr "Licenční smlouva modulu"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:48
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
-msgstr ""
+msgstr "Prosím přečtěte si a přijměte licenci modulu."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:74
 msgctxt "@button"
 msgid "Accept"
-msgstr ""
+msgstr "Příjmout"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:83
 msgctxt "@button"
@@ -3096,52 +3096,52 @@ msgstr "Odmítnout"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:164
 msgctxt "@button"
 msgid "Failed to load packages:"
-msgstr ""
+msgstr "Nepodařilo se načíst balíčky:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:164
 msgctxt "@button"
 msgid "Retry?"
-msgstr ""
+msgstr "Opakovat?"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:180
 msgctxt "@button"
 msgid "Loading"
-msgstr ""
+msgstr "Načítám"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:196
 msgctxt "@message"
 msgid "No more results to load"
-msgstr ""
+msgstr "Žádné další výsledky k načtení"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:196
 msgctxt "@message"
 msgid "No results found with current filter"
-msgstr ""
+msgstr "S aktuálním filtrem nebyly nalezeny žádné výsledky"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:239
 msgctxt "@button"
 msgid "Load more"
-msgstr ""
+msgstr "Načíst více"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
 msgctxt "@header"
 msgid "Manage packages"
-msgstr ""
+msgstr "Spravovat balíčky"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
 msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgstr "Zde můžete spravovat své Ultimaker Cura moduly a materiály. Udržujte své moduly aktuální a pravidelně zálohujte své nastavení."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Materials.qml:8
 msgctxt "@header"
 msgid "Install Materials"
-msgstr ""
+msgstr "Instalovat materiály"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
-msgstr ""
+msgstr "Vyberte a nainstalujte materiálové profily optimalizované pro vaše 3D tiskárny Ultimaker."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:42
 msgctxt "@title:tab"
@@ -3703,7 +3703,7 @@ msgstr "Knihovna pro výstřižky z mnohoúhelníků"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:153
 msgctxt "@label"
 msgid "Python bindings for Clipper"
-msgstr ""
+msgstr "Propojení Clipper s jazykem Python"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:154
 msgctxt "@Label"
@@ -3764,7 +3764,7 @@ msgstr "Smazat nebo nechat změny"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:50
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr ""
+msgstr "Upravili jste některá nastavení profilu. Chcete tato nastavení zachovat i po přepnutí profilů? V opačném případě můžete změny zahodit a načíst výchozí hodnoty z '%1'."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:76
 msgctxt "@title:column"
@@ -4380,30 +4380,30 @@ msgstr "Aktuální"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ProfileOverview.qml:40
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
-msgstr ""
+msgstr "Jednotka"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:22
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "Přejmenovat"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:23
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "Prosím uveďte nové jméno."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:56
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
-msgstr ""
+msgstr "Toto nastavení bylo skryto aktivním zařízením a nebude viditelné."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:73
 msgctxt "@item:tooltip %1 is list of setting names"
 msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
 msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Toto nastavení bylo skryto hodnotou nastavení %1. Změňte hodnotu toho nastavení, aby bylo toto znovu viditelné."
+msgstr[1] "Toto nastavení bylo skryto hodnotami nastavení %1. Změňte hodnoty těch nastavení, aby bylo toto znovu viditelné."
+msgstr[2] "Toto nastavení bylo skryto hodnotami nastavení %1. Změňte hodnoty těch nastavení, aby bylo toto znovu viditelné."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:13
 msgctxt "@title:tab"
@@ -4414,7 +4414,7 @@ msgstr "Nastavení zobrazení"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:131
 msgctxt "@action:button"
 msgid "Defaults"
-msgstr ""
+msgstr "Výchozí"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:53
 msgctxt "@label:textbox"
@@ -4424,7 +4424,7 @@ msgstr "Zkontrolovat vše"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:49
 msgctxt "@action:button"
 msgid "Add New"
-msgstr ""
+msgstr "Přidat"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:135
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:160
@@ -4472,7 +4472,7 @@ msgstr "Barva"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:261
 msgctxt "@title"
 msgid "Material color picker"
-msgstr ""
+msgstr "Volba barvy materiálu"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:274
 msgctxt "@label"
@@ -4703,13 +4703,13 @@ msgstr "Exportovat všechny materiály"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:72
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
-msgstr ""
+msgstr "Materiály kompatibilní s aktivní tiskárnou:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:78
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:93
 msgctxt "@action:button"
 msgid "Create new"
-msgstr ""
+msgstr "Vytvořit nový"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:90
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:87
@@ -4720,7 +4720,7 @@ msgstr "Import"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:101
 msgctxt "@action:button"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "Synchronizovat s tiskárnami"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:174
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:310
@@ -4781,27 +4781,27 @@ msgstr "Úspěšné exportování materiálu do <filename>%1</filename>"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:58
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
-msgstr ""
+msgstr "Profily kompatibilní s aktivní tiskárnou:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:97
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
-msgstr ""
+msgstr "Vytvořit nový profil z aktuálních nastavení/přepsání"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:124
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
-msgstr ""
+msgstr "Některá nastavení z aktuálního profilu byla přepsána."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:139
 msgctxt "@action:button"
 msgid "Update profile."
-msgstr ""
+msgstr "Aktualizovat profil."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:142
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
-msgstr ""
+msgstr "Aktualizovat profil s aktuálními nastaveními/přepsáními"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:157
 msgctxt "@action:label"
@@ -4858,7 +4858,7 @@ msgstr "Rozhranní"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:213
 msgctxt "@heading"
 msgid "-- incomplete --"
-msgstr ""
+msgstr "-- nekompletní --"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:258
 msgctxt "@label"
@@ -4868,7 +4868,7 @@ msgstr "Měna:"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:273
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
-msgstr ""
+msgstr "Styl*:"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:319
 msgctxt "@info:tooltip"
@@ -4883,7 +4883,7 @@ msgstr "Slicovat automaticky"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:336
 msgctxt "@label"
 msgid "*You will need to restart the application for these changes to have effect."
-msgstr ""
+msgstr "*Aby se tyto změny projevily, budete muset aplikaci restartovat."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:351
 msgctxt "@label"
@@ -5512,7 +5512,7 @@ msgstr "Spravovat tiskárny"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/SearchBar.qml:17
 msgctxt "@placeholder"
 msgid "Search"
-msgstr ""
+msgstr "Hledat"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/JobSpecs.qml:93
 msgctxt "@text Print job name"
@@ -5666,7 +5666,7 @@ msgstr ""
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ColorDialog.qml:104
 msgctxt "@label"
 msgid "Hex"
-msgstr ""
+msgstr "Hexadecimální"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintMonitor.qml:156
 msgctxt "@label"
@@ -5691,7 +5691,7 @@ msgstr "Předpokládaný zbývající čas"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:81
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
-msgstr ""
+msgstr "Zobrazit online řešení problémů"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:88
 msgctxt "@action:inmenu"
@@ -5771,7 +5771,7 @@ msgstr "Spravovat materiály..."
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:216
 msgctxt "@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Přidat více materiálů z Obchodu"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:223
 msgctxt "@action:inmenu menubar:profile"
@@ -6076,7 +6076,7 @@ msgstr "Kontroler modelu"
 #: SimulationView/plugin.json
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
-msgstr ""
+msgstr "Poskytuje náhled slicovaných dat vrstev"
 
 #: SimulationView/plugin.json
 msgctxt "name"
@@ -6216,12 +6216,12 @@ msgstr "Aktualizace verze 4.1 na 4.2"
 #: VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr ""
+msgstr "Aktualizuje konfigurace z Cura 4.13 na Cura 5.0."
 
 #: VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.13 to 5.0"
-msgstr ""
+msgstr "Aktualizace verze 4.13 na 5.0"
 
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
@@ -6516,12 +6516,12 @@ msgstr "Akce zařízení Ultimaker"
 #: Marketplace/plugin.json
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr ""
+msgstr "Spravuje rozšíření aplikace a umožňuje prohlížení rozšíření z webu Ultimaker."
 
 #: Marketplace/plugin.json
 msgctxt "name"
 msgid "Marketplace"
-msgstr ""
+msgstr "Obchod"
 
 #: SolidView/plugin.json
 msgctxt "description"
