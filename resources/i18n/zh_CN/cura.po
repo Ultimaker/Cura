@@ -1,21 +1,20 @@
 # Cura
-# Copyright (C) 2021 Ultimaker B.V.
+# Copyright (C) 2022 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.13\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-13 10:49+0200\n"
-"PO-Revision-Date: 2021-04-16 15:04+0200\n"
-"Last-Translator: Lionbridge <info@lionbridge.com>\n"
-"Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.1\n"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/PrepareStage/__init__.py:12
 msgctxt "@item:inmenu"
@@ -65,8 +64,13 @@ msgstr "无法获取更新信息。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:17
 #, python-brace-format
-msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
-msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
+msgctxt ""
+"@info Don't translate {machine_name}, since it gets replaced by a printer "
+"name!"
+msgid ""
+"New features or bug-fixes may be available for your {machine_name}! If you "
+"haven't done so already, it is recommended to update the firmware on your "
+"printer to version {latest_version}."
 msgstr "您的 {machine_name} 可能有新功能或错误修复可用！如果打印机上的固件还不是最新版本，建议将其更新为 {latest_version} 版。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:22
@@ -222,7 +226,9 @@ msgstr "更新固件"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:24
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
+msgid ""
+"Cura has detected material profiles that were not yet installed on the host "
+"printer of group {0}."
 msgstr "Cura 已检测到材料配置文件尚未安装到组 {0} 中的主机打印机上。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:26
@@ -233,7 +239,9 @@ msgstr "正在将材料发送到打印机"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
 msgctxt "@info:status"
-msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
+msgid ""
+"You are attempting to connect to {0} but it is not the host of a group. You "
+"can visit the web page to configure it as a group host."
 msgstr "您正在尝试连接到 {0}，但它不是组中的主机。您可以访问网页，将其配置为组主机。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:30
@@ -291,10 +299,9 @@ msgstr "数据已发送"
 msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
-" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr ""
-"未能通过云连接您的打印机 <b>{printer_name}</b>。\n"
-"只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
+" Manage your print queue and monitor your prints from anywhere connecting "
+"your printer to Digital Factory"
+msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。\n只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:26
 msgctxt "@info:title"
@@ -313,7 +320,9 @@ msgstr "了解详情"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
-msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgid ""
+"You are attempting to connect to a printer that is not running Ultimaker "
+"Connect. Please update the printer to the latest firmware."
 msgstr "您正在尝试连接未运行 Ultimaker Connect 的打印机。请将打印机更新至最新固件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
@@ -446,23 +455,22 @@ msgstr "是否删除打印机？"
 #, python-brace-format
 msgctxt "@label"
 msgid ""
-"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+"You are about to remove {0} printer from Cura. This action cannot be "
+"undone.\n"
 "Are you sure you want to continue?"
 msgid_plural ""
-"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"You are about to remove {0} printers from Cura. This action cannot be "
+"undone.\n"
 "Are you sure you want to continue?"
-msgstr[0] ""
-"您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n"
-"是否确实要继续？"
+msgstr[0] "您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n是否确实要继续？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:481
 msgctxt "@label"
 msgid ""
-"You are about to remove all printers from Cura. This action cannot be undone.\n"
+"You are about to remove all printers from Cura. This action cannot be "
+"undone.\n"
 "Are you sure you want to continue?"
-msgstr ""
-"您即将从 Cura 中删除所有打印机。此操作无法撤消。\n"
-"是否确定继续？"
+msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。\n是否确定继续？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:154
 msgctxt "@action:button"
@@ -504,15 +512,14 @@ msgstr "三维模型的助理"
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>One or more 3D models may not print optimally due to the model size and "
+"material configuration:</p>\n"
 "<p>{model_names}</p>\n"
-"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
-"<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>找出如何确保最好的打印质量和可靠性.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
+"<p>Find out how to ensure the best possible print quality and reliability.</"
+"p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality "
+"guide</a></p>"
+msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>\n<p>{model_names}</p>\n<p>找出如何确保最好的打印质量和可靠性.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SimulationView/SimulationView.py:129
 msgctxt "@info:status"
@@ -586,7 +593,9 @@ msgstr "没有在此处写入工作区的权限。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:101
 msgctxt "@error:zip"
-msgid "The operating system does not allow saving a project file to this location or with this file name."
+msgid ""
+"The operating system does not allow saving a project file to this location "
+"or with this file name."
 msgstr "操作系统不允许向此位置或用此文件名保存项目文件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFWriter/__init__.py:26
@@ -607,7 +616,9 @@ msgstr "压缩 G-code 文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:161
 msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+msgid ""
+"Slicing failed with an unexpected error. Please consider reporting a bug on "
+"our issue tracker."
 msgstr "发生意外错误，切片失败。请于问题跟踪器上报告错误。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:162
@@ -627,7 +638,9 @@ msgstr "在 Ultimaker Cura 问题跟踪器上报告错误。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:395
 msgctxt "@info:status"
-msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
+msgid ""
+"Unable to slice with the current material as it is incompatible with the "
+"selected machine or configuration."
 msgstr "无法使用当前材料进行切片，因为该材料与所选机器或配置不兼容。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:396
@@ -643,24 +656,31 @@ msgstr "无法切片"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:428
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Unable to slice with the current settings. The following settings have errors: {0}"
+msgid ""
+"Unable to slice with the current settings. The following settings have "
+"errors: {0}"
 msgstr "无法使用当前设置进行切片。以下设置存在错误：{0}"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:455
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
+msgid ""
+"Unable to slice due to some per-model settings. The following settings have "
+"errors on one or more models: {error_labels}"
 msgstr "因部分特定模型设置而无法切片。 以下设置在一个或多个模型上存在错误： {error_labels}"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:467
 msgctxt "@info:status"
-msgid "Unable to slice because the prime tower or prime position(s) are invalid."
+msgid ""
+"Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "无法切片（原因：主塔或主位置无效）。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:479
 #, python-format
 msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+msgid ""
+"Unable to slice because there are objects associated with disabled Extruder "
+"%s."
 msgstr "无法切片，因为存在与已禁用挤出机 %s 相关联的对象。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:489
@@ -670,11 +690,7 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr ""
-"请检查设置并检查您的模型是否：\n"
-"- 适合构建体积\n"
-"- 分配给了已启用的挤出器\n"
-"- 尚未全部设置为修改器网格"
+msgstr "请检查设置并检查您的模型是否：\n- 适合构建体积\n- 分配给了已启用的挤出器\n- 尚未全部设置为修改器网格"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:52
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:260
@@ -726,7 +742,10 @@ msgstr "喷嘴"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:544
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
+msgid ""
+"Project file <filename>{0}</filename> contains an unknown machine type "
+"<message>{1}</message>. Cannot import the machine. Models will be imported "
+"instead."
 msgstr "项目文件 <filename>{0}</filename> 包含未知机器类型 <message>{1}</message>。无法导入机器。将改为导入模型。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:547
@@ -737,7 +756,9 @@ msgstr "打开项目文件"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:644
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
-msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
+msgid ""
+"Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}"
+"</message>."
 msgstr "突然无法访问项目文件 <filename>{0}</filename>：<message>{1}</message>。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:645
@@ -749,13 +770,16 @@ msgstr "无法打开项目文件"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:652
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
-msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
+msgid ""
+"Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "项目文件 <filename>{0}</filename> 损坏: <message>{1}</message>。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:705
 #, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
-msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of Ultimaker Cura."
+msgid ""
+"Project file <filename>{0}</filename> is made using profiles that are "
+"unknown to this version of Ultimaker Cura."
 msgstr "项目文件 <filename>{0}</filename> 是用此 Ultimaker Cura 版本未识别的配置文件制作的。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/3MFReader/WorkspaceDialog.py:203
@@ -895,46 +919,48 @@ msgstr "选择升级"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/PackageModel.py:43
 msgctxt "@label:property"
 msgid "Unknown Package"
-msgstr ""
+msgstr "未知包"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/PackageModel.py:66
 msgctxt "@label:property"
 msgid "Unknown Author"
-msgstr ""
+msgstr "未知作者"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/RemotePackageList.py:116
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
-msgstr ""
+msgstr "无法解释服务器的响应。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/RemotePackageList.py:146
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
-msgstr ""
+msgstr "无法连接到市场。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:28
 msgctxt "@label"
 msgid "Installed Plugins"
-msgstr ""
+msgstr "已安装的插件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:29
 msgctxt "@label"
 msgid "Installed Materials"
-msgstr ""
+msgstr "已安装的材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:33
 msgctxt "@label"
 msgid "Bundled Plugins"
-msgstr ""
+msgstr "已捆绑的插件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/LocalPackageList.py:34
 msgctxt "@label"
 msgid "Bundled Materials"
-msgstr ""
+msgstr "已捆绑的材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:71
 msgctxt "@info:status"
-msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
+msgid ""
+"The highlighted areas indicate either missing or extraneous surfaces. Fix "
+"your model and open it again into Cura."
 msgstr "突出显示的区域指示缺少或多余的表面。修复模型，并再次在 Cura 中打开。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SolidView/SolidView.py:73
@@ -967,7 +993,9 @@ msgstr "G-code 详细信息"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/FlavorParser.py:504
 msgctxt "@info:generic"
-msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
+msgid ""
+"Make sure the g-code is suitable for your printer and printer configuration "
+"before sending the file to it. The g-code representation may not be accurate."
 msgstr "发送文件之前，请确保 G-code 适用于当前打印机和打印机配置。当前 G-code 文件可能不准确。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/GCodeReader/__init__.py:18
@@ -1002,12 +1030,15 @@ msgstr "通过 USB 连接"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:110
 msgctxt "@label"
-msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
+msgid ""
+"A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "正在进行 USB 打印，关闭 Cura 将停止此打印。您确定吗？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:135
 msgctxt "@message"
-msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
+msgid ""
+"A print is still in progress. Cura cannot start another print via USB until "
+"the previous print has completed."
 msgstr "正在进行打印在上一次打印完成之前，Cura 无法通过 USB 启动另一次打印。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:136
@@ -1057,7 +1088,9 @@ msgstr "正在初始化引擎..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/CuraApplication.py:1242
 #, python-format
-msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
+msgctxt ""
+"@info 'width', 'depth' and 'height' are variable names that must NOT be "
+"translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
@@ -1089,7 +1122,9 @@ msgstr "视觉"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:46
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:15
 msgctxt "@text"
-msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+msgid ""
+"The visual profile is designed to print visual prototypes and models with "
+"the intent of high visual and surface quality."
 msgstr "视觉配置文件用于打印视觉原型和模型，可实现出色的视觉效果和表面质量。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:49
@@ -1101,7 +1136,9 @@ msgstr "Engineering"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:50
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:19
 msgctxt "@text"
-msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+msgid ""
+"The engineering profile is designed to print functional prototypes and end-"
+"use parts with the intent of better accuracy and for closer tolerances."
 msgstr "工程配置文件用于打印功能性原型和最终用途部件，可提高准确性和减小公差。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:53
@@ -1113,7 +1150,9 @@ msgstr "草稿"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentCategoryModel.py:54
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/IntentTranslations.py:23
 msgctxt "@text"
-msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+msgid ""
+"The draft profile is designed to print initial prototypes and concept "
+"validation with the intent of significant print time reduction."
 msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩短打印时间。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/ExtrudersModel.py:219
@@ -1136,7 +1175,8 @@ msgstr "未知"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:113
 msgctxt "@label"
-msgid "The printer(s) below cannot be connected because they are part of a group"
+msgid ""
+"The printer(s) below cannot be connected because they are part of a group"
 msgstr "无法连接到下列打印机，因为这些打印机已在组中"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:115
@@ -1152,7 +1192,9 @@ msgstr "已计算"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:55
 #: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:66
 msgctxt "@action:button"
-msgid "Please sync the material profiles with your printers before starting to print."
+msgid ""
+"Please sync the material profiles with your printers before starting to "
+"print."
 msgstr "请在开始打印之前将材料配置文件与您的打印机同步。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:56
@@ -1165,7 +1207,7 @@ msgstr "新材料已装载"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/UltimakerCloud/CloudMaterialSync.py:74
 msgctxt "@action:button"
 msgid "Sync materials"
-msgstr ""
+msgstr "同步材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Machines/Models/MaterialManagementModel.py:288
 msgctxt "@label"
@@ -1219,8 +1261,10 @@ msgstr "来自 Digital Factory 的响应缺少重要信息。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:218
 msgctxt "@text:error"
-msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr "无法通过 Digital Factory 为某些打印机同步材料配置文件。"
+msgid ""
+"Failed to connect to Digital Factory to sync materials with some of the "
+"printers."
+msgstr "Failed to connect to Digital Factory to sync materials with some of the printers."
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/PrinterOutput/UploadMaterialsJob.py:232
 msgctxt "@text:error"
@@ -1394,7 +1438,9 @@ msgstr "下一步"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/BuildVolume.py:100
 msgctxt "@info:status"
-msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
+msgid ""
+"The build volume height has been reduced due to the value of the \"Print "
+"Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "由于“打印序列”设置的值，成形空间体积高度已被减少，以防止十字轴与打印模型相冲突。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/BuildVolume.py:103
@@ -1427,7 +1473,9 @@ msgstr "文件已存在"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:141
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
-msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgid ""
+"The file <filename>{0}</filename> already exists. Are you sure you want to "
+"overwrite it?"
 msgstr "文件 <filename>{0}</filename> 已存在。您确定要覆盖它吗？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/ContainerManager.py:459
@@ -1448,7 +1496,8 @@ msgstr "Default"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/MachineManager.py:857
 msgctxt "@info:message Followed by a list of settings."
-msgid "Settings have been changed to match the current availability of extruders:"
+msgid ""
+"Settings have been changed to match the current availability of extruders:"
 msgstr "已根据挤出机的当前可用性更改设置："
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/MachineManager.py:858
@@ -1464,13 +1513,16 @@ msgstr "挤出机已禁用"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:153
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "无法将配置文件导出至<filename> {0} </filename>： <message>{1}</message>"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:163
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
-msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
+"failure."
 msgstr "无法将配置文件导出至<filename> {0} </filename>： 写入器插件报告故障。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:171
@@ -1493,7 +1545,8 @@ msgstr "无法从 <filename>{0}</filename> 导入配置文件：{1}"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:209
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
+msgid ""
+"Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "无法在添加打印机前从 <filename>{0}</filename> 导入配置文件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:224
@@ -1512,7 +1565,9 @@ msgstr "无法从 <filename>{0}</filename> 导入配置文件："
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:262
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
+msgid ""
+"This profile <filename>{0}</filename> contains incorrect data, could not "
+"import it."
 msgstr "此配置文件 <filename>{0}</filename> 包含错误数据，无法导入。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:355
@@ -1562,13 +1617,18 @@ msgstr "无法添加配置文件。"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:483
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
+msgid ""
+"Quality type '{0}' is not compatible with the current active machine "
+"definition '{1}'."
 msgstr "质量类型“{0}”与当前有效的机器定义“{1}”不兼容。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/Settings/CuraContainerRegistry.py:488
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
+msgid ""
+"Warning: The profile is not visible because its quality type '{0}' is not "
+"available for the current configuration. Switch to a material/nozzle "
+"combination that can use this quality type."
 msgstr "警告：配置文件不可见，因为其质量类型“{0}”对当前配置不可用。请切换到可使用此质量类型的材料/喷嘴组合。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/MultiplyObjectsJob.py:30
@@ -1588,7 +1648,9 @@ msgstr "放置模型"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationService.py:216
 msgctxt "@info"
-msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
+msgid ""
+"Unable to start a new sign in process. Check if another sign in attempt is "
+"still active."
 msgstr "无法开始新的登录过程。请检查是否仍在尝试进行另一登录。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationService.py:277
@@ -1614,7 +1676,7 @@ msgstr "所提供的状态不正确。"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationRequestHandler.py:80
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
-msgstr "使用帐户服务器进行身份验证超时。"
+msgstr "Timeout when authenticating with the account server."
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/OAuth2/AuthorizationRequestHandler.py:97
 msgctxt "@message"
@@ -1634,17 +1696,18 @@ msgstr "Cura 无法启动"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/CrashHandler.py:113
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>\n"
-"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
-"                    <p>Backups can be found in the configuration folder.</p>\n"
-"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
+"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right."
+"</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start "
+"up. It was possibly caused by some incorrect configuration files. We suggest "
+"to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</"
+"p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</"
+"p>\n"
 "                "
-msgstr ""
-"<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>\n"
-"                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>\n"
-"                    <p>您可在配置文件夹中找到备份。</p>\n"
-"                    <p>请向我们发送此错误报告，以便解决问题。</p>\n"
-"                "
+msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>\n                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>\n                    <p>您可在配置文件夹中找到备份。</p>\n"
+"                    <p>请向我们发送此错误报告，以便解决问题。</p>\n                "
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/CrashHandler.py:122
 msgctxt "@action:button"
@@ -1674,13 +1737,12 @@ msgstr "错误报告"
 #: /home/remco/dev/code/ulti/trans/Cura/cura/CrashHandler.py:190
 msgctxt "@label crash message"
 msgid ""
-"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
-"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report "
+"to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report "
+"automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n"
-"            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n"
-"        "
+msgstr "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n        "
 
 #: /home/remco/dev/code/ulti/trans/Cura/cura/CrashHandler.py:198
 msgctxt "@title:groupbox"
@@ -1772,11 +1834,7 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr ""
-"请确保您的打印机已连接：\n"
-"- 检查打印机是否已启动。\n"
-"- 检查打印机是否连接至网络。\n"
-"- 检查您是否已登录查找云连接的打印机。"
+msgstr "请确保您的打印机已连接：\n- 检查打印机是否已启动。\n- 检查打印机是否连接至网络。\n- 检查您是否已登录查找云连接的打印机。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/MonitorStage/MonitorMain.qml:113
 msgctxt "@info"
@@ -1856,12 +1914,17 @@ msgstr "更新固件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:37
 msgctxt "@label"
-msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
+msgid ""
+"Firmware is the piece of software running directly on your 3D printer. This "
+"firmware controls the step motors, regulates the temperature and ultimately "
+"makes your printer work."
 msgstr "固件是直接在 3D 打印机上运行的一个软件。此固件控制步进电机，调节温度并最终使打印机正常工作。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:43
 msgctxt "@label"
-msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
+msgid ""
+"The firmware shipping with new printers works, but new versions tend to have "
+"more features and improvements."
 msgstr "新打印机出厂配备的固件完全可以正常使用，但新版本往往具有更多的新功能和改进。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:55
@@ -1876,12 +1939,15 @@ msgstr "上传自定义固件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:79
 msgctxt "@label"
-msgid "Firmware can not be updated because there is no connection with the printer."
+msgid ""
+"Firmware can not be updated because there is no connection with the printer."
 msgstr "未连接打印机，无法更新固件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:86
 msgctxt "@label"
-msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
+msgid ""
+"Firmware can not be updated because the connection with the printer does not "
+"support upgrading firmware."
 msgstr "与打印机间的连接不支持固件更新，因此无法更新固件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:93
@@ -2005,7 +2071,9 @@ msgstr "请及时更新打印机固件以远程管理打印队列。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:275
 msgctxt "@info"
-msgid "Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
+msgid ""
+"Webcam feeds for cloud printers cannot be viewed from Ultimaker Cura. Click "
+"\"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
 msgstr "无法从 Ultimaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:335
@@ -2066,12 +2134,15 @@ msgstr "覆盖"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:83
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
-msgid_plural "The assigned printer, %1, requires the following configuration changes:"
+msgid_plural ""
+"The assigned printer, %1, requires the following configuration changes:"
 msgstr[0] "分配的打印机 %1 需要以下配置更改："
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:87
 msgctxt "@label"
-msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
+msgid ""
+"The printer %1 is assigned, but the job contains an unknown material "
+"configuration."
 msgstr "已向打印机 %1 分配作业，但作业包含未知的材料配置。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:97
@@ -2096,7 +2167,9 @@ msgstr "将打印平台更改为 %1（此操作无法覆盖）。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:113
 msgctxt "@label"
-msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
+msgid ""
+"Override will use the specified settings with the existing printer "
+"configuration. This may result in a failed print."
 msgstr "覆盖将使用包含现有打印机配置的指定设置。这可能会导致打印失败。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:154
@@ -2126,7 +2199,12 @@ msgstr "连接到网络打印机"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:51
 msgctxt "@label"
-msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
+msgid ""
+"To print directly to your printer over the network, please make sure your "
+"printer is connected to the network using a network cable or by connecting "
+"your printer to your WIFI network. If you don't connect Cura with your "
+"printer, you can still use a USB drive to transfer g-code files to your "
+"printer."
 msgstr "欲通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接至网络。若不能连接 Cura 与打印机，亦可通过使用 USB 设备将 G-code 文件传输到打印机。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:51
@@ -2154,7 +2232,9 @@ msgstr "刷新"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:161
 msgctxt "@label"
-msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
+msgid ""
+"If your printer is not listed, read the <a href='%1'>network printing "
+"troubleshooting guide</a>"
 msgstr "如果您的打印机未列出，请阅读<a href='%1'>网络打印故障排除指南</a>"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:186
@@ -2431,7 +2511,7 @@ msgstr "最大"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:14
 msgctxt "@title:window"
 msgid "Convert Image"
-msgstr ""
+msgstr "转换图像"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:33
 msgctxt "@action:label"
@@ -2461,7 +2541,7 @@ msgstr "宽度 (mm)"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:124
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
-msgstr ""
+msgstr "构建板宽度，以毫米为单位"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:134
 msgctxt "@action:label"
@@ -2485,13 +2565,17 @@ msgstr "颜色越浅厚度越大"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:195
 msgctxt "@info:tooltip"
-msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
+msgid ""
+"For lithophanes dark pixels should correspond to thicker locations in order "
+"to block more light coming through. For height maps lighter pixels signify "
+"higher terrain, so lighter pixels should correspond to thicker locations in "
+"the generated 3D model."
 msgstr "在影像浮雕中，为了阻挡更多光源通过，深色像素应对应于较厚的位置。在高度图中，浅色像素代表着更高的地形，因此浅色像素对应于生成的 3D 模型中较厚的位置。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:205
 msgctxt "@action:label"
 msgid "Color Model"
-msgstr ""
+msgstr "颜色模型"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:224
 msgctxt "@item:inlistbox"
@@ -2505,7 +2589,9 @@ msgstr "半透明"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:232
 msgctxt "@info:tooltip"
-msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
+msgid ""
+"For lithophanes a simple logarithmic model for translucency is available. "
+"For height maps the pixel values correspond to heights linearly."
 msgstr "对于隐雕，提供一个用于半透明的简单对数模型。对于高度图，像素值与高度线性对应。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:242
@@ -2515,7 +2601,10 @@ msgstr "1 毫米透射率 (%)"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:263
 msgctxt "@info:tooltip"
-msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
+msgid ""
+"The percentage of light penetrating a print with a thickness of 1 "
+"millimeter. Lowering this value increases the contrast in dark regions and "
+"decreases the contrast in light regions of the image."
 msgstr "穿透 1 毫米厚的打印件的光线百分比。降低此值将增大图像暗区中的对比度并减小图像亮区中的对比度。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/ImageReader/ConfigUI.qml:274
@@ -2736,7 +2825,9 @@ msgstr "恢复备份"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:103
 msgctxt "@dialog:info"
-msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
+msgid ""
+"You will need to restart Cura before your backup is restored. Do you want to "
+"close Cura now?"
 msgstr "您需要重新启动 Cura 才能恢复备份。您要立即关闭 Cura 吗？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:34
@@ -2759,12 +2850,16 @@ msgstr "我的备份"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:38
 msgctxt "@empty_state"
-msgid "You don't have any backups currently. Use the 'Backup Now' button to create one."
+msgid ""
+"You don't have any backups currently. Use the 'Backup Now' button to create "
+"one."
 msgstr "您目前没有任何备份。使用“立即备份”按钮创建一个备份。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:60
 msgctxt "@backup_limit_info"
-msgid "During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones."
+msgid ""
+"During the preview phase, you'll be limited to 5 visible backups. Remove a "
+"backup to see older ones."
 msgstr "在预览阶段，将限制为 5 个可见备份。移除一个备份以查看更早的备份。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/CuraDrive/src/qml/main.qml:25
@@ -2779,7 +2874,9 @@ msgstr "更多关于匿名数据收集的信息"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:74
 msgctxt "@text:window"
-msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
+msgid ""
+"Ultimaker Cura collects anonymous data in order to improve the print quality "
+"and user experience. Below is an example of all the data that is shared:"
 msgstr "为了改善打印质量和用户体验，Ultimaker Cura 会收集匿名数据。以下是所有数据分享的示例："
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:110
@@ -2840,12 +2937,18 @@ msgstr "打印平台调平"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:44
 msgctxt "@label"
-msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
+msgid ""
+"To make sure your prints will come out great, you can now adjust your "
+"buildplate. When you click 'Move to Next Position' the nozzle will move to "
+"the different positions that can be adjusted."
 msgstr "为了确保打印质量出色，您现在可以开始调整您的打印平台。当您点击「移动到下一个位置」时，喷嘴将移动到可以调节的不同位置。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:57
 msgctxt "@label"
-msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
+msgid ""
+"For every position; insert a piece of paper under the nozzle and adjust the "
+"print build plate height. The print build plate height is right when the "
+"paper is slightly gripped by the tip of the nozzle."
 msgstr "在打印头停止的每一个位置下方插入一张纸，并调整平台高度。当纸张恰好被喷嘴的尖端轻微压住时，此时打印平台的高度已被正确校准。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:75
@@ -2861,42 +2964,42 @@ msgstr "移动到下一个位置"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:21
 msgctxt "@info"
 msgid "Ultimaker Verified Plug-in"
-msgstr ""
+msgstr "Ultimaker 验证插件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:22
 msgctxt "@info"
 msgid "Ultimaker Certified Material"
-msgstr ""
+msgstr "Ultimaker 认证材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/VerifiedIcon.qml:23
 msgctxt "@info"
 msgid "Ultimaker Verified Package"
-msgstr ""
+msgstr "Ultimaker 验证包"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:84
 msgctxt "@title"
 msgid "Loading..."
-msgstr ""
+msgstr "正在加载..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:143
 msgctxt "@button"
 msgid "Plugins"
-msgstr ""
+msgstr "插件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:151
 msgctxt "@button"
 msgid "Materials"
-msgstr ""
+msgstr "材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:188
 msgctxt "@info"
 msgid "Search in the browser"
-msgstr ""
+msgstr "在浏览器中搜索"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:266
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
-msgstr ""
+msgstr "要使用该包，您需要重新启动 Cura"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Marketplace.qml:274
 msgctxt "@info:button, %1 is the application name"
@@ -2906,164 +3009,166 @@ msgstr "退出 %1"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:165
 msgctxt "@label"
 msgid "By"
-msgstr ""
+msgstr "由："
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:199
 msgctxt "@button"
 msgid "Enable"
-msgstr ""
+msgstr "启用"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:199
 msgctxt "@button"
 msgid "Disable"
-msgstr ""
+msgstr "禁用"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:217
 msgctxt "@button"
 msgid "Downgrading..."
-msgstr ""
+msgstr "正在降级..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:218
 msgctxt "@button"
 msgid "Downgrade"
-msgstr ""
+msgstr "降级"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:222
 msgctxt "@button"
 msgid "Installing..."
-msgstr ""
+msgstr "正在安装..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:223
 msgctxt "@button"
 msgid "Install"
-msgstr ""
+msgstr "安装"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:227
 msgctxt "@button"
 msgid "Uninstall"
-msgstr ""
+msgstr "卸载"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:242
 msgctxt "@button"
 msgid "Updating..."
-msgstr ""
+msgstr "正在更新..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageCardHeader.qml:242
 msgctxt "@button"
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Plugins.qml:8
 msgctxt "@header"
 msgid "Install Plugins"
-msgstr ""
+msgstr "安装插件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Plugins.qml:12
 msgctxt "@text"
-msgid "Streamline your workflow and customize your Ultimaker Cura experience with plugins contributed by our amazing community of users."
-msgstr ""
+msgid ""
+"Streamline your workflow and customize your Ultimaker Cura experience with "
+"plugins contributed by our amazing community of users."
+msgstr "使用由我们卓越的用户社区提供的插件，简化您的工作流程并自定义 Ultimaker Cura 体验。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagePackagesButton.qml:32
 msgctxt "@info:tooltip"
 msgid "Manage packages"
-msgstr ""
+msgstr "管理包"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:85
 msgctxt "@header"
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:117
 msgctxt "@header"
 msgid "Compatible printers"
-msgstr ""
+msgstr "兼容的打印机"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:143
 msgctxt "@info"
 msgid "No compatibility information"
-msgstr ""
+msgstr "无兼容性信息"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:162
 msgctxt "@header"
 msgid "Compatible support materials"
-msgstr ""
+msgstr "兼容的支撑材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:188
 msgctxt "@info No materials"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:206
 msgctxt "@header"
 msgid "Compatible with Material Station"
-msgstr ""
+msgstr "与 Material Station 兼容"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
 msgctxt "@info"
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:216
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:244
 msgctxt "@info"
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:234
 msgctxt "@header"
 msgid "Optimized for Air Manager"
-msgstr ""
+msgstr "已针对 Air Manager 优化"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:260
 msgctxt "@button"
 msgid "Visit plug-in website"
-msgstr ""
+msgstr "访问插件网站"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:260
 msgctxt "@button"
 msgid "Website"
-msgstr ""
+msgstr "网站"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:269
 msgctxt "@button"
 msgid "Buy spool"
-msgstr ""
+msgstr "购买线轴"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:278
 msgctxt "@button"
 msgid "Safety datasheet"
-msgstr ""
+msgstr "安全数据表"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackagePage.qml:287
 msgctxt "@button"
 msgid "Technical datasheet"
-msgstr ""
+msgstr "技术数据表"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageDetails.qml:15
 msgctxt "@header"
 msgid "Package details"
-msgstr ""
+msgstr "包详情"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/PackageDetails.qml:40
 msgctxt "@button:tooltip"
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:16
 msgctxt "@button"
 msgid "Plugin license agreement"
-msgstr ""
+msgstr "插件许可协议"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:48
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
-msgstr ""
+msgstr "请阅读并同意插件许可。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:74
 msgctxt "@button"
 msgid "Accept"
-msgstr ""
+msgstr "接受"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/LicenseDialog.qml:83
 msgctxt "@button"
@@ -3073,52 +3178,56 @@ msgstr "拒绝"
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:164
 msgctxt "@button"
 msgid "Failed to load packages:"
-msgstr ""
+msgstr "无法加载包："
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:164
 msgctxt "@button"
 msgid "Retry?"
-msgstr ""
+msgstr "是否重试？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:180
 msgctxt "@button"
 msgid "Loading"
-msgstr ""
+msgstr "加载"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:196
 msgctxt "@message"
 msgid "No more results to load"
-msgstr ""
+msgstr "没有更多的结果要加载"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:196
 msgctxt "@message"
 msgid "No results found with current filter"
-msgstr ""
+msgstr "当前筛选没有任何结果"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Packages.qml:239
 msgctxt "@button"
 msgid "Load more"
-msgstr ""
+msgstr "加载更多"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:11
 msgctxt "@header"
 msgid "Manage packages"
-msgstr ""
+msgstr "管理包"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/ManagedPackages.qml:15
 msgctxt "@text"
-msgid "Manage your Ultimaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr ""
+msgid ""
+"Manage your Ultimaker Cura plugins and material profiles here. Make sure to "
+"keep your plugins up to date and backup your setup regularly."
+msgstr "在此处管理您的 Ultimaker Cura 插件和材料配置文件。请确保将插件保持为最新，并定期备份设置。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Materials.qml:8
 msgctxt "@header"
 msgid "Install Materials"
-msgstr ""
+msgstr "安装材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/Marketplace/resources/qml/Materials.qml:12
 msgctxt "@text"
-msgid "Select and install material profiles optimised for your Ultimaker 3D printers."
-msgstr ""
+msgid ""
+"Select and install material profiles optimised for your Ultimaker 3D "
+"printers."
+msgstr "选择并安装针对您的 Ultimaker 3D 打印机经过优化的材料配置文件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:42
 msgctxt "@title:tab"
@@ -3365,7 +3474,9 @@ msgstr "新建项目"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MainWindow/ApplicationMenu.qml:88
 msgctxt "@info:question"
-msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
+msgid ""
+"Are you sure you want to start a new project? This will clear the build "
+"plate and any unsaved settings."
 msgstr "你确定要开始一个新项目吗？这将清除打印平台及任何未保存的设置。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/MainWindow/MainWindowHeader.qml:135
@@ -3380,7 +3491,9 @@ msgstr "打印平台"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:55
 msgctxt "@tooltip"
-msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
+msgid ""
+"The target temperature of the heated bed. The bed will heat up or cool down "
+"towards this temperature. If this is 0, the bed heating is turned off."
 msgstr "热床的目标温度。热床将加热或冷却至此温度。若设置为 0，则不使用热床。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:88
@@ -3407,7 +3520,10 @@ msgstr "预热"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:286
 msgctxt "@tooltip of pre-heat"
-msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
+msgid ""
+"Heat the bed in advance before printing. You can continue adjusting your "
+"print while it is heating, and you won't have to wait for the bed to heat up "
+"when you're ready to print."
 msgstr "打印前请预热热床。您可以在热床加热时继续调整相关项，让您在准备打印时不必等待热床加热完毕。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/OutputDeviceHeader.qml:56
@@ -3447,7 +3563,9 @@ msgstr "发送 G-code"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:319
 msgctxt "@tooltip of G-code command input"
-msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
+msgid ""
+"Send a custom G-code command to the connected printer. Press 'enter' to send "
+"the command."
 msgstr "向连接的打印机发送自定义 G-code 命令。按“Enter”发送命令。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:40
@@ -3457,7 +3575,9 @@ msgstr "挤出机"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:70
 msgctxt "@tooltip"
-msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
+msgid ""
+"The target temperature of the hotend. The hotend will heat up or cool down "
+"towards this temperature. If this is 0, the hotend heating is turned off."
 msgstr "热端的目标温度。 热端将加热或冷却至此温度。 如果目标温度为 0，则热端加热将关闭。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:105
@@ -3472,7 +3592,10 @@ msgstr "热端的预热温度。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:297
 msgctxt "@tooltip of pre-heat"
-msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
+msgid ""
+"Heat the hotend in advance before printing. You can continue adjusting your "
+"print while it is heating, and you won't have to wait for the hotend to heat "
+"up when you're ready to print."
 msgstr "打印前请预热热端。您可以在热端加热时继续调整打印机，而不必等待热端加热完毕再做好打印准备。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:335
@@ -3497,7 +3620,9 @@ msgstr "打开项目文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:83
 msgctxt "@text:window"
-msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
+msgid ""
+"This is a Cura project file. Would you like to open it as a project or "
+"import the models from it?"
 msgstr "这是一个 Cura 项目文件。您想将其作为一个项目打开还是从中导入模型？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:91
@@ -3553,7 +3678,10 @@ msgstr "打开文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:47
 msgctxt "@text:window"
-msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
+msgid ""
+"We have found one or more project file(s) within the files you have "
+"selected. You can open only one project file at a time. We suggest to only "
+"import models from those files. Would you like to proceed?"
 msgstr "我们已经在您所选择的文件中找到一个或多个项目文件，但一次只能打开一个项目文件。我们建议只从那些文件中导入模型而不打开项目。您要继续操作吗?"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:64
@@ -3581,9 +3709,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Cura 由 Ultimaker B.V. 与社区合作开发。\n"
-"Cura 使用以下开源项目："
+msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。\nCura 使用以下开源项目："
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:134
 msgctxt "@label"
@@ -3678,7 +3804,7 @@ msgstr "多边形剪辑库"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:153
 msgctxt "@label"
 msgid "Python bindings for Clipper"
-msgstr ""
+msgstr "Clipper 的 Python 绑定"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/AboutDialog.qml:154
 msgctxt "@Label"
@@ -3738,8 +3864,11 @@ msgstr "舍弃或保留更改"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:50
 msgctxt "@text:window, %1 is a profile name"
-msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr ""
+msgid ""
+"You have customized some profile settings. Would you like to Keep these "
+"changed settings after switching profiles? Alternatively, you can discard "
+"the changes to load the defaults from '%1'."
+msgstr "您已经自定义了若干配置文件设置。\n是否要在切换配置文件后保留这些更改的设置？\n或者，也可舍弃更改以从“%1”加载默认值。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:76
 msgctxt "@title:column"
@@ -3909,12 +4038,15 @@ msgstr "正在从打印机加载可用配置..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:53
 msgctxt "@label"
-msgid "The configurations are not available because the printer is disconnected."
+msgid ""
+"The configurations are not available because the printer is disconnected."
 msgstr "该配置不可用，因为打印机已断开连接。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:137
 msgctxt "@label"
-msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
+msgid ""
+"This configuration is not available because %1 is not recognized. Please "
+"visit %2 to download the correct material profile."
 msgstr "此配置不可用，因为 %1 未被识别。请访问 %2 以下载正确的材料配置文件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:138
@@ -3924,7 +4056,8 @@ msgstr "市场"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:101
 msgctxt "@tooltip"
-msgid "The configuration of this extruder is not allowed, and prohibits slicing."
+msgid ""
+"The configuration of this extruder is not allowed, and prohibits slicing."
 msgstr "不允许此挤出器的配置并禁止切片。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:105
@@ -4031,10 +4164,7 @@ msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
 "- Back-up and sync your material profiles and plug-ins\n"
 "- Share ideas and get help from 48,000+ users in the Ultimaker community"
-msgstr ""
-"- 从 Marketplace 添加材料配置文件和插件\n"
-"- 备份和同步材料配置文件和插件\n"
-"- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
+msgstr "- 从 Marketplace 添加材料配置文件和插件\n- 备份和同步材料配置文件和插件\n- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Account/GeneralOperations.qml:58
 msgctxt "@button"
@@ -4208,7 +4338,10 @@ msgstr "打开文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:756
 msgctxt "@text:window"
-msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
+msgid ""
+"We have found one or more G-Code files within the files you have selected. "
+"You can only open one G-Code file at a time. If you want to open a G-Code "
+"file, please just select only one."
 msgstr "我们已经在您选择的文件中找到一个或多个 G-Code 文件。您一次只能打开一个 G-Code 文件。若需打开 G-Code 文件，请仅选择一个。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Cura.qml:836
@@ -4258,9 +4391,15 @@ msgid "Custom"
 msgstr "自定义"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/NoIntentIcon.qml:31
-msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
-msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
-msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
+msgctxt ""
+"@label %1 is filled in with the type of a profile. %2 is filled with a list "
+"of numbers (eg '1' or '1, 2')"
+msgid ""
+"There is no %1 profile for the configuration in extruder %2. The default "
+"intent will be used instead"
+msgid_plural ""
+"There is no %1 profile for the configurations in extruders %2. The default "
+"intent will be used instead"
 msgstr[0] "没有 %1 配置文件可用于挤出器 %2 中的配置。将改为使用默认意图"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:195
@@ -4270,7 +4409,8 @@ msgstr "渐层填充"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:233
 msgctxt "@label"
-msgid "Gradual infill will gradually increase the amount of infill towards the top."
+msgid ""
+"Gradual infill will gradually increase the amount of infill towards the top."
 msgstr "渐层填充（Gradual infill）将随着打印高度的提升而逐渐加大填充密度。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:28
@@ -4280,7 +4420,9 @@ msgstr "支持"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:69
 msgctxt "@label"
-msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
+msgid ""
+"Generate structures to support parts of the model which have overhangs. "
+"Without these structures, such parts would collapse during printing."
 msgstr "在模型的悬垂（Overhangs）部分生成支撑结构。若不这样做，这些部分在打印时将倒塌。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:50
@@ -4291,7 +4433,9 @@ msgstr "配置文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:80
 msgctxt "@tooltip"
-msgid "You have modified some profile settings. If you want to change these go to custom mode."
+msgid ""
+"You have modified some profile settings. If you want to change these go to "
+"custom mode."
 msgstr "您已修改部分配置文件设置。 如果您想对其进行更改，请转至自定义模式。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:27
@@ -4301,7 +4445,9 @@ msgstr "附着"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:72
 msgctxt "@label"
-msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
+msgid ""
+"Enable printing a brim or raft. This will add a flat area around or under "
+"your object which is easy to cut off afterwards."
 msgstr "允许打印 Brim 或 Raft。这将在您的对象周围或下方添加一个容易切断的平面区域。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:158
@@ -4323,13 +4469,11 @@ msgstr "配置文件"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintSetupSelector/Custom/CustomPrintSetup.qml:157
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
+"Some setting/override values are different from the values stored in the "
+"profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"某些设置/重写值与存储在配置文件中的值不同。\n"
-"\n"
-"点击打开配置文件管理器。"
+msgstr "某些设置/重写值与存储在配置文件中的值不同。\n\n点击打开配置文件管理器。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ProfileOverview.qml:37
 msgctxt "@title:column"
@@ -4349,28 +4493,33 @@ msgstr "当前"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ProfileOverview.qml:40
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
-msgstr ""
+msgstr "单位"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:22
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "重命名"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/RenameDialog.qml:23
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "请提供新名称。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:56
 msgctxt "@item:tooltip"
-msgid "This setting has been hidden by the active machine and will not be visible."
-msgstr ""
+msgid ""
+"This setting has been hidden by the active machine and will not be visible."
+msgstr "该设置已被当前机器所隐藏并不可见。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityItem.qml:73
 msgctxt "@item:tooltip %1 is list of setting names"
-msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
-msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
-msgstr[0] ""
+msgid ""
+"This setting has been hidden by the value of %1. Change the value of that "
+"setting to make this setting visible."
+msgid_plural ""
+"This setting has been hidden by the values of %1. Change the values of those "
+"settings to make this setting visible."
+msgstr[0] "该设置已被 %1 的值所隐藏，若需显示，更改此值可使设置项重新可见。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:13
 msgctxt "@title:tab"
@@ -4381,7 +4530,7 @@ msgstr "设置可见性"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:131
 msgctxt "@action:button"
 msgid "Defaults"
-msgstr ""
+msgstr "默认"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:53
 msgctxt "@label:textbox"
@@ -4391,7 +4540,7 @@ msgstr "全部勾选"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:49
 msgctxt "@action:button"
 msgid "Add New"
-msgstr ""
+msgstr "新增"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/MachinesPage.qml:135
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:160
@@ -4413,7 +4562,9 @@ msgstr "确认直径更改"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:122
 msgctxt "@label (%1 is a number)"
-msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
+msgid ""
+"The new filament diameter is set to %1 mm, which is not compatible with the "
+"current extruder. Do you wish to continue?"
 msgstr "新的灯丝直径被设置为%1毫米，这与当前的挤出机不兼容。你想继续吗？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:152
@@ -4439,7 +4590,7 @@ msgstr "颜色"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:261
 msgctxt "@title"
 msgid "Material color picker"
-msgstr ""
+msgstr "材料颜色选取器"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:274
 msgctxt "@label"
@@ -4513,7 +4664,9 @@ msgstr "匹配材料和打印机"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:54
 msgctxt "@text"
-msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
+msgid ""
+"Following a few simple steps, you will be able to synchronize all your "
+"material profiles with your printers."
 msgstr "只需遵循几个简单步骤，您就可以将所有材料配置文件与打印机同步。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:76
@@ -4533,7 +4686,9 @@ msgstr "登录"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:133
 msgctxt "@text"
-msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
+msgid ""
+"To automatically sync the material profiles with all your printers connected "
+"to Digital Factory you need to be signed in in Cura."
 msgstr "要自动将材料配置文件与连接到 Digital Factory 的所有打印机同步，您需要登录 Cura。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:157
@@ -4541,7 +4696,7 @@ msgstr "要自动将材料配置文件与连接到 Digital Factory 的所有打�
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:587
 msgctxt "@button"
 msgid "Sync materials with USB"
-msgstr "使用 USB 同步材料"
+msgstr "Sync materials with USB"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:190
 msgctxt "@title:header"
@@ -4571,7 +4726,8 @@ msgstr "缺少打印机？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:408
 msgctxt "@text"
-msgid "Make sure all your printers are turned ON and connected to Digital Factory."
+msgid ""
+"Make sure all your printers are turned ON and connected to Digital Factory."
 msgstr "请确保所有打印机都已打开并连接到 Digital Factory。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:417
@@ -4608,7 +4764,10 @@ msgstr "未找到打印机"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:558
 msgctxt "@text"
-msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
+msgid ""
+"It seems like you don't have any compatible printers connected to Digital "
+"Factory. Make sure your printer is connected and it's running the latest "
+"firmware."
 msgstr "您似乎没有任何兼容打印机连接到 Digital Factory。请确保打印机已连接并运行最新固件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:570
@@ -4627,8 +4786,10 @@ msgid "Sync material profiles via USB"
 msgstr "通过 USB 同步材料配置文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:633
-msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
-msgid "Follow the following steps to load the new material profiles to your printer."
+msgctxt ""
+"@text In the UI this is followed by a list of steps the user needs to take."
+msgid ""
+"Follow the following steps to load the new material profiles to your printer."
 msgstr "请遵循以下步骤将新材料配置文件加载到打印机。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:665
@@ -4643,7 +4804,9 @@ msgstr "将 .umm文件保存到 U 盘。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:667
 msgctxt "@text"
-msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
+msgid ""
+"Insert the USB stick into your printer and launch the procedure to load new "
+"material profiles."
 msgstr "将 U 盘插入打印机，并启动程序以加载新材料配置文件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsSyncDialog.qml:675
@@ -4670,13 +4833,13 @@ msgstr "导出所有材料"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:72
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
-msgstr ""
+msgstr "与处于活动状态的打印机兼容的材料："
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:78
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:93
 msgctxt "@action:button"
 msgid "Create new"
-msgstr ""
+msgstr "新建"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:90
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:87
@@ -4687,7 +4850,7 @@ msgstr "导入"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:101
 msgctxt "@action:button"
 msgid "Sync with Printers"
-msgstr ""
+msgstr "与打印机同步"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:174
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:310
@@ -4726,7 +4889,8 @@ msgstr "成功导入材料 <filename>%1</filename>"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:245
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
+msgid ""
+"Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "无法导入材料 <filename>%1</filename>： <message>%2</message>"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:256
@@ -4737,7 +4901,8 @@ msgstr "导出材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:270
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
-msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgid ""
+"Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "无法导出材料至 <filename>%1</filename>： <message>%2</message>"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:273
@@ -4748,31 +4913,33 @@ msgstr "成功导出材料至： <filename>%1</filename>"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:58
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
-msgstr ""
+msgstr "与处于活动状态的打印机兼容的配置文件："
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:97
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
-msgstr ""
+msgstr "使用当前设置/重写值创建新的配置文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:124
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
-msgstr ""
+msgstr "当前配置文件的一些设置已经重写。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:139
 msgctxt "@action:button"
 msgid "Update profile."
-msgstr ""
+msgstr "更新配置文件。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:142
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
-msgstr ""
+msgstr "使用当前设置 / 重写值更新配置文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:157
 msgctxt "@action:label"
-msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
+msgid ""
+"This profile uses the defaults specified by the printer, so it has no "
+"settings/overrides in the list below."
 msgstr "此配置文件使用打印机指定的默认值，因此在下面的列表中没有此设置项。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/ProfilesPage.qml:164
@@ -4825,7 +4992,7 @@ msgstr "接口"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:213
 msgctxt "@heading"
 msgid "-- incomplete --"
-msgstr ""
+msgstr "-- 不完整 --"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:258
 msgctxt "@label"
@@ -4833,9 +5000,10 @@ msgid "Currency:"
 msgstr "币种："
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:273
-msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgctxt ""
+"@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
-msgstr ""
+msgstr "主题*："
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:319
 msgctxt "@info:tooltip"
@@ -4849,8 +5017,9 @@ msgstr "自动切片"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:336
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
-msgstr ""
+msgid ""
+"*You will need to restart the application for these changes to have effect."
+msgstr "*需重新启动该应用程序，这些更改才能生效。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:351
 msgctxt "@label"
@@ -4859,7 +5028,9 @@ msgstr "视区行为"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:359
 msgctxt "@info:tooltip"
-msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
+msgid ""
+"Highlight unsupported areas of the model in red. Without support these areas "
+"will not print properly."
 msgstr "以红色突出显示模型需要增加支撑结构的区域。没有支撑，这些区域将无法正确打印。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:368
@@ -4869,7 +5040,9 @@ msgstr "显示悬垂（Overhang）"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:378
 msgctxt "@info:tooltip"
-msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
+msgid ""
+"Highlight missing or extraneous surfaces of the model using warning signs. "
+"The toolpaths will often be missing parts of the intended geometry."
 msgstr "使用警告标志突出显示模型缺少或多余的表面。刀具路径常常是要打印的几何结构缺少的部分。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:387
@@ -4879,7 +5052,9 @@ msgstr "显示模型错误"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:395
 msgctxt "@info:tooltip"
-msgid "Moves the camera so the model is in the center of the view when a model is selected"
+msgid ""
+"Moves the camera so the model is in the center of the view when a model is "
+"selected"
 msgstr "当模型被选中时，视角将自动调整到最合适的观察位置（模型处于正中央）"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:400
@@ -4904,7 +5079,8 @@ msgstr "是否跟随鼠标方向进行缩放？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:431
 msgctxt "@info:tooltip"
-msgid "Zooming towards the mouse is not supported in the orthographic perspective."
+msgid ""
+"Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "正交透视不支持通过鼠标进行缩放。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:436
@@ -4914,7 +5090,8 @@ msgstr "跟随鼠标方向缩放"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:462
 msgctxt "@info:tooltip"
-msgid "Should models on the platform be moved so that they no longer intersect?"
+msgid ""
+"Should models on the platform be moved so that they no longer intersect?"
 msgstr "需要移动平台上的模型，使它们不再相交吗？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:467
@@ -4987,7 +5164,9 @@ msgstr "打开并保存文件"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:602
 msgctxt "@info:tooltip"
-msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
+msgid ""
+"Should opening files from the desktop or external applications open in the "
+"same instance of Cura?"
 msgstr "应从桌面打开文件还是在同一 Cura 实例中打开外部应用程序？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:607
@@ -4997,7 +5176,9 @@ msgstr "使用单个 Cura 实例"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:618
 msgctxt "@info:tooltip"
-msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
+msgid ""
+"Should the build plate be cleared before loading a new model in the single "
+"instance of Cura?"
 msgstr "是否应在清理构建板后再将新模型加载到单个 Cura 实例中？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:624
@@ -5017,7 +5198,9 @@ msgstr "缩小过大模型"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:649
 msgctxt "@info:tooltip"
-msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
+msgid ""
+"An model may appear extremely small if its unit is for example in meters "
+"rather than millimeters. Should these models be scaled up?"
 msgstr "当模型以米而不是毫米为单位时，模型可能会在打印平台中显得非常小。在此情况下是否进行放大？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:654
@@ -5037,7 +5220,9 @@ msgstr "选择模型时加载"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:679
 msgctxt "@info:tooltip"
-msgid "Should a prefix based on the printer name be added to the print job name automatically?"
+msgid ""
+"Should a prefix based on the printer name be added to the print job name "
+"automatically?"
 msgstr "打印机名是否自动作为打印作业名称的前缀？"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:684
@@ -5082,12 +5267,17 @@ msgstr "始终导入模型"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:770
 msgctxt "@info:tooltip"
-msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
+msgid ""
+"When you have made changes to a profile and switched to a different one, a "
+"dialog will be shown asking whether you want to keep your modifications or "
+"not, or you can choose a default behaviour and never show that dialog again."
 msgstr "当您对配置文件进行更改并切换到其他配置文件时将显示一个对话框，询问您是否要保留修改。您也可以选择一个默认行为并令其不再显示该对话框。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:784
 msgctxt "@window:text"
-msgid "Default behavior for changed setting values when switching to a different profile: "
+msgid ""
+"Default behavior for changed setting values when switching to a different "
+"profile: "
 msgstr "切换到不同配置文件时对设置值更改的默认操作： "
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:799
@@ -5107,7 +5297,10 @@ msgstr "隐私"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:840
 msgctxt "@info:tooltip"
-msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
+msgid ""
+"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"models, IP addresses or other personally identifiable information is sent or "
+"stored."
 msgstr "您愿意将关于您的打印数据以匿名形式发送到 Ultimaker 吗？注意：我们不会记录/发送任何模型、IP 地址或其他私人数据。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:845
@@ -5152,7 +5345,9 @@ msgstr "稳定版和测试版"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:935
 msgctxt "@info:tooltip"
-msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
+msgid ""
+"Should an automatic check for new plugins be done every time Cura is "
+"started? It is highly recommended that you do not disable this!"
 msgstr "是否应在每次启动 Cura 时自动检查新插件？强烈建议您不要禁用此功能！"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Preferences/GeneralPage.qml:940
@@ -5193,7 +5388,9 @@ msgstr "该网络地址的打印机尚未响应。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:245
 msgctxt "@label"
-msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
+msgid ""
+"This printer cannot be added because it's an unknown printer or it's not the "
+"host of a group."
 msgstr "由于是未知打印机或不是组内主机，无法添加该打印机。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:347
@@ -5290,10 +5487,10 @@ msgstr "欢迎使用 Ultimaker Cura"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/WelcomeContent.qml:68
 msgctxt "@text"
-msgid "Please follow these steps to set up Ultimaker Cura. This will only take a few moments."
-msgstr ""
-"请按照以下步骤设置\n"
-"Ultimaker Cura。此操作只需要几分钟时间。"
+msgid ""
+"Please follow these steps to set up Ultimaker Cura. This will only take a "
+"few moments."
+msgstr "请按照以下步骤设置\nUltimaker Cura。此操作只需要几分钟时间。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/WelcomeContent.qml:86
 msgctxt "@button"
@@ -5372,7 +5569,9 @@ msgstr "帮助我们改进 Ultimaker Cura"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:57
 msgctxt "@text"
-msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
+msgid ""
+"Ultimaker Cura collects anonymous data to improve print quality and user "
+"experience, including:"
 msgstr "为了改善打印质量和用户体验，Ultimaker Cura 会收集匿名数据，这些数据包括："
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:71
@@ -5397,7 +5596,8 @@ msgstr "打印设置"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:102
 msgctxt "@text"
-msgid "Data collected by Ultimaker Cura will not contain any personal information."
+msgid ""
+"Data collected by Ultimaker Cura will not contain any personal information."
 msgstr "Ultimaker Cura 收集的数据不会包含任何个人信息。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:103
@@ -5448,22 +5648,30 @@ msgstr "预设打印机"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterSelector/MachineSelector.qml:47
 msgctxt "@status"
-msgid "The cloud printer is offline. Please check if the printer is turned on and connected to the internet."
+msgid ""
+"The cloud printer is offline. Please check if the printer is turned on and "
+"connected to the internet."
 msgstr "云打印机离线。请检查打印机是否已开启并连接到 Internet。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterSelector/MachineSelector.qml:51
 msgctxt "@status"
-msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
+msgid ""
+"This printer is not linked to your account. Please visit the Ultimaker "
+"Digital Factory to establish a connection."
 msgstr "此打印机未链接到您的帐户。请访问 Ultimaker Digital Factory 以建立连接。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterSelector/MachineSelector.qml:56
 msgctxt "@status"
-msgid "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer."
+msgid ""
+"The cloud connection is currently unavailable. Please sign in to connect to "
+"the cloud printer."
 msgstr "云连接当前不可用。请登录以连接到云打印机。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterSelector/MachineSelector.qml:60
 msgctxt "@status"
-msgid "The cloud connection is currently unavailable. Please check your internet connection."
+msgid ""
+"The cloud connection is currently unavailable. Please check your internet "
+"connection."
 msgstr "云连接当前不可用。请检查您的 Internet 连接。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrinterSelector/MachineSelector.qml:236
@@ -5479,7 +5687,7 @@ msgstr "管理打印机"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/SearchBar.qml:17
 msgctxt "@placeholder"
 msgid "Search"
-msgstr ""
+msgstr "搜索"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/JobSpecs.qml:93
 msgctxt "@text Print job name"
@@ -5539,13 +5747,11 @@ msgstr "您确定要中止打印吗？"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingCategory.qml:115
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
+"Some hidden settings use values different from their normal calculated "
+"value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"一些隐藏设置正在使用有别于一般设置的计算值。\n"
-"\n"
-"单击以使这些设置可见。"
+msgstr "一些隐藏设置正在使用有别于一般设置的计算值。\n\n单击以使这些设置可见。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingView.qml:47
 msgctxt "@label:textbox"
@@ -5585,7 +5791,9 @@ msgstr "配置设定可见性..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingItem.qml:78
 msgctxt "@label"
-msgid "This setting is not used because all the settings that it influences are overridden."
+msgid ""
+"This setting is not used because all the settings that it influences are "
+"overridden."
 msgstr "未使用此设置，因为受其影响的所有设置均已覆盖。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingItem.qml:83
@@ -5600,7 +5808,9 @@ msgstr "受影响项目"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingItem.qml:185
 msgctxt "@label"
-msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
+msgid ""
+"This setting is always shared between all extruders. Changing it here will "
+"change the value for all extruders."
 msgstr "此设置始终在所有挤出机之间共享。在此处更改它将改变所有挤出机的值。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingItem.qml:189
@@ -5614,26 +5824,21 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"此设置的值与配置文件不同。\n"
-"\n"
-"单击以恢复配置文件的值。"
+msgstr "此设置的值与配置文件不同。\n\n单击以恢复配置文件的值。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Settings/SettingItem.qml:329
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
+"This setting is normally calculated, but it currently has an absolute value "
+"set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"此设置通常可被自动计算，但其当前已被绝对定义。\n"
-"\n"
-"单击以恢复自动计算的值。"
+msgstr "此设置通常可被自动计算，但其当前已被绝对定义。\n\n单击以恢复自动计算的值。"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/ColorDialog.qml:104
 msgctxt "@label"
 msgid "Hex"
-msgstr ""
+msgstr "六角"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/PrintMonitor.qml:156
 msgctxt "@label"
@@ -5658,7 +5863,7 @@ msgstr "预计剩余时间"
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:81
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
-msgstr ""
+msgstr "显示联机故障排除"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:88
 msgctxt "@action:inmenu"
@@ -5736,9 +5941,11 @@ msgid "Manage Materials..."
 msgstr "管理材料..."
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:216
-msgctxt "@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate."
+msgctxt ""
+"@action:inmenu Marketplace is a brand name of Ultimaker's, so don't "
+"translate."
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "从市场添加更多材料"
 
 #: /home/remco/dev/code/ulti/trans/Cura/resources/qml/Actions.qml:223
 msgctxt "@action:inmenu menubar:profile"
@@ -5992,7 +6199,9 @@ msgstr "UFP 读取器"
 
 #: DigitalLibrary/plugin.json
 msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgid ""
+"Connects to the Digital Library, allowing Cura to open files from and save "
+"files to the Digital Library."
 msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文件并将文件保存到其中。"
 
 #: DigitalLibrary/plugin.json
@@ -6032,7 +6241,9 @@ msgstr "Ultimaker 网络连接"
 
 #: ModelChecker/plugin.json
 msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgid ""
+"Checks models and print configuration for possible printing issues and give "
+"suggestions."
 msgstr "检查模型和打印配置，以了解潜在的打印问题并给出建议。"
 
 #: ModelChecker/plugin.json
@@ -6043,7 +6254,7 @@ msgstr "模型检查器"
 #: SimulationView/plugin.json
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
-msgstr ""
+msgstr "提供切片层数据的预览。"
 
 #: SimulationView/plugin.json
 msgctxt "name"
@@ -6183,12 +6394,12 @@ msgstr "版本自 4.1 升级到 4.2"
 #: VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr ""
+msgstr "将配置从 Cura 4.13 升级至 Cura 5.0。"
 
 #: VersionUpgrade/VersionUpgrade413to50/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.13 to 5.0"
-msgstr ""
+msgstr "版本从 4.13 升级到 5.0"
 
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
@@ -6442,7 +6653,8 @@ msgstr "后期处理"
 
 #: SupportEraser/plugin.json
 msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgid ""
+"Creates an eraser mesh to block the printing of support in certain places"
 msgstr "创建橡皮擦网格，以便阻止在某些位置打印支撑"
 
 #: SupportEraser/plugin.json
@@ -6472,7 +6684,9 @@ msgstr "透视视图"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgid ""
+"Provides machine actions for Ultimaker machines (such as bed leveling "
+"wizard, selecting upgrades, etc.)."
 msgstr "为最后的机器提供机器操作（例如，热床调平向导，选择升级等）。"
 
 #: UltimakerMachineActions/plugin.json
@@ -6482,13 +6696,15 @@ msgstr "Ultimaker 打印机操作"
 
 #: Marketplace/plugin.json
 msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the Ultimaker website."
-msgstr ""
+msgid ""
+"Manages extensions to the application and allows browsing extensions from "
+"the Ultimaker website."
+msgstr "管理对应用程序的扩展并允许从 Ultimaker 网站浏览扩展。"
 
 #: Marketplace/plugin.json
 msgctxt "name"
 msgid "Marketplace"
-msgstr ""
+msgstr "市场"
 
 #: SolidView/plugin.json
 msgctxt "description"
@@ -6512,7 +6728,9 @@ msgstr "G-code 读取器"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgid ""
+"Provides a way to change machine settings (such as build volume, nozzle "
+"size, etc.)."
 msgstr "提供一种改变机器设置的方法（如构建体积、喷嘴大小等）。"
 
 #: MachineSettingsAction/plugin.json
@@ -6522,7 +6740,8 @@ msgstr "打印机设置操作"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgid ""
+"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 msgstr "接受 G-Code 并将其发送到一台打印机。 插件也可以更新固件。"
 
 #: USBPrinting/plugin.json
