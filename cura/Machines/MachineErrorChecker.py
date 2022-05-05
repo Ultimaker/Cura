@@ -194,7 +194,7 @@ class MachineErrorChecker(QObject):
                 keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
                 keys_to_recheck.add(key)
                 self._setResult(True, keys_to_recheck = keys_to_recheck)
-                continue
+                return
 
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)
