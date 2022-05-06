@@ -601,6 +601,7 @@ Item
                     maximum: 99999
                     unitText: model.unit
                     decimals: model.unit == "mm" ? 2 : 0
+                    enabled: base.editingEnabled
 
                     editingFinishedFunction: materialPropertyProvider.setPropertyValue("value", value)
                 }

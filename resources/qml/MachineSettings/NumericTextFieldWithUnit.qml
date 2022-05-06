@@ -38,6 +38,7 @@ UM.TooltipArea
 
     property alias textField: textFieldWithUnit
     property alias valueText: textFieldWithUnit.text
+    property alias enabled: textFieldWithUnit.enabled
     property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
 
     property string tooltipText: propertyProvider.properties.description ? propertyProvider.properties.description : ""
