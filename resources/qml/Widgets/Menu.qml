@@ -12,6 +12,7 @@ import Cura 1.0 as Cura
 UM.Menu
 {
     id: menu
+    Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
     topPadding: UM.Theme.getSize("narrow_margin").height
     bottomPadding: UM.Theme.getSize("narrow_margin").height
     padding: 0
